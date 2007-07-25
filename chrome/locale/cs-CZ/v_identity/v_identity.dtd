@@ -1,0 +1,52 @@
+<!ENTITY vident.compose.vidLogo.label "virtual identity">
+<!ENTITY vident.prefs.dlgTitle.label "Nastavení Virtual Identity">
+<!ENTITY vident.prefs.commonTab.label "Hlavní">
+<!ENTITY vident.prefs.vIdentityTab.label "Virtuální identita">
+<!ENTITY vident.prefs.smartReplyTab.label "Smart Reply">
+<!ENTITY vident.prefs.notificationTab.label "Zprávy o stavu">
+<!ENTITY vident.prefs.commonTab.header "Všeobecné nastavení">
+<!ENTITY vident.prefs.commonTab.caption "použít následující vlastnosti">
+<!ENTITY vident.prefs.versionWarning.label "váš poštovní program je pro použití funkce Smart Draft příliš starý">
+<!ENTITY vident.prefs.smartDraft.label "použít Smart Draft">
+<!ENTITY vident.prefs.smartReply.label "použít Smart Reply">
+<!ENTITY vident.prefs.smartReplyNewsgroups.label "použít Smart Reply i při odpovědi do diskusní skupiny">
+<!ENTITY vident.prefs.SMTP.label "zobrazit nabídku SMTP">
+<!ENTITY vident.prefs.vIdentityTab.header "Nastavení virtuálních identit">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.label "vlastnosti ke zkopírování">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.label "místo pro uložení odeslaných e-mailů">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.caption "při odeslání zprávy s Virtual Identity">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.desc "kopírovat následující vlastnostni z předchozí identity:">
+<!ENTITY vident.prefs.SMIME.label "Nastavení S/MIME">
+<!ENTITY vident.prefs.PGP.label "Nastavení OpenPGP">
+<!ENTITY vident.prefs.VCard.label "přílohy vCard">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.caption "při odeslání zprávy s Virtual Identity">
+<!ENTITY vident.prefs.vidFccAccount.label "Složka používána účtem změněným Virtual Identity">
+<!ENTITY vident.prefs.vidFccDefault.label "Složka používána výchozím účtem">
+<!ENTITY vident.prefs.smartReplyTab.header "Nastavení Smart Reply">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.label "1. získat adresu">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. filtrovat adresy">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. použít adresy">
+<!ENTITY vident.prefs.smartReplyTab.caption "Virtual Identity Smart Reply">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "Pro nalezení identity pro odpověď musí Smart Reply získat seznam možných identit odesilatele. Analyzuje proto hlavičky &apos;To&apos; a &apos;Cc&apos;. Má-li Smart Reply analyzovat dodatečné hlavičky, zadejte je zde (možná si pro jejich rozeznání budete muset nainstalovat další rozšíření, jako například enigmail nebo mnenhy).">
+<!ENTITY vident.prefs.smartReply.headers.desc "nové hlavičky - jedna na řádku, bez &apos;:&apos;, například &apos;x-original-to&apos;">
+<!ENTITY vident.prefs.smartReply.preferHeader.label "upřednostnit adresy těchto hlaviček před &apos;To&apos; a &apos;Cc&apos;">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.desc "Adresy se musí po získání filtrovat. Filtry jsou aplikovány postupně, můžete je tedy použít pro seřazení výsledku. První nalezená adresa může být ihned použita jako odesilatelova identita. Pokud nepoužijete filtr, budou přeneseny všechny adresy.">
+<!ENTITY vident.prefs.smartReply.filter.desc "Filtr Smart Reply - jeden filtr na řádku, je možné použít regulární výrazy (například &apos;/@mozilla.org$/&apos; platí pro všechny e-maily z domény mozilla.org">
+<!ENTITY vident.prefs.smartReply.ignoreFullname.label "při porovnání e-mailu s existujícími identitami ignorovat celé jméno">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Vyfiltrované adresy jsou nakonec přidány do rozbalovacího seznamu identit. Můžete si také zvolit, jak by měly být použity jako nové identity odesilatelů.">
+<!ENTITY vident.prefs.smartReply.ask.label "otevřít dialog pro výběr identity">
+<!ENTITY vident.prefs.smartReply.ask_always.label "ptát se i tehdy, když je jen jedna možná adresa">
+<!ENTITY vident.prefs.smartReply.autocreate.label "použít automaticky první nalezenou identitu">
+<!ENTITY vident.prefs.notificationTab.header "Zprávy o stavu">
+<!ENTITY vident.prefs.notificationTab.caption "Upozornění">
+<!ENTITY vident.prefs.notifyHeaders.label "zobrazit informace o rozpoznaných hlavičkách">
+<!ENTITY vident.prefs.notifySmartIdentity.label "aktivovat Smart Reply / zprávy o stavu Smart Draft">
+<!ENTITY vident.prefs.notifyTime.prefix.label "doba zobrazení zpráv o stavu (0 = nekonečno)">
+<!ENTITY vident.prefs.notifyTime.postfix.label "vteřin">
+<!ENTITY vident.accPane.prettyName.prefix "virtual Id">
+<!ENTITY vident.replySelector.dialogheader.title "Virtual Identity Smart Reply">
+<!ENTITY vident.replySelector.caption.label "Zvolte si virtuální identitu">
+<!ENTITY fccMailFolder.accesskey "P">
+<!ENTITY sentFolderOn.accesskey "e">
+<!ENTITY sentInOtherFolder.label "Další:">
+<!ENTITY sentInOtherFolder.accesskey "D">

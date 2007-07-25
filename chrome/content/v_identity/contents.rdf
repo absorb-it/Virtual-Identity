@@ -1,0 +1,36 @@
+<?xml version="1.0"?> 
+  <RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+              xmlns:chrome="http://www.mozilla.org/rdf/chrome#"> 
+
+    <RDF:Seq about="urn:mozilla:package:root"> 
+      <RDF:li resource="urn:mozilla:package:v_identity"/> 
+    </RDF:Seq> 
+
+    <RDF:Description about="urn:mozilla:package:v_identity" 
+          chrome:displayName="Thunderbird Virtual Identity Extension" 
+          chrome:author="Rene Ejury" 
+          chrome:name="v_identity"
+          chrome:extension="true"
+          chrome:description="Allows you to modify your Identity settings for a single Mail on the fly. Autocreates new Virtual Identities if you are replying to any mail based on your settings."> 
+    </RDF:Description>
+
+    <RDF:Seq about="urn:mozilla:overlays">
+      <RDF:li resource="chrome://messenger/content/messenger.xul"/>
+      <RDF:li resource="chrome://messenger/content/messengercompose/messengercompose.xul"/>
+      <RDF:li resource="chrome://messenger/content/msgHdrViewOverlay.xul"/>
+    </RDF:Seq>
+
+    <RDF:Seq about="chrome://messenger/content/messengercompose/messengercompose.xul">
+      <RDF:li>chrome://v_identity/content/v_identity.xul</RDF:li>
+      <RDF:li>chrome://v_identity/content/vI_context.xul</RDF:li>
+    </RDF:Seq>
+
+  <RDF:Seq about="chrome://messenger/content/msgHdrViewOverlay.xul">
+    <RDF:li>chrome://v_identity/content/vI_getHeader.xul</RDF:li>
+  </RDF:Seq>
+
+    <RDF:Seq about="chrome://messenger/content/messenger.xul">
+      <RDF:li>chrome://v_identity/content/vI_context.xul</RDF:li>
+    </RDF:Seq>
+
+</RDF:RDF>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+
+<bindings id="mailComposeBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:xbl="http://www.mozilla.org/xbl">
+
+<binding id="fromPopupItem_clone" extends="chrome://global/content/bindings/menu.xml#menuitem">
+  <content autostretch="never" excludes="template,observes,menupopup">
+      <xul:image class="menupopup_clone-icon" xbl:inherits="src"/>
+      <xul:label class="menupopup_clone-text" xbl:inherits="value=label,accesskey,crop"
+               crop="right" flex="1"/>
+      <xul:label id="msgIdentityPopupItem_label" class="menu-description composemenu-text-2" xbl:inherits="value=accountname"
+               crop="right"/>
+  </content>
+</binding>
+
+
+<binding id="fromMenuList_clone" display="xul:menu" extends="chrome://global/content/bindings/menulist.xml#menulist-description">
+  <resources>
+      <stylesheet src="chrome://global/skin/menu.css"/>
+  </resources>
+  <content sizetopopup="pref">
+    <xul:hbox flex="1">
+      <xul:vbox><xul:spacer flex="1" />
+      <xul:image class="menulist_clone-icon" id="msgIdentity_clone_image"
+      xbl:inherits="src"/>
+      <xul:spacer flex="1" /></xul:vbox>
+      <xul:vbox flex="1"><xul:spacer flex="1" />
+      <xul:textbox id="msgIdentity_clone_textbox" class="plain menulist_clone-textbox" xbl:inherits="value=label,crop,accesskey"
+      allowevents="true" oninput="vI_msgIdentityClone.inputEvent()"
+      onblur="vI_msgIdentityClone.blurEvent()"
+      crop="right" />
+      <xul:spacer flex="1" /></xul:vbox>
+      <xul:vbox><xul:spacer flex="1" />
+      <xul:label id="msgIdentity_clone_label" class="menu-description composemenu-text-2" xbl:inherits="value=accountname" crop="right"/>
+      <xul:spacer flex="1" /></xul:vbox>
+    </xul:hbox>
+    <!-- <xul:dropmarker class="menulist-dropmarker" type="menu"/> -->
+    <children includes="menupopup"/>
+  </content>
+</binding>
+
+</bindings>

@@ -1,0 +1,113 @@
+@import url("chrome://v_identity/locale/logo.css"); 
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+notificationbox {
+  -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#notificationbox");
+  -moz-box-orient: vertical;
+  overflow-y: hidden;
+}
+
+notification {
+  -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#notification");
+}
+
+.vINotificationLogo {
+	margin: 0;
+	padding: 0;
+}
+
+.identity_clone-menulist {
+  -moz-binding: url(chrome://v_identity/content/v_identity.xml#fromMenuList_clone);
+  -moz-appearance: textfield;
+  margin: 2px 4px;
+  border: 2px solid;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
+  -moz-border-right-colors: ThreeDHighlight ThreeDLightShadow;
+  -moz-border-bottom-colors: ThreeDHighlight ThreeDLightShadow;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow;
+  padding: 1px 0px 1px 2px;
+  background-color: -moz-Field;
+  color: -moz-FieldText;
+}
+
+.identity_clone-popup-item {
+  -moz-binding: url("chrome://v_identity/content/v_identity.xml#fromPopupItem_clone");
+  padding: 0;
+  margin: 0;
+}
+
+.menulist_clone-icon {
+	margin: 	0 3px;
+}
+
+.menupopup_clone-icon{
+	margin: 	0 3px;
+	padding:	0;
+}
+
+.menulist_clone-textbox, .menupopup_clone-text {
+	margin:		0;
+	padding: 	1px;
+	background-color: transparent;
+}
+
+.vIactiv {
+	color: red;
+}
+
+/* indicates a new indetity in menu */
+/* the alternate is the person-icon, which is defined elsewhere */
+.new-icon {
+  list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook-toolbar-small.png");
+  -moz-image-region: rect(0px 16px 16px 0px);
+}
+
+
+/* the following styles are copied from notification.css, cause its not included in pre2.0 */
+notification {
+  background-color: InfoBackground;
+  color: InfoText;
+}
+
+notification[type="info"] {
+  background-color: -moz-Dialog;
+}
+
+notification[type="critical"] {
+  background-color: red;
+}
+
+#fromPopupItem_clone .menulist-menupopup {
+	padding: 0;
+}
+
+.messageImage {
+  width: 16px;
+  height: 16px;
+  margin: 0px 1px 0px 6px;
+}
+
+.messageText {
+  -moz-margin-start: 5px;
+}
+
+.messageButton {
+  margin: 0px 5px 0px 5px;
+}
+
+.messageCloseButton {
+  list-style-image: url("chrome://global/skin/icons/close.png");
+  -moz-appearance: none;
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+  padding: 4px 2px;
+  border: none !important;
+}
+
+.messageCloseButton:hover {
+  -moz-image-region: rect(0px, 32px, 16px, 16px);
+}
+
+.messageCloseButton:hover:active {
+  -moz-image-region: rect(0px, 48px, 16px, 32px);
+}
+/* the previous styles are copied from notification.css, cause its not included in pre2.0 */

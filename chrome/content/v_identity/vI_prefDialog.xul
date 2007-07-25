@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+
+<?xul-overlay href="chrome://messenger/content/msgFolderPickerOverlay.xul"?>
+
+<!DOCTYPE page [
+<!ENTITY % amCopiesDTD SYSTEM "chrome://messenger/locale/am-copies.dtd">
+%amCopiesDTD;
+<!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
+%versionDTD;
+<!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
+%vIdentDTD;
+]>
+
+<?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/prefPanels.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/accountManage.css" type="text/css"?>
+<?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        onload="vI_prefDialog.init();"
+        buttons="accept,cancel"
+        ondialogaccept="vI_prefDialog.savePrefs();"
+        persist="screenX screenY"
+        title="&vident.prefs.dlgTitle.label;">
+
+<script type="application/x-javascript"
+            src="chrome://v_identity/content/vI_prefDialog.js" />
+
+ <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
+
+<broadcaster id="VIdent_broadcaster_doFcc"/>
+
+<textbox hidden="true" id="VIdent_identity.fccFolder"
+                prefstring="fcc_folder"/>
+<textbox hidden="true" id="VIdent_identity.fccFolderPickerMode"
+                prefstring="fcc_folder_picker_mode"/>
+
+<label class="v_identity_logo"
+	value="&vident.compose.vidLogo.label; &vident.version;" align="right" flex="1"/>
+
+<tabbox>
+	<tabs>
+		<tab label="&vident.prefs.commonTab.label;" />
+		<tab label="&vident.prefs.vIdentityTab.label;" />
+		<tab id="smartReplyTab" label="&vident.prefs.smartReplyTab.label;" />
+		<tab label="&vident.prefs.notificationTab.label;" />
+	</tabs>
+	<tabpanels>
+	<tabpanel orient="vertical" label="&vident.prefs.commonTab.header;">
+		<dialogheader title="&vident.prefs.commonTab.header;"/>
+		<groupbox>
+		<caption label="&vident.prefs.commonTab.caption;"/>
+			<label id="version-warning"
+				value="&vident.prefs.versionWarning.label;" hidden="true"/>
+			<checkbox id="VIdent_identity.smart_draft" label="&vident.prefs.smartDraft.label;"
+				prefstring="smart_draft"/>
+			<checkbox id="VIdent_identity.smart_reply" label="&vident.prefs.smartReply.label;"
+				prefstring="smart_reply"
+				oncommand="vI_prefDialog.base.smartReplyConstraint(this);"
+				/>
+			<checkbox id="VIdent_identity.smart_reply_for_newsgroups" label="&vident.prefs.smartReplyNewsgroups.label;"
+				prefstring="smart_reply_for_newsgroups" />
+			<checkbox id="VIdent_identity.show_smtp" label="&vident.prefs.SMTP.label;"
+				prefstring="show_smtp" />
+		</groupbox>
+	</tabpanel>
+	<tabpanel orient="vertical" label="&vident.prefs.vIdentityTab.header;">
+		<dialogheader title="&vident.prefs.vIdentityTab.header;"/>
+		<tabbox>
+		<tabs>
+			<tab label="&vident.prefs.vIdentityTab.valueTab.label;" />
+			<tab label="&vident.prefs.vIdentityTab.fccTab.label;" />
+		</tabs>
+		<tabpanels>
+			<tabpanel orient="vertical">
+			<groupbox>
+			<caption label="&vident.prefs.vIdentityTab.valueTab.caption;"/>
+			<description width="500px">&vident.prefs.vIdentityTab.valueTab.desc;</description>
+			<checkbox id="VIdent_identity.copySMIMESettings" label="&vident.prefs.SMIME.label;"
+				prefstring="copySMIMESettings"/>
+			<checkbox id="VIdent_identity.copyEnigmailSettings" label="&vident.prefs.PGP.label;"
+				prefstring="copyEnigmailSettings"/>
+			<checkbox id="VIdent_identity.copyAttachVCardSettings" label="&vident.prefs.VCard.label;"
+				prefstring="copyAttachVCardSettings"/>
+			</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+		<groupbox>
+		<caption label="&vident.prefs.vIdentityTab.fccTab.caption;"/>
+		<hbox align="center">
+			<checkbox id="VIdent_identity.doFcc" label="&fccMailFolder.label;" 
+				accesskey="&fccMailFolder.accesskey;"
+				oncommand="setupFccItems();" prefstring="doFcc"/>
+		</hbox>
+		<radiogroup id="VIdent_doFcc">
+		<grid class="specialFolderPickerGrid">
+			<columns>
+				<column flex="1"/>
+				<column flex="2"/>
+			</columns>
+			<rows>
+				<radio id="VIdent_fcc_Settings_Of_Account" 
+					value="3" label="&vident.prefs.vidFccAccount.label;"
+					oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
+					observes="VIdent_broadcaster_doFcc"/>
+				<radio id="VIdent_fcc_Settings_Of_Default" 
+					value="2" label="&vident.prefs.vidFccDefault.label;"
+					oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
+					observes="VIdent_broadcaster_doFcc"/>
+				<row align="center">
+					<radio id="VIdent_fcc_selectAccount" 
+						value="0" label="&sentFolderOn.label;"
+						accesskey="&sentFolderOn.accesskey;"
+						oncommand="setPickersState('msgFccAccountPicker', 'msgFccFolderPicker', event)" 
+						observes="VIdent_broadcaster_doFcc"/>
+					<menulist id="msgFccAccountPicker"
+						oncommand="noteSelectionChange('VIdent_fcc_selectAccount')" 
+						flex="1" observes="VIdent_broadcaster_doFcc"/>
+				</row> 
+				<row align="center">
+					<radio id="VIdent_fcc_selectFolder" 
+						value="1" label="&sentInOtherFolder.label;"
+						accesskey="&sentInOtherFolder.accesskey;"
+						oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
+						observes="VIdent_broadcaster_doFcc"/>
+					<menulist id="msgFccFolderPicker" 
+						oncommand="noteSelectionChange('VIdent_fcc_selectFolder')" 
+						flex="1" observes="VIdent_broadcaster_doFcc"/>
+				</row>
+			</rows>
+		</grid>
+		</radiogroup>
+
+		</groupbox>
+		</tabpanel>
+		</tabpanels>
+		</tabbox>
+	</tabpanel>
+	<tabpanel orient="vertical" label="&vident.prefs.smartReplyTab.header;">
+		<dialogheader title="&vident.prefs.smartReplyTab.header;"/>
+		<tabbox>
+		<tabs>
+			<tab id="smartReplyTab1" label="&vident.prefs.smartReplyTab.Tab1.label;" />
+			<tab id="smartReplyTab2" label="&vident.prefs.smartReplyTab.Tab2.label;" />
+			<tab id="smartReplyTab3" label="&vident.prefs.smartReplyTab.Tab3.label;" />
+		</tabs>
+		<tabpanels>
+			<tabpanel orient="vertical">
+			<groupbox>
+			<caption label="&vident.prefs.smartReplyTab.caption;"/>
+			<vbox align="left">
+				<description width="500px">&vident.prefs.smartReplyTab.Tab1.desc;</description>
+				<hbox>
+				<vbox><description width="300px">&vident.prefs.smartReply.headers.desc;</description><spacer flex="1"/></vbox>
+				<textbox id="VIdent_identity.smart_reply_headers" multiline="true"
+					rows="4" size="20" wrap="false" flex="1"
+					prefstring="smart_reply_headers" />
+				</hbox>
+				<checkbox id="VIdent_identity.smart_reply_prefer_headers" label="&vident.prefs.smartReply.preferHeader.label;"
+					prefstring="smart_reply_prefer_headers"/>
+			</vbox>
+			</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+			<groupbox>
+			<caption label="&vident.prefs.smartReplyTab.caption;"/>
+			<vbox align="left">
+				<description width="500px">&vident.prefs.smartReplyTab.Tab2.desc;</description>
+				<hbox>
+				<vbox><description width="300px">&vident.prefs.smartReply.filter.desc;</description><spacer flex="1"/></vbox>
+				<textbox id="VIdent_identity.smart_reply_filter" multiline="true"
+					rows="4" size="20" wrap="false" flex="1"
+					prefstring="smart_reply_filter" />
+				</hbox>
+				<checkbox id="VIdent_identity.smart_reply_ignoreFullName" label="&vident.prefs.smartReply.ignoreFullname.label;"
+					prefstring="smart_reply_ignoreFullName" wrap="true" width="500px"/>
+			</vbox>
+			</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+			<groupbox>
+			<caption label="&vident.prefs.smartReplyTab.caption;"/>
+			<vbox align="left">
+				<description width="500px">&vident.prefs.smartReplyTab.Tab3.desc;</description>
+				<checkbox id="VIdent_identity.smart_reply_ask" label="&vident.prefs.smartReply.ask.label;"
+					prefstring="smart_reply_ask"
+					oncommand="vI_prefDialog.base.smartReplyResultConstraint();"/>
+				<checkbox id="VIdent_identity.smart_reply_ask_always" label="&vident.prefs.smartReply.ask_always.label;"
+					prefstring="smart_reply_ask_always"
+					oncommand="vI_prefDialog.base.smartReplyResultConstraint();"/>
+				<hbox>
+				<checkbox id="VIdent_identity.smart_reply_autocreate" label="&vident.prefs.smartReply.autocreate.label;"
+					prefstring="smart_reply_autocreate"
+					oncommand="vI_prefDialog.base.smartReplyResultConstraint();"/>
+				</hbox>
+			</vbox>
+			</groupbox>
+			</tabpanel>
+		</tabpanels>
+		</tabbox>
+	</tabpanel>
+	<tabpanel orient="vertical" label="&vident.prefs.notificationTab.header;">
+		<dialogheader title="&vident.prefs.notificationTab.header;"/>
+		<groupbox>
+		<caption label="&vident.prefs.notificationTab.caption;"/>
+		<vbox align="left">
+			<checkbox id="VIdent_identity.get_header_notification" label="&vident.prefs.notifyHeaders.label;"
+				prefstring="get_header_notification"/>
+			<checkbox id="VIdent_identity.smart_reply_notification" label="&vident.prefs.notifySmartIdentity.label;"
+				prefstring="smart_reply_notification"/>
+			<hbox>
+			<vbox><spacer flex="1"/><label value="&vident.prefs.notifyTime.prefix.label;" /><spacer flex="1"/></vbox>
+			<textbox preftype="int" id="VIdent_identity.notification_timeout" flex="1"
+				prefstring="notification_timeout" size="1" />
+			<vbox><spacer flex="1"/><label value="&vident.prefs.notifyTime.postfix.label;" /><spacer flex="1"/></vbox>
+			</hbox>
+		</vbox>
+		</groupbox>
+	</tabpanel>
+	</tabpanels>
+</tabbox>
+</dialog>

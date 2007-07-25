@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+
+<?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/messageHeader.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/primaryToolbar.css" type="text/css"?>
+
+
+<!DOCTYPE overlay [
+<!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
+%versionDTD;
+<!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
+%vIdentDTD;
+]>
+
+  <overlay id="v_identity" 
+          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script type="application/x-javascript" src="chrome://v_identity/content/v_identity.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_account.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_msgIdentityClone.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_smtpSelector.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
+  </stringbundleset>
+
+<toolbox id="headers-box">
+	<notificationbox id="vINotification" position="1" insertbefore="MsgHeadersToolbar" />
+</toolbox>
+
+<vbox flex="1" id="addresses-box"> <!-- this is used as a strorage, elements will be rearranged by v_identity_init -->
+
+<hbox id="msgIdentityHbox" flex="1">
+	<menulist id="msgIdentity_clone" class="identity_clone-menulist person-icon"
+		label="..." flex="1" oncommand="vI_msgIdentityClone.LoadIdentity(false);">
+		<menupopup id="msgIdentityPopup_clone"/>
+	</menulist>
+	<hbox id="smtpServerListHbox" hidden="true">
+	<spacer flex="1" />
+	<menulist id="smtp_server_list" oncommand="vI_smtpSelector.loadSMTP();">
+	   <menupopup id="smtp_server_list_popup" />
+	</menulist>
+	</hbox>
+</hbox>
+   
+  <!-- Some of "Dynamic part of labels" are placed here.-->
+  <!-- (Well, I know that its not a good ideal to put them here. :P) -->
+  <data id="prettyName-Prefix" label="&vident.accPane.prettyName.prefix;" />
+  
+  </vbox>
+  <statusbarpanel id="statusText">
+  <label id="v_identity_logo"  class="v_identity_logo"
+			value="&vident.compose.vidLogo.label; &vident.version;" align="right" hidden="true" flex="1"/>
+    </statusbarpanel>
+</overlay>

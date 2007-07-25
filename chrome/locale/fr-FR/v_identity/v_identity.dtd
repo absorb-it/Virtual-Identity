@@ -1,0 +1,52 @@
+<!ENTITY vident.compose.vidLogo.label "Virtual Identity">
+<!ENTITY vident.prefs.dlgTitle.label "Paramètres de Virtual Identity">
+<!ENTITY vident.prefs.commonTab.label "Principaux">
+<!ENTITY vident.prefs.vIdentityTab.label "Identité virtuelle">
+<!ENTITY vident.prefs.smartReplyTab.label "Réponse intelligente">
+<!ENTITY vident.prefs.notificationTab.label "Messages d&apos;état">
+<!ENTITY vident.prefs.commonTab.header "Configuration générale">
+<!ENTITY vident.prefs.commonTab.caption "Utiliser les fonctions suivantes">
+<!ENTITY vident.prefs.versionWarning.label "Votre programme de messagerie est trop ancien pour utiliser la fonction brouillon intelligent">
+<!ENTITY vident.prefs.smartDraft.label "utiliser le brouillon intelligent">
+<!ENTITY vident.prefs.smartReply.label "utiliser une réponse intelligente">
+<!ENTITY vident.prefs.smartReplyNewsgroups.label "utiliser également une réponse intelligente lors d&apos;une réponse à un forum">
+<!ENTITY vident.prefs.SMTP.label "montrer le menu SMTP">
+<!ENTITY vident.prefs.vIdentityTab.header "Propriétés des identités virtuelles">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.label "Attributs à copier">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.label "Emplacement d&apos;enregistrement des E-mails envoyés">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.caption "Quand j&apos;envoie un message avec une identité virtuelle">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.desc "copier les attributs suivants à partir de l&apos;ancienne identité :">
+<!ENTITY vident.prefs.SMIME.label "paramètres de sécurité S/MIME">
+<!ENTITY vident.prefs.PGP.label "paramètres de sécurité OpenPGP">
+<!ENTITY vident.prefs.VCard.label "pièces jointes vCard">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Quand j&apos;envoie un message avec une identité virtuelle">
+<!ENTITY vident.prefs.vidFccAccount.label "Le dossier du compte modifié par Virtual Identity">
+<!ENTITY vident.prefs.vidFccDefault.label "Le dossier du compte par défaut">
+<!ENTITY vident.prefs.smartReplyTab.header "Paramètres de la réponse intelligente">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.label "1. Obtenir les adresses">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. Filtrer les adresses">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. Utiliser les adresses">
+<!ENTITY vident.prefs.smartReplyTab.caption "Réponse intelligente de Virtual Identity">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "Pour trouver une identité de réponse, la réponse intelligente doit obtenir une liste des identités d&apos;expéditeur possibles. C&apos;est pourquoi les champs d&apos;en-têtes &apos;À&apos; et &apos;Cc&apos; sont analysés. Si vous voulez que la réponse intelligente analyse d&apos;autres champs d&apos;en-têtes, vous pouvez les entrer ici (il vous faut peut-être une autre extension pour les reconnaître, par exemple enigmail ou mnenhy).">
+<!ENTITY vident.prefs.smartReply.headers.desc "en-têtes supplémentaires - un par ligne sans &apos;:&apos;, par exemple &apos;x-original-to&apos;">
+<!ENTITY vident.prefs.smartReply.preferHeader.label "préférer les adresses des ces en-têtes à celles de &apos;À&apos; et &apos;Cc&apos;">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.desc "Après avoir obtenu les adresses il faut les filtrer. Les filtres sont utilisés l&apos;un après l&apos;autre, donc vous pouvez aussi les utiliser pour classer les résultats. A la fin, la première adresse trouvée peut être utilisée instantanément comme identité d&apos;expéditeur. Si vous n&apos;utilisez aucun filtre, toutes les adresses sont transférées.">
+<!ENTITY vident.prefs.smartReply.filter.desc "filtre de la réponse intelligente - un filtre par ligne, vous pouvez utiliser des expressions régulières (par exemple &apos;/@mozilla.org$/&apos; correspond à toutes les adresses du domaine mozilla.org)">
+<!ENTITY vident.prefs.smartReply.ignoreFullname.label "ignorer le nom complet lors de la comparaison des adresses E-mails avec les identités existantes">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "À la fin, les adresses filtrées sont ajoutées au menu déroulant d&apos;identité du message. Vous pouvez également choisir la manière dont elles sont utilisées comme que nouvelle identité d&apos;expéditeur.">
+<!ENTITY vident.prefs.smartReply.ask.label "ouvrir une boîte de dialogue pour choisir l&apos;identité">
+<!ENTITY vident.prefs.smartReply.ask_always.label "également demander si une seule adresse est possible">
+<!ENTITY vident.prefs.smartReply.autocreate.label "utiliser la première identité trouvée sans poser de question">
+<!ENTITY vident.prefs.notificationTab.header "Messages d&apos;état">
+<!ENTITY vident.prefs.notificationTab.caption "Notifications">
+<!ENTITY vident.prefs.notifyHeaders.label "afficher des informations sur les en-têtes reconnus">
+<!ENTITY vident.prefs.notifySmartIdentity.label "activer les messages d&apos;état de réponse intelligente/brouillon intelligent">
+<!ENTITY vident.prefs.notifyTime.prefix.label "durée d&apos;affichage des messages d&apos;état (0 = infini)">
+<!ENTITY vident.prefs.notifyTime.postfix.label "secondes">
+<!ENTITY vident.accPane.prettyName.prefix "Id virtuelle">
+<!ENTITY vident.replySelector.dialogheader.title "Réponse intelligente de Virtual Identity">
+<!ENTITY vident.replySelector.caption.label "Choisissez une identité virtuelle">
+<!ENTITY fccMailFolder.accesskey "P">
+<!ENTITY sentFolderOn.accesskey "D">
+<!ENTITY sentInOtherFolder.label "Autre :">
+<!ENTITY sentInOtherFolder.accesskey "A">

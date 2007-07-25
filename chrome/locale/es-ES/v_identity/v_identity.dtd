@@ -1,0 +1,52 @@
+<!ENTITY vident.compose.vidLogo.label "Virtual identity">
+<!ENTITY vident.prefs.dlgTitle.label "Virtual Identity - Opciones">
+<!ENTITY vident.prefs.commonTab.label "Principal">
+<!ENTITY vident.prefs.vIdentityTab.label "Virtual Identity">
+<!ENTITY vident.prefs.smartReplyTab.label "Respuesta rápida">
+<!ENTITY vident.prefs.notificationTab.label "Estado de mensajes">
+<!ENTITY vident.prefs.commonTab.header "Configuración general">
+<!ENTITY vident.prefs.commonTab.caption "usar las siguientes opciones">
+<!ENTITY vident.prefs.versionWarning.label "su versión del programa es antigua para poder usar la opción de borradores rápidos">
+<!ENTITY vident.prefs.smartDraft.label "usar borradores rápidos">
+<!ENTITY vident.prefs.smartReply.label "usar respuesta rápida">
+<!ENTITY vident.prefs.smartReplyNewsgroups.label "usar la respuesta rápida también para responder a los grupos de noticias">
+<!ENTITY vident.prefs.SMTP.label "mostrar menú SMTP">
+<!ENTITY vident.prefs.vIdentityTab.header "Propiedades de las identidades virtuales">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.label "atributos a copiar">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.label "ubicación donde guardar los mensajes enviados">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.caption "al enviar un mensaje usando una identidad virtual">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.desc "copiar los siguientes atributos de la identidad correspondiente:">
+<!ENTITY vident.prefs.SMIME.label "Opciones de seguridad S/MIME">
+<!ENTITY vident.prefs.PGP.label "Opciones de seguridad OpenPGP">
+<!ENTITY vident.prefs.VCard.label "adjuntos vCard">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.caption "al enviar un mensaje usando una identidad virtual">
+<!ENTITY vident.prefs.vidFccAccount.label "Carpeta usada por la cuenta cambiada con Virtual Identity">
+<!ENTITY vident.prefs.vidFccDefault.label "Carpeta usada por la cuenta por defecto">
+<!ENTITY vident.prefs.smartReplyTab.header "Respuesta rápida - Opciones">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.label "1. obtener direcciones">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. filtrar direcciones">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. usar direcciones">
+<!ENTITY vident.prefs.smartReplyTab.caption "Virtual Identity - Respuesta rápida">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "Para encontrar la identidad con la que responder, la respuesta rápida tiene que obtener la lista de los posibles remitentes. Para ello, las cabeceras &apos;Para&apos; y &apos;Cc&apos; son analizadas. Si Smart Reply tiene que analizar cabeceras adicionales, puede incluirlas aquí (es posible que tenga que instalar alguna otra extensión para poder reconocerlas, como por ejemplo enigmail o mnenhy).">
+<!ENTITY vident.prefs.smartReply.headers.desc "cabeceras adicionales - una por línea, sin &apos;:&apos;, or ejemplo &apos;x-original-to&apos;">
+<!ENTITY vident.prefs.smartReply.preferHeader.label "usar las direcciones de estas cabeceras en lugar de &apos;Para&apos; o &apos;Cc&apos;">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.desc "Una vez obtenidas las direcciones, éstas son filtradas. Todos los filtros se usan después de los anteriores, por lo que puede usarlos también para ordenar los resultados. Al terminar, la primera dirección encontrada se usará como la identidad del remitente. Si no usa filtros, todas las direcciones serán transferidas.">
+<!ENTITY vident.prefs.smartReply.filter.desc "Filtros de respuesta rápida - un filtro por línea, con posibilidad de usar expresiones regulares (por ejemplo, &apos;/@mozilla.org$/&apos; coincide con cualquier correo del dominio mozilla.org">
+<!ENTITY vident.prefs.smartReply.ignoreFullname.label "ignorar los nombres completos al comparar las direcciones de correo con las identidades existentes">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Una vez terminado, las direcciones filtradas se añadirán al menú desplegable de identidades. Puede también seleccionar cómo se usarán como las nuevas identidades del remitente.">
+<!ENTITY vident.prefs.smartReply.ask.label "abrir una ventana para preguntar la identidad">
+<!ENTITY vident.prefs.smartReply.ask_always.label "preguntar incluso si solo hay una dirección posible">
+<!ENTITY vident.prefs.smartReply.autocreate.label "usar la primera identidad encontrada sin interacción">
+<!ENTITY vident.prefs.notificationTab.header "Estado de mensajes">
+<!ENTITY vident.prefs.notificationTab.caption "Notificaciones">
+<!ENTITY vident.prefs.notifyHeaders.label "mostrar información sobre las cabeceras reconocidas">
+<!ENTITY vident.prefs.notifySmartIdentity.label "activar estado de los mensajes en respuesta rápida / borrador rápido">
+<!ENTITY vident.prefs.notifyTime.prefix.label "tiempo para mostrar el estado de los mensajes (0 = infinito)">
+<!ENTITY vident.prefs.notifyTime.postfix.label "segundos">
+<!ENTITY vident.accPane.prettyName.prefix "Identidad virtual">
+<!ENTITY vident.replySelector.dialogheader.title "Virtual Identity - Respuesta rápida">
+<!ENTITY vident.replySelector.caption.label "Elegir una identidad virtual">
+<!ENTITY fccMailFolder.accesskey "P">
+<!ENTITY sentFolderOn.accesskey "e">
+<!ENTITY sentInOtherFolder.label "Otra:">
+<!ENTITY sentInOtherFolder.accesskey "O">

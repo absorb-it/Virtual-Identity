@@ -1,0 +1,52 @@
+<!ENTITY vident.compose.vidLogo.label "Virtual Identity">
+<!ENTITY vident.prefs.dlgTitle.label "Virtual Identity instellingen">
+<!ENTITY vident.prefs.commonTab.label "Hoofdvenster">
+<!ENTITY vident.prefs.vIdentityTab.label "Virtuele identiteit">
+<!ENTITY vident.prefs.smartReplyTab.label "Slim Antwoorden">
+<!ENTITY vident.prefs.notificationTab.label "Statusberichten">
+<!ENTITY vident.prefs.commonTab.header "Algemene configuratie">
+<!ENTITY vident.prefs.commonTab.caption "De volgende mogelijkheden gebruiken">
+<!ENTITY vident.prefs.versionWarning.label "Uw e-mail programma is te oud om de Slim Concept mogelijkheid te kunnen gebruiken">
+<!ENTITY vident.prefs.smartDraft.label "Slim Concept gebruiken">
+<!ENTITY vident.prefs.smartReply.label "Slim Antwoorden gebruiken">
+<!ENTITY vident.prefs.smartReplyNewsgroups.label "Slim Antwoorden ook gebruiken als aan een nieuwsgroep wordt geantwoord">
+<!ENTITY vident.prefs.SMTP.label "SMTP menu weergeven">
+<!ENTITY vident.prefs.vIdentityTab.header "Eigenschappen van virtuele identiteiten">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.label "Te kopiëren eigenschappen">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.label "Opslaglokatie voor verzonden berichten">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.caption "Bij het verzenden van een bericht met een virtuele identiteit">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.desc "de volgende eigenschappen van de vorige identiteit overnemen:">
+<!ENTITY vident.prefs.SMIME.label "S/MIME beveiligingsinstellingen">
+<!ENTITY vident.prefs.PGP.label "openPGP beveiligingsinstellingen">
+<!ENTITY vident.prefs.VCard.label "vCard bijlagen">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Bij het verzenden van een bericht met een virtuele identiteit">
+<!ENTITY vident.prefs.vidFccAccount.label "Door account gebruikte map wijzigen bij gebruik virtuele identiteit">
+<!ENTITY vident.prefs.vidFccDefault.label "door standaardaccount gebruikte map">
+<!ENTITY vident.prefs.smartReplyTab.header "Slim Antwoorden instellingen">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.label "1. adressen ophalen">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. adressen filteren">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. adressen gebruiken">
+<!ENTITY vident.prefs.smartReplyTab.caption "Virtual Identity Slim Antwoorden">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "Om een Antwoord-identiteit te vinden moet Slim Antwoorden een lijst van mogelijke verzender-identiteiten ophalen. Daarom worden de koptekstvelden &apos;Aan&apos; en &apos;Cc&apos; geanalyseerd. Als Slim Antwoorden nog meer koptekstvelden moet analyseren kunt u ze hier ingeven (wellicht dient u een andere extensie te installeren om ze te herkennen, zoals bijvoorbeeld enigmail or mnenhy).">
+<!ENTITY vident.prefs.smartReply.headers.desc "Aanvullende kopteksten - één per regel, zonder &apos;:&apos;, bijvoorbeeld &apos;x-original-to&apos;">
+<!ENTITY vident.prefs.smartReply.preferHeader.label "Adressen van deze kopteksten prevaleren boven &apos;Aan&apos; en &apos;Cc&apos;">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.desc "Na het ophalen van de adressen dienen ze te worden gefilterd. Alle filters worden na elkaar toegepast, dus u kunt ze ook gebruiken om het resultaat te sorteren. Op het einde kan het eerst aangetroffen adres worden gebruikt als de identiteit van de afzender. Als u geen filter gebruikt worden alle adressen overgebracht.">
+<!ENTITY vident.prefs.smartReply.filter.desc "Slim Antwoorden filter - één filter per regel, gebruik van reguliere expressies is mogelijk (bijvoorbeeld: &apos;/@mozilla.org$/&apos; komt overeen met elk bericht van domein mozilla.org)">
+<!ENTITY vident.prefs.smartReply.ignoreFullname.label "Volledige naam bij vergelijken van e-mail adressen met bestaande identiteiten negeren">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Op het einde worden de gefilterde adressen toegevoegd aan het bericht-identiteit dropdown menu. U kunt ook selecteren hoe ze worden gebruikt als de nieuwe afzender-identiteit.">
+<!ENTITY vident.prefs.smartReply.ask.label "Dialoogvenster openen om identiteit te kiezen">
+<!ENTITY vident.prefs.smartReply.ask_always.label "Ook vragen of er slechts één adres mogelijk is">
+<!ENTITY vident.prefs.smartReply.autocreate.label "Eerst aangetroffen identiteit gebruiken zonder interactie">
+<!ENTITY vident.prefs.notificationTab.header "Statusberichten">
+<!ENTITY vident.prefs.notificationTab.caption "Notificaties">
+<!ENTITY vident.prefs.notifyHeaders.label "Informatie over herkende kopteksten weergeven">
+<!ENTITY vident.prefs.notifySmartIdentity.label "Slim Antwoorden / Slim Concept statusberichten inschakelen">
+<!ENTITY vident.prefs.notifyTime.prefix.label "Weergaveduur statusberichten (0=oneindig)">
+<!ENTITY vident.prefs.notifyTime.postfix.label "seconden">
+<!ENTITY vident.accPane.prettyName.prefix "virtuele ID">
+<!ENTITY vident.replySelector.dialogheader.title "Virtual Identity Slim Antwoorden">
+<!ENTITY vident.replySelector.caption.label "Kies een virtuele identiteit">
+<!ENTITY fccMailFolder.accesskey "l">
+<!ENTITY sentFolderOn.accesskey "z">
+<!ENTITY sentInOtherFolder.label "Overig:">
+<!ENTITY sentInOtherFolder.accesskey "o">

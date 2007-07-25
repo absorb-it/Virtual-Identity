@@ -1,0 +1,52 @@
+<!ENTITY vident.compose.vidLogo.label "virtual identity">
+<!ENTITY vident.prefs.dlgTitle.label "Virtual Identity Einstellungen">
+<!ENTITY vident.prefs.commonTab.label "Allgemein">
+<!ENTITY vident.prefs.vIdentityTab.label "Virtuelle Identität">
+<!ENTITY vident.prefs.smartReplyTab.label "Smart Reply">
+<!ENTITY vident.prefs.notificationTab.label "Statusinformationen">
+<!ENTITY vident.prefs.commonTab.header "Allgemeine Konfiguration">
+<!ENTITY vident.prefs.commonTab.caption "benutze folgende Funktionen">
+<!ENTITY vident.prefs.versionWarning.label "Deine Version von Thunderbird ist zu alt, Smart Draft steht nicht zur Verfügung">
+<!ENTITY vident.prefs.smartDraft.label "verwende Smart Draft">
+<!ENTITY vident.prefs.smartReply.label "verwende Smart Reply">
+<!ENTITY vident.prefs.smartReplyNewsgroups.label "verwende Smart Reply auch bei Antworten an Newsgruppen">
+<!ENTITY vident.prefs.SMTP.label "zeige SMTP Auswahlmenu">
+<!ENTITY vident.prefs.vIdentityTab.header "Eigenschaften der Virtuellen Identität">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.label "zu kopierende Einstellungen">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.label "Speicherort für Emails">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.caption "Beim Senden von Nachrichten automatisch">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.desc "folgende Einstellungen der zugrunde liegenden Identität kopieren:">
+<!ENTITY vident.prefs.SMIME.label "S/MIME Sicherheitseinstellungen">
+<!ENTITY vident.prefs.PGP.label "OpenPGP Sicherheitseinstellungen">
+<!ENTITY vident.prefs.VCard.label "anzuhängende Visitenkarten">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Beim Senden von Nachrichten automatisch">
+<!ENTITY vident.prefs.vidFccAccount.label "Ordner des Accounts, der durch Virtual Identity geändert wurde">
+<!ENTITY vident.prefs.vidFccDefault.label "Ordner des Standard-Accounts">
+<!ENTITY vident.prefs.smartReplyTab.header "Smart Reply Einstellungen">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.label "1. Adressen besorgen">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. Adressen filtern">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. Adressen übernehmen">
+<!ENTITY vident.prefs.smartReplyTab.caption "Virtual Identity Smart Reply">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "In einem ersten Schritt muss &apos;Smart Reply&apos; eine Liste der möglichen Sendeadressen ihrer Antwort erstellen. Dafür werden die Empfängerfelder &apos;To&apos; und &apos;Cc&apos; der email ausgewertet. Wenn weitere Kopfzeilen der Mail ausgewertet werden sollen, kann dies hier angegeben werden (dafür müssen möglicherweise andere Erweiterungen, bspw. enigmail oder mnenhy, installiert sein).">
+<!ENTITY vident.prefs.smartReply.headers.desc "zusätzliche Kopfzeilen  -  je eine pro Zeile, Angabe ohne &apos;:&apos;, bspw. &apos;x-original-to&apos;">
+<!ENTITY vident.prefs.smartReply.preferHeader.label "bevorzuge Adressen dieser Kopfzeilen vor &apos;To&apos; und &apos;Cc&apos;">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.desc "Im zweiten Schritt werden die möglichen Sendeadressen gefiltert. Alle Filter werden der Reihe nach angewandt, so werden die Adressen gleichzeitig sortiert. Die zuerst gefundene Adresse kann dann direkt als Sender übernommen werden. Wird kein Filter angegeben, werden alle Adresen übernommen.">
+<!ENTITY vident.prefs.smartReply.filter.desc "Smart Reply Filter  -  eine Zeile je Filter, reguläre Ausdrücke sind möglich, bspw. filtert &apos;/@mozilla.org$/&apos; nach allen Emailadressen der domain mozilla.org">
+<!ENTITY vident.prefs.smartReply.ignoreFullname.label "ignoriere Namensangaben beim Vergleich der Email-Adressen mit vorhandenen Identitäten">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Die gefilterten Adressen werden abschliessend dem Sender-Auswahlmenu hinzugefügt. Hier kann entschieden werden, ob und wie die gefundenen Identitäten als Sender übernommen werden.">
+<!ENTITY vident.prefs.smartReply.ask.label "öffne ein Dialogfenster zur Auswahl der Identität">
+<!ENTITY vident.prefs.smartReply.ask_always.label "auch nachfragen, wenn nur eine Adresse zur Auswahl steht">
+<!ENTITY vident.prefs.smartReply.autocreate.label "übernehme die erste Identität automatisch.">
+<!ENTITY vident.prefs.notificationTab.header "Statusinformationen">
+<!ENTITY vident.prefs.notificationTab.caption "Benachrichtigungen">
+<!ENTITY vident.prefs.notifyHeaders.label "zeige Informationen über erfasste Header">
+<!ENTITY vident.prefs.notifySmartIdentity.label "aktiviere Smart Reply / Smart Draft Statusmeldungen">
+<!ENTITY vident.prefs.notifyTime.prefix.label "Zeit, bis Nachrichten ausgeblendet werden (0 für immer an)">
+<!ENTITY vident.prefs.notifyTime.postfix.label "Sekunden">
+<!ENTITY vident.accPane.prettyName.prefix "virtuelle Id">
+<!ENTITY vident.replySelector.dialogheader.title "Virtual Identity Smart Reply">
+<!ENTITY vident.replySelector.caption.label "Wählen Sie eine Virtuelle Identität">
+<!ENTITY fccMailFolder.accesskey "P">
+<!ENTITY sentFolderOn.accesskey "e">
+<!ENTITY sentInOtherFolder.label "Other:">
+<!ENTITY sentInOtherFolder.accesskey "O">
