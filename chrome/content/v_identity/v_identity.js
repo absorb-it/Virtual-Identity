@@ -107,7 +107,7 @@ var vI = {
 			vI_notificationBar.dump("## v_identity: StateListener reports ComposeProcessDone\n");
 			vI.Cleanup_Account();
 			if (aResult== Components.results.NS_OK && vI.msgType == nsIMsgCompDeliverMode.Now)
-					MsgComposeCloseWindow(false); // on TB 1.5* window is otherwise really closed, only hidden
+					MsgComposeCloseWindow(false);
 		},
 		SaveInFolderDone: function(folderURI) { 
 			vI_notificationBar.dump("## v_identity: SaveInFolderDone\n");
@@ -121,9 +121,10 @@ var vI = {
 			vI_notificationBar.dump("## v_identity: MsgComposeCloseWindow\n");
 			vI.original_functions.MsgComposeCloseWindow(false);
 		},
-
+		
 		GenericSendMessage: function (msgType) {
 			vI_notificationBar.dump("## v_identity: VIdentity_GenericSendMessage\n");
+			vI.msgType = msgType; 
 			// dont allow user to fake identity if Message is not sended NOW and thunderbird-version is below 2.0 !!!!
 			var appID = null;
 			var appVersion = null;
@@ -162,8 +163,6 @@ var vI = {
 			else {
 				vI_account.createAccount();
 				vI.addVirtualIdentityToMsgIdentityMenu();
-				vI.msgType = msgType; // store msgType to know if window should be closed or not
-				
 				vI.original_functions.GenericSendMessage( msgType );
 				if (window.cancelSendMessage) {
 					vI.Cleanup_Account();
@@ -174,18 +173,9 @@ var vI = {
 
 		replaceGenericFunction : function()
 		{
-			if (vI.original_functions.GenericSendMessage) return true;
-			if (typeof(GenericSendMessage)=="function") {
-				vI_notificationBar.dump("## v_identity: replace GenericSendMessage (Virtual Identity activated)\n");
-				vI.original_functions.GenericSendMessage = GenericSendMessage;
-				GenericSendMessage = function (msgType) {
-					vI.replacement_functions.GenericSendMessage(msgType);}
-				return true;
-			}
-			else {
-				vI_notificationBar.dump("## v_identity ERROR: could not replace your SendMessage Function, aborting\n"); 
-				return false;
-			}
+			if (GenericSendMessage == vI.replacement_functions.GenericSendMessage) return;
+			vI_notificationBar.dump("## v_identity: replace GenericSendMessage (Virtual Identity activated)\n");
+			GenericSendMessage = vI.replacement_functions.GenericSendMessage;
 		},
 	},
 
@@ -220,6 +210,12 @@ var vI = {
 		vI.original_functions.MsgComposeCloseWindow = MsgComposeCloseWindow;
 		MsgComposeCloseWindow = function (recycleIt) {
 			vI.replacement_functions.MsgComposeCloseWindow(recycleIt); }
+			
+		// adapt GenericSendMessage to know SendMsgType
+		vI_notificationBar.dump("## v_identity: adapt GenericSendMessage\n");
+		vI.original_functions.GenericSendMessage = GenericSendMessage;
+		GenericSendMessage = function (msgType) {
+				vI.msgType = msgType; vI.original_functions.GenericSendMessage(msgType); }
 		
 		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
 		window.removeEventListener("load", vI.init, false);
@@ -262,9 +258,9 @@ var vI = {
 		vI.Cleanup_Account();
 		
 		// restore function
-		if (vI.original_functions.GenericSendMessage) {
-			GenericSendMessage = vI.original_functions.GenericSendMessage;
-			vI.original_functions.GenericSendMessage = null;
+		if (GenericSendMessage == vI.replacement_functions.GenericSendMessage) {
+			GenericSendMessage = function (msgType) {
+				vI.msgType = msgType; vI.original_functions.GenericSendMessage(msgType); }
 			vI_notificationBar.dump("## v_identity: restored GenericSendMessage (Virtual Identity deactivated)\n");
 		}
 	},

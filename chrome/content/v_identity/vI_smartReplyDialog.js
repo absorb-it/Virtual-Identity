@@ -31,7 +31,7 @@ vI_smartReply_dialog = {
 		// var all_addresses = { number : 0, emails : {}, fullNames : {}, combinedNames : {} };
 		vI_smartReply_dialog.all_addresses = window.arguments[0];
 		for (index = 0; index < vI_smartReply_dialog.all_addresses.number; index++)
-			vI_smartReply_dialog.add_row(vI_smartReply_dialog.all_addresses.combinedNames.value[index]);
+			vI_smartReply_dialog.add_row(vI_smartReply_dialog.all_addresses.combinedNames[index]);
 	},
 
 	add_row : function(combinedName) {

@@ -127,7 +127,7 @@ vI_prefDialog = {
 			var ask_always = document.getElementById("VIdent_identity.smart_reply_ask_always")
 			var autocreate = document.getElementById("VIdent_identity.smart_reply_autocreate")
 			ask_always.setAttribute("disabled", (autocreate.checked || !ask.checked))
-			autocreate.setAttribute("disabled", ask_always.checked)
+			autocreate.setAttribute("disabled", (ask.checked && ask_always.checked))
 		},
 		
 		smartReplyHeaderReset : function() {

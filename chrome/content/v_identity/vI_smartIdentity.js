@@ -101,7 +101,9 @@ vI_smartIdentity = {
 	matchSelectedIdentity : function(all_addresses) {
 		vI_notificationBar.dump("## vI_smartIdentity: search for preselected Identity\n");
 		current_email = getCurrentIdentity().email.toLowerCase();
+		vI_notificationBar.dump("## vI_smartIdentity: preselected email: " + current_email + "\n");
 		current_name =  getCurrentIdentity().fullName.toLowerCase();
+		vI_notificationBar.dump("## vI_smartIdentity: preselected name: " + current_name + "\n");
 		for (index = 0; index < all_addresses.number; index++) {
 			if (current_email == all_addresses.emails[index].toLowerCase()
 				&& (vI.preferences.getBoolPref("smart_reply_ignoreFullName") ||
@@ -123,6 +125,9 @@ vI_smartIdentity = {
 			var server = accounts[i].incomingServer;
 			//  ignore (other) virtualIdentity Accounts
 			if (!server || server.hostName == "virtualIdentity") continue;
+			// ignore newsgroup accounts if not selected in preferences
+			if (!vI.preferences.getBoolPref("smart_reply_for_newsgroups") &&
+				server.type == "nntp") continue;
 		
 			var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 			for (var j in identities) {
@@ -283,6 +288,7 @@ vI_smartIdentity = {
 		if (vI_smartIdentity.matchSelectedIdentity(all_addresses)) return;
 		
 		if (vI_smartIdentity.smartIdentity_BaseIdentity = vI_smartIdentity.matchAnyIdentity(all_addresses)) {
+			vI_notificationBar.dump("## vI_smartIdentity:  existing Identity key: " + vI_smartIdentity.smartIdentity_BaseIdentity.key + "\n")
 			vI_notificationBar.addNote(
 				vI.elements.strings.getString("vident.smartIdentity.matchExisting"),
 				"smart_reply_notification");
@@ -351,7 +357,7 @@ vI_smartIdentity = {
 	updateMsgComposeDialog : function() {
 		vI_msgIdentityClone.setMenuToIdentity(vI_smartIdentity.smartIdentity_BaseIdentity.key);
 		// after inserting a new signature (as part of the new identity) the cursor is not at the right place.
-		// there is no easy way to est the cursor at the end, before the signature, so set it at the beginning.
+		// there is no easy way to set the cursor at the end, before the signature, so set it at the beginning.
 		if (vI_smartIdentity.smartIdentity_BaseIdentity.attachSignature)
 			gMsgCompose.editor.beginningOfDocument();
 	},

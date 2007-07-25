@@ -157,25 +157,24 @@ vI_msgIdentityClone = {
 	markAsNewAccount : function(newIdentity) {
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		if (newIdentity) {
-			if (vI.replacement_functions.replaceGenericFunction()) {
-				if (vI.elements.Obj_vILogo.getAttribute("hidden") != "false") {
-					vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone
-						.setAttribute("class", vI_msgIdentityClone.text_virtualId_class);
+			vI.replacement_functions.replaceGenericFunction()
+			if (vI.elements.Obj_vILogo.getAttribute("hidden") != "false") {
+				vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone
+					.setAttribute("class", vI_msgIdentityClone.text_virtualId_class);
+				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
+					.setAttribute("class", vI_msgIdentityClone.icon_virtualId_class);
+				if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
+					.getAttribute("value") != "vid") {
 					vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
-						.setAttribute("class", vI_msgIdentityClone.icon_virtualId_class);
-					if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
-						.getAttribute("value") != "vid") {
-						vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
-							.setAttribute("value","vid")
-						var accountname = document.getElementById("prettyName-Prefix")
-									.getAttribute("label")
-									+ vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
-									.getAttribute("accountname")
-						vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
-							.setAttribute("accountname", accountname)
-					}
-					vI.elements.Obj_vILogo.setAttribute("hidden","false");
+						.setAttribute("value","vid")
+					var accountname = document.getElementById("prettyName-Prefix")
+								.getAttribute("label")
+								+ vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
+								.getAttribute("accountname")
+					vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
+						.setAttribute("accountname", accountname)
 				}
+				vI.elements.Obj_vILogo.setAttribute("hidden","false");
 			}
 		}
 		else {
@@ -201,7 +200,10 @@ vI_msgIdentityClone = {
 			var server = accounts[i].incomingServer;
 				//  ignore (other) virtualIdentity Accounts
 				if (!server || server.hostName == "virtualIdentity") continue;
-			
+				// ignore newsgroup accounts if not selected in preferences
+				if (!vI.preferences.getBoolPref("smart_reply_for_newsgroups") &&
+					server.type == "nntp") continue;
+				
 				var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 				for (var j in identites) {
 					var identity = identites[j];
