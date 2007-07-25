@@ -10,8 +10,10 @@
 <!ENTITY vident.prefs.smartDraft.label "utiliser le brouillon intelligent">
 <!ENTITY vident.prefs.smartReply.label "utiliser une réponse intelligente">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "utiliser également une réponse intelligente lors d&apos;une réponse à un forum">
+<!ENTITY vident.prefs.smartTimestamp.label "use Smart Timestamp">
 <!ENTITY vident.prefs.SMTP.label "montrer le menu SMTP">
 <!ENTITY vident.prefs.menuEntry.label "add entry for Settings-Dialog to Tools menu">
+<!ENTITY vident.prefs.warnNonvirtual.label "warn on any usage of non-virtual Identities">
 <!ENTITY vident.prefs.vIdentityTab.header "Propriétés des identités virtuelles">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "Attributs à copier">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "Emplacement d&apos;enregistrement des E-mails envoyés">
@@ -20,6 +22,8 @@
 <!ENTITY vident.prefs.SMIME.label "paramètres de sécurité S/MIME">
 <!ENTITY vident.prefs.PGP.label "paramètres de sécurité OpenPGP">
 <!ENTITY vident.prefs.VCard.label "pièces jointes vCard">
+<!ENTITY vident.prefs.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the 'Signature Switch' extension. By now this option is not available.">
+<!ENTITY vident.prefs.HideSignature.label "remove any 'Signatur' while using a Virtual Identity">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Quand j&apos;envoie un message avec une identité virtuelle">
 <!ENTITY vident.prefs.vidFccAccount.label "Le dossier du compte modifié par Virtual Identity">
 <!ENTITY vident.prefs.vidFccDefault.label "Le dossier du compte par défaut">
@@ -39,6 +43,7 @@
 <!ENTITY vident.prefs.smartReply.ask.label "ouvrir une boîte de dialogue pour choisir l&apos;identité">
 <!ENTITY vident.prefs.smartReply.ask_always.label "également demander si une seule adresse est possible">
 <!ENTITY vident.prefs.smartReply.autocreate.label "utiliser la première identité trouvée sans poser de question">
+<!ENTITY vident.prefs.smartReply.autocreate.desc "(if there is only one possible address)">
 <!ENTITY vident.prefs.notificationTab.header "Messages d&apos;état">
 <!ENTITY vident.prefs.notificationTab.caption "Notifications">
 <!ENTITY vident.prefs.notifyHeaders.label "afficher des informations sur les en-têtes reconnus">

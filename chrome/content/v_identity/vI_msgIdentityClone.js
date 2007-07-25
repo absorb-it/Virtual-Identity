@@ -137,7 +137,8 @@ vI_msgIdentityClone = {
 	setIdentity : function(newName) {
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = newName;
-		vI_msgIdentityClone.markAsNewAccount(vI_msgIdentityClone.isNewIdentity());
+		var newIdentity = vI_msgIdentityClone.isNewIdentity();
+		window.setTimeout(vI_msgIdentityClone.markAsNewAccount, 0, newIdentity);
 	},
 	
 	blurEvent : function() {
@@ -176,6 +177,10 @@ vI_msgIdentityClone = {
 				}
 				vI.elements.Obj_vILogo.setAttribute("hidden","false");
 			}
+			// code to hide the signature
+			try { if (vI.preferences.getBoolPref("hide_signature") && ss_signature.length == 0)
+				ss_main.signatureSwitch()
+			} catch(vErr) { };
 		}
 		else {
 			if (vI.elements.Obj_vILogo.getAttribute("hidden") != "true") {
@@ -186,6 +191,9 @@ vI_msgIdentityClone = {
 				vI.Cleanup();
 				vI.elements.Obj_vILogo.setAttribute("hidden","true");
 			}
+			// code to show the signature
+			try { if (ss_signature.length > 0) ss_main.signatureSwitch(); }
+			catch(vErr) { };
 		}
 	},
 	

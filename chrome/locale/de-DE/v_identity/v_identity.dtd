@@ -10,8 +10,10 @@
 <!ENTITY vident.prefs.smartDraft.label "verwende Smart Draft">
 <!ENTITY vident.prefs.smartReply.label "verwende Smart Reply">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "verwende Smart Reply auch bei Antworten an Newsgruppen">
+<!ENTITY vident.prefs.smartTimestamp.label "verwende Smart Timestamp">
 <!ENTITY vident.prefs.SMTP.label "zeige SMTP Auswahlmenu">
 <!ENTITY vident.prefs.menuEntry.label "füge Einstellungs-Dialog zu Menu Extras hinzu">
+<!ENTITY vident.prefs.warnNonvirtual.label "warne bei jeder Verwendung einer dauerhaft gespeicherten Identität">
 <!ENTITY vident.prefs.vIdentityTab.header "Eigenschaften der Virtuellen Identität">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "zu kopierende Einstellungen">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "Speicherort für Emails">
@@ -20,6 +22,8 @@
 <!ENTITY vident.prefs.SMIME.label "S/MIME Sicherheitseinstellungen">
 <!ENTITY vident.prefs.PGP.label "OpenPGP Sicherheitseinstellungen">
 <!ENTITY vident.prefs.VCard.label "anzuhängende Visitenkarten">
+<!ENTITY vident.prefs.HideSignature.warning.desc "Hinweis: Zur dynamischen Abschaltung der 'Signatur' muss die Erweiterung 'Signature Switch' installiert (und aktiviert) sein. Zur Zeit steht diese Option nicht zur Verfügung.">
+<!ENTITY vident.prefs.HideSignature.label "entferne eine 'Signatur' bei Nutzung einer Virtuellen Identität">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Beim Senden von Nachrichten automatisch">
 <!ENTITY vident.prefs.vidFccAccount.label "Ordner des Accounts, der durch Virtual Identity geändert wurde">
 <!ENTITY vident.prefs.vidFccDefault.label "Ordner des Standard-Accounts">
@@ -38,7 +42,8 @@
 <!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Die gefilterten Adressen werden abschliessend dem Sender-Auswahlmenu hinzugefügt. Hier kann entschieden werden, ob und wie die gefundenen Identitäten als Sender übernommen werden.">
 <!ENTITY vident.prefs.smartReply.ask.label "öffne ein Dialogfenster zur Auswahl der Identität">
 <!ENTITY vident.prefs.smartReply.ask_always.label "auch nachfragen, wenn nur eine Adresse zur Auswahl steht">
-<!ENTITY vident.prefs.smartReply.autocreate.label "übernehme die erste Identität automatisch.">
+<!ENTITY vident.prefs.smartReply.autocreate.label "übernehme die erste Identität automatisch">
+<!ENTITY vident.prefs.smartReply.autocreate.desc "(wenn nur eine Adresse zur Auswahl steht)">
 <!ENTITY vident.prefs.notificationTab.header "Statusinformationen">
 <!ENTITY vident.prefs.notificationTab.caption "Benachrichtigungen">
 <!ENTITY vident.prefs.notifyHeaders.label "zeige Informationen über erfasste Header">

@@ -83,10 +83,16 @@
 				/>
 			<checkbox id="VIdent_identity.smart_reply_for_newsgroups" label="&vident.prefs.smartReplyNewsgroups.label;"
 				prefstring="smart_reply_for_newsgroups" />
+			<checkbox id="VIdent_identity.smart_timestamp" label="&vident.prefs.smartTimestamp.label;"
+				prefstring="smart_timestamp" />
+			<spacer height="10px"/>
 			<checkbox id="VIdent_identity.show_smtp" label="&vident.prefs.SMTP.label;"
 				prefstring="show_smtp" />
 			<checkbox id="VIdent_identity.menu_entry" label="&vident.prefs.menuEntry.label;"
 				prefstring="menu_entry" />
+			<spacer height="10px"/>
+			<checkbox id="VIdent_identity.warn_nonvirtual" label="&vident.prefs.warnNonvirtual.label;"
+				prefstring="warn_nonvirtual" />
 		</groupbox>
 	</tabpanel>
 	<tabpanel orient="vertical" label="&vident.prefs.vIdentityTab.header;">
@@ -107,6 +113,10 @@
 				prefstring="copyEnigmailSettings"/>
 			<checkbox id="VIdent_identity.copyAttachVCardSettings" label="&vident.prefs.VCard.label;"
 				prefstring="copyAttachVCardSettings"/>
+			<spacer height="10px"/>
+			<description id="VIdent_identity.HideSignature.warning" width="500px">&vident.prefs.HideSignature.warning.desc;</description>
+			<checkbox id="VIdent_identity.hide_signature" label="&vident.prefs.HideSignature.label;" disabled="true"
+				prefstring="hide_signature"/>
 			</groupbox>
 			</tabpanel>
 			<tabpanel orient="vertical">
@@ -220,9 +230,15 @@
 					prefstring="smart_reply_ask_always"
 					oncommand="vI_prefDialog.base.smartReplyResultConstraint();"/>
 				<hbox>
+				<vbox><spacer flex="1"/>
 				<checkbox id="VIdent_identity.smart_reply_autocreate" label="&vident.prefs.smartReply.autocreate.label;"
 					prefstring="smart_reply_autocreate"
 					oncommand="vI_prefDialog.base.smartReplyResultConstraint();"/>
+				<spacer flex="1"/></vbox>
+				<vbox><spacer flex="1"/>
+				<label value="&vident.prefs.smartReply.autocreate.desc;" hidden="true"
+					id="VIdent_identity.smart_reply_autocreate.desc" />
+				<spacer flex="1"/></vbox>
 				</hbox>
 			</vbox>
 			</groupbox>

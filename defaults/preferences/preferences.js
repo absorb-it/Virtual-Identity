@@ -17,9 +17,12 @@ pref("extensions.virtualIdentity.smart_reply_defaultFullName", "");
 pref("extensions.virtualIdentity.smart_reply_ignoreFullName", false);
 pref("extensions.virtualIdentity.smart_reply_autocreate", true);
 pref("extensions.virtualIdentity.smart_reply_for_newsgroups", false);
+pref("extensions.virtualIdentity.smart_timestamp", false);
 pref("extensions.virtualIdentity.get_header_notification", true);
 pref("extensions.virtualIdentity.debug_notification", false);
 pref("extensions.virtualIdentity.notification_timeout", 5);
+pref("extensions.virtualIdentity.warn_nonvirtual", false);
+pref("extensions.virtualIdentity.hide_signature", false);
 
 
 pref("extensions.{dddd428e-5ac8-4a81-9f78-276c734f75b8}.description", "chrome://v_identity/locale/v_identity.properties");

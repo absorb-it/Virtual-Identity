@@ -10,8 +10,10 @@
 <!ENTITY vident.prefs.smartDraft.label "Slim Concept gebruiken">
 <!ENTITY vident.prefs.smartReply.label "Slim Antwoorden gebruiken">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "Slim Antwoorden ook gebruiken als aan een nieuwsgroep wordt geantwoord">
+<!ENTITY vident.prefs.smartTimestamp.label "use Smart Timestamp">
 <!ENTITY vident.prefs.SMTP.label "SMTP menu weergeven">
 <!ENTITY vident.prefs.menuEntry.label "Onderdeel voor Instellingen-dialoogvenster aan Extra menu toevoegen">
+<!ENTITY vident.prefs.warnNonvirtual.label "warn on any usage of non-virtual Identities">
 <!ENTITY vident.prefs.vIdentityTab.header "Eigenschappen van virtuele identiteiten">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "Te kopiëren eigenschappen">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "Opslaglokatie voor verzonden berichten">
@@ -20,6 +22,8 @@
 <!ENTITY vident.prefs.SMIME.label "S/MIME beveiligingsinstellingen">
 <!ENTITY vident.prefs.PGP.label "openPGP beveiligingsinstellingen">
 <!ENTITY vident.prefs.VCard.label "vCard bijlagen">
+<!ENTITY vident.prefs.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the 'Signature Switch' extension. By now this option is not available.">
+<!ENTITY vident.prefs.HideSignature.label "remove any 'Signatur' while using a Virtual Identity">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Bij het verzenden van een bericht met een virtuele identiteit">
 <!ENTITY vident.prefs.vidFccAccount.label "Door account gebruikte map wijzigen bij gebruik virtuele identiteit">
 <!ENTITY vident.prefs.vidFccDefault.label "door standaardaccount gebruikte map">
@@ -39,6 +43,7 @@
 <!ENTITY vident.prefs.smartReply.ask.label "Dialoogvenster openen om identiteit te kiezen">
 <!ENTITY vident.prefs.smartReply.ask_always.label "Ook vragen of er slechts één adres mogelijk is">
 <!ENTITY vident.prefs.smartReply.autocreate.label "Eerst aangetroffen identiteit gebruiken zonder interactie">
+<!ENTITY vident.prefs.smartReply.autocreate.desc "(if there is only one possible address)">
 <!ENTITY vident.prefs.notificationTab.header "Statusberichten">
 <!ENTITY vident.prefs.notificationTab.caption "Notificaties">
 <!ENTITY vident.prefs.notifyHeaders.label "Informatie over herkende kopteksten weergeven">

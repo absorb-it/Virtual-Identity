@@ -53,8 +53,11 @@ vI_prefDialog = {
 				"VIdent_identity.smart_reply_defaultFullName",
 				"VIdent_identity.smart_reply_ignoreFullName",
 				"VIdent_identity.smart_reply_autocreate",
+				"VIdent_identity.smart_timestamp",
 				"VIdent_identity.notification_timeout",
-				"VIdent_identity.debug_notification"],
+				"VIdent_identity.debug_notification",
+				"VIdent_identity.warn_nonvirtual",
+				"VIdent_identity.hide_signature"],
 	
 		init : function() {
 		// initialize the default window values...
@@ -126,13 +129,39 @@ vI_prefDialog = {
 			var ask = document.getElementById("VIdent_identity.smart_reply_ask")
 			var ask_always = document.getElementById("VIdent_identity.smart_reply_ask_always")
 			var autocreate = document.getElementById("VIdent_identity.smart_reply_autocreate")
+			var autocreate_desc = document.getElementById("VIdent_identity.smart_reply_autocreate.desc")
 			ask_always.setAttribute("disabled", (autocreate.checked || !ask.checked))
 			autocreate.setAttribute("disabled", (ask.checked && ask_always.checked))
+			autocreate_desc.setAttribute("disabled", (ask.checked && ask_always.checked))
+			autocreate_desc.setAttribute("hidden", !ask.checked)
 		},
 		
 		smartReplyHeaderReset : function() {
 			var textfield = document.getElementById("VIdent_identity.smart_reply_headers")
 			textfield.value = "x-original-to\nto\ncc"
+		},
+		
+		smartReplyHideSignature : function() {
+			var switch_signature_ID="{2ab1b709-ba03-4361-abf9-c50b964ff75d}"
+			var em = Components.classes["@mozilla.org/extensions/manager;1"]
+				.getService(Components.interfaces.nsIExtensionManager);
+			var rdfS = Components.classes["@mozilla.org/rdf/rdf-service;1"].getService(Components.interfaces.nsIRDFService);
+			var source=rdfS.GetResource("urn:mozilla:item:"+switch_signature_ID)
+			
+			var item = em.getItemForID(switch_signature_ID)
+			if (!item.installLocationKey) return;
+
+			var disabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#disabled");
+			var isDisabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#isDisabled");
+			var disabled = em.datasource.GetTarget(source, disabledResource, true);
+			if (!disabled) disabled = em.datasource.GetTarget(source, isDisabledResource, true);
+			try {
+				disabled=disabled.QueryInterface(Components.interfaces.nsIRDFLiteral);
+				if (disabled.Value=="true") return;
+			} catch (e) { }
+			
+			document.getElementById("VIdent_identity.HideSignature.warning").setAttribute("hidden", "true");
+			document.getElementById("VIdent_identity.hide_signature").setAttribute("disabled", "false");
 		}
 	},
 
@@ -172,7 +201,7 @@ vI_prefDialog = {
 		}
 		
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
-		
+		vI_prefDialog.base.smartReplyHideSignature();
 		dump("## vI_prefDialog: init_prefs done\n");
 	},
 	

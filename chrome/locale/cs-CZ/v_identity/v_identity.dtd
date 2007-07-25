@@ -10,8 +10,10 @@
 <!ENTITY vident.prefs.smartDraft.label "použít Smart Draft">
 <!ENTITY vident.prefs.smartReply.label "použít Smart Reply">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "použít Smart Reply i při odpovědi do diskusní skupiny">
+<!ENTITY vident.prefs.smartTimestamp.label "použít Smart Timestamp">
 <!ENTITY vident.prefs.SMTP.label "zobrazit nabídku SMTP">
 <!ENTITY vident.prefs.menuEntry.label "přidat položku do dialogu Možnosti v nabídce Nástroje">
+<!ENTITY vident.prefs.warnNonvirtual.label "warn on any usage of non-virtual Identities">
 <!ENTITY vident.prefs.vIdentityTab.header "Nastavení virtuálních identit">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "vlastnosti ke zkopírování">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "místo pro uložení odeslaných e-mailů">
@@ -20,6 +22,8 @@
 <!ENTITY vident.prefs.SMIME.label "Nastavení S/MIME">
 <!ENTITY vident.prefs.PGP.label "Nastavení OpenPGP">
 <!ENTITY vident.prefs.VCard.label "přílohy vCard">
+<!ENTITY vident.prefs.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the 'Signature Switch' extension. By now this option is not available.">
+<!ENTITY vident.prefs.HideSignature.label "remove any 'Signatur' while using a Virtual Identity">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "při odeslání zprávy s Virtual Identity">
 <!ENTITY vident.prefs.vidFccAccount.label "Složka používána účtem změněným Virtual Identity">
 <!ENTITY vident.prefs.vidFccDefault.label "Složka používána výchozím účtem">
@@ -39,6 +43,7 @@
 <!ENTITY vident.prefs.smartReply.ask.label "otevřít dialog pro výběr identity">
 <!ENTITY vident.prefs.smartReply.ask_always.label "ptát se i tehdy, když je jen jedna možná adresa">
 <!ENTITY vident.prefs.smartReply.autocreate.label "použít automaticky první nalezenou identitu">
+<!ENTITY vident.prefs.smartReply.autocreate.desc "(if there is only one possible address)">
 <!ENTITY vident.prefs.notificationTab.header "Zprávy o stavu">
 <!ENTITY vident.prefs.notificationTab.caption "Upozornění">
 <!ENTITY vident.prefs.notifyHeaders.label "zobrazit informace o rozpoznaných hlavičkách">

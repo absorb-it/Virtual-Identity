@@ -98,7 +98,7 @@ var vI_notificationBar = {
 			var text = [];
 			for (var i=0; i<items.length; i++)
 			{
-				var output = " - " + items[i].name + " " + items[i].version;
+				var output = " - " + items[i].name + " " + items[i].id + " " + items[i].version;
 				var source = rdfS.GetResource("urn:mozilla:item:"+items[i].id);
 				var disabled = ds.GetTarget(source, disabledResource, true);
 				if (!disabled) disabled = ds.GetTarget(source, isDisabledResource, true);

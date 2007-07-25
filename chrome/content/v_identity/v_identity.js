@@ -161,9 +161,11 @@ var vI = {
 				else { return; }
 			}
 			else {
+				// just to be sure to use the recent settings if account was left by cancelled Send Operation
+				vI.Cleanup_Account();
 				vI_account.createAccount();
 				vI.addVirtualIdentityToMsgIdentityMenu();
-				vI.original_functions.GenericSendMessage( msgType );
+				vI.original_functions.GenericSendMessage(msgType);
 				if (window.cancelSendMessage) {
 					vI.Cleanup_Account();
 					vI_notificationBar.dump("## v_identity: SendMessage cancelled\n");
@@ -215,10 +217,18 @@ var vI = {
 		vI_notificationBar.dump("## v_identity: adapt GenericSendMessage\n");
 		vI.original_functions.GenericSendMessage = GenericSendMessage;
 		GenericSendMessage = function (msgType) {
-				vI.msgType = msgType; vI.original_functions.GenericSendMessage(msgType); }
+				vI.msgType = msgType; if (vI.warning(msgType)) vI.original_functions.GenericSendMessage(msgType); }
 		
 		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
 		window.removeEventListener("load", vI.init, false);
+	},
+	
+	// show a warning if you are using a usual (non-virtual) identity
+	warning : function(msgType) {
+		var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+			.getService(Components.interfaces.nsIPromptService);
+		return ((msgType != nsIMsgCompDeliverMode.Now) || !vI.preferences.getBoolPref("warn_nonvirtual") || 
+			promptService.confirm(window,"Warning",vI.elements.strings.getString("vident.sendNonvirtual.warning")))
 	},
 	
 	// sets the values of the dropdown-menu to the ones of the newly created account
@@ -260,7 +270,7 @@ var vI = {
 		// restore function
 		if (GenericSendMessage == vI.replacement_functions.GenericSendMessage) {
 			GenericSendMessage = function (msgType) {
-				vI.msgType = msgType; vI.original_functions.GenericSendMessage(msgType); }
+				vI.msgType = msgType; if (vI.warning()) vI.original_functions.GenericSendMessage(msgType); }
 			vI_notificationBar.dump("## v_identity: restored GenericSendMessage (Virtual Identity deactivated)\n");
 		}
 	},

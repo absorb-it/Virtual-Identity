@@ -31,6 +31,14 @@ vI_smartIdentity = {
 
 	// After Loading the MessageComposeDialog, check if smartIdentity is needed
 	init : function() {
+		var type = gMsgCompose.type;
+		var msgComposeType = Components.interfaces.nsIMsgCompType;
+		vI_notificationBar.dump("## vI_smartIdentity: msgComposeType = " + type + "\n");
+		
+		if (vI.preferences.getBoolPref("smart_timestamp") && 
+			((type == msgComposeType.New) || (type == msgComposeType.NewsPost) || (type == msgComposeType.MailToUrl)))
+					vI_smartIdentity.SmartTimestamp(hdr);
+					
 		// if there is no ID of the original Message  (Why?) leave the function
 		var uri = gMsgCompose.originalMsgURI; 
 		if (!uri) {
@@ -44,9 +52,6 @@ vI_smartIdentity = {
 			return;
 		};
 		
-		var type = gMsgCompose.type;
-		var msgComposeType = Components.interfaces.nsIMsgCompType;
-		vI_notificationBar.dump("## vI_smartIdentity: msgComposeType = " + type + "\n");
 		switch (type) {
 			case msgComposeType.ForwardAsAttachment:
 			case msgComposeType.ForwardInline:
@@ -64,7 +69,28 @@ vI_smartIdentity = {
 				if (vI.preferences.getBoolPref("smart_draft"))
 					vI_smartIdentity.SmartDraft(hdr);
 				break;
+			case *:
+				if (vI.preferences.getBoolPref("smart_timestamp"))
+					vI_smartIdentity.SmartTimestamp(hdr);
+				break;
+
 			}
+	},
+	
+	// this function adds a timestamp to the current sender
+	SmartTimestamp : function() {
+		vI_notificationBar.dump("## vI_smartIdentity: SmartTimestamp()\n");
+
+		current_email = getCurrentIdentity().email;
+		vI_notificationBar.dump("## vI_smartIdentity: current email: " + current_email + "\n");
+		
+		var dateobj = new Date();
+		new_email = current_email.replace(/@/g, parseInt(dateobj.getTime()/1000)+"@");
+		vI_notificationBar.dump("## vI_smartIdentity: new email: " + new_email + "\n");
+
+		vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIUsage") + ".",
+					"smart_reply_notification");
+		vI_msgIdentityClone.setIdentity(getCurrentIdentity().fullName + " <" + new_email + ">");
 	},
 	
 	// this function checks if we have a draft-case and Smart-Draft should replace the Identity
@@ -340,11 +366,29 @@ vI_smartIdentity = {
 	},
 	
 	removeSmartIdentityFromRecipients : function(all_addresses, index) {
+		var bcc_addresses = { number : 1, emails : {}, fullNames : {}, combinedNames : {} };
+		var skip_bcc = false;
+		
+		if (getCurrentIdentity().doBcc) {
+			vI.headerParser.parseHeadersWithArray(getCurrentIdentity().doBccList, bcc_addresses.emails,
+				bcc_addresses.fullNames, bcc_addresses.combinedNames);
+			
+			for (index = 0; index < bcc_addresses.number; index++) {
+				if (all_addresses.emails[index] == bcc_addresses.emails.value[index]) {
+					skip_bcc = true; break;
+				}
+			}
+		}
+		
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
+			var popup = awGetPopupElement(row);
 			var input = awGetInputElement(row);
+			// check if the entry is used as a BCC selected in account settings
+			if ((awGetPopupElement(row).selectedItem.getAttribute("value") == "addr_bcc") && skip_bcc) continue;
+			// check if entry is matching senders address, if so, remove it
 			if (input.value == all_addresses.emails[index] ||
 				input.value == all_addresses.combinedNames[index]) {
-					awGetInputElement(row).value = ""
+					awSetInputAndPopupValue(input, "", popup, "addr_to", -1);
 					awCleanupRows()
 					vI_notificationBar.addNote(" " +
 						vI.elements.strings.getString("vident.smartIdentity.remRecipient"),
