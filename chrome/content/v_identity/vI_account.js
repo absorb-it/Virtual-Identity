@@ -160,7 +160,7 @@ vI_account = {
 			{
 			    case "2"  :
 				dump ("## vI_account: preparing Fcc --- use Settings of Default Account\n");
-				vI_account.account.defaultIdentity.doFcc = gAccountManager.defaultIdentity.doFcc;
+				vI_account.account.defaultIdentity.doFcc = gAccountManager.defaultAccount.defaultIdentity.doFcc;
 				vI_account.account.defaultIdentity.fccFolder = gAccountManager.defaultAccount.defaultIdentity.fccFolder;
 				vI_account.account.defaultIdentity.fccFolderPickerMode = gAccountManager.defaultAccount.defaultIdentity.fccFolderPickerMode;
 				break;

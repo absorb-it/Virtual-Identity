@@ -11,6 +11,7 @@
 <!ENTITY vident.prefs.smartReply.label "utiliser une réponse intelligente">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "utiliser également une réponse intelligente lors d&apos;une réponse à un forum">
 <!ENTITY vident.prefs.SMTP.label "montrer le menu SMTP">
+<!ENTITY vident.prefs.menuEntry.label "add entry for Settings-Dialog to Tools menu">
 <!ENTITY vident.prefs.vIdentityTab.header "Propriétés des identités virtuelles">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "Attributs à copier">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "Emplacement d&apos;enregistrement des E-mails envoyés">
@@ -27,12 +28,13 @@
 <!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. Filtrer les adresses">
 <!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. Utiliser les adresses">
 <!ENTITY vident.prefs.smartReplyTab.caption "Réponse intelligente de Virtual Identity">
-<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "Pour trouver une identité de réponse, la réponse intelligente doit obtenir une liste des identités d&apos;expéditeur possibles. C&apos;est pourquoi les champs d&apos;en-têtes &apos;À&apos; et &apos;Cc&apos; sont analysés. Si vous voulez que la réponse intelligente analyse d&apos;autres champs d&apos;en-têtes, vous pouvez les entrer ici (il vous faut peut-être une autre extension pour les reconnaître, par exemple enigmail ou mnenhy).">
-<!ENTITY vident.prefs.smartReply.headers.desc "en-têtes supplémentaires - un par ligne sans &apos;:&apos;, par exemple &apos;x-original-to&apos;">
-<!ENTITY vident.prefs.smartReply.preferHeader.label "préférer les adresses des ces en-têtes à celles de &apos;À&apos; et &apos;Cc&apos;">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "To find a Reply-Identity, Smart Reply has to get a list of possible sender identities. Therefore usually the header-fields &apos;To&apos; and &apos;Cc&apos; are analyzed. Here you can enter those and/or other header-fields. (additional options: to select header number n out of any headers with the same name add &apos;:n&apos;. If you add &apos;:@&apos; to any entry, only email-addresses are used, names are ignored.)">
+<!ENTITY vident.prefs.smartReply.headers.desc "en-têtes supplémentaires - un par ligne, par exemple &apos;x-original-to&apos; ou &apos;x-original-to:@&apos; ou &apos;x-original-to:2:@&apos;">
+<!ENTITY vident.prefs.smartReply.headers.reset "Restaurer les valeurs par défaut">
 <!ENTITY vident.prefs.smartReplyTab.Tab2.desc "Après avoir obtenu les adresses il faut les filtrer. Les filtres sont utilisés l&apos;un après l&apos;autre, donc vous pouvez aussi les utiliser pour classer les résultats. A la fin, la première adresse trouvée peut être utilisée instantanément comme identité d&apos;expéditeur. Si vous n&apos;utilisez aucun filtre, toutes les adresses sont transférées.">
-<!ENTITY vident.prefs.smartReply.filter.desc "filtre de la réponse intelligente - un filtre par ligne, vous pouvez utiliser des expressions régulières (par exemple &apos;/@mozilla.org$/&apos; correspond à toutes les adresses du domaine mozilla.org)">
+<!ENTITY vident.prefs.smartReply.filter.desc "Filtre(s) de la réponse intelligente - un filtre par ligne, vous pouvez utiliser des expressions régulières (par exemple &apos;/@mozilla.org$/&apos; correspond à toutes les adresses du domaine mozilla.org)">
 <!ENTITY vident.prefs.smartReply.ignoreFullname.label "ignorer le nom complet lors de la comparaison des adresses E-mails avec les identités existantes">
+<!ENTITY vident.prefs.smartReply.defaultFullname.label "Si aucune adresse E-mail trouvée ne contient un nom, utiliser le nom suivant :">
 <!ENTITY vident.prefs.smartReplyTab.Tab3.desc "À la fin, les adresses filtrées sont ajoutées au menu déroulant d&apos;identité du message. Vous pouvez également choisir la manière dont elles sont utilisées comme que nouvelle identité d&apos;expéditeur.">
 <!ENTITY vident.prefs.smartReply.ask.label "ouvrir une boîte de dialogue pour choisir l&apos;identité">
 <!ENTITY vident.prefs.smartReply.ask_always.label "également demander si une seule adresse est possible">
@@ -43,6 +45,9 @@
 <!ENTITY vident.prefs.notifySmartIdentity.label "activer les messages d&apos;état de réponse intelligente/brouillon intelligent">
 <!ENTITY vident.prefs.notifyTime.prefix.label "durée d&apos;affichage des messages d&apos;état (0 = infini)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "secondes">
+<!ENTITY vident.prefs.notificationTab.Debug.caption "Débogage">
+<!ENTITY vident.prefs.notifyDebug.desc "Pour détecter les bugs, résoudre les problèmes de configuration et comprendre ce que Virtual Identity fait, en particulier avec les filtres de réponse intelligente, vous pouvez activer la production d&apos;informations complémentaires. Cette option ralentit votre client E-mail, par conséquent vous ne devriez pas l&apos;activer en l&apos;absence de nécessité.">
+<!ENTITY vident.prefs.notifyDebug.label "afficher les informations de débogage">
 <!ENTITY vident.accPane.prettyName.prefix "Id virtuelle">
 <!ENTITY vident.replySelector.dialogheader.title "Réponse intelligente de Virtual Identity">
 <!ENTITY vident.replySelector.caption.label "Choisissez une identité virtuelle">

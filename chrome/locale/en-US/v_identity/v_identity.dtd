@@ -11,6 +11,7 @@
 <!ENTITY vident.prefs.smartReply.label "use Smart Reply">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "use Smart Reply also if answering to a newsgroup">
 <!ENTITY vident.prefs.SMTP.label "show SMTP Menu">
+<!ENTITY vident.prefs.menuEntry.label "add entry for Settings-Dialog to Tools menu">
 <!ENTITY vident.prefs.vIdentityTab.header "Properties of Virtual Identities">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "attributes to copy">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "place to save sent emails">
@@ -27,12 +28,13 @@
 <!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. filter addresses">
 <!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. use addresses">
 <!ENTITY vident.prefs.smartReplyTab.caption "Virtual Identity Smart Reply">
-<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "To find a Reply-Identity, Smart Reply has to get a list of possible sender identities. Therefore the header-fields &apos;To&apos; and &apos;Cc&apos; are analyzed. If Smart Reply should analyze additional header-fields, you can enter them here (maybe you need to install another extension to recognize them, as for instance enigmail or mnenhy).">
-<!ENTITY vident.prefs.smartReply.headers.desc "additional headers  -  one per line, without &apos;:&apos;, for instance &apos;x-original-to&apos;">
-<!ENTITY vident.prefs.smartReply.preferHeader.label "prefer addresses of those headers against &apos;To&apos; und &apos;Cc&apos;">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "To find a Reply-Identity, Smart Reply has to get a list of possible sender identities. Therefore usually the header-fields &apos;To&apos; and &apos;Cc&apos; are analyzed. Here you can enter those and/or other header-fields. (additional options: to select header number n out of any headers with the same name add &apos;:n&apos;. If you add &apos;:@&apos; to any entry, only email-addresses are used, names are ignored.)">
+<!ENTITY vident.prefs.smartReply.headers.desc "additional headers  -  one per line, for instance &apos;x-original-to&apos; or &apos;x-original-to:@&apos; or &apos;x-original-to:2:@&apos;">
+<!ENTITY vident.prefs.smartReply.headers.reset "set default values">
 <!ENTITY vident.prefs.smartReplyTab.Tab2.desc "After getting the addresses they have to be filtered. All filters are used after each other, so you can use them to sort the result too. At the end the first-found address might get used instantly as a senders identity. If you don&apos;t use a filter, all addresses are transferred.">
 <!ENTITY vident.prefs.smartReply.filter.desc "Smart Reply filter  -  one filter per line, usage of regular Expressions possible (for instance &apos;/@mozilla.org$/&apos; is matching every email from domain mozilla.org">
 <!ENTITY vident.prefs.smartReply.ignoreFullname.label "ignore full name while comparing email addresses with existing identities">
+<!ENTITY vident.prefs.smartReply.defaultFullname.label "if there is no name to any found email-address, use the following one:">
 <!ENTITY vident.prefs.smartReplyTab.Tab3.desc "At the end the filtered addresses are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity.">
 <!ENTITY vident.prefs.smartReply.ask.label "open a dialog to choose Identity">
 <!ENTITY vident.prefs.smartReply.ask_always.label "ask also if there is only one possible address">
@@ -43,6 +45,9 @@
 <!ENTITY vident.prefs.notifySmartIdentity.label "activate Smart Reply / Smart Draft status messages">
 <!ENTITY vident.prefs.notifyTime.prefix.label "time to show status messages (0 = infinite)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "seconds">
+<!ENTITY vident.prefs.notificationTab.Debug.caption "Debugging">
+<!ENTITY vident.prefs.notifyDebug.desc "To find bugs, solve configuration problems and understand what Virtual Identity is doing, especially with the SmartReply-filters, you can enable some additional informations. Using this option slows down your mail-client, therefore it shouldn't be activated permanently.">
+<!ENTITY vident.prefs.notifyDebug.label "show area with debug-informations">
 <!ENTITY vident.accPane.prettyName.prefix "virtual Id">
 <!ENTITY vident.replySelector.dialogheader.title "Virtual Identity Smart Reply">
 <!ENTITY vident.replySelector.caption.label "Choose a Virtual Identity">

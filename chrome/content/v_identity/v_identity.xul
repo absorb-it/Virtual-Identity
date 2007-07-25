@@ -49,6 +49,12 @@
     <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
   </stringbundleset>
 
+<vbox id="appcontent" >
+	<splitter id="vIDebugBoxSplitter" hidden="true"/>
+	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
+	DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
+</vbox>
+
 <toolbox id="headers-box">
 	<notificationbox id="vINotification" position="1" insertbefore="MsgHeadersToolbar" />
 </toolbox>
@@ -57,7 +63,7 @@
 
 <hbox id="msgIdentityHbox" flex="1">
 	<menulist id="msgIdentity_clone" class="identity_clone-menulist person-icon"
-		label="..." flex="1" oncommand="vI_msgIdentityClone.LoadIdentity(false);">
+		label="..." flex="1" oncommand="vI_msgIdentityClone.LoadIdentity();" hidden="true">
 		<menupopup id="msgIdentityPopup_clone"/>
 	</menulist>
 	<hbox id="smtpServerListHbox" hidden="true">

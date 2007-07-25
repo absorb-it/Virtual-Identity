@@ -47,15 +47,6 @@ var vI = {
 			return MenuItem
 		},
 
-		selectIdentityMenuItem: function(object, MenuItem) {
-			object.selectedItem = MenuItem;
-			// set the account name on the menu list value.
-			object.setAttribute("label", MenuItem.getAttribute("label"));
-			object.setAttribute("accountname", MenuItem.getAttribute("accountname"));
-			object.setAttribute("accountkey", MenuItem.getAttribute("accountkey"));
-			object.setAttribute("value", MenuItem.getAttribute("value"));
-		},
-
 		addSeparatorToCloneMenu: function() {
 			var object = vI_msgIdentityClone.elements.Obj_msgIdentityClone;
 			var separator = document.createElement("menuseparator");
@@ -71,7 +62,7 @@ var vI = {
 		getAddress : function() {
 			var address = vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value;
 			var splitted = { number : 0, emails : {}, fullNames : {}, combinedNames : {} };
-			vI.headerParser	.parseHeadersWithArray(address, splitted.emails,
+			vI.headerParser.parseHeadersWithArray(address, splitted.emails,
 				splitted.fullNames, splitted.combinedNames);
 			return { name: splitted.fullNames.value[0], email: splitted.emails.value[0],
 					combinedName: splitted.combinedNames.value[0]}
@@ -85,8 +76,6 @@ var vI = {
 	headerParser : Components.classes["@mozilla.org/messenger/headerparser;1"]
 				.getService(Components.interfaces.nsIMsgHeaderParser),
 	
-	params : window.arguments[0],
-
 	// Those variables keep pointers to original functions which might get replaced later
 	original_functions : {
 		GenericSendMessage : null,
@@ -135,16 +124,25 @@ var vI = {
 
 		GenericSendMessage: function (msgType) {
 			vI_notificationBar.dump("## v_identity: VIdentity_GenericSendMessage\n");
-
 			// dont allow user to fake identity if Message is not sended NOW and thunderbird-version is below 2.0 !!!!
-			var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
-			var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"].getService(Components.interfaces.nsIVersionComparator);
+			var appID = null;
+			var appVersion = null;
+			var versionChecker;
+			if("@mozilla.org/xre/app-info;1" in Components.classes) {
+				var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
+					.getService(Components.interfaces.nsIXULAppInfo);
+				appID = appInfo.ID
+				appVersion = appInfo.version
+			}
+			if("@mozilla.org/xpcom/version-comparator;1" in Components.classes)
+				versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+					.getService(Components.interfaces.nsIVersionComparator);
+			else appID = null;
 			const THUNDERBIRD_ID = "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
-			//const MOZILLA_ID = "{86c18b42-e466-45a9-ae7a-9b95ba6f5640}";
 			const SEAMONKEY_ID = "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
 			if (msgType != nsIMsgCompDeliverMode.Now &&
-				((appInfo.ID == THUNDERBIRD_ID && versionChecker.compare(appInfo.version, "2.0b") < 0) ||
-				(appInfo.ID == SEAMONKEY_ID && versionChecker.compare(appInfo.version, "1.5a") < 0)))	{
+				((!appID) || (appID == THUNDERBIRD_ID && versionChecker.compare(appVersion, "2.0b") < 0) ||
+				(appID == SEAMONKEY_ID && versionChecker.compare(appVersion, "1.5a") < 0)))	{
 				var server = gAccountManager.defaultAccount.incomingServer.prettyName
 				var name = gAccountManager.defaultAccount.defaultIdentity.fullName
 				var email = gAccountManager.defaultAccount.defaultIdentity.email
@@ -178,7 +176,7 @@ var vI = {
 		{
 			if (vI.original_functions.GenericSendMessage) return true;
 			if (typeof(GenericSendMessage)=="function") {
-				vI_notificationBar.dump("## v_identity: replace GenericSendMessage\n");
+				vI_notificationBar.dump("## v_identity: replace GenericSendMessage (Virtual Identity activated)\n");
 				vI.original_functions.GenericSendMessage = GenericSendMessage;
 				GenericSendMessage = function (msgType) {
 					vI.replacement_functions.GenericSendMessage(msgType);}
@@ -198,6 +196,9 @@ var vI = {
 	
 	// initialization //
 	init: function() {
+		// clear the DebugArea (not needed cause window is new)
+		//~ vI_notificationBar.clear_dump()
+	
 		// initialize the pointers to extension elements
 		vI.elements.init_base()
 		
@@ -207,8 +208,6 @@ var vI = {
 		
 		storage_box.removeChild(vI.elements.Area_MsgIdentityHbox)
 		parent_hbox.appendChild(vI.elements.Area_MsgIdentityHbox);
-		
-		vI.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
 		
 		// initialize the pointers to extension elements (initialize those earlier might brake the interface)
 		vI.elements.init_rest();
@@ -229,32 +228,31 @@ var vI = {
 	// sets the values of the dropdown-menu to the ones of the newly created account
 	addVirtualIdentityToMsgIdentityMenu : function()
 	{
-		vI.storeBaseIdentity = {
-			label : vI.elements.Obj_MsgIdentity.getAttribute("label"),
-			accountname : vI.elements.Obj_MsgIdentity.getAttribute("accountname"),
-			accountkey : vI.elements.Obj_MsgIdentity.getAttribute("accountkey"),
-			value : vI.elements.Obj_MsgIdentity.getAttribute("value")
-		}
+		vI.storeBaseIdentity = vI.elements.Obj_MsgIdentity.selectedItem
 		var newMenuItem = vI.helper.addIdentityMenuItem(vI.elements.Obj_MsgIdentityPopup,
 						vI_account.account.defaultIdentity.identityName,
 						" - " +  vI_account.account.incomingServer.prettyName,
 						vI_account.account.key,
 						vI_account.account.defaultIdentity.key)
-		vI.helper.selectIdentityMenuItem(vI.elements.Obj_MsgIdentity, newMenuItem)
+		vI.elements.Obj_MsgIdentity.selectedItem = newMenuItem;
+		vI.elements.Obj_MsgIdentity.setAttribute("label", newMenuItem.getAttribute("label"));
+		vI.elements.Obj_MsgIdentity.setAttribute("accountname", newMenuItem.getAttribute("accountname"));
+		vI.elements.Obj_MsgIdentity.setAttribute("value", newMenuItem.getAttribute("value"));
 	},
 	
 	// sets the values of the dropdown-menu to the ones of the newly created account
 	remVirtualIdentityFromMsgIdentityMenu : function()
 	{
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.childNodes
-		for (index = 0; index < MenuItems.length; index++) {
-			if ( MenuItems[index].getAttribute("value") == vI_account.account.defaultIdentity.key )
-				vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.removeChild(MenuItems[index])
+		for (index = 1; index <= MenuItems.length; index++) {
+			if ( MenuItems[MenuItems.length - index].getAttribute("value") == vI_account.account.defaultIdentity.key )
+				vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.removeChild(MenuItems[MenuItems.length - index])
 		}
-		vI.elements.Obj_MsgIdentity.setAttribute("label", vI.storeBaseIdentity.label);
-		vI.elements.Obj_MsgIdentity.setAttribute("accountname", vI.storeBaseIdentity.accountname);
-		vI.elements.Obj_MsgIdentity.setAttribute("accountkey", vI.storeBaseIdentity.accountkey);
-		vI.elements.Obj_MsgIdentity.setAttribute("value", vI.storeBaseIdentity.value);
+		vI.elements.Obj_MsgIdentity.selectedItem = vI.storeBaseIdentity;
+		vI.elements.Obj_MsgIdentity.setAttribute("label", vI.storeBaseIdentity.getAttribute("label"));
+		vI.elements.Obj_MsgIdentity.setAttribute("accountname", vI.storeBaseIdentity.getAttribute("accountname"));
+		vI.elements.Obj_MsgIdentity.setAttribute("value", vI.storeBaseIdentity.getAttribute("value"));
+		vI.storeBaseIdentity = null;
 	},
 	
 	// Clean all the things I had changed (expecpt the FillIdentityListPopup)
@@ -267,6 +265,7 @@ var vI = {
 		if (vI.original_functions.GenericSendMessage) {
 			GenericSendMessage = vI.original_functions.GenericSendMessage;
 			vI.original_functions.GenericSendMessage = null;
+			vI_notificationBar.dump("## v_identity: restored GenericSendMessage (Virtual Identity deactivated)\n");
 		}
 	},
 

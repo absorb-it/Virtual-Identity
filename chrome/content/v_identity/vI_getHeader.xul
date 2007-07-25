@@ -41,6 +41,12 @@
     <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
   </stringbundleset>
 
+<vbox id="messagepanebox" >
+	<splitter id="vIDebugBoxSplitter" hidden="true"/>
+	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
+	DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
+</vbox>
+
 <vbox id="messagepanebox">
 	 <notificationbox id="vINotification" position="1" insertbefore="msgheaderstoolbar-box"/>
 </vbox>

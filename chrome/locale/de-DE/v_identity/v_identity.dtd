@@ -11,6 +11,7 @@
 <!ENTITY vident.prefs.smartReply.label "verwende Smart Reply">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "verwende Smart Reply auch bei Antworten an Newsgruppen">
 <!ENTITY vident.prefs.SMTP.label "zeige SMTP Auswahlmenu">
+<!ENTITY vident.prefs.menuEntry.label "füge Einstellungs-Dialog zu Menu Extras hinzu">
 <!ENTITY vident.prefs.vIdentityTab.header "Eigenschaften der Virtuellen Identität">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "zu kopierende Einstellungen">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "Speicherort für Emails">
@@ -27,12 +28,13 @@
 <!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. Adressen filtern">
 <!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. Adressen übernehmen">
 <!ENTITY vident.prefs.smartReplyTab.caption "Virtual Identity Smart Reply">
-<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "In einem ersten Schritt muss &apos;Smart Reply&apos; eine Liste der möglichen Sendeadressen ihrer Antwort erstellen. Dafür werden die Empfängerfelder &apos;To&apos; und &apos;Cc&apos; der email ausgewertet. Wenn weitere Kopfzeilen der Mail ausgewertet werden sollen, kann dies hier angegeben werden (dafür müssen möglicherweise andere Erweiterungen, bspw. enigmail oder mnenhy, installiert sein).">
-<!ENTITY vident.prefs.smartReply.headers.desc "zusätzliche Kopfzeilen  -  je eine pro Zeile, Angabe ohne &apos;:&apos;, bspw. &apos;x-original-to&apos;">
-<!ENTITY vident.prefs.smartReply.preferHeader.label "bevorzuge Adressen dieser Kopfzeilen vor &apos;To&apos; und &apos;Cc&apos;">
-<!ENTITY vident.prefs.smartReplyTab.Tab2.desc "Im zweiten Schritt werden die möglichen Sendeadressen gefiltert. Alle Filter werden der Reihe nach angewandt, so werden die Adressen gleichzeitig sortiert. Die zuerst gefundene Adresse kann dann direkt als Sender übernommen werden. Wird kein Filter angegeben, werden alle Adresen übernommen.">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "In einem ersten Schritt muss &apos;Smart Reply&apos; eine Liste der möglichen Sendeadressen ihrer Antwort erstellen. Dafür werden üblicherweise die Empfängerfelder &apos;To&apos; und &apos;Cc&apos; der Email ausgewertet. Hier können diese und weitere Kopfzeilen angegeben werden. (ergänzende Optionen: Auswahl der Kopfzeile Nummer n aus mehreren Kopfzeilen mit gleicher Bezeichnung durch &apos;:n&apos;. Email-Adressen übernehmen, Namen ignorieren durch &apos;:@&apos;.)">
+<!ENTITY vident.prefs.smartReply.headers.desc "zusätzliche Kopfzeilen  -  je eine pro Zeile bspw. &apos;x-original-to&apos; oder &apos;x-original-to:@&apos; oder &apos;x-original-to:2:@&apos;">
+<!ENTITY vident.prefs.smartReply.headers.reset "setze Vorgabe-Werte">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.desc "Im zweiten Schritt werden die möglichen Sendeadressen gefiltert. Alle Filter werden der Reihe nach angewandt, so werden die Adressen gleichzeitig sortiert. Die zuerst gefundene Adresse kann dann direkt als Sender übernommen werden. Wird kein Filter angegeben, werden alle Adressen übernommen.">
 <!ENTITY vident.prefs.smartReply.filter.desc "Smart Reply Filter  -  eine Zeile je Filter, reguläre Ausdrücke sind möglich, bspw. filtert &apos;/@mozilla.org$/&apos; nach allen Emailadressen der domain mozilla.org">
 <!ENTITY vident.prefs.smartReply.ignoreFullname.label "ignoriere Namensangaben beim Vergleich der Email-Adressen mit vorhandenen Identitäten">
+<!ENTITY vident.prefs.smartReply.defaultFullname.label "falls kein Name zu einer Email-Adresse gefunden wurde, benutze folgenden Namen:">
 <!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Die gefilterten Adressen werden abschliessend dem Sender-Auswahlmenu hinzugefügt. Hier kann entschieden werden, ob und wie die gefundenen Identitäten als Sender übernommen werden.">
 <!ENTITY vident.prefs.smartReply.ask.label "öffne ein Dialogfenster zur Auswahl der Identität">
 <!ENTITY vident.prefs.smartReply.ask_always.label "auch nachfragen, wenn nur eine Adresse zur Auswahl steht">
@@ -43,6 +45,9 @@
 <!ENTITY vident.prefs.notifySmartIdentity.label "aktiviere Smart Reply / Smart Draft Statusmeldungen">
 <!ENTITY vident.prefs.notifyTime.prefix.label "Zeit, bis Nachrichten ausgeblendet werden (0 für immer an)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "Sekunden">
+<!ENTITY vident.prefs.notificationTab.Debug.caption "Fehlersuche">
+<!ENTITY vident.prefs.notifyDebug.desc "Zur Fehlersuche und zum besseren Verständnis der Funktionsweise von Virtual Identity, besonders auch der Filter von SmartReply, können weitere Informationen in einem eigenen Bereich angezeigt werden. Diese Debug-Informationen stehen nur in englischer Sprache zur Verfügung. Die Ausgabe verlangsamt die Arbeit des Email-Programms und sollte darum nicht dauerhaft aktiviert bleiben.">
+<!ENTITY vident.prefs.notifyDebug.label "zeige Bereich mit Informationen zur Fehlersuche">
 <!ENTITY vident.accPane.prettyName.prefix "virtuelle Id">
 <!ENTITY vident.replySelector.dialogheader.title "Virtual Identity Smart Reply">
 <!ENTITY vident.replySelector.caption.label "Wählen Sie eine Virtuelle Identität">

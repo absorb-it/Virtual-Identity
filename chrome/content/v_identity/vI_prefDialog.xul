@@ -85,6 +85,8 @@
 				prefstring="smart_reply_for_newsgroups" />
 			<checkbox id="VIdent_identity.show_smtp" label="&vident.prefs.SMTP.label;"
 				prefstring="show_smtp" />
+			<checkbox id="VIdent_identity.menu_entry" label="&vident.prefs.menuEntry.label;"
+				prefstring="menu_entry" />
 		</groupbox>
 	</tabpanel>
 	<tabpanel orient="vertical" label="&vident.prefs.vIdentityTab.header;">
@@ -174,13 +176,14 @@
 			<vbox align="left">
 				<description width="500px">&vident.prefs.smartReplyTab.Tab1.desc;</description>
 				<hbox>
-				<vbox><description width="300px">&vident.prefs.smartReply.headers.desc;</description><spacer flex="1"/></vbox>
+				<vbox><description width="300px">&vident.prefs.smartReply.headers.desc;</description>
+				<spacer flex="1"/>
+				<button label="&vident.prefs.smartReply.headers.reset;" oncommand="vI_prefDialog.base.smartReplyHeaderReset();"/>
+				</vbox>
 				<textbox id="VIdent_identity.smart_reply_headers" multiline="true"
 					rows="4" size="20" wrap="false" flex="1"
 					prefstring="smart_reply_headers" />
 				</hbox>
-				<checkbox id="VIdent_identity.smart_reply_prefer_headers" label="&vident.prefs.smartReply.preferHeader.label;"
-					prefstring="smart_reply_prefer_headers"/>
 			</vbox>
 			</groupbox>
 			</tabpanel>
@@ -197,6 +200,11 @@
 				</hbox>
 				<checkbox id="VIdent_identity.smart_reply_ignoreFullName" label="&vident.prefs.smartReply.ignoreFullname.label;"
 					prefstring="smart_reply_ignoreFullName" wrap="true" width="500px"/>
+				<hbox>
+				<description width="300px">&vident.prefs.smartReply.defaultFullname.label;</description>
+				<vbox><spacer flex="1"/><textbox id="VIdent_identity.smart_reply_defaultFullName" flex="1"
+					prefstring="smart_reply_defaultFullName" size="20" /><spacer flex="1"/></vbox>
+				</hbox>
 			</vbox>
 			</groupbox>
 			</tabpanel>
@@ -224,7 +232,7 @@
 	</tabpanel>
 	<tabpanel orient="vertical" label="&vident.prefs.notificationTab.header;">
 		<dialogheader title="&vident.prefs.notificationTab.header;"/>
-		<groupbox>
+		<groupbox id="notificationGroupBox">
 		<caption label="&vident.prefs.notificationTab.caption;"/>
 		<vbox align="left">
 			<checkbox id="VIdent_identity.get_header_notification" label="&vident.prefs.notifyHeaders.label;"
@@ -237,6 +245,14 @@
 				prefstring="notification_timeout" size="1" />
 			<vbox><spacer flex="1"/><label value="&vident.prefs.notifyTime.postfix.label;" /><spacer flex="1"/></vbox>
 			</hbox>
+		</vbox>
+		</groupbox>
+		<groupbox>
+		<caption label="&vident.prefs.notificationTab.Debug.caption;"/>
+		<vbox align="left">
+			<description width="500px">&vident.prefs.notifyDebug.desc;</description>
+			<checkbox id="VIdent_identity.debug_notification" label="&vident.prefs.notifyDebug.label;"
+				prefstring="debug_notification"/>
 		</vbox>
 		</groupbox>
 	</tabpanel>

@@ -44,15 +44,17 @@ vI_prefDialog = {
 				"VIdent_identity.smart_reply_ask",
 				"VIdent_identity.smart_reply_ask_always",
 				"VIdent_identity.show_smtp",
+				"VIdent_identity.menu_entry",
 				"VIdent_identity.smart_reply_headers",
 				"VIdent_identity.smart_reply_filter",
 				"VIdent_identity.smart_draft",
-				"VIdent_identity.smart_reply_prefer_headers",
 				"VIdent_identity.smart_reply_notification",
 				"VIdent_identity.get_header_notification",
+				"VIdent_identity.smart_reply_defaultFullName",
 				"VIdent_identity.smart_reply_ignoreFullName",
 				"VIdent_identity.smart_reply_autocreate",
-				"VIdent_identity.notification_timeout"],
+				"VIdent_identity.notification_timeout",
+				"VIdent_identity.debug_notification"],
 	
 		init : function() {
 		// initialize the default window values...
@@ -106,7 +108,6 @@ vI_prefDialog = {
 				"VIdent_identity.smart_reply_ask_always",
 				"VIdent_identity.smart_reply_headers",
 				"VIdent_identity.smart_reply_filter",
-				"VIdent_identity.smart_reply_prefer_headers",
 				"VIdent_identity.smart_reply_ignoreFullName",
 				"VIdent_identity.smart_reply_autocreate",
 				"smartReplyTab", "smartReplyTab1", "smartReplyTab2", "smartReplyTab3"];
@@ -127,6 +128,11 @@ vI_prefDialog = {
 			var autocreate = document.getElementById("VIdent_identity.smart_reply_autocreate")
 			ask_always.setAttribute("disabled", (autocreate.checked || !ask.checked))
 			autocreate.setAttribute("disabled", ask_always.checked)
+		},
+		
+		smartReplyHeaderReset : function() {
+			var textfield = document.getElementById("VIdent_identity.smart_reply_headers")
+			textfield.value = "x-original-to\nto\ncc"
 		}
 	},
 
@@ -138,17 +144,32 @@ vI_prefDialog = {
 		setupFccItems();
 		SetSpecialFolderNamesWithDelims();
 
-		var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
-		var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"].getService(Components.interfaces.nsIVersionComparator);
+		var appID = null;
+		var appVersion = null;
+		var versionChecker;
+		if("@mozilla.org/xre/app-info;1" in Components.classes) {
+			var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
+				.getService(Components.interfaces.nsIXULAppInfo);
+			appID = appInfo.ID
+			appVersion = appInfo.version
+		}
+		if("@mozilla.org/xpcom/version-comparator;1" in Components.classes)
+			versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+				.getService(Components.interfaces.nsIVersionComparator);
+		else appID = null;
 		const THUNDERBIRD_ID = "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
-		//const MOZILLA_ID = "{86c18b42-e466-45a9-ae7a-9b95ba6f5640}";
 		const SEAMONKEY_ID = "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
-		if ((appInfo.ID == THUNDERBIRD_ID && versionChecker.compare(appInfo.version, "2.0b") < 0) ||
-			(appInfo.ID == SEAMONKEY_ID && versionChecker.compare(appInfo.version, "1.5a") < 0)) {
+		if ((!appID) || (appID == THUNDERBIRD_ID && versionChecker.compare(appVersion, "2.0b") < 0) ||
+			(appID == SEAMONKEY_ID && versionChecker.compare(appVersion, "1.5a") < 0)) {
 			document.getElementById("version-warning").setAttribute("hidden", "false");
 			document.getElementById("VIdent_identity.smart_draft").setAttribute("disabled", "true");
 		}
-		
+		if ((!appID) || (appID == THUNDERBIRD_ID && versionChecker.compare(appVersion, "1.5.0.7") < 0)) {
+			document.getElementById("notificationGroupBox").setAttribute("hidden", "true");
+		}
+		if ((!appID) || (appID != THUNDERBIRD_ID)) {
+			document.getElementById("VIdent_identity.menu_entry").setAttribute("hidden", "true");
+		}
 		
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
 		

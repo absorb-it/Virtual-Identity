@@ -42,6 +42,9 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone = document.getElementById("msgIdentity_clone");
 		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone = document.getElementById("msgIdentityPopup_clone");
 		vI_msgIdentityClone.clone_Obj_MsgIdentity();
+		vI_msgIdentityClone.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
+		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("hidden", "false");
+		vI_msgIdentityClone.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
 	},
 	
 	// double the Identity-Select Dropdown-Menu
@@ -60,21 +63,26 @@ vI_msgIdentityClone = {
 			// "accountname" property changed in Thunderbird 3.x, Seamonkey 1.5x to "description"
 			newMenuItem.setAttribute("accountname", vI.helper.getAccountname(newMenuItem))
 		}
+		if (!vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem) {
+			vI_notificationBar.dump("## vI_msgIdentityClone: Obj_MsgIdentity.selectedItem not set, using first Menuitem\n");
+			vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem =
+				vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.firstChild
+			vI_notificationBar.dump("## vI_msgIdentityClone: MsgIdentityPopup.doCommand()\n");
+			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.doCommand();
+		}
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 			.setAttribute("value", vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"));
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 			.setAttribute("label", vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("label"));
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
-			.setAttribute("accountkey", vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("accountkey"));
-		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 			.setAttribute("accountname", vI.helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem));
 	},
 	
 	resetMenuToDefault : function () {
-		vI_msgIdentityClone.setMenuToIdentity(gAccountManager.defaultAccount.defaultIdentity.key, false);
+		vI_msgIdentityClone.setMenuToIdentity(gAccountManager.defaultAccount.defaultIdentity.key);
 	},
 
-	setMenuToIdentity : function (identitykey, startup) {
+	setMenuToIdentity : function (identitykey) {
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].getAttribute("value") ==
@@ -84,7 +92,7 @@ vI_msgIdentityClone = {
 					break;
 			}
 		}
-		vI_msgIdentityClone.LoadIdentity(startup);
+		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.doCommand();
 	},
 	
 	copySelectedIdentity : function() {
@@ -98,6 +106,8 @@ vI_msgIdentityClone = {
 				break;
 			}
 		}
+		vI_notificationBar.dump("## vI_msgIdentityClone: MsgIdentityPopup.doCommand()\n");
+		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.doCommand();
 	},
 	
 	initMsgIdentityTextbox_clone : function() {
@@ -109,14 +119,12 @@ vI_msgIdentityClone = {
 	// this LoadIdentity - oncommand is used by our clone MsgIdentity Menu
 	// if VIdentity Extension is closed after the extension area was opened at least once,
 	// remove the Virtual Account if a different (usual) Account is choosen in the cloned dropdown-menu
-	LoadIdentity : function(startup)
+	LoadIdentity : function()
 	{
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value != "vid") {
 			vI_msgIdentityClone.copySelectedIdentity();
 			vI_smtpSelector.resetMenuToMsgIdentity(
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value);
-			vI_notificationBar.dump("## vI_msgIdentityClone: calling LoadIdentity(" + startup +") from MsgCompose\n")
-			LoadIdentity(startup);
 		}
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value =
@@ -210,7 +218,6 @@ vI_msgIdentityClone = {
 							vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("value", identity.key);
 							vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("label", address.name + " <" + address.email + ">");
 							vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("accountname", " - " + accounts[i].incomingServer.prettyName);
-							vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("accountkey", "");
 							return false;
 						}
 					}

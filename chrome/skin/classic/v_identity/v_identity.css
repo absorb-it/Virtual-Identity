@@ -16,6 +16,12 @@ notification {
 	padding: 0;
 }
 
+#vIDebugBox {
+	overflow: auto;
+	font-size: x-small;
+	height: 10em;
+}
+
 .identity_clone-menulist {
   -moz-binding: url(chrome://v_identity/content/v_identity.xml#fromMenuList_clone);
   -moz-appearance: textfield;
