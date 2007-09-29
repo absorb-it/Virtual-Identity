@@ -61,7 +61,10 @@ vI_smtpSelector = {
 				}
 			}
 		if (!smtpKey) smtpKey = vI_smtpSelector.smtpService.defaultServer.key;
-		
+		vI_smtpSelector.setMenuToKey(smtpKey);
+	},
+	
+	setMenuToKey : function (smtpKey) {
 		MenuItems = vI_smtpSelector.elements.Obj_SMTPServerListPopup.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].getAttribute("key") == smtpKey) {
@@ -71,7 +74,7 @@ vI_smtpSelector = {
 			}
 		}
 	},
-	
+
 	loadSMTP_server_list : function()
 	{
 		var idserver;

@@ -114,12 +114,24 @@ var vI = {
 			vI.Cleanup_Account();
 		}
 	},
-	
+		
 	replacement_functions : {
 		// if the windows gets closed, this is the way to get rid of the account.
 		MsgComposeCloseWindow : function(recycleIt) {
 			vI_notificationBar.dump("## v_identity: MsgComposeCloseWindow\n");
 			vI.original_functions.MsgComposeCloseWindow(false);
+		},
+		
+		awReturnHit: function (element) {
+			vI_notificationBar.dump("## v_identity: awReturnHit\n");
+			vI.original_functions.awReturnHit(element);
+			vI_addressBook.readVirtualIdentity(element);
+		},
+		
+		awTabFromRecipient: function (element, event) {
+			vI_notificationBar.dump("## v_identity: awTabFromRecipient\n");
+			vI.original_functions.awTabFromRecipient(element, event);
+			vI_addressBook.readVirtualIdentity(element);
 		},
 		
 		GenericSendMessage: function (msgType) {
@@ -170,6 +182,7 @@ var vI = {
 					vI.Cleanup_Account();
 					vI_notificationBar.dump("## v_identity: SendMessage cancelled\n");
 				}
+				else if (msgType == nsIMsgCompDeliverMode.Now) vI_addressBook.storeVirtualIdentity();
 			}
 		},
 
@@ -218,6 +231,22 @@ var vI = {
 		vI.original_functions.GenericSendMessage = GenericSendMessage;
 		GenericSendMessage = function (msgType) {
 				vI.msgType = msgType; if (vI.warning(msgType)) vI.original_functions.GenericSendMessage(msgType); }
+		
+		// adapt awReturnHit to change Indentity if stored in AddressBook
+		vI_notificationBar.dump("## v_identity: adapt awReturnHit\n");
+		vI.original_functions.awReturnHit = awReturnHit;
+		awReturnHit = function (element) {
+				vI.replacement_functions.awReturnHit(element); }
+		
+		// adapt awTabFromRecipient to change Indentity if stored in AddressBook
+		vI_notificationBar.dump("## v_identity: adapt awTabFromRecipient\n");
+		vI.original_functions.awTabFromRecipient = awTabFromRecipient;
+		awTabFromRecipient = function (element, event) {
+				vI.replacement_functions.awTabFromRecipient(element, event); }
+		
+		//~ old_onblur = document.getElementById("addressingWidget").onblur
+		//~ document.getElementById("addressingWidget").onblur = old_onblur + 
+			//~ "; vI_notificationBar.dump('## v_identity: awOnBlur\n'); vI.readVirtualIdentity(element);"
 		
 		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
 		window.removeEventListener("load", vI.init, false);

@@ -137,8 +137,10 @@ vI_msgIdentityClone = {
 	setIdentity : function(newName) {
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = newName;
+		vI_msgIdentityClone.blurEvent()
 		var newIdentity = vI_msgIdentityClone.isNewIdentity();
 		window.setTimeout(vI_msgIdentityClone.markAsNewAccount, 0, newIdentity);
+		return newIdentity;
 	},
 	
 	blurEvent : function() {
@@ -166,6 +168,9 @@ vI_msgIdentityClone = {
 					.setAttribute("class", vI_msgIdentityClone.icon_virtualId_class);
 				if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 					.getAttribute("value") != "vid") {
+					vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
+						.setAttribute("oldvalue",vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
+								.getAttribute("value"))
 					vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 						.setAttribute("value","vid")
 					var accountname = document.getElementById("prettyName-Prefix")
