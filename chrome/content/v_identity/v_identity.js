@@ -243,11 +243,7 @@ var vI = {
 		vI.original_functions.awTabFromRecipient = awTabFromRecipient;
 		awTabFromRecipient = function (element, event) {
 				vI.replacement_functions.awTabFromRecipient(element, event); }
-		
-		//~ old_onblur = document.getElementById("addressingWidget").onblur
-		//~ document.getElementById("addressingWidget").onblur = old_onblur + 
-			//~ "; vI_notificationBar.dump('## v_identity: awOnBlur\n'); vI.readVirtualIdentity(element);"
-		
+				
 		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
 		window.removeEventListener("load", vI.init, false);
 	},
