@@ -172,7 +172,7 @@ var vI = {
 					}
 				else { return; }
 			}
-			else if ( !vI.preferences.getBoolPref("warn_virtual") || 
+			else if ( msgType != nsIMsgCompDeliverMode.Now || !vI.preferences.getBoolPref("warn_virtual") || 
 				promptService.confirm(window,"Warning",vI.elements.strings.getString("vident.sendVirtual.warning")) ) {
 				// just to be sure to use the recent settings if account was left by cancelled Send Operation
 				vI.Cleanup_Account();
