@@ -190,7 +190,7 @@
 				<hbox>
 				<vbox><description width="300px">&vident.prefs.smartReply.headers.desc;</description>
 				<spacer flex="1"/>
-				<button label="&vident.prefs.smartReply.headers.reset;" oncommand="vI_prefDialog.base.smartReplyHeaderReset();"/>
+				<button id="VIdent_identity.smart_reply_headers_reset" label="&vident.prefs.smartReply.headers.reset;" oncommand="vI_prefDialog.base.smartReplyHeaderReset();"/>
 				</vbox>
 				<textbox id="VIdent_identity.smart_reply_headers" multiline="true"
 					rows="4" size="20" wrap="false" flex="1"

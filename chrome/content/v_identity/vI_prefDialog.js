@@ -112,8 +112,10 @@ vI_prefDialog = {
 				"VIdent_identity.smart_reply_ask_always",
 				"VIdent_identity.smart_reply_headers",
 				"VIdent_identity.smart_reply_filter",
+				"VIdent_identity.smart_reply_defaultFullName",
 				"VIdent_identity.smart_reply_ignoreFullName",
 				"VIdent_identity.smart_reply_autocreate",
+				"VIdent_identity.smart_reply_headers_reset",
 				"smartReplyTab", "smartReplyTab1", "smartReplyTab2", "smartReplyTab3"];
 			for( var i = 0; i < elementIDs.length; i++ ) {
 				if (element.checked)
@@ -127,6 +129,7 @@ vI_prefDialog = {
 		},
 		
 		smartReplyResultConstraint : function() {
+			if (!document.getElementById("VIdent_identity.smart_reply").checked) return;
 			var ask = document.getElementById("VIdent_identity.smart_reply_ask")
 			var ask_always = document.getElementById("VIdent_identity.smart_reply_ask_always")
 			var autocreate = document.getElementById("VIdent_identity.smart_reply_autocreate")
