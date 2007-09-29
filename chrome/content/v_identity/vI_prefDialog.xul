@@ -93,6 +93,8 @@
 			<spacer height="10px"/>
 			<checkbox id="VIdent_identity.warn_nonvirtual" label="&vident.prefs.warnNonvirtual.label;"
 				prefstring="warn_nonvirtual" />
+			<checkbox id="VIdent_identity.warn_virtual" label="&vident.prefs.warnVirtual.label;"
+				prefstring="warn_virtual" />
 		</groupbox>
 	</tabpanel>
 	<tabpanel orient="vertical" label="&vident.prefs.vIdentityTab.header;">

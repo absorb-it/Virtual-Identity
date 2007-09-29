@@ -14,6 +14,7 @@
 <!ENTITY vident.prefs.SMTP.label "mostrar menú SMTP">
 <!ENTITY vident.prefs.menuEntry.label "añadir entrada para el cuadro de opciones al menú Herramientas">
 <!ENTITY vident.prefs.warnNonvirtual.label "warn on any usage of non-virtual Identities">
+<!ENTITY vident.prefs.warnVirtual.label "warn on any usage of virtual Identities">
 <!ENTITY vident.prefs.vIdentityTab.header "Propiedades de las identidades virtuales">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "atributos a copiar">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "ubicación donde guardar los mensajes enviados">

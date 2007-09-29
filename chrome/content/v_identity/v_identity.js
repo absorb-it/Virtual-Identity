@@ -135,6 +135,8 @@ var vI = {
 		},
 		
 		GenericSendMessage: function (msgType) {
+			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+				.getService(Components.interfaces.nsIPromptService);
 			vI_notificationBar.dump("## v_identity: VIdentity_GenericSendMessage\n");
 			vI.msgType = msgType; 
 			// dont allow user to fake identity if Message is not sended NOW and thunderbird-version is below 2.0 !!!!
@@ -161,8 +163,6 @@ var vI = {
 				var email = gAccountManager.defaultAccount.defaultIdentity.email
 
 				//Get the bundled string file.
-				var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-					.getService(Components.interfaces.nsIPromptService);
 				if (promptService.confirm(window,"Error",vI.elements.strings.getString("vident.sendLater.warning") +
 					vI.elements.strings.getString("vident.sendLater.prefix") +
 					name + " " + email + " [" + server + "]" + vI.elements.strings.getString("vident.sendLater.postfix")))
@@ -172,7 +172,8 @@ var vI = {
 					}
 				else { return; }
 			}
-			else {
+			else if ( !vI.preferences.getBoolPref("warn_virtual") || 
+				promptService.confirm(window,"Warning",vI.elements.strings.getString("vident.sendVirtual.warning")) ) {
 				// just to be sure to use the recent settings if account was left by cancelled Send Operation
 				vI.Cleanup_Account();
 				vI_account.createAccount();
@@ -295,7 +296,7 @@ var vI = {
 		// restore function
 		if (GenericSendMessage == vI.replacement_functions.GenericSendMessage) {
 			GenericSendMessage = function (msgType) {
-				vI.msgType = msgType; if (vI.warning()) vI.original_functions.GenericSendMessage(msgType); }
+				vI.msgType = msgType; if (vI.warning(msgType)) vI.original_functions.GenericSendMessage(msgType); }
 			vI_notificationBar.dump("## v_identity: restored GenericSendMessage (Virtual Identity deactivated)\n");
 		}
 	},

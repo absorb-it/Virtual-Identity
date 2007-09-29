@@ -14,6 +14,7 @@
 <!ENTITY vident.prefs.SMTP.label "zeige SMTP Auswahlmenu">
 <!ENTITY vident.prefs.menuEntry.label "füge Einstellungs-Dialog zu Menu Extras hinzu">
 <!ENTITY vident.prefs.warnNonvirtual.label "warne bei jeder Verwendung einer dauerhaft gespeicherten Identität">
+<!ENTITY vident.prefs.warnVirtual.label "warne bei jeder Verwendung einer Virtuellen Identität">
 <!ENTITY vident.prefs.vIdentityTab.header "Eigenschaften der Virtuellen Identität">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "zu kopierende Einstellungen">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "Speicherort für Emails">

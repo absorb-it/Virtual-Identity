@@ -57,6 +57,7 @@ vI_prefDialog = {
 				"VIdent_identity.notification_timeout",
 				"VIdent_identity.debug_notification",
 				"VIdent_identity.warn_nonvirtual",
+				"VIdent_identity.warn_virtual",
 				"VIdent_identity.hide_signature"],
 	
 		init : function() {

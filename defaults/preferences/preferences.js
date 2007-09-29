@@ -22,6 +22,7 @@ pref("extensions.virtualIdentity.get_header_notification", true);
 pref("extensions.virtualIdentity.debug_notification", false);
 pref("extensions.virtualIdentity.notification_timeout", 5);
 pref("extensions.virtualIdentity.warn_nonvirtual", false);
+pref("extensions.virtualIdentity.warn_virtual", false);
 pref("extensions.virtualIdentity.hide_signature", false);
 
 
