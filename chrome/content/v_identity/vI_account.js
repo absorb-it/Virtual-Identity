@@ -95,7 +95,8 @@ vI_account = {
 	removeAccount : function() {
 		if (vI_account.account) {
 			vI_notificationBar.dump("## vI_account: Account " + vI_account.account.incomingServer.prettyName + " removed\n")
-			vI_account.account.incomingServer.rootFolder.Delete();
+			try { vI_account.account.incomingServer.rootFolder.Delete(); }
+			catch (e) { };
 			gAccountManager.removeAccount(vI_account.account);
 			vI_account.account = null;
 		}
@@ -132,7 +133,8 @@ vI_account = {
 		
 		
 		// remove the folder created with this account - it should never be used to store mails
-		vI_account.account.incomingServer.rootFolder.Delete();
+		try { vI_account.account.incomingServer.rootFolder.Delete(); }
+		catch (e) { };
 	
 		vI_notificationBar.dump("## vI_account: New Account created " + vI_account.account.incomingServer.prettyName + "\n");
 		//~ confirm("## vI_account: New Account created "+server.prettyName+"\n");
