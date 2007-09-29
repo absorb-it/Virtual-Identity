@@ -287,7 +287,7 @@ var vI = {
 		vI.storeBaseIdentity = null;
 	},
 	
-	// Clean all the things I had changed (expecpt the FillIdentityListPopup)
+	// Clean all the things I had changed (except the FillIdentityListPopup)
 	Cleanup : function()
 	{
 		vI_notificationBar.dump("## v_identity: Cleanup\n");
