@@ -345,7 +345,7 @@ vI_smartIdentity = {
 		vI_smartIdentity.addSmartIdentitiesToCloneMenu(all_addresses);
 		
 		if (vI.preferences.getBoolPref("smart_reply_ask") && 
-			(all_addresses.number == 1 && vI.preferences.getBoolPref("smart_reply_ask_always")
+			((all_addresses.number == 1 && vI.preferences.getBoolPref("smart_reply_ask_always"))
 				|| all_addresses.number > 1))
 			window.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul",0, // give the Dialog a unique id
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
