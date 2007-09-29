@@ -19,13 +19,8 @@
     Portions created by the Initial Developer are Copyright (C) 2007
     the Initial Developer. All Rights Reserved.
 
-    Contributor(s): chuonthis
+    Contributor(s):
  * ***** END LICENSE BLOCK ***** */
-
-/**
-* some code copied and adapted from 'Show SMTP Username'
-* thanks to chuonthis
-*/
 
 vI_smtpSelector = {
 	smtpService : Components.classes["@mozilla.org/messengercompose/smtp;1"]
@@ -120,57 +115,17 @@ vI_smtpSelector = {
 			  if (idserver == server) vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem = listitem;
 			}
 		}
-		vI_smtpSelector.elements.Obj_SMTPServerList.setAttribute("label", vI_smtpSelector.getNewHostnamex(idserver));
+		vI_smtpSelector.elements.Obj_SMTPServerList.setAttribute("label", (server.description?server.description:server.hostname));
 	},
 
 	createSmtpListItemx : function (server) {
 	    var listitem = document.createElement("menuitem");
 
-	    var hostname = vI_smtpSelector.getNewHostnamex(server);
-	    
-	    listitem.setAttribute("label", hostname);
+	    listitem.setAttribute("label", (server.description?server.description:server.hostname));
 	    listitem.setAttribute("key", server.key);
 	    // give it some unique id
 	    listitem.id = "smtpServer." + server.key;
 
 	    return listitem;
-	},
-	
-	getNewHostnamex : function (server)
-	{
-	    var showAlias = true;
-	    var showUsername = true;
-	    var hideUsername = true;
-
-	    
-	    // reuse Preferences from ssun
-	    try { showAlias = vI.preferences.getBoolPref("ssun.showalias"); } catch (ex) {}
-	    try { showUsername = vI.preferences.getBoolPref("ssun.showusername"); } catch (ex) {}
-	    try { hideUsername = vI.preferences.getBoolPref("ssun.hideusername"); } catch (ex) {}
-
-	    var hostname = server.hostname;
-	    var port = "";
-
-	    if (server.port)
-	      port = ":" + server.port;
-
-	    // SSUN: Get server alias
-	    var alias = "";
-	    if (showAlias) {
-		try { alias = vI.preferences.getCharPref("ssun." + server.key + ".alias"); } catch (ex) {}
-		if (alias) {
-		    hostname = alias;
-		} else {
-		    hostname += port;
-		}
-	    } else {
-		hostname += port;
-	    }
-
-	    // SSUN: Add username
-	    if (showUsername && (!showAlias || (showAlias && (!alias || !hideUsername))) && server.authMethod && server.username)
-	      hostname += " (" + server.username + ")";
-
-	    return hostname
 	}
 }
