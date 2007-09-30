@@ -10,7 +10,7 @@
   <!-- locale information -->
   <RDF:Description about="urn:mozilla:locale:nl-NL"
         chrome:displayName="Nederlands (NL)"
-        chrome:author="Rene Ejury"
+        chrome:author="Rmarkh"
         chrome:name="nl-NL">
     <chrome:packages>
       <RDF:Seq about="urn:mozilla:locale:nl-NL:packages">

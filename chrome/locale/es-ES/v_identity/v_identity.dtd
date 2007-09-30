@@ -10,11 +10,11 @@
 <!ENTITY vident.prefs.smartDraft.label "usar borradores rápidos">
 <!ENTITY vident.prefs.smartReply.label "usar respuesta rápida">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "usar la respuesta rápida también para responder a los grupos de noticias">
-<!ENTITY vident.prefs.smartTimestamp.label "use Smart Timestamp">
+<!ENTITY vident.prefs.smartTimestamp.label "usar marca de tiempo rápida">
 <!ENTITY vident.prefs.SMTP.label "mostrar menú SMTP">
 <!ENTITY vident.prefs.menuEntry.label "añadir entrada para el cuadro de opciones al menú Herramientas">
-<!ENTITY vident.prefs.warnNonvirtual.label "warn on any usage of non-virtual Identities">
-<!ENTITY vident.prefs.warnVirtual.label "warn on any usage of virtual Identities">
+<!ENTITY vident.prefs.warnNonvirtual.label "avisar si se usa una identidad no virtual">
+<!ENTITY vident.prefs.warnVirtual.label "avisar si se usa una identidad virtual">
 <!ENTITY vident.prefs.vIdentityTab.header "Propiedades de las identidades virtuales">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "atributos a copiar">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "ubicación donde guardar los mensajes enviados">
@@ -23,8 +23,8 @@
 <!ENTITY vident.prefs.SMIME.label "Opciones de seguridad S/MIME">
 <!ENTITY vident.prefs.PGP.label "Opciones de seguridad OpenPGP">
 <!ENTITY vident.prefs.VCard.label "adjuntos vCard">
-<!ENTITY vident.prefs.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the 'Signature Switch' extension. By now this option is not available.">
-<!ENTITY vident.prefs.HideSignature.label "remove any 'Signatur' while using a Virtual Identity">
+<!ENTITY vident.prefs.HideSignature.warning.desc "nota: para habilitar la desactivación dinámica de firmas tiene que instalar (y activar) la extensión &apos;Signature Switch&apos;. Por ahora, esta opción no está disponible.">
+<!ENTITY vident.prefs.HideSignature.label "eliminar cualquier firma cuando se use una identidad virtual">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "al enviar un mensaje usando una identidad virtual">
 <!ENTITY vident.prefs.vidFccAccount.label "Carpeta usada por la cuenta cambiada con Virtual Identity">
 <!ENTITY vident.prefs.vidFccDefault.label "Carpeta usada por la cuenta por defecto">
@@ -44,7 +44,7 @@
 <!ENTITY vident.prefs.smartReply.ask.label "abrir una ventana para preguntar la identidad">
 <!ENTITY vident.prefs.smartReply.ask_always.label "preguntar incluso si solo hay una dirección posible">
 <!ENTITY vident.prefs.smartReply.autocreate.label "usar la primera identidad encontrada sin interacción">
-<!ENTITY vident.prefs.smartReply.autocreate.desc "(if there is only one possible address)">
+<!ENTITY vident.prefs.smartReply.autocreate.desc "(si sólo hay una posible dirección)">
 <!ENTITY vident.prefs.notificationTab.header "Estado de mensajes">
 <!ENTITY vident.prefs.notificationTab.caption "Notificaciones">
 <!ENTITY vident.prefs.notifyHeaders.label "mostrar información sobre las cabeceras reconocidas">

@@ -6,15 +6,15 @@
 <!ENTITY vident.prefs.notificationTab.label "Statusberichten">
 <!ENTITY vident.prefs.commonTab.header "Algemene configuratie">
 <!ENTITY vident.prefs.commonTab.caption "De volgende mogelijkheden gebruiken">
-<!ENTITY vident.prefs.versionWarning.label "Uw e-mail programma is te oud om de Slim Concept mogelijkheid te kunnen gebruiken">
+<!ENTITY vident.prefs.versionWarning.label "Uw e-mailprogramma is te oud om de Slim Concept-mogelijkheid te kunnen gebruiken">
 <!ENTITY vident.prefs.smartDraft.label "Slim Concept gebruiken">
 <!ENTITY vident.prefs.smartReply.label "Slim Antwoorden gebruiken">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "Slim Antwoorden ook gebruiken als aan een nieuwsgroep wordt geantwoord">
-<!ENTITY vident.prefs.smartTimestamp.label "use Smart Timestamp">
+<!ENTITY vident.prefs.smartTimestamp.label "Slimme Tijdsafdruk gebruiken">
 <!ENTITY vident.prefs.SMTP.label "SMTP menu weergeven">
 <!ENTITY vident.prefs.menuEntry.label "Onderdeel voor Instellingen-dialoogvenster aan Extra menu toevoegen">
-<!ENTITY vident.prefs.warnNonvirtual.label "warn on any usage of non-virtual Identities">
-<!ENTITY vident.prefs.warnVirtual.label "warn on any usage of virtual Identities">
+<!ENTITY vident.prefs.warnNonvirtual.label "Waarschuwen bij gebruik van niet-virtuele identiteiten">
+<!ENTITY vident.prefs.warnVirtual.label "Waarschuwen bij gebruik van virtuele identiteiten">
 <!ENTITY vident.prefs.vIdentityTab.header "Eigenschappen van virtuele identiteiten">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "Te kopiëren eigenschappen">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "Opslaglokatie voor verzonden berichten">
@@ -23,8 +23,8 @@
 <!ENTITY vident.prefs.SMIME.label "S/MIME beveiligingsinstellingen">
 <!ENTITY vident.prefs.PGP.label "openPGP beveiligingsinstellingen">
 <!ENTITY vident.prefs.VCard.label "vCard bijlagen">
-<!ENTITY vident.prefs.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the 'Signature Switch' extension. By now this option is not available.">
-<!ENTITY vident.prefs.HideSignature.label "remove any 'Signatur' while using a Virtual Identity">
+<!ENTITY vident.prefs.HideSignature.warning.desc "Opmerking: Om dynamisch deactiveren van handtekeningen in te schakelen dient u de ‘Signature Switch’ extensie te installeren (en activeren). Op dit moment is deze optie niet beschikbaar.">
+<!ENTITY vident.prefs.HideSignature.label "Alle handtekeningen verwijderen bij gebruik van een virtuele identiteit">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Bij het verzenden van een bericht met een virtuele identiteit">
 <!ENTITY vident.prefs.vidFccAccount.label "Door account gebruikte map wijzigen bij gebruik virtuele identiteit">
 <!ENTITY vident.prefs.vidFccDefault.label "door standaardaccount gebruikte map">
@@ -37,14 +37,14 @@
 <!ENTITY vident.prefs.smartReply.headers.desc "Aanvullende kopteksten - één per regel, bijvoorbeeld &apos;x-original-to&apos; of &apos;x-original-to:@&apos; of &apos;x-original-to:2:@&apos;">
 <!ENTITY vident.prefs.smartReply.headers.reset "Standaardwaarden instellen">
 <!ENTITY vident.prefs.smartReplyTab.Tab2.desc "Na het ophalen van de adressen dienen ze te worden gefilterd. Alle filters worden na elkaar toegepast, dus u kunt ze ook gebruiken om het resultaat te sorteren. Op het einde kan het eerst aangetroffen adres worden gebruikt als de identiteit van de afzender. Als u geen filter gebruikt worden alle adressen overgebracht.">
-<!ENTITY vident.prefs.smartReply.filter.desc "Slim Antwoorden filter - één filter per regel, gebruik van reguliere expressies is mogelijk (bijvoorbeeld: &apos;/@mozilla.org$/&apos; komt overeen met elk bericht van domein mozilla.org)">
-<!ENTITY vident.prefs.smartReply.ignoreFullname.label "Volledige naam bij vergelijken van e-mail adressen met bestaande identiteiten negeren">
-<!ENTITY vident.prefs.smartReply.defaultFullname.label "Als er geen naam bij een gevonden e-mail adres staat de volgende gebruiken:">
-<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Op het einde worden de gefilterde adressen toegevoegd aan het bericht-identiteit dropdown menu. U kunt ook selecteren hoe ze worden gebruikt als de nieuwe afzender-identiteit.">
+<!ENTITY vident.prefs.smartReply.filter.desc "Slim Antwoorden filter - één filter per regel, gebruik van reguliere expressies is mogelijk (bijvoorbeeld: ‘/@mozilla.org$/’ komt overeen met elk bericht van domein mozilla.org)">
+<!ENTITY vident.prefs.smartReply.ignoreFullname.label "Volledige naam bij vergelijken van e-mailadressen met bestaande identiteiten negeren">
+<!ENTITY vident.prefs.smartReply.defaultFullname.label "Als er geen naam bij een gevonden e-mailadres staat de volgende gebruiken:">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Op het einde worden de gefilterde adressen toegevoegd aan het berichtidentiteit dropdownmenu. U kunt ook selecteren hoe ze worden gebruikt als de nieuwe afzenderidentiteit.">
 <!ENTITY vident.prefs.smartReply.ask.label "Dialoogvenster openen om identiteit te kiezen">
-<!ENTITY vident.prefs.smartReply.ask_always.label "Ook vragen of er slechts één adres mogelijk is">
+<!ENTITY vident.prefs.smartReply.ask_always.label "Ook vragen als er slechts één adres mogelijk is">
 <!ENTITY vident.prefs.smartReply.autocreate.label "Eerst aangetroffen identiteit gebruiken zonder interactie">
-<!ENTITY vident.prefs.smartReply.autocreate.desc "(if there is only one possible address)">
+<!ENTITY vident.prefs.smartReply.autocreate.desc "(als er slechts één adres mogelijk is)">
 <!ENTITY vident.prefs.notificationTab.header "Statusberichten">
 <!ENTITY vident.prefs.notificationTab.caption "Notificaties">
 <!ENTITY vident.prefs.notifyHeaders.label "Informatie over herkende kopteksten weergeven">
@@ -52,8 +52,8 @@
 <!ENTITY vident.prefs.notifyTime.prefix.label "Weergaveduur statusberichten (0=oneindig)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "seconden">
 <!ENTITY vident.prefs.notificationTab.Debug.caption "Foutopsporing">
-<!ENTITY vident.prefs.notifyDebug.desc "Om fouten te vinden, configuratieproblemen op te lossen en te begrijpen wat Virtual Identity doet, in het bijzonder met de SlimAntwoorden-filters, kunt u wat aanvullende informatie activeren. Het gebruik van deze optie vertraagt uw mailprogramma en dient derhalve niet permanent ingeschakeld te zijn.">
-<!ENTITY vident.prefs.notifyDebug.label "Veld met foutopsporings-informatie weergeven">
+<!ENTITY vident.prefs.notifyDebug.desc "Om fouten te vinden, configuratieproblemen op te lossen en te begrijpen wat Virtual Identity doet, in het bijzonder met de Slim Antwoorden-filters, kunt u wat aanvullende informatie activeren. Het gebruik van deze optie vertraagt uw mailprogramma en dient derhalve niet permanent ingeschakeld te zijn.">
+<!ENTITY vident.prefs.notifyDebug.label "Veld met foutopsporingsinformatie weergeven">
 <!ENTITY vident.accPane.prettyName.prefix "virtuele ID">
 <!ENTITY vident.replySelector.dialogheader.title "Virtual Identity Slim Antwoorden">
 <!ENTITY vident.replySelector.caption.label "Kies een virtuele identiteit">

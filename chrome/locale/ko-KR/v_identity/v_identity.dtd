@@ -1,0 +1,63 @@
+<!ENTITY vident.compose.vidLogo.label "virtual identity">
+<!ENTITY vident.prefs.dlgTitle.label "virtual identity 설정">
+<!ENTITY vident.prefs.commonTab.label "주요">
+<!ENTITY vident.prefs.vIdentityTab.label "Virtual Identity">
+<!ENTITY vident.prefs.smartReplyTab.label "지능형 답신">
+<!ENTITY vident.prefs.notificationTab.label "상태 메시지">
+<!ENTITY vident.prefs.commonTab.header "일반 환경설정">
+<!ENTITY vident.prefs.commonTab.caption "다음 기능 사용">
+<!ENTITY vident.prefs.versionWarning.label "지능형 초안 기능을 사용하기에는 이메일 풀그림이 너무 구형입니다">
+<!ENTITY vident.prefs.smartDraft.label "지능형 초안 사용">
+<!ENTITY vident.prefs.smartReply.label "지능형 답신 사용">
+<!ENTITY vident.prefs.smartReplyNewsgroups.label "뉴스그룹에 답변시 지능형 답신 사용">
+<!ENTITY vident.prefs.smartTimestamp.label "지능형 발송 시간 사용">
+<!ENTITY vident.prefs.SMTP.label "SMTP 메뉴 표시">
+<!ENTITY vident.prefs.menuEntry.label "도구 메뉴에 설정 대화상자 항목 추가">
+<!ENTITY vident.prefs.warnNonvirtual.label "비 가상신원 사용 경고">
+<!ENTITY vident.prefs.warnVirtual.label "warn on any usage of virtual Identities">
+<!ENTITY vident.prefs.vIdentityTab.header "Virtual Identity의 속성">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.label "속성 복사">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.label "보낸 이메일 저장해 두기">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.caption "가상 신원으로 메시지를 보내는 동안">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.desc "형식화된 신원으로 부터 다음의 속성을 복사:">
+<!ENTITY vident.prefs.SMIME.label "S/MIME 보안 설정">
+<!ENTITY vident.prefs.PGP.label "OpenPGP 보안 설정">
+<!ENTITY vident.prefs.VCard.label "vCard 첨부">
+<!ENTITY vident.prefs.HideSignature.warning.desc "참고: 서명의 동적인 동원해제를 가능하게 하기 위해 &apos;Signature Switch&apos;확장기능을 설치(그리고 작동)해야만 합니다. 지금 이 선택사항은 이용할수 없습니다.">
+<!ENTITY vident.prefs.HideSignature.label "가상 신원 사용 중 아무 &apos;서명&apos;이나 제거">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.caption "while sending a message with a Virtual Identity">
+<!ENTITY vident.prefs.vidFccAccount.label "가상 신원으로 계정 변경시 폴더 사용">
+<!ENTITY vident.prefs.vidFccDefault.label "기본 계정으로 폴더 사용">
+<!ENTITY vident.prefs.smartReplyTab.header "지능형 답신 설정">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.label "1. 주소 받기">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. 필터 주소">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. 주소 사용">
+<!ENTITY vident.prefs.smartReplyTab.caption "가상 신원 지능형 답신">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "To find a Reply-Identity, Smart Reply has to get a list of possible sender identities. Therefore usually the header-fields &apos;To&apos; and &apos;Cc&apos; are analyzed. Here you can enter those and/or other header-fields. (additional options: to select header number n out of any headers with the same name add &apos;:n&apos;. If you add &apos;:@&apos; to any entry, only email-addresses are used, names are ignored.)">
+<!ENTITY vident.prefs.smartReply.headers.desc "추가 헤더  -  줄 당 1개, for instance &apos;x-original-to&apos; or &apos;x-original-to:@&apos; or &apos;x-original-to:2:@&apos;">
+<!ENTITY vident.prefs.smartReply.headers.reset "기본 값 설정">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.desc "주소를 얻은 후 그들은 걸러지게 됩니다. 모든 필터가 사용되어진 이후, 그 결과 또한 정렬되어 사용할 수 있습니다. 처음 발견된 주소 끝에 발송자 신원을 즉시에 사용해 얻을 수 있습니다. 만약 당신이 필터를 사용하지 않는다면, 모든 주소는 전송됩니다.">
+<!ENTITY vident.prefs.smartReply.filter.desc "지능형 답신 필터 - 1줄 당 1개의 필터, 정규표현식 사용 가능 (for instance &apos;/@mozilla.org$/&apos; is matching every email from domain mozilla.org">
+<!ENTITY vident.prefs.smartReply.ignoreFullname.label "이메일 주소를 존재하는 신원과 비교하고 있는 동안 전체 이름을 무시.">
+<!ENTITY vident.prefs.smartReply.defaultFullname.label "만약 찾아낸 전자 우편의 주소가 아무 이름도 없다면, 다음 중 하나를 사용합니다:">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "걸러진 주소 끝에 메세지 신원 드롭다운 메뉴를 추가합니다. 또한 그들을 새 발송인 신원으로 사용하는 방법을 선택할수 있습니다.">
+<!ENTITY vident.prefs.smartReply.ask.label "신원 선택 대화상자 열기">
+<!ENTITY vident.prefs.smartReply.ask_always.label "만약 오직 1개의 가능한 주소만 있으면 다시 묻기">
+<!ENTITY vident.prefs.smartReply.autocreate.label "상호작용 없이 처음 찾아낸 신원을 사용하십시오">
+<!ENTITY vident.prefs.smartReply.autocreate.desc "(오직 1개의 가능한 주소가 있다면)">
+<!ENTITY vident.prefs.notificationTab.header "상태 메시지">
+<!ENTITY vident.prefs.notificationTab.caption "통지">
+<!ENTITY vident.prefs.notifyHeaders.label "승인 헤더에 대한 정보 표시">
+<!ENTITY vident.prefs.notifySmartIdentity.label "지능형 답신 / 지능형 초안 상태 메시지 사용">
+<!ENTITY vident.prefs.notifyTime.prefix.label "상태 메시지 표시 시간 (0 = 무한)">
+<!ENTITY vident.prefs.notifyTime.postfix.label "초">
+<!ENTITY vident.prefs.notificationTab.Debug.caption "디버깅">
+<!ENTITY vident.prefs.notifyDebug.desc "To find bugs, solve configuration problems and understand what Virtual Identity is doing, especially with the SmartReply-filters, you can enable some additional informations. Using this option slows down your mail-client, therefore it shouldn&apos;t be activated permanently.">
+<!ENTITY vident.prefs.notifyDebug.label "디버그 정보 영역 표시">
+<!ENTITY vident.accPane.prettyName.prefix "virtual Id">
+<!ENTITY vident.replySelector.dialogheader.title "가상 신원 지능형 답신">
+<!ENTITY vident.replySelector.caption.label "가상 신원 선택">
+<!ENTITY fccMailFolder.accesskey "P">
+<!ENTITY sentFolderOn.accesskey "e">
+<!ENTITY sentInOtherFolder.label "기타:">
+<!ENTITY sentInOtherFolder.accesskey "O">

@@ -4,17 +4,17 @@
 
   <!-- list all the packages being supplied by this jar -->
   <RDF:Seq about="urn:mozilla:locale:root">
-    <RDF:li resource="urn:mozilla:locale:it-IT"/>
+    <RDF:li resource="urn:mozilla:locale:sk-SK"/>
   </RDF:Seq>
 
   <!-- locale information -->
-  <RDF:Description about="urn:mozilla:locale:it-IT"
-        chrome:displayName="Italiano (IT)"
-        chrome:author="Underpass"
-        chrome:name="it-IT">
+  <RDF:Description about="urn:mozilla:locale:sk-SK"
+        chrome:displayName="Slovak (SK)"
+        chrome:author="Sai"
+        chrome:name="sk-SK">
     <chrome:packages>
-      <RDF:Seq about="urn:mozilla:locale:it-IT:packages">
-        <RDF:li resource="urn:mozilla:locale:it-IT:v_identity"/>
+      <RDF:Seq about="urn:mozilla:locale:sk-SK:packages">
+        <RDF:li resource="urn:mozilla:locale:sk-SK:v_identity"/>
       </RDF:Seq>
     </chrome:packages>
   </RDF:Description>
