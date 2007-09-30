@@ -1,5 +1,6 @@
 <!ENTITY vident.compose.vidLogo.label "virtual identity">
 <!ENTITY vident.prefs.dlgTitle.label "Virtual Identity Einstellungen">
+<!ENTITY vident.prefs.vidLogo.tooltiptext "Öffne die Webseite von Virtual Identity">
 <!ENTITY vident.prefs.commonTab.label "Allgemein">
 <!ENTITY vident.prefs.vIdentityTab.label "Virtuelle Identität">
 <!ENTITY vident.prefs.smartReplyTab.label "Smart Reply">
@@ -11,6 +12,7 @@
 <!ENTITY vident.prefs.smartReply.label "verwende Smart Reply">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "verwende Smart Reply auch bei Antworten an Newsgruppen">
 <!ENTITY vident.prefs.smartTimestamp.label "verwende Smart Timestamp">
+<!ENTITY vident.prefs.aBook.label "verwende Adressbuch zum Speichern Virtueller Identitäten">
 <!ENTITY vident.prefs.SMTP.label "zeige SMTP Auswahlmenu">
 <!ENTITY vident.prefs.menuEntry.label "füge Einstellungs-Dialog zu Menu Extras hinzu">
 <!ENTITY vident.prefs.warnNonvirtual.label "warne bei jeder Verwendung einer dauerhaft gespeicherten Identität">
@@ -45,10 +47,31 @@
 <!ENTITY vident.prefs.smartReply.ask_always.label "auch nachfragen, wenn nur eine Adresse zur Auswahl steht">
 <!ENTITY vident.prefs.smartReply.autocreate.label "übernehme die erste Identität automatisch">
 <!ENTITY vident.prefs.smartReply.autocreate.desc "(wenn nur eine Adresse zur Auswahl steht)">
+<!ENTITY vident.prefs.aBookTab.label "Verwendung Adressbuch">
+<!ENTITY vident.prefs.aBookTab.header "Speicherung Virtueller Identitäten im Adressbuch">
+<!ENTITY vident.prefs.aBookCap.caption "Virtual Identity Adressbuch-Konfiguration">
+<!ENTITY vident.prefs.aBookTab.Tab1.label "1. Allgemeine Konfiguration">
+<!ENTITY vident.prefs.aBookTab.Tab2.label "2. Übernahme der Adressen">
+<!ENTITY vident.prefs.aBookTab.Tab3.label "3. Erweitert">
+<!ENTITY vident.prefs.aBook.storedefault.label "speichere Virtuelle Identitäten beim Senden von Emails">
+<!ENTITY vident.prefs.aBook.show_switch.label "zeige Schalter zum Aktivieren/Deaktivieren der Speicherung">
+<!ENTITY vident.prefs.aBook.warn_update.label "frage nach, bevor Virtuelle Identitäten im Adressbuch überschrieben werden">
+<!ENTITY vident.prefs.aBookCap2.caption "Auswahl der Sendeindentität">
+<!ENTITY vident.prefs.aBook.ask.label "öffne ein Dialogfenster zur Auswahl der Identität">
+<!ENTITY vident.prefs.aBook.ask_always.label "auch nachfragen, wenn nur eine Adresse zur Auswahl steht">
+<!ENTITY vident.prefs.aBook.autocreate.label "übernehme die erste Identität automatisch">
+<!ENTITY vident.prefs.aBook.autocreate.desc "(wenn nur eine Adresse zur Auswahl steht)">
+<!ENTITY vident.prefs.aBook.prefer_smart_reply.label "bevorzuge Smart Reply-Identitäten">
+<!ENTITY vident.prefs.aBook.ignore_smart_reply.label "ignoriere Smart Reply-Identitäten wenn Identitäten im Adressbuch gefunden werden">
+<!ENTITY vident.prefs.aBookCap3.caption "erweiterte Optionen">
+<!ENTITY vident.prefs.aBook.warn_vI_replace.label "frage nach, wenn im Sender-Feld eingetragene Virtuelle Identität ersetzt werden soll.">
+<!ENTITY vident.prefs.aBook.remove_entries.desc "Virtual Identity speichert Informationen im Adressbuch. Hier können diese ergänzenden Informationen aus den Adressbuch gelöscht werden. Dies kann lange dauern.">
+<!ENTITY vident.prefs.aBook.remove_entries.remove "entferne Informationen">
 <!ENTITY vident.prefs.notificationTab.header "Statusinformationen">
 <!ENTITY vident.prefs.notificationTab.caption "Benachrichtigungen">
 <!ENTITY vident.prefs.notifyHeaders.label "zeige Informationen über erfasste Header">
 <!ENTITY vident.prefs.notifySmartIdentity.label "aktiviere Smart Reply / Smart Draft Statusmeldungen">
+<!ENTITY vident.prefs.notifyABook.label "aktiviere Adressbuch Statusmeldungen">
 <!ENTITY vident.prefs.notifyTime.prefix.label "Zeit, bis Nachrichten ausgeblendet werden (0 für immer an)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "Sekunden">
 <!ENTITY vident.prefs.notificationTab.Debug.caption "Fehlersuche">

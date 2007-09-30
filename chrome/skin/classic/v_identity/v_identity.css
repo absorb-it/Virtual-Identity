@@ -1,6 +1,10 @@
 @import url("chrome://v_identity/locale/logo.css"); 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
+.v_identity_logo_button {
+	-moz-appearance: toolbarbutton;
+}
+
 notificationbox {
   -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#notificationbox");
   -moz-box-orient: vertical;

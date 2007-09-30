@@ -24,6 +24,15 @@ pref("extensions.virtualIdentity.notification_timeout", 5);
 pref("extensions.virtualIdentity.warn_nonvirtual", false);
 pref("extensions.virtualIdentity.warn_virtual", false);
 pref("extensions.virtualIdentity.hide_signature", false);
-
-
+pref("extensions.virtualIdentity.aBook_use", true);
+pref("extensions.virtualIdentity.aBook_storedefault", false);
+pref("extensions.virtualIdentity.aBook_show_switch", true);
+pref("extensions.virtualIdentity.aBook_warn_update", false);
+pref("extensions.virtualIdentity.aBook_ask", false);
+pref("extensions.virtualIdentity.aBook_ask_always", false);
+pref("extensions.virtualIdentity.aBook_autocreate", true);
+pref("extensions.virtualIdentity.aBook_prefer_smart_reply", false);
+pref("extensions.virtualIdentity.aBook_ignore_smart_reply", false);
+pref("extensions.virtualIdentity.aBook_warn_vI_replace", false);
+pref("extensions.virtualIdentity.aBook_notification", true);
 pref("extensions.{dddd428e-5ac8-4a81-9f78-276c734f75b8}.description", "chrome://v_identity/locale/v_identity.properties");

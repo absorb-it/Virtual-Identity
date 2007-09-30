@@ -1,5 +1,6 @@
 <!ENTITY vident.compose.vidLogo.label "virtual identity">
 <!ENTITY vident.prefs.dlgTitle.label "Virtual Identity Settings">
+<!ENTITY vident.prefs.vidLogo.tooltiptext "Open Virtual Identity Homepage">
 <!ENTITY vident.prefs.commonTab.label "Main">
 <!ENTITY vident.prefs.vIdentityTab.label "Virtual Identity">
 <!ENTITY vident.prefs.smartReplyTab.label "Smart Reply">

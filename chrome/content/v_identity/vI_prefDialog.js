@@ -58,7 +58,18 @@ vI_prefDialog = {
 				"VIdent_identity.debug_notification",
 				"VIdent_identity.warn_nonvirtual",
 				"VIdent_identity.warn_virtual",
-				"VIdent_identity.hide_signature"],
+				"VIdent_identity.hide_signature",
+				"VIdent_identity.aBook_use",
+				"VIdent_identity.aBook_storedefault",
+				"VIdent_identity.aBook_show_switch",
+				"VIdent_identity.aBook_warn_update",
+				"VIdent_identity.aBook_ask",
+				"VIdent_identity.aBook_ask_always",
+				"VIdent_identity.aBook_autocreate",
+				"VIdent_identity.aBook_prefer_smart_reply",
+				"VIdent_identity.aBook_ignore_smart_reply",
+				"VIdent_identity.aBook_warn_vI_replace",
+				"VIdent_identity.aBook_notification"],
 	
 		init : function() {
 		// initialize the default window values...
@@ -127,6 +138,30 @@ vI_prefDialog = {
 			}
 			vI_prefDialog.base.smartReplyResultConstraint();
 		},
+
+		aBookConstraint : function(element) {
+			var elementIDs = [
+				"VIdent_identity.aBook_storedefault",
+				"VIdent_identity.aBook_show_switch",
+				"VIdent_identity.aBook_warn_update",
+				"VIdent_identity.aBook_ask",
+				"VIdent_identity.aBook_ask_always",
+				"VIdent_identity.aBook_autocreate",
+				"VIdent_identity.aBook_prefer_smart_reply",
+				"VIdent_identity.aBook_ignore_smart_reply",
+				"VIdent_identity.aBook_warn_vI_replace",
+				"VIdent_identity.aBook_remove_entries",
+				"aBookTab", "aBookTab1", "aBookTab2", "aBookTab3"];
+			for( var i = 0; i < elementIDs.length; i++ ) {
+				if (element.checked)
+					document.getElementById(elementIDs[i])
+						.removeAttribute("disabled");
+				else
+					document.getElementById(elementIDs[i])
+						.setAttribute("disabled", "true");
+			}
+			vI_prefDialog.base.smartReplyResultConstraint();
+		},
 		
 		smartReplyResultConstraint : function() {
 			if (!document.getElementById("VIdent_identity.smart_reply").checked) return;
@@ -140,6 +175,18 @@ vI_prefDialog = {
 			autocreate_desc.setAttribute("hidden", !ask.checked)
 		},
 		
+		aBookResultConstraint : function() {
+			if (!document.getElementById("VIdent_identity.aBook_use").checked) return;
+			var ask = document.getElementById("VIdent_identity.aBook_ask")
+			var ask_always = document.getElementById("VIdent_identity.aBook_ask_always")
+			var autocreate = document.getElementById("VIdent_identity.aBook_autocreate")
+			var autocreate_desc = document.getElementById("VIdent_identity.aBook_autocreate.desc")
+			ask_always.setAttribute("disabled", (autocreate.checked || !ask.checked))
+			autocreate.setAttribute("disabled", (ask.checked && ask_always.checked))
+			autocreate_desc.setAttribute("disabled", (ask.checked && ask_always.checked))
+			autocreate_desc.setAttribute("hidden", !ask.checked)
+		},
+
 		smartReplyHeaderReset : function() {
 			var textfield = document.getElementById("VIdent_identity.smart_reply_headers")
 			textfield.value = "x-original-to\nto\ncc"
@@ -215,7 +262,15 @@ vI_prefDialog = {
 			gFccFolderWithDelim, fccAccountPickerId, fccFolderPickerId,
 			"VIdent_identity.fccFolder", "VIdent_identity.fccFolderPickerMode" );
 		vI_prefDialog.base.savePrefs();
-	}
+	},
+
+        openURL : function(aURL) {
+            var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
+            var protocolSvc = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"].getService(Components.interfaces.nsIExternalProtocolService);
+
+            uri.spec = aURL;
+            protocolSvc.loadUrl(uri);
+        }
 }
 
 
