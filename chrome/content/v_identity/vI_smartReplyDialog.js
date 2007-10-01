@@ -25,13 +25,35 @@
 vI_smartReply_dialog = {
 	Obj_radioGroup : null,
 	all_addresses : null,
+	AccountManager : Components.classes["@mozilla.org/messenger/account-manager;1"]
+				.getService(Components.interfaces.nsIMsgAccountManager),
+	smtpService : Components.classes["@mozilla.org/messengercompose/smtp;1"]
+				.getService(Components.interfaces.nsISmtpService),
 	
+	getIdentityName : function (key) {
+		return vI_smartReply_dialog.AccountManager.getIdentity(key).identityName
+	},
+	
+	getSMTPName : function (key) {
+		var server = vI_smartReply_dialog.smtpService.getServerByKey(key)
+		return (server.description?server.description:server.hostname)
+	},
+
 	init : function() {	
 		vI_smartReply_dialog.Obj_radioGroup = document.getElementById("replySelector.radiogroup");
-		// var all_addresses = { number : 0, emails : {}, fullNames : {}, combinedNames : {} };
+		// var all_addresses = { number : 0, emails : {}, fullNames : {}, combinedNames : {},
+		//			id_keys : {}, smtp_keys : {} };
 		vI_smartReply_dialog.all_addresses = window.arguments[0];
-		for (index = 0; index < vI_smartReply_dialog.all_addresses.number; index++)
-			vI_smartReply_dialog.add_row(vI_smartReply_dialog.all_addresses.combinedNames[index]);
+		for (index = 0; index < vI_smartReply_dialog.all_addresses.number; index++) {
+			var menuentry = vI_smartReply_dialog.all_addresses.combinedNames[index]
+			var id = null; var smtp = null;
+			if (vI_smartReply_dialog.all_addresses.id_keys[index])
+				id = vI_smartReply_dialog.getIdentityName(vI_smartReply_dialog.all_addresses.id_keys[index])
+			if (vI_smartReply_dialog.all_addresses.smtp_keys[index])
+				smtp = vI_smartReply_dialog.getSMTPName(vI_smartReply_dialog.all_addresses.smtp_keys[index])
+			menuentry += ((id||smtp)?"   (":"") + (id?id:"") + ((id&&smtp)?",":"") + (smtp?"SMTP:"+smtp:"") + ((id||smtp)?")":"")
+			vI_smartReply_dialog.add_row(menuentry);
+		}
 	},
 
 	add_row : function(combinedName) {

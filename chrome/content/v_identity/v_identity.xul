@@ -73,6 +73,8 @@
 	   <menupopup id="smtp_server_list_popup" />
 	</menulist>
 	</hbox>
+	<checkbox id="aBook_save" label="&vident.composeDialog.aBookSave.label;" 
+		tooltiptext="&vident.composeDialog.aBookSave.tooltiptext;" hidden="true" />
 </hbox>
    
   <!-- Some of "Dynamic part of labels" are placed here.-->

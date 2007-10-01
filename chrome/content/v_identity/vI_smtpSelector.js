@@ -127,5 +127,10 @@ vI_smtpSelector = {
 	    listitem.id = "smtpServer." + server.key;
 
 	    return listitem;
+	},
+	
+	getSMTPName : function (key) {
+		var server = vI_smtpSelector.smtpService.getServerByKey(key)
+		return (server.description?server.description:server.hostname)
 	}
 }

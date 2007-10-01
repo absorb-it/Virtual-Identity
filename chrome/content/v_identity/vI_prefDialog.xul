@@ -48,6 +48,12 @@
 
 <script type="application/x-javascript"
             src="chrome://v_identity/content/vI_prefDialog.js" />
+<script type="application/x-javascript"
+            src="chrome://v_identity/content/vI_addressBook.js" />
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
+  </stringbundleset>
 
  <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
 
@@ -232,7 +238,7 @@
 			</tabpanel>
 			<tabpanel orient="vertical">
 			<groupbox>
-			<caption label="&vident.prefs.smartReplyTab.caption;"/>
+			<caption label="&vident.prefs.smartReplyTab3.caption;"/>
 			<vbox align="left">
 				<description width="500px">&vident.prefs.smartReplyTab.Tab3.desc;</description>
 				<checkbox id="VIdent_identity.smart_reply_ask" label="&vident.prefs.smartReply.ask.label;"
@@ -270,58 +276,51 @@
 		<tabpanels>
 			<tabpanel orient="vertical">
 			<groupbox>
-			<caption label="&vident.prefs.aBookCap.caption;"/>
+			<caption label="&vident.prefs.aBookCap1.caption;"/>
 			<vbox align="left">
 				<checkbox id="VIdent_identity.aBook_storedefault" label="&vident.prefs.aBook.storedefault.label;"
 					prefstring="aBook_storedefault"/>
-				<checkbox id="VIdent_identity.aBook_show_switch" label="&vident.prefs.aBook.show_switch.label;"
-					prefstring="aBook_show_switch"/>
 				<checkbox id="VIdent_identity.aBook_warn_update" label="&vident.prefs.aBook.warn_update.label;"
 					prefstring="aBook_warn_update"/>
 			</vbox>
 			</groupbox>
-			</tabpanel>
-			<tabpanel orient="vertical">
 			<groupbox>
-			<caption label="&vident.prefs.aBookCap.caption;"/>
+			<caption label="&vident.prefs.aBookCap2.caption;"/>
 			<vbox align="left">
-				<checkbox id="VIdent_identity.aBook_ask" label="&vident.prefs.aBook.ask.label;"
-					prefstring="aBook_ask"
-					oncommand="vI_prefDialog.base.aBookResultConstraint();"/>
-				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.aBook_ask_always" label="&vident.prefs.aBook.ask_always.label;"
-					prefstring="aBook_ask_always"
-					oncommand="vI_prefDialog.base.aBookResultConstraint();"/>
-				</hbox>
-				<hbox>
-				<vbox><spacer flex="1"/>
-				<checkbox id="VIdent_identity.aBook_autocreate" label="&vident.prefs.aBook.autocreate.label;"
-					prefstring="aBook_autocreate"
-					oncommand="vI_prefDialog.base.aBookResultConstraint();"/>
-				<spacer flex="1"/></vbox>
-				<vbox><spacer flex="1"/>
-				<label value="&vident.prefs.aBook.autocreate.desc;" hidden="true"
-					id="VIdent_identity.aBook_autocreate.desc" />
-				<spacer flex="1"/></vbox>
-				</hbox>
-				<spacer height="10px"/>
-				<checkbox id="VIdent_identity.aBook_prefer_smart_reply" label="&vident.prefs.aBook.prefer_smart_reply.label;"
-					prefstring="aBook_prefer_smart_reply"/>
-				<checkbox id="VIdent_identity.aBook_ignore_smart_reply" label="&vident.prefs.aBook.ignore_smart_reply.label;"
-					prefstring="aBook_ignore_smart_reply"/>
+				<checkbox id="VIdent_identity.aBook_show_switch" label="&vident.prefs.aBook.show_switch.label;"
+					prefstring="aBook_show_switch"/>
+				<checkbox id="VIdent_identity.aBook_warn_vI_replace" label="&vident.prefs.aBook.warn_vI_replace.label;"
+					prefstring="aBook_warn_vI_replace"/>
 			</vbox>
 			</groupbox>
 			</tabpanel>
 			<tabpanel orient="vertical">
 			<groupbox>
-			<caption label="&vident.prefs.aBookCap.caption;"/>
+			<caption label="&vident.prefs.aBookCap3.caption;"/>
 			<vbox align="left">
-				<checkbox id="VIdent_identity.aBook_warn_vI_replace" label="&vident.prefs.aBook.warn_vI_replace.label;"
-					prefstring="aBook_warn_vI_replace"/>
-				<spacer height="10px"/>
+				<description width="500px">&vident.prefs.aBook.reply.desc;</description>
+				<checkbox id="VIdent_identity.aBook_use_for_smart_reply" label="&vident.prefs.aBook.use_for_smart_reply.label;"
+					prefstring="aBook_use_for_smart_reply"
+					oncommand="vI_prefDialog.base.aBookSmartReplyConstraint();" />
+				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.aBook_prefer_smart_reply" label="&vident.prefs.aBook.prefer_smart_reply.label;"
+					prefstring="aBook_prefer_smart_reply"/>
+				</hbox>
+				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.aBook_ignore_smart_reply" label="&vident.prefs.aBook.ignore_smart_reply.label;"
+					prefstring="aBook_ignore_smart_reply"/>
+				</hbox>
+			</vbox>
+			</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+			<groupbox>
+			<caption label="&vident.prefs.aBookCap4.caption;"/>
+			<vbox align="left">
 				<vbox><description width="500px">&vident.prefs.aBook.remove_entries.desc;</description>
-				<spacer flex="1"/>
+				<spacer height="10px" />
+				<label id="VIdent_identity.aBook_status" />
 				<hbox><spacer flex="1"/>
-				<button id="VIdent_identity.aBook_remove_entries" label="&vident.prefs.aBook.remove_entries.remove;" oncommand="vI_prefDialog.base.smartReplyHeaderReset();"/>
+				<button id="VIdent_identity.aBook_remove_entries" label="&vident.prefs.aBook.remove_entries.remove;"
+					oncommand="vI_addressBook.removeVIdentityFromABook(true);vI_prefDialog.base.aBookCheckCounter();"/>
 				<spacer flex="1"/></hbox>
 				</vbox>
 			</vbox>

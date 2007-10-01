@@ -35,21 +35,22 @@ vI_smartIdentity = {
 		var msgComposeType = Components.interfaces.nsIMsgCompType;
 		vI_notificationBar.dump("## vI_smartIdentity: msgComposeType = " + type + "\n");
 		
-		if (vI.preferences.getBoolPref("smart_timestamp") && 
-			((type == msgComposeType.New) || (type == msgComposeType.NewsPost) || (type == msgComposeType.MailToUrl)))
-					vI_smartIdentity.SmartTimestamp(hdr);
+		//~ if (vI.preferences.getBoolPref("smart_timestamp") && 
+			//~ ((type == msgComposeType.New) || (type == msgComposeType.NewsPost) || (type == msgComposeType.MailToUrl)))
+					//~ vI_smartIdentity.SmartTimestamp(hdr);
 					
 		// if there is no ID of the original Message  (Why?) leave the function
 		var uri = gMsgCompose.originalMsgURI; 
 		if (!uri) {
 			vI_notificationBar.dump("## vI_smartIdentity: cant get URI of former Message\n");
-			return;
+			//~ return;
 		}
 		try { var hdr = vI_smartIdentity.messenger.messageServiceFromURI(uri).messageURIToMsgHdr(uri); }
 		catch(vErr) {
 			vI_notificationBar.dump("## vI_smartIdentity: can't get Message Header.\n");
 			vI_notificationBar.dump("## vI_smartIdentity: (maybe you're opening a message stored as a file)\n");
-			return;
+			hdr = null;
+			//~ return;
 		};
 		
 		switch (type) {
@@ -69,17 +70,33 @@ vI_smartIdentity = {
 				if (vI.preferences.getBoolPref("smart_draft"))
 					vI_smartIdentity.SmartDraft(hdr);
 				break;
-			case *:
+			case msgComposeType.New:
+			case msgComposeType.NewsPost:
+			case msgComposeType.MailToUrl:
+				if (vI.preferences.getBoolPref("aBook_use"))
+					vI_smartIdentity.queryABook();
 				if (vI.preferences.getBoolPref("smart_timestamp"))
-					vI_smartIdentity.SmartTimestamp(hdr);
+					vI_smartIdentity.SmartTimestamp();
 				break;
 
 			}
 	},
 	
+	// this function creates a list of possible sender addresses from Addressbook and uses them (according to SmartReply behaivior)
+	queryABook : function() {
+		var all_addresses = { number : 0, emails : {}, fullNames : {}, combinedNames : {}, id_keys : {}, smtp_keys : {} };
+		vI_addressBook.getVIdentityFromAllRecipients(all_addresses);
+		vI_notificationBar.dump("## vI_smartIdentity: checked for Addressbook-Identities and found " + all_addresses.number + " address(es)\n")
+		if (all_addresses.number > 0) vI_smartIdentity.smartIdentitySelection(all_addresses);
+	},
+	
 	// this function adds a timestamp to the current sender
 	SmartTimestamp : function() {
 		vI_notificationBar.dump("## vI_smartIdentity: SmartTimestamp()\n");
+		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") == "vid") {
+			vI_notificationBar.dump("## vI_smartIdentity: Virtual Identity in usage, aborting\n");
+			return;
+		}
 
 		current_email = getCurrentIdentity().email;
 		vI_notificationBar.dump("## vI_smartIdentity: current email: " + current_email + "\n");
@@ -97,6 +114,11 @@ vI_smartIdentity = {
 	SmartDraft : function(hdr) {
 		vI_notificationBar.dump("## vI_smartIdentity: SmartDraft()\n");
 		
+		if (!hdr) {
+			vI_notificationBar.dump("## vI_smartIdentity: SmartDraft Problem. No Header found, shouldn't happen\n");
+			return;
+		}
+			
 		var all_addresses = { number : 1, emails : {}, fullNames : {}, combinedNames : {} };
 		vI.headerParser.parseHeadersWithArray(hdr.author, all_addresses.emails,
 			all_addresses.fullNames, all_addresses.combinedNames);
@@ -175,7 +197,8 @@ vI_smartIdentity = {
 
 	
 	filterAddresses : function(all_addresses) {
-		var return_addresses = { number : 0, emails : { }, fullNames : { }, combinedNames : { } };
+		var return_addresses = { number : 0, emails : { }, fullNames : { }, combinedNames : { },
+					id_keys : { }, smtp_keys : { } };
 		
 		var filter_list = vI.preferences.getCharPref("smart_reply_filter").split(/\n/)
 		if (filter_list.length == 0) filter_list[0] == ""
@@ -215,15 +238,28 @@ vI_smartIdentity = {
 				if (add_addr)	return_addresses = vI_smartIdentity.addWithoutDuplicates(return_addresses,
 						all_addresses.emails[j],
 						all_addresses.fullNames[j],
-						all_addresses.combinedNames[j])
+						all_addresses.combinedNames[j], null, null)
 			}
 		}
 		return return_addresses;
 	},
 	
-	addWithoutDuplicates : function(all_addresses, email, fullName, combinedName) {
+	mergeWithoutDuplicates : function(all_addresses, add_addresses) {
+		for (index = 0; index < add_addresses.number; index++)
+			vI_smartIdentity.addWithoutDuplicates(all_addresses,
+				add_addresses.emails[index],
+				add_addresses.fullNames[index],
+				add_addresses.combinedNames[index],
+				add_addresses.id_keys[index],
+				add_addresses.smtp_keys[index])
+		return all_addresses
+	},
+	
+	addWithoutDuplicates : function(all_addresses, email, fullName, combinedName, id_key, smtp_key) {
 		for (index = 0; index < all_addresses.number; index++) {
-			if (all_addresses.emails[index] == email) {
+			if (all_addresses.emails[index] == email &&
+				(!all_addresses.id_keys[index] || !id_key || all_addresses.id_keys[index] == id_key) &&
+				(!all_addresses.smtp_keys[index] || !smtp_key || all_addresses.smtp_keys[index] == smtp_key) ) {
 				// found, so check if we can use the Name of the new field
 				if (all_addresses.fullNames[index] == "" && fullName != "") {
 					all_addresses.fullNames[index] = fullName
@@ -231,6 +267,11 @@ vI_smartIdentity = {
 					vI_notificationBar.dump("## vI_smartIdentity:   added fullName '" + fullName
 						+ "' to stored email '" + email +"'\n")
 				}
+				// check if id_key or smtp_key can be used
+				if (id_key) all_addresses.id_keys[index] = id_key;
+				else all_addresses.id_keys[index] = null;
+				if (smtp_key) all_addresses.smtp_keys[index] = smtp_key;
+				else all_addresses.smtp_keys[index] = smtp_key;
 				return all_addresses;
 			}
 		}
@@ -238,6 +279,10 @@ vI_smartIdentity = {
 		all_addresses.emails[index] = email;
 		all_addresses.fullNames[index] = fullName;
 		all_addresses.combinedNames[index] = combinedName;
+		if (id_key) all_addresses.id_keys[index] = id_key;
+		else all_addresses.id_keys[index] = null;
+		if (smtp_key) all_addresses.smtp_keys[index] = smtp_key;
+		else all_addresses.smtp_keys[index] = smtp_key;
 		all_addresses.number = index + 1;
 		return all_addresses;
 	},
@@ -286,6 +331,10 @@ vI_smartIdentity = {
 						all_addresses.emails[all_addresses.number] + ">"
 				else all_addresses.combinedNames[all_addresses.number] =
 					all_addresses.emails[all_addresses.number]
+					
+				// mark id and smtp as empty
+				all_addresses.id_keys[all_addresses.number] = null;
+				all_addresses.smtp_keys[all_addresses.number] = null;
 				
 				vI_notificationBar.dump("## vI_smartIdentity:   found '" +
 					all_addresses.combinedNames[all_addresses.number++] + "'\n")
@@ -302,14 +351,56 @@ vI_smartIdentity = {
 			return;
 		}
 		
-		var all_addresses = { number : 0, emails : {}, fullNames : {}, combinedNames : {} };
+		var all_addresses = { number : 0, emails : {}, fullNames : {}, combinedNames : {}, id_keys : {}, smtp_keys : {} };
+		var aBook_addresses = { number : 0, emails : {}, fullNames : {}, combinedNames : {}, id_keys : {}, smtp_keys : {} };
 		
 		/* first step: collect addresses */
-		vI_smartIdentity.collectAddresses(all_addresses, hdr);
 		
-		vI_notificationBar.dump("## vI_smartIdentity: " + all_addresses.number + " address(es) after parsing, before filtering\n")
+		// check if addressbook-search should be used before SmartReply
+		if (vI.preferences.getBoolPref("aBook_use_for_smart_reply")) {
+			vI_addressBook.getVIdentityFromAllRecipients(aBook_addresses);
+			vI_notificationBar.dump("## vI_smartIdentity: checked for Addressbook-Identities and found " + aBook_addresses.number + " address(es)\n")
+		}
 		
-		/* second step: filter (and sort) addresses */
+		vI_notificationBar.dump("## vI_smartIdentity: ----------------------------------------------------------\n")
+		
+		if (aBook_addresses.number == 0 || !vI.preferences.getBoolPref("aBook_ignore_smart_reply")) {
+		
+			vI_smartIdentity.collectAddresses(all_addresses, hdr);
+			
+			vI_notificationBar.dump("## vI_smartIdentity: " + all_addresses.number + " address(es) after parsing, before filtering\n")
+			
+			/* second step: filter (and sort) addresses */
+			
+			all_addresses = vI_smartIdentity.filterAddresses(all_addresses);
+			
+			vI_notificationBar.dump("## vI_smartIdentity: filtering done, " + all_addresses.number + " address(es) left\n")
+			
+			var smart_reply_defaultFullName = vI.preferences.getCharPref("smart_reply_defaultFullName")
+			if (smart_reply_defaultFullName != "") {
+				for (index = 0; index < all_addresses.number; index++) {
+					if (all_addresses.fullNames[index] == "") {
+						all_addresses.fullNames[index] = smart_reply_defaultFullName
+						all_addresses.combinedNames[index] =
+							smart_reply_defaultFullName + " <" + all_addresses.emails[index] + ">"
+						vI_notificationBar.dump("## vI_smartIdentity: added default FullName '" + 
+							smart_reply_defaultFullName + "' to '" + all_addresses.emails[index] + "'\n")
+					}
+				}
+			}	
+		}
+		
+		vI_notificationBar.dump("## vI_smartIdentity: ----------------------------------------------------------\n")
+		
+		// merge SmartReply-Identities and Addressbook-Identites
+		if (vI.preferences.getBoolPref("aBook_prefer_smart_reply"))
+			all_addresses = vI_smartIdentity.mergeWithoutDuplicates(all_addresses, aBook_addresses)
+		else
+			all_addresses = vI_smartIdentity.mergeWithoutDuplicates(aBook_addresses, all_addresses)
+		
+		vI_notificationBar.dump("## vI_smartIdentity: merged SmartReply & Addressbook, " + all_addresses.number + " address(es) left\n")
+		
+		if (all_addresses.number == 0) return;
 		
 		if (vI_smartIdentity.matchSelectedIdentity(all_addresses)) return;
 		
@@ -321,27 +412,12 @@ vI_smartIdentity = {
 			window.setTimeout(vI_smartIdentity.updateMsgComposeDialog, 0);
 			return;
 		}
-		
-		all_addresses = vI_smartIdentity.filterAddresses(all_addresses);
-		
-		vI_notificationBar.dump("## vI_smartIdentity: filtering done, " + all_addresses.number + " address(es) left\n")
-		if (all_addresses.number == 0) return;
-		
-		var smart_reply_defaultFullName = vI.preferences.getCharPref("smart_reply_defaultFullName")
-		if (smart_reply_defaultFullName != "") {
-			for (index = 0; index < all_addresses.number; index++) {
-				if (all_addresses.fullNames[index] == "") {
-					all_addresses.fullNames[index] = smart_reply_defaultFullName
-					all_addresses.combinedNames[index] =
-						smart_reply_defaultFullName + " <" + all_addresses.emails[index] + ">"
-					vI_notificationBar.dump("## vI_smartIdentity: added default FullName '" + 
-						smart_reply_defaultFullName + "' to '" + all_addresses.emails[index] + "'\n")
-				}
-			}
-		}	
-		
+
 		/* third step: select address */
-		
+		vI_smartIdentity.smartIdentitySelection(all_addresses);
+	},
+	
+	smartIdentitySelection : function(all_addresses) {
 		vI_smartIdentity.addSmartIdentitiesToCloneMenu(all_addresses);
 		
 		if (vI.preferences.getBoolPref("smart_reply_ask") && 
@@ -357,10 +433,12 @@ vI_smartIdentity = {
 				+ vI.elements.strings.getString("vident.smartIdentity.moreThanOne");
 			vI_notificationBar.addNote(label + ".", "smart_reply_notification");
 			vI_smartIdentity.changeIdentityToSmartIdentity(all_addresses, 0);
-		}
+		}	
 	},
 	
 	changeIdentityToSmartIdentity : function(all_addresses, selectedValue) {
+		if (all_addresses.id_keys[selectedValue]) vI_msgIdentityClone.setMenuToIdentity(all_addresses.id_keys[selectedValue])
+		if (all_addresses.smtp_keys[selectedValue]) vI_smtpSelector.setMenuToKey(all_addresses.smtp_keys[selectedValue])
 		vI_msgIdentityClone.setIdentity(all_addresses.combinedNames[selectedValue]);
 		vI_smartIdentity.removeSmartIdentityFromRecipients(all_addresses, selectedValue);
 	},

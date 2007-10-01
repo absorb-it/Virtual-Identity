@@ -95,6 +95,10 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.doCommand();
 	},
 	
+	getIdentityName : function (key) {
+		return gAccountManager.getIdentity(key).accountname;
+	},
+	
 	copySelectedIdentity : function() {
 		// copy selected Menu-Value from clone to orig.
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.childNodes
@@ -181,6 +185,8 @@ vI_msgIdentityClone = {
 						.setAttribute("accountname", accountname)
 				}
 				vI.elements.Obj_vILogo.setAttribute("hidden","false");
+				vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden",
+					!vI.preferences.getBoolPref("aBook_show_switch"));
 			}
 			// code to hide the signature
 			try { if (vI.preferences.getBoolPref("hide_signature") && ss_signature.length == 0)
@@ -195,6 +201,7 @@ vI_msgIdentityClone = {
 					.setAttribute("class", vI_msgIdentityClone.icon_usualId_class);
 				vI.Cleanup();
 				vI.elements.Obj_vILogo.setAttribute("hidden","true");
+				vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden","true");
 			}
 			// code to show the signature
 			try { if (ss_signature.length > 0) ss_main.signatureSwitch(); }

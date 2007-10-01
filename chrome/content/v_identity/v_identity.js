@@ -60,6 +60,7 @@ var vI = {
 		},
 		
 		getAddress : function() {
+			vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 			var address = vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value;
 			var splitted = { number : 0, emails : {}, fullNames : {}, combinedNames : {} };
 			vI.headerParser.parseHeadersWithArray(address, splitted.emails,
@@ -122,18 +123,11 @@ var vI = {
 			vI.original_functions.MsgComposeCloseWindow(false);
 		},
 		
-		awReturnHit: function (element) {
-			vI_notificationBar.dump("## v_identity: awReturnHit\n");
-			vI.original_functions.awReturnHit(element);
-			vI_addressBook.readVirtualIdentity(element);
+		awOnBlur : function (element) {
+			vI_notificationBar.dump("## v_identity: awOnBlur\n");
+			vI_addressBook.updateVIdentityFromABook(element.value);
 		},
-		
-		awTabFromRecipient: function (element, event) {
-			vI_notificationBar.dump("## v_identity: awTabFromRecipient\n");
-			vI.original_functions.awTabFromRecipient(element, event);
-			vI_addressBook.readVirtualIdentity(element);
-		},
-		
+
 		GenericSendMessage: function (msgType) {
 			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 				.getService(Components.interfaces.nsIPromptService);
@@ -183,7 +177,7 @@ var vI = {
 					vI.Cleanup_Account();
 					vI_notificationBar.dump("## v_identity: SendMessage cancelled\n");
 				}
-				else if (msgType == nsIMsgCompDeliverMode.Now) vI_addressBook.storeVirtualIdentity();
+				else if (msgType == nsIMsgCompDeliverMode.Now) vI_addressBook.storeVIdentityToAllRecipients();
 			}
 		},
 
@@ -218,6 +212,7 @@ var vI = {
 		// initialize the pointers to extension elements (initialize those earlier might brake the interface)
 		vI.elements.init_rest();
 		
+		vI_addressBook.init();
 		vI_smtpSelector.init();
 		vI_msgIdentityClone.init();
 		
@@ -233,18 +228,11 @@ var vI = {
 		GenericSendMessage = function (msgType) {
 				vI.msgType = msgType; if (vI.warning(msgType)) vI.original_functions.GenericSendMessage(msgType); }
 		
-		// adapt awReturnHit to change Indentity if stored in AddressBook
-		vI_notificationBar.dump("## v_identity: adapt awReturnHit\n");
-		vI.original_functions.awReturnHit = awReturnHit;
-		awReturnHit = function (element) {
-				vI.replacement_functions.awReturnHit(element); }
+		// better approach would be to use te onchange event, but this one is not fired in any change case
+		// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
+		awGetInputElement(1).setAttribute("onblur",
+			"window.setTimeout(vI.replacement_functions.awOnBlur, 250, this);")
 		
-		// adapt awTabFromRecipient to change Indentity if stored in AddressBook
-		vI_notificationBar.dump("## v_identity: adapt awTabFromRecipient\n");
-		vI.original_functions.awTabFromRecipient = awTabFromRecipient;
-		awTabFromRecipient = function (element, event) {
-				vI.replacement_functions.awTabFromRecipient(element, event); }
-				
 		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
 		window.removeEventListener("load", vI.init, false);
 	},
