@@ -1,5 +1,6 @@
 <!ENTITY vident.compose.vidLogo.label "Virtual identity">
 <!ENTITY vident.prefs.dlgTitle.label "Virtual Identity - Opciones">
+<!ENTITY vident.prefs.vidLogo.tooltiptext "Open Virtual Identity Homepage">
 <!ENTITY vident.prefs.commonTab.label "Principal">
 <!ENTITY vident.prefs.vIdentityTab.label "Virtual Identity">
 <!ENTITY vident.prefs.smartReplyTab.label "Respuesta rápida">
@@ -11,6 +12,8 @@
 <!ENTITY vident.prefs.smartReply.label "usar respuesta rápida">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "usar la respuesta rápida también para responder a los grupos de noticias">
 <!ENTITY vident.prefs.smartTimestamp.label "usar marca de tiempo rápida">
+<!ENTITY vident.prefs.aBook.label "use Addressbook to store Virtual Identities">
+<!ENTITY vident.prefs.aBookNonVIdentity.label "store also usual Identities in you Addressbook">
 <!ENTITY vident.prefs.SMTP.label "mostrar menú SMTP">
 <!ENTITY vident.prefs.menuEntry.label "añadir entrada para el cuadro de opciones al menú Herramientas">
 <!ENTITY vident.prefs.warnNonvirtual.label "avisar si se usa una identidad no virtual">
@@ -33,6 +36,7 @@
 <!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. filtrar direcciones">
 <!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. usar direcciones">
 <!ENTITY vident.prefs.smartReplyTab.caption "Virtual Identity - Respuesta rápida">
+<!ENTITY vident.prefs.smartReplyTab3.caption "Virtual Identity - Respuesta rápida / Addressbook">
 <!ENTITY vident.prefs.smartReplyTab.Tab1.desc "Para encontrar la identidad con la que responder, la respuesta rápida tiene que obtener la lista de los posibles remitentes. Para ello, las cabeceras &apos;Para&apos; y &apos;Cc&apos; son analizadas. Si Smart Reply tiene que analizar cabeceras adicionales, puede incluirlas aquí (Opciones adicionales: para seleccionar la cabecera número n de varias con el mismo nombre añada &apos;:,&apos;. Si añade &apos;:@&apos; en alguna entrada, sólo se usarán las direcciones de correo, los nombres serán ignorados.)">
 <!ENTITY vident.prefs.smartReply.headers.desc "cabeceras adicionales - una por por ejemplo &apos;x-original-to&apos; o &apos;x-original-to:@&apos; o &apos;x-original-to:2:@&apos;">
 <!ENTITY vident.prefs.smartReply.headers.reset "establecer los valores por defecto">
@@ -40,22 +44,46 @@
 <!ENTITY vident.prefs.smartReply.filter.desc "Filtros de respuesta rápida - un filtro por línea, con posibilidad de usar expresiones regulares (por ejemplo, &apos;/@mozilla.org$/&apos; coincide con cualquier correo del dominio mozilla.org">
 <!ENTITY vident.prefs.smartReply.ignoreFullname.label "ignorar los nombres completos al comparar las direcciones de correo con las identidades existentes">
 <!ENTITY vident.prefs.smartReply.defaultFullname.label "si no hay nombres en las direcciones encontradas, usar el siguiente:">
-<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Una vez terminado, las direcciones filtradas se añadirán al menú desplegable de identidades. Puede también seleccionar cómo se usarán como las nuevas identidades del remitente.">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Una vez terminado, las direcciones filtradas se añadirán al menú desplegable de identidades. Puede también seleccionar cómo se usarán como las nuevas identidades del remitente (If you use the Addressbook to lookup for Identities, the same Options are used).">
 <!ENTITY vident.prefs.smartReply.ask.label "abrir una ventana para preguntar la identidad">
 <!ENTITY vident.prefs.smartReply.ask_always.label "preguntar incluso si solo hay una dirección posible">
 <!ENTITY vident.prefs.smartReply.autocreate.label "usar la primera identidad encontrada sin interacción">
 <!ENTITY vident.prefs.smartReply.autocreate.desc "(si sólo hay una posible dirección)">
+<!ENTITY vident.prefs.aBookTab.label "Addressbook">
+<!ENTITY vident.prefs.aBookTab.header "Storing Virtual Identities in Addressbook">
+<!ENTITY vident.prefs.aBookCap1.caption "Virtual Identity Addressbook-Options">
+<!ENTITY vident.prefs.aBookCap2.caption "Configure Email-Dialog">
+<!ENTITY vident.prefs.aBookCap3.caption "Configure Reply-Identities">
+<!ENTITY vident.prefs.aBookCap4.caption "Cleaning of Addressbooks">
+<!ENTITY vident.prefs.aBookTab.Tab1.label "1. Common Configurations">
+<!ENTITY vident.prefs.aBookTab.Tab2.label "2. Reply-Identities">
+<!ENTITY vident.prefs.aBookTab.Tab3.label "3. Extended">
+<!ENTITY vident.prefs.aBook.storedefault.label "save Virtual Identities while sending emails">
+<!ENTITY vident.prefs.aBook.warn_update.label "ask before overwriting Virtual Identities in your Addressbook">
+<!ENTITY vident.prefs.aBook.show_switch.label "show switch to activate/deactivate saving of Identities">
+<!ENTITY vident.prefs.aBook.warn_vI_replace.label "ask before Virtual Identity in Sender-Field will be replaced">
+<!ENTITY vident.prefs.aBookCap2.caption "Selection of Senders Identity">
+<!ENTITY vident.prefs.aBook.reply.desc "If you answer any emails and usage of Addressbook is activated together with 'Smart Reply', this is the place to configure if and how the found Identities will be used. Choosing in between the resulting Identities is done the same way as configured under 'Smart Reply'.">
+<!ENTITY vident.prefs.aBook.use_for_smart_reply.label "use Addressbook Identities together with 'Smart-Reply'">
+<!ENTITY vident.prefs.aBook.prefer_smart_reply.label "prefer 'Smart Reply'-Identities">
+<!ENTITY vident.prefs.aBook.ignore_smart_reply.label "ignore 'Smart Reply'-Identities if Identities were found in Addressbook">
+<!ENTITY vident.prefs.aBookCap3.caption "extended Options">
+<!ENTITY vident.prefs.aBook.remove_entries.desc "Here you are able to remove all Virtual Identity Informations from you Addressbooks.">
+<!ENTITY vident.prefs.aBook.remove_entries.remove "remove Informations">
 <!ENTITY vident.prefs.notificationTab.header "Estado de mensajes">
 <!ENTITY vident.prefs.notificationTab.caption "Notificaciones">
 <!ENTITY vident.prefs.notifyHeaders.label "mostrar información sobre las cabeceras reconocidas">
 <!ENTITY vident.prefs.notifySmartIdentity.label "activar estado de los mensajes en respuesta rápida / borrador rápido">
+<!ENTITY vident.prefs.notifyABook.label "aktivate Addressbook status messages">
 <!ENTITY vident.prefs.notifyTime.prefix.label "tiempo para mostrar el estado de los mensajes (0 = infinito)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "segundos">
 <!ENTITY vident.prefs.notificationTab.Debug.caption "Depuración">
 <!ENTITY vident.prefs.notifyDebug.desc "Para encontrar fallos, resolver problemas y entender lo que está haciendo Virtual Identity, especialmente con los filtros de respuesta rápida, puede habilitar alguna información adicional. Esta información aparecerá mayoritariamente en inglés. Si usa esta opción, el cliente de correo será más lento, por lo que no debe estar activa permanentemente.">
 <!ENTITY vident.prefs.notifyDebug.label "mostrar el área con la información de depuración">
 <!ENTITY vident.accPane.prettyName.prefix "Identidad virtual">
-<!ENTITY vident.replySelector.dialogheader.title "Virtual Identity - Respuesta rápida">
+<!ENTITY vident.composeDialog.aBookSave.label "save">
+<!ENTITY vident.composeDialog.aBookSave.tooltiptext "save Identity while sending in Addressbook">
+<!ENTITY vident.replySelector.dialogheader.title "Virtual Identity">
 <!ENTITY vident.replySelector.caption.label "Elegir una identidad virtual">
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">

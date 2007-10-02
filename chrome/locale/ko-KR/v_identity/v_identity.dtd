@@ -1,5 +1,6 @@
 <!ENTITY vident.compose.vidLogo.label "virtual identity">
 <!ENTITY vident.prefs.dlgTitle.label "virtual identity 설정">
+<!ENTITY vident.prefs.vidLogo.tooltiptext "Open Virtual Identity Homepage">
 <!ENTITY vident.prefs.commonTab.label "주요">
 <!ENTITY vident.prefs.vIdentityTab.label "Virtual Identity">
 <!ENTITY vident.prefs.smartReplyTab.label "지능형 답신">
@@ -11,6 +12,8 @@
 <!ENTITY vident.prefs.smartReply.label "지능형 답신 사용">
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "뉴스그룹에 답변시 지능형 답신 사용">
 <!ENTITY vident.prefs.smartTimestamp.label "지능형 발송 시간 사용">
+<!ENTITY vident.prefs.aBook.label "use Addressbook to store Virtual Identities">
+<!ENTITY vident.prefs.aBookNonVIdentity.label "store also usual Identities in you Addressbook">
 <!ENTITY vident.prefs.SMTP.label "SMTP 메뉴 표시">
 <!ENTITY vident.prefs.menuEntry.label "도구 메뉴에 설정 대화상자 항목 추가">
 <!ENTITY vident.prefs.warnNonvirtual.label "비 가상신원 사용 경고">
@@ -33,6 +36,7 @@
 <!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. 필터 주소">
 <!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. 주소 사용">
 <!ENTITY vident.prefs.smartReplyTab.caption "가상 신원 지능형 답신">
+<!ENTITY vident.prefs.smartReplyTab3.caption "가상 신원 지능형 답신 / Addressbook">
 <!ENTITY vident.prefs.smartReplyTab.Tab1.desc "To find a Reply-Identity, Smart Reply has to get a list of possible sender identities. Therefore usually the header-fields &apos;To&apos; and &apos;Cc&apos; are analyzed. Here you can enter those and/or other header-fields. (additional options: to select header number n out of any headers with the same name add &apos;:n&apos;. If you add &apos;:@&apos; to any entry, only email-addresses are used, names are ignored.)">
 <!ENTITY vident.prefs.smartReply.headers.desc "추가 헤더  -  줄 당 1개, for instance &apos;x-original-to&apos; or &apos;x-original-to:@&apos; or &apos;x-original-to:2:@&apos;">
 <!ENTITY vident.prefs.smartReply.headers.reset "기본 값 설정">
@@ -40,22 +44,46 @@
 <!ENTITY vident.prefs.smartReply.filter.desc "지능형 답신 필터 - 1줄 당 1개의 필터, 정규표현식 사용 가능 (for instance &apos;/@mozilla.org$/&apos; is matching every email from domain mozilla.org">
 <!ENTITY vident.prefs.smartReply.ignoreFullname.label "이메일 주소를 존재하는 신원과 비교하고 있는 동안 전체 이름을 무시.">
 <!ENTITY vident.prefs.smartReply.defaultFullname.label "만약 찾아낸 전자 우편의 주소가 아무 이름도 없다면, 다음 중 하나를 사용합니다:">
-<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "걸러진 주소 끝에 메세지 신원 드롭다운 메뉴를 추가합니다. 또한 그들을 새 발송인 신원으로 사용하는 방법을 선택할수 있습니다.">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "걸러진 주소 끝에 메세지 신원 드롭다운 메뉴를 추가합니다. 또한 그들을 새 발송인 신원으로 사용하는 방법을 선택할수 있습니다 (If you use the Addressbook to lookup for Identities, the same Options are used).">
 <!ENTITY vident.prefs.smartReply.ask.label "신원 선택 대화상자 열기">
 <!ENTITY vident.prefs.smartReply.ask_always.label "만약 오직 1개의 가능한 주소만 있으면 다시 묻기">
 <!ENTITY vident.prefs.smartReply.autocreate.label "상호작용 없이 처음 찾아낸 신원을 사용하십시오">
 <!ENTITY vident.prefs.smartReply.autocreate.desc "(오직 1개의 가능한 주소가 있다면)">
+<!ENTITY vident.prefs.aBookTab.label "Addressbook">
+<!ENTITY vident.prefs.aBookTab.header "Storing Virtual Identities in Addressbook">
+<!ENTITY vident.prefs.aBookCap1.caption "Virtual Identity Addressbook-Options">
+<!ENTITY vident.prefs.aBookCap2.caption "Configure Email-Dialog">
+<!ENTITY vident.prefs.aBookCap3.caption "Configure Reply-Identities">
+<!ENTITY vident.prefs.aBookCap4.caption "Cleaning of Addressbooks">
+<!ENTITY vident.prefs.aBookTab.Tab1.label "1. Common Configurations">
+<!ENTITY vident.prefs.aBookTab.Tab2.label "2. Reply-Identities">
+<!ENTITY vident.prefs.aBookTab.Tab3.label "3. Extended">
+<!ENTITY vident.prefs.aBook.storedefault.label "save Virtual Identities while sending emails">
+<!ENTITY vident.prefs.aBook.warn_update.label "ask before overwriting Virtual Identities in your Addressbook">
+<!ENTITY vident.prefs.aBook.show_switch.label "show switch to activate/deactivate saving of Identities">
+<!ENTITY vident.prefs.aBook.warn_vI_replace.label "ask before Virtual Identity in Sender-Field will be replaced">
+<!ENTITY vident.prefs.aBookCap2.caption "Selection of Senders Identity">
+<!ENTITY vident.prefs.aBook.reply.desc "If you answer any emails and usage of Addressbook is activated together with 'Smart Reply', this is the place to configure if and how the found Identities will be used. Choosing in between the resulting Identities is done the same way as configured under 'Smart Reply'.">
+<!ENTITY vident.prefs.aBook.use_for_smart_reply.label "use Addressbook Identities together with 'Smart-Reply'">
+<!ENTITY vident.prefs.aBook.prefer_smart_reply.label "prefer 'Smart Reply'-Identities">
+<!ENTITY vident.prefs.aBook.ignore_smart_reply.label "ignore 'Smart Reply'-Identities if Identities were found in Addressbook">
+<!ENTITY vident.prefs.aBookCap3.caption "extended Options">
+<!ENTITY vident.prefs.aBook.remove_entries.desc "Here you are able to remove all Virtual Identity Informations from you Addressbooks.">
+<!ENTITY vident.prefs.aBook.remove_entries.remove "remove Informations">
 <!ENTITY vident.prefs.notificationTab.header "상태 메시지">
 <!ENTITY vident.prefs.notificationTab.caption "통지">
 <!ENTITY vident.prefs.notifyHeaders.label "승인 헤더에 대한 정보 표시">
 <!ENTITY vident.prefs.notifySmartIdentity.label "지능형 답신 / 지능형 초안 상태 메시지 사용">
+<!ENTITY vident.prefs.notifyABook.label "aktivate Addressbook status messages">
 <!ENTITY vident.prefs.notifyTime.prefix.label "상태 메시지 표시 시간 (0 = 무한)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "초">
 <!ENTITY vident.prefs.notificationTab.Debug.caption "디버깅">
 <!ENTITY vident.prefs.notifyDebug.desc "To find bugs, solve configuration problems and understand what Virtual Identity is doing, especially with the SmartReply-filters, you can enable some additional informations. Using this option slows down your mail-client, therefore it shouldn&apos;t be activated permanently.">
 <!ENTITY vident.prefs.notifyDebug.label "디버그 정보 영역 표시">
 <!ENTITY vident.accPane.prettyName.prefix "virtual Id">
-<!ENTITY vident.replySelector.dialogheader.title "가상 신원 지능형 답신">
+<!ENTITY vident.composeDialog.aBookSave.label "save">
+<!ENTITY vident.composeDialog.aBookSave.tooltiptext "save Identity while sending in Addressbook">
+<!ENTITY vident.replySelector.dialogheader.title "Virtual Identity">
 <!ENTITY vident.replySelector.caption.label "가상 신원 선택">
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">

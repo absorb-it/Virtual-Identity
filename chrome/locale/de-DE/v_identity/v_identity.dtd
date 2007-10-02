@@ -13,7 +13,7 @@
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "verwende Smart Reply auch bei Antworten an Newsgruppen">
 <!ENTITY vident.prefs.smartTimestamp.label "verwende Smart Timestamp">
 <!ENTITY vident.prefs.aBook.label "verwende Adressbuch zum Speichern Virtueller Identitäten">
-<!ENTITY vident.prefs.aBookNonVIdentity.label "speichere auch normale Identitäten im Addressbuch">
+<!ENTITY vident.prefs.aBookNonVIdentity.label "speichere auch normale Identitäten im Adressbuch">
 <!ENTITY vident.prefs.SMTP.label "zeige SMTP Auswahlmenu">
 <!ENTITY vident.prefs.menuEntry.label "füge Einstellungs-Dialog zu Menu Extras hinzu">
 <!ENTITY vident.prefs.warnNonvirtual.label "warne bei jeder Verwendung einer dauerhaft gespeicherten Identität">
@@ -61,14 +61,14 @@
 <!ENTITY vident.prefs.aBook.storedefault.label "speichere Virtuelle Identitäten beim Senden von Emails">
 <!ENTITY vident.prefs.aBook.warn_update.label "frage nach, bevor Virtuelle Identitäten im Adressbuch überschrieben werden">
 <!ENTITY vident.prefs.aBook.show_switch.label "zeige Schalter zum Aktivieren/Deaktivieren der Speicherung">
-<!ENTITY vident.prefs.aBook.warn_vI_replace.label "frage nach, wenn im Sender-Feld eingetragene Virtuelle Identität ersetzt werden soll.">
+<!ENTITY vident.prefs.aBook.warn_vI_replace.label "frage nach, wenn im Sender-Feld eingetragene Virtuelle Identität ersetzt werden soll">
 <!ENTITY vident.prefs.aBookCap2.caption "Auswahl der Sendeindentität">
 <!ENTITY vident.prefs.aBook.reply.desc "Wird auf emails geantwortet und ist die Nutzung des Adressbuchs gemeinsam mit 'Smart Reply' aktiviert, kann hier konfiguriert werden, ob und wie die gefundenen Identitäten genutzt werden. Die Übernahme der Identitäten als Sender erfolgt dabei genauso, wie unter 'Smart Reply' konfiguriert.">
 <!ENTITY vident.prefs.aBook.use_for_smart_reply.label "benutze Adressbuch-Identitäten gemeinsam mit 'Smart Reply'">
 <!ENTITY vident.prefs.aBook.prefer_smart_reply.label "bevorzuge Smart Reply-Identitäten">
 <!ENTITY vident.prefs.aBook.ignore_smart_reply.label "ignoriere Smart Reply-Identitäten wenn Identitäten im Adressbuch gefunden werden">
 <!ENTITY vident.prefs.aBookCap3.caption "erweiterte Optionen">
-<!ENTITY vident.prefs.aBook.remove_entries.desc "Hier können sie die Informationen über Virtuelle Identitäten aus ihren Addressbüchern entfernen.">
+<!ENTITY vident.prefs.aBook.remove_entries.desc "Hier können sie die Informationen über Virtuelle Identitäten aus ihren Adressbüchern entfernen.">
 <!ENTITY vident.prefs.aBook.remove_entries.remove "entferne Informationen">
 <!ENTITY vident.prefs.notificationTab.header "Statusinformationen">
 <!ENTITY vident.prefs.notificationTab.caption "Benachrichtigungen">
@@ -83,7 +83,7 @@
 <!ENTITY vident.accPane.prettyName.prefix "virtuelle Id">
 <!ENTITY vident.composeDialog.aBookSave.label "speichern">
 <!ENTITY vident.composeDialog.aBookSave.tooltiptext "speichere Identität beim Senden im Adressbuch">
-<!ENTITY vident.replySelector.dialogheader.title "Virtual Identity - Smart Identity">
+<!ENTITY vident.replySelector.dialogheader.title "Virtual Identity">
 <!ENTITY vident.replySelector.caption.label "Wählen Sie eine Virtuelle Identität">
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">
