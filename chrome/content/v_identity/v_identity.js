@@ -172,12 +172,12 @@ var vI = {
 				vI.Cleanup_Account();
 				vI_account.createAccount();
 				vI.addVirtualIdentityToMsgIdentityMenu();
+				vI_addressBook.storeVIdentityToAllRecipients(msgType);
 				vI.original_functions.GenericSendMessage(msgType);
 				if (window.cancelSendMessage) {
 					vI.Cleanup_Account();
 					vI_notificationBar.dump("## v_identity: SendMessage cancelled\n");
-				}
-				else if (msgType == nsIMsgCompDeliverMode.Now) vI_addressBook.storeVIdentityToAllRecipients();
+				};
 			}
 		},
 
@@ -226,7 +226,9 @@ var vI = {
 		vI_notificationBar.dump("## v_identity: adapt GenericSendMessage\n");
 		vI.original_functions.GenericSendMessage = GenericSendMessage;
 		GenericSendMessage = function (msgType) {
-				vI.msgType = msgType; if (vI.warning(msgType)) vI.original_functions.GenericSendMessage(msgType); }
+				vI.msgType = msgType; if (vI.warning(msgType)) {
+					vI_addressBook.storeVIdentityToAllRecipients(msgType);
+					vI.original_functions.GenericSendMessage(msgType); } }
 		
 		// better approach would be to use te onchange event, but this one is not fired in any change case
 		// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
@@ -284,7 +286,9 @@ var vI = {
 		// restore function
 		if (GenericSendMessage == vI.replacement_functions.GenericSendMessage) {
 			GenericSendMessage = function (msgType) {
-				vI.msgType = msgType; if (vI.warning(msgType)) vI.original_functions.GenericSendMessage(msgType); }
+				vI.msgType = msgType; if (vI.warning(msgType)) {
+					vI_addressBook.storeVIdentityToAllRecipients(msgType);
+					vI.original_functions.GenericSendMessage(msgType); } }
 			vI_notificationBar.dump("## v_identity: restored GenericSendMessage (Virtual Identity deactivated)\n");
 		}
 	},

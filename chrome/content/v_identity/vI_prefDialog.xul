@@ -101,6 +101,9 @@
 				prefstring="aBook_use"
 				oncommand="vI_prefDialog.base.aBookConstraint(this);"
 				/>
+			<hbox><spacer width="20px"/><checkbox id="VIdent_identity.aBook_use_non_vI" label="&vident.prefs.aBookNonVIdentity.label;"
+				prefstring="aBook_use_non_vI" />
+			</hbox>				
 			<spacer height="10px"/>
 			<checkbox id="VIdent_identity.show_smtp" label="&vident.prefs.SMTP.label;"
 				prefstring="show_smtp" />

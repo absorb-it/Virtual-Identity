@@ -13,6 +13,7 @@
 <!ENTITY vident.prefs.smartReplyNewsgroups.label "verwende Smart Reply auch bei Antworten an Newsgruppen">
 <!ENTITY vident.prefs.smartTimestamp.label "verwende Smart Timestamp">
 <!ENTITY vident.prefs.aBook.label "verwende Adressbuch zum Speichern Virtueller Identitäten">
+<!ENTITY vident.prefs.aBookNonVIdentity.label "speichere auch normale Identitäten im Addressbuch">
 <!ENTITY vident.prefs.SMTP.label "zeige SMTP Auswahlmenu">
 <!ENTITY vident.prefs.menuEntry.label "füge Einstellungs-Dialog zu Menu Extras hinzu">
 <!ENTITY vident.prefs.warnNonvirtual.label "warne bei jeder Verwendung einer dauerhaft gespeicherten Identität">
@@ -48,7 +49,7 @@
 <!ENTITY vident.prefs.smartReply.ask_always.label "auch nachfragen, wenn nur eine Adresse zur Auswahl steht">
 <!ENTITY vident.prefs.smartReply.autocreate.label "übernehme die erste Identität automatisch">
 <!ENTITY vident.prefs.smartReply.autocreate.desc "(wenn nur eine Adresse zur Auswahl steht)">
-<!ENTITY vident.prefs.aBookTab.label "Verwendung Adressbuch">
+<!ENTITY vident.prefs.aBookTab.label "Adressbuch">
 <!ENTITY vident.prefs.aBookTab.header "Speicherung Virtueller Identitäten im Adressbuch">
 <!ENTITY vident.prefs.aBookCap1.caption "Virtual Identity Adressbuch-Konfiguration">
 <!ENTITY vident.prefs.aBookCap2.caption "Konfiguration Email-Dialog">
@@ -81,7 +82,7 @@
 <!ENTITY vident.prefs.notifyDebug.label "zeige Bereich mit Informationen zur Fehlersuche">
 <!ENTITY vident.accPane.prettyName.prefix "virtuelle Id">
 <!ENTITY vident.composeDialog.aBookSave.label "speichern">
-<!ENTITY vident.composeDialog.aBookSave.tooltiptext "speichere Virtuelle Identität beim Senden im Adressbuch">
+<!ENTITY vident.composeDialog.aBookSave.tooltiptext "speichere Identität beim Senden im Adressbuch">
 <!ENTITY vident.replySelector.dialogheader.title "Virtual Identity - Smart Identity">
 <!ENTITY vident.replySelector.caption.label "Wählen Sie eine Virtuelle Identität">
 <!ENTITY fccMailFolder.accesskey "P">

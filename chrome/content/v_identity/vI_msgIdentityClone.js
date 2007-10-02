@@ -201,7 +201,10 @@ vI_msgIdentityClone = {
 					.setAttribute("class", vI_msgIdentityClone.icon_usualId_class);
 				vI.Cleanup();
 				vI.elements.Obj_vILogo.setAttribute("hidden","true");
-				vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden","true");
+				vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden",
+					!vI.preferences.getBoolPref("aBook_use_non_vI"));
+				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
+					.setAttribute("oldvalue",null)
 			}
 			// code to show the signature
 			try { if (ss_signature.length > 0) ss_main.signatureSwitch(); }

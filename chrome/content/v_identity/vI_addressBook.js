@@ -19,17 +19,16 @@
     Portions created by the Initial Developer are Copyright (C) 2007
     the Initial Developer. All Rights Reserved.
 
-    Contributor(s): Mike Krieger
+    Contributor(s): Mike Krieger, Sebastian Apel
  * ***** END LICENSE BLOCK ***** */
  
 /**
-* some code copied and adapted from 'addresscontext'
-* thanks to Mike Krieger
+* some code copied and adapted from 'addressContext' and from 'Birthday Reminder'
+* thanks to Mike Krieger and Sebastian Apel
 */
 
 vI_addressBook = {
-	CardFields : Array("custom1", "custom2", "custom3", "custom4", "notes"),
-	QueryFields : Array("Custom1", "Custom2", "Custom3", "Custom4", "Notes"),
+	CardFields : Array("Custom1", "Custom2", "Custom3", "Custom4", "Notes"),
 	
 	elements : {
 		Obj_aBookSave : null,
@@ -37,10 +36,14 @@ vI_addressBook = {
 
 	init: function() {
 		vI_addressBook.elements.Obj_aBookSave = document.getElementById("aBook_save");
+		vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden",
+					!vI.preferences.getBoolPref("aBook_use_non_vI"));
 		vI_addressBook.elements.Obj_aBookSave.checked = vI.preferences.getBoolPref("aBook_storedefault");
 	},
 
 	removeVIdentityFromABook: function(remove) {
+		// this function will be called exclusivly from vI_prefDialog. So it is used in different context than the rest of
+		// the functions, access of vI.* is not possible
 		// given the function paramter as false it might be used to count the fields which have a VirtualIdentity stored
 		var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 			.getService(Components.interfaces.nsIPromptService);
@@ -68,7 +71,7 @@ vI_addressBook = {
 		while (enumerator && enumerator.hasMoreElements()) {
 			var addrbook = enumerator.getNext();  // an addressbook directory
 			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
-			for each (var prop in vI_addressBook.QueryFields) {
+			for each (var prop in vI_addressBook.CardFields) {
 				var searchUri = addrbook.directoryProperties.URI + "?(or(" + prop + ",c,vIdentity:))"; // search for the address in this book
 				var directory = rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
 				// directory will now be a subset of the addressbook containing only those cards that match the searchstring 'address'
@@ -143,9 +146,11 @@ vI_addressBook = {
 	readVIdentityFromCard : function(Card) {
 		vI_notificationBar.dump("## vI_addressBook: readVIdentityFromCard.\n")
 		for each (var prop in vI_addressBook.CardFields) {
+			prop = prop.toLowerCase();
 			if (Card[prop].indexOf("vIdentity: ") == 0) {
 				var newFullEmail=Card[prop].replace(/vIdentity: /,"");
 				var infoIndex = newFullEmail.indexOf(" (id")
+				if (!infoIndex) infoIndex = newFullEmail.indexOf(" (smtp")
 				var info = null;
 				if ( infoIndex != -1) {
 					info = newFullEmail.substr(infoIndex+2).replace(/\)/,"").split(/,/)
@@ -164,8 +169,8 @@ vI_addressBook = {
 						combinedNames : Array(splitted.combinedNames.value[0]),
 						id_keys : {}, smtp_keys : {},
 						fullABEntry : Array(Card[prop].replace(/vIdentity: /,"")) };
-				if ( info[0] ) addresses.id_keys[0] = info[0];
-				if ( info[1] ) addresses.smtp_keys[0] = info[1];
+				if ( info && info[0] ) addresses.id_keys[0] = info[0];
+				if ( info && info[1] ) addresses.smtp_keys[0] = info[1];
 				vI_notificationBar.dump("## vI_addressBook: found '" + addresses.fullABEntry[0] + "'.\n")
 				return addresses
 			}
@@ -177,25 +182,29 @@ vI_addressBook = {
 	equalsCurrentIdentity : function(addresses) {
 		var old_address = vI.helper.getAddress();		
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
+		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
-		vI_notificationBar.dump("## vI_addressBook: '" + old_address.email + "'\n")
-		vI_notificationBar.dump("## vI_addressBook: '" + old_address.name + "'\n")
-		vI_notificationBar.dump("## vI_addressBook: '" + id_key + "'\n")
-		vI_notificationBar.dump("## vI_addressBook: '" + smtp_key + "'\n")
-		vI_notificationBar.dump("## vI_addressBook: '" + addresses.emails[0] + "'\n")
-		vI_notificationBar.dump("## vI_addressBook: '" + addresses.fullNames[0] + "'\n")
-		vI_notificationBar.dump("## vI_addressBook: '" + addresses.id_keys[0] + "'\n")
-		vI_notificationBar.dump("## vI_addressBook: '" + addresses.smtp_keys[0] + "'\n")
-		
-		return (	(!addresses.id_keys[0] || id_key == addresses.id_keys[0]) &&
+		//~ vI_notificationBar.dump("## vI_addressBook: '" + old_address.email + "'\n")
+		//~ vI_notificationBar.dump("## vI_addressBook: '" + old_address.name + "'\n")
+		//~ vI_notificationBar.dump("## vI_addressBook: '" + id_key + "'\n")
+		//~ vI_notificationBar.dump("## vI_addressBook: '" + smtp_key + "'\n")
+		//~ vI_notificationBar.dump("## vI_addressBook: '" + addresses.emails[0] + "'\n")
+		//~ vI_notificationBar.dump("## vI_addressBook: '" + addresses.fullNames[0] + "'\n")
+		//~ vI_notificationBar.dump("## vI_addressBook: '" + addresses.id_keys[0] + "'\n")
+		//~ vI_notificationBar.dump("## vI_addressBook: '" + addresses.smtp_keys[0] + "'\n")
+		var equal = (	(!addresses.id_keys[0] || id_key == addresses.id_keys[0]) &&
 				(!addresses.smtp_keys[0] || smtp_key == addresses.smtp_keys[0]) &&
 				(old_address.email == addresses.emails[0]) &&
 				(old_address.name == addresses.fullNames[0])	)
+		if (equal) vI_notificationBar.dump("## vI_addressBook: Identities are the same\n")
+		else vI_notificationBar.dump("## vI_addressBook: Identities differ\n")
+		return equal;
 	},
 	
 	getCurrentVIdentityString : function() {
 		var old_address = vI.helper.getAddress();		
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
+		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
 		return old_address.combinedName + " (" + id_key + "," + smtp_key + ")"
 	},
@@ -223,8 +232,8 @@ vI_addressBook = {
 					if (addresses.id_keys[0]) vI_msgIdentityClone.setMenuToIdentity(addresses.id_keys[0])
 					if (addresses.smtp_keys[0]) vI_smtpSelector.setMenuToKey(addresses.smtp_keys[0])
 					if (vI_msgIdentityClone.setIdentity(addresses.combinedNames[0]))
-						vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIUsage") + ".",
-							"smart_reply_notification");
+						vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIaBookUsage") + ".",
+							"aBook_notification");
 				}
 			}
 		}
@@ -232,6 +241,7 @@ vI_addressBook = {
 	
 	writeVIdentityToABook : function(Card) {
 		for each (var prop in vI_addressBook.CardFields) {
+			prop = prop.toLowerCase();
 			vI_notificationBar.dump("## vI_addressBook: checking " + prop + ".\n")
 			if (Card[prop] == "" || Card[prop].indexOf("vIdentity: ") == 0) {
 				Card[prop] = "vIdentity: " + vI_addressBook.getCurrentVIdentityString();
@@ -271,8 +281,11 @@ vI_addressBook = {
 		else vI_addressBook.writeVIdentityToABook(Card);
 	},
 	
-	storeVIdentityToAllRecipients : function() {
+	storeVIdentityToAllRecipients : function(msgType) {
+		if (msgType != nsIMsgCompDeliverMode.Now) return;
 		if (!vI.preferences.getBoolPref("aBook_use")) return;
+		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" &&
+			!vI.preferences.getBoolPref("aBook_use_non_vI")) return;
 		if (vI_addressBook.elements.Obj_aBookSave.getAttribute("hidden") == "false" ) {
 			vI_notificationBar.dump("## vI_addressBook: switch shown.\n")
 			if (!vI_addressBook.elements.Obj_aBookSave.checked) {

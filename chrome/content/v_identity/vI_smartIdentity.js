@@ -363,32 +363,35 @@ vI_smartIdentity = {
 		}
 		
 		vI_notificationBar.dump("## vI_smartIdentity: ----------------------------------------------------------\n")
-		
-		if (aBook_addresses.number == 0 || !vI.preferences.getBoolPref("aBook_ignore_smart_reply")) {
-		
-			vI_smartIdentity.collectAddresses(all_addresses, hdr);
+		if (hdr) {
+			if (aBook_addresses.number == 0 || !vI.preferences.getBoolPref("aBook_ignore_smart_reply")) {
 			
-			vI_notificationBar.dump("## vI_smartIdentity: " + all_addresses.number + " address(es) after parsing, before filtering\n")
-			
-			/* second step: filter (and sort) addresses */
-			
-			all_addresses = vI_smartIdentity.filterAddresses(all_addresses);
-			
-			vI_notificationBar.dump("## vI_smartIdentity: filtering done, " + all_addresses.number + " address(es) left\n")
-			
-			var smart_reply_defaultFullName = vI.preferences.getCharPref("smart_reply_defaultFullName")
-			if (smart_reply_defaultFullName != "") {
-				for (index = 0; index < all_addresses.number; index++) {
-					if (all_addresses.fullNames[index] == "") {
-						all_addresses.fullNames[index] = smart_reply_defaultFullName
-						all_addresses.combinedNames[index] =
-							smart_reply_defaultFullName + " <" + all_addresses.emails[index] + ">"
-						vI_notificationBar.dump("## vI_smartIdentity: added default FullName '" + 
-							smart_reply_defaultFullName + "' to '" + all_addresses.emails[index] + "'\n")
+				vI_smartIdentity.collectAddresses(all_addresses, hdr);
+				
+				vI_notificationBar.dump("## vI_smartIdentity: " + all_addresses.number + " address(es) after parsing, before filtering\n")
+				
+				/* second step: filter (and sort) addresses */
+				
+				all_addresses = vI_smartIdentity.filterAddresses(all_addresses);
+				
+				vI_notificationBar.dump("## vI_smartIdentity: filtering done, " + all_addresses.number + " address(es) left\n")
+				
+				var smart_reply_defaultFullName = vI.preferences.getCharPref("smart_reply_defaultFullName")
+				if (smart_reply_defaultFullName != "") {
+					for (index = 0; index < all_addresses.number; index++) {
+						if (all_addresses.fullNames[index] == "") {
+							all_addresses.fullNames[index] = smart_reply_defaultFullName
+							all_addresses.combinedNames[index] =
+								smart_reply_defaultFullName + " <" + all_addresses.emails[index] + ">"
+							vI_notificationBar.dump("## vI_smartIdentity: added default FullName '" + 
+								smart_reply_defaultFullName + "' to '" + all_addresses.emails[index] + "'\n")
+						}
 					}
-				}
-			}	
+				}	
+			}
+			else vI_notificationBar.dump("## vI_smartIdentity: SmartReply skipped, Identities in Addressbook found.\n");
 		}
+		else vI_notificationBar.dump("## vI_smartIdentity: SmartReply skipped. No Header-information found.\n");
 		
 		vI_notificationBar.dump("## vI_smartIdentity: ----------------------------------------------------------\n")
 		
