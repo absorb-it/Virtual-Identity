@@ -26,16 +26,18 @@
 
     <em:id>{dddd428e-5ac8-4a81-9f78-276c734f75b8}</em:id>
     <em:name>Virtual Identity</em:name>
-    <em:version>0.4.3pre</em:version>
+    <em:version>0.4.4pre</em:version>
     <em:description>Allows you to modify your Identity settings for a single Mail on the fly.</em:description>
     <em:creator>Rene Ejury</em:creator>
     <em:contributor>Translations: www.babelzilla.org</em:contributor>
     <em:contributor>markh</em:contributor>		<!-- dutch localization -->
-    <em:contributor>patheticcockroach</em:contributor>		<!-- french localization -->
-    <em:contributor>Carlos (chuzo)</em:contributor>		<!-- spanish localization -->
-    <em:contributor>Michal (mik)</em:contributor>		<!-- czech localization -->
+    <em:contributor>PatheticCockroach</em:contributor>		<!-- french localization -->
+    <em:contributor>Proyecto Nave</em:contributor>		<!-- spanish localization -->
+    <em:contributor>Michal Kec (MiK)</em:contributor>		<!-- czech localization -->
     <em:contributor>Underpass</em:contributor>		<!-- italian localization -->
-    <em:homepageURL>http://absorb.it/hacked/thunderbird/v_identity.html</em:homepageURL>
+    <em:contributor>Sai</em:contributor>		<!-- slovakian localization -->
+    <em:contributor>wtspout</em:contributor>		<!-- korean localization -->
+    <em:homepageURL>http://www.absorb.it/virtual-id</em:homepageURL>
     <!--
     When no updateURL is found, default addons.mozilla.org is used. So its not needed anymore.
     <em:updateURL>http://absorb.it/hacked/thunderbird/v_identity_update.rdf</em:updateURL>
@@ -56,6 +58,8 @@
 	<em:locale>locale/nl-NL/v_identity/</em:locale>
 	<em:locale>locale/it-IT/v_identity/</em:locale>
 	<em:locale>locale/cs-CZ/v_identity/</em:locale>
+	<em:locale>locale/sk-SK/v_identity/</em:locale>
+	<em:locale>locale/ko-KR/v_identity/</em:locale>
        </Description>
     </em:file>
   </Description>      
