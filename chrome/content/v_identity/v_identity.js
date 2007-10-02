@@ -172,12 +172,12 @@ var vI = {
 				vI.Cleanup_Account();
 				vI_account.createAccount();
 				vI.addVirtualIdentityToMsgIdentityMenu();
-				vI_addressBook.storeVIdentityToAllRecipients(msgType);
 				vI.original_functions.GenericSendMessage(msgType);
+				vI_addressBook.storeVIdentityToAllRecipients(msgType);
 				if (window.cancelSendMessage) {
 					vI.Cleanup_Account();
 					vI_notificationBar.dump("## v_identity: SendMessage cancelled\n");
-				};
+				}
 			}
 		},
 
@@ -227,8 +227,8 @@ var vI = {
 		vI.original_functions.GenericSendMessage = GenericSendMessage;
 		GenericSendMessage = function (msgType) {
 				vI.msgType = msgType; if (vI.warning(msgType)) {
-					vI_addressBook.storeVIdentityToAllRecipients(msgType);
-					vI.original_functions.GenericSendMessage(msgType); } }
+					vI.original_functions.GenericSendMessage(msgType);
+					vI_addressBook.storeVIdentityToAllRecipients(msgType); } }
 		
 		// better approach would be to use te onchange event, but this one is not fired in any change case
 		// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
@@ -287,8 +287,8 @@ var vI = {
 		if (GenericSendMessage == vI.replacement_functions.GenericSendMessage) {
 			GenericSendMessage = function (msgType) {
 				vI.msgType = msgType; if (vI.warning(msgType)) {
-					vI_addressBook.storeVIdentityToAllRecipients(msgType);
-					vI.original_functions.GenericSendMessage(msgType); } }
+					vI.original_functions.GenericSendMessage(msgType);
+					vI_addressBook.storeVIdentityToAllRecipients(msgType); } }
 			vI_notificationBar.dump("## v_identity: restored GenericSendMessage (Virtual Identity deactivated)\n");
 		}
 	},

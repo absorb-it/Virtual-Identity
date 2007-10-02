@@ -30,6 +30,8 @@
 vI_addressBook = {
 	CardFields : Array("Custom1", "Custom2", "Custom3", "Custom4", "Notes"),
 	
+	VIdentityString : null,
+	
 	elements : {
 		Obj_aBookSave : null,
 	},
@@ -196,8 +198,8 @@ vI_addressBook = {
 				(!addresses.smtp_keys[0] || smtp_key == addresses.smtp_keys[0]) &&
 				(old_address.email == addresses.emails[0]) &&
 				(old_address.name == addresses.fullNames[0])	)
-		if (equal) vI_notificationBar.dump("## vI_addressBook: Identities are the same\n")
-		else vI_notificationBar.dump("## vI_addressBook: Identities differ\n")
+		if (equal) vI_notificationBar.dump("## vI_addressBook: Identities are the same.\n")
+		else vI_notificationBar.dump("## vI_addressBook: Identities differ.\n")
 		return equal;
 	},
 	
@@ -244,9 +246,9 @@ vI_addressBook = {
 			prop = prop.toLowerCase();
 			vI_notificationBar.dump("## vI_addressBook: checking " + prop + ".\n")
 			if (Card[prop] == "" || Card[prop].indexOf("vIdentity: ") == 0) {
-				Card[prop] = "vIdentity: " + vI_addressBook.getCurrentVIdentityString();
+				Card[prop] = "vIdentity: " + vI_addressBook.VIdentityString;
 				Card.editCardToDatabase("");
-				vI_notificationBar.dump("## vI_addressBook: added vIdentity to AddressBook '" + vI_addressBook.getCurrentVIdentityString() + "' to field '" + prop + "'.\n")
+				vI_notificationBar.dump("## vI_addressBook: added vIdentity to AddressBook '" + vI_addressBook.VIdentityString + "' to field '" + prop + "'.\n")
 				return;
 			}
 		}
@@ -262,13 +264,12 @@ vI_addressBook = {
 		
 		if (addresses) {
 			if (!vI_addressBook.equalsCurrentIdentity(addresses)) {
-				vI_notificationBar.dump("## vI_addressBook: Identities differ.\n")
 				var warning = 	vI.elements.strings.getString("vident.updateAddressBook.warning1") +
 						email +
 						vI.elements.strings.getString("vident.updateAddressBook.warning2") +
 						addresses.fullABEntry[0] +
 						vI.elements.strings.getString("vident.updateAddressBook.warning3") +
-						vI_addressBook.getCurrentVIdentityString() +
+						vI_addressBook.VIdentityString +
 						vI.elements.strings.getString("vident.updateAddressBook.warning4");
 				vI_notificationBar.dump("## vI_addressBook: " + warning + ".\n")
 				var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
@@ -301,8 +302,11 @@ vI_addressBook = {
 			}
 		}
 		
+		// store VIdentityString
+		vI_addressBook.VIdentityString = vI_addressBook.getCurrentVIdentityString();
+		
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
-			vI_addressBook.updateABookFromVIdentity(awGetInputElement(row).value)
+			window.setTimeout(vI_addressBook.updateABookFromVIdentity, 50, awGetInputElement(row).value)
 		}
 	},
 	
