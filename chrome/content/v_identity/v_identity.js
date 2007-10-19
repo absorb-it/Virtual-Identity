@@ -62,11 +62,18 @@ var vI = {
 		getAddress : function() {
 			vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 			var address = vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value;
-			var splitted = { number : 0, emails : {}, fullNames : {}, combinedNames : {} };
-			vI.headerParser.parseHeadersWithArray(address, splitted.emails,
-				splitted.fullNames, splitted.combinedNames);
-			return { name: splitted.fullNames.value[0], email: splitted.emails.value[0],
-					combinedName: splitted.combinedNames.value[0]}
+			
+			// prefer an email address separated with < >, only if not found use any other
+			if (!address.match(/<\s*[^>\s]*@[^>\s]*\s*>/)) address.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/)
+			var name = RegExp.leftContext + RegExp.rightContext
+			var email = RegExp.lastMatch
+			email = email.replace(/\s+|<|>/g,"")
+			name = name.replace(/^\s+|\s+$/g,"")
+			vI_notificationBar.dump("## v_identity: getAddress: name '" + 
+				name + "' email '" + email + "'\n");
+			return { name: name,
+				 email: email,
+				 combinedName: name + " <" + email + ">"}
 		},
 	},
 
