@@ -250,7 +250,7 @@ var vI_prepareHeader = {
 			
 			if (vI_prepareHeader.addedHeaders.length > 0) {
 				extraHdrs += vI_prepareHeader.addedHeaders.join(" ");
-				extraHdrs = extraHdrs.replace(/^ */, "").replace(/ *$/, "");
+				extraHdrs = extraHdrs.replace(/^\s+|\s+$/g,"")
 				vI_prepareHeader.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", extraHdrs)
 			}
 			vI_notificationBar.dump("## vI_prepareHeader: extraExpandedHeaders '" + vI_prepareHeader.addedHeaders.join(" ") + "' added\n");
