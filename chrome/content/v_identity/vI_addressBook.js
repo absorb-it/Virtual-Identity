@@ -108,23 +108,27 @@ vI_addressBook = {
 		// enumerate all of the address books on this system
 		var parentDir = rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
 		var enumerator = parentDir.childNodes;
+		if (!enumerator) return null; // uups, no addressbooks?
 		
 		var splitted = { number : 0, emails : {}, fullNames : {}, combinedNames : {} };
 		vI.headerParser.parseHeadersWithArray(email, splitted.emails,
 			splitted.fullNames, splitted.combinedNames);
 		var recipient_email = splitted.emails.value[0]
+		var recipient_fullName = splitted.fullNames.value[0]
 		if (!recipient_email) return null;
 	
 		vI_notificationBar.dump("## vI_addressBook: Search '" + recipient_email + "' in addressbooks.\n")
 		
-		var matches = { number : 0, cards : {} }
+		var matchingEmailCards = { number : 0, cards : {} }
+		var matchingFullNameCards = { number : 0, cards : {} }
 		while (enumerator && enumerator.hasMoreElements()) {
 			var addrbook = enumerator.getNext();  // an addressbook directory
 			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
-			var searchUri = addrbook.directoryProperties.URI + "?(or(PrimaryEmail,c," + recipient_email + "))";  // search for the address in this book
+			var searchUri = addrbook.directoryProperties.URI + "?(or(PrimaryEmail,c," + recipient_email + ")(SecondEmail,c," + recipient_email + "))";  // search for the address in this book
 			//~ vI_notificationBar.dump("## vI_addressBook: searchUri '" + searchUri + "'\n");
 			var directory = rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
 			// directory will now be a subset of the addressbook containing only those cards that match the searchstring 'address'
+			if (!directory) break;
 			var childCards = directory.childCards;
 			
 			var keepGoing = 1;
@@ -133,35 +137,47 @@ vI_addressBook = {
 			while (keepGoing == 1) {
 				currentCard = childCards.currentItem();
 				currentCard.QueryInterface(Components.interfaces.nsIAbCard);
-				if (currentCard.primaryEmail.toLowerCase() == recipient_email.toLowerCase()) {
+				if (currentCard.primaryEmail.toLowerCase() == recipient_email.toLowerCase() ||
+					currentCard.secondEmail.toLowerCase() == recipient_email.toLowerCase()) {
 					vI_notificationBar.dump("## vI_addressBook: card found, primaryEmail '" + currentCard.primaryEmail.toLowerCase() + "'.\n")
-					matches.cards[matches.number++] = currentCard;
+					if (currentCard.displayName == recipient_fullName) {
+						vI_notificationBar.dump("## vI_addressBook:             matching full Name '" + currentCard.displayName + "'.\n")
+						matchingFullNameCards.cards[matchingFullNameCards.number++] = currentCard;
+					}
+					else matchingEmailCards.cards[matchingEmailCards.number++] = currentCard;
 				}
 				try { childCards.next(); } catch (ex) {	keepGoing = 0; }
 			}
 		}
 		
+		vI_notificationBar.dump("## vI_addressBook: found " + matchingEmailCards.number + " card(s) with matching email.\n")
+		vI_notificationBar.dump("## vI_addressBook: found " + matchingFullNameCards.number + " card(s) with matching email and Full Name.\n")
+		// prefer matchingFullNameCards over matchingEmailCards
+		var matchingCards = matchingEmailCards
+		if (matchingFullNameCards.number > 0) matchingCards = matchingFullNameCards
+		
 		// usual cases, found or not
-		switch (matches.number) {
+		switch (matchingCards.number) {
 			case 0:
 				vI_notificationBar.dump("## vI_addressBook: " + recipient_email + " not found.\n")
 				return null;
 			case 1:
-				return matches.cards[0];
+				return matchingCards.cards[0];
 		}
 		
 		// upps, more than one matching address found
-		vI_notificationBar.dump("## vI_addressBook WARNING: " + matches.number + " matching entries found.\n")
-		for (index = 0; index < matches.number; index++) {
+		vI_notificationBar.dump("## vI_addressBook WARNING: " + matchingEmailCards.number + " matching entries found.\n")
+				
+		for (index = 0; index < matchingCards.number; index++) {
 			for each (var prop in vI_addressBook.CardFields) {
-				if (matches.cards[index][prop.toLowerCase()].indexOf("vIdentity: ") == 0) {
+				if (matchingCards.cards[index][prop.toLowerCase()].indexOf("vIdentity: ") == 0) {
 					vI_notificationBar.dump("## vI_addressBook WARNING: use first one with a stored Virtual Identity.\n")
-					return matches.cards[index];
+					return matchingCards.cards[index];
 				}
 			}
 		}
 		vI_notificationBar.dump("## vI_addressBook WARNING: none has a stored Virtual Identity, use first in set.\n")
-		return matches.cards[0];
+		return matchingCards.cards[0];
 	},
 				
 	readVIdentityFromCard : function(Card) {
