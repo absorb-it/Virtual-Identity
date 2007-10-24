@@ -94,7 +94,7 @@ vI_smartIdentity = {
 	SmartTimestamp : function() {
 		vI_notificationBar.dump("## vI_smartIdentity: SmartTimestamp()\n");
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") == "vid") {
-			vI_notificationBar.dump("## vI_smartIdentity: Virtual Identity in usage, aborting\n");
+			vI_notificationBar.dump("## vI_smartIdentity: Virtual Identity in use, aborting\n");
 			return;
 		}
 
