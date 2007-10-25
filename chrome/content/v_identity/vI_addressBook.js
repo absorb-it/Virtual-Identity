@@ -189,16 +189,12 @@ vI_addressBook = {
 					newFullEmail = newFullEmail.substr(0, infoIndex);
 				}
 				
-				// split FullEmail into parts
-				var splitted = { number : 0, emails : {}, fullNames : {}, combinedNames : {} };
-				vI.headerParser.parseHeadersWithArray(newFullEmail, splitted.emails,
-					splitted.fullNames, splitted.combinedNames);
-
+				var splitted = vI.helper.parseAddress(newFullEmail);
 				// format of addresses is choosen to be compatible with vI_smartIdentity
 				var addresses = { number : 1,
-						emails : Array(splitted.emails.value[0]),
-						fullNames : Array(splitted.fullNames.value[0]),
-						combinedNames : Array(splitted.combinedNames.value[0]),
+						emails : Array(splitted.email),
+						fullNames : Array(splitted.name),
+						combinedNames : Array(splitted.combinedName),
 						id_keys : {}, smtp_keys : {},
 						fullABEntry : Array(Card[prop].replace(/vIdentity: /,"")) };
 				if ( info && info[0] ) addresses.id_keys[0] = info[0];

@@ -61,8 +61,10 @@ var vI = {
 		
 		getAddress : function() {
 			vI_msgIdentityClone.initMsgIdentityTextbox_clone();
-			var address = vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value;
-			
+			return vI.helper.parseAddress(vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value);
+		},
+		
+		parseAddress : function(address) {
 			// prefer an email address separated with < >, only if not found use any other
 			if (!address.match(/<\s*[^>\s]*@[^>\s]*\s*>/)) address.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/)
 			var name = RegExp.leftContext + RegExp.rightContext
@@ -74,7 +76,7 @@ var vI = {
 			return { name: name,
 				 email: email,
 				 combinedName: name + " <" + email + ">"}
-		},
+		}
 	},
 
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
