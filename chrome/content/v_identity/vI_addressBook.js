@@ -32,9 +32,14 @@ vI_addressBook = {
 	
 	VIdentityString : null,
 	
-	elements : {
-		Obj_aBookSave : null,
-	},
+	elements : { Obj_aBookSave : null },
+	
+	promptService : Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+			.getService(Components.interfaces.nsIPromptService),
+			
+	rdfService : Components.classes["@mozilla.org/rdf/rdf-service;1"]
+			.getService(Components.interfaces.nsIRDFService),
+
 
 	init: function() {
 		vI_addressBook.elements.Obj_aBookSave = document.getElementById("aBook_save");
@@ -47,15 +52,11 @@ vI_addressBook = {
 		// this function will be called exclusivly from vI_prefDialog. So it is used in different context than the rest of
 		// the functions, access of vI.* is not possible
 		// given the function paramter as false it might be used to count the fields which have a VirtualIdentity stored
-		var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			.getService(Components.interfaces.nsIPromptService);
-		var rdfService = Components.classes["@mozilla.org/rdf/rdf-service;1"]
-			.getService(Components.interfaces.nsIRDFService);
 		
 		counter = 0;
 		
 		// enumerate all of the address books on this system
-		var parentDir = rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
+		var parentDir = vI_addressBook.rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
 		var enumerator = parentDir.childNodes;
 			
 		//~ vI_notificationBar.dump("## vI_addressBook: Search Virtual Identities in addressbooks.\n")
@@ -66,7 +67,7 @@ vI_addressBook = {
 			var warning = strings.getString("vident.clearAddressBook.status.prefix") + " " + number + " " +
 					strings.getString("vident.clearAddressBook.status.postfix") + " " + 
 					strings.getString("vident.clearAddressBook.warning")
-			if (!promptService.confirm(window,"Warning",warning))
+			if (!vI_addressBook.promptService.confirm(window,"Warning",warning))
 				return;
 		}
 		
@@ -75,12 +76,12 @@ vI_addressBook = {
 			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
 			for each (var prop in vI_addressBook.CardFields) {
 				var searchUri = addrbook.directoryProperties.URI + "?(or(" + prop + ",c,vIdentity:))"; // search for the address in this book
-				var directory = rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
+				var directory = vI_addressBook.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
 				// directory will now be a subset of the addressbook containing only those cards that match the searchstring 'address'
+				if (!directory) break;
 				var ChildCards = directory.childCards;
 				var keepGoing = 1;
-				try { ChildCards.first(); }
-				catch (ex) { keepGoing = 0; }
+				try { ChildCards.first(); } catch (ex) { keepGoing = 0; }
 				
 				while (keepGoing == 1) {
 					var Card = ChildCards.currentItem();
@@ -91,11 +92,7 @@ vI_addressBook = {
 						Card.editCardToDatabase("");
 					}
 					
-					try {
-						ChildCards.next();
-					} catch (ex) {
-						keepGoing = 0;
-					}
+					try { ChildCards.next(); } catch (ex) {	keepGoing = 0; }
 				}
 			}
 		}
@@ -103,10 +100,8 @@ vI_addressBook = {
 	},
 
 	getCardForAddress: function(email) {
-		var rdfService = Components.classes["@mozilla.org/rdf/rdf-service;1"].getService(Components.interfaces.nsIRDFService);
-		
 		// enumerate all of the address books on this system
-		var parentDir = rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
+		var parentDir = vI_addressBook.rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
 		var enumerator = parentDir.childNodes;
 		if (!enumerator) return null; // uups, no addressbooks?
 		
@@ -126,7 +121,7 @@ vI_addressBook = {
 			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
 			var searchUri = addrbook.directoryProperties.URI + "?(or(PrimaryEmail,c," + recipient_email + ")(SecondEmail,c," + recipient_email + "))";  // search for the address in this book
 			//~ vI_notificationBar.dump("## vI_addressBook: searchUri '" + searchUri + "'\n");
-			var directory = rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
+			var directory = vI_addressBook.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
 			// directory will now be a subset of the addressbook containing only those cards that match the searchstring 'address'
 			if (!directory) break;
 			var childCards = directory.childCards;
@@ -221,14 +216,6 @@ vI_addressBook = {
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
 		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
-		//~ vI_notificationBar.dump("## vI_addressBook: '" + old_address.email + "'\n")
-		//~ vI_notificationBar.dump("## vI_addressBook: '" + old_address.name + "'\n")
-		//~ vI_notificationBar.dump("## vI_addressBook: '" + id_key + "'\n")
-		//~ vI_notificationBar.dump("## vI_addressBook: '" + smtp_key + "'\n")
-		//~ vI_notificationBar.dump("## vI_addressBook: '" + addresses.emails[0] + "'\n")
-		//~ vI_notificationBar.dump("## vI_addressBook: '" + addresses.fullNames[0] + "'\n")
-		//~ vI_notificationBar.dump("## vI_addressBook: '" + addresses.id_keys[0] + "'\n")
-		//~ vI_notificationBar.dump("## vI_addressBook: '" + addresses.smtp_keys[0] + "'\n")
 		var equal = (	(!addresses.id_keys[0] || id_key == addresses.id_keys[0]) &&
 				(!addresses.smtp_keys[0] || smtp_key == addresses.smtp_keys[0]) &&
 				(old_address.email == addresses.emails[0]) &&
@@ -238,12 +225,12 @@ vI_addressBook = {
 		return equal;
 	},
 	
-	getCurrentVIdentityString : function() {
+	storeCurrentVIdentityString : function() {
 		var old_address = vI.helper.getAddress();		
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
 		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
-		return old_address.combinedName + " (" + id_key + "," + smtp_key + ")"
+		vI_addressBook.VIdentityString = old_address.combinedName + " (" + id_key + "," + smtp_key + ")"
 	},
 	
 	updateVIdentityFromABook: function(email) {
@@ -255,9 +242,6 @@ vI_addressBook = {
 			vI_notificationBar.dump("## vI_addressBook: compare with current Identity\n");
 			// only update fields if new Identity is different than old one.
 			if (!vI_addressBook.equalsCurrentIdentity(addresses)) {
-				
-				var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-						.getService(Components.interfaces.nsIPromptService);
 				var warning = vI.elements.strings.getString("vident.updateVirtualIdentity.warning1") +
 							email +
 							vI.elements.strings.getString("vident.updateVirtualIdentity.warning2") +
@@ -265,7 +249,7 @@ vI_addressBook = {
 							vI.elements.strings.getString("vident.updateVirtualIdentity.warning3");
 				if (	vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
 					!vI.preferences.getBoolPref("aBook_warn_vI_replace") ||
-					promptService.confirm(window,"Warning",warning)) {						
+					vI_addressBook.promptService.confirm(window,"Warning",warning)) {						
 					if (addresses.id_keys[0]) vI_msgIdentityClone.setMenuToIdentity(addresses.id_keys[0])
 					if (addresses.smtp_keys[0]) vI_smtpSelector.setMenuToKey(addresses.smtp_keys[0])
 					if (vI_msgIdentityClone.setIdentity(addresses.combinedNames[0]))
@@ -307,10 +291,8 @@ vI_addressBook = {
 						vI_addressBook.VIdentityString +
 						vI.elements.strings.getString("vident.updateAddressBook.warning4");
 				vI_notificationBar.dump("## vI_addressBook: " + warning + ".\n")
-				var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-					.getService(Components.interfaces.nsIPromptService);
 				if (!vI.preferences.getBoolPref("aBook_warn_update") ||
-						promptService.confirm(window,"Warning",warning))
+						vI_addressBook.promptService.confirm(window,"Warning",warning))
 					vI_addressBook.writeVIdentityToABook(Card);
 			}
 		}
@@ -338,7 +320,7 @@ vI_addressBook = {
 		}
 		
 		// store VIdentityString
-		vI_addressBook.VIdentityString = vI_addressBook.getCurrentVIdentityString();
+		vI_addressBook.storeCurrentVIdentityString()
 		
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			window.setTimeout(vI_addressBook.updateABookFromVIdentity, 50, awGetInputElement(row).value)
