@@ -76,12 +76,12 @@ vI_addressBook = {
 	awOnBlur : function (element) {
 		// only react on events triggered by addressCol2 - textinput Elements
 		if (! element.id.match(/^addressCol2*/)) return;
-		vI_notificationBar.dump("## v_identity: awOnBlur '" + element.id +"'\n");
+		vI_notificationBar.dump("## vI_addressBook: awOnBlur '" + element.id +"'\n");
 		vI_addressBook.updateVIdentityFromABook(element);
 	},
 
 	awPopupOnCommand : function (element) {
-		vI_notificationBar.dump("## v_identity: awPopupOnCommand'" + element.id +"'\n");
+		vI_notificationBar.dump("## vI_addressBook: awPopupOnCommand'" + element.id +"'\n");
 		vI_addressBook.updateVIdentityFromABook(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")))
 	},
 	
@@ -391,6 +391,7 @@ vI_addressBook = {
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup") continue;
+			vI_addressBook.lastCheckedEmail[row] = awGetInputElement(row).value;
 			var Card = vI_addressBook.getCardForAddress(awGetInputElement(row).value);
 			if (!Card) continue;
 			var addresses = vI_addressBook.readVIdentityFromCard(Card);
