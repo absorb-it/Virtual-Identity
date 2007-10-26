@@ -115,7 +115,6 @@ vI_smtpSelector = {
 			  if (idserver == server) vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem = listitem;
 			}
 		}
-		vI_smtpSelector.elements.Obj_SMTPServerList.setAttribute("label", (server.description?server.description:server.hostname));
 	},
 
 	createSmtpListItemx : function (server) {
