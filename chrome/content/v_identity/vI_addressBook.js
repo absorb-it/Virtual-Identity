@@ -135,7 +135,7 @@ vI_addressBook = {
 				if (currentCard.primaryEmail.toLowerCase() == recipient_email.toLowerCase() ||
 					currentCard.secondEmail.toLowerCase() == recipient_email.toLowerCase()) {
 					vI_notificationBar.dump("## vI_addressBook: card found, primaryEmail '" + currentCard.primaryEmail.toLowerCase() + "'.\n")
-					if (currentCard.displayName == recipient_fullName) {
+					if (recipient_fullName != "" && currentCard.displayName == recipient_fullName) {
 						vI_notificationBar.dump("## vI_addressBook:             matching full Name '" + currentCard.displayName + "'.\n")
 						matchingFullNameCards.cards[matchingFullNameCards.number++] = currentCard;
 					}
