@@ -111,6 +111,7 @@ var vI = {
 		},
 		NotifyComposeFieldsReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeFieldsReady\n");
+			vI_addressBook.init();
 			vI_smartIdentity.init();
 		},
 		ComposeProcessDone: function(aResult) {
@@ -132,11 +133,6 @@ var vI = {
 			vI.original_functions.MsgComposeCloseWindow(false);
 		},
 		
-		awOnBlur : function (element) {
-			vI_notificationBar.dump("## v_identity: awOnBlur\n");
-			vI_addressBook.updateVIdentityFromABook(element.value);
-		},
-
 		GenericSendMessage: function (msgType) {
 			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 				.getService(Components.interfaces.nsIPromptService);
@@ -221,7 +217,6 @@ var vI = {
 		// initialize the pointers to extension elements (initialize those earlier might brake the interface)
 		vI.elements.init_rest();
 		
-		vI_addressBook.init();
 		vI_smtpSelector.init();
 		vI_msgIdentityClone.init();
 		
@@ -238,11 +233,6 @@ var vI = {
 				vI.msgType = msgType; if (vI.warning(msgType)) {
 					vI.original_functions.GenericSendMessage(msgType);
 					vI_addressBook.storeVIdentityToAllRecipients(msgType); } }
-		
-		// better approach would be to use te onchange event, but this one is not fired in any change case
-		// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
-		awGetInputElement(1).setAttribute("onblur",
-			"window.setTimeout(vI.replacement_functions.awOnBlur, 250, this);")
 		
 		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
 		window.removeEventListener("load", vI.init, false);

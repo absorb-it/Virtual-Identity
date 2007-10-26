@@ -32,6 +32,8 @@ vI_addressBook = {
 	
 	VIdentityString : null,
 	
+	lastCheckedEmail : {}, // array of last checked emails per row, to prevent ugly double dialogs
+	
 	elements : { Obj_aBookSave : null },
 	
 	promptService : Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
@@ -39,15 +41,50 @@ vI_addressBook = {
 			
 	rdfService : Components.classes["@mozilla.org/rdf/rdf-service;1"]
 			.getService(Components.interfaces.nsIRDFService),
+	
+	original_functions : {
+		awSetInputAndPopupValue : null,
+	},
 
-
+	replacement_functions : {
+		awSetInputAndPopupValue : function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
+			vI_notificationBar.dump("## vI_addressBook: awSetInputAndPopupValue '" + inputElem.id +"'\n");
+			vI_addressBook.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
+			vI_addressBook.updateVIdentityFromABook(inputElem);
+		},
+	},
+	
+	
 	init: function() {
 		vI_addressBook.elements.Obj_aBookSave = document.getElementById("aBook_save");
 		vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden",
 					!vI.preferences.getBoolPref("aBook_use_non_vI"));
 		vI_addressBook.elements.Obj_aBookSave.checked = vI.preferences.getBoolPref("aBook_storedefault");
+		
+		// better approach would be to use te onchange event, but this one is not fired in any change case
+		// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
+		// same seems to happen with the ondragdrop event
+		awGetInputElement(1).setAttribute("onblur",
+			"window.setTimeout(vI_addressBook.awOnBlur, 250, this.parentNode.parentNode.parentNode);")
+		awGetPopupElement(1).setAttribute("oncommand",
+			"window.setTimeout(vI_addressBook.awPopupOnCommand, 250, this);")
+		vI_addressBook.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
+		awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
+			vI_addressBook.replacement_functions.awSetInputAndPopupValue (inputElem, inputValue, popupElem, popupValue, rowNumber) }
+	},
+	
+	awOnBlur : function (element) {
+		// only react on events triggered by addressCol2 - textinput Elements
+		if (! element.id.match(/^addressCol2*/)) return;
+		vI_notificationBar.dump("## v_identity: awOnBlur '" + element.id +"'\n");
+		vI_addressBook.updateVIdentityFromABook(element);
 	},
 
+	awPopupOnCommand : function (element) {
+		vI_notificationBar.dump("## v_identity: awPopupOnCommand'" + element.id +"'\n");
+		vI_addressBook.updateVIdentityFromABook(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")))
+	},
+	
 	removeVIdentityFromABook: function(remove) {
 		// this function will be called exclusivly from vI_prefDialog. So it is used in different context than the rest of
 		// the functions, access of vI.* is not possible
@@ -103,15 +140,15 @@ vI_addressBook = {
 		// enumerate all of the address books on this system
 		var parentDir = vI_addressBook.rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
 		var enumerator = parentDir.childNodes;
-		if (!enumerator) return null; // uups, no addressbooks?
+		if (!enumerator) {vI_notificationBar.dump("## vI_addressBook: no addressbooks?\n"); return null;} // uups, no addressbooks?
 		
 		var splitted = { number : 0, emails : {}, fullNames : {}, combinedNames : {} };
 		vI.headerParser.parseHeadersWithArray(email, splitted.emails,
 			splitted.fullNames, splitted.combinedNames);
 		var recipient_email = splitted.emails.value[0]
 		var recipient_fullName = splitted.fullNames.value[0]
-		if (!recipient_email) return null;
-	
+		if (!recipient_email) {vI_notificationBar.dump("## vI_addressBook: no recipient_email?\n"); return null;}
+		
 		vI_notificationBar.dump("## vI_addressBook: Search '" + recipient_email + "' in addressbooks.\n")
 		
 		var matchingEmailCards = { number : 0, cards : {} }
@@ -229,8 +266,29 @@ vI_addressBook = {
 		vI_addressBook.VIdentityString = old_address.combinedName + " (" + id_key + "," + smtp_key + ")"
 	},
 	
-	updateVIdentityFromABook: function(email) {
-		if (!vI.preferences.getBoolPref("aBook_use")) return;
+	updateVIdentityFromABook: function(inputElement) {
+		if (!vI.preferences.getBoolPref("aBook_use")) {
+			vI_notificationBar.dump("## vI_addressBook: usage deactivated.\n")
+			return all_addresses;
+		}
+		
+		var recipientType = document.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
+					.selectedItem.getAttribute("value");
+		if (recipientType == "addr_reply" || recipientType == "addr_followup") {
+			vI_notificationBar.dump("## vI_addressBook: field is a 'reply-to' or 'followup-to'. not searched.\n")
+			return;
+		}
+		var email = inputElement.value
+		if (email == "") {
+			vI_notificationBar.dump("## vI_addressBook: no email found, not checked.\n"); return;
+		}
+		
+		var row = inputElement.id.replace(/^addressCol2#/,"")
+		if (vI_addressBook.lastCheckedEmail[row] && vI_addressBook.lastCheckedEmail[row] == email) {
+			vI_notificationBar.dump("## vI_addressBook: same email than before, not checked again.\n"); return;
+		}
+		vI_addressBook.lastCheckedEmail[row] = email;
+		
 		var Card = vI_addressBook.getCardForAddress(email); if (!Card) return;
 		var addresses = vI_addressBook.readVIdentityFromCard(Card)
 		
@@ -326,7 +384,13 @@ vI_addressBook = {
 	getVIdentityFromAllRecipients : function(all_addresses) {
 		// var all_addresses = { number : 0, emails : {}, fullNames : {},
 		//			combinedNames : {}, id_keys : {}, smtp_keys : {} };
+		if (!vI.preferences.getBoolPref("aBook_use")) {
+			vI_notificationBar.dump("## vI_addressBook: usage deactivated.\n")
+			return all_addresses;
+		}
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
+			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
+			if (recipientType == "addr_reply" || recipientType == "addr_followup") continue;
 			var Card = vI_addressBook.getCardForAddress(awGetInputElement(row).value);
 			if (!Card) continue;
 			var addresses = vI_addressBook.readVIdentityFromCard(Card);
