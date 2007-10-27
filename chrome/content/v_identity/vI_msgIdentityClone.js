@@ -123,7 +123,7 @@ vI_msgIdentityClone = {
 	// remove the Virtual Account if a different (usual) Account is choosen in the cloned dropdown-menu
 	LoadIdentity : function()
 	{
-		vI_msgIdentityClone.cleanupReplyTo(true);
+		vI_msgIdentityClone.cleanupReplyTo();
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value != "vid") {
 			vI_msgIdentityClone.copySelectedIdentity();
 			vI_smtpSelector.resetMenuToMsgIdentity(
@@ -135,7 +135,7 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("accountname",
 			vI.helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem));
 		vI_msgIdentityClone.markAsNewAccount(vI_msgIdentityClone.isNewIdentity());
-		vI_msgIdentityClone.searchReplyToRow();
+		vI_msgIdentityClone.initReplyToFields();
 	},
 	
 	setIdentity : function(newName) {
@@ -161,68 +161,86 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.markAsNewAccount(vI_msgIdentityClone.isNewIdentity());
 	},
 	
-	replyToInputElem : null,
-	replyToPopupElem : null,
+	replyToInputElem : null,	// it is important to store the Elements and not the row
+	replyToPopupElem : null,	// cause row might change if one above gets removed
 	replyToStoredLastValue : null,
-	replyToStoredInitValue : null,
 	replyToSynchronize : true,
 	
-	searchReplyToRow : function() {
+	// called directly after a change of the Identity with the dropdown menu
+	// searches the first reply-to row and assumes that this is the one we like to adapt
+	initReplyToFields : function() {
 		if (!vI.preferences.getBoolPref("experimental")) return
-		vI_notificationBar.dump("#X searchReplyToRow\n");
+		var replyTo = gAccountManager.getIdentity(vI_msgIdentityClone.elements.
+				Obj_MsgIdentity_clone.selectedItem.value).replyTo
+		vI_notificationBar.dump("#X initReplyToFields identity.replyTo: " + replyTo + "\n");
+		if (replyTo == "") return
+		
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
-			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
-			if (recipientType == "addr_reply") {
+			var awType = awGetPopupElement(row).selectedItem.getAttribute("value");
+			var awValue = awGetInputElement(row).value
+			if (awType == "addr_reply" && awValue == replyTo) {
 				vI_notificationBar.dump("#X vI_msgIdentityClone: Reply-To found in row " + row + "\n");
-				vI_msgIdentityClone.replyToPopupElem = document.getElementById("addressCol1#" + row)
-				vI_msgIdentityClone.replyToInputElem = document.getElementById("addressCol2#" + row)
-				vI_msgIdentityClone.replyToStoredInitValue = document.getElementById("addressCol2#" + row).value
+				vI_msgIdentityClone.replyToPopupElem = awGetPopupElement(row)
+				vI_msgIdentityClone.replyToInputElem = awGetInputElement(row)
 				break;
 				}
 		}
-		if (!vI_msgIdentityClone.replyToInputElem) vI_notificationBar.dump("#X vI_msgIdentityClone: no reply-to row found\n");
+		if (!vI_msgIdentityClone.replyToInputElem) vI_notificationBar.dump("#X vI_msgIdentityClone: no Reply-To row found\n");
 	},
 	
-	cleanupReplyTo : function(force) {
+	cleanupReplyTo : function() {
 		if (!vI.preferences.getBoolPref("experimental")) return
+		if (!vI_msgIdentityClone.replyToSynchronize) return
 		vI_notificationBar.dump("#X cleanupReplyTo\n");
-		if 	(vI_msgIdentityClone.replyToInputElem &&
-				(vI_msgIdentityClone.replyToInputElem.value == vI_msgIdentityClone.replyToStoredLastValue)) {
+		if (vI_msgIdentityClone.replyToInputElem) {
 				vI_notificationBar.dump("#X restore ReplyTo\n");
-				vI_msgIdentityClone.replyToInputElem.value = vI_msgIdentityClone.replyToStoredInitValue
+				vI_msgIdentityClone.replyToInputElem.value =
+					gAccountManager.getIdentity(vI_msgIdentityClone.elements.
+						Obj_MsgIdentity_clone.selectedItem.value).replyTo
+				vI_msgIdentityClone.replyToInputElem.setAttribute("value",
+					gAccountManager.getIdentity(vI_msgIdentityClone.elements.
+						Obj_MsgIdentity_clone.selectedItem.value).replyTo)
 			}
-		if (force) {
-			vI_msgIdentityClone.replyToInputElem = null;
-			vI_msgIdentityClone.replyToPopupElem = null;
-			vI_msgIdentityClone.replyToStoredInitValue = null;
-		}
+		vI_msgIdentityClone.replyToInputElem = null;
+		vI_msgIdentityClone.replyToPopupElem = null;
 		vI_msgIdentityClone.replyToStoredLastValue = null;
 	},
 	
+	// updateReplyTo is called on every change in the From: field, if its a virtual Identity
 	updateReplyTo : function(newIdentity) {
 		if (!vI.preferences.getBoolPref("experimental")) return
 		if (!vI.preferences.getBoolPref("autoReplyToSelf")) return
-		vI_notificationBar.dump("#X updateReplyTo\n");
+		if (!vI_msgIdentityClone.replyToSynchronize) {
+			vI_notificationBar.dump("#X updateReplyTo stopped Synchronizing\n") 
+			return
+		}
+		vI_notificationBar.dump("#X updateReplyTo replyToStoredLastValue=" 
+				+ vI_msgIdentityClone.replyToStoredLastValue + "\n");
 
+		// if replyToInputElem not set (so no initial Reply-To row was found) add a row now
 		if (!vI_msgIdentityClone.replyToInputElem) {
 			awAddRecipient("addr_reply",vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value)
-			vI_msgIdentityClone.replyToPopupElem = document.getElementById("addressCol1#" + top.MAX_RECIPIENTS)
-			vI_msgIdentityClone.replyToInputElem = document.getElementById("addressCol2#" + top.MAX_RECIPIENTS)
-			vI_msgIdentityClone.replyToStoredInitValue = document.getElementById("addressCol2#" + top.MAX_RECIPIENTS).value
+			//~ vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.focus()
+			vI_msgIdentityClone.replyToPopupElem = awGetPopupElement(top.MAX_RECIPIENTS - 1)
+			vI_msgIdentityClone.replyToInputElem = awGetInputElement(top.MAX_RECIPIENTS - 1)
+			//~ vI_notificationBar.dump("#X vI_msgIdentityClone: Reply-To created in row " + top.MAX_RECIPIENTS + "\n");
+		}
+		
+		// check if sychronizing should still be done (will be stopped if value was modified by hand)
+		if ( (vI_msgIdentityClone.replyToPopupElem.selectedItem.value != "addr_reply") ||
+			(vI_msgIdentityClone.replyToStoredLastValue &&
+			vI_msgIdentityClone.replyToInputElem.value != vI_msgIdentityClone.replyToStoredLastValue)) {
+			vI_msgIdentityClone.replyToSynchronize = false;
+			vI_notificationBar.dump("#X vI_msgIdentityClone: (former) Reply-To entry changed, stop synchronizing\n");
 		}
 		else {
-			// check if reply-to field was changed individually, then stop adapting the field
-			if ((vI_msgIdentityClone.replyToPopupElem.selectedItem.getAttribute("value") != "addr_reply") ||
-				(vI_msgIdentityClone.replyToStoredLastValue &&
-				vI_msgIdentityClone.replyToInputElem.value != vI_msgIdentityClone.replyToStoredLastValue)) {
-				replyToSynchronize = false;
-				vI_notificationBar.dump("#X vI_msgIdentityClone: (former) Reply-To entry changed, stop synchronizing\n");
-			}
-			else {
-				vI_msgIdentityClone.replyToInputElem.value = vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value
-				vI_msgIdentityClone.replyToStoredLastValue = vI_msgIdentityClone.replyToInputElem.value
-			}
+			vI_msgIdentityClone.replyToInputElem.value =
+				vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value
+			//~ vI_msgIdentityClone.replyToInputElem.setAttribute("value",
+				//~ vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value)
+			vI_msgIdentityClone.replyToStoredLastValue = vI_msgIdentityClone.replyToInputElem.value
 		}
+		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.focus()
 	},
 	
 	markAsNewAccount : function(newIdentity) {
@@ -277,8 +295,6 @@ vI_msgIdentityClone = {
 			// code to show the signature
 			try { if (ss_signature.length > 0) ss_main.signatureSwitch(); }
 			catch(vErr) { };
-			
-			//~ vI_msgIdentityClone.cleanupReplyTo(false);
 		}
 	},
 	
