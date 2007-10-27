@@ -47,11 +47,9 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
 	},
 	
-	// double the Identity-Select Dropdown-Menu
-	// if you 'created' a virtual Identity and you close the extension area, the Virtual Identity shows up in the
-	// Identity-Dropdown Menu.
-	// problem is that there is not yet a existent Identity stored in any account for it, and other Code might
-	// access the Dropdown-Menu to know which Identity is selected. So show and change only a clone of the real one.
+	// double the Identity-Select Dropdown-Menu to be more flexible with modifying it
+	// the original Identity Dropdown Menu is hidden and stores the base Identity, on which one
+	// the Virtual Identity is build upon
 	clone_Obj_MsgIdentity : function() {
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
@@ -83,6 +81,7 @@ vI_msgIdentityClone = {
 	},
 
 	setMenuToIdentity : function (identitykey) {
+		vI_notificationBar.dump("## vI_msgIdentityClone: setMenuToIdentity key " + identitykey + "\n");
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].getAttribute("value") ==
@@ -272,14 +271,17 @@ vI_msgIdentityClone = {
 					!vI.preferences.getBoolPref("aBook_use_non_vI"));
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 					.setAttribute("oldvalue",null)
+				//~ vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.doCommand();
+				vI_msgIdentityClone.setMenuToIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value"));
 			}
 			// code to show the signature
 			try { if (ss_signature.length > 0) ss_main.signatureSwitch(); }
 			catch(vErr) { };
 			
-			vI_msgIdentityClone.cleanupReplyTo(false);
+			//~ vI_msgIdentityClone.cleanupReplyTo(false);
 		}
 	},
+	
 	
 	// checks if the Identity currently described by the extension-area fields i still available as
 	// a stored identity. If so, use the stored one.
@@ -305,13 +307,10 @@ vI_msgIdentityClone = {
 					if (	identity.getUnicharAttribute("fullName") == address.name &&
 						identity.getUnicharAttribute("useremail") == address.email &&
 						smtpKey == vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key')) {
-					//~ if (	identity.getUnicharAttribute("fullName") == FullName &&
-						//~ identity.getUnicharAttribute("useremail") == Useremail) {
-							//~ // all values are identical to an existing Identity
+							// all values are identical to an existing Identity
 							// set Identity combobox to this value
 							vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("value", identity.key);
-							vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("label", address.name + " <" + address.email + ">");
-							vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("accountname", " - " + accounts[i].incomingServer.prettyName);
+							vI_notificationBar.dump("## vI_msgIdentityClone: matchingIdentity key " + identity.key + "\n");
 							return false;
 						}
 					}
