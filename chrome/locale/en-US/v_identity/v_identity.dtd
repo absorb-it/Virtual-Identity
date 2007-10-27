@@ -28,6 +28,7 @@
 <!ENTITY vident.prefs.VCard.label "vCard attachments">
 <!ENTITY vident.prefs.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the 'Signature Switch' extension. By now this option is not available.">
 <!ENTITY vident.prefs.HideSignature.label "remove any 'Signatur' while using a Virtual Identity">
+<!ENTITY vident.prefs.autoReplyToSelf.label "set Virtual Identity as Reply-To Address">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "while sending a message with a Virtual Identity">
 <!ENTITY vident.prefs.vidFccAccount.label "Folder used by Account changed with Virtual Identity">
 <!ENTITY vident.prefs.vidFccDefault.label "Folder used by Default Account">

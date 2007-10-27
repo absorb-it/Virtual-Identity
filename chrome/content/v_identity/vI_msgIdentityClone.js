@@ -121,10 +121,10 @@ vI_msgIdentityClone = {
 	},
 	
 	// this LoadIdentity - oncommand is used by our clone MsgIdentity Menu
-	// if VIdentity Extension is closed after the extension area was opened at least once,
 	// remove the Virtual Account if a different (usual) Account is choosen in the cloned dropdown-menu
 	LoadIdentity : function()
 	{
+		vI_msgIdentityClone.cleanupReplyTo(true);
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value != "vid") {
 			vI_msgIdentityClone.copySelectedIdentity();
 			vI_smtpSelector.resetMenuToMsgIdentity(
@@ -136,6 +136,7 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("accountname",
 			vI.helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem));
 		vI_msgIdentityClone.markAsNewAccount(vI_msgIdentityClone.isNewIdentity());
+		vI_msgIdentityClone.searchReplyToRow();
 	},
 	
 	setIdentity : function(newName) {
@@ -159,6 +160,70 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		// compare Identity with existant ones and prepare Virtual-Identity if nonexistant found
 		vI_msgIdentityClone.markAsNewAccount(vI_msgIdentityClone.isNewIdentity());
+	},
+	
+	replyToInputElem : null,
+	replyToPopupElem : null,
+	replyToStoredLastValue : null,
+	replyToStoredInitValue : null,
+	replyToSynchronize : true,
+	
+	searchReplyToRow : function() {
+		if (!vI.preferences.getBoolPref("experimental")) return
+		vI_notificationBar.dump("#X searchReplyToRow\n");
+		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
+			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
+			if (recipientType == "addr_reply") {
+				vI_notificationBar.dump("#X vI_msgIdentityClone: Reply-To found in row " + row + "\n");
+				vI_msgIdentityClone.replyToPopupElem = document.getElementById("addressCol1#" + row)
+				vI_msgIdentityClone.replyToInputElem = document.getElementById("addressCol2#" + row)
+				vI_msgIdentityClone.replyToStoredInitValue = document.getElementById("addressCol2#" + row).value
+				break;
+				}
+		}
+		if (!vI_msgIdentityClone.replyToInputElem) vI_notificationBar.dump("#X vI_msgIdentityClone: no reply-to row found\n");
+	},
+	
+	cleanupReplyTo : function(force) {
+		if (!vI.preferences.getBoolPref("experimental")) return
+		vI_notificationBar.dump("#X cleanupReplyTo\n");
+		if 	(vI_msgIdentityClone.replyToInputElem &&
+				(vI_msgIdentityClone.replyToInputElem.value == vI_msgIdentityClone.replyToStoredLastValue)) {
+				vI_notificationBar.dump("#X restore ReplyTo\n");
+				vI_msgIdentityClone.replyToInputElem.value = vI_msgIdentityClone.replyToStoredInitValue
+			}
+		if (force) {
+			vI_msgIdentityClone.replyToInputElem = null;
+			vI_msgIdentityClone.replyToPopupElem = null;
+			vI_msgIdentityClone.replyToStoredInitValue = null;
+		}
+		vI_msgIdentityClone.replyToStoredLastValue = null;
+	},
+	
+	updateReplyTo : function(newIdentity) {
+		if (!vI.preferences.getBoolPref("experimental")) return
+		if (!vI.preferences.getBoolPref("autoReplyToSelf")) return
+		vI_notificationBar.dump("#X updateReplyTo\n");
+
+		if (!vI_msgIdentityClone.replyToInputElem) {
+			awAddRecipient("addr_reply",vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value)
+			vI_msgIdentityClone.replyToPopupElem = document.getElementById("addressCol1#" + top.MAX_RECIPIENTS)
+			vI_msgIdentityClone.replyToInputElem = document.getElementById("addressCol2#" + top.MAX_RECIPIENTS)
+			vI_msgIdentityClone.replyToStoredInitValue = document.getElementById("addressCol2#" + top.MAX_RECIPIENTS).value
+		}
+		else {
+			// check if reply-to field was changed individually, then stop adapting the field
+			if ((vI_msgIdentityClone.replyToPopupElem.selectedItem.getAttribute("value") != "addr_reply") ||
+				(vI_msgIdentityClone.replyToStoredLastValue &&
+				vI_msgIdentityClone.replyToInputElem.value != vI_msgIdentityClone.replyToStoredLastValue)) {
+				replyToSynchronize = false;
+				vI_notificationBar.dump("#X vI_msgIdentityClone: (former) Reply-To entry changed, stop synchronizing\n");
+			}
+			else {
+				vI_msgIdentityClone.replyToInputElem.value = vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value
+				vI_msgIdentityClone.replyToStoredLastValue = vI_msgIdentityClone.replyToInputElem.value
+			}
+		}
 	},
 	
 	markAsNewAccount : function(newIdentity) {
@@ -192,6 +257,8 @@ vI_msgIdentityClone = {
 			try { if (vI.preferences.getBoolPref("hide_signature") && ss_signature.length == 0)
 				ss_main.signatureSwitch()
 			} catch(vErr) { };
+			// set reply-to according to Virtual Identity
+			vI_msgIdentityClone.updateReplyTo(newIdentity)
 		}
 		else {
 			if (vI.elements.Obj_vILogo.getAttribute("hidden") != "true") {
@@ -209,6 +276,8 @@ vI_msgIdentityClone = {
 			// code to show the signature
 			try { if (ss_signature.length > 0) ss_main.signatureSwitch(); }
 			catch(vErr) { };
+			
+			vI_msgIdentityClone.cleanupReplyTo(false);
 		}
 	},
 	

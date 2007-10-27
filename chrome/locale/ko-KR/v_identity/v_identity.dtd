@@ -28,6 +28,7 @@
 <!ENTITY vident.prefs.VCard.label "vCard 첨부">
 <!ENTITY vident.prefs.HideSignature.warning.desc "참고: 서명의 동적인 동원해제를 가능하게 하기 위해 &apos;Signature Switch&apos;확장기능을 설치(그리고 작동)해야만 합니다. 지금 이 선택사항은 이용할수 없습니다.">
 <!ENTITY vident.prefs.HideSignature.label "가상 신원 사용 중 아무 &apos;서명&apos;이나 제거">
+<!ENTITY vident.prefs.autoReplyToSelf.label "set Virtual Identity as Reply-To Address">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "while sending a message with a Virtual Identity">
 <!ENTITY vident.prefs.vidFccAccount.label "가상 신원으로 계정 변경시 폴더 사용">
 <!ENTITY vident.prefs.vidFccDefault.label "기본 계정으로 폴더 사용">

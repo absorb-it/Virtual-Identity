@@ -68,7 +68,8 @@ vI_prefDialog = {
 				"VIdent_identity.aBook_ignore_smart_reply",
 				"VIdent_identity.aBook_warn_vI_replace",
 				"VIdent_identity.aBook_use_non_vI",
-				"VIdent_identity.aBook_notification"],
+				"VIdent_identity.aBook_notification",
+				"VIdent_identity.autoReplyToSelf"],
 	
 		init : function() {
 		// initialize the default window values...
@@ -270,6 +271,12 @@ vI_prefDialog = {
 		vI_prefDialog.base.smartReplyHideSignature();
 		vI_prefDialog.base.aBookConstraint(document.getElementById("VIdent_identity.aBook_use"));
 		vI_prefDialog.base.aBookCheckCounter();
+		
+		if (vI_prefDialog.preferences.getBoolPref("experimental")){
+			document.getElementById("autoReplyToSelfSpacer").setAttribute("hidden", "false")
+			document.getElementById("VIdent_identity.autoReplyToSelf").setAttribute("hidden", "false")
+		}
+		
 		dump("## vI_prefDialog: init_prefs done\n");
 	},
 	

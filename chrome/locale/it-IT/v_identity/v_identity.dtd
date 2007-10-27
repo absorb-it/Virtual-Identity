@@ -28,6 +28,7 @@
 <!ENTITY vident.prefs.VCard.label "allegati vCard">
 <!ENTITY vident.prefs.HideSignature.warning.desc "Nota: per disattivare l&apos;inserimento automatico della firma, è necessario installare e attivare l&apos;estensione &apos;Signature Switch&apos;. Al momento questa opzione non è disponibile.">
 <!ENTITY vident.prefs.HideSignature.label "Rimuovi qualunque firma in occasione dell&apos;utilizzo di una identità virtuale">
+<!ENTITY vident.prefs.autoReplyToSelf.label "set Virtual Identity as Reply-To Address">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "All&apos;invio di un messaggio con un&apos;identità virtuale">
 <!ENTITY vident.prefs.vidFccAccount.label "cartella utilizzata dall&apos;account sostituito da un&apos;identità virtuale">
 <!ENTITY vident.prefs.vidFccDefault.label "cartella utilizzata dall&apos;account predefinito">

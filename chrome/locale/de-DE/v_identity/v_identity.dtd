@@ -28,6 +28,7 @@
 <!ENTITY vident.prefs.VCard.label "anzuhängende Visitenkarten">
 <!ENTITY vident.prefs.HideSignature.warning.desc "Hinweis: Zur dynamischen Abschaltung der 'Signatur' muss die Erweiterung 'Signature Switch' installiert (und aktiviert) sein. Zur Zeit steht diese Option nicht zur Verfügung.">
 <!ENTITY vident.prefs.HideSignature.label "entferne eine 'Signatur' bei Nutzung einer Virtuellen Identität">
+<!ENTITY vident.prefs.autoReplyToSelf.label "setze Virtuelle Identität als Reply-To Adresse">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Beim Senden von Nachrichten automatisch">
 <!ENTITY vident.prefs.vidFccAccount.label "Ordner des Accounts, der durch Virtual Identity geändert wurde">
 <!ENTITY vident.prefs.vidFccDefault.label "Ordner des Standard-Accounts">

@@ -28,6 +28,7 @@
 <!ENTITY vident.prefs.VCard.label "přílohy vCard">
 <!ENTITY vident.prefs.HideSignature.warning.desc "poznámka: pro aktivaci dynamického odstraňování podpisu je potřeba nainstalovat a aktivovat rozšíření &apos;Signature Switch&apos;. Nyní tato volba není dostupná.">
 <!ENTITY vident.prefs.HideSignature.label "při použití virtuální identity odstranit podpis">
+<!ENTITY vident.prefs.autoReplyToSelf.label "set Virtual Identity as Reply-To Address">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "při odeslání zprávy s Virtual Identity">
 <!ENTITY vident.prefs.vidFccAccount.label "Složka používána účtem změněným Virtual Identity">
 <!ENTITY vident.prefs.vidFccDefault.label "Složka používána výchozím účtem">

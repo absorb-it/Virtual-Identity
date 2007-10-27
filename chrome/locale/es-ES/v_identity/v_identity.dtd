@@ -28,6 +28,7 @@
 <!ENTITY vident.prefs.VCard.label "adjuntos vCard">
 <!ENTITY vident.prefs.HideSignature.warning.desc "nota: para habilitar la desactivación dinámica de firmas tiene que instalar (y activar) la extensión &apos;Signature Switch&apos;. Por ahora, esta opción no está disponible.">
 <!ENTITY vident.prefs.HideSignature.label "eliminar cualquier firma cuando se use una identidad virtual">
+<!ENTITY vident.prefs.autoReplyToSelf.label "set Virtual Identity as Reply-To Address">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "al enviar un mensaje usando una identidad virtual">
 <!ENTITY vident.prefs.vidFccAccount.label "Carpeta usada por la cuenta cambiada con Virtual Identity">
 <!ENTITY vident.prefs.vidFccDefault.label "Carpeta usada por la cuenta por defecto">

@@ -28,6 +28,7 @@
 <!ENTITY vident.prefs.VCard.label "Prílohy VCard">
 <!ENTITY vident.prefs.HideSignature.warning.desc "poznámka: pre zapnutie dynamického vypnutia podpisov je potrebné nainštalovať (a povoliť) rozšírenie &quot;Signature Switch&quot; . Inak táto voľba nie je dostupná.">
 <!ENTITY vident.prefs.HideSignature.label "Odstrániť každý podpis pri použitý virtuálnej identity">
+<!ENTITY vident.prefs.autoReplyToSelf.label "set Virtual Identity as Reply-To Address">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Počas posielania správy s virtuálnou identitou">
 <!ENTITY vident.prefs.vidFccAccount.label "Priečinok používaný účtom zmeneným virtuálnou identitou">
 <!ENTITY vident.prefs.vidFccDefault.label "Priečinok používaný predvoleným účtom">

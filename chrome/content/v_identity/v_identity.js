@@ -111,6 +111,7 @@ var vI = {
 		},
 		NotifyComposeFieldsReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeFieldsReady\n");
+			vI_msgIdentityClone.searchReplyToRow();
 			vI_addressBook.init();
 			vI_smartIdentity.init();
 		},

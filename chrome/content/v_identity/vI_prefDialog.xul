@@ -138,6 +138,11 @@
 			<description id="VIdent_identity.HideSignature.warning" width="500px">&vident.prefs.HideSignature.warning.desc;</description>
 			<checkbox id="VIdent_identity.hide_signature" label="&vident.prefs.HideSignature.label;" disabled="true"
 				prefstring="hide_signature"/>
+			<!-- experimental -->
+			<spacer id="autoReplyToSelfSpacer" height="10px" hidden="true"/>
+			<checkbox id="VIdent_identity.autoReplyToSelf" label="&vident.prefs.autoReplyToSelf.label;"
+				prefstring="autoReplyToSelf" hidden="true"/>
+			<!-- experimental -->
 			</groupbox>
 			</tabpanel>
 			<tabpanel orient="vertical">

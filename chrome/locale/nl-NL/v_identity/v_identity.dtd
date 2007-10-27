@@ -28,6 +28,7 @@
 <!ENTITY vident.prefs.VCard.label "vCard bijlagen">
 <!ENTITY vident.prefs.HideSignature.warning.desc "Opmerking: Om dynamisch deactiveren van handtekeningen in te schakelen dient u de ‘Signature Switch’ extensie te installeren (en activeren). Op dit moment is deze optie niet beschikbaar.">
 <!ENTITY vident.prefs.HideSignature.label "Alle handtekeningen verwijderen bij gebruik van een virtuele identiteit">
+<!ENTITY vident.prefs.autoReplyToSelf.label "set Virtual Identity as Reply-To Address">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Bij het verzenden van een bericht met een virtuele identiteit">
 <!ENTITY vident.prefs.vidFccAccount.label "Door account gebruikte map wijzigen bij gebruik virtuele identiteit">
 <!ENTITY vident.prefs.vidFccDefault.label "door standaardaccount gebruikte map">
