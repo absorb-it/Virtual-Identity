@@ -27,6 +27,7 @@ pref("extensions.virtualIdentity.hide_signature", false);
 pref("extensions.virtualIdentity.aBook_use", true);
 pref("extensions.virtualIdentity.aBook_use_non_vI", false);
 pref("extensions.virtualIdentity.aBook_storedefault", true);
+pref("extensions.virtualIdentity.aBook_dont_update_multiple", true);
 pref("extensions.virtualIdentity.aBook_show_switch", true);
 pref("extensions.virtualIdentity.aBook_warn_update", true);
 pref("extensions.virtualIdentity.aBook_use_for_smart_reply", true);

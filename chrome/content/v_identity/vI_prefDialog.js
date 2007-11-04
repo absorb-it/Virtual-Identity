@@ -61,6 +61,7 @@ vI_prefDialog = {
 				"VIdent_identity.hide_signature",
 				"VIdent_identity.aBook_use",
 				"VIdent_identity.aBook_storedefault",
+				"VIdent_identity.aBook_dont_update_multiple",
 				"VIdent_identity.aBook_show_switch",
 				"VIdent_identity.aBook_warn_update",
 				"VIdent_identity.aBook_use_for_smart_reply",
@@ -270,11 +271,12 @@ vI_prefDialog = {
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
 		vI_prefDialog.base.smartReplyHideSignature();
 		vI_prefDialog.base.aBookConstraint(document.getElementById("VIdent_identity.aBook_use"));
-		vI_prefDialog.base.aBookCheckCounter();
+		window.setTimeout(vI_prefDialog.base.aBookCheckCounter, 0); // do this in background, cause this might take a while
 		
 		if (vI_prefDialog.preferences.getBoolPref("experimental")){
 			document.getElementById("autoReplyToSelfSpacer").setAttribute("hidden", "false")
 			document.getElementById("VIdent_identity.autoReplyToSelf").setAttribute("hidden", "false")
+			document.getElementById("VIdent_identity.aBook_dont_update_multiple").setAttribute("hidden", "false")
 		}
 		
 		dump("## vI_prefDialog: init_prefs done\n");

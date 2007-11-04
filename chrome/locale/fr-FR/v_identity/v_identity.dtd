@@ -61,6 +61,7 @@
 <!ENTITY vident.prefs.aBookTab.Tab3.label "3. Extended">
 <!ENTITY vident.prefs.aBook.storedefault.label "save Virtual Identities while sending emails">
 <!ENTITY vident.prefs.aBook.warn_update.label "ask before overwriting Virtual Identities in your Addressbook">
+<!ENTITY vident.prefs.aBook.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
 <!ENTITY vident.prefs.aBook.show_switch.label "show switch to activate/deactivate saving of Identities">
 <!ENTITY vident.prefs.aBook.warn_vI_replace.label "ask before Virtual Identity in Sender-Field will be replaced">
 <!ENTITY vident.prefs.aBookCap2.caption "Selection of Senders Identity">

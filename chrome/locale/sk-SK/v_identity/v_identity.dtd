@@ -61,6 +61,7 @@
 <!ENTITY vident.prefs.aBookTab.Tab3.label "3. Rozšírené">
 <!ENTITY vident.prefs.aBook.storedefault.label "Ukladať Virtuálne identity počas odosielania emailov">
 <!ENTITY vident.prefs.aBook.warn_update.label "Spýtať sa pred prepísaním Virtuálnej Identity v Adresáry">
+<!ENTITY vident.prefs.aBook.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
 <!ENTITY vident.prefs.aBook.show_switch.label "Ukázať prepnutie zapnutia/vypnutia uloženej totožnosti">
 <!ENTITY vident.prefs.aBook.warn_vI_replace.label "Spýtať sa pred nahradením Virtuálnej Identity v poli odosielateľa">
 <!ENTITY vident.prefs.aBook.reply.desc "Ak odpovedáte na email a máte zapnutý Adresár spolu s &quot;rýchlou odpoveďou&quot; môžete nastaviť koľko nájdených Virtuálnych Identít bude použité.Choosing in between the resulting Identities is done the same way as configured under &apos;Smart Reply&apos;.">

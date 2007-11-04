@@ -61,6 +61,7 @@
 <!ENTITY vident.prefs.aBookTab.Tab3.label "3. Avanzate">
 <!ENTITY vident.prefs.aBook.storedefault.label "Salva le identità virtuali in occasione dell&apos;invio dei messaggi">
 <!ENTITY vident.prefs.aBook.warn_update.label "Chiedi conferma prima di sovrascrivere le identità virtuali presenti in rubrica">
+<!ENTITY vident.prefs.aBook.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
 <!ENTITY vident.prefs.aBook.show_switch.label "Mostra opzione per attivare/disattivare il salvataggio delle identità">
 <!ENTITY vident.prefs.aBook.warn_vI_replace.label "Chiedi conferma prima di sostituire il campo &apos;Mittente&apos; con un&apos;identità virtuale">
 <!ENTITY vident.prefs.aBook.reply.desc "Queste opzioni permettono di configurare l&apos;utilizzo delle identità nel caso in cui si utilizzi la rubrica insieme a &apos;Smart Reply&apos;. La scelta tra le identità risultanti viene effettuata nella stessa maniera in cui è configurata &apos;Smart Reply&apos;.">

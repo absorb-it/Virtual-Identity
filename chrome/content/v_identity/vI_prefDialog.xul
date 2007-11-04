@@ -290,6 +290,8 @@
 					prefstring="aBook_storedefault"/>
 				<checkbox id="VIdent_identity.aBook_warn_update" label="&vident.prefs.aBook.warn_update.label;"
 					prefstring="aBook_warn_update"/>
+				<checkbox id="VIdent_identity.aBook_dont_update_multiple" label="&vident.prefs.aBook.dont_update_multiple.label;"
+					prefstring="aBook_dont_update_multiple" hidden="true"/>
 			</vbox>
 			</groupbox>
 			<groupbox>

@@ -31,6 +31,7 @@ vI_addressBook = {
 	CardFields : Array("Custom1", "Custom2", "Custom3", "Custom4", "Notes"),
 	
 	VIdentityString : null,
+	multipleRecipients : null,
 	
 	lastCheckedEmail : {}, // array of last checked emails per row, to prevent ugly double dialogs
 	
@@ -335,8 +336,14 @@ vI_addressBook = {
 		var addresses = vI_addressBook.readVIdentityFromCard(Card);
 		var old_address = vI.helper.getAddress();
 		
+		
+		dontUpdateMultipleNoEqual = (vI.preferences.getBoolPref("experimental") &&
+				vI.preferences.getBoolPref("aBook_dont_update_multiple") &&
+				vI_addressBook.multipleRecipients)
+		
 		if (addresses) {
-			if (!vI_addressBook.equalsCurrentIdentity(addresses)) {
+			if (!vI_addressBook.equalsCurrentIdentity(addresses) &&
+				!dontUpdateMultipleNoEqual) {
 				var warning = 	vI.elements.strings.getString("vident.updateAddressBook.warning1") +
 						email +
 						vI.elements.strings.getString("vident.updateAddressBook.warning2") +
@@ -375,6 +382,18 @@ vI_addressBook = {
 		
 		// store VIdentityString
 		vI_addressBook.storeCurrentVIdentityString()
+
+		// check if there are multiple recipients
+		vI_addressBook.multipleRecipients = false;
+		var recipients = 0;
+		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
+			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
+			if (recipientType == "addr_reply" || recipientType == "addr_followup") continue;
+			if (recipients++ == 1) {
+				vI_addressBook.multipleRecipients = true
+				break;
+			}
+		}			
 		
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			window.setTimeout(vI_addressBook.updateABookFromVIdentity, 50, awGetInputElement(row).value)

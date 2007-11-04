@@ -61,6 +61,7 @@
 <!ENTITY vident.prefs.aBookTab.Tab3.label "3. Erweitert">
 <!ENTITY vident.prefs.aBook.storedefault.label "speichere Virtuelle Identitäten beim Senden von Emails">
 <!ENTITY vident.prefs.aBook.warn_update.label "frage nach, bevor Virtuelle Identitäten im Adressbuch überschrieben werden">
+<!ENTITY vident.prefs.aBook.dont_update_multiple.label "überschreibe keine Einträge wenn Email an mehrere Empfänger geht">
 <!ENTITY vident.prefs.aBook.show_switch.label "zeige Schalter zum Aktivieren/Deaktivieren der Speicherung">
 <!ENTITY vident.prefs.aBook.warn_vI_replace.label "frage nach, wenn im Sender-Feld eingetragene Virtuelle Identität ersetzt werden soll">
 <!ENTITY vident.prefs.aBookCap2.caption "Auswahl der Sendeindentität">
