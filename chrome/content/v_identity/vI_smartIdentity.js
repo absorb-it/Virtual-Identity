@@ -502,11 +502,24 @@ vI_smartIdentity = {
 	addSmartIdentitiesToCloneMenu: function(all_addresses) {
 		vI.helper.addSeparatorToCloneMenu();
 		var object = vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone
-		var accountname = document.getElementById("prettyName-Prefix").getAttribute("label")
-				+ vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
-									.getAttribute("accountname")
-		for (index = 0; index < all_addresses.number; index++)
+		for (index = 0; index < all_addresses.number; index++) {
+			var accountname = null;
+			if (all_addresses.id_keys[index]) {
+				MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.childNodes
+				for (j = 0; j < MenuItems.length; j++) {
+					if ( MenuItems[j].getAttribute("value") == all_addresses.id_keys[index] ) {
+						accountname = MenuItems[j].getAttribute("accountname")
+						break;
+					}
+				}
+			}
+			if (!accountname) accountname = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("accountname")
+			accountname = document.getElementById("prettyName-Prefix").getAttribute("label") + accountname
+			
 			vI.helper.addIdentityMenuItem(object, all_addresses.combinedNames[index],
-				accountname, "", "vid")
+				accountname, "", "vid",
+				all_addresses.id_keys[index],
+				all_addresses.smtp_keys[index])
+		}
 	},
 }

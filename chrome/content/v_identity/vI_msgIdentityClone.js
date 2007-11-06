@@ -98,17 +98,12 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.doCommand();
 	},
 	
-	getIdentityName : function (key) {
-		return gAccountManager.getIdentity(key).accountname;
-	},
-	
-	copySelectedIdentity : function() {
+	copySelectedIdentity : function(id_key) {
 		vI_notificationBar.dump("## vI_msgIdentityClone: copySelectedIdentity\n");
 		// copy selected Menu-Value from clone to orig.
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
-			if ( MenuItems[index].getAttribute("value")
-				== vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") ) {
+			if ( MenuItems[index].getAttribute("value") == id_key ) {
 				vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem = MenuItems[index];
 				vI_msgIdentityClone.elements.Obj_MsgIdentity.value = MenuItems[index].getAttribute("value");
 				break;
@@ -130,16 +125,29 @@ vI_msgIdentityClone = {
 	{
 		vI_notificationBar.dump("## vI_msgIdentityClone: LoadIdentity\n");
 		vI_msgIdentityClone.cleanupReplyTo();
+		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
+		
+		var label = null;
+		
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value != "vid") {
-			vI_msgIdentityClone.copySelectedIdentity();
+			vI_msgIdentityClone.copySelectedIdentity(
+				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value);
 			vI_smtpSelector.resetMenuToMsgIdentity(
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value);
+			// Identitys might have IdentityName set differently to 'name <email>',
+			// so retrieve name and email directly from Identity
+			var identity = gAccountManager.getIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"))
+			label = identity.getUnicharAttribute("fullName") + " <" + identity.getUnicharAttribute("useremail") + ">"			
 		}
-		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
-		// Identitys might have IdentityName set differently to 'name <email>',
-		// so retrieve name and email directly from Identity
-		var identity = gAccountManager.getIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"))
-		var label = identity.getUnicharAttribute("fullName") + " <" + identity.getUnicharAttribute("useremail") + ">"
+		else {
+			vI_msgIdentityClone.copySelectedIdentity(
+				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.base_id_key);
+			vI_smtpSelector.resetMenuToMsgIdentity(
+				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.base_id_key);
+			vI_smtpSelector.setMenuToKey(
+				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.smtp_key);
+			label = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.label
+		}
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("label", label);
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = label;
 

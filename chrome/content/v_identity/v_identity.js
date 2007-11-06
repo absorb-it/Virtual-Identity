@@ -31,7 +31,7 @@ var vI = {
 			else return elem.getAttribute("accountname")
 		},
 
-		addIdentityMenuItem: function(object, identityName, accountName, accountKey, identityKey) {
+		addIdentityMenuItem: function(object, identityName, accountName, accountKey, identityKey, base_id_key, smtp_key) {
 			var MenuItem = document.createElement("menuitem");
 			MenuItem.className = "identity-popup-item";
 			
@@ -41,6 +41,8 @@ var vI = {
 			MenuItem.setAttribute("accountkey", accountKey);
 			MenuItem.setAttribute("value", identityKey);
 			MenuItem.setAttribute("class", "identity_clone-popup-item new-icon")
+			if (base_id_key) MenuItem.setAttribute("base_id_key", base_id_key)
+			if (smtp_key) MenuItem.setAttribute("smtp_key", smtp_key)
 			
 			object.appendChild(MenuItem)
 			
@@ -258,7 +260,7 @@ var vI = {
 						vI_account.account.defaultIdentity.identityName,
 						" - " +  vI_account.account.incomingServer.prettyName,
 						vI_account.account.key,
-						vI_account.account.defaultIdentity.key)
+						vI_account.account.defaultIdentity.key, null, null)
 		vI.elements.Obj_MsgIdentity.selectedItem = newMenuItem;
 		vI.elements.Obj_MsgIdentity.setAttribute("label", newMenuItem.getAttribute("label"));
 		vI.elements.Obj_MsgIdentity.setAttribute("accountname", newMenuItem.getAttribute("accountname"));

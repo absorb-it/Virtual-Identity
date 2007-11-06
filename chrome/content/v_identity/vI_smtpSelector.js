@@ -48,6 +48,7 @@ vI_smtpSelector = {
 	},
 	
 	resetMenuToMsgIdentity : function(identitykey) {
+		if (!identitykey) return;
 		var smtpKey = gAccountManager.getIdentity(identitykey).smtpServerKey
 		if (!smtpKey) for (var i in gAccountManager.accounts) {
 				for (var j in gAccountManager.accounts[i].identities) {
@@ -60,6 +61,7 @@ vI_smtpSelector = {
 	},
 	
 	setMenuToKey : function (smtpKey) {
+		if (!smtpKey) return;
 		MenuItems = vI_smtpSelector.elements.Obj_SMTPServerListPopup.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].getAttribute("key") == smtpKey) {
