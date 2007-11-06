@@ -65,12 +65,15 @@ var vI = {
 		},
 		
 		parseAddress : function(address) {
+			//~ vI_notificationBar.dump("## v_identity: getAddress: parsing '" + address + "'\n")
+			var name = ""; email = "";
 			// prefer an email address separated with < >, only if not found use any other
-			if (!address.match(/<\s*[^>\s]*@[^>\s]*\s*>/)) address.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/)
-			var name = RegExp.leftContext + RegExp.rightContext
-			var email = RegExp.lastMatch
-			email = email.replace(/\s+|<|>/g,"")
-			name = name.replace(/^\s+|\s+$/g,"")
+			if (address.match(/<\s*[^>\s]*@[^>\s]*\s*>/) || address.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/)) {
+				name = RegExp.leftContext + RegExp.rightContext
+				email = RegExp.lastMatch
+				email = email.replace(/\s+|<|>/g,"")
+				name = name.replace(/^\s+|\s+$/g,"")
+			}
 			vI_notificationBar.dump("## v_identity: getAddress: name '" + 
 				name + "' email '" + email + "'\n");
 			return { name: name,
