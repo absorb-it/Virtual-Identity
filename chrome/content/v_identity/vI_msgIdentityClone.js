@@ -71,9 +71,12 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 			.setAttribute("value", vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"));
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
-			.setAttribute("label", vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("label"));
-		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 			.setAttribute("accountname", vI.helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem));
+		// Identitys might have IdentityName set differently to 'name <email>',
+		// so retrieve name and email directly from Identity
+		var identity = gAccountManager.getIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"))
+		var label = identity.getUnicharAttribute("fullName") + " <" + identity.getUnicharAttribute("useremail") + ">"
+		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("label", label);
 	},
 	
 	resetMenuToDefault : function () {
@@ -91,7 +94,8 @@ vI_msgIdentityClone = {
 					break;
 			}
 		}
-		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.doCommand();
+		vI_notificationBar.dump("## vI_msgIdentityClone: setMenuToIdentity MsgIdentityPopup_clone.doCommand()\n");
+		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.doCommand();
 	},
 	
 	getIdentityName : function (key) {
@@ -99,6 +103,7 @@ vI_msgIdentityClone = {
 	},
 	
 	copySelectedIdentity : function() {
+		vI_notificationBar.dump("## vI_msgIdentityClone: copySelectedIdentity\n");
 		// copy selected Menu-Value from clone to orig.
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
@@ -109,7 +114,7 @@ vI_msgIdentityClone = {
 				break;
 			}
 		}
-		vI_notificationBar.dump("## vI_msgIdentityClone: MsgIdentityPopup.doCommand()\n");
+		vI_notificationBar.dump("## vI_msgIdentityClone: copySelectedIdentity MsgIdentityPopup.doCommand()\n");
 		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.doCommand();
 	},
 	
@@ -123,6 +128,7 @@ vI_msgIdentityClone = {
 	// remove the Virtual Account if a different (usual) Account is choosen in the cloned dropdown-menu
 	LoadIdentity : function()
 	{
+		vI_notificationBar.dump("## vI_msgIdentityClone: LoadIdentity\n");
 		vI_msgIdentityClone.cleanupReplyTo();
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value != "vid") {
 			vI_msgIdentityClone.copySelectedIdentity();
@@ -130,8 +136,13 @@ vI_msgIdentityClone = {
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value);
 		}
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
-		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value =
-			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.getAttribute("label");
+		// Identitys might have IdentityName set differently to 'name <email>',
+		// so retrieve name and email directly from Identity
+		var identity = gAccountManager.getIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"))
+		var label = identity.getUnicharAttribute("fullName") + " <" + identity.getUnicharAttribute("useremail") + ">"
+		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("label", label);
+		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = label;
+
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("accountname",
 			vI.helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem));
 		vI_msgIdentityClone.markAsNewAccount(vI_msgIdentityClone.isNewIdentity());
@@ -139,11 +150,14 @@ vI_msgIdentityClone = {
 	},
 	
 	setIdentity : function(newName) {
+		vI_notificationBar.dump("## initReplyToFields setIdentity " + newName + "\n");
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = newName;
 		vI_msgIdentityClone.blurEvent()
 		var newIdentity = vI_msgIdentityClone.isNewIdentity();
 		window.setTimeout(vI_msgIdentityClone.markAsNewAccount, 0, newIdentity);
+		if (!newIdentity) window.setTimeout(vI_msgIdentityClone.setMenuToIdentity, 0,
+			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value"));
 		return newIdentity;
 	},
 	
@@ -158,89 +172,100 @@ vI_msgIdentityClone = {
 	{
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		// compare Identity with existant ones and prepare Virtual-Identity if nonexistant found
-		vI_msgIdentityClone.markAsNewAccount(vI_msgIdentityClone.isNewIdentity());
+		var newIdentity = vI_msgIdentityClone.isNewIdentity();
+		vI_msgIdentityClone.markAsNewAccount(newIdentity);
+		if (!newIdentity) vI_msgIdentityClone.setMenuToIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value"));
 	},
 	
 	replyToInputElem : null,	// it is important to store the Elements and not the row
 	replyToPopupElem : null,	// cause row might change if one above gets removed
+	replyToInitValue : null,
 	replyToStoredLastValue : null,
 	replyToSynchronize : true,
 	
 	// called directly after a change of the Identity with the dropdown menu
 	// searches the first reply-to row and assumes that this is the one we like to adapt
 	initReplyToFields : function() {
-		if (!vI.preferences.getBoolPref("experimental")) return
 		var replyTo = gAccountManager.getIdentity(vI_msgIdentityClone.elements.
 				Obj_MsgIdentity_clone.selectedItem.value).replyTo
-		vI_notificationBar.dump("#X initReplyToFields identity.replyTo: " + replyTo + "\n");
+		vI_notificationBar.dump("## initReplyToFields identity.replyTo: " + replyTo + "\n");
 		if (replyTo == "") return
 		
+		vI_msgIdentityClone.replyToInitValue = replyTo;
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var awType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			var awValue = awGetInputElement(row).value
 			if (awType == "addr_reply" && awValue == replyTo) {
-				vI_notificationBar.dump("#X vI_msgIdentityClone: Reply-To found in row " + row + "\n");
+				vI_notificationBar.dump("## vI_msgIdentityClone: Reply-To found in row " + row + "\n");
 				vI_msgIdentityClone.replyToPopupElem = awGetPopupElement(row)
 				vI_msgIdentityClone.replyToInputElem = awGetInputElement(row)
 				break;
 				}
 		}
-		if (!vI_msgIdentityClone.replyToInputElem) vI_notificationBar.dump("#X vI_msgIdentityClone: no Reply-To row found\n");
+		if (!vI_msgIdentityClone.replyToInputElem) vI_notificationBar.dump("## vI_msgIdentityClone: no Reply-To row found\n");
 	},
 	
 	cleanupReplyTo : function() {
-		if (!vI.preferences.getBoolPref("experimental")) return
 		if (!vI_msgIdentityClone.replyToSynchronize) return
-		vI_notificationBar.dump("#X cleanupReplyTo\n");
-		if (vI_msgIdentityClone.replyToInputElem) {
-				vI_notificationBar.dump("#X restore ReplyTo\n");
-				vI_msgIdentityClone.replyToInputElem.value =
-					gAccountManager.getIdentity(vI_msgIdentityClone.elements.
-						Obj_MsgIdentity_clone.selectedItem.value).replyTo
-				vI_msgIdentityClone.replyToInputElem.setAttribute("value",
-					gAccountManager.getIdentity(vI_msgIdentityClone.elements.
-						Obj_MsgIdentity_clone.selectedItem.value).replyTo)
+		vI_notificationBar.dump("## cleanupReplyTo\n");
+		
+		// check if sychronizing should still be done (will be stopped if value was modified by hand)
+		// if still in synchronizing mode reset the fields
+		if ( vI_msgIdentityClone.replyToInputElem && vI_msgIdentityClone.synchroneReplyTo() ) {
+			if (vI_msgIdentityClone.replyToInitValue) {
+				var replyTo = vI_msgIdentityClone.replyToInitValue;
+				vI_notificationBar.dump("## restore ReplyTo: " + replyTo + "\n");
+				vI_msgIdentityClone.replyToInputElem.value = replyTo;
+				vI_msgIdentityClone.replyToInputElem.setAttribute("value",replyTo)
 			}
+			else {
+				awDeleteHit(vI_msgIdentityClone.replyToInputElem);
+				window.setTimeout("vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.focus();", 0)
+			}
+		}
 		vI_msgIdentityClone.replyToInputElem = null;
 		vI_msgIdentityClone.replyToPopupElem = null;
+		vI_msgIdentityClone.replyToInitValue = null;
 		vI_msgIdentityClone.replyToStoredLastValue = null;
+	},
+	
+	synchroneReplyTo : function() {
+		vI_notificationBar.dump("## synchroneReplyTo\n");
+		if ( (vI_msgIdentityClone.replyToPopupElem.selectedItem.value != "addr_reply") ||
+			(vI_msgIdentityClone.replyToStoredLastValue &&
+			vI_msgIdentityClone.replyToInputElem.value != vI_msgIdentityClone.replyToStoredLastValue)) {
+			vI_msgIdentityClone.replyToSynchronize = false;
+			vI_notificationBar.dump("## vI_msgIdentityClone: (former) Reply-To entry changed, stop synchronizing\n");
+		}
+		return vI_msgIdentityClone.replyToSynchronize
 	},
 	
 	// updateReplyTo is called on every change in the From: field, if its a virtual Identity
 	updateReplyTo : function(newIdentity) {
-		if (!vI.preferences.getBoolPref("experimental")) return
 		if (!vI.preferences.getBoolPref("autoReplyToSelf")) return
 		if (!vI_msgIdentityClone.replyToSynchronize) {
-			vI_notificationBar.dump("#X updateReplyTo stopped Synchronizing\n") 
+			vI_notificationBar.dump("## updateReplyTo stopped Synchronizing\n") 
 			return
 		}
-		vI_notificationBar.dump("#X updateReplyTo replyToStoredLastValue=" 
+		vI_notificationBar.dump("## updateReplyTo replyToStoredLastValue=" 
 				+ vI_msgIdentityClone.replyToStoredLastValue + "\n");
 
 		// if replyToInputElem not set (so no initial Reply-To row was found) add a row now
 		if (!vI_msgIdentityClone.replyToInputElem) {
 			awAddRecipient("addr_reply",vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value)
-			//~ vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.focus()
+			window.setTimeout("vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.focus();", 0)
 			vI_msgIdentityClone.replyToPopupElem = awGetPopupElement(top.MAX_RECIPIENTS - 1)
 			vI_msgIdentityClone.replyToInputElem = awGetInputElement(top.MAX_RECIPIENTS - 1)
-			//~ vI_notificationBar.dump("#X vI_msgIdentityClone: Reply-To created in row " + top.MAX_RECIPIENTS + "\n");
 		}
 		
 		// check if sychronizing should still be done (will be stopped if value was modified by hand)
-		if ( (vI_msgIdentityClone.replyToPopupElem.selectedItem.value != "addr_reply") ||
-			(vI_msgIdentityClone.replyToStoredLastValue &&
-			vI_msgIdentityClone.replyToInputElem.value != vI_msgIdentityClone.replyToStoredLastValue)) {
-			vI_msgIdentityClone.replyToSynchronize = false;
-			vI_notificationBar.dump("#X vI_msgIdentityClone: (former) Reply-To entry changed, stop synchronizing\n");
-		}
-		else {
+		if (vI_msgIdentityClone.synchroneReplyTo()) {
 			vI_msgIdentityClone.replyToInputElem.value =
 				vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value
 			//~ vI_msgIdentityClone.replyToInputElem.setAttribute("value",
 				//~ vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value)
 			vI_msgIdentityClone.replyToStoredLastValue = vI_msgIdentityClone.replyToInputElem.value
-		}
-		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.focus()
+		}		
 	},
 	
 	markAsNewAccount : function(newIdentity) {
@@ -290,7 +315,6 @@ vI_msgIdentityClone = {
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 					.setAttribute("oldvalue",null)
 				//~ vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.doCommand();
-				vI_msgIdentityClone.setMenuToIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value"));
 			}
 			// code to show the signature
 			try { if (ss_signature.length > 0) ss_main.signatureSwitch(); }

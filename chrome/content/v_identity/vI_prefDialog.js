@@ -273,11 +273,8 @@ vI_prefDialog = {
 		vI_prefDialog.base.aBookConstraint(document.getElementById("VIdent_identity.aBook_use"));
 		window.setTimeout(vI_prefDialog.base.aBookCheckCounter, 0); // do this in background, cause this might take a while
 		
-		if (vI_prefDialog.preferences.getBoolPref("experimental")){
-			document.getElementById("autoReplyToSelfSpacer").setAttribute("hidden", "false")
-			document.getElementById("VIdent_identity.autoReplyToSelf").setAttribute("hidden", "false")
-			document.getElementById("VIdent_identity.aBook_dont_update_multiple").setAttribute("hidden", "false")
-		}
+		//~ if (vI_prefDialog.preferences.getBoolPref("experimental")){
+		//~ }
 		
 		dump("## vI_prefDialog: init_prefs done\n");
 	},

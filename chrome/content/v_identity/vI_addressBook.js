@@ -237,6 +237,7 @@ vI_addressBook = {
 						fullABEntry : Array(Card[prop].replace(/vIdentity: /,"")) };
 				if ( info && info[0] ) addresses.id_keys[0] = info[0];
 				if ( info && info[1] ) addresses.smtp_keys[0] = info[1];
+				vI_notificationBar.dump("## vI_addressBook: found '" + addresses.combinedNames[0] + "'.\n")
 				vI_notificationBar.dump("## vI_addressBook: found '" + addresses.fullABEntry[0] + "'.\n")
 				return addresses
 			}
@@ -337,9 +338,8 @@ vI_addressBook = {
 		var old_address = vI.helper.getAddress();
 		
 		
-		dontUpdateMultipleNoEqual = (vI.preferences.getBoolPref("experimental") &&
-				vI.preferences.getBoolPref("aBook_dont_update_multiple") &&
-				vI_addressBook.multipleRecipients)
+		dontUpdateMultipleNoEqual = (vI.preferences.getBoolPref("aBook_dont_update_multiple") &&
+					vI_addressBook.multipleRecipients)
 		
 		if (addresses) {
 			if (!vI_addressBook.equalsCurrentIdentity(addresses) &&

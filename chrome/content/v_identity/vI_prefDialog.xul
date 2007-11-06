@@ -138,11 +138,9 @@
 			<description id="VIdent_identity.HideSignature.warning" width="500px">&vident.prefs.HideSignature.warning.desc;</description>
 			<checkbox id="VIdent_identity.hide_signature" label="&vident.prefs.HideSignature.label;" disabled="true"
 				prefstring="hide_signature"/>
-			<!-- experimental -->
-			<spacer id="autoReplyToSelfSpacer" height="10px" hidden="true"/>
+			<spacer id="autoReplyToSelfSpacer" height="10px"/>
 			<checkbox id="VIdent_identity.autoReplyToSelf" label="&vident.prefs.autoReplyToSelf.label;"
-				prefstring="autoReplyToSelf" hidden="true"/>
-			<!-- experimental -->
+				prefstring="autoReplyToSelf"/>
 			</groupbox>
 			</tabpanel>
 			<tabpanel orient="vertical">
@@ -291,7 +289,7 @@
 				<checkbox id="VIdent_identity.aBook_warn_update" label="&vident.prefs.aBook.warn_update.label;"
 					prefstring="aBook_warn_update"/>
 				<checkbox id="VIdent_identity.aBook_dont_update_multiple" label="&vident.prefs.aBook.dont_update_multiple.label;"
-					prefstring="aBook_dont_update_multiple" hidden="true"/>
+					prefstring="aBook_dont_update_multiple"/>
 			</vbox>
 			</groupbox>
 			<groupbox>
