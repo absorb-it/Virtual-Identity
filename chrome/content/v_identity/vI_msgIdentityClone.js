@@ -169,7 +169,9 @@ vI_msgIdentityClone = {
 		return newIdentity;
 	},
 	
+	blurEventBlocked : false,
 	blurEvent : function() {
+		if (vI_msgIdentityClone.blurEventBlocked) return;
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		var address = vI.helper.getAddress();
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = address.combinedName;
@@ -260,8 +262,9 @@ vI_msgIdentityClone = {
 
 		// if replyToInputElem not set (so no initial Reply-To row was found) add a row now
 		if (!vI_msgIdentityClone.replyToInputElem) {
+			vI_msgIdentityClone.blurEventBlocked = true;
 			awAddRecipient("addr_reply",vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value)
-			window.setTimeout("vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.focus();", 0)
+			window.setTimeout("vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.focus();vI_msgIdentityClone.blurEventBlocked = false;", 0)
 			vI_msgIdentityClone.replyToPopupElem = awGetPopupElement(top.MAX_RECIPIENTS - 1)
 			vI_msgIdentityClone.replyToInputElem = awGetInputElement(top.MAX_RECIPIENTS - 1)
 		}
