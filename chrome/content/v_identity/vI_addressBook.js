@@ -398,6 +398,9 @@ vI_addressBook = {
 		}			
 		
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
+			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
+			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
+				awGetInputElement(row).value.match(/^\s*$/) ) continue;
 			window.setTimeout(vI_addressBook.updateABookFromVIdentity, 50, awGetInputElement(row).value)
 		}
 	},
