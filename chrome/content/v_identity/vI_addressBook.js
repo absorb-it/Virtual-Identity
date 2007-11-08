@@ -388,9 +388,11 @@ vI_addressBook = {
 		var recipients = 0;
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
-			if (recipientType == "addr_reply" || recipientType == "addr_followup" || awGetInputElement(row).value == "") continue;
+			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
+				awGetInputElement(row).value.match(/^\s*$/) ) continue;
 			if (recipients++ == 1) {
 				vI_addressBook.multipleRecipients = true
+				vI_notificationBar.dump("## vI_addressBook: multiple recipients found.\n")
 				break;
 			}
 		}			
