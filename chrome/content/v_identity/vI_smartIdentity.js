@@ -133,17 +133,7 @@ vI_smartIdentity = {
 		vI_notificationBar.dump("## vI_smartIdentity: checked for Addressbook-Identities and found " + aBook_addresses.number + " address(es)\n")
 		
 		all_addresses = vI_smartIdentity.mergeWithoutDuplicates(all_addresses, aBook_addresses);
-		
-		if (vI_smartIdentity.matchSelectedIdentity(all_addresses)) return;
-		
-		if (vI_smartIdentity.smartIdentity_BaseIdentity = vI_smartIdentity.matchAnyIdentity(all_addresses)) {
-			vI_notificationBar.addNote(
-				vI.elements.strings.getString("vident.smartIdentity.matchExisting"),
-				"smart_reply_notification");
-			window.setTimeout(vI_smartIdentity.updateMsgComposeDialog, 0);
-			return;
-		}
-	
+			
 		vI_smartIdentity.smartIdentitySelection(all_addresses, true);
 	},
 	
