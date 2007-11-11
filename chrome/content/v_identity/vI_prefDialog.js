@@ -70,6 +70,7 @@ vI_prefDialog = {
 				"VIdent_identity.aBook_warn_vI_replace",
 				"VIdent_identity.aBook_use_non_vI",
 				"VIdent_identity.aBook_notification",
+				"VIdent_identity.aBook_getOneOnly",
 				"VIdent_identity.autoReplyToSelf"],
 	
 		init : function() {
@@ -155,6 +156,8 @@ vI_prefDialog = {
 				"VIdent_identity.aBook_warn_vI_replace",
 				"VIdent_identity.aBook_remove_entries",
 				"VIdent_identity.aBook_use_non_vI",
+				"VIdent_identity.aBook_dont_update_multiple",
+				"VIdent_identity.aBook_getOneOnly",
 				"aBookTab", "aBookTab1", "aBookTab2", "aBookTab3"];
 			for( var i = 0; i < elementIDs.length; i++ ) {
 				if (element.checked)

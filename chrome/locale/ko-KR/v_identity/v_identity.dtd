@@ -64,6 +64,7 @@
 <!ENTITY vident.prefs.aBook.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
 <!ENTITY vident.prefs.aBook.show_switch.label "show switch to activate/deactivate saving of Identities">
 <!ENTITY vident.prefs.aBook.warn_vI_replace.label "ask before Virtual Identity in Sender-Field will be replaced">
+<!ENTITY vident.prefs.aBook.get_One_Only.label "ignore Addressbook after first Virtual Identity was retrieved">
 <!ENTITY vident.prefs.aBookCap2.caption "Selection of Senders Identity">
 <!ENTITY vident.prefs.aBook.reply.desc "If you answer any emails and usage of Addressbook is activated together with 'Smart Reply', this is the place to configure if and how the found Identities will be used. Choosing in between the resulting Identities is done the same way as configured under 'Smart Reply'.">
 <!ENTITY vident.prefs.aBook.use_for_smart_reply.label "use Addressbook Identities together with 'Smart-Reply'">

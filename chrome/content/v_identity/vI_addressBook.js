@@ -162,10 +162,8 @@ vI_addressBook = {
 			var directory = vI_addressBook.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
 			// directory will now be a subset of the addressbook containing only those cards that match the searchstring 'address'
 			if (!directory) break;
-			var childCards = directory.childCards;
-			
-			var keepGoing = 1;
-			try { childCards.first(); } catch (ex) { keepGoing = 0; }
+			var childCards = null; var keepGoing = 1;
+			try { childCards = directory.childCards; childCards.first(); } catch (ex) { keepGoing = 0; }
 			
 			while (keepGoing == 1) {
 				currentCard = childCards.currentItem();
@@ -268,6 +266,8 @@ vI_addressBook = {
 		vI_addressBook.VIdentityString = old_address.combinedName + " (" + id_key + "," + smtp_key + ")"
 	},
 	
+	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the AddressBook was successfull
+	firstUsedABookEntry : null,	// stores the used ABook-entry to show a warning if the Identities differ
 	updateVIdentityFromABook: function(inputElement) {
 		if (!vI.preferences.getBoolPref("aBook_use")) {
 			vI_notificationBar.dump("## vI_addressBook: usage deactivated.\n")
@@ -277,9 +277,15 @@ vI_addressBook = {
 		var recipientType = document.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
 					.selectedItem.getAttribute("value");
 		if (recipientType == "addr_reply" || recipientType == "addr_followup") {
+			// reset firstUsedInputElement and firstUsedABookEntry if recipientType was changed
+			if (vI_addressBook.firstUsedInputElement == inputElement) {
+				vI_addressBook.firstUsedInputElement = null;
+				vI_addressBook.firstUsedABookEntry = null;
+			}
 			vI_notificationBar.dump("## vI_addressBook: field is a 'reply-to' or 'followup-to'. not searched.\n")
 			return;
 		}
+		
 		var email = inputElement.value
 		if (email == "") {
 			vI_notificationBar.dump("## vI_addressBook: no email found, not checked.\n"); return;
@@ -292,12 +298,25 @@ vI_addressBook = {
 		vI_addressBook.lastCheckedEmail[row] = email;
 		
 		var Card = vI_addressBook.getCardForAddress(email); if (!Card) return;
+		
+		// found Card, so store InputElement
+		if (!vI_addressBook.firstUsedInputElement) vI_addressBook.firstUsedInputElement = inputElement;
+		
 		var addresses = vI_addressBook.readVIdentityFromCard(Card)
 		
 		if (addresses) {				
 			vI_notificationBar.dump("## vI_addressBook: compare with current Identity\n");
+			if (vI_addressBook.firstUsedInputElement == inputElement)
+				vI_addressBook.firstUsedABookEntry = addresses.fullABEntry[0]
+			if (vI.preferences.getBoolPref("aBook_getOneOnly") && vI_addressBook.firstUsedInputElement &&
+				vI_addressBook.firstUsedInputElement != inputElement) {
+				vI_notificationBar.dump("## vI_addressBook: retrieved Identity for other recipient-field before. ignoring\n");
+				if (vI_addressBook.firstUsedABookEntry != addresses.fullABEntry[0])
+					vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIaBookCollidingIdentity"),
+						"aBook_notification");
+			}
 			// only update fields if new Identity is different than old one.
-			if (!vI_addressBook.equalsCurrentIdentity(addresses)) {
+			else if (!vI_addressBook.equalsCurrentIdentity(addresses)) {
 				var warning = vI.elements.strings.getString("vident.updateVirtualIdentity.warning1") +
 							email +
 							vI.elements.strings.getString("vident.updateVirtualIdentity.warning2") +

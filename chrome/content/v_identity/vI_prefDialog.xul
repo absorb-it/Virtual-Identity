@@ -299,6 +299,8 @@
 					prefstring="aBook_show_switch"/>
 				<checkbox id="VIdent_identity.aBook_warn_vI_replace" label="&vident.prefs.aBook.warn_vI_replace.label;"
 					prefstring="aBook_warn_vI_replace"/>
+				<checkbox id="VIdent_identity.aBook_getOneOnly" label="&vident.prefs.aBook.get_One_Only.label;"
+					prefstring="aBook_getOneOnly"/>
 			</vbox>
 			</groupbox>
 			</tabpanel>

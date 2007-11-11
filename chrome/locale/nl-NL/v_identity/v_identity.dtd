@@ -64,6 +64,7 @@
 <!ENTITY vident.prefs.aBook.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
 <!ENTITY vident.prefs.aBook.show_switch.label "Schakelaar om opslaan van identiteiten te activeren/deactiveren laten zien">
 <!ENTITY vident.prefs.aBook.warn_vI_replace.label "Vragen voordat de virtuele identiteit in het afzendersveld wordt vervangen">
+<!ENTITY vident.prefs.aBook.get_One_Only.label "ignore Addressbook after first Virtual Identity was retrieved">
 <!ENTITY vident.prefs.aBook.reply.desc "Als u antwoordt op e-mailberichten en het gebruik van het adresboek is geactiveerd in combinatie met Slim Antwoorden kunt u hier instellen of en hoe aangetroffen identiteiten worden gebruikt. De keuze tussen de resulterende identiteiten wordt op dezelfde wijze gemaakt als ingesteld onder Slim Antwoorden.">
 <!ENTITY vident.prefs.aBook.use_for_smart_reply.label "Adresboekidentiteiten in combinatie met Slim Antwoorden gebruiken">
 <!ENTITY vident.prefs.aBook.prefer_smart_reply.label "Voorkeur geven aan Slim Antwoorden-identiteiten">

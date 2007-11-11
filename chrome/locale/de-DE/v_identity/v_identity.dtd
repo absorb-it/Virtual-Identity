@@ -64,6 +64,7 @@
 <!ENTITY vident.prefs.aBook.dont_update_multiple.label "überschreibe keine Einträge wenn Email an mehrere Empfänger geht">
 <!ENTITY vident.prefs.aBook.show_switch.label "zeige Schalter zum Aktivieren/Deaktivieren der Speicherung">
 <!ENTITY vident.prefs.aBook.warn_vI_replace.label "frage nach, wenn im Sender-Feld eingetragene Virtuelle Identität ersetzt werden soll">
+<!ENTITY vident.prefs.aBook.get_One_Only.label "ignoriere Adressbuch nachdem die erste Virtuelle Identität gefunden wurde">
 <!ENTITY vident.prefs.aBookCap2.caption "Auswahl der Sendeindentität">
 <!ENTITY vident.prefs.aBook.reply.desc "Wird auf emails geantwortet und ist die Nutzung des Adressbuchs gemeinsam mit 'Smart Reply' aktiviert, kann hier konfiguriert werden, ob und wie die gefundenen Identitäten genutzt werden. Die Übernahme der Identitäten als Sender erfolgt dabei genauso, wie unter 'Smart Reply' konfiguriert.">
 <!ENTITY vident.prefs.aBook.use_for_smart_reply.label "benutze Adressbuch-Identitäten gemeinsam mit 'Smart Reply'">

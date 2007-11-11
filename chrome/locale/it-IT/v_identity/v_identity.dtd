@@ -64,6 +64,7 @@
 <!ENTITY vident.prefs.aBook.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
 <!ENTITY vident.prefs.aBook.show_switch.label "Mostra opzione per attivare/disattivare il salvataggio delle identità">
 <!ENTITY vident.prefs.aBook.warn_vI_replace.label "Chiedi conferma prima di sostituire il campo &apos;Mittente&apos; con un&apos;identità virtuale">
+<!ENTITY vident.prefs.aBook.get_One_Only.label "ignore Addressbook after first Virtual Identity was retrieved">
 <!ENTITY vident.prefs.aBook.reply.desc "Queste opzioni permettono di configurare l&apos;utilizzo delle identità nel caso in cui si utilizzi la rubrica insieme a &apos;Smart Reply&apos;. La scelta tra le identità risultanti viene effettuata nella stessa maniera in cui è configurata &apos;Smart Reply&apos;.">
 <!ENTITY vident.prefs.aBook.use_for_smart_reply.label "Utilizza le identità della rubrica insieme a &apos;Smart Reply&apos;">
 <!ENTITY vident.prefs.aBook.prefer_smart_reply.label "Utilizza le identità di &apos;Smart Reply&apos; ove possibile">

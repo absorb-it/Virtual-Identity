@@ -35,6 +35,7 @@ pref("extensions.virtualIdentity.aBook_prefer_smart_reply", false);
 pref("extensions.virtualIdentity.aBook_ignore_smart_reply", true);
 pref("extensions.virtualIdentity.aBook_warn_vI_replace", true);
 pref("extensions.virtualIdentity.aBook_notification", true);
+pref("extensions.virtualIdentity.aBook_getOneOnly", true);
 pref("extensions.virtualIdentity.experimental", false);
 pref("extensions.virtualIdentity.autoReplyToSelf", false);
 pref("extensions.{dddd428e-5ac8-4a81-9f78-276c734f75b8}.description", "chrome://v_identity/locale/v_identity.properties");

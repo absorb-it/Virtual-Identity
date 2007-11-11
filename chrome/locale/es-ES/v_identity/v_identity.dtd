@@ -64,6 +64,7 @@
 <!ENTITY vident.prefs.aBook.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
 <!ENTITY vident.prefs.aBook.show_switch.label "mostrar selector para activar/desactivar la opción de guardar las identidades">
 <!ENTITY vident.prefs.aBook.warn_vI_replace.label "preguntar antes de reemplazar el campo remitente con la identidad virtual">
+<!ENTITY vident.prefs.aBook.get_One_Only.label "ignore Addressbook after first Virtual Identity was retrieved">
 <!ENTITY vident.prefs.aBook.reply.desc "Si responde un correo y tiene activado el uso de la libreta de direcciones junto con la &apos;respuesta rápida&apos;, aquí puede configurar cómo se usarán las identidades que se encuentren.  La elección entre las identidades que se encuentren se hace del mismo modo que se haya configurado en la &apos;respuesta rápida&apos;.">
 <!ENTITY vident.prefs.aBook.use_for_smart_reply.label "usar las identidades de la libreta de direcciones junto con la &apos;respuesta rápida&apos;">
 <!ENTITY vident.prefs.aBook.prefer_smart_reply.label "preferir las identidades de &apos;respuesta rápida&apos;">
