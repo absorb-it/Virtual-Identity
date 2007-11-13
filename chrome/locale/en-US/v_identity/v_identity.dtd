@@ -77,7 +77,7 @@
 <!ENTITY vident.prefs.notificationTab.caption "Notifications">
 <!ENTITY vident.prefs.notifyHeaders.label "show information about recognized headers">
 <!ENTITY vident.prefs.notifySmartIdentity.label "activate Smart Reply / Smart Draft status messages">
-<!ENTITY vident.prefs.notifyABook.label "aktivate Addressbook status messages">
+<!ENTITY vident.prefs.notifyABook.label "activate Addressbook status messages">
 <!ENTITY vident.prefs.notifyTime.prefix.label "time to show status messages (0 = infinite)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "seconds">
 <!ENTITY vident.prefs.notificationTab.Debug.caption "Debugging">
