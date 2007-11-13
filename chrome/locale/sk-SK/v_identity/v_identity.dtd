@@ -52,8 +52,8 @@
 <!ENTITY vident.prefs.smartReply.autocreate.desc "(ak je len jedna možná adresa)">
 <!ENTITY vident.prefs.aBookTab.label "Adresár">
 <!ENTITY vident.prefs.aBookTab.header "Ukladať virtuálne identity v Adresári">
-<!ENTITY vident.prefs.aBookCap1.caption "Nastavenie Virtuálnej Identity v Adresári">
-<!ENTITY vident.prefs.aBookCap2.caption "Výber Identity Odosielateľa">
+<!ENTITY vident.prefs.aBookCap1.caption "Storing of Virtual Identities">
+<!ENTITY vident.prefs.aBookCap2.caption "Reading of Virtual Identities">
 <!ENTITY vident.prefs.aBookCap3.caption "rozvírené Nastavenia">
 <!ENTITY vident.prefs.aBookCap4.caption "Vyčistiť Adresár">
 <!ENTITY vident.prefs.aBookTab.Tab1.label "1. Všeobecné nastavenia">

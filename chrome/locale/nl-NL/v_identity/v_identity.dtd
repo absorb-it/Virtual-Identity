@@ -52,8 +52,8 @@
 <!ENTITY vident.prefs.smartReply.autocreate.desc "(als er slechts één adres mogelijk is)">
 <!ENTITY vident.prefs.aBookTab.label "Adresboek">
 <!ENTITY vident.prefs.aBookTab.header "Virtuele identiteiten worden in adresboek opgeslagen">
-<!ENTITY vident.prefs.aBookCap1.caption "Virtual Identity adresboekopties">
-<!ENTITY vident.prefs.aBookCap2.caption "Selectie van afzendersidentiteit">
+<!ENTITY vident.prefs.aBookCap1.caption "Storing of Virtual Identities">
+<!ENTITY vident.prefs.aBookCap2.caption "Reading of Virtual Identities">
 <!ENTITY vident.prefs.aBookCap3.caption "Uitgebreide opties">
 <!ENTITY vident.prefs.aBookCap4.caption "Opschonen van adresboeken">
 <!ENTITY vident.prefs.aBookTab.Tab1.label "1. Algemene instellingen">

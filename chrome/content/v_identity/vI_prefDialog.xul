@@ -286,6 +286,8 @@
 			<vbox align="left">
 				<checkbox id="VIdent_identity.aBook_storedefault" label="&vident.prefs.aBook.storedefault.label;"
 					prefstring="aBook_storedefault"/>
+				<checkbox id="VIdent_identity.aBook_show_switch" label="&vident.prefs.aBook.show_switch.label;"
+					prefstring="aBook_show_switch"/>
 				<checkbox id="VIdent_identity.aBook_warn_update" label="&vident.prefs.aBook.warn_update.label;"
 					prefstring="aBook_warn_update"/>
 				<checkbox id="VIdent_identity.aBook_dont_update_multiple" label="&vident.prefs.aBook.dont_update_multiple.label;"
@@ -295,8 +297,6 @@
 			<groupbox>
 			<caption label="&vident.prefs.aBookCap2.caption;"/>
 			<vbox align="left">
-				<checkbox id="VIdent_identity.aBook_show_switch" label="&vident.prefs.aBook.show_switch.label;"
-					prefstring="aBook_show_switch"/>
 				<checkbox id="VIdent_identity.aBook_warn_vI_replace" label="&vident.prefs.aBook.warn_vI_replace.label;"
 					prefstring="aBook_warn_vI_replace"/>
 				<checkbox id="VIdent_identity.aBook_getOneOnly" label="&vident.prefs.aBook.get_One_Only.label;"

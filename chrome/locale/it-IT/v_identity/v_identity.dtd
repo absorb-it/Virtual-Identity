@@ -52,8 +52,8 @@
 <!ENTITY vident.prefs.smartReply.autocreate.desc "(se esiste un unico indirizzo possibile)">
 <!ENTITY vident.prefs.aBookTab.label "Rubrica">
 <!ENTITY vident.prefs.aBookTab.header "Salvataggio delle identità virtuali nella rubrica">
-<!ENTITY vident.prefs.aBookCap1.caption "Opzioni della rubrica di Virtual Identity">
-<!ENTITY vident.prefs.aBookCap2.caption "Selezione dell&apos;identità per il mittente">
+<!ENTITY vident.prefs.aBookCap1.caption "Storing of Virtual Identities">
+<!ENTITY vident.prefs.aBookCap2.caption "Reading of Virtual Identities">
 <!ENTITY vident.prefs.aBookCap3.caption "Opzioni avanzate">
 <!ENTITY vident.prefs.aBookCap4.caption "Pulizia delle rubriche">
 <!ENTITY vident.prefs.aBookTab.Tab1.label "1. Configurazioni standard">

@@ -52,8 +52,8 @@
 <!ENTITY vident.prefs.smartReply.autocreate.desc "(pokud je jen jedna možná adresa)">
 <!ENTITY vident.prefs.aBookTab.label "Addressbook">
 <!ENTITY vident.prefs.aBookTab.header "Storing Virtual Identities in Addressbook">
-<!ENTITY vident.prefs.aBookCap1.caption "Virtual Identity Addressbook-Options">
-<!ENTITY vident.prefs.aBookCap2.caption "Configure Email-Dialog">
+<!ENTITY vident.prefs.aBookCap1.caption "Storing of Virtual Identities">
+<!ENTITY vident.prefs.aBookCap2.caption "Reading of Virtual Identities">
 <!ENTITY vident.prefs.aBookCap3.caption "Configure Reply-Identities">
 <!ENTITY vident.prefs.aBookCap4.caption "Cleaning of Addressbooks">
 <!ENTITY vident.prefs.aBookTab.Tab1.label "1. Common Configurations">

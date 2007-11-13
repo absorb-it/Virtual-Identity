@@ -52,8 +52,8 @@
 <!ENTITY vident.prefs.smartReply.autocreate.desc "(si sólo hay una posible dirección)">
 <!ENTITY vident.prefs.aBookTab.label "Libreta de direcciones">
 <!ENTITY vident.prefs.aBookTab.header "Guardar las identidades virtuales en la libreta de direcciones">
-<!ENTITY vident.prefs.aBookCap1.caption "Libreta de direcciones de las identidades Virtuales - Opciones">
-<!ENTITY vident.prefs.aBookCap2.caption "Selección de la identidad del remitente">
+<!ENTITY vident.prefs.aBookCap1.caption "Storing of Virtual Identities">
+<!ENTITY vident.prefs.aBookCap2.caption "Reading of Virtual Identities">
 <!ENTITY vident.prefs.aBookCap3.caption "opciones extendidas">
 <!ENTITY vident.prefs.aBookCap4.caption "Limpieza de las libretas de direcciones">
 <!ENTITY vident.prefs.aBookTab.Tab1.label "1. Configuraciones comunes">
