@@ -304,7 +304,8 @@ vI_msgIdentityClone = {
 				}
 				vI.elements.Obj_vILogo.setAttribute("hidden","false");
 				vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden",
-					!vI.preferences.getBoolPref("aBook_show_switch"));
+					!vI.preferences.getBoolPref("aBook_show_switch") ||
+					!vI.preferences.getBoolPref("aBook_use"));
 			}
 			// code to hide the signature
 			try { if (vI.preferences.getBoolPref("hide_signature") && ss_signature.length == 0)
@@ -322,7 +323,9 @@ vI_msgIdentityClone = {
 				vI.Cleanup();
 				vI.elements.Obj_vILogo.setAttribute("hidden","true");
 				vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden",
-					!vI.preferences.getBoolPref("aBook_use_non_vI"));
+					!vI.preferences.getBoolPref("aBook_show_switch") ||
+					!vI.preferences.getBoolPref("aBook_use_non_vI") ||
+					!vI.preferences.getBoolPref("aBook_use"));
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 					.setAttribute("oldvalue",null)
 				//~ vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.doCommand();

@@ -42,7 +42,11 @@ vI_addressBook = {
 			
 	rdfService : Components.classes["@mozilla.org/rdf/rdf-service;1"]
 			.getService(Components.interfaces.nsIRDFService),
-	
+
+	prefroot : Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch(null),
+
 	original_functions : {
 		awSetInputAndPopupValue : null,
 	},
@@ -55,12 +59,32 @@ vI_addressBook = {
 		},
 	},
 	
+	observe: function() {
+		vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden",
+			!vI.preferences.getBoolPref("aBook_show_switch") ||
+			!vI.preferences.getBoolPref("aBook_use_non_vI") ||
+			!vI.preferences.getBoolPref("aBook_use"));
+		vI_addressBook.elements.Obj_aBookSave.checked = vI.preferences.getBoolPref("aBook_storedefault");
+	},
+	
+	addObserver: function() {
+		vI_addressBook.prefroot.addObserver("extensions.virtualIdentity.aBook_use", vI_addressBook, false);
+		vI_addressBook.prefroot.addObserver("extensions.virtualIdentity.aBook_show_switch", vI_addressBook, false);
+		vI_addressBook.prefroot.addObserver("extensions.virtualIdentity.aBook_use_non_vI", vI_addressBook, false);
+		vI_addressBook.prefroot.addObserver("extensions.virtualIdentity.aBook_storedefault", vI_addressBook, false);	
+	},
+	
+	removeObserver: function() {
+		vI_addressBook.prefroot.removeObserver("extensions.virtualIdentity.aBook_use", vI_addressBook);
+		vI_addressBook.prefroot.removeObserver("extensions.virtualIdentity.aBook_show_switch", vI_addressBook);
+		vI_addressBook.prefroot.removeObserver("extensions.virtualIdentity.aBook_use_non_vI", vI_addressBook);
+		vI_addressBook.prefroot.removeObserver("extensions.virtualIdentity.aBook_storedefault", vI_addressBook);
+	},
 	
 	init: function() {
 		vI_addressBook.elements.Obj_aBookSave = document.getElementById("aBook_save");
-		vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden",
-					!vI.preferences.getBoolPref("aBook_use_non_vI"));
-		vI_addressBook.elements.Obj_aBookSave.checked = vI.preferences.getBoolPref("aBook_storedefault");
+		vI_addressBook.addObserver();
+		vI_addressBook.observe();
 		
 		// better approach would be to use te onchange event, but this one is not fired in any change case
 		// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
@@ -271,7 +295,7 @@ vI_addressBook = {
 	updateVIdentityFromABook: function(inputElement) {
 		if (!vI.preferences.getBoolPref("aBook_use")) {
 			vI_notificationBar.dump("## vI_addressBook: usage deactivated.\n")
-			return all_addresses;
+			return;
 		}
 		
 		var recipientType = document.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
@@ -449,3 +473,4 @@ vI_addressBook = {
 	}
 
 }
+window.addEventListener("unload", function(e) { vI_addressBook.removeObserver(); }, false);
