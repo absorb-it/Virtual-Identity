@@ -60,9 +60,17 @@
 <broadcaster id="VIdent_broadcaster_doFcc"/>
 
 <textbox hidden="true" id="VIdent_identity.fccFolder"
-                prefstring="fcc_folder"/>
+                prefstring="fccFolder"/>
 <textbox hidden="true" id="VIdent_identity.fccFolderPickerMode"
-                prefstring="fcc_folder_picker_mode"/>
+                prefstring="fccFolderPickerMode"/>
+<textbox hidden="true" id="VIdent_identity.draftFolder"
+                prefstring="draftFolder"/>
+<textbox hidden="true" id="VIdent_identity.draftFolderPickerMode"
+                prefstring="draftFolderPickerMode"/>
+<textbox hidden="true" id="VIdent_identity.stationeryFolder"
+                prefstring="stationeryFolder"/>
+<textbox hidden="true" id="VIdent_identity.stationeryFolderPickerMode"
+                prefstring="stationeryFolderPickerMode"/>
 
 <hbox>
 <spacer flex="1" />
@@ -122,9 +130,11 @@
 		<tabs>
 			<tab label="&vident.prefs.vIdentityTab.valueTab.label;" />
 			<tab label="&vident.prefs.vIdentityTab.fccTab.label;" />
+			<tab label="&vident.prefs.vIdentityTab.draftsTab.label;" />
+			<tab label="&vident.prefs.vIdentityTab.tmplTab.label;" />
 		</tabs>
 		<tabpanels>
-			<tabpanel orient="vertical">
+		<tabpanel orient="vertical">
 			<groupbox>
 			<caption label="&vident.prefs.vIdentityTab.valueTab.caption;"/>
 			<description width="500px">&vident.prefs.vIdentityTab.valueTab.desc;</description>
@@ -142,55 +152,134 @@
 			<checkbox id="VIdent_identity.autoReplyToSelf" label="&vident.prefs.autoReplyToSelf.label;"
 				prefstring="autoReplyToSelf"/>
 			</groupbox>
-			</tabpanel>
-			<tabpanel orient="vertical">
-		<groupbox>
-		<caption label="&vident.prefs.vIdentityTab.fccTab.caption;"/>
-		<hbox align="center">
-			<checkbox id="VIdent_identity.doFcc" label="&fccMailFolder.label;" 
-				accesskey="&fccMailFolder.accesskey;"
-				oncommand="setupFccItems();" prefstring="doFcc"/>
-		</hbox>
-		<radiogroup id="VIdent_doFcc">
-		<grid class="specialFolderPickerGrid">
-			<columns>
-				<column flex="1"/>
-				<column flex="2"/>
-			</columns>
-			<rows>
-				<radio id="VIdent_fcc_Settings_Of_Account" 
-					value="3" label="&vident.prefs.vidFccAccount.label;"
-					oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
-					observes="VIdent_broadcaster_doFcc"/>
-				<radio id="VIdent_fcc_Settings_Of_Default" 
-					value="2" label="&vident.prefs.vidFccDefault.label;"
-					oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
-					observes="VIdent_broadcaster_doFcc"/>
-				<row align="center">
-					<radio id="VIdent_fcc_selectAccount" 
-						value="0" label="&sentFolderOn.label;"
-						accesskey="&sentFolderOn.accesskey;"
-						oncommand="setPickersState('msgFccAccountPicker', 'msgFccFolderPicker', event)" 
-						observes="VIdent_broadcaster_doFcc"/>
-					<menulist id="msgFccAccountPicker"
-						oncommand="noteSelectionChange('VIdent_fcc_selectAccount')" 
-						flex="1" observes="VIdent_broadcaster_doFcc"/>
-				</row> 
-				<row align="center">
-					<radio id="VIdent_fcc_selectFolder" 
-						value="1" label="&sentInOtherFolder.label;"
-						accesskey="&sentInOtherFolder.accesskey;"
+		</tabpanel>
+		<tabpanel orient="vertical">
+			<groupbox>
+			<caption label="&vident.prefs.vIdentityTab.fccTab.caption;"/>
+			<hbox align="center">
+				<checkbox id="VIdent_identity.doFcc" label="&fccMailFolder.label;" 
+					accesskey="&fccMailFolder.accesskey;"
+					oncommand="setupFccItems();" prefstring="doFcc"/>
+			</hbox>
+			<radiogroup id="VIdent_doFcc">
+			<grid class="specialFolderPickerGrid">
+				<columns>
+					<column flex="1"/>
+					<column flex="2"/>
+				</columns>
+				<rows>
+					<radio id="VIdent_fcc_Settings_Of_Account" 
+						value="3" label="&vident.prefs.vidFccAccount.label;"
 						oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
 						observes="VIdent_broadcaster_doFcc"/>
-					<menulist id="msgFccFolderPicker" 
-						oncommand="noteSelectionChange('VIdent_fcc_selectFolder')" 
-						flex="1" observes="VIdent_broadcaster_doFcc"/>
-				</row>
-			</rows>
-		</grid>
-		</radiogroup>
+					<radio id="VIdent_fcc_Settings_Of_Default" 
+						value="2" label="&vident.prefs.vidFccDefault.label;"
+						oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
+						observes="VIdent_broadcaster_doFcc"/>
+					<row align="center">
+						<radio id="VIdent_fcc_selectAccount" 
+							value="0" label="&sentFolderOn.label;"
+							accesskey="&sentFolderOn.accesskey;"
+							oncommand="setPickersState('msgFccAccountPicker', 'msgFccFolderPicker', event)" 
+							observes="VIdent_broadcaster_doFcc"/>
+						<menulist id="msgFccAccountPicker"
+							oncommand="noteSelectionChange('VIdent_fcc_selectAccount')" 
+							flex="1" observes="VIdent_broadcaster_doFcc"/>
+					</row> 
+					<row align="center">
+						<radio id="VIdent_fcc_selectFolder" 
+							value="1" label="&sentInOtherFolder.label;"
+							accesskey="&sentInOtherFolder.accesskey;"
+							oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
+							observes="VIdent_broadcaster_doFcc"/>
+						<menulist id="msgFccFolderPicker" 
+							oncommand="noteSelectionChange('VIdent_fcc_selectFolder')" 
+							flex="1" observes="VIdent_broadcaster_doFcc"/>
+					</row>
+				</rows>
+			</grid>
+			</radiogroup>
 
-		</groupbox>
+			</groupbox>
+		</tabpanel>
+		<tabpanel orient="vertical">
+			<groupbox>
+			<caption />
+			<radiogroup id="VIdent_messageDrafts">
+			<grid class="specialFolderPickerGrid">
+				<columns>
+					<column flex="1"/>
+					<column flex="2"/>
+				</columns>
+				<rows>
+					<radio id="VIdent_draft_Settings_Of_Account" 
+						value="3" label="&vident.prefs.vidFccAccount.label;"
+						oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
+					<radio id="VIdent_draft_Settings_Of_Default" 
+						value="2" label="&vident.prefs.vidFccDefault.label;"
+						oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
+					<row align="center">
+						<radio id="VIdent_draft_selectAccount" 
+							value="0" label="&draftsFolderOn.label;"
+							accesskey="&draftsFolderOn.accesskey;"
+							oncommand="setPickersState('msgDraftsAccountPicker', 'msgDraftsFolderPicker', event)" />
+						<menulist id="msgDraftsAccountPicker"
+							oncommand="noteSelectionChange('VIdent_draft_selectAccount')" />
+					</row> 
+					<row align="center">
+						<radio id="VIdent_draft_selectFolder" 
+							value="1" label="&draftInOtherFolder.label;"
+							accesskey="&draftInOtherFolder.accesskey;"
+							oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
+						<menulist id="msgDraftsFolderPicker" 
+							oncommand="noteSelectionChange('VIdent_draft_selectFolder')" 
+							flex="1" />
+					</row>
+				</rows>
+			</grid>
+			</radiogroup>
+
+			</groupbox>
+		</tabpanel>
+		<tabpanel orient="vertical">
+			<groupbox>
+			<caption />
+			<radiogroup id="VIdent_messageTemplates">
+			<grid class="specialFolderPickerGrid">
+				<columns>
+					<column flex="1"/>
+					<column flex="2"/>
+				</columns>
+				<rows>
+					<radio id="VIdent_tmpl_Settings_Of_Account" 
+						value="3" label="&vident.prefs.vidFccAccount.label;"
+						oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
+					<radio id="VIdent_fcc_Settings_Of_Default" 
+						value="2" label="&vident.prefs.vidFccDefault.label;"
+						oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
+					<row align="center">
+						<radio id="VIdent_tmpl_selectAccount" 
+							value="0" label="&templatesFolderOn.label;"
+							accesskey="&templatesFolderOn.accesskey;"
+							oncommand="setPickersState('msgStationeryAccountPicker', 'msgStationeryFolderPicker', event)" />
+						<menulist id="msgStationeryAccountPicker"
+							oncommand="noteSelectionChange('VIdent_tmpl_selectAccount')" 
+							flex="1" />
+					</row> 
+					<row align="center">
+						<radio id="VIdent_tmpl_selectFolder" 
+							value="1" label="&templateInOtherFolder.label;"
+							accesskey="&templateInOtherFolder.accesskey;"
+							oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
+						<menulist id="msgStationeryFolderPicker" 
+							oncommand="noteSelectionChange('VIdent_tmpl_selectFolder')" 
+							flex="1" />
+					</row>
+				</rows>
+			</grid>
+			</radiogroup>
+
+			</groupbox>
 		</tabpanel>
 		</tabpanels>
 		</tabbox>
