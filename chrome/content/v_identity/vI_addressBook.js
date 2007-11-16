@@ -473,4 +473,4 @@ vI_addressBook = {
 	}
 
 }
-window.addEventListener("unload", function(e) { vI_addressBook.removeObserver(); }, false);
+window.addEventListener("unload", function(e) { try {vI_addressBook.removeObserver();} catch (ex) { } }, false);
