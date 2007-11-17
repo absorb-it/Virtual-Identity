@@ -130,7 +130,8 @@ vI_account = {
 		vI_account.copyMsgIdentityClone();
 		vI_account.copyPreferences();
 		vI_account.setupFcc();
-		
+		vI_account.setupDraft();
+		vI_account.setupTemplates();
 		
 		// remove the folder created with this account - it should never be used to store mails
 		try { vI_account.account.incomingServer.rootFolder.Delete(); }
@@ -158,7 +159,7 @@ vI_account = {
 	setupFcc : function()
 	{
 		if (vI.preferences.getBoolPref("doFcc")) {
-			switch (vI.preferences.getCharPref("fcc_folder_picker_mode"))
+			switch (vI.preferences.getCharPref("fccFolderPickerMode"))
 			{
 			    case "2"  :
 				dump ("## vI_account: preparing Fcc --- use Settings of Default Account\n");
@@ -177,9 +178,9 @@ vI_account = {
 				vI_account.account.defaultIdentity.doFcc
 					= vI.preferences.getBoolPref("doFcc");
 				vI_account.account.defaultIdentity.fccFolder
-					= vI.preferences.getCharPref("fcc_folder");
+					= vI.preferences.getCharPref("fccFolder");
 				vI_account.account.defaultIdentity.fccFolderPickerMode
-					= vI.preferences.getCharPref("fcc_folder_picker_mode");
+					= vI.preferences.getCharPref("fccFolderPickerMode");
 				break;
 			}
 		}
@@ -189,6 +190,61 @@ vI_account = {
 		}
 		vI_notificationBar.dump("## vI_account: Stored (doFcc " + vI_account.account.defaultIdentity.doFcc + " fccFolder " +
 			vI_account.account.defaultIdentity.fccFolder + " fccFolderPickerMode " +
-			vI_account.account.defaultIdentity.fccFolderPickerMode + ")\n");
+			vI_account.account.defaultIdentity.fccFolderPickerMode + "(" +
+			vI.preferences.getCharPref("fccFolderPickerMode") + "))\n");
+	},
+	
+	setupDraft : function()	{
+		switch (vI.preferences.getCharPref("draftFolderPickerMode"))
+		{
+		    case "2"  :
+			dump ("## vI_account: preparing Draft --- use Settings of Default Account\n");
+			vI_account.account.defaultIdentity.draftFolder = gAccountManager.defaultAccount.defaultIdentity.draftFolder;
+			vI_account.account.defaultIdentity.draftsFolderPickerMode = gAccountManager.defaultAccount.defaultIdentity.draftsFolderPickerMode;
+			break;
+		    case "3"  :
+			dump ("## vI_account: preparing Draft --- use Settings of Modified Account\n");
+			vI_account.account.defaultIdentity.draftFolder = vI.helper.getBaseIdentity().draftFolder;
+			vI_account.account.defaultIdentity.draftsFolderPickerMode = vI.helper.getBaseIdentity().draftsFolderPickerMode;
+			break;
+		    default  :
+			dump ("## vI_account: preparing Draft --- use Virtual Identity Settings\n");
+			vI_account.account.defaultIdentity.draftFolder
+				= vI.preferences.getCharPref("draftFolder");
+			vI_account.account.defaultIdentity.draftsFolderPickerMode
+				= vI.preferences.getCharPref("draftFolderPickerMode");
+			break;
+		}
+		vI_notificationBar.dump("## vI_account: Stored (draftFolder " +
+			vI_account.account.defaultIdentity.draftFolder + " draftsFolderPickerMode " +
+			vI_account.account.defaultIdentity.draftsFolderPickerMode + "(" +
+			vI.preferences.getCharPref("draftFolderPickerMode") + "))\n");
+	},
+	
+	setupTemplates : function()	{
+		switch (vI.preferences.getCharPref("stationeryFolderPickerMode"))
+		{
+		    case "2"  :
+			dump ("## vI_account: preparing Templates --- use Settings of Default Account\n");
+			vI_account.account.defaultIdentity.stationeryFolder = gAccountManager.defaultAccount.defaultIdentity.stationeryFolder;
+			vI_account.account.defaultIdentity.tmplFolderPickerMode = gAccountManager.defaultAccount.defaultIdentity.tmplFolderPickerMode;
+			break;
+		    case "3"  :
+			dump ("## vI_account: preparing Templates --- use Settings of Modified Account\n");
+			vI_account.account.defaultIdentity.stationeryFolder = vI.helper.getBaseIdentity().stationeryFolder;
+			vI_account.account.defaultIdentity.tmplFolderPickerMode = vI.helper.getBaseIdentity().tmplFolderPickerMode;
+			break;
+		    default  :
+			dump ("## vI_account: preparing Templates --- use Virtual Identity Settings\n");
+			vI_account.account.defaultIdentity.stationeryFolder
+				= vI.preferences.getCharPref("stationeryFolder");
+			vI_account.account.defaultIdentity.tmplFolderPickerMode
+				= vI.preferences.getCharPref("stationeryFolderPickerMode");
+			break;
+		}
+		vI_notificationBar.dump("## vI_account: Stored (stationeryFolder " +
+			vI_account.account.defaultIdentity.stationeryFolder + " tmplFolderPickerMode " +
+			vI_account.account.defaultIdentity.tmplFolderPickerMode + "(" +
+			vI.preferences.getCharPref("stationeryFolderPickerMode") + "))\n");
 	}
 }
