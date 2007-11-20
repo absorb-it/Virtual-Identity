@@ -1,6 +1,10 @@
 pref("extensions.virtualIdentity.doFcc", true);
-pref("extensions.virtualIdentity.fcc_folder", "");
-pref("extensions.virtualIdentity.fcc_folder_picker_mode", "3");
+pref("extensions.virtualIdentity.fccFolder", "");
+pref("extensions.virtualIdentity.fccFolderPickerMode", "3");
+pref("extensions.virtualIdentity.draftFolder", "");
+pref("extensions.virtualIdentity.draftFolderPickerMode", "3");
+pref("extensions.virtualIdentity.stationeryFolder", "");
+pref("extensions.virtualIdentity.stationeryFolderPickerMode", "3");
 pref("extensions.virtualIdentity.copySMIMESettings", false);
 pref("extensions.virtualIdentity.copyEnigmailSettings", false);
 pref("extensions.virtualIdentity.copyAttachVCardSettings", false);
