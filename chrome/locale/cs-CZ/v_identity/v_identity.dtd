@@ -21,6 +21,8 @@
 <!ENTITY vident.prefs.vIdentityTab.header "Nastavení virtuálních identit">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "vlastnosti ke zkopírování">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "místo pro uložení odeslaných e-mailů">
+<!ENTITY vident.prefs.vIdentityTab.draftsTab.label "place to save drafts">
+<!ENTITY vident.prefs.vIdentityTab.tmplTab.label "place to save templates">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.caption "při odeslání zprávy s Virtual Identity">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.desc "kopírovat následující vlastnosti z předchozí identity:">
 <!ENTITY vident.prefs.SMIME.label "Nastavení S/MIME">

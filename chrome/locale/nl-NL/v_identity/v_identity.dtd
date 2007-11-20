@@ -21,6 +21,8 @@
 <!ENTITY vident.prefs.vIdentityTab.header "Eigenschappen van virtuele identiteiten">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "Te kopiëren eigenschappen">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "Opslaglokatie voor verzonden berichten">
+<!ENTITY vident.prefs.vIdentityTab.draftsTab.label "place to save drafts">
+<!ENTITY vident.prefs.vIdentityTab.tmplTab.label "place to save templates">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.caption "Bij het verzenden van een bericht met een virtuele identiteit">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.desc "de volgende eigenschappen van de vorige identiteit overnemen:">
 <!ENTITY vident.prefs.SMIME.label "S/MIME beveiligingsinstellingen">

@@ -21,6 +21,8 @@
 <!ENTITY vident.prefs.vIdentityTab.header "Propiedades de las identidades virtuales">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "atributos a copiar">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "ubicación donde guardar los mensajes enviados">
+<!ENTITY vident.prefs.vIdentityTab.draftsTab.label "place to save drafts">
+<!ENTITY vident.prefs.vIdentityTab.tmplTab.label "place to save templates">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.caption "al enviar un mensaje usando una identidad virtual">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.desc "copiar los siguientes atributos de la identidad correspondiente:">
 <!ENTITY vident.prefs.SMIME.label "Opciones de seguridad S/MIME">

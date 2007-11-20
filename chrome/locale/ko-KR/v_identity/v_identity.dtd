@@ -21,6 +21,8 @@
 <!ENTITY vident.prefs.vIdentityTab.header "Virtual Identity의 속성">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "속성 복사">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "보낸 이메일 저장해 두기">
+<!ENTITY vident.prefs.vIdentityTab.draftsTab.label "place to save drafts">
+<!ENTITY vident.prefs.vIdentityTab.tmplTab.label "place to save templates">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.caption "가상 신원으로 메시지를 보내는 동안">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.desc "형식화된 신원으로 부터 다음의 속성을 복사:">
 <!ENTITY vident.prefs.SMIME.label "S/MIME 보안 설정">

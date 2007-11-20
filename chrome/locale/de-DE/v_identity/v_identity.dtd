@@ -21,6 +21,8 @@
 <!ENTITY vident.prefs.vIdentityTab.header "Eigenschaften der Virtuellen Identität">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "zu kopierende Einstellungen">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "Speicherort für Emails">
+<!ENTITY vident.prefs.vIdentityTab.draftsTab.label "Speicherort für Drafts">
+<!ENTITY vident.prefs.vIdentityTab.tmplTab.label "Speicherort für Templates">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.caption "Beim Senden von Nachrichten automatisch">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.desc "folgende Einstellungen der zugrunde liegenden Identität kopieren:">
 <!ENTITY vident.prefs.SMIME.label "S/MIME Sicherheitseinstellungen">
