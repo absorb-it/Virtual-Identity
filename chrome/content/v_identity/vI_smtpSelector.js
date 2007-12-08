@@ -75,15 +75,20 @@ vI_smtpSelector = {
 	loadSMTP_server_list : function()
 	{
 		var idserver;
-		if (vI.helper.getBaseIdentity().smtpServerKey) 
+		if (vI.helper.getBaseIdentity().smtpServerKey) {
 			idserver = vI_smtpSelector.smtpService.getServerByKey(vI.helper.getBaseIdentity().smtpServerKey);
+			vI_notificationBar.dump("## v_smtpSelector: use SMTP from BaseIdentity: " + vI_smtpSelector.getSMTPName(idserver.key) + "\n")
+			}
 		else {
 			// find the account related to the identity, to get the account-related default smtp, if it exists.
 			var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 			accounts.sort(compareAccountSortOrder);
 			
 			for (var x in accounts) {
-				if (idserver) break;
+				if (idserver) {
+					vI_notificationBar.dump("## v_smtpSelector: use SMTP from Account of BaseIdentity: " + vI_smtpSelector.getSMTPName(idserver.key) + "\n")
+					break;
+				}
 				var server = accounts[x].incomingServer;
 				
 				//  ignore (other) virtualIdentity Accounts
@@ -100,7 +105,10 @@ vI_smtpSelector = {
 				}
 			}
 		}
-		if (!idserver) idserver = vI_smtpSelector.smtpService.defaultServer;
+		if (!idserver) {
+			idserver = vI_smtpSelector.smtpService.defaultServer;
+			vI_notificationBar.dump("## v_smtpSelector: use default SMTP: " + vI_smtpSelector.getSMTPName(idserver.key) + "\n")
+		}
 		
 		var defaultServer = vI_smtpSelector.smtpService.defaultServer;
 		var servers = vI_smtpSelector.smtpService.smtpServers;
