@@ -290,6 +290,10 @@ vI_smartIdentity = {
 	collectAddresses : function(all_addresses, hdr) {
 		// add emails from selected headers (stored by vI_getHeader.xul/js)
 		var reply_headers = vI.preferences.getCharPref("smart_reply_headers").split(/\n/)
+		var unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+		unicodeConverter.charset = "UTF-8";                                  
+					
 		for (index = 0; index < reply_headers.length; index++) {
 			// ------------- prepare fields to read the stored header ----------------
 			var replyHeader_splitted = reply_headers[index].split(/:/)
@@ -307,7 +311,7 @@ vI_smartIdentity = {
 			if (!isNaN(replyHeaderNumber)) replyHeaderNameToRead += ":" + replyHeaderNumber
 
 			// ------------- read the stored header -------------------------------
-			var value = hdr.getStringProperty("vI_" + replyHeaderNameToRead)
+			var value = unicodeConverter.ConvertToUnicode(hdr.getStringProperty("vI_" + replyHeaderNameToRead))
 			vI_notificationBar.dump("## vI_smartIdentity: reading header '" +
 				replyHeaderNameToRead + "'\n");
 			

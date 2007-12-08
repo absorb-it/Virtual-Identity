@@ -128,9 +128,14 @@ var vI_getHeader = {
 					if (currentHeadersCounter[headerName] != 1)
 						value = hdr.getStringProperty(vI_getHeader.headerToSearch[index].headerNameToStore) + 
 						", " + value;
-					hdr.setStringProperty(vI_getHeader.headerToSearch[index].headerNameToStore,value);
-					vI_notificationBar.dump(" ...stored");
-					
+					var unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+						.createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+					unicodeConverter.charset = "UTF-8";                                  
+					hdr.setStringProperty(vI_getHeader.headerToSearch[index].headerNameToStore,unicodeConverter.ConvertFromUnicode(value) + unicodeConverter.Finish());
+
+					storedValue = hdr.getProperty(vI_getHeader.headerToSearch[index].headerNameToStore,value)
+					storedConvValue = unicodeConverter.ConvertToUnicode(storedValue)
+					vI_notificationBar.dump(" ...stored as '" + storedConvValue + "'");
 					if (!found) { 
 						label = vI_getHeader.strings.getString("vident.getHeader.headerFound");
 						found = true;

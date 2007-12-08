@@ -163,6 +163,10 @@ vI_addressBook = {
 
 	getCardForAddress: function(email) {
 		// enumerate all of the address books on this system
+		if (!email.match(/@/)) {
+			vI_notificationBar.dump("## vI_addressBook: getCardForAddress got no email, aborting.\n")
+			return null;
+		}
 		var parentDir = vI_addressBook.rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
 		var enumerator = parentDir.childNodes;
 		if (!enumerator) {vI_notificationBar.dump("## vI_addressBook: no addressbooks?\n"); return null;} // uups, no addressbooks?
