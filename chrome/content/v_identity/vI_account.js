@@ -25,22 +25,6 @@
 vI_account = {
 	account : null,
 	
-	//~ Checks if there is stil another VIdentity Account and creates a new identity number
-	getNewAccountNumber : function()
-	{
-		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount)
-		var FreeVIdentityNumber = 0
-		for (index = 0; index < accounts.length; index++) {
-			var server = accounts[index].incomingServer;
-			if (server && server.hostName == "virtualIdentity" 
-			&& server.prettyName ==
-				document.getElementById("prettyName-Prefix").getAttribute("label")
-					+ FreeVIdentityNumber)
-					FreeVIdentityNumber++
-		}
-		return FreeVIdentityNumber;
-	},
-	
 	_copyBoolAttribute : function(name) {
 		vI_account.account.defaultIdentity.setBoolAttribute(name,
 				vI.helper.getBaseIdentity().getBoolAttribute(name));
@@ -94,9 +78,10 @@ vI_account = {
 	
 	removeAccount : function() {
 		if (vI_account.account) {
-			vI_notificationBar.dump("## vI_account: Account " + vI_account.account.incomingServer.prettyName + " removed\n")
-			try { vI_account.account.incomingServer.rootFolder.Delete(); }
-			catch (e) { };
+			vI_account.account.incomingServer = gAccountManager.createIncomingServer("toRemove","virtualIdentity","pop3");
+			//~ try { vI_account.account.incomingServer.rootFolder.Delete(); }
+			//~ catch (e) { };
+			
 			gAccountManager.removeAccount(vI_account.account);
 			vI_account.account = null;
 		}
@@ -122,23 +107,15 @@ vI_account = {
 		
 		vI_account.account.addIdentity(gAccountManager.createIdentity());
 	
-		var Number = vI_account.getNewAccountNumber();
-	
-		vI_account.account.incomingServer = gAccountManager.createIncomingServer("user"+Number,"virtualIdentity","pop3");
-		vI_account.account.incomingServer.prettyName = document.getElementById("prettyName-Prefix").getAttribute("label") + Number;
-
+		// the new account uses the same incomingServer than the base one, has to be replaced before the account is removed
+		var servers = gAccountManager.GetServersForIdentity(vI.helper.getBaseIdentity());
+		vI_account.account.incomingServer = servers.QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
+		
 		vI_account.copyMsgIdentityClone();
 		vI_account.copyPreferences();
 		vI_account.setupFcc();
 		vI_account.setupDraft();
 		vI_account.setupTemplates();
-		
-		// remove the folder created with this account - it should never be used to store mails
-		try { vI_account.account.incomingServer.rootFolder.Delete(); }
-		catch (e) { };
-	
-		vI_notificationBar.dump("## vI_account: New Account created " + vI_account.account.incomingServer.prettyName + "\n");
-		//~ confirm("## vI_account: New Account created "+server.prettyName+"\n");
 	},
 	
 	copyMsgIdentityClone : function() {
