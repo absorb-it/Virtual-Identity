@@ -137,7 +137,7 @@ vI_addressBook = {
 			var addrbook = enumerator.getNext();  // an addressbook directory
 			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
 			for each (var prop in vI_addressBook.CardFields) {
-				var searchUri = addrbook.directoryProperties.URI + "?(or(" + prop + ",c,vIdentity:))"; // search for the address in this book
+				var searchUri = (addrbook.directoryProperties?addrbook.directoryProperties.URI:addrbook.URI) + "?(or(" + prop + ",c,vIdentity:))"; // search for the address in this book
 				var directory = vI_addressBook.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
 				// directory will now be a subset of the addressbook containing only those cards that match the searchstring 'address'
 				if (!directory) break;
@@ -185,7 +185,7 @@ vI_addressBook = {
 		while (enumerator && enumerator.hasMoreElements()) {
 			var addrbook = enumerator.getNext();  // an addressbook directory
 			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
-			var searchUri = addrbook.directoryProperties.URI + "?(or(PrimaryEmail,c," + recipient_email + ")(SecondEmail,c," + recipient_email + "))";  // search for the address in this book
+			var searchUri = (addrbook.directoryProperties?addrbook.directoryProperties.URI:addrbook.URI) + "?(or(PrimaryEmail,c," + encodeURIComponent(recipient_email) + ")(SecondEmail,c," + encodeURIComponent(recipient_email) + "))";  // search for the address in this book
 			//~ vI_notificationBar.dump("## vI_addressBook: searchUri '" + searchUri + "'\n");
 			var directory = vI_addressBook.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
 			// directory will now be a subset of the addressbook containing only those cards that match the searchstring 'address'

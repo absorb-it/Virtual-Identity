@@ -178,7 +178,7 @@ vI_account = {
 				vI_account.account.defaultIdentity.doFcc
 					= vI.preferences.getBoolPref("doFcc");
 				vI_account.account.defaultIdentity.fccFolder
-					= vI.preferences.getCharPref("fccFolder");
+					= vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("fccFolder"));
 				vI_account.account.defaultIdentity.fccFolderPickerMode
 					= vI.preferences.getCharPref("fccFolderPickerMode");
 				break;
@@ -210,7 +210,7 @@ vI_account = {
 		    default  :
 			dump ("## vI_account: preparing Draft --- use Virtual Identity Settings\n");
 			vI_account.account.defaultIdentity.draftFolder
-				= vI.preferences.getCharPref("draftFolder");
+				= vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("draftFolder"));
 			vI_account.account.defaultIdentity.draftsFolderPickerMode
 				= vI.preferences.getCharPref("draftFolderPickerMode");
 			break;
@@ -237,7 +237,7 @@ vI_account = {
 		    default  :
 			dump ("## vI_account: preparing Templates --- use Virtual Identity Settings\n");
 			vI_account.account.defaultIdentity.stationeryFolder
-				= vI.preferences.getCharPref("stationeryFolder");
+				= vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("stationeryFolder"));
 			vI_account.account.defaultIdentity.tmplFolderPickerMode
 				= vI.preferences.getCharPref("stationeryFolderPickerMode");
 			break;

@@ -31,6 +31,9 @@ vI_prefDialog = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 				.getService(Components.interfaces.nsIPrefService)
 				.getBranch("extensions.virtualIdentity."),
+				
+	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+				.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 	
 	base : {
 		_elementIDs : [	"VIdent_identity.doFcc",
@@ -96,7 +99,7 @@ vI_prefDialog = {
 						element.setAttribute("value", 
 						vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring")) );
 					else element.setAttribute("value", 
-						vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring")) );
+						vI_prefDialog.unicodeConverter.ConvertToUnicode(vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"))) );
 				} catch (ex) {}
 			}
 		},
@@ -118,7 +121,7 @@ vI_prefDialog = {
 						vI_prefDialog.preferences.setIntPref(
 							element.getAttribute("prefstring"), element.value);
 					else vI_prefDialog.preferences.setCharPref(
-							element.getAttribute("prefstring"), element.value);
+							element.getAttribute("prefstring"), vI_prefDialog.unicodeConverter.ConvertFromUnicode(element.value));
 					//~ alert(elementID + " " + element.getAttribute("prefstring") + " " + parseInt(element.value))
 				}
 			}
@@ -243,6 +246,7 @@ vI_prefDialog = {
 	},
 
 	init : function() {
+		vI_prefDialog.unicodeConverter.charset="UTF-8";
 		vI_prefDialog.base.init();
 		onInitCopiesAndFolders()
 

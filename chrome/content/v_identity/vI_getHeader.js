@@ -38,12 +38,15 @@ var vI_getHeader = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.virtualIdentity."),
 			
+	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
+
 	strings : document.getElementById("vIdentBundle"),
 	
 	headerToSearch : null,
 	
 	prepareHeaderToSearchArray : function() {
-		var headerList = vI_getHeader.preferences.getCharPref("smart_reply_headers").split(/\n/)
+		var headerList = vI_getHeader.unicodeConverter.ConvertToUnicode(vI_getHeader.preferences.getCharPref("smart_reply_headers")).split(/\n/)
 		
 		vI_getHeader.headerToSearch = [];
 		
@@ -66,31 +69,11 @@ var vI_getHeader = {
 		}
 	},
 
-	adaptPreferences : function() {
-		// this is only for transition from 0.4.0 to 0.4.1, will be removed after a while
-		try { 	if (vI_getHeader.preferences.getBoolPref("smart_reply_prefer_headers")) {
-				vI_notificationBar.dump("## vI_getHeader: preference-format changed\n## vI_getHeader: appending 'to' and 'cc' to header-list\n")
-				vI_getHeader.preferences.setCharPref("smart_reply_headers",
-					vI_getHeader.preferences.getCharPref("smart_reply_headers") + "\nto\ncc")
-			}
-			else {
-				vI_notificationBar.dump("## vI_getHeader: preference-format changed\n## vI_getHeader: inserting 'to' and 'cc' to header-list\n")
-				vI_getHeader.preferences.setCharPref("smart_reply_headers",
-					"to\ncc\n" + vI_getHeader.preferences.getCharPref("smart_reply_headers"))
-			}
-			vI_getHeader.preferences.clearUserPref("smart_reply_prefer_headers")
-			vI_notificationBar.dump("## vI_getHeader: 'smart_reply_prefer_headers' preference-entry removed\n")
-		}
-		catch(vErr) { }	
-	},
-
 	getHeader: function() {
 		vI_notificationBar.clear_dump()
 		vI_notificationBar.dump("## vI_getHeader: onEndHeaders\n")
 		var index;
 
-		vI_getHeader.adaptPreferences();
-		
 		var srcMsgURI = GetLoadedMessage();
 		if (srcMsgURI == null) return;
 		
@@ -128,13 +111,10 @@ var vI_getHeader = {
 					if (currentHeadersCounter[headerName] != 1)
 						value = hdr.getStringProperty(vI_getHeader.headerToSearch[index].headerNameToStore) + 
 						", " + value;
-					var unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-						.createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-					unicodeConverter.charset = "UTF-8";                                  
-					hdr.setStringProperty(vI_getHeader.headerToSearch[index].headerNameToStore,unicodeConverter.ConvertFromUnicode(value) + unicodeConverter.Finish());
+					hdr.setStringProperty(vI_getHeader.headerToSearch[index].headerNameToStore,vI_getHeader.unicodeConverter.ConvertFromUnicode(value) + vI_getHeader.unicodeConverter.Finish());
 
 					storedValue = hdr.getProperty(vI_getHeader.headerToSearch[index].headerNameToStore,value)
-					storedConvValue = unicodeConverter.ConvertToUnicode(storedValue)
+					storedConvValue = vI_getHeader.unicodeConverter.ConvertToUnicode(storedValue)
 					vI_notificationBar.dump(" ...stored as '" + storedConvValue + "'");
 					if (!found) { 
 						label = vI_getHeader.strings.getString("vident.getHeader.headerFound");
@@ -192,6 +172,7 @@ var vI_prepareHeader = {
 	init : function() {
 		vI_notificationBar.dump("## vI_prepareHeader: init\n");
 		if (vI_prepareHeader.addExtraHeader()) vI_prepareHeader.addObserver();
+		vI_getHeader.unicodeConverter.charset = "UTF-8";
 	},
 	
 	cleanup : function() {
@@ -218,7 +199,7 @@ var vI_prepareHeader = {
 	// this is a adapted copy of enigEnsureExtraHeaders() from enigmail, thanks
 	addExtraHeader : function() {
 		vI_notificationBar.dump("## vI_prepareHeader: addExtraHeader\n");
-		var header_list = vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_headers").split(/\n/)
+		var header_list = vI_getHeader.unicodeConverter.ConvertToUnicode(vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_headers")).split(/\n/)
 		try {
 			var extraHdrs = " " + 
 				vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase()

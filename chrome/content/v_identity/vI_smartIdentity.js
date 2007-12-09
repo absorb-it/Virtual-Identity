@@ -192,7 +192,7 @@ vI_smartIdentity = {
 		var return_addresses = { number : 0, emails : { }, fullNames : { }, combinedNames : { },
 					id_keys : { }, smtp_keys : { } };
 		
-		var filter_list = vI.preferences.getCharPref("smart_reply_filter").split(/\n/)
+		var filter_list = vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_filter")).split(/\n/)
 		if (filter_list.length == 0) filter_list[0] == ""
 		
 		for (i = 0; i < filter_list.length; i++) {
@@ -289,10 +289,7 @@ vI_smartIdentity = {
 	
 	collectAddresses : function(all_addresses, hdr) {
 		// add emails from selected headers (stored by vI_getHeader.xul/js)
-		var reply_headers = vI.preferences.getCharPref("smart_reply_headers").split(/\n/)
-		var unicodeConverter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-		unicodeConverter.charset = "UTF-8";                                  
+		var reply_headers = vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_headers")).split(/\n/)
 					
 		for (index = 0; index < reply_headers.length; index++) {
 			// ------------- prepare fields to read the stored header ----------------
@@ -311,7 +308,7 @@ vI_smartIdentity = {
 			if (!isNaN(replyHeaderNumber)) replyHeaderNameToRead += ":" + replyHeaderNumber
 
 			// ------------- read the stored header -------------------------------
-			var value = unicodeConverter.ConvertToUnicode(hdr.getStringProperty("vI_" + replyHeaderNameToRead))
+			var value = vI.unicodeConverter.ConvertToUnicode(hdr.getStringProperty("vI_" + replyHeaderNameToRead))
 			vI_notificationBar.dump("## vI_smartIdentity: reading header '" +
 				replyHeaderNameToRead + "'\n");
 			
@@ -380,7 +377,7 @@ vI_smartIdentity = {
 				
 				vI_notificationBar.dump("## vI_smartIdentity: filtering done, " + all_addresses.number + " address(es) left\n")
 				
-				var smart_reply_defaultFullName = vI.preferences.getCharPref("smart_reply_defaultFullName")
+				var smart_reply_defaultFullName = vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_defaultFullName"))
 				if (smart_reply_defaultFullName != "") {
 					for (index = 0; index < all_addresses.number; index++) {
 						if (all_addresses.fullNames[index] == "") {

@@ -91,6 +91,9 @@ var vI = {
 	headerParser : Components.classes["@mozilla.org/messenger/headerparser;1"]
 				.getService(Components.interfaces.nsIMsgHeaderParser),
 	
+	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+				.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
+
 	// Those variables keep pointers to original functions which might get replaced later
 	original_functions : {
 		GenericSendMessage : null,
@@ -209,7 +212,8 @@ var vI = {
 	init: function() {
 		// clear the DebugArea (not needed cause window is new)
 		//~ vI_notificationBar.clear_dump()
-	
+		vI.unicodeConverter.charset="UTF-8";
+		
 		// initialize the pointers to extension elements
 		vI.elements.init_base()
 		
