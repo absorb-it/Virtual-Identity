@@ -113,7 +113,7 @@ var vI_getHeader = {
 						", " + value;
 					hdr.setStringProperty(vI_getHeader.headerToSearch[index].headerNameToStore,vI_getHeader.unicodeConverter.ConvertFromUnicode(value) + vI_getHeader.unicodeConverter.Finish());
 
-					storedValue = hdr.getProperty(vI_getHeader.headerToSearch[index].headerNameToStore,value)
+					storedValue = hdr.getProperty(vI_getHeader.headerToSearch[index].headerNameToStore)
 					storedConvValue = vI_getHeader.unicodeConverter.ConvertToUnicode(storedValue)
 					vI_notificationBar.dump(" ...stored as '" + storedConvValue + "'");
 					if (!found) { 
@@ -156,6 +156,8 @@ var vI_getHeader = {
 		vI_getHeader.messenger = Components.classes["@mozilla.org/messenger;1"].createInstance();
 		vI_getHeader.messenger = vI_getHeader.messenger.QueryInterface(Components.interfaces.nsIMessenger);
 		vI_getHeader.strings = document.getElementById("vIdentBundle");
+		
+		vI_getHeader.unicodeConverter.charset = "UTF-8";
 	}
 }
 
@@ -164,6 +166,9 @@ var vI_prepareHeader = {
 	prefroot : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch(null),
+
+	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 			
 	addedHeaders : [],
 	
@@ -172,7 +177,6 @@ var vI_prepareHeader = {
 	init : function() {
 		vI_notificationBar.dump("## vI_prepareHeader: init\n");
 		if (vI_prepareHeader.addExtraHeader()) vI_prepareHeader.addObserver();
-		vI_getHeader.unicodeConverter.charset = "UTF-8";
 	},
 	
 	cleanup : function() {
@@ -199,7 +203,8 @@ var vI_prepareHeader = {
 	// this is a adapted copy of enigEnsureExtraHeaders() from enigmail, thanks
 	addExtraHeader : function() {
 		vI_notificationBar.dump("## vI_prepareHeader: addExtraHeader\n");
-		var header_list = vI_getHeader.unicodeConverter.ConvertToUnicode(vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_headers")).split(/\n/)
+		vI_prepareHeader.unicodeConverter.charset = "UTF-8";
+		var header_list = vI_prepareHeader.unicodeConverter.ConvertToUnicode(vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_headers")).split(/\n/)
 		try {
 			var extraHdrs = " " + 
 				vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase()
