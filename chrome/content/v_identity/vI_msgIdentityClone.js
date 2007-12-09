@@ -348,9 +348,6 @@ vI_msgIdentityClone = {
 			var server = accounts[i].incomingServer;
 				//  ignore (other) virtualIdentity Accounts
 				if (!server || server.hostName == "virtualIdentity") continue;
-				// ignore newsgroup accounts if not selected in preferences
-				if (!vI.preferences.getBoolPref("smart_reply_for_newsgroups") &&
-					server.type == "nntp") continue;
 				
 				var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 				for (var j in identites) {
