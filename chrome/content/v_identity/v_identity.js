@@ -70,7 +70,7 @@ var vI = {
 			//~ vI_notificationBar.dump("## v_identity: getAddress: parsing '" + address + "'\n")
 			var name = ""; email = "";
 			// prefer an email address separated with < >, only if not found use any other
-			if (address.match(/<\s*[^>\s]*@[^>\s]*\s*>/) || address.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/)) {
+			if (address.match(/<\s*[^>\s]*@[^>\s]*\s*>/) || address.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/) || address.match(/$/)) {
 				name = RegExp.leftContext + RegExp.rightContext
 				email = RegExp.lastMatch
 				email = email.replace(/\s+|<|>/g,"")
