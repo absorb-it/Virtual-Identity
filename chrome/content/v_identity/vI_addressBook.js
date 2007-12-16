@@ -111,89 +111,104 @@ vI_addressBook = {
 		vI_addressBook.updateVIdentityFromABook(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")))
 	},
 	
-	removeVIdentityFromABook: function(remove) {
-		// this function will be called exclusivly from vI_prefDialog. So it is used in different context than the rest of
-		// the functions, access of vI.* is not possible
-		// given the function paramter as false it might be used to count the fields which have a VirtualIdentity stored
+	//~ removeNGCardsFromABook: function(remove) {
+		//~ // this function will be called exclusivly from vI_prefDialog. So it is used in different context than the rest of
+		//~ // the functions, access of vI.* is not possible
+		//~ // given the function paramter as false it might be used to count the fields which have a VirtualIdentity stored
 		
-		counter = 0;
+		//~ counter = 0;
 		
-		// enumerate all of the address books on this system
-		var parentDir = vI_addressBook.rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
-		var enumerator = parentDir.childNodes;
+		//~ // enumerate all of the address books on this system
+		//~ var parentDir = vI_addressBook.rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
+		//~ var enumerator = parentDir.childNodes;
 			
 		//~ vI_notificationBar.dump("## vI_addressBook: Search Virtual Identities in addressbooks.\n")
 		
-		if (remove) {
-			var number = vI_addressBook.removeVIdentityFromABook(false)
-			var strings = document.getElementById("vIdentBundle");
-			var warning = strings.getString("vident.clearAddressBook.status.prefix") + " " + number + " " +
-					strings.getString("vident.clearAddressBook.status.postfix") + " " + 
-					strings.getString("vident.clearAddressBook.warning")
-			if (!vI_addressBook.promptService.confirm(window,"Warning",warning))
-				return;
-		}
+		//~ if (remove) {
+			//~ var number = vI_addressBook.removeNGCardsFromABook(false)
+			//~ var strings = document.getElementById("vIdentBundle");
+			//~ var warning = strings.getString("vident.clearAddressBook.statusNG.prefix") + " " + number + " " +
+					//~ strings.getString("vident.clearAddressBook.statusNG.postfix") + " " + 
+					//~ strings.getString("vident.clearAddressBook.warningNG")
+			//~ if (!vI_addressBook.promptService.confirm(window,"Warning",warning))
+				//~ return;
+		//~ }
 		
-		while (enumerator && enumerator.hasMoreElements()) {
-			var addrbook = enumerator.getNext();  // an addressbook directory
-			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
-			for each (var prop in vI_addressBook.CardFields) {
-				var searchUri = (addrbook.directoryProperties?addrbook.directoryProperties.URI:addrbook.URI) + "?(or(" + prop + ",c,vIdentity:))"; // search for the address in this book
-				var directory = vI_addressBook.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
-				// directory will now be a subset of the addressbook containing only those cards that match the searchstring 'address'
-				if (!directory) break;
-				var ChildCards = directory.childCards;
-				var keepGoing = 1;
-				try { ChildCards.first(); } catch (ex) { keepGoing = 0; }
+		//~ while (enumerator && enumerator.hasMoreElements()) {
+			//~ var addrbook = enumerator.getNext();  // an addressbook directory
+			//~ addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
+			//~ var searchUri = (addrbook.directoryProperties?addrbook.directoryProperties.URI:addrbook.URI) + "?(or(Notes,c," + encodeURIComponent(vI_addressBook.addNote) + "))"; // search for the address in this book
+			//~ var directory = vI_addressBook.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
+			//~ // directory will now be a subset of the addressbook containing only those cards that match the searchstring 'address'
+			//~ if (!directory) break;
+			
+			//~ if (remove) addrbook.deleteDirectory(directory)
+			//~ else {
+				//~ var ChildCards = directory.childCards;
+				//~ var keepGoing = 1;
+				//~ try { ChildCards.first(); } catch (ex) { keepGoing = 0; }
 				
-				while (keepGoing == 1) {
-					var Card = ChildCards.currentItem();
-					Card = Card.QueryInterface(Components.interfaces.nsIAbCard);
-					counter += 1;
-					if (remove) {
-						Card[prop.toLowerCase()] = "";
-						Card.editCardToDatabase("");
-					}
-					
-					try { ChildCards.next(); } catch (ex) {	keepGoing = 0; }
-				}
-			}
-		}
+				//~ while (keepGoing == 1) {
+					//~ var Card = ChildCards.currentItem();
+					//~ Card = Card.QueryInterface(Components.interfaces.nsIAbCard);
+					//~ counter += 1;
+					//~ try { ChildCards.next(); } catch (ex) {	keepGoing = 0; }
+				//~ }
+			//~ }
+		//~ }
+		//~ return counter;
+	//~ },
+	
+	countVIdentitiesInABook : function (){
+		var queryString = "?(or"
+		for each (var prop in vI_addressBook.CardFields)
+			queryString += "(" + prop + ",c,vIdentity:)";
+		queryString += ")"
+		return vI_addressBook._walkTroughCards(queryString,vI_addressBook._countVIdentities, 0)
+	},
+	
+	_countVIdentities : function(addrbook, Card, counter) {
+		if (addrbook.description != "Virtual Identity") counter += 1;
 		return counter;
 	},
 
-	getCardForAddress: function(recipient) {
-		// enumerate all of the address books on this system
+	removeVIdentityFromABook : function() {
+		// this function will be called exclusivly from vI_prefDialog. So it is used in different context than the rest of
+		// the functions, access of vI.* is not possible
+		var number = vI_addressBook.removeVIdentityFromABook(false)
+		var strings = document.getElementById("vIdentBundle");
+		var warning = strings.getString("vident.clearAddressBook.status.prefix") + " " + number + " " +
+				strings.getString("vident.clearAddressBook.status.postfix") + " " + 
+				strings.getString("vident.clearAddressBook.warning")
+		if (!vI_addressBook.promptService.confirm(window,"Warning",warning))
+			return;
+		for each (var prop in vI_addressBook.CardFields) {
+			var queryString = "?(or(" + prop + ",c,vIdentity:))";
+			vI_addressBook._walkTroughCards(queryString,vI_addressBook._removeVIdentity,prop)
+		}
+	},
+	
+	_removeVIdentity: function(addrbook, Card, prop) {
+		Card[prop.toLowerCase()] = "";
+		Card.editCardToDatabase("");
+	},
+
+	_walkTroughCards : function (queryString, callFunction, returnVar) {
 		var parentDir = vI_addressBook.rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
 		var enumerator = parentDir.childNodes;
-		if (!enumerator) {vI_notificationBar.dump("## vI_addressBook: no addressbooks?\n"); return null;} // uups, no addressbooks?
-		
-		var splittedRecipient = vI.helper.parseAddress(recipient);
-		var queryString;
-		if (splittedRecipient.email) {
-			queryString = "?(or(PrimaryEmail,c," + encodeURIComponent(splittedRecipient.email) + ")(SecondEmail,c," +
-				encodeURIComponent(splittedRecipient.email) + "))";
-			vI_notificationBar.dump("## vI_addressBook: Search '" + splittedRecipient.email + "' in addressbook emails.\n")
-		}
-		else {
-			queryString = "?(or(DisplayName,c," +
-				encodeURIComponent(splittedRecipient.name) + "))";
-			vI_notificationBar.dump("## vI_addressBook: Search '" + splittedRecipient.name + "' in addressbook displayed names.\n")
-		}
-		var matchingEmailCards = { number : 0, cards : {} }
-		var matchingFullNameCards = { number : 0, cards : {} }
+		if (!enumerator) {vI_notificationBar.dump("## vI_addressBook: no addressbooks?\n"); return null;} // uups, no addressbooks?	
 		while (enumerator && enumerator.hasMoreElements()) {
 			var addrbook = enumerator.getNext();  // an addressbook directory
 			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
-			var searchUri = (addrbook.directoryProperties?addrbook.directoryProperties.URI:addrbook.URI) + queryString;  // search for the address in this book
+			var searchUri = (addrbook.directoryProperties?addrbook.directoryProperties.URI:addrbook.URI) + queryString;
 			vI_notificationBar.dump("## vI_addressBook: searchUri '" + searchUri + "'\n");
-			var directory = vI_addressBook.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
+			//~ var directory = vI_addressBook.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
 			
-			//~ var AbView = Components.classes["@mozilla.org/addressbook/abview;1"].createInstance(Components.interfaces.nsIAbView);
-			//~ AbView.init(searchUri, true, null, "GeneratedName", "ascending");
-			//~ var directory = AbView.directory;
+			var AbView = Components.classes["@mozilla.org/addressbook/abview;1"].createInstance(Components.interfaces.nsIAbView);
+			AbView.init(searchUri, true, null, "GeneratedName", "ascending");
+			var directory = AbView.directory;
 			
-			// directory will now be a subset of the addressbook containing only those cards that match the searchstring 'address'
+			// directory will now be a subset of the addressbook containing only those cards that match the searchstring
 			if (!directory) break;
 			var childCards = null; var keepGoing = 1;
 			try { childCards = directory.childCards; childCards.first(); } catch (ex) { keepGoing = 0; }
@@ -204,31 +219,105 @@ vI_addressBook = {
 				//~ currentCard = directory.childNodes.getNext();
 				currentCard.QueryInterface(Components.interfaces.nsIAbCard);
 				vI_notificationBar.dump("## vI_addressBook:             checking '" + currentCard.displayName + "'.\n")
-				if (splittedRecipient.email) {
-					if (currentCard.primaryEmail.toLowerCase() == splittedRecipient.email.toLowerCase() ||
-						currentCard.secondEmail.toLowerCase() == splittedRecipient.email.toLowerCase()) {
-						vI_notificationBar.dump("## vI_addressBook: card found, primaryEmail '" + currentCard.primaryEmail.toLowerCase() + "'.\n")
-						if (splittedRecipient.name != "" && currentCard.displayName == splittedRecipient.name) {
-							vI_notificationBar.dump("## vI_addressBook:             matching displayed Name '" + currentCard.displayName + "'.\n")
-							matchingFullNameCards.cards[matchingFullNameCards.number++] = currentCard;
-						}
-						else matchingEmailCards.cards[matchingEmailCards.number++] = currentCard;
-					}
-				}
-				else {
-					if (splittedRecipient.name != "" && currentCard.displayName == splittedRecipient.name) {
-						vI_notificationBar.dump("## vI_addressBook:             matching displayed Name '" + currentCard.displayName + "'.\n")
-						matchingFullNameCards.cards[matchingFullNameCards.number++] = currentCard;
-					}
-				}
+				returnVar = callFunction(addrbook, currentCard, returnVar);
 				try { childCards.next(); } catch (ex) {	keepGoing = 0; }
 			}
 		}
+		return returnVar;
+	},
+
+	_findMatchingCard : function (addrbook, Card, returnVar) {
+	//	var returnVar = { email : email, name : name, mailListName : mailListName,
+	//		matchingEmailCards : { number : 0, cards : {} }, matchingFullNameCards : { number : 0, cards : {} } }
+		if (addrbook.dirName == "Virtual Identity") return returnVar
+		if (returnVar.email) {
+			if (Card.primaryEmail.toLowerCase() == returnVar.email.toLowerCase() ||
+				Card.secondEmail.toLowerCase() == returnVar.email.toLowerCase()) {
+				vI_notificationBar.dump("## vI_addressBook: card found, primaryEmail '" + Card.primaryEmail.toLowerCase() + "'.\n")
+				if (returnVar.name != "" && Card.displayName == returnVar.name) {
+					vI_notificationBar.dump("## vI_addressBook:             matching displayed Name '" + Card.displayName + "'.\n")
+					returnVar.matchingFullNameCards.cards[returnVar.matchingFullNameCards.number++] = Card;
+				}
+				else returnVar.matchingEmailCards.cards[returnVar.matchingEmailCards.number++] = Card;
+			}
+		}
+		else if (returnVar.name != "" && Card.displayName == returnVar.name) {
+			vI_notificationBar.dump("## vI_addressBook:             matching displayed Name '" + Card.displayName + "'.\n")
+			returnVar.matchingFullNameCards.cards[returnVar.matchingFullNameCards.number++] = Card;
+		}
+		return returnVar;
+	},
+
+	_findMatchingCardInVIAbook : function(addrbook, Card, returnVar) {
+		vI_notificationBar.dump("## vI_addressBook:             aBook '" + addrbook.dirName + "'.\n")
+		if (!returnVar.Card && addrbook.dirName == "Virtual Identity" && 
+			Card.displayName.toLowerCase() == returnVar.name.toLowerCase() ) {
+			vI_notificationBar.dump("## vI_addressBook:             found CardInVIAbook.\n")
+			return { name: returnVar.name, Card : Card }
+		}
+		else return returnVar
+	},
+
+	// newsgroup and mailin-list entries are stored in a separate Virtual Identity AddressBook
+	getCardForAddressFromVIAbook : function(name) {
+		vI_notificationBar.dump("## vI_addressBook: getCardForAddressFromVIAbook '" + name + "' \n")
+		queryString = "?(or(DisplayName,c," + encodeURIComponent(name) + "))";
+		vI_notificationBar.dump("## vI_addressBook: Search '" + name + "' in VI addressbook displayed names.\n")
+		var returnVar = vI_addressBook._walkTroughCards(queryString, vI_addressBook._findMatchingCardInVIAbook,
+			{ name : name, Card : null } )
+		return returnVar.Card		
+	},
+	
+	_isMailingListCard : function (addrbook, Card, returnVar) {
+	// returnVar = { mailListName : mailListName, isMailList : false } 
+		return (returnVar.isMailList || addrbook.dirName != "Virtual Identity" &&
+			Card.isMailList && Card.displayName.toLowerCase() == returnVar.mailListName.toLowerCase())
+	},
+	
+	getMailListName : function(recipient) {
+		if (recipient.match(/<[^>]*>/) || recipient.match(/$/)) {
+			mailListName = RegExp.leftContext + RegExp.rightContext
+			mailListName = mailListName.replace(/^\s+|\s+$/g,"")
+		}
+		return mailListName;
+	},
+	
+	isMailingList: function(recipient) {
+		vI_notificationBar.dump("## vI_addressBook: isMailingList '" + recipient + "' \n")
+		queryString = "?(or(DisplayName,c," + encodeURIComponent(vI_addressBook.getMailListName(recipient)) + "))"
+		var returnVar = vI_addressBook._walkTroughCards(queryString, vI_addressBook._isMailingListCard,
+			{ mailListName : mailListName, isMailList : false } )
+		return returnVar.isMailList;
+	},
+	
+	getCardForAddress: function(recipient, recipientType) {
+		if (recipientType == "addr_newsgroups") 
+			return vI_addressBook.getCardForAddressFromVIAbook(recipient)
+		else if (vI_addressBook.isMailingList(recipient))
+			return vI_addressBook.getCardForAddressFromVIAbook(getMailListName(recipient))
+		else 
+			return vI_addressBook.getCardForAddressFromNonVIAbook(recipient)
+	},
+	
+	getCardForAddressFromNonVIAbook :function (recipient) {
+		var queryString; var email = null; var name = null;
 		
-		vI_notificationBar.dump("## vI_addressBook: found " + matchingEmailCards.number + " card(s) with matching email.\n")
+		var splittedRecipient = vI.helper.parseAddress(recipient)
+		email = splittedRecipient.email; name = splittedRecipient.name
+		queryString = "?(or(PrimaryEmail,c," + encodeURIComponent(email) + ")(SecondEmail,c," + encodeURIComponent(email) + "))"
+
+		vI_notificationBar.dump("## vI_addressBook: Search '" + email + "' in addressbook emails.\n")
+
+		var returnVar = { email : email, name : name, mailListName : mailListName,
+			matchingEmailCards : { number : 0, cards : {} }, matchingFullNameCards : { number : 0, cards : {} } }
+		returnVar = vI_addressBook._walkTroughCards(queryString, vI_addressBook._findMatchingCard, returnVar)
+		var matchingEmailCards = returnVar.matchingEmailCards; var matchingFullNameCards = returnVar.matchingFullNameCards;
+		
+		vI_notificationBar.dump("## vI_addressBook: found " + matchingEmailCards.number + " card(s) with matching email (or lists).\n")
 		vI_notificationBar.dump("## vI_addressBook: found " + matchingFullNameCards.number + " card(s) with matching displayed Name.\n")
+		
 		// prefer matchingFullNameCards over matchingEmailCards
-		var matchingCards = matchingEmailCards
+		matchingCards = matchingEmailCards
 		if (matchingFullNameCards.number > 0) matchingCards = matchingFullNameCards
 		
 		// usual cases, found or not
@@ -241,7 +330,7 @@ vI_addressBook = {
 		}
 		
 		// upps, more than one matching address found
-		vI_notificationBar.dump("## vI_addressBook WARNING: " + matchingEmailCards.number + " matching entries found.\n")
+		vI_notificationBar.dump("## vI_addressBook WARNING: " + matchingCards.number + " matching entries found.\n")
 				
 		for (index = 0; index < matchingCards.number; index++) {
 			for each (var prop in vI_addressBook.CardFields) {
@@ -330,18 +419,17 @@ vI_addressBook = {
 			return;
 		}
 		
-		var email = inputElement.value
-		if (email == "") {
-			vI_notificationBar.dump("## vI_addressBook: no email found, not checked.\n"); return;
+		if (inputElement.value == "") {
+			vI_notificationBar.dump("## vI_addressBook: no recipient found, not checked.\n"); return;
 		}
 		
 		var row = inputElement.id.replace(/^addressCol2#/,"")
-		if (vI_addressBook.lastCheckedEmail[row] && vI_addressBook.lastCheckedEmail[row] == email) {
+		if (vI_addressBook.lastCheckedEmail[row] && vI_addressBook.lastCheckedEmail[row] == inputElement.value) {
 			vI_notificationBar.dump("## vI_addressBook: same email than before, not checked again.\n"); return;
 		}
-		vI_addressBook.lastCheckedEmail[row] = email;
+		vI_addressBook.lastCheckedEmail[row] = inputElement.value;
 		
-		var Card = vI_addressBook.getCardForAddress(email); if (!Card) return;
+		var Card = vI_addressBook.getCardForAddress(inputElement.value, recipientType); if (!Card) return;
 		
 		// found Card, so store InputElement
 		if (!vI_addressBook.firstUsedInputElement) vI_addressBook.firstUsedInputElement = inputElement;
@@ -393,8 +481,8 @@ vI_addressBook = {
 		vI_notificationBar.dump("## vI_addressBook: no free field in AddressBook.\n")
 	},
 	
-	updateABookFromVIdentity : function(email) {
-		var Card = vI_addressBook.getCardForAddress(email)
+	updateABookFromVIdentity : function(recipient, recipientType) {
+		var Card = vI_addressBook.getCardForAddress(recipient, recipientType)
 		if (!Card) return;
 		
 		var addresses = vI_addressBook.readVIdentityFromCard(Card);
@@ -464,19 +552,23 @@ vI_addressBook = {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
 				awGetInputElement(row).value.match(/^\s*$/) ) continue;
-			if (recipientType == "addr_newsgroups" && vI_addressBook.prefroot.getBoolPref("mail.collect_email_address_outgoing") &&
-				(!vI_addressBook.getCardForAddress(awGetInputElement(row).value))) {
-				
-				newCard = Components.classes["@mozilla.org/addressbook/cardproperty;1"]
-					.createInstance(Components.interfaces.nsIAbCard);
-				newCard.displayName = awGetInputElement(row).value;
-				newCard.notes = vI_addressBook.addNote
-				
-				var aBook = vI_addressBook.rdfService.GetResource(vI_addressBook.prefroot.getCharPref("mail.collect_addressbook"))
-					.QueryInterface(Components.interfaces.nsIAbDirectory);
-				aBook.addCard(newCard)
-			}
-			window.setTimeout(vI_addressBook.updateABookFromVIdentity, 50, awGetInputElement(row).value)
+			if (recipientType == "addr_newsgroups") vI_addressBook.addNewCard(awGetInputElement(row).value, recipientType)
+			window.setTimeout(vI_addressBook.updateABookFromVIdentity, 50, awGetInputElement(row).value, recipientType)
+		}
+	},
+	
+	addNewCard : function(recipient, recipientType) {
+		if (recipientType == "addr_newsgroups" && vI_addressBook.prefroot.getBoolPref("mail.collect_email_address_outgoing") &&
+			(!vI_addressBook.getCardForAddress(recipient,recipientType))) {
+			
+			newCard = Components.classes["@mozilla.org/addressbook/cardproperty;1"]
+				.createInstance(Components.interfaces.nsIAbCard);
+			newCard.displayName = recipient;
+			newCard.notes = vI_addressBook.addNote
+			
+			var aBook = vI_addressBook.rdfService.GetResource(vI_addressBook.prefroot.getCharPref("mail.collect_addressbook"))
+				.QueryInterface(Components.interfaces.nsIAbDirectory);
+			aBook.addCard(newCard)
 		}
 	},
 	
@@ -491,7 +583,7 @@ vI_addressBook = {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup") continue;
 			vI_addressBook.lastCheckedEmail[row] = awGetInputElement(row).value;
-			var Card = vI_addressBook.getCardForAddress(awGetInputElement(row).value);
+			var Card = vI_addressBook.getCardForAddress(awGetInputElement(row).value,recipientType);
 			if (!Card) continue;
 			var addresses = vI_addressBook.readVIdentityFromCard(Card);
 			if (addresses) vI_smartIdentity.addWithoutDuplicates(all_addresses,
