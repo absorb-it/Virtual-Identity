@@ -201,7 +201,7 @@ vI_addressBook = {
 			var addrbook = enumerator.getNext();  // an addressbook directory
 			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
 			var searchUri = (addrbook.directoryProperties?addrbook.directoryProperties.URI:addrbook.URI) + queryString;
-			vI_notificationBar.dump("## vI_addressBook: searchUri '" + searchUri + "'\n");
+			//~ vI_notificationBar.dump("## vI_addressBook: searchUri '" + searchUri + "'\n");
 			//~ var directory = vI_addressBook.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
 			
 			var AbView = Components.classes["@mozilla.org/addressbook/abview;1"].createInstance(Components.interfaces.nsIAbView);
@@ -218,7 +218,7 @@ vI_addressBook = {
 			//~ while (directory.childNodes && directory.childNodes.hasMoreElements()) {
 				//~ currentCard = directory.childNodes.getNext();
 				currentCard.QueryInterface(Components.interfaces.nsIAbCard);
-				vI_notificationBar.dump("## vI_addressBook:             checking '" + currentCard.displayName + "'.\n")
+				//~ vI_notificationBar.dump("## vI_addressBook:             checking '" + currentCard.displayName + "'.\n")
 				returnVar = callFunction(addrbook, currentCard, returnVar);
 				try { childCards.next(); } catch (ex) {	keepGoing = 0; }
 			}
@@ -249,11 +249,14 @@ vI_addressBook = {
 	},
 
 	_findMatchingCardInVIAbook : function(addrbook, Card, returnVar) {
-		vI_notificationBar.dump("## vI_addressBook:             aBook '" + addrbook.dirName + "'.\n")
-		if (!returnVar.Card && addrbook.dirName == "Virtual Identity" && 
-			Card.displayName.toLowerCase() == returnVar.name.toLowerCase() ) {
-			vI_notificationBar.dump("## vI_addressBook:             found CardInVIAbook.\n")
-			return { name: returnVar.name, Card : Card }
+		//~ vI_notificationBar.dump("## vI_addressBook:             aBook '" + addrbook.dirName + "'.\n")
+		if (!returnVar.Card && addrbook.dirName == "Virtual Identity") {
+			vI_notificationBar.dump("## vI_addressBook: comparing '" + Card.displayName.toLowerCase() + "' und '" +
+				returnVar.name.toLowerCase() + "'.\n")
+			if ( Card.displayName.toLowerCase() == returnVar.name.toLowerCase() ) {
+				vI_notificationBar.dump("## vI_addressBook:             found CardInVIAbook.\n")
+				return { name: returnVar.name, Card : Card }
+			}
 		}
 		else return returnVar
 	},
@@ -265,13 +268,16 @@ vI_addressBook = {
 		vI_notificationBar.dump("## vI_addressBook: Search '" + name + "' in VI addressbook displayed names.\n")
 		var returnVar = vI_addressBook._walkTroughCards(queryString, vI_addressBook._findMatchingCardInVIAbook,
 			{ name : name, Card : null } )
+		if (returnVar.Card) vI_notificationBar.dump("## vI_addressBook: Card found in VI addressbook.\n")
+		else vI_notificationBar.dump("## vI_addressBook: Card not found in VI addressbook.\n")
 		return returnVar.Card		
 	},
 	
 	_isMailingListCard : function (addrbook, Card, returnVar) {
 	// returnVar = { mailListName : mailListName, isMailList : false } 
-		return (returnVar.isMailList || addrbook.dirName != "Virtual Identity" &&
-			Card.isMailList && Card.displayName.toLowerCase() == returnVar.mailListName.toLowerCase())
+		return { mailListName : returnVar.mailListName,
+			isMailList : (returnVar.isMailList || addrbook.dirName != "Virtual Identity" &&
+			Card.isMailList && Card.displayName.toLowerCase() == returnVar.mailListName.toLowerCase()) }
 	},
 	
 	getMailListName : function(recipient) {
@@ -287,6 +293,7 @@ vI_addressBook = {
 		queryString = "?(or(DisplayName,c," + encodeURIComponent(vI_addressBook.getMailListName(recipient)) + "))"
 		var returnVar = vI_addressBook._walkTroughCards(queryString, vI_addressBook._isMailingListCard,
 			{ mailListName : mailListName, isMailList : false } )
+		vI_notificationBar.dump("## vI_addressBook: isMailList  " + returnVar.isMailList + ".\n")
 		return returnVar.isMailList;
 	},
 	
@@ -294,7 +301,7 @@ vI_addressBook = {
 		if (recipientType == "addr_newsgroups") 
 			return vI_addressBook.getCardForAddressFromVIAbook(recipient)
 		else if (vI_addressBook.isMailingList(recipient))
-			return vI_addressBook.getCardForAddressFromVIAbook(getMailListName(recipient))
+			return vI_addressBook.getCardForAddressFromVIAbook(vI_addressBook.getMailListName(recipient))
 		else 
 			return vI_addressBook.getCardForAddressFromNonVIAbook(recipient)
 	},
@@ -482,6 +489,7 @@ vI_addressBook = {
 	},
 	
 	updateABookFromVIdentity : function(recipient, recipientType) {
+		vI_notificationBar.dump("## vI_addressBook: updateABookFromVIdentity " + recipient + ".\n")
 		var Card = vI_addressBook.getCardForAddress(recipient, recipientType)
 		if (!Card) return;
 		
@@ -552,24 +560,34 @@ vI_addressBook = {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
 				awGetInputElement(row).value.match(/^\s*$/) ) continue;
-			if (recipientType == "addr_newsgroups") vI_addressBook.addNewCard(awGetInputElement(row).value, recipientType)
+			vI_addressBook.addNewCard(awGetInputElement(row).value, recipientType)
 			window.setTimeout(vI_addressBook.updateABookFromVIdentity, 50, awGetInputElement(row).value, recipientType)
 		}
 	},
 	
-	addNewCard : function(recipient, recipientType) {
-		if (recipientType == "addr_newsgroups" && vI_addressBook.prefroot.getBoolPref("mail.collect_email_address_outgoing") &&
-			(!vI_addressBook.getCardForAddress(recipient,recipientType))) {
-			
+	_addNewCardToVIAbook : function (recipient) {
+			vI_notificationBar.dump("## vI_addressBook: _addNewCardToVIAbook.\n")
 			newCard = Components.classes["@mozilla.org/addressbook/cardproperty;1"]
 				.createInstance(Components.interfaces.nsIAbCard);
 			newCard.displayName = recipient;
 			newCard.notes = vI_addressBook.addNote
-			
-			var aBook = vI_addressBook.rdfService.GetResource(vI_addressBook.prefroot.getCharPref("mail.collect_addressbook"))
-				.QueryInterface(Components.interfaces.nsIAbDirectory);
-			aBook.addCard(newCard)
-		}
+			var parentDir = vI_addressBook.rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
+			var enumerator = parentDir.childNodes;
+			if (!enumerator) {vI_notificationBar.dump("## vI_addressBook: no addressbooks?\n"); return null;} // uups, no addressbooks?	
+			while (enumerator && enumerator.hasMoreElements()) {
+				var addrbook = enumerator.getNext();  // an addressbook directory
+				addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
+				if (addrbook.dirName == "Virtual Identity") { addrbook.addCard(newCard); break }
+			}
+	},
+	
+	addNewCard : function(recipient, recipientType) {
+		if (!vI_addressBook.prefroot.getBoolPref("mail.collect_email_address_outgoing")) return;
+		if (recipientType == "addr_newsgroups" && !vI_addressBook.getCardForAddressFromVIAbook(recipient))
+			vI_addressBook._addNewCardToVIAbook(recipient)
+		else if ( vI_addressBook.isMailingList(recipient) &&
+			!vI_addressBook.getCardForAddressFromVIAbook(vI_addressBook.getMailListName(recipient)) )
+			vI_addressBook._addNewCardToVIAbook(vI_addressBook.getMailListName(recipient))
 	},
 	
 	getVIdentityFromAllRecipients : function(all_addresses) {
