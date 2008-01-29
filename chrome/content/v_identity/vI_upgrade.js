@@ -72,7 +72,7 @@ vI_upgrade = {
 			try { vI_upgrade.preferences.clearUserPref(pref); vI_notificationBar.dumpUpgrade(".") }
 			catch (e) { };
 		}
-		vI_notificationBar.dumpUpgrade("done.")
+		vI_notificationBar.dumpUpgrade("done.\n")
 	},
 	
 	extUpgrade : function() {
