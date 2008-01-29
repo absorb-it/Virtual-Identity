@@ -82,8 +82,8 @@ vI_upgrade = {
 			case null:
 				vI_upgrade.transferVIdentityABookToRDF();
 				vI_upgrade.removeObsoleteUserPrefs();
-				vI_rdfDatasource.storeExtVersion();
 		}
+		vI_rdfDatasource.storeExtVersion();
 		vI_notificationBar.dumpUpgrade("extension-upgrade to " + vI_rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
 	},
 		
