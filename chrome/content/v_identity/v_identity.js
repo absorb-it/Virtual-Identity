@@ -76,7 +76,7 @@ var vI = {
 				email = email.replace(/\s+|<|>/g,"")
 				name = name.replace(/^\s+|\s+$/g,"")
 			}
-			vI_notificationBar.dump("## v_identity: getAddress: name '" + 
+			vI_notificationBar.dump("## v_identity: getAddress: address '" + address + "' name '" + 
 				name + "' email '" + email + "'\n");
 			return { name: name,
 				 email: email,
@@ -120,7 +120,7 @@ var vI = {
 		NotifyComposeFieldsReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeFieldsReady\n");
 			vI_msgIdentityClone.initReplyToFields();
-			vI_addressBook.init();
+			vI_storage.init();
 			vI_smartIdentity.init();
 		},
 		ComposeProcessDone: function(aResult) {
@@ -187,7 +187,7 @@ var vI = {
 				vI_account.createAccount();
 				vI.addVirtualIdentityToMsgIdentityMenu();
 				vI.original_functions.GenericSendMessage(msgType);
-				vI_addressBook.storeVIdentityToAllRecipients(msgType);
+				vI_storage.storeVIdentityToAllRecipients(msgType);
 				if (window.cancelSendMessage) {
 					vI.Cleanup_Account();
 					vI_notificationBar.dump("## v_identity: SendMessage cancelled\n");
@@ -242,7 +242,7 @@ var vI = {
 		GenericSendMessage = function (msgType) {
 				vI.msgType = msgType; if (vI.warning(msgType)) {
 					vI.original_functions.GenericSendMessage(msgType);
-					vI_addressBook.storeVIdentityToAllRecipients(msgType); } }
+					vI_storage.storeVIdentityToAllRecipients(msgType); } }
 		
 		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
 		window.removeEventListener("load", vI.init, false);
@@ -297,7 +297,7 @@ var vI = {
 			GenericSendMessage = function (msgType) {
 				vI.msgType = msgType; if (vI.warning(msgType)) {
 					vI.original_functions.GenericSendMessage(msgType);
-					vI_addressBook.storeVIdentityToAllRecipients(msgType); } }
+					vI_storage.storeVIdentityToAllRecipients(msgType); } }
 			vI_notificationBar.dump("## v_identity: restored GenericSendMessage (Virtual Identity deactivated)\n");
 		}
 	},
@@ -307,7 +307,7 @@ var vI = {
 		// remove temporary Account
 		if (vI_account.account) {
 			vI.remVirtualIdentityFromMsgIdentityMenu();
-			vI_account.removeAccount();
+			vI_account.removeUsedVIAccount();
 		}
 	},
 }

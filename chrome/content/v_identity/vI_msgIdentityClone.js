@@ -303,9 +303,8 @@ vI_msgIdentityClone = {
 						.setAttribute("accountname", accountname)
 				}
 				vI.elements.Obj_vILogo.setAttribute("hidden","false");
-				vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden",
-					!vI.preferences.getBoolPref("aBook_show_switch") ||
-					!vI.preferences.getBoolPref("aBook_use"));
+				//~ vI_storage.elements.Obj_storageSave.setAttribute("hidden",
+					//~ !vI.preferences.getBoolPref("storage_show_switch"));
 			}
 			// code to hide the signature
 			try { if (vI.preferences.getBoolPref("hide_signature") && ss_signature.length == 0)
@@ -322,10 +321,8 @@ vI_msgIdentityClone = {
 					.setAttribute("class", vI_msgIdentityClone.icon_usualId_class);
 				vI.Cleanup();
 				vI.elements.Obj_vILogo.setAttribute("hidden","true");
-				vI_addressBook.elements.Obj_aBookSave.setAttribute("hidden",
-					!vI.preferences.getBoolPref("aBook_show_switch") ||
-					!vI.preferences.getBoolPref("aBook_use_non_vI") ||
-					!vI.preferences.getBoolPref("aBook_use"));
+				//~ vI_storage.elements.Obj_storageSave.setAttribute("hidden",
+					//~ !vI.preferences.getBoolPref("storage_show_switch"));
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 					.setAttribute("oldvalue",null)
 				//~ vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.doCommand();
@@ -345,16 +342,11 @@ vI_msgIdentityClone = {
 		var address = vI.helper.getAddress();
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		for (var i in accounts) {
-			var server = accounts[i].incomingServer;
-				//  ignore (other) virtualIdentity Accounts
-				if (!server || server.hostName == "virtualIdentity") continue;
-				
+			var server = accounts[i].incomingServer;				
 				var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 				for (var j in identites) {
 					var identity = identites[j];
 					var smtpKey = identity.smtpServerKey;
-					if (!identity.smtpServerKey) smtpKey = accounts[i].defaultIdentity.smtpServerKey;
-					if (!identity.smtpServerKey) smtpKey = vI_smtpSelector.smtpService.defaultServer.key;
 					if (	identity.getUnicharAttribute("fullName") == address.name &&
 						identity.getUnicharAttribute("useremail") == address.email &&
 						smtpKey == vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key')) {

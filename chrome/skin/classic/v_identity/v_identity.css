@@ -1,6 +1,23 @@
 @import url("chrome://v_identity/locale/logo.css"); 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
+#upgradeWizard {
+	width: 550px;
+	height: 350px
+}
+
+#upgradeWizard wizardpage {
+	overflow:	hidden;
+}
+
+#upgradeWizard browser {
+	height:		175px;
+}
+
+#upgradeWizard textbox {
+	height:		165px;
+}
+	
 .v_identity_logo_button {
 	-moz-appearance: toolbarbutton;
 }

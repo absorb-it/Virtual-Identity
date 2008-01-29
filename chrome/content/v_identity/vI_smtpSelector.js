@@ -36,15 +36,15 @@ vI_smtpSelector = {
 		vI_smtpSelector.elements.Area_SMTPServerList = document.getElementById("smtpServerListHbox");
 		vI_smtpSelector.elements.Obj_SMTPServerList = document.getElementById("smtp_server_list");
 		vI_smtpSelector.elements.Obj_SMTPServerListPopup = document.getElementById("smtp_server_list_popup");
-		vI_smtpSelector.loadSMTP_server_list();
-		if (vI.preferences.getBoolPref("show_smtp") &&
-			(vI_smtpSelector.elements.Obj_SMTPServerListPopup.childNodes.length > 1))
+		vI_smtpSelector.__loadSMTP_server_list();
+		vI_smtpSelector.__selectUsedSMTPServer();
+		if (vI.preferences.getBoolPref("show_smtp"))
 				vI_smtpSelector.elements.Area_SMTPServerList.setAttribute("hidden", "false");
 	},
 
 	loadSMTP : function()
 	{
-		vI_msgIdentityClone.inputEvent();
+		vI_msgIdentityClone.inputEvent(); // any change of the menu is handled by vI_msgIdentityClone
 	},
 	
 	resetMenuToMsgIdentity : function(identitykey) {
@@ -56,28 +56,26 @@ vI_smtpSelector = {
 						smtpKey = gAccountManager.accounts[i].defaultIdentity.smtpServerKey;
 				}
 			}
-		if (!smtpKey) smtpKey = vI_smtpSelector.smtpService.defaultServer.key;
 		vI_smtpSelector.setMenuToKey(smtpKey);
 	},
 	
 	setMenuToKey : function (smtpKey) {
-		if (!smtpKey) return;
 		MenuItems = vI_smtpSelector.elements.Obj_SMTPServerListPopup.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
+			if (MenuItems[index].localName == "menuseparator") continue;
 			if (MenuItems[index].getAttribute("key") == smtpKey) {
-					vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem =
-						MenuItems[index];
-					break;
+				vI_notificationBar.dump("## v_smtpSelector: use SMTP " + MenuItems[index].label + "\n")
+				vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem =
+					MenuItems[index];
+				break;
 			}
 		}
 	},
-
-	loadSMTP_server_list : function()
-	{
-		var idserver;
+	
+	__selectUsedSMTPServer : function() {
 		if (vI.helper.getBaseIdentity().smtpServerKey) {
-			idserver = vI_smtpSelector.smtpService.getServerByKey(vI.helper.getBaseIdentity().smtpServerKey);
-			vI_notificationBar.dump("## v_smtpSelector: use SMTP from BaseIdentity: " + vI_smtpSelector.getSMTPName(idserver.key) + "\n")
+			document.getElementById('smtp_server_list').value = vI.helper.getBaseIdentity().smtpServerKey
+			vI_notificationBar.dump("## v_smtpSelector: use SMTP from BaseIdentity: " + vI.helper.getBaseIdentity().smtpServerKey + "\n")
 			}
 		else {
 			// find the account related to the identity, to get the account-related default smtp, if it exists.
@@ -85,61 +83,51 @@ vI_smtpSelector = {
 			accounts.sort(compareAccountSortOrder);
 			
 			for (var x in accounts) {
-				if (idserver) {
-					vI_notificationBar.dump("## v_smtpSelector: use SMTP from Account of BaseIdentity: " + vI_smtpSelector.getSMTPName(idserver.key) + "\n")
-					break;
-				}
 				var server = accounts[x].incomingServer;
-				
-				//  ignore (other) virtualIdentity Accounts
-				if (!server || server.hostName == "virtualIdentity") continue;
 				
 				var identities = queryISupportsArray(accounts[x].identities, Components.interfaces.nsIMsgIdentity);
 				for (var j in identities) {
 					var identity = identities[j];
 					if (identity.key == vI.helper.getBaseIdentity().key) {
 						if (accounts[x].defaultIdentity.smtpServerKey)
-							idserver = vI_smtpSelector.smtpService.getServerByKey(accounts[x].defaultIdentity.smtpServerKey);
-						break;
-						}
+							vI_notificationBar.dump("## v_smtpSelector: use SMTP from Account of BaseIdentity: " + accounts[x].defaultIdentity.smtpServerKey + "\n")
+						document.getElementById('smtp_server_list').value = accounts[x].defaultIdentity.smtpServerKey
+						return;
+					}
 				}
 			}
 		}
-		if (!idserver) {
-			idserver = vI_smtpSelector.smtpService.defaultServer;
-			vI_notificationBar.dump("## v_smtpSelector: use default SMTP: " + vI_smtpSelector.getSMTPName(idserver.key) + "\n")
-		}
-		
-		var defaultServer = vI_smtpSelector.smtpService.defaultServer;
-		var servers = vI_smtpSelector.smtpService.smtpServers;
-	    
-		var serverCount = servers.Count();
+	},
+	
+	__loadSMTP_server_list : function()
+	{
+		var listitem = vI_smtpSelector.__createDefaultSmtpListItem();
+		vI_smtpSelector.elements.Obj_SMTPServerListPopup.appendChild(listitem);
+		vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem = listitem;
 
-		for (var i=0 ; i<serverCount; i++) {
+		var separator = document.createElement("menuseparator");
+		vI_smtpSelector.elements.Obj_SMTPServerListPopup.appendChild(separator);
+
+		var servers = vI_smtpSelector.smtpService.smtpServers;
+		for (var i=0 ; i<servers.Count(); i++) {
 			var server = servers.QueryElementAt(i, Components.interfaces.nsISmtpServer);
-			if (!server.redirectorType) 
-			{
-			  var listitem = vI_smtpSelector.createSmtpListItemx(server);
-			  vI_smtpSelector.elements.Obj_SMTPServerListPopup.appendChild(listitem);
-			  // set choosen default server 
-			  if (idserver == server) vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem = listitem;
+			if (!server.redirectorType) {
+				var listitem = vI_smtpSelector.__createSmtpListItem(server);
+				vI_smtpSelector.elements.Obj_SMTPServerListPopup.appendChild(listitem);
 			}
 		}
 	},
-
-	createSmtpListItemx : function (server) {
+	
+	__createDefaultSmtpListItem : function () {
 	    var listitem = document.createElement("menuitem");
-
-	    listitem.setAttribute("label", (server.description?server.description:server.hostname));
-	    listitem.setAttribute("key", server.key);
-	    // give it some unique id
-	    listitem.id = "smtpServer." + server.key;
-
-	    return listitem;
+	    listitem.setAttribute("label", document.getElementById("bundle_messenger").getString("defaultServerTag"));
+	    return listitem;	
 	},
 	
-	getSMTPName : function (key) {
-		var server = vI_smtpSelector.smtpService.getServerByKey(key)
-		return (server.description?server.description:server.hostname)
+	__createSmtpListItem : function (server) {
+	    var listitem = document.createElement("menuitem");
+	    listitem.setAttribute("label", (server.description?server.description:server.hostname));
+	    listitem.setAttribute("key", server.key);
+	    return listitem;
 	}
 }

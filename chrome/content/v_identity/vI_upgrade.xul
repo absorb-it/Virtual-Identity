@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+
+<?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>   
+<?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+
+<!DOCTYPE page [
+<!ENTITY % vIdentUpgradeDTD SYSTEM "chrome://v_identity/locale/vI_upgrade.dtd">
+%vIdentUpgradeDTD;
+<!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
+%versionDTD;
+<!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
+%vIdentDTD;
+]>
+
+<wizard id="upgradeWizard" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        title="Virtual Identity Extension Upgrade/Installation"
+	zlevel="6" >
+
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_upgrade.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_account.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js" />	
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_htmlTextBox.js" />
+
+<stringbundle id="vITextBoxBundle" src="chrome://v_identity/locale/vI_upgrade.properties" />
+	
+	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.intro', 'vident.intro');"
+		label="&vident.upgrade.intro.label;" description="&vident.upgrade.intro.description;" >
+		<groupbox>
+			<caption label="&vident.upgrade.intro.caption;"/>
+			<browser id="vITextBox.intro" disablehistory="true" />
+		</groupbox>
+	</wizardpage>
+	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.features', 'vident.features');"
+		label="&vident.upgrade.features.label;" description="&vident.upgrade.features.description;" >
+		<groupbox>
+			<caption label="&vident.upgrade.features.caption;"/>
+			<browser id="vITextBox.features" disablehistory="true" />
+		</groupbox>
+	</wizardpage>
+	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.license', 'vident.license');"
+		label="&vident.upgrade.license.label;" description="&vident.upgrade.license.description;" >
+		<groupbox>
+			<caption label="&vident.upgrade.license.caption;"/>
+			<browser id="vITextBox.license" disablehistory="true" />
+		</groupbox>
+	</wizardpage>
+	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.upgrade1', 'vident.upgrade1');"
+		label="&vident.upgrade.upgrade1.label;" description="&vident.upgrade.upgrade1.description;" >
+		<groupbox>
+			<caption label="&vident.upgrade.upgrade1.caption;"/>
+			<browser id="vITextBox.upgrade1" disablehistory="true" />
+		</groupbox>
+	</wizardpage>
+	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_upgrade.init();vI_upgrade.step1();"
+		label="&vident.upgrade.upgrade2.label;" description="&vident.upgrade.upgrade2.description;" >
+		<groupbox>
+			<caption label="&vident.upgrade.upgrade2.caption;"/>
+			<splitter id="vIDebugBoxSplitter" hidden="true" />
+			<textbox id="vIDebugBox" multiline="true" readonly="true" />
+		</groupbox>
+	</wizardpage>
+	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.upgrade3', 'vident.upgrade3');"
+		label="&vident.upgrade.upgrade3.label;" description="&vident.upgrade.upgrade3.description;" >
+		<groupbox>
+			<caption label="&vident.upgrade.upgrade3.caption;"/>
+			<browser id="vITextBox.upgrade3" disablehistory="true" />
+		</groupbox>
+	</wizardpage>	
+	<hbox>
+	<spacer flex="1" />
+	<button class="v_identity_logo v_identity_logo_button"
+		label="&vident.compose.vidLogo.label; &vident.version;"
+		oncommand="vI_upgrade.openURL('http://www.absorb.it/virtual-id')" tooltiptext="&vident.prefs.vidLogo.tooltiptext;" />
+	<spacer width="10px" />
+	</hbox>
+</wizard>

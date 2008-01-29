@@ -66,18 +66,16 @@ vI_prefDialog = {
 				"VIdent_identity.warn_nonvirtual",
 				"VIdent_identity.warn_virtual",
 				"VIdent_identity.hide_signature",
-				"VIdent_identity.aBook_use",
-				"VIdent_identity.aBook_storedefault",
-				"VIdent_identity.aBook_dont_update_multiple",
-				"VIdent_identity.aBook_show_switch",
-				"VIdent_identity.aBook_warn_update",
-				"VIdent_identity.aBook_use_for_smart_reply",
-				"VIdent_identity.aBook_prefer_smart_reply",
-				"VIdent_identity.aBook_ignore_smart_reply",
-				"VIdent_identity.aBook_warn_vI_replace",
-				"VIdent_identity.aBook_use_non_vI",
-				"VIdent_identity.aBook_notification",
-				"VIdent_identity.aBook_getOneOnly",
+				"VIdent_identity.storage_storedefault",
+				"VIdent_identity.storage_dont_update_multiple",
+				"VIdent_identity.storage_show_switch",
+				"VIdent_identity.storage_warn_update",
+				"VIdent_identity.storage_use_for_smart_reply",
+				"VIdent_identity.storage_prefer_smart_reply",
+				"VIdent_identity.storage_ignore_smart_reply",
+				"VIdent_identity.storage_warn_vI_replace",
+				"VIdent_identity.storage_notification",
+				"VIdent_identity.storage_getOneOnly",
 				"VIdent_identity.autoReplyToSelf"],
 	
 		init : function() {
@@ -138,10 +136,10 @@ vI_prefDialog = {
 				"VIdent_identity.smart_reply_ignoreFullName",
 				"VIdent_identity.smart_reply_autocreate",
 				"VIdent_identity.smart_reply_headers_reset",
-				"VIdent_identity.aBook_use_for_smart_reply",
-				"VIdent_identity.aBook_prefer_smart_reply",
-				"VIdent_identity.aBook_ignore_smart_reply",
-				"aBookTab2",
+				"VIdent_identity.storage_use_for_smart_reply",
+				"VIdent_identity.storage_prefer_smart_reply",
+				"VIdent_identity.storage_ignore_smart_reply",
+				"storageTab2",
 				"smartReplyTab", "smartReplyTab1", "smartReplyTab2", "smartReplyTab3"];
 			for( var i = 0; i < elementIDs.length; i++ ) {
 				if (element.checked)
@@ -152,32 +150,6 @@ vI_prefDialog = {
 						.setAttribute("disabled", "true");
 			}
 			vI_prefDialog.base.smartReplyResultConstraint();
-		},
-
-		aBookConstraint : function(element) {
-			var elementIDs = [
-				"VIdent_identity.aBook_storedefault",
-				"VIdent_identity.aBook_show_switch",
-				"VIdent_identity.aBook_warn_update",
-				"VIdent_identity.aBook_use_for_smart_reply",
-				"VIdent_identity.aBook_prefer_smart_reply",
-				"VIdent_identity.aBook_ignore_smart_reply",
-				"VIdent_identity.aBook_warn_vI_replace",
-				"VIdent_identity.aBook_remove_entries",
-				"VIdent_identity.aBook_use_non_vI",
-				"VIdent_identity.aBook_dont_update_multiple",
-				"VIdent_identity.aBook_getOneOnly",
-				"aBookTab", "aBookTab1", "aBookTab2", "aBookTab3"];
-			for( var i = 0; i < elementIDs.length; i++ ) {
-				if (element.checked)
-					document.getElementById(elementIDs[i])
-						.removeAttribute("disabled");
-				else
-					document.getElementById(elementIDs[i])
-						.setAttribute("disabled", "true");
-			}
-			vI_prefDialog.base.aBookSmartReplyConstraint();
-			vI_prefDialog.base.aBookCheckCounter();
 		},
 		
 		smartReplyResultConstraint : function() {
@@ -192,18 +164,17 @@ vI_prefDialog = {
 			autocreate_desc.setAttribute("hidden", !ask.checked)
 		},
 		
-		aBookSmartReplyConstraint : function() {
-			if (!document.getElementById("VIdent_identity.aBook_use").checked) return;
-			var use_for_smart_reply = document.getElementById("VIdent_identity.aBook_use_for_smart_reply")
-			var prefer_smart_reply = document.getElementById("VIdent_identity.aBook_prefer_smart_reply")
-			var ignore_smart_reply = document.getElementById("VIdent_identity.aBook_ignore_smart_reply")
+		storageSmartReplyConstraint : function() {
+			var use_for_smart_reply = document.getElementById("VIdent_identity.storage_use_for_smart_reply")
+			var prefer_smart_reply = document.getElementById("VIdent_identity.storage_prefer_smart_reply")
+			var ignore_smart_reply = document.getElementById("VIdent_identity.storage_ignore_smart_reply")
 			prefer_smart_reply.setAttribute("disabled", !use_for_smart_reply.checked)
 			ignore_smart_reply.setAttribute("disabled", !use_for_smart_reply.checked)
 		},
 
 		smartReplyHeaderReset : function() {
 			var textfield = document.getElementById("VIdent_identity.smart_reply_headers")
-			textfield.value = "x-original-to\nto\ncc"
+			textfield.value = "envelope-to\nx-original-to\nto\ncc"
 		},
 		
 		smartReplyHideSignature : function() {
@@ -228,21 +199,6 @@ vI_prefDialog = {
 			document.getElementById("VIdent_identity.HideSignature.warning").setAttribute("hidden", "true");
 			document.getElementById("VIdent_identity.hide_signature").setAttribute("disabled", "false");
 		},
-		
-		aBookCheckCounter : function() {
-			var aBookStatus = document.getElementById("VIdent_identity.aBook_status");
-			var strings = document.getElementById("vIdentBundle");
-			var number = vI_addressBook.removeVIdentityFromABook(false);
-			var statusString = "";
-			if (number > 0)
-				statusString = strings.getString("vident.clearAddressBook.status.prefix") + " " + number + " " +
-					strings.getString("vident.clearAddressBook.status.postfix")
-			else	{
-				statusString = strings.getString("vident.clearAddressBook.status.none")
-				document.getElementById("VIdent_identity.aBook_remove_entries").setAttribute("disabled", "true")
-			}
-			aBookStatus.setAttribute("value", statusString);
-		}
 	},
 
 	init : function() {
@@ -279,8 +235,6 @@ vI_prefDialog = {
 		
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
 		vI_prefDialog.base.smartReplyHideSignature();
-		vI_prefDialog.base.aBookConstraint(document.getElementById("VIdent_identity.aBook_use"));
-		window.setTimeout(vI_prefDialog.base.aBookCheckCounter, 0); // do this in background, cause this might take a while
 		
 		//~ if (vI_prefDialog.preferences.getBoolPref("experimental")){
 		//~ }

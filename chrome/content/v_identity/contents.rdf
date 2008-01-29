@@ -31,6 +31,7 @@
 
     <RDF:Seq about="chrome://messenger/content/messenger.xul">
       <RDF:li>chrome://v_identity/content/vI_context.xul</RDF:li>
+      <RDF:li>chrome://v_identity/content/vI_upgradeOverlay.xul</RDF:li>
     </RDF:Seq>
 
 </RDF:RDF>

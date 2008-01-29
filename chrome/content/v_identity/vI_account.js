@@ -25,6 +25,14 @@
 vI_account = {
 	account : null,
 	
+	AccountManager : Components.classes["@mozilla.org/messenger/account-manager;1"]
+		.getService(Components.interfaces.nsIMsgAccountManager),
+
+	
+	prefroot : Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefService)
+		.getBranch(null),
+
 	_copyBoolAttribute : function(name) {
 		vI_account.account.defaultIdentity.setBoolAttribute(name,
 				vI.helper.getBaseIdentity().getBoolAttribute(name));
@@ -75,14 +83,36 @@ vI_account = {
 			vI_account._copyCharAttribute("escapedVCard");
 		}
 	},
+		
+	cleanupSystem : function() {
+		vI_notificationBar.dump("## vI_account: cleanupSystem:\n")
+		for (var i=0; i < vI_account.AccountManager.accounts.Count(); i++) {
+			var account = vI_account.AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
+			vI_account.removeAccount(account);
+		}
+		vI_notificationBar.dump("## vI_account: cleanupSystem done.\n")
+	},
 	
-	removeAccount : function() {
+	removeAccount : function(account) {
+		var key = account.key;
+		var server = account.incomingServer;
+		if (!server || server.hostName != "virtualIdentity") {
+			try {	vI_account.prefroot.getBoolPref("mail.account." + account.key + ".vIdentity");
+				account.incomingServer = vI_account.AccountManager.
+							createIncomingServer("toRemove","virtualIdentity","pop3");
+			} catch (e) { return; };
+		}
+		try { account.incomingServer.rootFolder.Delete(); }
+		catch (e) { };
+		vI_notificationBar.dump("## vI_account: removing account " + key + ".\n")
+		vI_account.AccountManager.removeAccount(account);
+		try { vI_account.prefroot.clearUserPref("mail.account." + key + ".vIdentity");	}
+		catch (e) { };
+	},
+	
+	removeUsedVIAccount : function() {
 		if (vI_account.account) {
-			vI_account.account.incomingServer = gAccountManager.createIncomingServer("toRemove","virtualIdentity","pop3");
-			//~ try { vI_account.account.incomingServer.rootFolder.Delete(); }
-			//~ catch (e) { };
-			
-			gAccountManager.removeAccount(vI_account.account);
+			vI_account.removeAccount(vI_account.account);
 			vI_account.account = null;
 		}
 	},
@@ -94,21 +124,24 @@ vI_account = {
 			return;
 		}
 		
+		vI_account.cleanupSystem();
+		
 		/*
 		// the easiest way would be to get all requiered Attributes might be to duplicate the default account like this
-		var recentAccount = gAccountManager.getAccount(vI.elements.Obj_MsgIdentity.selectedItem.getAttribute("accountkey"));
-		vI.VIdent_Account = gAccountManager.duplicateAccount(recentAccount);
+		var recentAccount = vI_account.AccountManager.getAccount(vI.elements.Obj_MsgIdentity.selectedItem.getAttribute("accountkey"));
+		vI.VIdent_Account = vI_account.AccountManager.duplicateAccount(recentAccount);
 		// but this ends up in the following exception:
 		// "Component returned failure code: 0x80004001 (NS_ERROR_NOT_IMPLEMENTED) [nsIMsgAccountManager.duplicateAccount]"
 		// so I have to do this by hand ;(
 		*/
 		
-		vI_account.account = gAccountManager.createAccount();
+		vI_account.account = vI_account.AccountManager.createAccount();
+		vI_account.prefroot.setBoolPref("mail.account." + vI_account.account.key + ".vIdentity", true)
 		
-		vI_account.account.addIdentity(gAccountManager.createIdentity());
+		vI_account.account.addIdentity(vI_account.AccountManager.createIdentity());
 	
 		// the new account uses the same incomingServer than the base one, has to be replaced before the account is removed
-		var servers = gAccountManager.GetServersForIdentity(vI.helper.getBaseIdentity());
+		var servers = vI_account.AccountManager.GetServersForIdentity(vI.helper.getBaseIdentity());
 		vI_account.account.incomingServer = servers.QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
 		
 		vI_account.copyMsgIdentityClone();
@@ -140,9 +173,9 @@ vI_account = {
 			{
 			    case "2"  :
 				dump ("## vI_account: preparing Fcc --- use Settings of Default Account\n");
-				vI_account.account.defaultIdentity.doFcc = gAccountManager.defaultAccount.defaultIdentity.doFcc;
-				vI_account.account.defaultIdentity.fccFolder = gAccountManager.defaultAccount.defaultIdentity.fccFolder;
-				vI_account.account.defaultIdentity.fccFolderPickerMode = gAccountManager.defaultAccount.defaultIdentity.fccFolderPickerMode;
+				vI_account.account.defaultIdentity.doFcc = vI_account.AccountManager.defaultAccount.defaultIdentity.doFcc;
+				vI_account.account.defaultIdentity.fccFolder = vI_account.AccountManager.defaultAccount.defaultIdentity.fccFolder;
+				vI_account.account.defaultIdentity.fccFolderPickerMode = vI_account.AccountManager.defaultAccount.defaultIdentity.fccFolderPickerMode;
 				break;
 			    case "3"  :
 				dump ("## vI_account: preparing Fcc --- use Settings of Modified Account\n");
@@ -176,8 +209,8 @@ vI_account = {
 		{
 		    case "2"  :
 			dump ("## vI_account: preparing Draft --- use Settings of Default Account\n");
-			vI_account.account.defaultIdentity.draftFolder = gAccountManager.defaultAccount.defaultIdentity.draftFolder;
-			vI_account.account.defaultIdentity.draftsFolderPickerMode = gAccountManager.defaultAccount.defaultIdentity.draftsFolderPickerMode;
+			vI_account.account.defaultIdentity.draftFolder = vI_account.AccountManager.defaultAccount.defaultIdentity.draftFolder;
+			vI_account.account.defaultIdentity.draftsFolderPickerMode = vI_account.AccountManager.defaultAccount.defaultIdentity.draftsFolderPickerMode;
 			break;
 		    case "3"  :
 			dump ("## vI_account: preparing Draft --- use Settings of Modified Account\n");
@@ -203,8 +236,8 @@ vI_account = {
 		{
 		    case "2"  :
 			dump ("## vI_account: preparing Templates --- use Settings of Default Account\n");
-			vI_account.account.defaultIdentity.stationeryFolder = gAccountManager.defaultAccount.defaultIdentity.stationeryFolder;
-			vI_account.account.defaultIdentity.tmplFolderPickerMode = gAccountManager.defaultAccount.defaultIdentity.tmplFolderPickerMode;
+			vI_account.account.defaultIdentity.stationeryFolder = vI_account.AccountManager.defaultAccount.defaultIdentity.stationeryFolder;
+			vI_account.account.defaultIdentity.tmplFolderPickerMode = vI_account.AccountManager.defaultAccount.defaultIdentity.tmplFolderPickerMode;
 			break;
 		    case "3"  :
 			dump ("## vI_account: preparing Templates --- use Settings of Modified Account\n");

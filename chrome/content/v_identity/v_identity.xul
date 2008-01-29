@@ -44,10 +44,12 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_smtpSelector.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
-<script type="application/x-javascript" src="chrome://v_identity/content/vI_addressBook.js"/>
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js"/>
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js"/>
 
   <stringbundleset id="stringbundleset">
     <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
+    <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />
   </stringbundleset>
 
 <vbox id="appcontent" >
@@ -73,8 +75,8 @@
 	   <menupopup id="smtp_server_list_popup" />
 	</menulist>
 	</hbox>
-	<checkbox id="aBook_save" label="&vident.composeDialog.aBookSave.label;" 
-		tooltiptext="&vident.composeDialog.aBookSave.tooltiptext;" hidden="true" />
+	<checkbox id="storage_save" label="&vident.composeDialog.storageSave.label;" 
+		tooltiptext="&vident.composeDialog.storageSave.tooltiptext;" hidden="true" />
 </hbox>
    
   <!-- Some of "Dynamic part of labels" are placed here.-->

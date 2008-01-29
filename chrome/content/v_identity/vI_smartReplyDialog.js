@@ -51,7 +51,9 @@ vI_smartReply_dialog = {
 				id = vI_smartReply_dialog.getIdentityName(vI_smartReply_dialog.all_addresses.id_keys[index])
 			if (vI_smartReply_dialog.all_addresses.smtp_keys[index])
 				smtp = vI_smartReply_dialog.getSMTPName(vI_smartReply_dialog.all_addresses.smtp_keys[index])
-			menuentry += ((id||smtp)?"   (":"") + (id?id:"") + ((id&&smtp)?",":"") + (smtp?"SMTP:"+smtp:"") + ((id||smtp)?")":"")
+			menuentry += (id?"(" + id + "," + 
+					(smtp?smtp:document.getElementById("bundle_messenger").getString("defaultServerTag")) +
+					")":"")
 			vI_smartReply_dialog.add_row(menuentry);
 		}
 	},
