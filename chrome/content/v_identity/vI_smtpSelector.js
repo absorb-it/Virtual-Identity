@@ -73,7 +73,7 @@ vI_smtpSelector = {
 	},
 	
 	setMenuToKey : function (smtpKey) {
-		(smtpKey == null?"":smtpKey) // TB 3.0a uses null instead of "" to recognize default servers.
+		(smtpKey == null?"":smtpKey) // replace unset smtpServers with default
 		vI_notificationBar.dump("## v_smtpSelector: setMenuToKey '" + smtpKey + "'\n")
 		MenuItems = vI_smtpSelector.elements.Obj_SMTPServerListPopup.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
