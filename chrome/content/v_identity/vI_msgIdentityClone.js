@@ -51,6 +51,13 @@ vI_msgIdentityClone = {
 	// the original Identity Dropdown Menu is hidden and stores the base Identity, on which one
 	// the Virtual Identity is build upon
 	clone_Obj_MsgIdentity : function() {
+		if (!vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem) {
+			vI_notificationBar.dump("## vI_msgIdentityClone: Obj_MsgIdentity.selectedItem not set, using first Menuitem\n");
+			vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem =
+				vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.firstChild
+			vI_notificationBar.dump("## vI_msgIdentityClone: MsgIdentityPopup.doCommand()\n");
+			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.doCommand();
+		}
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
 			var newMenuItem = MenuItems[index].cloneNode(true);
@@ -60,13 +67,6 @@ vI_msgIdentityClone = {
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem = newMenuItem;
 			// "accountname" property changed in Thunderbird 3.x, Seamonkey 1.5x to "description"
 			newMenuItem.setAttribute("accountname", vI.helper.getAccountname(newMenuItem))
-		}
-		if (!vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem) {
-			vI_notificationBar.dump("## vI_msgIdentityClone: Obj_MsgIdentity.selectedItem not set, using first Menuitem\n");
-			vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem =
-				vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.firstChild
-			vI_notificationBar.dump("## vI_msgIdentityClone: MsgIdentityPopup.doCommand()\n");
-			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.doCommand();
 		}
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 			.setAttribute("value", vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"));
