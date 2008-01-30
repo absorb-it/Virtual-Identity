@@ -34,5 +34,8 @@
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_upgradeOverlay.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js" />
-	<label id="extVersion" value="&vident.version;" hidden="true" />
+	<!-- following element just stores the Ext-Version, seamonkey has no extensionmanager -->
+	<vbox id="messagepanebox" >
+		<label id="extVersion" value="&vident.version;" hidden="true" />
+	</vbox>
 </overlay>
