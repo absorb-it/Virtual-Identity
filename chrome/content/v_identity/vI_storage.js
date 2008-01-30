@@ -155,7 +155,7 @@ vI_storage = {
 					"storage_notification");
 		}
 		// only update fields if new Identity is different than old one.
-		if (!vI_storage.__equalsCurrentIdentity(storageData)) {
+		else if (!vI_storage.__equalsCurrentIdentity(storageData)) {
 			var warning = vI_storage.__getReplaceVIdentityWarning(recipient, storageData);
 			if (	vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
 				!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
