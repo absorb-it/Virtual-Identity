@@ -29,7 +29,7 @@ vI_upgrade = {
 			
 	init : function() {
 		document.documentElement.getButton("cancel").setAttribute("hidden", "true")
-		vI_notificationBar.dumpUpgrade("") // this initialises the debug-area
+		vI_notificationBar.dump("") // this initialises the debug-area
 	},
 	
 	adaptButtons : function() {
@@ -38,45 +38,45 @@ vI_upgrade = {
 	},
 	
 	step1 : function() {
-		vI_notificationBar.dumpUpgrade("starting upgrade.\n\n")
+		vI_notificationBar.dump("starting upgrade.\n\n")
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "false")
 		document.documentElement.getButton('next').setAttribute('disabled','true');
 		vI_rdfDatasource.init(); // just to be sure that Datasource is initialised
 		if (vI_rdfDatasource.extUpgrade()) vI_upgrade.extUpgrade();
 		if (vI_rdfDatasource.rdfUpgradeRequired()) vI_upgrade.rdfUpgrade();
 		vI_account.cleanupSystem();
-		vI_notificationBar.dumpUpgrade("\n\nupgrade finished.\n");
+		vI_notificationBar.dump("\n\nupgrade finished.\n");
 		document.documentElement.getButton('next').setAttribute('disabled','false');
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "true")
 	},
 	
 	rdfUpgrade : function() {
-		vI_notificationBar.dumpUpgrade("checking for previous version of rdf, found " + 
+		vI_notificationBar.dump("checking for previous version of rdf, found " + 
 			vI_rdfDatasource.getCurrentRDFFileVersion() + "\nrdf-upgrade required.\n")
 		switch (vI_rdfDatasource.getCurrentRDFFileVersion()) {
 			case null:
 				vI_rdfDatasource.initRDFDataSource();
 		}
-		vI_notificationBar.dumpUpgrade("rdf-upgrade to " + vI_rdfDatasource.getCurrentRDFFileVersion() + " done.\n\n");
+		vI_notificationBar.dump("rdf-upgrade to " + vI_rdfDatasource.getCurrentRDFFileVersion() + " done.\n\n");
 	},
 
 	removeObsoleteUserPrefs : function() {
 		// remove obsolete preference-tree virtualIdentity
 		
 		// remove any obsolete preferences under extensions.virtualIdentity
-		vI_notificationBar.dumpUpgrade("removing obsolete preferences:\n")
+		vI_notificationBar.dump("removing obsolete preferences:\n")
 		for each (pref in Array("aBook_use", "aBook_storedefault", "aBook_dont_update_multiple",
 				"aBook_show_switch", "aBook_warn_update", "aBook_use_for_smart_reply", "aBook_prefer_smart_reply",
 				"aBook_ignore_smart_reply", "aBook_warn_vI_replace", "aBook_use_non_vI", "aBook_notification",
 				"experimental")) {
-			try { vI_upgrade.preferences.clearUserPref(pref); vI_notificationBar.dumpUpgrade(".") }
+			try { vI_upgrade.preferences.clearUserPref(pref); vI_notificationBar.dump(".") }
 			catch (e) { };
 		}
-		vI_notificationBar.dumpUpgrade("done.\n")
+		vI_notificationBar.dump("done.\n")
 	},
 	
 	extUpgrade : function() {
-		vI_notificationBar.dumpUpgrade("checking for previous version, found " + 
+		vI_notificationBar.dump("checking for previous version, found " + 
 			vI_rdfDatasource.getCurrentExtFileVersion() + "\nextension-upgrade required.\n")
 		switch (vI_rdfDatasource.getCurrentExtFileVersion()) {
 			case null:
@@ -84,7 +84,7 @@ vI_upgrade = {
 				vI_upgrade.removeObsoleteUserPrefs();
 		}
 		vI_rdfDatasource.storeExtVersion();
-		vI_notificationBar.dumpUpgrade("extension-upgrade to " + vI_rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
+		vI_notificationBar.dump("extension-upgrade to " + vI_rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
 	},
 		
 	CardFields : Array("Custom1", "Custom2", "Custom3", "Custom4", "Notes"),
@@ -98,13 +98,13 @@ vI_upgrade = {
 			returnVar.prop = returnVar.prop.toLowerCase();
 			returnVar = vI_storage._walkTroughCards(queryString,vI_upgrade.__transferVIdentityABookToRDF, returnVar )
 		}
-		vI_notificationBar.dumpUpgrade("\ntransferred " + returnVar.counter + " VirtualIdentity information items from AddressBook to RDF.\n")
+		vI_notificationBar.dump("\ntransferred " + returnVar.counter + " VirtualIdentity information items from AddressBook to RDF.\n")
 	},
 	
 	__transferVIdentityABookToRDF: function(addrbook, Card, returnVar) {
 		if (!Card[returnVar.prop].match(/^vIdentity:/)) return returnVar;
 		if (returnVar.warning) {
-			vI_notificationBar.dumpUpgrade("transferring VirtualIdentity information from AddressBook to RDF file,\nthis might take a while:\n");
+			vI_notificationBar.dump("transferring VirtualIdentity information from AddressBook to RDF file,\nthis might take a while:\n");
 			returnVar.warning = false
 		}
 		
@@ -130,7 +130,7 @@ vI_upgrade = {
 		
 		Card[returnVar.prop] = "";
 		Card.editCardToDatabase("");
-		vI_notificationBar.dumpUpgrade(".");
+		vI_notificationBar.dump(".");
 		return { prop: returnVar.prop, counter : ++returnVar.counter, warning : returnVar.warning };
 	},
 	

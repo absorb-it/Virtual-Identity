@@ -51,11 +51,12 @@ var vI_notificationBar = {
 		}
 	},
 
-	init : function(upgrade) {
-		vI_notificationBar.Obj_vINotification = document.getElementById("vINotification");
+	init : function() {
 		vI_notificationBar.Obj_DebugBox = document.getElementById("vIDebugBox");
+		if (vI_notificationBar.Obj_DebugBox.getAttribute("upgrade")) return;
+		vI_notificationBar.Obj_vINotification = document.getElementById("vINotification");
 		vI_notificationBar.checkVersion();
-		if (upgrade || !vI_notificationBar.preferences.getBoolPref("debug_notification")) return;
+		if (!vI_notificationBar.preferences.getBoolPref("debug_notification")) return;
 		vI_notificationBar.Obj_DebugBox.setAttribute("hidden","false");
 		document.getElementById("vIDebugBoxSplitter").setAttribute("hidden","false");
 		vI_notificationBar.dump_app_version();
@@ -114,32 +115,23 @@ var vI_notificationBar = {
 		vI_notificationBar.dump("--------------------------------------------------------------------------------\n")
 	},
 	
-	dumpUpgrade : function(note) {
-		vI_notificationBar.__dump(note, true);
-	},
-	
 	dump : function(note) {
-		if (!vI_notificationBar.preferences.getBoolPref("debug_notification")) {
-			if (!vI_notificationBar.Obj_DebugBox) return;
+		if (!vI_notificationBar.Obj_DebugBox) vI_notificationBar.init();
+		if (!vI_notificationBar.Obj_DebugBox) return;
+		if (!vI_notificationBar.Obj_DebugBox.getAttribute("upgrade") && 
+			!vI_notificationBar.preferences.getBoolPref("debug_notification")) {
 			vI_notificationBar.Obj_DebugBox.setAttribute("hidden","true");
 			document.getElementById("vIDebugBoxSplitter").setAttribute("hidden","true");
 			vI_notificationBar.Obj_DebugBox = null;
 			return
 		}
-		vI_notificationBar.__dump(note, false);
-	},
-	
-	__dump : function (note, upgrade) {
-		dump(note);
-		if (!vI_notificationBar.Obj_DebugBox) vI_notificationBar.init(upgrade);
-		if (!vI_notificationBar.Obj_DebugBox) return;
 		var new_text = document.createTextNode(note);
 		var new_br = document.createElementNS("http://www.w3.org/1999/xhtml", 'br');
 		vI_notificationBar.Obj_DebugBox.inputField.appendChild(new_text);
 		vI_notificationBar.Obj_DebugBox.inputField.appendChild(new_br);
 		vI_notificationBar.Obj_DebugBox.inputField.scrollTop = 
-			vI_notificationBar.Obj_DebugBox.inputField.scrollHeight - vI_notificationBar.Obj_DebugBox.inputField.clientHeight
-	
+			vI_notificationBar.Obj_DebugBox.inputField.scrollHeight -
+			vI_notificationBar.Obj_DebugBox.inputField.clientHeight
 	},
 	
 	hide : function() {

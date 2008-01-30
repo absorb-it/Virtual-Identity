@@ -80,8 +80,7 @@
 		label="&vident.upgrade.upgrade2.label;" description="&vident.upgrade.upgrade2.description;" >
 		<groupbox>
 			<caption label="&vident.upgrade.upgrade2.caption;"/>
-			<splitter id="vIDebugBoxSplitter" hidden="true" />
-			<textbox id="vIDebugBox" multiline="true" readonly="true" />
+			<textbox id="vIDebugBox" upgrade="true" multiline="true" readonly="true" />
 		</groupbox>
 	</wizardpage>
 	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.upgrade3', 'vident.upgrade3');"
