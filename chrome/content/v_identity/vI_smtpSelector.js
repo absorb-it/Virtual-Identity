@@ -38,8 +38,21 @@ vI_smtpSelector = {
 		vI_smtpSelector.elements.Obj_SMTPServerListPopup = document.getElementById("smtp_server_list_popup");
 		vI_smtpSelector.__loadSMTP_server_list();
 		vI_smtpSelector.__selectUsedSMTPServer();
-		if (vI.preferences.getBoolPref("show_smtp"))
-				vI_smtpSelector.elements.Area_SMTPServerList.setAttribute("hidden", "false");
+		vI_smtpSelector.addObserver();
+		vI_smtpSelector.observe(); // just do it once to initialize the status
+	},
+
+	observe: function() {
+		vI_smtpSelector.elements.Area_SMTPServerList.setAttribute("hidden",
+			!vI.preferences.getBoolPref("show_smtp"));
+	},
+	
+	addObserver: function() {
+		vI_storage.prefroot.addObserver("extensions.virtualIdentity.show_smtp", vI_smtpSelector, false);
+	},
+	
+	removeObserver: function() {
+		vI_storage.prefroot.removeObserver("extensions.virtualIdentity.show_smtp", vI_smtpSelector);
 	},
 
 	loadSMTP : function()
@@ -142,3 +155,4 @@ vI_smtpSelector = {
 	    return listitem;
 	}
 }
+window.addEventListener("unload", function(e) { try {vI_smtpSelector.removeObserver();} catch (ex) { } }, false);
