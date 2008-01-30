@@ -33,8 +33,9 @@ vI_rdfDatasource = {
 	rdfNSMaillist : "vIStorage/maillist/",
 	rdfNSNewsgroup : "vIStorage/newsgroup/",
 	
-	extensionManager : Components.classes["@mozilla.org/extensions/manager;1"]
-			.getService(Components.interfaces.nsIExtensionManager),
+	// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
+	// extensionManager : Components.classes["@mozilla.org/extensions/manager;1"]
+	//		.getService(Components.interfaces.nsIExtensionManager),
 	
 	rdfVersion : "0.0.1",	// version of current implemented RDF-schema, internal only to trigger updates
 	
@@ -64,7 +65,9 @@ vI_rdfDatasource = {
 		oldExtVersion = vI_rdfDatasource.getCurrentExtFileVersion()
 		var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 			.getService(Components.interfaces.nsIVersionComparator);
-		var extVersion = vI_rdfDatasource.extensionManager.getItemForID(vI_rdfDatasource.virtualIdentityID).version
+		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
+		// var extVersion = vI_rdfDatasource.extensionManager.getItemForID(vI_rdfDatasource.virtualIdentityID).version
+		var extVersion = document.getElementById("extVersion").getAttribute("value");
 		return (!oldExtVersion || versionChecker.compare(oldExtVersion, extVersion) < 0)	
 	},
 	
@@ -86,9 +89,11 @@ vI_rdfDatasource = {
 	},
 	
 	storeExtVersion: function() {
-		var value = vI_rdfDatasource.extensionManager.getItemForID(vI_rdfDatasource.virtualIdentityID).version
+		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
+		// var extVersion = vI_rdfDatasource.extensionManager.getItemForID(vI_rdfDatasource.virtualIdentityID).version
+		var extVersion = document.getElementById("extVersion").getAttribute("value");
 		vI_rdfDatasource.__setRDFValue(
-			vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "virtualIdentity"), "version", value)
+			vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "virtualIdentity"), "version", extVersion)
 		vI_rdfDatasource.flush();
 	},
 

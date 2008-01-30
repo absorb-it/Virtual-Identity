@@ -178,26 +178,29 @@ vI_prefDialog = {
 		},
 		
 		smartReplyHideSignature : function() {
-			var switch_signature_ID="{2ab1b709-ba03-4361-abf9-c50b964ff75d}"
-			var em = Components.classes["@mozilla.org/extensions/manager;1"]
-				.getService(Components.interfaces.nsIExtensionManager);
-			var rdfS = Components.classes["@mozilla.org/rdf/rdf-service;1"].getService(Components.interfaces.nsIRDFService);
-			var source=rdfS.GetResource("urn:mozilla:item:"+switch_signature_ID)
-			
-			var item = em.getItemForID(switch_signature_ID)
-			if (!item.installLocationKey) return;
+			// seamonkey has no extsnion-manager
+			if (("nsIExtensionManager" in Components.interfaces) && ("@mozilla.org/extensions/manager;1" in Components.classes)) {
+				var switch_signature_ID="{2ab1b709-ba03-4361-abf9-c50b964ff75d}"
+				var em = Components.classes["@mozilla.org/extensions/manager;1"]
+					.getService(Components.interfaces.nsIExtensionManager);
+				var rdfS = Components.classes["@mozilla.org/rdf/rdf-service;1"].getService(Components.interfaces.nsIRDFService);
+				var source=rdfS.GetResource("urn:mozilla:item:"+switch_signature_ID)
+				
+				var item = em.getItemForID(switch_signature_ID)
+				if (!item.installLocationKey) return;
 
-			var disabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#disabled");
-			var isDisabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#isDisabled");
-			var disabled = em.datasource.GetTarget(source, disabledResource, true);
-			if (!disabled) disabled = em.datasource.GetTarget(source, isDisabledResource, true);
-			try {
-				disabled=disabled.QueryInterface(Components.interfaces.nsIRDFLiteral);
-				if (disabled.Value=="true") return;
-			} catch (e) { }
-			
-			document.getElementById("VIdent_identity.HideSignature.warning").setAttribute("hidden", "true");
-			document.getElementById("VIdent_identity.hide_signature").setAttribute("disabled", "false");
+				var disabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#disabled");
+				var isDisabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#isDisabled");
+				var disabled = em.datasource.GetTarget(source, disabledResource, true);
+				if (!disabled) disabled = em.datasource.GetTarget(source, isDisabledResource, true);
+				try {
+					disabled=disabled.QueryInterface(Components.interfaces.nsIRDFLiteral);
+					if (disabled.Value=="true") return;
+				} catch (e) { }
+				
+				document.getElementById("VIdent_identity.HideSignature.warning").setAttribute("hidden", "true");
+				document.getElementById("VIdent_identity.hide_signature").setAttribute("disabled", "false");
+			}
 		},
 	},
 

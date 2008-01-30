@@ -24,10 +24,15 @@
    - ***** END LICENSE BLOCK ***** -->
    
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
-
-<!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/v_identity.dtd">
+<!DOCTYPE overlay [
+<!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
+%versionDTD;
+<!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
+%vIdentDTD;
+]>
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_upgradeOverlay.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js" />
+	<label id="extVersion" value="&vident.version;" hidden="true" />
 </overlay>

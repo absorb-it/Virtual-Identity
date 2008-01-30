@@ -97,5 +97,6 @@
 		label="&vident.compose.vidLogo.label; &vident.version;"
 		oncommand="vI_upgrade.openURL('http://www.absorb.it/virtual-id')" tooltiptext="&vident.prefs.vidLogo.tooltiptext;" />
 	<spacer width="10px" />
+	<label id="extVersion" value="&vident.version;" hidden="true" />
 	</hbox>
 </wizard>
