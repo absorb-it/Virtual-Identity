@@ -60,11 +60,14 @@ vI_smtpSelector = {
 	},
 	
 	setMenuToKey : function (smtpKey) {
+		(smtpKey == null?"":smtpKey) // TB 3.0a uses null instead of "" to recognize default servers.
+		vI_notificationBar.dump("## v_smtpSelector: setMenuToKey '" + smtpKey + "'\n")
 		MenuItems = vI_smtpSelector.elements.Obj_SMTPServerListPopup.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].localName == "menuseparator") continue;
+			//~ vI_notificationBar.dump("## v_smtpSelector: compare with '" + MenuItems[index].getAttribute("key") + "'\n")
 			if (MenuItems[index].getAttribute("key") == smtpKey) {
-				vI_notificationBar.dump("## v_smtpSelector: use SMTP " + MenuItems[index].label + "\n")
+				//~ vI_notificationBar.dump("## v_smtpSelector: use SMTP " + MenuItems[index].label + "\n")
 				vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem =
 					MenuItems[index];
 				break;
@@ -73,30 +76,38 @@ vI_smtpSelector = {
 	},
 	
 	__selectUsedSMTPServer : function() {
+		vI_notificationBar.dump("## v_smtpSelector: __selectUsedSMTPServer\n")
 		if (vI.helper.getBaseIdentity().smtpServerKey) {
-			document.getElementById('smtp_server_list').value = vI.helper.getBaseIdentity().smtpServerKey
+			//~ vI_notificationBar.dump("## v_smtpSelector: __selectUsedSMTPServer if\n")
+			vI_smtpSelector.setMenuToKey(vI.helper.getBaseIdentity().smtpServerKey)
 			vI_notificationBar.dump("## v_smtpSelector: use SMTP from BaseIdentity: " + vI.helper.getBaseIdentity().smtpServerKey + "\n")
 			}
 		else {
+			//~ vI_notificationBar.dump("## v_smtpSelector: __selectUsedSMTPServer else\n")
 			// find the account related to the identity, to get the account-related default smtp, if it exists.
 			var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 			accounts.sort(compareAccountSortOrder);
 			
 			for (var x in accounts) {
+				vI_notificationBar.dump(".")
 				var server = accounts[x].incomingServer;
 				
 				var identities = queryISupportsArray(accounts[x].identities, Components.interfaces.nsIMsgIdentity);
 				for (var j in identities) {
+					vI_notificationBar.dump("_")
 					var identity = identities[j];
 					if (identity.key == vI.helper.getBaseIdentity().key) {
-						if (accounts[x].defaultIdentity.smtpServerKey)
-							vI_notificationBar.dump("## v_smtpSelector: use SMTP from Account of BaseIdentity: " + accounts[x].defaultIdentity.smtpServerKey + "\n")
-						document.getElementById('smtp_server_list').value = accounts[x].defaultIdentity.smtpServerKey
+						if (accounts[x].defaultIdentity.smtpServerKey) {
+							vI_notificationBar.dump("## v_smtpSelector: use SMTP from Account of BaseIdentity: " +
+								accounts[x].defaultIdentity.smtpServerKey + "\n")
+							vI_smtpSelector.setMenuToKey(accounts[x].defaultIdentity.smtpServerKey)
+						}
 						return;
 					}
 				}
 			}
 		}
+		//~ vI_notificationBar.dump("## v_smtpSelector: __selectUsedSMTPServer finished\n")
 	},
 	
 	__loadSMTP_server_list : function()
