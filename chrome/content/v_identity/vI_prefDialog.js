@@ -187,7 +187,7 @@ vI_prefDialog = {
 				var source=rdfS.GetResource("urn:mozilla:item:"+switch_signature_ID)
 				
 				var item = em.getItemForID(switch_signature_ID)
-				if (!item.installLocationKey) return;
+				if (!item || !item.installLocationKey) return;
 
 				var disabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#disabled");
 				var isDisabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#isDisabled");
