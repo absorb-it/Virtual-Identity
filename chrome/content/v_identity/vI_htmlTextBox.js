@@ -47,7 +47,8 @@ var vI_htmlTextBox = {
 			var text_item = vI_htmlTextBox.__checkList(text_list[i]);
 			vI_htmlTextBox.__add(text_item);
 			if (!vI_htmlTextBox.currentList) {
-				var new_br = document.createElementNS("http://www.w3.org/1999/xhtml", 'html:br');
+				var new_br = vI_htmlTextBox.Obj_TextBox.contentDocument
+					.createElementNS("http://www.w3.org/1999/xhtml", 'html:br');
 				vI_htmlTextBox.Obj_TextBox.contentDocument.body.appendChild(new_br);
 			}
 		}
@@ -57,7 +58,8 @@ var vI_htmlTextBox = {
 	
 	__isHR : function(text) {
 		if (text == "---") {
-			var new_hr = document.createElementNS("http://www.w3.org/1999/xhtml", 'html:hr');
+			var new_hr = vI_htmlTextBox.Obj_TextBox.contentDocument
+				.createElementNS("http://www.w3.org/1999/xhtml", 'html:hr');
 			vI_htmlTextBox.Obj_TextBox.contentDocument.body.appendChild(new_hr);
 			return true;
 		}
@@ -68,10 +70,12 @@ var vI_htmlTextBox = {
 	__checkList : function (text) {
 		if (text.match(/^\*\s/)) {
 			if (!vI_htmlTextBox.currentList) {
-				vI_htmlTextBox.currentList = document.createElementNS("http://www.w3.org/1999/xhtml", 'html:ul');
+				vI_htmlTextBox.currentList = vI_htmlTextBox.Obj_TextBox.contentDocument
+					.createElementNS("http://www.w3.org/1999/xhtml", 'html:ul');
 				vI_htmlTextBox.Obj_TextBox.contentDocument.body.appendChild(vI_htmlTextBox.currentList);
 			}
-			vI_htmlTextBox.currentBaseNode = document.createElementNS("http://www.w3.org/1999/xhtml", 'html:li');
+			vI_htmlTextBox.currentBaseNode = vI_htmlTextBox.Obj_TextBox.contentDocument
+								.createElementNS("http://www.w3.org/1999/xhtml", 'html:li');
 			vI_htmlTextBox.currentList.appendChild(vI_htmlTextBox.currentBaseNode);
 		}
 		else {
@@ -91,16 +95,17 @@ var vI_htmlTextBox = {
 	},
 	
 	__addText : function (text) {
-		var new_text = document.createTextNode(text);
+		var new_text = vI_htmlTextBox.Obj_TextBox.contentDocument.createTextNode(text);
 		vI_htmlTextBox.currentBaseNode.appendChild(new_text);
 	},
 	
 	__addLink : function (text) {
-		var new_a = document.createElementNS("http://www.w3.org/1999/xhtml", 'html:a');
+		var new_a = vI_htmlTextBox.Obj_TextBox.contentDocument
+			.createElementNS("http://www.w3.org/1999/xhtml", 'html:a');
 		new_a.setAttribute("href", text)
 		new_a.setAttribute("style", "text-decoration: underline")
 		vI_htmlTextBox.currentBaseNode.appendChild(new_a);
-		var new_text = document.createTextNode(text);
+		var new_text = vI_htmlTextBox.Obj_TextBox.contentDocument.createTextNode(text);
 		new_a.appendChild(new_text);
 	},
 }
