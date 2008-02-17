@@ -26,10 +26,17 @@
 
     <em:id>{dddd428e-5ac8-4a81-9f78-276c734f75b8}</em:id>
     <em:name>Virtual Identity</em:name>
-    <em:version>0.5.0pre2</em:version>
+    <em:version>0.5.0pre3</em:version>
     <em:description>Allows you to modify your Identity settings for a single Mail on the fly.</em:description>
     <em:creator>Rene Ejury</em:creator>
     <em:contributor>Translations: www.babelzilla.org</em:contributor>
+    <em:contributor>markh</em:contributor>		<!-- dutch localization -->
+    <em:contributor>PatheticCockroach</em:contributor>		<!-- french localization -->
+    <em:contributor>Proyecto Nave</em:contributor>		<!-- spanish localization -->
+    <em:contributor>Michal Kec (MiK)</em:contributor>		<!-- czech localization -->
+    <em:contributor>Underpass</em:contributor>		<!-- italian localization -->
+    <em:contributor>Sai</em:contributor>		<!-- slovakian localization -->
+    <em:contributor>wtspout</em:contributor>		<!-- korean localization -->
     <em:homepageURL>http://www.absorb.it/virtual-id</em:homepageURL>
     <!--
     When no updateURL is found, default addons.mozilla.org is used. So its not needed anymore.
