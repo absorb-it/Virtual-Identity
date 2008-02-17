@@ -412,7 +412,7 @@
 				prefstring="get_header_notification"/>
 			<checkbox id="VIdent_identity.smart_reply_notification" label="&vident.prefs.notifySmartIdentity.label;"
 				prefstring="smart_reply_notification"/>
-			<checkbox id="VIdent_identity.storage_notification" label="&vident.prefs.notifystorage.label;"
+			<checkbox id="VIdent_identity.storage_notification" label="&vident.prefs.notifyStorage.label;"
 				prefstring="storage_notification"/>
 			<hbox>
 			<vbox><spacer flex="1"/><label value="&vident.prefs.notifyTime.prefix.label;" /><spacer flex="1"/></vbox>
