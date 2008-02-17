@@ -63,7 +63,6 @@
 <!ENTITY vident.prefs.storage.show_switch.label "show switch to activate/deactivate saving of Identities">
 <!ENTITY vident.prefs.storage.warn_vI_replace.label "ask before Virtual Identity in Sender-Field will be replaced">
 <!ENTITY vident.prefs.storage.get_One_Only.label "ignore Storage after first Virtual Identity was retrieved">
-<!ENTITY vident.prefs.storageCap2.caption "Selection of Senders Identity">
 <!ENTITY vident.prefs.storage.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with 'Smart Reply' can configured here. Choosing in between the resulting Identities is done the same way as configured under 'Smart Reply'.">
 <!ENTITY vident.prefs.storage.use_for_smart_reply.label "use stored Identities together with 'Smart-Reply'">
 <!ENTITY vident.prefs.storage.prefer_smart_reply.label "prefer 'Smart Reply'-Identities">
@@ -72,7 +71,7 @@
 <!ENTITY vident.prefs.notificationTab.caption "Notifications">
 <!ENTITY vident.prefs.notifyHeaders.label "show information about recognized headers">
 <!ENTITY vident.prefs.notifySmartIdentity.label "activate Smart Reply / Smart Draft status messages">
-<!ENTITY vident.prefs.notifystorage.label "activate Storage status messages">
+<!ENTITY vident.prefs.notifyStorage.label "activate Storage status messages">
 <!ENTITY vident.prefs.notifyTime.prefix.label "time to show status messages (0 = infinite)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "seconds">
 <!ENTITY vident.prefs.notificationTab.Debug.caption "Debugging">
