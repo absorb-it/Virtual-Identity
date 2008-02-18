@@ -33,22 +33,22 @@ vI_smtpSelector = {
 	},
 	
 	init : function() {
-		vI_smtpSelector.elements.Area_SMTPServerList = document.getElementById("smtpServerListHbox");
-		vI_smtpSelector.elements.Obj_SMTPServerList = document.getElementById("smtp_server_list");
-		vI_smtpSelector.elements.Obj_SMTPServerListPopup = document.getElementById("smtp_server_list_popup");
+		// only do this once
+		if (!vI_smtpSelector.elements.Area_SMTPServerList) {
+			vI_smtpSelector.elements.Area_SMTPServerList = document.getElementById("smtpServerListHbox");
+			vI_smtpSelector.elements.Obj_SMTPServerList = document.getElementById("smtp_server_list");
+			vI_smtpSelector.elements.Obj_SMTPServerListPopup = document.getElementById("smtp_server_list_popup");
+			vI_smtpSelector.addObserver();
+		}
 		vI_smtpSelector.__loadSMTP_server_list();
 		vI_smtpSelector.__selectUsedSMTPServer();
-		vI_smtpSelector.addObserver();
 		vI_smtpSelector.observe(); // just do it once to initialize the status
 	},
 	
-	reinit : function() {
-		vI_notificationBar.dump("## v_smtpSelector: reinit\n")
+	clean : function() {
+		vI_notificationBar.dump("## v_smtpSelector: clean\n")
 		MenuItems = vI_smtpSelector.elements.Obj_SMTPServerListPopup.childNodes
 		while (MenuItems.length > 0) vI_smtpSelector.elements.Obj_SMTPServerListPopup.removeChild(MenuItems[0])
-		vI_smtpSelector.__loadSMTP_server_list();
-		vI_smtpSelector.__selectUsedSMTPServer();
-		vI_smtpSelector.observe(); // just do it once to initialize the status
 	},
 
 	observe: function() {

@@ -45,12 +45,13 @@ vI_storage = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch(null),
 	
-	reinit: function() {
+	clean: function() {
 		vI_storage.multipleRecipients = null;
 		vI_storage.lastCheckedEmail = {};
 		vI_storage.elements = { Obj_storageSave : null };
 		vI_storage.firstUsedInputElement = null;
 		vI_storage.firstUsedStorageData = null;
+		awSetInputAndPopupValue = vI_storage.original_functions.awSetInputAndPopupValue;
 	},
 	
 	original_functions : {
@@ -95,17 +96,19 @@ vI_storage = {
 	
 	
 	init: function() {
-		vI_storage.elements.Obj_storageSave = document.getElementById("storage_save");
-		vI_storage.addObserver();
-		vI_storage.observe();
-		
-		// better approach would be to use te onchange event, but this one is not fired in any change case
-		// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
-		// same seems to happen with the ondragdrop event
-		awGetInputElement(1).setAttribute("onblur",
-			"window.setTimeout(vI_storage.awOnBlur, 250, this.parentNode.parentNode.parentNode);")
-		awGetPopupElement(1).setAttribute("oncommand",
-			"window.setTimeout(vI_storage.awPopupOnCommand, 250, this);")
+		if (!vI_storage.elements.Obj_storageSave) {
+			vI_storage.elements.Obj_storageSave = document.getElementById("storage_save");
+			vI_storage.addObserver();
+			vI_storage.observe();
+			
+			// better approach would be to use te onchange event, but this one is not fired in any change case
+			// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
+			// same seems to happen with the ondragdrop event
+			awGetInputElement(1).setAttribute("onblur",
+				"window.setTimeout(vI_storage.awOnBlur, 250, this.parentNode.parentNode.parentNode);")
+			awGetPopupElement(1).setAttribute("oncommand",
+				"window.setTimeout(vI_storage.awPopupOnCommand, 250, this);")
+		}
 		vI_storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
 		awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
 			vI_storage.replacement_functions.awSetInputAndPopupValue (inputElem, inputValue, popupElem, popupValue, rowNumber) }

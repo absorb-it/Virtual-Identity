@@ -120,7 +120,7 @@ var vI = {
 		},
 		NotifyComposeFieldsReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeFieldsReady\n");
-			vI.open();
+			vI.initSystemStage2();
 		},
 		ComposeProcessDone: function(aResult) {
 			vI_notificationBar.dump("## v_identity: StateListener reports ComposeProcessDone\n");
@@ -208,13 +208,27 @@ var vI = {
 		vI_notificationBar.dump("## v_identity: end. remove Account if there.\n")
 		vI.Cleanup_Account();
 	},
-	
+
 	// initialization //
 	init: function() {
 		vI.unicodeConverter.charset="UTF-8";
+		vI.adapt_interface();
+		vI.adapt_genericSendMessage();
 		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
 		window.addEventListener('compose-window-reopen', vI.reopen, true);
 		window.addEventListener('compose-window-close', vI.close, true);
+		vI.initSystemStage1();
+	},
+	
+	initSystemStage1 : function() {
+		vI_smtpSelector.init();
+		vI_msgIdentityClone.init();
+		vI_msgIdentityClone.initReplyToFields();
+	},
+	
+	initSystemStage2 : function() {
+		vI_storage.init();
+		vI_smartIdentity.init();	
 	},
 	
 	close : function() {
@@ -231,7 +245,7 @@ var vI = {
 		var parent_hbox = vI.elements.Obj_MsgIdentity.parentNode;
 		var storage_box = document.getElementById("addresses-box");
 		
-		storage_box.removeChild(vI.elements.Area_MsgIdentityHbox)
+		storage_box.removeChild(vI.elements.Area_MsgIdentityHbox);
 		parent_hbox.appendChild(vI.elements.Area_MsgIdentityHbox);
 		
 		// initialize the pointers to extension elements (initialize those earlier might brake the interface)
@@ -250,28 +264,29 @@ var vI = {
 					vI_storage.storeVIdentityToAllRecipients(msgType); } }		
 	},
 	
-	open : function() {
-		vI_notificationBar.dump("## v_identity: composeDialog opened.\n")
-		vI.adapt_interface();
-		vI.adapt_genericSendMessage();
-		vI_smtpSelector.init();
-		vI_msgIdentityClone.init();
-		vI_msgIdentityClone.initReplyToFields();
-		vI_storage.init();
-		vI_smartIdentity.init();
-	},
-	
 	reopen: function() {
 		vI_notificationBar.clear_dump()
-		vI_notificationBar.dump("## v_identity: composeDialog reopened.\n")
-		vI.adapt_interface();
-		vI.adapt_genericSendMessage();
-		vI_storage.reinit();
-		vI_smtpSelector.reinit();
-		vI_msgIdentityClone.reinit();
-		vI_msgIdentityClone.reinitReplyToFields();
-		vI_storage.reinit();
-		vI_smartIdentity.reinit();
+		vI_notificationBar.dump("## v_identity: composeDialog reopened. " + gMsgCompose.type + "\n")
+		// clean all elements
+		vI_smtpSelector.clean();
+		vI_msgIdentityClone.clean();
+		vI_msgIdentityClone.cleanReplyToFields();
+		vI_storage.clean();
+		vI_smartIdentity.clean();
+		// now (re)init the elements
+		vI.initSystemStage1();
+		
+		// stateLsitener only works with reply etc., so check MsgType to activate stage2
+		var msgComposeType = Components.interfaces.nsIMsgCompType;
+		switch (gMsgCompose.type) {
+			case msgComposeType.New:
+			case msgComposeType.NewsPost:
+			case msgComposeType.MailToUrl:
+				vI.initSystemStage2();
+				break;
+			default:
+				gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
+		}
 	},
 	
 	// show a warning if you are using a usual (non-virtual) identity

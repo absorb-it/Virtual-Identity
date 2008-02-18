@@ -28,9 +28,8 @@ vI_smartIdentity = {
 		
 	smartIdentity_BaseIdentity : null,
 
-	reinit : function() {
+	clean : function() {
 		vI_smartIdentity.smartIdentity_BaseIdentity = null;
-		vI_smartIdentity.init();
 	},
 	
 	// After Loading the MessageComposeDialog, check if smartIdentity is needed

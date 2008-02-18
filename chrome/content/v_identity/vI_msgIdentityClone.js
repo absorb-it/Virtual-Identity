@@ -37,22 +37,25 @@ vI_msgIdentityClone = {
 	},
 	
 	init : function() {
-		vI_msgIdentityClone.elements.Obj_MsgIdentity = document.getElementById("msgIdentity");
-		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup = document.getElementById("msgIdentityPopup");
-		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone = document.getElementById("msgIdentity_clone");
-		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone = document.getElementById("msgIdentityPopup_clone");
+		var reopen = vI_msgIdentityClone.elements.Obj_MsgIdentity
+		if (!reopen) {
+			vI_msgIdentityClone.elements.Obj_MsgIdentity = document.getElementById("msgIdentity");
+			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup = document.getElementById("msgIdentityPopup");
+			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone = document.getElementById("msgIdentity_clone");
+			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone = document.getElementById("msgIdentityPopup_clone");
+		}
 		vI_msgIdentityClone.clone_Obj_MsgIdentity();
-		vI_msgIdentityClone.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
-		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("hidden", "false");
-		vI_msgIdentityClone.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
+		if (!reopen) {
+			vI_msgIdentityClone.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
+			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("hidden", "false");
+			vI_msgIdentityClone.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
+		}
+		else vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.doCommand();
 	},
 	
-	reinit : function() {
-		vI_notificationBar.dump("## vI_msgIdentityClone: reinit\n");
+	clean : function() {
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.childNodes
 		while (MenuItems.length > 0) vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.removeChild(MenuItems[0])
-		vI_msgIdentityClone.clone_Obj_MsgIdentity();
-		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.doCommand();
 	},
 	
 	// double the Identity-Select Dropdown-Menu to be more flexible with modifying it
@@ -203,13 +206,12 @@ vI_msgIdentityClone = {
 	replyToStoredLastValue : null,
 	replyToSynchronize : true,
 	
-	reinitReplyToFields : function() {
+	cleanReplyToFields : function() {
 		replyToInputElem = null;
 		replyToPopupElem = null;
 		replyToInitValue = null;
 		replyToStoredLastValue = null;
 		replyToSynchronize = true;
-		vI_msgIdentityClone.initReplyToFields();
 	},
 	
 	// called directly after a change of the Identity with the dropdown menu
