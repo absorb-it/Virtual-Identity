@@ -26,9 +26,13 @@ vI_smartIdentity = {
 	messenger : Components.classes["@mozilla.org/messenger;1"].createInstance()
 		.QueryInterface(Components.interfaces.nsIMessenger),
 		
-	smartIdentity : null,
 	smartIdentity_BaseIdentity : null,
 
+	reinit : function() {
+		vI_smartIdentity.smartIdentity_BaseIdentity = null;
+		vI_smartIdentity.init();
+	},
+	
 	// After Loading the MessageComposeDialog, check if smartIdentity is needed
 	init : function() {
 		var type = gMsgCompose.type;

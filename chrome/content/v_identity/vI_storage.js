@@ -44,7 +44,15 @@ vI_storage = {
 	prefroot : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch(null),
-
+	
+	reinit: function() {
+		vI_storage.multipleRecipients = null;
+		vI_storage.lastCheckedEmail = {};
+		vI_storage.elements = { Obj_storageSave : null };
+		vI_storage.firstUsedInputElement = null;
+		vI_storage.firstUsedStorageData = null;
+	},
+	
 	original_functions : {
 		awSetInputAndPopupValue : null,
 	},
@@ -105,7 +113,7 @@ vI_storage = {
 	
 	
 	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
-	firstUsedRDFEntry : null,	// stores the used storage-entry to show a warning if the Identities differ
+	firstUsedStorageData : null,	// stores the used storage-entry to show a warning if the Identities differ
 	updateVIdentityFromStorage: function(inputElement) {
 		if (!vI.preferences.getBoolPref("storeVIdentity")) {
 			vI_notificationBar.dump("## vI_storage: usage deactivated.\n")

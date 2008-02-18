@@ -47,6 +47,14 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
 	},
 	
+	reinit : function() {
+		vI_notificationBar.dump("## vI_msgIdentityClone: reinit\n");
+		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.childNodes
+		while (MenuItems.length > 0) vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.removeChild(MenuItems[0])
+		vI_msgIdentityClone.clone_Obj_MsgIdentity();
+		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.doCommand();
+	},
+	
 	// double the Identity-Select Dropdown-Menu to be more flexible with modifying it
 	// the original Identity Dropdown Menu is hidden and stores the base Identity, on which one
 	// the Virtual Identity is build upon
@@ -63,8 +71,10 @@ vI_msgIdentityClone = {
 			var newMenuItem = MenuItems[index].cloneNode(true);
 			newMenuItem.setAttribute("class", "identity_clone-popup-item person-icon")
 			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.appendChild(newMenuItem)
-			if (vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem == MenuItems[index])
+			if (vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem == MenuItems[index]) {
+				vI_notificationBar.dump("## vI_msgIdentityClone: '" + vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.value + "'\n");
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem = newMenuItem;
+			}
 			// "accountname" property changed in Thunderbird 3.x, Seamonkey 1.5x to "description"
 			newMenuItem.setAttribute("accountname", vI.helper.getAccountname(newMenuItem))
 		}
@@ -192,6 +202,15 @@ vI_msgIdentityClone = {
 	replyToInitValue : null,
 	replyToStoredLastValue : null,
 	replyToSynchronize : true,
+	
+	reinitReplyToFields : function() {
+		replyToInputElem = null;
+		replyToPopupElem = null;
+		replyToInitValue = null;
+		replyToStoredLastValue = null;
+		replyToSynchronize = true;
+		vI_msgIdentityClone.initReplyToFields();
+	},
 	
 	// called directly after a change of the Identity with the dropdown menu
 	// searches the first reply-to row and assumes that this is the one we like to adapt

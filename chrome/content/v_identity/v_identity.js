@@ -111,6 +111,7 @@ var vI = {
 			vI.elements.Obj_vILogo = document.getElementById("v_identity_logo");
 			vI.elements.strings = document.getElementById("vIdentBundle");
 		},
+		strings : null
 	},
 
 	ComposeStateListener : {
@@ -119,15 +120,11 @@ var vI = {
 		},
 		NotifyComposeFieldsReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeFieldsReady\n");
-			vI_msgIdentityClone.initReplyToFields();
-			vI_storage.init();
-			vI_smartIdentity.init();
+			vI.open();
 		},
 		ComposeProcessDone: function(aResult) {
 			vI_notificationBar.dump("## v_identity: StateListener reports ComposeProcessDone\n");
-			vI.Cleanup_Account();
-			if (aResult== Components.results.NS_OK && vI.msgType == nsIMsgCompDeliverMode.Now)
-					MsgComposeCloseWindow(false);
+			vI.Cleanup_Account(); // not really required, parallel handled by vI.close
 		},
 		SaveInFolderDone: function(folderURI) { 
 			vI_notificationBar.dump("## v_identity: SaveInFolderDone\n");
@@ -139,7 +136,9 @@ var vI = {
 		// if the windows gets closed, this is the way to get rid of the account.
 		MsgComposeCloseWindow : function(recycleIt) {
 			vI_notificationBar.dump("## v_identity: MsgComposeCloseWindow\n");
-			vI.original_functions.MsgComposeCloseWindow(false);
+			//~ alert("before MsgComposeCloseWindow")
+			//~ vI.original_functions.MsgComposeCloseWindow(false);
+			//~ alert("after MsgComposeCloseWindow")
 		},
 		
 		GenericSendMessage: function (msgType) {
@@ -204,15 +203,26 @@ var vI = {
 	},
 
 	remove: function() {
+		window.removeEventListener('compose-window-reopen', vI.reopen, true);
+		window.removeEventListener('compose-window-close', vI.close, true);
 		vI_notificationBar.dump("## v_identity: end. remove Account if there.\n")
 		vI.Cleanup_Account();
 	},
 	
 	// initialization //
 	init: function() {
-		// clear the DebugArea (not needed cause window is new)
-		//~ vI_notificationBar.clear_dump()
 		vI.unicodeConverter.charset="UTF-8";
+		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
+		window.addEventListener('compose-window-reopen', vI.reopen, true);
+		window.addEventListener('compose-window-close', vI.close, true);
+	},
+	
+	close : function() {
+		vI.Cleanup_Account();
+	},
+	
+	adapt_interface : function() {
+		if (vI.elements.strings) return; // only rearrange the interface once
 		
 		// initialize the pointers to extension elements
 		vI.elements.init_base()
@@ -225,27 +235,43 @@ var vI = {
 		parent_hbox.appendChild(vI.elements.Area_MsgIdentityHbox);
 		
 		// initialize the pointers to extension elements (initialize those earlier might brake the interface)
-		vI.elements.init_rest();
-		
-		vI_smtpSelector.init();
-		vI_msgIdentityClone.init();
-		
-		// replace MsgComposeCloseWindow with our own version to get rid of the old account in any case
-		vI_notificationBar.dump("## v_identity: replace MsgComposeCloseWindow\n");
-		vI.original_functions.MsgComposeCloseWindow = MsgComposeCloseWindow;
-		MsgComposeCloseWindow = function (recycleIt) {
-			vI.replacement_functions.MsgComposeCloseWindow(recycleIt); }
-			
+		vI.elements.init_rest();	
+	},
+	
+	adapt_genericSendMessage : function() {
+		if (vI.original_functions.GenericSendMessage) return; // only initialize this once
+	
 		// adapt GenericSendMessage to know SendMsgType
 		vI_notificationBar.dump("## v_identity: adapt GenericSendMessage\n");
 		vI.original_functions.GenericSendMessage = GenericSendMessage;
 		GenericSendMessage = function (msgType) {
 				vI.msgType = msgType; if (vI.warning(msgType)) {
 					vI.original_functions.GenericSendMessage(msgType);
-					vI_storage.storeVIdentityToAllRecipients(msgType); } }
-		
-		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
-		window.removeEventListener("load", vI.init, false);
+					vI_storage.storeVIdentityToAllRecipients(msgType); } }		
+	},
+	
+	open : function() {
+		vI_notificationBar.dump("## v_identity: composeDialog opened.\n")
+		vI.adapt_interface();
+		vI.adapt_genericSendMessage();
+		vI_smtpSelector.init();
+		vI_msgIdentityClone.init();
+		vI_msgIdentityClone.initReplyToFields();
+		vI_storage.init();
+		vI_smartIdentity.init();
+	},
+	
+	reopen: function() {
+		vI_notificationBar.clear_dump()
+		vI_notificationBar.dump("## v_identity: composeDialog reopened.\n")
+		vI.adapt_interface();
+		vI.adapt_genericSendMessage();
+		vI_storage.reinit();
+		vI_smtpSelector.reinit();
+		vI_msgIdentityClone.reinit();
+		vI_msgIdentityClone.reinitReplyToFields();
+		vI_storage.reinit();
+		vI_smartIdentity.reinit();
 	},
 	
 	// show a warning if you are using a usual (non-virtual) identity
