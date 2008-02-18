@@ -67,7 +67,7 @@ vI_upgrade = {
 		vI_notificationBar.dump("removing obsolete preferences:\n")
 		for each (pref in Array("aBook_use", "aBook_storedefault", "aBook_dont_update_multiple",
 				"aBook_show_switch", "aBook_warn_update", "aBook_use_for_smart_reply", "aBook_prefer_smart_reply",
-				"aBook_ignore_smart_reply", "aBook_warn_vI_replace", "aBook_use_non_vI", "aBook_notification",
+				"aBook_ignore_smart_reply", "aBook_warn_vI_replace", "aBook_use_non_vI", "aBook_notification", "storeVIdentity",
 				"experimental")) {
 			try { vI_upgrade.preferences.clearUserPref(pref); vI_notificationBar.dump(".") }
 			catch (e) { };

@@ -76,8 +76,7 @@ vI_smartIdentity = {
 			case msgComposeType.New:
 			case msgComposeType.NewsPost:
 			case msgComposeType.MailToUrl:
-				if (vI.preferences.getBoolPref("storeVIdentity"))
-					vI_smartIdentity.queryStorage();
+				vI_smartIdentity.queryStorage();
 				if (vI.preferences.getBoolPref("smart_timestamp"))
 					vI_smartIdentity.SmartTimestamp();
 				break;

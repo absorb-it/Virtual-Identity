@@ -40,5 +40,4 @@ pref("extensions.virtualIdentity.storage_notification", true);
 pref("extensions.virtualIdentity.storage_getOneOnly", true);
 pref("extensions.virtualIdentity.experimental", false);
 pref("extensions.virtualIdentity.autoReplyToSelf", false);
-pref("extensions.virtualIdentity.storeVIdentity", true);
 pref("extensions.{dddd428e-5ac8-4a81-9f78-276c734f75b8}.description", "chrome://v_identity/locale/v_identity.properties");

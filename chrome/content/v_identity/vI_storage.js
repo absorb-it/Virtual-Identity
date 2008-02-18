@@ -117,12 +117,7 @@ vI_storage = {
 	
 	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
 	firstUsedStorageData : null,	// stores the used storage-entry to show a warning if the Identities differ
-	updateVIdentityFromStorage: function(inputElement) {
-		if (!vI.preferences.getBoolPref("storeVIdentity")) {
-			vI_notificationBar.dump("## vI_storage: usage deactivated.\n")
-			return;
-		}
-		
+	updateVIdentityFromStorage: function(inputElement) {		
 		var recipientType = document.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
 			.selectedItem.getAttribute("value");
 		if (recipientType == "addr_reply" || recipientType == "addr_followup") {
