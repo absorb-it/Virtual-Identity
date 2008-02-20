@@ -307,8 +307,12 @@ vI_storage = {
 			//~ vI_notificationBar.dump("## vI_storage: searchUri '" + searchUri + "'\n");
 			//~ var directory = vI_storage.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
 			
-			var AbView = Components.classes["@mozilla.org/addressbook/abview;1"].createInstance(Components.interfaces.nsIAbView);
-			AbView.init(searchUri, true, null, "GeneratedName", "ascending");
+			// just try the following steps, they might fail if addressbook wasn't configured the right way
+			// not completely reproducible, but caused bug https://www.absorb.it/virtual-id/ticket/41
+			try {
+				var AbView = Components.classes["@mozilla.org/addressbook/abview;1"].createInstance(Components.interfaces.nsIAbView);
+				AbView.init(searchUri, true, null, "GeneratedName", "ascending");
+			} catch (ex) { break; };
 			var directory = AbView.directory;
 			
 			// directory will now be a subset of the addressbook containing only those cards that match the searchstring
