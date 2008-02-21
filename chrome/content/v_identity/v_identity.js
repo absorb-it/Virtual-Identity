@@ -267,24 +267,36 @@ var vI = {
 	reopen: function() {
 		vI_notificationBar.clear_dump()
 		vI_notificationBar.dump("## v_identity: composeDialog reopened. " + gMsgCompose.type + "\n")
+		
 		// clean all elements
 		vI_smtpSelector.clean();
 		vI_msgIdentityClone.clean();
 		vI_msgIdentityClone.cleanReplyToFields();
 		vI_storage.clean();
 		vI_smartIdentity.clean();
+		
 		// now (re)init the elements
 		vI.initSystemStage1();
 		
-		// stateLsitener only works with reply etc., so check MsgType to activate stage2
+		// stateListener only works in reply-cases
+		// so activate stage2 in reply-cases trough StateListener
+		// in other cases directly
 		var msgComposeType = Components.interfaces.nsIMsgCompType;
 		switch (gMsgCompose.type) {
 			case msgComposeType.New:
 			case msgComposeType.NewsPost:
 			case msgComposeType.MailToUrl:
-				vI.initSystemStage2();
-				break;
-			default:
+			case msgComposeType.Draft:
+			case msgComposeType.Template:
+			case msgComposeType.ForwardAsAttachment:
+			case msgComposeType.ForwardInline:
+				vI.initSystemStage2(); break;
+			case msgComposeType.Reply:
+			case msgComposeType.ReplyAll:
+			case msgComposeType.ReplyToGroup:
+			case msgComposeType.ReplyToSender:
+			case msgComposeType.ReplyToSenderAndGroup:
+			case msgComposeType.ReplyWithTemplate:
 				gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
 		}
 	},
