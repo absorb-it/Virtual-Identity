@@ -414,7 +414,7 @@ vI_smartIdentity = {
 	},
 	
 	smartIdentitySelection : function(all_addresses, autocreate) {
-		vI_smartIdentity.addSmartIdentitiesToCloneMenu(all_addresses);
+		vI_msgIdentityClone.addIdentitiesToCloneMenu(all_addresses);
 		
 		if (!autocreate && vI.preferences.getBoolPref("smart_reply_ask") && 
 			((all_addresses.number == 1 && vI.preferences.getBoolPref("smart_reply_ask_always"))
@@ -480,31 +480,5 @@ vI_smartIdentity = {
 		// there is no easy way to set the cursor at the end, before the signature, so set it at the beginning.
 		if (vI_smartIdentity.smartIdentity_BaseIdentity.attachSignature)
 			gMsgCompose.editor.beginningOfDocument();
-	},
-	
-	// adds MenuItem for SmartIdentities to the Identity-Select Dropdown Menu
-	// this might get conflicts with other code, so use the cloned Dropdown-Menu instead
-	addSmartIdentitiesToCloneMenu: function(all_addresses) {
-		vI.helper.addSeparatorToCloneMenu();
-		var object = vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone
-		for (index = 0; index < all_addresses.number; index++) {
-			var accountname = null;
-			if (all_addresses.id_keys[index]) {
-				MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.childNodes
-				for (j = 0; j < MenuItems.length; j++) {
-					if ( MenuItems[j].getAttribute("value") == all_addresses.id_keys[index] ) {
-						accountname = MenuItems[j].getAttribute("accountname")
-						break;
-					}
-				}
-			}
-			if (!accountname) accountname = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("accountname")
-			accountname = document.getElementById("prettyName-Prefix").getAttribute("label") + accountname
-			
-			vI.helper.addIdentityMenuItem(object, all_addresses.combinedNames[index],
-				accountname, "", "vid",
-				all_addresses.id_keys[index],
-				all_addresses.smtp_keys[index])
-		}
 	},
 }

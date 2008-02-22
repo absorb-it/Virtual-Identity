@@ -111,6 +111,45 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.doCommand();
 	},
 	
+	addSeparatorToCloneMenu: function() {
+		var object = vI_msgIdentityClone.elements.Obj_msgIdentityClone;
+		var separator = document.createElement("menuseparator");
+		separator.setAttribute("id", "vid_separator");
+		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.appendChild(
+			separator)
+	},
+
+	addIdentityToCloneMenu: function(name, id, smtp) {
+		var accountname = null; var separator = null;
+		if (id) {
+			// if a base-id exists, search the account related to this id
+			MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.firstChild.childNodes
+			for (j = 0; j < MenuItems.length; j++) {
+				if (MenuItems[j].localName == "menuseparator") {
+					separator = true; break;
+				}
+				if (MenuItems[j].getAttribute("value") == id )
+					accountname = MenuItems[j].getAttribute("accountname")
+			}
+		}
+		if (!separator) vI_msgIdentityClone.addSeparatorToCloneMenu();
+		
+		if (!accountname) accountname = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("accountname")
+		accountname = document.getElementById("prettyName-Prefix").getAttribute("label") + accountname
+		
+		vI.helper.addIdentityMenuItem(vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone,
+			name, accountname, "", "vid", id, smtp)	
+	},
+	
+	// adds MenuItem for Identities to the cloned Identity-Select Dropdown Menu
+	addIdentitiesToCloneMenu: function(all_addresses) {
+		vI_msgIdentityClone.addSeparatorToCloneMenu();
+		for (index = 0; index < all_addresses.number; index++) {
+			vI_msgIdentityClone.addIdentityToCloneMenu(
+				all_addresses.combinedNames[index], all_addresses.id_keys[index], all_addresses.smtp_keys[index])
+		}
+	},
+	
 	copySelectedIdentity : function(id_key) {
 		vI_notificationBar.dump("## vI_msgIdentityClone: copySelectedIdentity\n");
 		// copy selected Menu-Value from clone to orig.

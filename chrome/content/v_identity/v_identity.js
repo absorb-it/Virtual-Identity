@@ -49,14 +49,6 @@ var vI = {
 			return MenuItem
 		},
 
-		addSeparatorToCloneMenu: function() {
-			var object = vI_msgIdentityClone.elements.Obj_msgIdentityClone;
-			var separator = document.createElement("menuseparator");
-			separator.setAttribute("id", "vid_separator");
-			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.appendChild(
-				separator)
-		},
-
 		getBaseIdentity : function () {
 			return gAccountManager.getIdentity(vI.elements.Obj_MsgIdentity.value);
 		},

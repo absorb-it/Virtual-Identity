@@ -157,21 +157,28 @@ vI_storage = {
 				vI_storage.firstUsedStorageData.fullName != storageData.fullName ||
 				vI_storage.firstUsedStorageData.id != storageData.id ||
 				vI_storage.firstUsedStorageData.smtp != storageData.smtp ) {
-					// XX add Identity to dropdown-menu
+					// add Identity to dropdown-menu
+					vI_msgIdentityClone.addIdentityToCloneMenu(
+						vI_storage.__combineNames(storageData.fullName, storageData.email),
+						storageData.id, storageData.smtp)
 					vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageCollidingIdentity"),
 					"storage_notification");
 			}
 		}
 		// only update fields if new Identity is different than old one.
 		else if (!vI_storage.__equalsCurrentIdentity(storageData)) {
-			// XX add Identity to dropdown-menu
+			// add Identity to dropdown-menu
+			vI_msgIdentityClone.addIdentityToCloneMenu(
+				vI_storage.__combineNames(storageData.fullName, storageData.email),
+				storageData.id, storageData.smtp)
 			var warning = vI_storage.__getReplaceVIdentityWarning(recipient, storageData);
 			if (	vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
 				!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
 				vI_storage.promptService.confirm(window,"Warning",warning)) {						
 					vI_msgIdentityClone.setMenuToIdentity(storageData.id)
 					vI_smtpSelector.setMenuToKey(storageData.smtp)
-					if (vI_msgIdentityClone.setIdentity(storageData.fullName + "<" + storageData.email + ">"))
+					if (vI_msgIdentityClone.setIdentity(
+						vI_storage.__combineNames(storageData.fullName, storageData.email)))
 					vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
 						"storage_notification");
 			}
