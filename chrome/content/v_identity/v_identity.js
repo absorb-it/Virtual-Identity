@@ -203,6 +203,7 @@ var vI = {
 
 	// initialization //
 	init: function() {
+		vI_notificationBar.dump("## v_identity: init.\n")
 		vI.unicodeConverter.charset="UTF-8";
 		vI.adapt_interface();
 		vI.adapt_genericSendMessage();
@@ -210,15 +211,18 @@ var vI = {
 		window.addEventListener('compose-window-reopen', vI.reopen, true);
 		window.addEventListener('compose-window-close', vI.close, true);
 		vI.initSystemStage1();
+		vI_notificationBar.dump("## v_identity: init done.\n")
 	},
 	
 	initSystemStage1 : function() {
+		vI_notificationBar.dump("## v_identity: initSystemStage1.\n")
 		vI_smtpSelector.init();
 		vI_msgIdentityClone.init();
 		vI_msgIdentityClone.initReplyToFields();
 	},
 	
 	initSystemStage2 : function() {
+		vI_notificationBar.dump("## v_identity: initSystemStage2.\n")
 		vI_storage.init();
 		vI_smartIdentity.init();	
 	},
@@ -258,7 +262,7 @@ var vI = {
 	
 	reopen: function() {
 		vI_notificationBar.clear_dump()
-		vI_notificationBar.dump("## v_identity: composeDialog reopened. " + gMsgCompose.type + "\n")
+		vI_notificationBar.dump("## v_identity: composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
 		
 		// clean all elements
 		vI_smtpSelector.clean();
@@ -266,6 +270,7 @@ var vI = {
 		vI_msgIdentityClone.cleanReplyToFields();
 		vI_storage.clean();
 		vI_smartIdentity.clean();
+		vI_notificationBar.dump("## v_identity: everything cleaned.\n")
 		
 		// now (re)init the elements
 		vI.initSystemStage1();
@@ -291,6 +296,7 @@ var vI = {
 			case msgComposeType.ReplyWithTemplate:
 				gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
 		}
+		vI_notificationBar.dump("## v_identity: reopen done.\n")
 	},
 	
 	// show a warning if you are using a usual (non-virtual) identity
