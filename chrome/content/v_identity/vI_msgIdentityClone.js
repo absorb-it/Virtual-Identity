@@ -112,6 +112,7 @@ vI_msgIdentityClone = {
 	},
 	
 	addSeparatorToCloneMenu: function() {
+		vI_notificationBar.dump("## vI_msgIdentityClone: addSeparatorToCloneMenu\n");
 		var object = vI_msgIdentityClone.elements.Obj_msgIdentityClone;
 		var separator = document.createElement("menuseparator");
 		separator.setAttribute("id", "vid_separator");
@@ -120,17 +121,16 @@ vI_msgIdentityClone = {
 	},
 
 	addIdentityToCloneMenu: function(name, id, smtp) {
+		vI_notificationBar.dump("## vI_msgIdentityClone: addIdentityToCloneMenu '" + id + "'\n");
 		var accountname = null; var separator = null;
-		if (id) {
-			// if a base-id exists, search the account related to this id
-			MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.firstChild.childNodes
-			for (j = 0; j < MenuItems.length; j++) {
-				if (MenuItems[j].localName == "menuseparator") {
-					separator = true; break;
-				}
-				if (MenuItems[j].getAttribute("value") == id )
-					accountname = MenuItems[j].getAttribute("accountname")
+		// if a base-id exists, search the account related to this id
+		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.firstChild.childNodes
+		for (j = 0; j < MenuItems.length; j++) {
+			if (MenuItems[j].localName == "menuseparator") {
+				separator = true; break;
 			}
+			if (id && MenuItems[j].getAttribute("value") == id )
+				accountname = MenuItems[j].getAttribute("accountname")
 		}
 		if (!separator) vI_msgIdentityClone.addSeparatorToCloneMenu();
 		
