@@ -44,16 +44,11 @@ vI_smartIdentity = {
 					
 		// if there is no ID of the original Message  (Why?) leave the function
 		var uri = gMsgCompose.originalMsgURI; 
-		if (!uri) {
-			vI_notificationBar.dump("## vI_smartIdentity: cant get URI of former Message\n");
-			//~ return;
-		}
+		if (!uri) vI_notificationBar.dump("## vI_smartIdentity: can't get URI of former Message\n");
 		try { var hdr = vI_smartIdentity.messenger.messageServiceFromURI(uri).messageURIToMsgHdr(uri); }
 		catch(vErr) {
-			vI_notificationBar.dump("## vI_smartIdentity: can't get Message Header.\n");
-			vI_notificationBar.dump("## vI_smartIdentity: (maybe you're opening a message stored as a file)\n");
+			vI_notificationBar.dump("## vI_smartIdentity: can't get Message Header of former Message.\n");
 			hdr = null;
-			//~ return;
 		};
 		
 		switch (type) {
@@ -76,22 +71,12 @@ vI_smartIdentity = {
 			case msgComposeType.New:
 			case msgComposeType.NewsPost:
 			case msgComposeType.MailToUrl:
-				vI_smartIdentity.queryStorage();
-				if (vI.preferences.getBoolPref("smart_timestamp"))
-					vI_smartIdentity.SmartTimestamp();
+				vI_smartIdentity.SmartNewMail();
 				break;
 
 			}
 	},
-	
-	// this function creates a list of possible sender addresses from Storage and uses them (according to SmartReply behaivior)
-	queryStorage : function() {
-		var all_addresses = { number : 0, emails : {}, fullNames : {}, combinedNames : {}, id_keys : {}, smtp_keys : {} };
-		vI_storage.getVIdentityFromAllRecipients(all_addresses);
-		vI_notificationBar.dump("## vI_smartIdentity: checked for stored VIdentities and found " + all_addresses.number + " address(es)\n")
-		if (all_addresses.number > 0) vI_smartIdentity.smartIdentitySelection(all_addresses, false);
-	},
-	
+		
 	// this function adds a timestamp to the current sender
 	SmartTimestamp : function() {
 		vI_notificationBar.dump("## vI_smartIdentity: SmartTimestamp()\n");
@@ -110,6 +95,17 @@ vI_smartIdentity = {
 		vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIUsage") + ".",
 					"smart_reply_notification");
 		vI_msgIdentityClone.setIdentity(getCurrentIdentity().fullName + " <" + new_email + ">");
+	},
+	
+	SmartNewMail : function() {
+		var all_addresses = { number : 0, emails : {}, fullNames : {}, combinedNames : {}, id_keys : {}, smtp_keys : {} };
+		vI_storage.getVIdentityFromAllRecipients(all_addresses);
+		vI_notificationBar.dump("## vI_smartIdentity: checked for stored VIdentities and found " + all_addresses.number + " address(es)\n")
+
+		if (all_addresses.number > 0)
+			vI_smartIdentity.smartIdentitySelection(all_addresses, false)
+		else if (vI.preferences.getBoolPref("smart_timestamp"))
+			vI_smartIdentity.SmartTimestamp();	
 	},
 	
 	// this function checks if we have a draft-case and Smart-Draft should replace the Identity
@@ -158,7 +154,7 @@ vI_smartIdentity = {
 		return false;
 	},
 	
-	// checks if any Identity in the collected address-set i still available as
+	// checks if any Identity in the collected address-set is already available as
 	// a stored identity. If so, use the stored one.
 	matchAnyIdentity : function(all_addresses) {
 		vI_notificationBar.dump("## vI_smartIdentity: check if any collected address is stored as a (usual) Identity\n");
@@ -349,7 +345,7 @@ vI_smartIdentity = {
 		
 		/* first step: collect addresses */
 		
-		// check if Storage-search should be used before SmartReply
+		// check if Storage-search should be used in SmartReply-case
 		if (vI.preferences.getBoolPref("storage_use_for_smart_reply")) {
 			vI_storage.getVIdentityFromAllRecipients(storage_addresses);
 			vI_notificationBar.dump("## vI_smartIdentity: checked for stored VIdentities and found " + storage_addresses.number + " address(es)\n")
