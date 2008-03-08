@@ -1,13 +1,11 @@
 content	v_identity jar:chrome/v_identity.jar!/content/v_identity/
 locale	v_identity	en-US	jar:chrome/v_identity.jar!/locale/en-US/v_identity/
 locale	v_identity	de-DE	jar:chrome/v_identity.jar!/locale/de-DE/v_identity/
-locale	v_identity	es-ES	jar:chrome/v_identity.jar!/locale/es-ES/v_identity/
 locale	v_identity	fr-FR	jar:chrome/v_identity.jar!/locale/fr-FR/v_identity/
 locale	v_identity	cs-CZ	jar:chrome/v_identity.jar!/locale/cs-CZ/v_identity/
 locale	v_identity	it-IT	jar:chrome/v_identity.jar!/locale/it-IT/v_identity/
 locale	v_identity	nl-NL	jar:chrome/v_identity.jar!/locale/nl-NL/v_identity/
-locale	v_identity	ko-KR	jar:chrome/v_identity.jar!/locale/ko-KR/v_identity/
-locale	v_identity	sk-SK	jar:chrome/v_identity.jar!/locale/sk-SK/v_identity/
+locale	v_identity	pl-PL	jar:chrome/v_identity.jar!/locale/pl-PL/v_identity/
 skin	v_identity	classic/1.0	jar:chrome/v_identity.jar!/skin/classic/v_identity/
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://v_identity/content/v_identity.xul
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://v_identity/content/vI_context.xul

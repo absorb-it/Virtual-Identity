@@ -6,7 +6,7 @@
 <!ENTITY vident.prefs.smartReplyTab.label "Smart Reply">
 <!ENTITY vident.prefs.notificationTab.label "Messaggi di stato">
 <!ENTITY vident.prefs.commonTab.header "Configurazione generale">
-<!ENTITY vident.prefs.commonTab.caption "Usa le seguenti funzioni">
+<!ENTITY vident.prefs.commonTab.caption "Utilizza le seguenti funzioni">
 <!ENTITY vident.prefs.versionWarning.label "La versione di Thunderbird in uso non è adatta a supportare la funzione di Smart Draft">
 <!ENTITY vident.prefs.smartDraft.label "Utilizza Smart Draft">
 <!ENTITY vident.prefs.smartReply.label "Utilizza Smart Reply">
@@ -18,9 +18,9 @@
 <!ENTITY vident.prefs.warnVirtual.label "Mostra un avviso quando vengono utilizzate identità virtuali">
 <!ENTITY vident.prefs.vIdentityTab.header "Proprietà delle identità virtuali">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "Attributi da copiare">
-<!ENTITY vident.prefs.vIdentityTab.fccTab.label "Posizione in cui salvare i messaggi inviati">
-<!ENTITY vident.prefs.vIdentityTab.draftsTab.label "place to save drafts">
-<!ENTITY vident.prefs.vIdentityTab.tmplTab.label "place to save templates">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.label "Posizione per i messaggi inviati">
+<!ENTITY vident.prefs.vIdentityTab.draftsTab.label "Posizione per le bozze">
+<!ENTITY vident.prefs.vIdentityTab.tmplTab.label "Posizione per i modelli">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.caption "All&apos;invio di un messaggio con un&apos;identità virtuale">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.desc "copia i seguenti attributi da una precedente identità:">
 <!ENTITY vident.prefs.SMIME.label "S/MIME">
@@ -28,7 +28,7 @@
 <!ENTITY vident.prefs.VCard.label "allegati vCard">
 <!ENTITY vident.prefs.HideSignature.warning.desc "Nota: per disattivare l&apos;inserimento automatico della firma, è necessario installare e attivare l&apos;estensione &apos;Signature Switch&apos;. Al momento questa opzione non è disponibile.">
 <!ENTITY vident.prefs.HideSignature.label "Rimuovi qualunque firma in occasione dell&apos;utilizzo di una identità virtuale">
-<!ENTITY vident.prefs.autoReplyToSelf.label "set Virtual Identity as Reply-To Address">
+<!ENTITY vident.prefs.autoReplyToSelf.label "imposta l&apos;identità virtuale come indirizzo per le risposte">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "All&apos;invio di un messaggio con un&apos;identità virtuale">
 <!ENTITY vident.prefs.vidFccAccount.label "cartella utilizzata dall&apos;account sostituito da un&apos;identità virtuale">
 <!ENTITY vident.prefs.vidFccDefault.label "cartella utilizzata dall&apos;account predefinito">
@@ -45,37 +45,37 @@
 <!ENTITY vident.prefs.smartReply.filter.desc "Filtro per Smart Reply - da inserire in righe separate. È possibile utilizzare espressioni regolari (ad esempio a &apos;/@mozilla.org$/&apos; corrisponderà ogni e-mail inviata dal dominio mozilla.org)">
 <!ENTITY vident.prefs.smartReply.ignoreFullname.label "Ignora i nomi completi durante il confronto tra indirizzi e-mail e identità esistenti">
 <!ENTITY vident.prefs.smartReply.defaultFullname.label "Se non è presente alcun nome negli indirizzi email individuati, utilizza il seguente:">
-<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "At the end the filtered addresses are combined with the stored previous Virtual Identities (see storage configuration). Than they are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity.">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Alla fine della procedura, gli indirizzi filtrati vengono combinati con le identità virtuali salvate precedentemente (vedi le opzioni di salvataggio). Successivamente, vengono aggiunte al menu a discesa. È possibile anche utilizzarle come indirizzi del mittente.">
 <!ENTITY vident.prefs.smartReply.ask.label "Visualizza una finestra di dialogo per la scelta dell&apos;identità">
 <!ENTITY vident.prefs.smartReply.ask_always.label "Chiedi anche se esiste un solo indirizzo possibile">
 <!ENTITY vident.prefs.smartReply.autocreate.label "Utilizza la prima identità individuata senza interazione con l&apos;utente">
 <!ENTITY vident.prefs.smartReply.autocreate.desc "(se esiste un unico indirizzo possibile)">
-<!ENTITY vident.prefs.storageTab.label "Storage">
+<!ENTITY vident.prefs.storageTab.label "Salvataggio">
 <!ENTITY vident.prefs.storageTab.header "Salvataggio delle identità virtuali">
-<!ENTITY vident.prefs.storageCap1.caption "Storing of Virtual Identities">
-<!ENTITY vident.prefs.storageCap2.caption "Reading of Virtual Identities">
+<!ENTITY vident.prefs.storageCap1.caption "Salvataggio delle identità virtuali">
+<!ENTITY vident.prefs.storageCap2.caption "Lettura delle identità virtuali">
 <!ENTITY vident.prefs.storageCap3.caption "Opzioni avanzate">
 <!ENTITY vident.prefs.storageTab.Tab1.label "1. Configurazioni standard">
 <!ENTITY vident.prefs.storageTab.Tab2.label "2. Identità per le risposte">
 <!ENTITY vident.prefs.storage.storedefault.label "Salva le identità virtuali in occasione dell&apos;invio dei messaggi">
-<!ENTITY vident.prefs.storage.warn_update.label "Chiedi conferma prima di sovrascrivere le identità virtuali presenti in Storage">
-<!ENTITY vident.prefs.storage.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
+<!ENTITY vident.prefs.storage.warn_update.label "Chiedi conferma prima di sovrascrivere le identità virtuali salvate">
+<!ENTITY vident.prefs.storage.dont_update_multiple.label "Non sovrascrivere mai automaticamente (e chiedi conferma) se l&apos;e-mail ha destinatari multipli">
 <!ENTITY vident.prefs.storage.show_switch.label "Mostra opzione per attivare/disattivare il salvataggio delle identità">
 <!ENTITY vident.prefs.storage.warn_vI_replace.label "Chiedi conferma prima di sostituire il campo &apos;Mittente&apos; con un&apos;identità virtuale">
-<!ENTITY vident.prefs.storage.get_One_Only.label "ignore Storage after first Virtual Identity was retrieved">
-<!ENTITY vident.prefs.storage.reply.desc "Queste opzioni permettono di configurare l&apos;utilizzo delle identità nel caso in cui si utilizzi la Storage insieme a &apos;Smart Reply&apos;. La scelta tra le identità risultanti viene effettuata nella stessa maniera in cui è configurata &apos;Smart Reply&apos;.">
-<!ENTITY vident.prefs.storage.use_for_smart_reply.label "Utilizza le identità della Storage insieme a &apos;Smart Reply&apos;">
+<!ENTITY vident.prefs.storage.get_One_Only.label "Ignora le altre identità salvate dopo che la prima identità virtuale è stata trovata">
+<!ENTITY vident.prefs.storage.reply.desc "Queste opzioni servono a configurare la priorità delle identità virtuali salvate da utilizzare nella risposta ad un messaggio. La scelta tra le identità risultanti può essere effettuata allo stesso modo dell&apos;opzione &apos;Smart Reply&apos;.">
+<!ENTITY vident.prefs.storage.use_for_smart_reply.label "Utilizza le identità salvate insieme a &apos;Smart Reply&apos;">
 <!ENTITY vident.prefs.storage.prefer_smart_reply.label "Utilizza le identità di &apos;Smart Reply&apos; ove possibile">
-<!ENTITY vident.prefs.storage.ignore_smart_reply.label "Ignora le identità di &apos;Smart Reply&apos; se vengono individuate identità nella Storage">
+<!ENTITY vident.prefs.storage.ignore_smart_reply.label "Ignora le identità di &apos;Smart Reply&apos; se vengono individuate altre identità virtuali salvate">
 <!ENTITY vident.prefs.notificationTab.header "Messaggi di stato">
 <!ENTITY vident.prefs.notificationTab.caption "Notifiche">
 <!ENTITY vident.prefs.notifyHeaders.label "Mostra informazioni sulle intestazioni riconosciute">
 <!ENTITY vident.prefs.notifySmartIdentity.label "Attiva i messaggi di stato per Smart Reply / Smart Draft">
-<!ENTITY vident.prefs.notifyStorage.label "Attiva i messaggi di stato per la Storage">
+<!ENTITY vident.prefs.notifyStorage.label "Attiva i messaggi di stato per le identità salvate">
 <!ENTITY vident.prefs.notifyTime.prefix.label "Durata della visualizzazione per i messaggi di stato (0 = infinita)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "secondi">
 <!ENTITY vident.prefs.notificationTab.Debug.caption "Risoluzione dei problemi">
-<!ENTITY vident.prefs.notifyDebug.desc "Al fine di identificare i bug, risolvere problemi di configurazione e comprendere le operazioni compiute da Virtual Identity, è possibile ottenere alcune informazioni aggiuntive. L&apos;utilizzo di questa opzione causerà rallentamenti al client di posta, e per questo motivo si consiglia di attivarla soltanto per brevi periodi.">
+<!ENTITY vident.prefs.notifyDebug.desc "Al fine di identificare i bug, risolvere problemi di configurazione e comprendere le operazioni compiute da Virtual Identity, è possibile ottenere alcune informazioni aggiuntive. L&apos;utilizzo di questa opzione causerà rallentamenti al programma di posta, e per questo motivo si consiglia di attivarla soltanto per brevi periodi.">
 <!ENTITY vident.prefs.notifyDebug.label "Visualizza area con le informazioni relative al debug">
 <!ENTITY vident.accPane.prettyName.prefix "Id virtuale">
 <!ENTITY vident.composeDialog.storageSave.label "Salva">

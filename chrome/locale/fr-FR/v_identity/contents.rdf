@@ -10,7 +10,7 @@
   <!-- locale information -->
   <RDF:Description about="urn:mozilla:locale:fr-FR"
         chrome:displayName="French (FR)"
-        chrome:author="PatheticCockroach"
+        chrome:author="Goofy, PatheticCockroach"
         chrome:name="fr-FR">
     <chrome:packages>
       <RDF:Seq about="urn:mozilla:locale:fr-FR:packages">

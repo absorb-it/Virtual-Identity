@@ -26,8 +26,8 @@
 <!ENTITY vident.prefs.SMIME.label "S/MIME Sicherheitseinstellungen">
 <!ENTITY vident.prefs.PGP.label "OpenPGP Sicherheitseinstellungen">
 <!ENTITY vident.prefs.VCard.label "anzuhängende Visitenkarten">
-<!ENTITY vident.prefs.HideSignature.warning.desc "Hinweis: Zur dynamischen Abschaltung der 'Signatur' muss die Erweiterung 'Signature Switch' installiert (und aktiviert) sein. Zur Zeit steht diese Option nicht zur Verfügung.">
-<!ENTITY vident.prefs.HideSignature.label "entferne eine 'Signatur' bei Nutzung einer Virtuellen Identität">
+<!ENTITY vident.prefs.HideSignature.warning.desc "Hinweis: Zur dynamischen Abschaltung der &apos;Signatur&apos; muss die Erweiterung &apos;Signature Switch&apos; installiert (und aktiviert) sein. Zur Zeit steht diese Option nicht zur Verfügung.">
+<!ENTITY vident.prefs.HideSignature.label "entferne eine &apos;Signatur&apos; bei Nutzung einer Virtuellen Identität">
 <!ENTITY vident.prefs.autoReplyToSelf.label "setze Virtuelle Identität als Reply-To Adresse">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Beim Senden von Nachrichten automatisch">
 <!ENTITY vident.prefs.vidFccAccount.label "Ordner des Accounts, der durch Virtual Identity geändert wurde">
@@ -45,7 +45,9 @@
 <!ENTITY vident.prefs.smartReply.filter.desc "Smart Reply Filter  -  eine Zeile je Filter, reguläre Ausdrücke sind möglich, bspw. filtert &apos;/@mozilla.org$/&apos; nach allen Emailadressen der domain mozilla.org">
 <!ENTITY vident.prefs.smartReply.ignoreFullname.label "ignoriere Namensangaben beim Vergleich der Email-Adressen mit vorhandenen Identitäten">
 <!ENTITY vident.prefs.smartReply.defaultFullname.label "falls kein Name zu einer Email-Adresse gefunden wurde, benutze folgenden Namen:">
-<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "At the end the filtered addresses are combined with the stored previous Virtual Identities (see storage configuration). Than they are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity.">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Zum Schluss werden die gefilterten Adressen und die gespeicherten Virtuellen Identitäten zusammengeführt (vgl. die Speicher-Konfiguration) und dem Identitäts-Menu hinzugefügt. Hier kann ausgewählt werden, ob und wie diese als Sender-Identität genutzt werden.
+
+At the end the filtered addresses are combined with the stored previous Virtual Identities (see storage configuration). Than they are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity.">
 <!ENTITY vident.prefs.smartReply.ask.label "öffne ein Dialogfenster zur Auswahl der Identität">
 <!ENTITY vident.prefs.smartReply.ask_always.label "auch nachfragen, wenn nur eine Adresse zur Auswahl steht">
 <!ENTITY vident.prefs.smartReply.autocreate.label "übernehme die erste Identität automatisch">
@@ -63,8 +65,8 @@
 <!ENTITY vident.prefs.storage.show_switch.label "zeige Schalter zum Aktivieren/Deaktivieren der Speicherung">
 <!ENTITY vident.prefs.storage.warn_vI_replace.label "frage nach, wenn im Sender-Feld eingetragene Virtuelle Identität ersetzt werden soll">
 <!ENTITY vident.prefs.storage.get_One_Only.label "ignoriere Identity-Speicher nachdem die erste Virtuelle Identität gefunden wurde">
-<!ENTITY vident.prefs.storage.reply.desc "Wird auf emails geantwortet und ist die Nutzung des Identity-Speichers gemeinsam mit 'Smart Reply' aktiviert, kann hier konfiguriert werden, ob und wie die gefundenen Identitäten genutzt werden. Die Übernahme der Identitäten als Sender erfolgt dabei genauso, wie unter 'Smart Reply' konfiguriert.">
-<!ENTITY vident.prefs.storage.use_for_smart_reply.label "benutze Identity-Speicher gemeinsam mit 'Smart Reply'">
+<!ENTITY vident.prefs.storage.reply.desc "Wird auf emails geantwortet und ist die Nutzung des Identity-Speichers gemeinsam mit &apos;Smart Reply&apos; aktiviert, kann hier konfiguriert werden, ob und wie die gefundenen Identitäten genutzt werden. Die Übernahme der Identitäten als Sender erfolgt dabei genauso, wie unter &apos;Smart Reply&apos; konfiguriert.">
+<!ENTITY vident.prefs.storage.use_for_smart_reply.label "benutze Identity-Speicher gemeinsam mit &apos;Smart Reply&apos;">
 <!ENTITY vident.prefs.storage.prefer_smart_reply.label "bevorzuge Smart Reply-Identitäten">
 <!ENTITY vident.prefs.storage.ignore_smart_reply.label "ignoriere Smart Reply-Identitäten wenn Identitäten im Identity-Speicher gefunden werden">
 <!ENTITY vident.prefs.notificationTab.header "Statusinformationen">
@@ -75,7 +77,7 @@
 <!ENTITY vident.prefs.notifyTime.prefix.label "Zeit, bis Nachrichten ausgeblendet werden (0 für immer an)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "Sekunden">
 <!ENTITY vident.prefs.notificationTab.Debug.caption "Fehlersuche">
-<!ENTITY vident.prefs.notifyDebug.desc "Zur Fehlersuche und zum besseren Verständnis der Funktionsweise von Virtual Identity, besonders auch der Filter von 'Smart Reply', können weitere Informationen in einem eigenen Bereich angezeigt werden. Diese Debug-Informationen stehen nur in englischer Sprache zur Verfügung. Die Ausgabe verlangsamt die Arbeit des Email-Programms und sollte darum nicht dauerhaft aktiviert bleiben.">
+<!ENTITY vident.prefs.notifyDebug.desc "Zur Fehlersuche und zum besseren Verständnis der Funktionsweise von Virtual Identity, besonders auch der Filter von &apos;Smart Reply&apos;, können weitere Informationen in einem eigenen Bereich angezeigt werden. Diese Debug-Informationen stehen nur in englischer Sprache zur Verfügung. Die Ausgabe verlangsamt die Arbeit des Email-Programms und sollte darum nicht dauerhaft aktiviert bleiben.">
 <!ENTITY vident.prefs.notifyDebug.label "zeige Bereich mit Informationen zur Fehlersuche">
 <!ENTITY vident.accPane.prettyName.prefix "virtuelle Id">
 <!ENTITY vident.composeDialog.storageSave.label "speichern">

@@ -4,17 +4,17 @@
 
   <!-- list all the packages being supplied by this jar -->
   <RDF:Seq about="urn:mozilla:locale:root">
-    <RDF:li resource="urn:mozilla:locale:es-ES"/>
+    <RDF:li resource="urn:mozilla:locale:pl-PL"/>
   </RDF:Seq>
 
   <!-- locale information -->
-  <RDF:Description about="urn:mozilla:locale:es-ES"
-        chrome:displayName="Español (ES)"
-        chrome:author="Proyecto Nave"
-        chrome:name="es-ES">
+  <RDF:Description about="urn:mozilla:locale:pl-PL"
+        chrome:displayName="Polish (PL)"
+        chrome:author="WacÅ‚aw Jacek"
+        chrome:name="pl-PL">
     <chrome:packages>
-      <RDF:Seq about="urn:mozilla:locale:es-ES:packages">
-        <RDF:li resource="urn:mozilla:locale:es-ES:v_identity"/>
+      <RDF:Seq about="urn:mozilla:locale:pl-PL:packages">
+        <RDF:li resource="urn:mozilla:locale:pl-PL:v_identity"/>
       </RDF:Seq>
     </chrome:packages>
   </RDF:Description>

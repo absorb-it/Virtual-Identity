@@ -26,8 +26,8 @@
 <!ENTITY vident.prefs.SMIME.label "S/MIME security settings">
 <!ENTITY vident.prefs.PGP.label "OpenPGP security settings">
 <!ENTITY vident.prefs.VCard.label "vCard attachments">
-<!ENTITY vident.prefs.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the 'Signature Switch' extension. By now this option is not available.">
-<!ENTITY vident.prefs.HideSignature.label "remove any 'Signatur' while using a Virtual Identity">
+<!ENTITY vident.prefs.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the &apos;Signature Switch&apos; extension. By now this option is not available.">
+<!ENTITY vident.prefs.HideSignature.label "remove any &apos;Signatur&apos; while using a Virtual Identity">
 <!ENTITY vident.prefs.autoReplyToSelf.label "set Virtual Identity as Reply-To Address">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "while sending a message with a Virtual Identity">
 <!ENTITY vident.prefs.vidFccAccount.label "Folder used by Account changed with Virtual Identity">
@@ -63,10 +63,10 @@
 <!ENTITY vident.prefs.storage.show_switch.label "show switch to activate/deactivate saving of Identities">
 <!ENTITY vident.prefs.storage.warn_vI_replace.label "ask before Virtual Identity in Sender-Field will be replaced">
 <!ENTITY vident.prefs.storage.get_One_Only.label "ignore Storage after first Virtual Identity was retrieved">
-<!ENTITY vident.prefs.storage.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with 'Smart Reply' can configured here. Choosing in between the resulting Identities is done the same way as configured under 'Smart Reply'.">
-<!ENTITY vident.prefs.storage.use_for_smart_reply.label "use stored Identities together with 'Smart-Reply'">
-<!ENTITY vident.prefs.storage.prefer_smart_reply.label "prefer 'Smart Reply'-Identities">
-<!ENTITY vident.prefs.storage.ignore_smart_reply.label "ignore 'Smart Reply'-Identities if Virtual Identities were found stored">
+<!ENTITY vident.prefs.storage.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with &apos;Smart Reply&apos; can configured here. Choosing in between the resulting Identities is done the same way as configured under &apos;Smart Reply&apos;.">
+<!ENTITY vident.prefs.storage.use_for_smart_reply.label "use stored Identities together with &apos;Smart-Reply&apos;">
+<!ENTITY vident.prefs.storage.prefer_smart_reply.label "prefer &apos;Smart Reply&apos;-Identities">
+<!ENTITY vident.prefs.storage.ignore_smart_reply.label "ignore &apos;Smart Reply&apos;-Identities if Virtual Identities were found stored">
 <!ENTITY vident.prefs.notificationTab.header "Status Messages">
 <!ENTITY vident.prefs.notificationTab.caption "Notifications">
 <!ENTITY vident.prefs.notifyHeaders.label "show information about recognized headers">
@@ -75,7 +75,7 @@
 <!ENTITY vident.prefs.notifyTime.prefix.label "time to show status messages (0 = infinite)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "seconds">
 <!ENTITY vident.prefs.notificationTab.Debug.caption "Debugging">
-<!ENTITY vident.prefs.notifyDebug.desc "To find bugs, solve configuration problems and understand what Virtual Identity is doing, especially with the SmartReply-filters, you can enable some additional informations. Using this option slows down your mail-client, therefore it shouldn't be activated permanently.">
+<!ENTITY vident.prefs.notifyDebug.desc "To find bugs, solve configuration problems and understand what Virtual Identity is doing, especially with the SmartReply-filters, you can enable some additional informations. Using this option slows down your mail-client, therefore it shouldn&apos;t be activated permanently.">
 <!ENTITY vident.prefs.notifyDebug.label "show area with debug-informations">
 <!ENTITY vident.accPane.prettyName.prefix "virtual Id">
 <!ENTITY vident.composeDialog.storageSave.label "save">

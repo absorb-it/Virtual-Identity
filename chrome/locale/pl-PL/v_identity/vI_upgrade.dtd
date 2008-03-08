@@ -1,0 +1,18 @@
+<!ENTITY vident.upgrade.intro.label "Virtual Identity - Instalacja/Aktualizacja">
+<!ENTITY vident.upgrade.intro.description "wprowadzenie">
+<!ENTITY vident.upgrade.intro.caption "Virtual Identity">
+<!ENTITY vident.upgrade.features.label "Virtual Identity - Instalacja/Aktualizacja">
+<!ENTITY vident.upgrade.features.description "funkcje">
+<!ENTITY vident.upgrade.features.caption "Virtual Identity">
+<!ENTITY vident.upgrade.license.label "Virtual Identity - Instalacja/Aktualizacja">
+<!ENTITY vident.upgrade.license.description "licencja">
+<!ENTITY vident.upgrade.license.caption "GNU General Public License">
+<!ENTITY vident.upgrade.upgrade1.label "Virtual Identity - Instalacja/Aktualizacja">
+<!ENTITY vident.upgrade.upgrade1.description "aktualizacja - krok 1/2">
+<!ENTITY vident.upgrade.upgrade1.caption "Virtual Identity - Przechowalnia danych">
+<!ENTITY vident.upgrade.upgrade2.label "Virtual Identity - Instalacja/Aktualizacja">
+<!ENTITY vident.upgrade.upgrade2.description "aktualizacja - krok 2/2">
+<!ENTITY vident.upgrade.upgrade2.caption "Virtual Identity - Aktualizacja">
+<!ENTITY vident.upgrade.upgrade3.label "Virtual Identity - Instalacja/Aktualizacja">
+<!ENTITY vident.upgrade.upgrade3.description "zakończ">
+<!ENTITY vident.upgrade.upgrade3.caption "Virtual Identity">

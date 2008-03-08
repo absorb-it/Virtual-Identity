@@ -1,6 +1,6 @@
 <!ENTITY vident.compose.vidLogo.label "virtual identity">
 <!ENTITY vident.prefs.dlgTitle.label "Nastavení Virtual Identity">
-<!ENTITY vident.prefs.vidLogo.tooltiptext "Open Virtual Identity Homepage">
+<!ENTITY vident.prefs.vidLogo.tooltiptext "Otevřít domovskou stránku rozšíření Virtual Identity">
 <!ENTITY vident.prefs.commonTab.label "Hlavní">
 <!ENTITY vident.prefs.vIdentityTab.label "Virtuální identita">
 <!ENTITY vident.prefs.smartReplyTab.label "Smart Reply">
@@ -19,8 +19,8 @@
 <!ENTITY vident.prefs.vIdentityTab.header "Nastavení virtuálních identit">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.label "vlastnosti ke zkopírování">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.label "místo pro uložení odeslaných e-mailů">
-<!ENTITY vident.prefs.vIdentityTab.draftsTab.label "place to save drafts">
-<!ENTITY vident.prefs.vIdentityTab.tmplTab.label "place to save templates">
+<!ENTITY vident.prefs.vIdentityTab.draftsTab.label "místo pro uložení konceptů">
+<!ENTITY vident.prefs.vIdentityTab.tmplTab.label "místo pro uložení šablon">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.caption "při odeslání zprávy s Virtual Identity">
 <!ENTITY vident.prefs.vIdentityTab.valueTab.desc "kopírovat následující vlastnosti z předchozí identity:">
 <!ENTITY vident.prefs.SMIME.label "Nastavení S/MIME">
@@ -28,7 +28,7 @@
 <!ENTITY vident.prefs.VCard.label "přílohy vCard">
 <!ENTITY vident.prefs.HideSignature.warning.desc "poznámka: pro aktivaci dynamického odstraňování podpisu je potřeba nainstalovat a aktivovat rozšíření &apos;Signature Switch&apos;. Nyní tato volba není dostupná.">
 <!ENTITY vident.prefs.HideSignature.label "při použití virtuální identity odstranit podpis">
-<!ENTITY vident.prefs.autoReplyToSelf.label "set Virtual Identity as Reply-To Address">
+<!ENTITY vident.prefs.autoReplyToSelf.label "nastavit Virtual Identity jako adresu pro Reply-To">
 <!ENTITY vident.prefs.vIdentityTab.fccTab.caption "při odeslání zprávy s Virtual Identity">
 <!ENTITY vident.prefs.vidFccAccount.label "Složka používána účtem změněným Virtual Identity">
 <!ENTITY vident.prefs.vidFccDefault.label "Složka používána výchozím účtem">
@@ -37,7 +37,7 @@
 <!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. filtrovat adresy">
 <!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. použít adresy">
 <!ENTITY vident.prefs.smartReplyTab.caption "Virtual Identity Smart Reply">
-<!ENTITY vident.prefs.smartReplyTab3.caption "Virtual Identity Smart Reply / Storage">
+<!ENTITY vident.prefs.smartReplyTab3.caption "Virtual Identity Smart Reply / Úložiště">
 <!ENTITY vident.prefs.smartReplyTab.Tab1.desc "Pro nalezení identity pro odpověď musí Smart Reply získat seznam možných identit odesilatele. Analyzuje proto hlavičky &apos;To&apos; a &apos;Cc&apos;. Má-li Smart Reply analyzovat dodatečné hlavičky. Zde můžete zadat tyto a/nebo jiné hlavičky. (Dodatečné možnosti: Pro výběr n-té hlavičky z několika hlaviček stejného jména přidejte &apos;n&apos;. Pokud k některému záznamu přidáte &apos;@&apos;, použije se pouze e-mailová adresa a jméno bude ignorováno.)">
 <!ENTITY vident.prefs.smartReply.headers.desc "nové hlavičky - jedna na řádku, bez &apos;:&apos;, například &apos;x-original-to&apos; nebo &apos;x-original-to:@&apos; nebo &apos;x-original-to:2:@&apos;">
 <!ENTITY vident.prefs.smartReply.headers.reset "nastavit výchozí hodnoty">
@@ -45,41 +45,41 @@
 <!ENTITY vident.prefs.smartReply.filter.desc "Filtr Smart Reply - jeden filtr na řádku, je možné použít regulární výrazy (například &apos;/@mozilla.org$/&apos; platí pro všechny e-maily z domény mozilla.org">
 <!ENTITY vident.prefs.smartReply.ignoreFullname.label "při porovnání e-mailu s existujícími identitami ignorovat celé jméno">
 <!ENTITY vident.prefs.smartReply.defaultFullname.label "pokud k žádné nalezené e-mailové adrese není uvedeno jméno, použít následující:">
-<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "At the end the filtered addresses are combined with the stored previous Virtual Identities (see storage configuration). Than they are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity.">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Nakonec jsou filtrované adresy zkombinovány s dříve uloženými virtuálními identitami (viz nastavení úložiště). Následně jsou uloženy do stahovací nabídky identit. Dále si můžete zvolit, jak by mohly být použity jako nová identita odesilatele">
 <!ENTITY vident.prefs.smartReply.ask.label "otevřít dialog pro výběr identity">
 <!ENTITY vident.prefs.smartReply.ask_always.label "ptát se i tehdy, když je jen jedna možná adresa">
 <!ENTITY vident.prefs.smartReply.autocreate.label "použít automaticky první nalezenou identitu">
 <!ENTITY vident.prefs.smartReply.autocreate.desc "(pokud je jen jedna možná adresa)">
-<!ENTITY vident.prefs.storageTab.label "Storage">
-<!ENTITY vident.prefs.storageTab.header "Storing Virtual Identities">
-<!ENTITY vident.prefs.storageCap1.caption "Storing of Virtual Identities">
-<!ENTITY vident.prefs.storageCap2.caption "Reading of Virtual Identities">
-<!ENTITY vident.prefs.storageCap3.caption "Configure Reply-Identities">
-<!ENTITY vident.prefs.storageTab.Tab1.label "1. Common Configurations">
-<!ENTITY vident.prefs.storageTab.Tab2.label "2. Reply-Identities">
-<!ENTITY vident.prefs.storage.storedefault.label "save Virtual Identities while sending emails">
-<!ENTITY vident.prefs.storage.warn_update.label "ask before overwriting Virtual Identities in your Storage">
-<!ENTITY vident.prefs.storage.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
-<!ENTITY vident.prefs.storage.show_switch.label "show switch to activate/deactivate saving of Identities">
-<!ENTITY vident.prefs.storage.warn_vI_replace.label "ask before Virtual Identity in Sender-Field will be replaced">
-<!ENTITY vident.prefs.storage.get_One_Only.label "ignore Storage after first Virtual Identity was retrieved">
-<!ENTITY vident.prefs.storage.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with 'Smart Reply' can configured here. Choosing in between the resulting Identities is done the same way as configured under 'Smart Reply'.">
-<!ENTITY vident.prefs.storage.use_for_smart_reply.label "use stored Identities together with 'Smart-Reply'">
-<!ENTITY vident.prefs.storage.prefer_smart_reply.label "prefer 'Smart Reply'-Identities">
-<!ENTITY vident.prefs.storage.ignore_smart_reply.label "ignore 'Smart Reply'-Identities if Virtual Identities were found stored">
+<!ENTITY vident.prefs.storageTab.label "Úložiště">
+<!ENTITY vident.prefs.storageTab.header "Ukládání virtuálních identit">
+<!ENTITY vident.prefs.storageCap1.caption "Ukládání virtuálních identit">
+<!ENTITY vident.prefs.storageCap2.caption "Načítání virtuálních identit">
+<!ENTITY vident.prefs.storageCap3.caption "Nastavení identit pro odpověď">
+<!ENTITY vident.prefs.storageTab.Tab1.label "1. Obecná nastavení">
+<!ENTITY vident.prefs.storageTab.Tab2.label "2. Identity pro odpověď">
+<!ENTITY vident.prefs.storage.storedefault.label "uložit virtuální identity při odesílání e-mailů">
+<!ENTITY vident.prefs.storage.warn_update.label "zeptat se před přepsáním virtuální identity v úložišti">
+<!ENTITY vident.prefs.storage.dont_update_multiple.label "nikdy nepřepsat (zeptat se), pokud má e-mail více příjemců">
+<!ENTITY vident.prefs.storage.show_switch.label "zobrazit přepínač pro povolení/zakázání ukládání identit">
+<!ENTITY vident.prefs.storage.warn_vI_replace.label "zeptat se před nahrazením virtuální identity v hlavičce Odesílatel">
+<!ENTITY vident.prefs.storage.get_One_Only.label "ignorovat úložiště po získání první virtuální identity">
+<!ENTITY vident.prefs.storage.reply.desc "Zde lze nastavit prioritu uložených virtuálních adres v porovnání s těmi získanými funkcí &apos;Smart Reply&apos; při odpovědi na e-mail. Volba mezi výslednými identitami se provede stejným způsobem, jako je nastaveno pod &apos;Smart Reply&apos;.">
+<!ENTITY vident.prefs.storage.use_for_smart_reply.label "použít uložené identity společně s &apos;Smart-Reply&apos;">
+<!ENTITY vident.prefs.storage.prefer_smart_reply.label "preferovat identity z &apos;Smart Reply&apos;">
+<!ENTITY vident.prefs.storage.ignore_smart_reply.label "pokud je nalezena uložená identita, ignorovat identity z &apos;Smart Reply&apos;">
 <!ENTITY vident.prefs.notificationTab.header "Zprávy o stavu">
 <!ENTITY vident.prefs.notificationTab.caption "Upozornění">
 <!ENTITY vident.prefs.notifyHeaders.label "zobrazit informace o rozpoznaných hlavičkách">
 <!ENTITY vident.prefs.notifySmartIdentity.label "aktivovat Smart Reply / zprávy o stavu Smart Draft">
-<!ENTITY vident.prefs.notifyStorage.label "aktivate Storage status messages">
+<!ENTITY vident.prefs.notifyStorage.label "povolit stavové zprávy úložiště">
 <!ENTITY vident.prefs.notifyTime.prefix.label "doba zobrazení zpráv o stavu (0 = nekonečno)">
 <!ENTITY vident.prefs.notifyTime.postfix.label "vteřin">
 <!ENTITY vident.prefs.notificationTab.Debug.caption "Ladění">
 <!ENTITY vident.prefs.notifyDebug.desc "Chcete-li hledat chyby, vyřešit problémy s konfigurací a porozumět tomu, co Virtual Identity dělá (především s filtry SmartReply), můžete si zobrazovat další informace. Použití této volby však zpomalí váš e-mailový klient, proto by neměla být zapnuta stále.">
 <!ENTITY vident.prefs.notifyDebug.label "zobrazit pole s ladícími informacemi">
 <!ENTITY vident.accPane.prettyName.prefix "virtual Id">
-<!ENTITY vident.composeDialog.storageSave.label "save">
-<!ENTITY vident.composeDialog.storageSave.tooltiptext "save Identity while sending">
+<!ENTITY vident.composeDialog.storageSave.label "uložit">
+<!ENTITY vident.composeDialog.storageSave.tooltiptext "uložit identitu při odesílání">
 <!ENTITY vident.replySelector.dialogheader.title "Virtuální identita">
 <!ENTITY vident.replySelector.caption.label "Zvolte si virtuální identitu">
 <!ENTITY fccMailFolder.accesskey "P">
