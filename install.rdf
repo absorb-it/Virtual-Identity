@@ -30,6 +30,7 @@
     <em:description>Allows you to modify your Identity settings for a single Mail on the fly.</em:description>
     <em:creator>Rene Ejury</em:creator>
     <em:contributor>Translations: www.babelzilla.org</em:contributor>
+    <em:contributor>Proyecto Nave</em:contributor>	<!-- spanish localization -->
     <em:contributor>Rmarkh</em:contributor>		<!-- dutch localization -->
     <em:contributor>Underpass</em:contributor>		<!-- italian localization -->    
     <em:contributor>Goofy</em:contributor>			<!-- french localization -->
@@ -57,6 +58,7 @@
 	<em:locale>locale/it-IT/v_identity/</em:locale>
 	<em:locale>locale/cs-CZ/v_identity/</em:locale>
 	<em:locale>locale/pl-PL/v_identity/</em:locale>
+	<em:locale>locale/es-ES/v_identity/</em:locale>
        </Description>
     </em:file>
   </Description>      

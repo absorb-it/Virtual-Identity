@@ -1,0 +1,88 @@
+<!ENTITY vident.compose.vidLogo.label "Virtual identity">
+<!ENTITY vident.prefs.dlgTitle.label "Virtual Identity - Opciones">
+<!ENTITY vident.prefs.vidLogo.tooltiptext "Visitar la página web de Virtual Identity">
+<!ENTITY vident.prefs.commonTab.label "Principal">
+<!ENTITY vident.prefs.vIdentityTab.label "Virtual Identity">
+<!ENTITY vident.prefs.smartReplyTab.label "Respuesta rápida">
+<!ENTITY vident.prefs.notificationTab.label "Estado de mensajes">
+<!ENTITY vident.prefs.commonTab.header "Configuración general">
+<!ENTITY vident.prefs.commonTab.caption "usar las siguientes opciones">
+<!ENTITY vident.prefs.versionWarning.label "su versión del programa es antigua para poder usar la opción de borradores rápidos">
+<!ENTITY vident.prefs.smartDraft.label "usar borradores rápidos">
+<!ENTITY vident.prefs.smartReply.label "usar respuesta rápida">
+<!ENTITY vident.prefs.smartReplyNewsgroups.label "usar la respuesta rápida también para responder a los grupos de noticias">
+<!ENTITY vident.prefs.smartTimestamp.label "usar marca de tiempo rápida">
+<!ENTITY vident.prefs.SMTP.label "mostrar menú SMTP">
+<!ENTITY vident.prefs.menuEntry.label "añadir entrada para el cuadro de opciones al menú Herramientas">
+<!ENTITY vident.prefs.warnNonvirtual.label "avisar si se usa una identidad no virtual">
+<!ENTITY vident.prefs.warnVirtual.label "avisar al usar cualquiera de las identidades virtuales">
+<!ENTITY vident.prefs.vIdentityTab.header "Propiedades de las identidades virtuales">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.label "atributos a copiar">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.label "ubicación donde guardar los mensajes enviados">
+<!ENTITY vident.prefs.vIdentityTab.draftsTab.label "ubicación para guardar los borradores">
+<!ENTITY vident.prefs.vIdentityTab.tmplTab.label "ubicación para guardar las plantillas">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.caption "al enviar un mensaje usando una identidad virtual">
+<!ENTITY vident.prefs.vIdentityTab.valueTab.desc "copiar los siguientes atributos de la identidad correspondiente:">
+<!ENTITY vident.prefs.SMIME.label "Opciones de seguridad S/MIME">
+<!ENTITY vident.prefs.PGP.label "Opciones de seguridad OpenPGP">
+<!ENTITY vident.prefs.VCard.label "adjuntos vCard">
+<!ENTITY vident.prefs.HideSignature.warning.desc "nota: para habilitar la desactivación dinámica de firmas tiene que instalar (y activar) la extensión &apos;Signature Switch&apos;. Por ahora, esta opción no está disponible.">
+<!ENTITY vident.prefs.HideSignature.label "eliminar cualquier firma cuando se use una identidad virtual">
+<!ENTITY vident.prefs.autoReplyToSelf.label "establecer la identidad virtual como la dirección a la que responder">
+<!ENTITY vident.prefs.vIdentityTab.fccTab.caption "al enviar un mensaje usando una identidad virtual">
+<!ENTITY vident.prefs.vidFccAccount.label "Carpeta usada por la cuenta cambiada con Virtual Identity">
+<!ENTITY vident.prefs.vidFccDefault.label "Carpeta usada por la cuenta por defecto">
+<!ENTITY vident.prefs.smartReplyTab.header "Respuesta rápida - Opciones">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.label "1. obtener direcciones">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. filtrar direcciones">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. usar direcciones">
+<!ENTITY vident.prefs.smartReplyTab.caption "Virtual Identity - Respuesta rápida">
+<!ENTITY vident.prefs.smartReplyTab3.caption "Virtual Identity - Respuesta rápida / Storage">
+<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "Para encontrar la identidad con la que responder, la respuesta rápida tiene que obtener la lista de los posibles remitentes. Para ello, las cabeceras &apos;Para&apos; y &apos;Cc&apos; son analizadas. Si Smart Reply tiene que analizar cabeceras adicionales, puede incluirlas aquí (Opciones adicionales: para seleccionar la cabecera número n de varias con el mismo nombre añada &apos;:,&apos;. Si añade &apos;:@&apos; en alguna entrada, sólo se usarán las direcciones de correo, los nombres serán ignorados.)">
+<!ENTITY vident.prefs.smartReply.headers.desc "cabeceras adicionales - una por por ejemplo &apos;x-original-to&apos; o &apos;x-original-to:&apos;">
+<!ENTITY vident.prefs.smartReply.headers.reset "establecer los valores por defecto">
+<!ENTITY vident.prefs.smartReplyTab.Tab2.desc "Una vez obtenidas las direcciones, éstas son filtradas. Todos los filtros se usan después de los anteriores, por lo que puede usarlos también para ordenar los resultados. Al terminar, la primera dirección encontrada se usará como la identidad del remitente. Si no usa filtros, todas las direcciones serán transferidas.">
+<!ENTITY vident.prefs.smartReply.filter.desc "Filtros de respuesta rápida - un filtro por línea, con posibilidad de usar expresiones regulares (por ejemplo, &apos;/@mozilla.org$/&apos; coincide con cualquier correo del dominio mozilla.org">
+<!ENTITY vident.prefs.smartReply.ignoreFullname.label "ignorar los nombres completos al comparar las direcciones de correo con las identidades existentes">
+<!ENTITY vident.prefs.smartReply.defaultFullname.label "si no hay nombres en las direcciones encontradas, usar el siguiente:">
+<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Para terminar las direcciones filtradas se combinarán con las identidades virtuales guardadas anteriormente (ver la configuración de almacenamiento). Después se añadirán al desplegable de identidades. Puede seleccionar cual usar como la nueva identidad del remitente.">
+<!ENTITY vident.prefs.smartReply.ask.label "abrir una ventana para preguntar la identidad">
+<!ENTITY vident.prefs.smartReply.ask_always.label "preguntar incluso si solo hay una dirección posible">
+<!ENTITY vident.prefs.smartReply.autocreate.label "usar la primera identidad encontrada sin interacción">
+<!ENTITY vident.prefs.smartReply.autocreate.desc "(si sólo hay una posible dirección)">
+<!ENTITY vident.prefs.storageTab.label "Almacenamiento">
+<!ENTITY vident.prefs.storageTab.header "Guardar las identidades virtuales">
+<!ENTITY vident.prefs.storageCap1.caption "Guardar las identidades virtuales">
+<!ENTITY vident.prefs.storageCap2.caption "Leer las identidades virtuales">
+<!ENTITY vident.prefs.storageCap3.caption "Configurar las identidades de respuesta">
+<!ENTITY vident.prefs.storageTab.Tab1.label "1. Configuraciones comunes">
+<!ENTITY vident.prefs.storageTab.Tab2.label "2. Identidades para responder">
+<!ENTITY vident.prefs.storage.storedefault.label "guardar las identidades virtuales al enviar los correos">
+<!ENTITY vident.prefs.storage.warn_update.label "preguntar siempre antes de sobreescribir las identidades virtuales en la Storage">
+<!ENTITY vident.prefs.storage.dont_update_multiple.label "no sobreescribir (y preguntar) si un correo tiene varios remitentes">
+<!ENTITY vident.prefs.storage.show_switch.label "mostrar selector para activar/desactivar la opción de guardar las identidades">
+<!ENTITY vident.prefs.storage.warn_vI_replace.label "preguntar antes de reemplazar el campo remitente con la identidad virtual">
+<!ENTITY vident.prefs.storage.get_One_Only.label "ignorar el amacenamiento una vez que se recupere la primera identidad virtual">
+<!ENTITY vident.prefs.storage.reply.desc "Si responde un correo y tiene activado el uso de la Storage junto con la &apos;respuesta rápida&apos;, aquí puede configurar cómo se usarán las identidades que se encuentren.  La elección entre las identidades que se encuentren se hace del mismo modo que se haya configurado en la &apos;respuesta rápida&apos;.">
+<!ENTITY vident.prefs.storage.use_for_smart_reply.label "usar las identidades de la Storage junto con la &apos;respuesta rápida&apos;">
+<!ENTITY vident.prefs.storage.prefer_smart_reply.label "preferir las identidades de &apos;respuesta rápida&apos;">
+<!ENTITY vident.prefs.storage.ignore_smart_reply.label "Ignorar las identidades de &apos;respuesta rápida&apos; si se encuentran en la Storage">
+<!ENTITY vident.prefs.notificationTab.header "Estado de mensajes">
+<!ENTITY vident.prefs.notificationTab.caption "Notificaciones">
+<!ENTITY vident.prefs.notifyHeaders.label "mostrar información sobre las cabeceras reconocidas">
+<!ENTITY vident.prefs.notifySmartIdentity.label "activar estado de los mensajes en respuesta rápida / borrador rápido">
+<!ENTITY vident.prefs.notifyStorage.label "activar el estado de los mensajes en la Storage">
+<!ENTITY vident.prefs.notifyTime.prefix.label "tiempo para mostrar el estado de los mensajes (0 = infinito)">
+<!ENTITY vident.prefs.notifyTime.postfix.label "segundos">
+<!ENTITY vident.prefs.notificationTab.Debug.caption "Depuración">
+<!ENTITY vident.prefs.notifyDebug.desc "Para encontrar fallos, resolver problemas y entender lo que está haciendo Virtual Identity, especialmente con los filtros de respuesta rápida, puede habilitar alguna información adicional. Esta información aparecerá mayoritariamente en inglés. Si usa esta opción, el cliente de correo será más lento, por lo que no debe estar activa permanentemente.">
+<!ENTITY vident.prefs.notifyDebug.label "mostrar el área con la información de depuración">
+<!ENTITY vident.accPane.prettyName.prefix "Identidad virtual">
+<!ENTITY vident.composeDialog.storageSave.label "guardar">
+<!ENTITY vident.composeDialog.storageSave.tooltiptext "guardar la identidad al enviar">
+<!ENTITY vident.replySelector.dialogheader.title "Virtual Identity">
+<!ENTITY vident.replySelector.caption.label "Elegir una identidad virtual">
+<!ENTITY fccMailFolder.accesskey "P">
+<!ENTITY sentFolderOn.accesskey "e">
+<!ENTITY sentInOtherFolder.label "Otra:">
+<!ENTITY sentInOtherFolder.accesskey "O">
