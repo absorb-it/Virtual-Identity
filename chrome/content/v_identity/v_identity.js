@@ -336,7 +336,23 @@ var vI = {
 		vI.elements.Obj_MsgIdentity.setAttribute("value", vI.storeBaseIdentity.getAttribute("value"));
 		vI.storeBaseIdentity = null;
 	},
-	
+
+	// Clean all the things I had changed (except the FillIdentityListPopup)
+	Cleanup : function()
+	{
+		vI_notificationBar.dump("## v_identity: Cleanup\n");
+		vI.Cleanup_Account();
+		
+		// restore function
+		if (GenericSendMessage == vI.replacement_functions.GenericSendMessage) {
+			GenericSendMessage = function (msgType) {
+				vI.msgType = msgType; if (vI.warning(msgType)) {
+					vI.original_functions.GenericSendMessage(msgType);
+					vI_storage.storeVIdentityToAllRecipients(msgType); } }
+			vI_notificationBar.dump("## v_identity: restored GenericSendMessage (Virtual Identity deactivated)\n");
+		}
+	},
+
 	// removes the account
 	Cleanup_Account : function() {
 		// remove temporary Account
