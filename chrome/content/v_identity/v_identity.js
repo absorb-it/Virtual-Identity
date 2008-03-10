@@ -89,6 +89,8 @@ var vI = {
 	// Those variables keep pointers to original functions which might get replaced later
 	original_functions : {
 		GenericSendMessage : null,
+		FillIdentityListPopup : null,	// TB 2.x
+		FillIdentityList : null,	// TB 3.x
 	},
 
 	// some pointers to the layout-elements of the extension
@@ -126,6 +128,55 @@ var vI = {
 	},
 		
 	replacement_functions : {
+		// TB 2.x
+		FillIdentityListPopup: function(popup) {
+			vI_notificationBar.dump("## v_identity: mod. FillIdentityListPopup\n");
+			var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
+			accounts.sort(compareAccountSortOrder);
+
+			for (var i in accounts) {
+				var server = accounts[i].incomingServer;
+				if (!server) continue;
+				// check for VirtualIdentity Account
+				try {	vI_account.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
+					continue; } catch (e) { };
+
+				var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
+				for (var j in identites) {
+					var identity = identites[j];
+					var item = document.createElement("menuitem");
+					item.className = "identity-popup-item";
+					item.setAttribute("label", identity.identityName);
+					item.setAttribute("value", identity.key);
+					item.setAttribute("accountkey", accounts[i].key);
+					item.setAttribute("accountname", " - " + server.prettyName);
+					popup.appendChild(item);
+				}
+			}
+		},
+		
+		// TB 3.x
+		FillIdentityList: function(menulist) {
+			vI_notificationBar.dump("## v_identity: mod. FillIdentityList\n");
+			var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
+			accounts.sort(compareAccountSortOrder);
+
+			for (var i in accounts) {
+				var server = accounts[i].incomingServer;
+				if (!server) continue;
+				// check for VirtualIdentity Account
+				try {	vI_account.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
+					continue; } catch (e) { };
+
+				var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
+				for (var j in identites) {
+					var identity = identites[j];
+					var item = menulist.appendItem(identity.identityName, identity.key, server.prettyName);
+					item.setAttribute("accountkey", accounts[i].key);
+				}
+			}
+		},
+		
 		GenericSendMessage: function (msgType) {
 			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 				.getService(Components.interfaces.nsIPromptService);
@@ -178,7 +229,20 @@ var vI = {
 				}
 			}
 		},
-
+		
+		replace_FillIdentityList : function() {
+			if (typeof(FillIdentityList)=="function") {
+				//~ vI_notificationBar.dump("## v_identity: replace FillIdentityList (TB 3.x)\n");
+				vI.original_functions.FillIdentityList = FillIdentityList;
+				FillIdentityList = vI.replacement_functions.FillIdentityList;
+			}
+			else {
+				//~ vI_notificationBar.dump("## v_identity: replace FillIdentityListPopup (TB 2.x)\n");
+				vI.original_functions.FillIdentityListPopup = FillIdentityListPopup;
+				FillIdentityListPopup = vI.replacement_functions.FillIdentityListPopup;
+			}
+		},
+		
 		replaceGenericFunction : function()
 		{
 			if (GenericSendMessage == vI.replacement_functions.GenericSendMessage) return;
@@ -358,5 +422,7 @@ var vI = {
 	},
 }
 
+
+vI.replacement_functions.replace_FillIdentityList();
 window.addEventListener("load", vI.init, false);
 window.addEventListener("unload", vI.remove, false);
