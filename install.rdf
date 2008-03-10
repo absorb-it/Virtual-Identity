@@ -29,14 +29,14 @@
     <em:version>0.5.0</em:version>
     <em:description>Allows you to modify your Identity settings for a single Mail on the fly.</em:description>
     <em:creator>Rene Ejury</em:creator>
-    <em:contributor>Translations: www.babelzilla.org</em:contributor>
-    <em:contributor>Proyecto Nave</em:contributor>	<!-- spanish localization -->
-    <em:contributor>Rmarkh</em:contributor>		<!-- dutch localization -->
-    <em:contributor>Underpass</em:contributor>		<!-- italian localization -->    
-    <em:contributor>Goofy</em:contributor>			<!-- french localization -->
-    <em:contributor>PatheticCockroach</em:contributor>		<!-- french localization -->
-    <em:contributor>Michal Kec (MiK)</em:contributor>		<!-- czech localization -->
-    <em:contributor>Wacław Jacek</em:contributor>	<!-- polish translation -->
+    <em:translator>www.babelzilla.org</em:translator>
+    <em:translator>- Proyecto Nave</em:translator>	<!-- spanish localization -->
+    <em:translator>- Rmarkh</em:translator>		<!-- dutch localization -->
+    <em:translator>- Underpass</em:translator>		<!-- italian localization -->    
+    <em:translator>- Goofy</em:translator>			<!-- french localization -->
+    <em:translator>- PatheticCockroach</em:translator>		<!-- french localization -->
+    <em:translator>- Michal Kec (MiK)</em:translator>		<!-- czech localization -->
+    <em:translator>- Wacław Jacek</em:translator>	<!-- polish translation -->
     <em:homepageURL>http://www.absorb.it/virtual-id</em:homepageURL>
     <!--
     When no updateURL is found, default addons.mozilla.org is used. So its not needed anymore.
