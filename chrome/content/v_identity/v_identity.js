@@ -89,7 +89,6 @@ var vI = {
 	// Those variables keep pointers to original functions which might get replaced later
 	original_functions : {
 		GenericSendMessage : null,
-		MsgComposeCloseWindow : null,
 	},
 
 	// some pointers to the layout-elements of the extension
@@ -117,22 +116,16 @@ var vI = {
 		ComposeProcessDone: function(aResult) {
 			vI_notificationBar.dump("## v_identity: StateListener reports ComposeProcessDone\n");
 			vI.Cleanup_Account(); // not really required, parallel handled by vI.close
+			vI_storage.clean();
 		},
 		SaveInFolderDone: function(folderURI) { 
 			vI_notificationBar.dump("## v_identity: SaveInFolderDone\n");
 			vI.Cleanup_Account();
+			vI_storage.clean();
 		}
 	},
 		
 	replacement_functions : {
-		// if the windows gets closed, this is the way to get rid of the account.
-		MsgComposeCloseWindow : function(recycleIt) {
-			vI_notificationBar.dump("## v_identity: MsgComposeCloseWindow\n");
-			//~ alert("before MsgComposeCloseWindow")
-			//~ vI.original_functions.MsgComposeCloseWindow(false);
-			//~ alert("after MsgComposeCloseWindow")
-		},
-		
 		GenericSendMessage: function (msgType) {
 			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 				.getService(Components.interfaces.nsIPromptService);
@@ -199,6 +192,7 @@ var vI = {
 		window.removeEventListener('compose-window-close', vI.close, true);
 		vI_notificationBar.dump("## v_identity: end. remove Account if there.\n")
 		vI.Cleanup_Account();
+		vI_storage.clean();
 	},
 
 	// initialization //
@@ -229,6 +223,7 @@ var vI = {
 	
 	close : function() {
 		vI.Cleanup_Account();
+		vI_storage.clean();
 	},
 	
 	adapt_interface : function() {
@@ -261,14 +256,14 @@ var vI = {
 	},
 	
 	reopen: function() {
-		vI_notificationBar.clear_dump()
+		vI_notificationBar.dump("--------------------------------------------------------------------------------\n")
 		vI_notificationBar.dump("## v_identity: composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
 		
 		// clean all elements
 		vI_smtpSelector.clean();
 		vI_msgIdentityClone.clean();
 		vI_msgIdentityClone.cleanReplyToFields();
-		vI_storage.clean();
+		//~ vI_storage.clean();
 		vI_smartIdentity.clean();
 		vI_notificationBar.dump("## v_identity: everything cleaned.\n")
 		

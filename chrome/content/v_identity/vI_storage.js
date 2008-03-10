@@ -46,6 +46,7 @@ vI_storage = {
 			.getBranch(null),
 	
 	clean: function() {
+		vI_notificationBar.dump("## vI_storage: clean.\n");
 		vI_storage.multipleRecipients = null;
 		vI_storage.lastCheckedEmail = {};
 		vI_storage.elements = { Obj_storageSave : null };
