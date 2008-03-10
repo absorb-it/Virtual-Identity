@@ -402,21 +402,24 @@ vI_msgIdentityClone = {
 		var address = vI.helper.getAddress();
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		for (var i in accounts) {
-			var server = accounts[i].incomingServer;				
-				var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
-				for (var j in identites) {
-					var identity = identites[j];
-					var smtpKey = identity.smtpServerKey;
-					if (	identity.getUnicharAttribute("fullName") == address.name &&
-						identity.getUnicharAttribute("useremail") == address.email &&
-						smtpKey == vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key')) {
-							// all values are identical to an existing Identity
-							// set Identity combobox to this value
-							vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("value", identity.key);
-							vI_notificationBar.dump("## vI_msgIdentityClone: matchingIdentity key " + identity.key + "\n");
-							return false;
-						}
+			// check for VirtualIdentity Account
+			try {	vI_account.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
+				continue; } catch (e) { };
+			
+			var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
+			for (var j in identites) {
+				var identity = identites[j];
+				var smtpKey = identity.smtpServerKey;
+				if (	identity.getUnicharAttribute("fullName") == address.name &&
+					identity.getUnicharAttribute("useremail") == address.email &&
+					smtpKey == vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key')) {
+						// all values are identical to an existing Identity
+						// set Identity combobox to this value
+						vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("value", identity.key);
+						vI_notificationBar.dump("## vI_msgIdentityClone: matchingIdentity key " + identity.key + "\n");
+						return false;
 					}
+				}
 			}
 		return true;
 	},

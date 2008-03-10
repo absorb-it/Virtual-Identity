@@ -160,11 +160,16 @@ vI_smartIdentity = {
 		vI_notificationBar.dump("## vI_smartIdentity: check if any collected address is stored as a (usual) Identity\n");
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		for (var i in accounts) {
+			// check for VirtualIdentity Account
+			try {	vI_account.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
+				continue; } catch (e) { };
+			
 			var server = accounts[i].incomingServer;
 			// ignore newsgroup accounts if not selected in preferences
 			if (!vI.preferences.getBoolPref("smart_reply_for_newsgroups") &&
 				server.type == "nntp") continue;
-		
+			
+			
 			var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 			for (var j in identities) {
 				for (index = 0; index < all_addresses.number; index++) {
