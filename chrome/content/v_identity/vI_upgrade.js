@@ -44,7 +44,6 @@ vI_upgrade = {
 		vI_rdfDatasource.init(); // just to be sure that Datasource is initialised
 		if (vI_rdfDatasource.extUpgrade()) vI_upgrade.extUpgrade();
 		if (vI_rdfDatasource.rdfUpgradeRequired()) vI_upgrade.rdfUpgrade();
-		vI_account.cleanupSystem();
 		vI_notificationBar.dump("\n\nupgrade finished.\n");
 		document.documentElement.getButton('next').setAttribute('disabled','false');
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "true")
