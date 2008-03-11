@@ -83,36 +83,84 @@ vI_account = {
 			vI_account._copyCharAttribute("escapedVCard");
 		}
 	},
+	
+	__cleanupDirectories : function() {
+		var file = Components.classes["@mozilla.org/file/directory_service;1"]
+		.getService(Components.interfaces.nsIProperties)
+			.get("ProfD", Components.interfaces.nsIFile);
 		
+		var fileEnumerator = file.directoryEntries
+		while (fileEnumerator.hasMoreElements()) {
+			var dir = fileEnumerator.getNext()
+			dir.QueryInterface(Components.interfaces.nsIFile);
+			if (dir.path.match(new RegExp("[/\\\\]Mail$","i"))) { // match Windows and Linux/Mac separators
+				var dirEnumerator = dir.directoryEntries
+				while (dirEnumerator.hasMoreElements()) {
+					var maildir = dirEnumerator.getNext()
+					maildir.QueryInterface(Components.interfaces.nsIFile);
+					if (maildir.path.match(new RegExp("[/\\\\]virtualIdentity.*$","i"))) {// match Windows and Linux/Mac separators
+						// should be empty, VirtualIdentity never uses those directories
+						try {maildir.remove(false)} catch(e) { };
+						vI_notificationBar.dump(".")
+					}
+				}
+			}
+		}
+		vI_notificationBar.dump("\n")
+	},
+	
 	cleanupSystem : function() {
 		vI_notificationBar.dump("## vI_account: cleanupSystem:\n")
+		vI_notificationBar.dump("## vI_account: checking for leftover VirtualIdentity accounts ")
 		for (var i=0; i < vI_account.AccountManager.accounts.Count(); i++) {
 			var account = vI_account.AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-			vI_account.removeAccount(account);
+			if (vI_account.__isVIdentityAccount(account)) {
+				vI_notificationBar.dump(".")
+				vI_account.__removeAccount(account);
+			}
 		}
+		vI_notificationBar.dump("\n## vI_account: checking for leftover VirtualIdentity directories ")
+		vI_account.__cleanupDirectories();
+		
 		vI_notificationBar.dump("## vI_account: cleanupSystem done.\n")
 	},
 	
-	removeAccount : function(account) {
-		var key = account.key;
-		var server = account.incomingServer;
-		if (!server || server.hostName != "virtualIdentity") {
-			try {	vI_account.prefroot.getBoolPref("mail.account." + account.key + ".vIdentity");
-				account.incomingServer = vI_account.AccountManager.
-							createIncomingServer("toRemove","virtualIdentity","pop3");
-			} catch (e) { return; };
+	__isVIdentityAccount : function(account) {
+		// check for new (post0.5.0) accounts,
+		try {	vI_account.prefroot.getBoolPref("mail.account." + account.key + ".vIdentity");
+			return true;
+		} catch (e) { };
+		// check for old (pre 0.5.0) accounts
+		if (account.incomingServer.hostName == "virtualIdentity") return true;
+		return false;
+	},
+	
+	__removeAccount : function(account) {
+		// in new (post 0.5.0) Virtual Identity accounts the Incoming Server of the account
+		// points to an incoming server of a different account. Cause the internal
+		// removeAccount function tries to removes the incoming server ether, create
+		// a real one.
+		if (!account.incomingServer || account.incomingServer.hostName != "virtualIdentity") {
+			account.incomingServer = vI_account.AccountManager.
+				createIncomingServer("toRemove","virtualIdentity","pop3");
 		}
+
+		// remove the rootFolder of the account
 		try { account.incomingServer.rootFolder.Delete(); }
 		catch (e) { };
+		
+		var key = account.key;
 		vI_notificationBar.dump("## vI_account: removing account " + key + ".\n")
+		// remove the account
 		vI_account.AccountManager.removeAccount(account);
+		// remove the additional tagging-pref
 		try { vI_account.prefroot.clearUserPref("mail.account." + key + ".vIdentity");	}
 		catch (e) { };
 	},
 	
 	removeUsedVIAccount : function() {
 		if (vI_account.account) {
-			vI_account.removeAccount(vI_account.account);
+			vI_account.__removeAccount(vI_account.account);
 			vI_account.account = null;
 		}
 	},
@@ -123,9 +171,6 @@ vI_account = {
 			alert("account still created, shouldn't happen");
 			return;
 		}
-		
-		vI_account.cleanupSystem();
-		
 		/*
 		// the easiest way would be to get all requiered Attributes might be to duplicate the default account like this
 		var recentAccount = vI_account.AccountManager.getAccount(vI.elements.Obj_MsgIdentity.selectedItem.getAttribute("accountkey"));
