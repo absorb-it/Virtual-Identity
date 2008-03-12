@@ -129,7 +129,12 @@ vI_rdfDatasource = {
 		var id = vI_rdfDatasource.__getRDFValue(resource, "id")
 		var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
 		
-		return { email : email, fullName : fullName, id : id, smtp : (smtp="default"?"":smtp) };
+		vI_notificationBar.dump("## vI_rdfDatasource: email '" + email + "'\n");
+		vI_notificationBar.dump("## vI_rdfDatasource: fullName '" + fullName + "'\n");
+		vI_notificationBar.dump("## vI_rdfDatasource: id '" + id + "'\n");
+		vI_notificationBar.dump("## vI_rdfDatasource: smtp '" + smtp + "'\n");
+		
+		return { email : email, fullName : fullName, id : id, smtp : (smtp=="default"?"":smtp) };
 	},
 	
 	__getRDFValue : function (resource, field) {
