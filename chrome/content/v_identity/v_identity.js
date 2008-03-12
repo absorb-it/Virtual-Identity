@@ -320,7 +320,7 @@ var vI = {
 	},
 	
 	reopen: function() {
-		vI_notificationBar.dump("--------------------------------------------------------------------------------\n")
+		vI_notificationBar.clear_dump();
 		vI_notificationBar.dump("## v_identity: composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
 		
 		// clean all elements
