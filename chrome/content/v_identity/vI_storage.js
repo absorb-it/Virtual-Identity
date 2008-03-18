@@ -49,7 +49,6 @@ vI_storage = {
 		vI_notificationBar.dump("## vI_storage: clean.\n");
 		vI_storage.multipleRecipients = null;
 		vI_storage.lastCheckedEmail = {};
-		vI_storage.elements = { Obj_storageSave : null };
 		vI_storage.firstUsedInputElement = null;
 		vI_storage.firstUsedStorageData = null;
 		awSetInputAndPopupValue = vI_storage.original_functions.awSetInputAndPopupValue;
