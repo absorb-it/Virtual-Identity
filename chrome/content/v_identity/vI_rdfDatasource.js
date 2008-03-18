@@ -165,6 +165,7 @@ vI_rdfDatasource = {
 	},
 
 	__setRDFValue : function (resource, field, value) {
+		if (!value) return; // return if some value was not set.
 		var predicate = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "rdf#" + field);
 		var name = vI_rdfDatasource.rdfService.GetLiteral(value);
 		var target = vI_rdfDatasource.rdfDataSource.GetTarget(resource, predicate, true);
