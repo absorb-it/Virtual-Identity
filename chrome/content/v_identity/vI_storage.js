@@ -208,6 +208,11 @@ vI_storage = {
 	
 	storeVIdentityToAllRecipients : function(msgType) {
 		if (msgType != nsIMsgCompDeliverMode.Now) return;
+		if (!vI_storage.elements.Obj_storageSave) {
+			// ugly temp. fix for https://www.absorb.it/virtual-id/ticket/44
+			vI_notificationBar.dump("## vI_storage: Obj_storageSave doesn't exist, shouldn't happen")
+			vI_storage.elements.Obj_storageSave = document.getElementById("storage_save");
+		}
 		if (vI_storage.elements.Obj_storageSave.getAttribute("hidden") == "false" ) {
 			vI_notificationBar.dump("## vI_storage: switch shown.\n")
 			if (!vI_storage.elements.Obj_storageSave.checked) {
