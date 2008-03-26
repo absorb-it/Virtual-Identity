@@ -376,7 +376,7 @@ vI_storage = {
 	},
 	
 	__combineNames : function (fullName, email) {
-		if (fullName.replace(/^\s+|\s+$/g,"")) return fullName.replace(/^\s+|\s+$/g,"") + " <" + email.replace(/^\s+|\s+$/g,"") + ">"
+		if (fullName && fullName.replace(/^\s+|\s+$/g,"")) return fullName.replace(/^\s+|\s+$/g,"") + " <" + email.replace(/^\s+|\s+$/g,"") + ">"
 		else return email.replace(/^\s+|\s+$/g,"")
 	},
 	
