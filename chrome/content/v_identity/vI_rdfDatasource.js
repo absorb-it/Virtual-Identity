@@ -114,7 +114,49 @@ vI_rdfDatasource = {
 		}
 		return vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + rdfNSRecType + recDescription);
 	},
-
+	
+	removeVIdentityFromRDF : function (resource) {
+		vI_rdfDatasource.__unsetRDFValue(resource, "email", vI_rdfDatasource.__getRDFValue(resource, "email"))
+		vI_rdfDatasource.__unsetRDFValue(resource, "fullName", vI_rdfDatasource.__getRDFValue(resource, "fullName"))
+		vI_rdfDatasource.__unsetRDFValue(resource, "id", vI_rdfDatasource.__getRDFValue(resource, "id"))
+		vI_rdfDatasource.__unsetRDFValue(resource, "smtp", vI_rdfDatasource.__getRDFValue(resource, "smtp"))
+	},
+	
+	__unsetRDFValue : function (resource, field, value) {
+		if (!value) return; // return if some value was not set.
+		var predicate = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "rdf#" + field);
+		var name = vI_rdfDatasource.rdfService.GetLiteral(value);
+		var target = vI_rdfDatasource.rdfDataSource.GetTarget(resource, predicate, true);
+		if (target instanceof Components.interfaces.nsIRDFLiteral)
+			vI_rdfDatasource.rdfDataSource.Unassert(resource, predicate, name, true);
+	},
+	
+	readAllVIdentitiesFromRDF : function (callFunction) {
+		vI_notificationBar.dump("## vI_rdfDatasource: readAllVIdentitiesFromRDF.\n");
+		var enumerator = vI_rdfDatasource.rdfDataSource.GetAllResources();
+		while (enumerator && enumerator.hasMoreElements()) {
+			var resource = enumerator.getNext();
+			resource.QueryInterface(Components.interfaces.nsIRDFResource);
+			
+			var type; var name;
+			if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSEmail, "i")))
+				{ type = "email"; name = RegExp.rightContext }
+			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSNewsgroup, "i")))
+				{ type = "newsgroup"; name = RegExp.rightContext }
+			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSMaillist, "i")))
+				{ type = "maillist"; name = RegExp.rightContext }
+			else continue;
+			
+			var email = vI_rdfDatasource.__getRDFValue(resource, "email")
+			var fullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
+			var id = vI_rdfDatasource.__getRDFValue(resource, "id")
+			var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
+			var values = { email : email, fullName : fullName, id : id, smtp : (smtp=="default"?"":smtp) };
+			
+			callFunction (resource, type, name, values)		
+		}
+	},
+	
 	readVIdentityFromRDF : function (recDescription, recType) {
 		vI_notificationBar.dump("## vI_rdfDatasource: readVIdentityFromRDF.\n");
 		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
@@ -145,7 +187,7 @@ vI_rdfDatasource = {
 	},
 	
 	updateRDFFromVIdentity : function(recDescription, recType) {
-		var address = vI.helper.getAddress();	
+		var address = vI_helper.getAddress();	
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
 		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute("key");
@@ -155,6 +197,7 @@ vI_rdfDatasource = {
 	
 	updateRDF : function (recDescription, recType, email, fullName, id, smtp) {
 		if (!recDescription.replace(/^\s+|\s+$/g,"")) return;
+		if (!email) return;
 		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
 		if (!resource) return null;
 

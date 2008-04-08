@@ -7,12 +7,12 @@
 <!ENTITY vident.upgrade.license.label "Instalace/aktualizace Virtual Identity">
 <!ENTITY vident.upgrade.license.description "licence">
 <!ENTITY vident.upgrade.license.caption "GNU General Public License">
-<!ENTITY vident.upgrade.upgrade1.label "Instalace/aktualizace Virtual Identity">
-<!ENTITY vident.upgrade.upgrade1.description "aktualizace, krok 1/2">
-<!ENTITY vident.upgrade.upgrade1.caption "Datové úložiště Virtual Identity">
-<!ENTITY vident.upgrade.upgrade2.label "Instalace/aktualizace Virtual Identity">
-<!ENTITY vident.upgrade.upgrade2.description "aktualizace, krok 2/2">
-<!ENTITY vident.upgrade.upgrade2.caption "Aktualizace Virtual Identity">
-<!ENTITY vident.upgrade.upgrade3.label "Instalace/aktualizace Virtual Identity">
-<!ENTITY vident.upgrade.upgrade3.description "dokončit">
-<!ENTITY vident.upgrade.upgrade3.caption "Virtual Identity">
+<!ENTITY vident.upgrade.0.5.0.label "Instalace/aktualizace Virtual Identity">
+<!ENTITY vident.upgrade.0.5.0.description "aktualizace, krok 1/2">
+<!ENTITY vident.upgrade.0.5.0.caption "Datové úložiště Virtual Identity">
+<!ENTITY vident.upgrade.upgrade.label "Instalace/aktualizace Virtual Identity">
+<!ENTITY vident.upgrade.upgrade.description "aktualizace, krok 2/2">
+<!ENTITY vident.upgrade.upgrade.caption "Aktualizace Virtual Identity">
+<!ENTITY vident.upgrade.finish.label "Instalace/aktualizace Virtual Identity">
+<!ENTITY vident.upgrade.finish.description "dokončit">
+<!ENTITY vident.upgrade.finish.caption "Virtual Identity">

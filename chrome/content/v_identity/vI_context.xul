@@ -23,7 +23,9 @@
    - Contributor(s):
    - ***** END LICENSE BLOCK ***** -->
 
-<!DOCTYPE page [
+<!DOCTYPE overlay [
+<!ENTITY % dataTreeDTD SYSTEM "chrome://v_identity/locale/vI_rdfDataEditor.dtd">
+%dataTreeDTD;
 <!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
 %vIdentDTD;
 ]>
@@ -36,7 +38,7 @@
 			.getBranch(null),
 			
 		observe: function(subject, topic, data) {
-			document.getElementById("vI_settingsMenu").setAttribute("hidden", 
+			document.getElementById("vI_Menu").setAttribute("hidden", 
 				!vI_context.prefroot.getBoolPref("extensions.virtualIdentity.menu_entry"));
 		}
 		
@@ -52,6 +54,13 @@
 	</script>
 	
 	<menupopup id="taskPopup">
-		<menuitem id="vI_settingsMenu" hidden="true" label="&vident.prefs.dlgTitle.label;" oncommand="openDialog('chrome://v_identity/content/vI_prefDialog.xul', '', 'chrome,modal');" />
+		<menu id="vI_Menu" hidden="true" label="&vident.vI_Menu.label;">
+			<menupopup>
+				<menuitem id="vI_settingsMenu" label="&vident.vI_Menu.Settings.label;"
+					oncommand="openDialog('chrome://v_identity/content/vI_prefDialog.xul', '', 'chrome,modal');" />
+				<menuitem id="vI_rdfDataTree" label="&vident.vI_Menu.DataEditor.label;"
+					oncommand="openDialog('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome,modal');" />
+			</menupopup>
+		</menu>
 	</menupopup> 
 </overlay>

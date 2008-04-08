@@ -79,12 +79,12 @@ vI_msgIdentityClone = {
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem = newMenuItem;
 			}
 			// "accountname" property changed in Thunderbird 3.x, Seamonkey 1.5x to "description"
-			newMenuItem.setAttribute("accountname", vI.helper.getAccountname(newMenuItem))
+			newMenuItem.setAttribute("accountname", vI_helper.getAccountname(newMenuItem))
 		}
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 			.setAttribute("value", vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"));
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
-			.setAttribute("accountname", vI.helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem));
+			.setAttribute("accountname", vI_helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem));
 		// Identitys might have IdentityName set differently to 'name <email>',
 		// so retrieve name and email directly from Identity
 		var identity = gAccountManager.getIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"))
@@ -137,7 +137,7 @@ vI_msgIdentityClone = {
 		if (!accountname) accountname = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("accountname")
 		accountname = document.getElementById("prettyName-Prefix").getAttribute("label") + accountname
 		
-		vI.helper.addIdentityMenuItem(vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone,
+		vI_helper.addIdentityMenuItem(vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone,
 			name, accountname, "", "vid", id, smtp)	
 	},
 	
@@ -204,7 +204,7 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = label;
 
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("accountname",
-			vI.helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem));
+			vI_helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem));
 		vI_msgIdentityClone.markAsNewAccount(vI_msgIdentityClone.isNewIdentity());
 		vI_msgIdentityClone.initReplyToFields();
 	},
@@ -225,7 +225,7 @@ vI_msgIdentityClone = {
 	blurEvent : function() {
 		if (vI_msgIdentityClone.blurEventBlocked) return;
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
-		var address = vI.helper.getAddress();
+		var address = vI_helper.getAddress();
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = address.combinedName;
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.setAttribute("value",address.combinedName)
 	},
@@ -399,7 +399,7 @@ vI_msgIdentityClone = {
 	isNewIdentity : function()
 	{
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
-		var address = vI.helper.getAddress();
+		var address = vI_helper.getAddress();
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		for (var i in accounts) {
 			// check for VirtualIdentity Account

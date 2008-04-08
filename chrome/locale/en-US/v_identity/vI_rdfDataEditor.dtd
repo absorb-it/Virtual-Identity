@@ -1,0 +1,36 @@
+<!ENTITY vI_rdfDataTree.filterPrefs.label "Filter:">
+<!ENTITY vI_rdfDataTree.filterPrefs.accesskey "i">
+<!ENTITY vI_rdfDataTree.newItem.label "New Entry">
+<!ENTITY vI_rdfDataTree.newItem.accesskey "n">
+<!ENTITY vI_rdfDataTree.showAll.label "Show All">
+<!ENTITY vI_rdfDataTree.showAll.accesskey "w">
+<!ENTITY vI_rdfDataTree.recipientColumn.label "Recipient">
+<!ENTITY vI_rdfDataTree.typeColumn.label "Type">
+<!ENTITY vI_rdfDataTree.senderColumn.label "Sender">
+<!ENTITY vI_rdfDataTree.idColumn.label "Identity">
+<!ENTITY vI_rdfDataTree.smtpColumn.label "SMTP">
+<!ENTITY vI_rdfDataTree.menuEntry.label "Virtual Identity Data-Storage">
+
+<!ENTITY vI_rdfDataTree.modifySelected.label "modify selected Items">
+<!ENTITY vI_rdfDataTree.modifySelected.accesskey "M">
+<!ENTITY vI_rdfDataTree.removeSelected.label "remove selected Items">
+<!ENTITY vI_rdfDataTree.removeSelected.accesskey "R">
+<!ENTITY vI_rdfDataTree.newItem.label "add new Item">
+<!ENTITY vI_rdfDataTree.newItem.accesskey "N">
+
+<!ENTITY vI_rdfDataEditor.dataType.email "email">
+<!ENTITY vI_rdfDataEditor.dataType.maillist "mailing list">
+<!ENTITY vI_rdfDataEditor.dataType.newsgroup "newsgroup">
+
+<!ENTITY vI_rdfDataEditor.header.label "Add/Modify Storage-Data">
+<!ENTITY vI_rdfDataEditor.recipient.label "Recipient:">
+<!ENTITY vI_rdfDataEditor.recipient.accesskey "R">
+<!ENTITY vI_rdfDataEditor.type.label "recipient-type">
+<!ENTITY vI_rdfDataEditor.type.accesskey "T">
+<!ENTITY vI_rdfDataEditor.caption.label "stored Virtual Identity:">
+<!ENTITY vI_rdfDataEditor.sender.label "Sender:">
+<!ENTITY vI_rdfDataEditor.sender.accesskey "R">
+<!ENTITY vI_rdfDataEditor.smtp.label "SMTP:">
+<!ENTITY vI_rdfDataEditor.smtp.accesskey "S">
+<!ENTITY vI_rdfDataEditor.identity.label "Base Identity">
+<!ENTITY vI_rdfDataEditor.identity.accesskey "I">

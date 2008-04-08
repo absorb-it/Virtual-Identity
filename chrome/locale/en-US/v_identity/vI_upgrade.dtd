@@ -7,12 +7,12 @@
 <!ENTITY vident.upgrade.license.label "Virtual Identity Install/Upgrade">
 <!ENTITY vident.upgrade.license.description "license">
 <!ENTITY vident.upgrade.license.caption "GNU General Public License">
-<!ENTITY vident.upgrade.upgrade1.label "Virtual Identity Install/Upgrade">
-<!ENTITY vident.upgrade.upgrade1.description "upgrade step 1/2">
-<!ENTITY vident.upgrade.upgrade1.caption "Virtual Identity Data-Storage">
-<!ENTITY vident.upgrade.upgrade2.label "Virtual Identity Install/Upgrade">
-<!ENTITY vident.upgrade.upgrade2.description "upgrade step 2/2">
-<!ENTITY vident.upgrade.upgrade2.caption "Virtual Identity Upgrade">
-<!ENTITY vident.upgrade.upgrade3.label "Virtual Identity Install/Upgrade">
-<!ENTITY vident.upgrade.upgrade3.description "finish">
-<!ENTITY vident.upgrade.upgrade3.caption "Virtual Identity">
+<!ENTITY vident.upgrade.0.5.0.label "Virtual Identity Install/Upgrade">
+<!ENTITY vident.upgrade.0.5.0.description "upgrade step 1/2">
+<!ENTITY vident.upgrade.0.5.0.caption "Virtual Identity Data-Storage">
+<!ENTITY vident.upgrade.upgrade.label "Virtual Identity Install/Upgrade">
+<!ENTITY vident.upgrade.upgrade.description "upgrade step 2/2">
+<!ENTITY vident.upgrade.upgrade.caption "Virtual Identity Upgrade">
+<!ENTITY vident.upgrade.finish.label "Virtual Identity Install/Upgrade">
+<!ENTITY vident.upgrade.finish.description "finish">
+<!ENTITY vident.upgrade.finish.caption "Virtual Identity">

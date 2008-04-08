@@ -159,7 +159,7 @@ vI_storage = {
 				vI_storage.firstUsedStorageData.smtp != storageData.smtp ) {
 					// add Identity to dropdown-menu
 					vI_msgIdentityClone.addIdentityToCloneMenu(
-						vI_storage.__combineNames(storageData.fullName, storageData.email),
+						vI_helper.combineNames(storageData.fullName, storageData.email),
 						storageData.id, storageData.smtp)
 					vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageCollidingIdentity"),
 					"storage_notification");
@@ -169,7 +169,7 @@ vI_storage = {
 		else if (!vI_storage.__equalsCurrentIdentity(storageData)) {
 			// add Identity to dropdown-menu
 			vI_msgIdentityClone.addIdentityToCloneMenu(
-				vI_storage.__combineNames(storageData.fullName, storageData.email),
+				vI_helper.combineNames(storageData.fullName, storageData.email),
 				storageData.id, storageData.smtp)
 			var warning = vI_storage.__getReplaceVIdentityWarning(recipient, storageData);
 			if (	vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
@@ -178,7 +178,7 @@ vI_storage = {
 					vI_msgIdentityClone.setMenuToIdentity(storageData.id)
 					vI_smtpSelector.setMenuToKey(storageData.smtp)
 					if (vI_msgIdentityClone.setIdentity(
-						vI_storage.__combineNames(storageData.fullName, storageData.email)))
+						vI_helper.combineNames(storageData.fullName, storageData.email)))
 					vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
 						"storage_notification");
 			}
@@ -193,7 +193,7 @@ vI_storage = {
 	},
 	
 	__equalsCurrentIdentity : function(storageData) {
-		var curAddress = vI.helper.getAddress();		
+		var curAddress = vI_helper.getAddress();		
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
 		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
@@ -253,7 +253,7 @@ vI_storage = {
 	},
 	
 	__getVIdentityString : function() {
-		var old_address = vI.helper.getAddress();		
+		var old_address = vI_helper.getAddress();		
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
 		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
@@ -266,7 +266,7 @@ vI_storage = {
 		return	vI.elements.strings.getString("vident.updateVirtualIdentity.warning1") +
 			recipient.recDesc + " (" + recipient.recType + ")" +
 			vI.elements.strings.getString("vident.updateVirtualIdentity.warning2") +
-			vI_storage.__combineNames(storageData.fullName, storageData.email) +
+			vI_helper.combineNames(storageData.fullName, storageData.email) +
 			" (" + storageData.id + "," + 
 			(storageData.smtp?storageData.smtp:document.getElementById("bundle_messenger").getString("defaultServerTag")) +
 			")" + vI.elements.strings.getString("vident.updateVirtualIdentity.warning3");
@@ -276,7 +276,7 @@ vI_storage = {
 		return  vI.elements.strings.getString("vident.updateStorage.warning1") +
 			recipient.recDesc + " (" + recipient.recType + ")" +
 			vI.elements.strings.getString("vident.updateStorage.warning2") +
-			vI_storage.__combineNames(storageData.fullName, storageData.email) +
+			vI_helper.combineNames(storageData.fullName, storageData.email) +
 			" (" + storageData.id + "," + 
 			(storageData.smtp?storageData.smtp:document.getElementById("bundle_messenger").getString("defaultServerTag")) +
 			")" + vI.elements.strings.getString("vident.updateStorage.warning3") +
@@ -374,12 +374,7 @@ vI_storage = {
 		}
 		return mailListName;
 	},
-	
-	__combineNames : function (fullName, email) {
-		if (fullName && fullName.replace(/^\s+|\s+$/g,"")) return fullName.replace(/^\s+|\s+$/g,"") + " <" + email.replace(/^\s+|\s+$/g,"") + ">"
-		else return email.replace(/^\s+|\s+$/g,"")
-	},
-	
+		
 	getVIdentityFromAllRecipients : function(all_addresses) {
 		// var all_addresses = { number : 0, emails : {}, fullNames : {},
 		//			combinedNames : {}, id_keys : {}, smtp_keys : {} };
@@ -392,7 +387,7 @@ vI_storage = {
 			if (storageData) vI_smartIdentity.addWithoutDuplicates(all_addresses,
 				storageData.email,
 				storageData.fullName,
-				vI_storage.__combineNames(storageData.fullName, storageData.email),
+				vI_helper.combineNames(storageData.fullName, storageData.email),
 				storageData.id,
 				storageData.smtp)
 		}

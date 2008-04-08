@@ -39,6 +39,7 @@
           xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script type="application/x-javascript" src="chrome://v_identity/content/v_identity.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_account.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_msgIdentityClone.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />

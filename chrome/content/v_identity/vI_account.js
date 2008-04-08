@@ -35,22 +35,22 @@ vI_account = {
 
 	_copyBoolAttribute : function(name) {
 		vI_account.account.defaultIdentity.setBoolAttribute(name,
-				vI.helper.getBaseIdentity().getBoolAttribute(name));
+				vI_helper.getBaseIdentity().getBoolAttribute(name));
 	},
 	
 	_copyIntAttribute : function(name) {
 		vI_account.account.defaultIdentity.setIntAttribute(name,
-				vI.helper.getBaseIdentity().getIntAttribute(name));
+				vI_helper.getBaseIdentity().getIntAttribute(name));
 	},
 
 	_copyCharAttribute : function(name) {
 		vI_account.account.defaultIdentity.setCharAttribute(name,
-				vI.helper.getBaseIdentity().getCharAttribute(name));
+				vI_helper.getBaseIdentity().getCharAttribute(name));
 	},
 
 	_copyUnicharAttribute : function(name) {
 		vI_account.account.defaultIdentity.setUnicharAttribute(name,
-				vI.helper.getBaseIdentity().getUnicharAttribute(name));
+				vI_helper.getBaseIdentity().getUnicharAttribute(name));
 	},
 
 	copyPreferences : function() {
@@ -186,7 +186,7 @@ vI_account = {
 		vI_account.account.addIdentity(vI_account.AccountManager.createIdentity());
 	
 		// the new account uses the same incomingServer than the base one, has to be replaced before the account is removed
-		var servers = vI_account.AccountManager.GetServersForIdentity(vI.helper.getBaseIdentity());
+		var servers = vI_account.AccountManager.GetServersForIdentity(vI_helper.getBaseIdentity());
 		vI_account.account.incomingServer = servers.QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
 		
 		vI_account.copyMsgIdentityClone();
@@ -197,7 +197,7 @@ vI_account = {
 	},
 	
 	copyMsgIdentityClone : function() {
-		var address = vI.helper.getAddress();
+		var address = vI_helper.getAddress();
 		vI_account.account.defaultIdentity.setUnicharAttribute("fullName", address.name);
 		vI_account.account.defaultIdentity.setCharAttribute("useremail", address.email);
 		
@@ -224,9 +224,9 @@ vI_account = {
 				break;
 			    case "3"  :
 				dump ("## vI_account: preparing Fcc --- use Settings of Modified Account\n");
-				vI_account.account.defaultIdentity.doFcc = vI.helper.getBaseIdentity().doFcc;
-				vI_account.account.defaultIdentity.fccFolder = vI.helper.getBaseIdentity().fccFolder;
-				vI_account.account.defaultIdentity.fccFolderPickerMode = vI.helper.getBaseIdentity().fccFolderPickerMode;
+				vI_account.account.defaultIdentity.doFcc = vI_helper.getBaseIdentity().doFcc;
+				vI_account.account.defaultIdentity.fccFolder = vI_helper.getBaseIdentity().fccFolder;
+				vI_account.account.defaultIdentity.fccFolderPickerMode = vI_helper.getBaseIdentity().fccFolderPickerMode;
 				break;
 			    default  :
 				dump ("## vI_account: preparing Fcc --- use Virtual Identity Settings\n");
@@ -259,8 +259,8 @@ vI_account = {
 			break;
 		    case "3"  :
 			dump ("## vI_account: preparing Draft --- use Settings of Modified Account\n");
-			vI_account.account.defaultIdentity.draftFolder = vI.helper.getBaseIdentity().draftFolder;
-			vI_account.account.defaultIdentity.draftsFolderPickerMode = vI.helper.getBaseIdentity().draftsFolderPickerMode;
+			vI_account.account.defaultIdentity.draftFolder = vI_helper.getBaseIdentity().draftFolder;
+			vI_account.account.defaultIdentity.draftsFolderPickerMode = vI_helper.getBaseIdentity().draftsFolderPickerMode;
 			break;
 		    default  :
 			dump ("## vI_account: preparing Draft --- use Virtual Identity Settings\n");
@@ -286,8 +286,8 @@ vI_account = {
 			break;
 		    case "3"  :
 			dump ("## vI_account: preparing Templates --- use Settings of Modified Account\n");
-			vI_account.account.defaultIdentity.stationeryFolder = vI.helper.getBaseIdentity().stationeryFolder;
-			vI_account.account.defaultIdentity.tmplFolderPickerMode = vI.helper.getBaseIdentity().tmplFolderPickerMode;
+			vI_account.account.defaultIdentity.stationeryFolder = vI_helper.getBaseIdentity().stationeryFolder;
+			vI_account.account.defaultIdentity.tmplFolderPickerMode = vI_helper.getBaseIdentity().tmplFolderPickerMode;
 			break;
 		    default  :
 			dump ("## vI_account: preparing Templates --- use Virtual Identity Settings\n");

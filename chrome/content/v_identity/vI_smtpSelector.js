@@ -99,10 +99,10 @@ vI_smtpSelector = {
 	
 	__selectUsedSMTPServer : function() {
 		vI_notificationBar.dump("## v_smtpSelector: __selectUsedSMTPServer\n")
-		if (vI.helper.getBaseIdentity().smtpServerKey) {
+		if (vI_helper.getBaseIdentity().smtpServerKey) {
 			//~ vI_notificationBar.dump("## v_smtpSelector: __selectUsedSMTPServer if\n")
-			vI_smtpSelector.setMenuToKey(vI.helper.getBaseIdentity().smtpServerKey)
-			vI_notificationBar.dump("## v_smtpSelector: use SMTP from BaseIdentity: " + vI.helper.getBaseIdentity().smtpServerKey + "\n")
+			vI_smtpSelector.setMenuToKey(vI_helper.getBaseIdentity().smtpServerKey)
+			vI_notificationBar.dump("## v_smtpSelector: use SMTP from BaseIdentity: " + vI_helper.getBaseIdentity().smtpServerKey + "\n")
 			}
 		else {
 			//~ vI_notificationBar.dump("## v_smtpSelector: __selectUsedSMTPServer else\n")
@@ -118,7 +118,7 @@ vI_smtpSelector = {
 				for (var j in identities) {
 					vI_notificationBar.dump("_")
 					var identity = identities[j];
-					if (identity.key == vI.helper.getBaseIdentity().key) {
+					if (identity.key == vI_helper.getBaseIdentity().key) {
 						if (accounts[x].defaultIdentity.smtpServerKey) {
 							vI_notificationBar.dump("## v_smtpSelector: use SMTP from Account of BaseIdentity: " +
 								accounts[x].defaultIdentity.smtpServerKey + "\n")

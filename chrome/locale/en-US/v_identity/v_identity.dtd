@@ -86,3 +86,6 @@
 <!ENTITY sentFolderOn.accesskey "e">
 <!ENTITY sentInOtherFolder.label "Other:">
 <!ENTITY sentInOtherFolder.accesskey "O">
+<!ENTITY vident.vI_Menu.label "Virtual Identity">
+<!ENTITY vident.vI_Menu.Settings.label "Settings">
+<!ENTITY vident.vI_Menu.DataEditor.label "Data-Storage Editor">
