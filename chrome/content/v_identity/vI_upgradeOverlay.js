@@ -29,7 +29,6 @@ vI_upgradeOverlay = {
 			window.openDialog("chrome://v_identity/content/vI_upgrade.xul",0, // give the Dialog a unique id
 				"chrome, dialog, modal, alwaysRaised, resizable=yes").focus();
 		else vI_account.cleanupSystem(); // always clean leftover accounts and directories
-
 	}
 }
 addEventListener('messagepane-loaded', vI_upgradeOverlay.init, true);

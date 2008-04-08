@@ -49,45 +49,67 @@
 <stringbundle id="vITextBoxBundle" src="chrome://v_identity/locale/vI_upgrade.properties" />
 	
 	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.intro', 'vident.intro');"
-		label="&vident.upgrade.intro.label;" description="&vident.upgrade.intro.description;" >
+		label="&vident.upgrade.intro.label;" description="&vident.upgrade.intro.description;"
+		pageid="intro" next="features" >
 		<groupbox>
 			<caption label="&vident.upgrade.intro.caption;"/>
 			<browser id="vITextBox.intro" disablehistory="true" />
 		</groupbox>
 	</wizardpage>
+	<!-- features -->
 	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.features', 'vident.features');"
-		label="&vident.upgrade.features.label;" description="&vident.upgrade.features.description;" >
+		label="&vident.upgrade.features.label;" description="&vident.upgrade.features.description;" 
+		pageid="features" next="license" >
 		<groupbox>
 			<caption label="&vident.upgrade.features.caption;"/>
 			<browser id="vITextBox.features" disablehistory="true" />
 		</groupbox>
 	</wizardpage>
+	<!-- GPL license -->
 	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.license', 'vident.license');"
-		label="&vident.upgrade.license.label;" description="&vident.upgrade.license.description;" >
+		label="&vident.upgrade.license.label;" description="&vident.upgrade.license.description;"
+		id="license" pageid="license" next="0.5.0" >
 		<groupbox>
 			<caption label="&vident.upgrade.license.caption;"/>
 			<browser id="vITextBox.license" disablehistory="true" />
 		</groupbox>
 	</wizardpage>
-	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.upgrade1', 'vident.upgrade1');"
-		label="&vident.upgrade.upgrade1.label;" description="&vident.upgrade.upgrade1.description;" >
+	<!-- upgrade information -->
+	<!-- 0.5.0 -->
+	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.0.5.0', 'vident.0.5.0');"
+		label="&vident.upgrade.0.5.0.label;" description="&vident.upgrade.0.5.0.description;"
+		pageid="0.5.0" next="upgrade" >
 		<groupbox>
-			<caption label="&vident.upgrade.upgrade1.caption;"/>
-			<browser id="vITextBox.upgrade1" disablehistory="true" />
+			<caption label="&vident.upgrade.0.5.0.caption;"/>
+			<browser id="vITextBox.0.5.0" disablehistory="true" />
 		</groupbox>
 	</wizardpage>
-	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_upgrade.init();vI_upgrade.step1();"
-		label="&vident.upgrade.upgrade2.label;" description="&vident.upgrade.upgrade2.description;" >
+	<!-- 0.5.3 -->
+<!--	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.0.5.3', 'vident.0.5.3');"
+		label="&vident.upgrade.0.5.3.label;" description="&vident.upgrade.0.5.3.description;"
+		pageid="0.5.3" next="upgrade" >
 		<groupbox>
-			<caption label="&vident.upgrade.upgrade2.caption;"/>
+			<caption label="&vident.upgrade.0.5.3.caption;"/>
+			<browser id="vITextBox.0.5.3" disablehistory="true" />
+		</groupbox>
+	</wizardpage>	
+-->
+	<!-- upgrade procedure -->
+	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_upgrade.upgrade();"
+		label="&vident.upgrade.upgrade.label;" description="&vident.upgrade.upgrade.description;" 
+		pageid="upgrade" next="finish" >
+		<groupbox>
+			<caption label="&vident.upgrade.upgrade.caption;"/>
 			<textbox id="vIDebugBox" upgrade="true" multiline="true" readonly="true" />
 		</groupbox>
-	</wizardpage>
-	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.upgrade3', 'vident.upgrade3');"
-		label="&vident.upgrade.upgrade3.label;" description="&vident.upgrade.upgrade3.description;" >
+	</wizardpage>	
+	<!-- finish -->
+	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.finish', 'vident.finish');"
+		label="&vident.upgrade.finish.label;" description="&vident.upgrade.finish.description;" 
+		pageid="finish" >
 		<groupbox>
-			<caption label="&vident.upgrade.upgrade3.caption;"/>
-			<browser id="vITextBox.upgrade3" disablehistory="true" />
+			<caption label="&vident.upgrade.finish.caption;"/>
+			<browser id="vITextBox.finish" disablehistory="true" />
 		</groupbox>
 	</wizardpage>	
 	<hbox>

@@ -30,6 +30,17 @@ vI_upgrade = {
 	init : function() {
 		document.documentElement.getButton("cancel").setAttribute("hidden", "true")
 		vI_notificationBar.dump("") // this initialises the debug-area
+		vI_rdfDatasource.init(); // just to be sure that Datasource is initialised
+		vI_upgrade.skipUpgradePages(); // skip obsolete upgrade Pages
+	},
+		
+	skipUpgradePages : function() {
+		var preUpdateWizardPage = document.getElementById("license")		
+		var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+			.getService(Components.interfaces.nsIVersionComparator);
+		// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
+		if (versionChecker.compare(vI_rdfDatasource.getCurrentExtFileVersion(), "0.5.0") >= 0)
+			preUpdateWizardPage.setAttribute("next", "upgrade")
 	},
 	
 	adaptButtons : function() {
@@ -37,15 +48,18 @@ vI_upgrade = {
 		document.documentElement.getButton('next').focus();
 	},
 	
-	step1 : function() {
+	upgrade : function() {
 		vI_notificationBar.dump("starting upgrade.\n\n")
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "false")
 		document.documentElement.getButton('next').setAttribute('disabled','true');
-		vI_rdfDatasource.init(); // just to be sure that Datasource is initialised
+		
 		if (vI_rdfDatasource.extUpgrade()) vI_upgrade.extUpgrade();
 		if (vI_rdfDatasource.rdfUpgradeRequired()) vI_upgrade.rdfUpgrade();
+		
 		vI_account.cleanupSystem();
+		
 		vI_notificationBar.dump("\n\nupgrade finished.\n");
+		
 		document.documentElement.getButton('next').setAttribute('disabled','false');
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "true")
 	},
@@ -59,8 +73,20 @@ vI_upgrade = {
 		}
 		vI_notificationBar.dump("rdf-upgrade to " + vI_rdfDatasource.getCurrentRDFFileVersion() + " done.\n\n");
 	},
-
-	removeObsoleteUserPrefs : function() {
+	
+	extUpgrade : function() {
+		vI_notificationBar.dump("checking for previous version, found " + 
+			vI_rdfDatasource.getCurrentExtFileVersion() + "\nextension-upgrade required.\n")
+		switch (vI_rdfDatasource.getCurrentExtFileVersion()) {
+			case null:
+				vI_upgrade.__transferAllVIdentityABookToRDF();
+				vI_upgrade.__removeObsoleteUserPrefs();
+		}
+		vI_rdfDatasource.storeExtVersion();
+		vI_notificationBar.dump("extension-upgrade to " + vI_rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
+	},
+		
+	__removeObsoleteUserPrefs : function() {
 		// remove obsolete preference-tree virtualIdentity
 		
 		// remove any obsolete preferences under extensions.virtualIdentity
@@ -74,24 +100,12 @@ vI_upgrade = {
 		}
 		vI_notificationBar.dump("done.\n")
 	},
-	
-	extUpgrade : function() {
-		vI_notificationBar.dump("checking for previous version, found " + 
-			vI_rdfDatasource.getCurrentExtFileVersion() + "\nextension-upgrade required.\n")
-		switch (vI_rdfDatasource.getCurrentExtFileVersion()) {
-			case null:
-				vI_upgrade.transferVIdentityABookToRDF();
-				vI_upgrade.removeObsoleteUserPrefs();
-		}
-		vI_rdfDatasource.storeExtVersion();
-		vI_notificationBar.dump("extension-upgrade to " + vI_rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
-	},
-		
+
 	CardFields : Array("Custom1", "Custom2", "Custom3", "Custom4", "Notes"),
 	// --------------------------------------------------------------------
 	// remove all VirtualIdentity-related Information from the AddressBook
 	// and transfer it to the RDF File.
-	transferVIdentityABookToRDF : function() {
+	__transferAllVIdentityABookToRDF : function() {
 		var returnVar = { prop : null, counter : 0, warning : true }
 		for each (returnVar.prop in vI_upgrade.CardFields) {
 			var queryString = "?(or(" +returnVar.prop + ",c,vIdentity:))";
@@ -119,13 +133,13 @@ vI_upgrade = {
 		if ( info && info[0] ) id = info[0];
 		if ( info && info[1] ) smtp = info[1];
 		
-		var splitted = vI_upgrade.parseAddress(newFullEmail);
+		var splitted = vI_upgrade.__parseAddress(newFullEmail);
 		//~ alert(splitted.email + "++" + splitted.name + "++" + splitted.combinedName)
 		
-		vI_rdfDatasource.updateRDF(vI_storage.__combineNames(Card.displayName, Card.primaryEmail),
+		vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.primaryEmail),
 						"email", splitted.email, splitted.name, id, smtp)
 		if (Card.secondEmail.replace(/^\s+|\s+$/g,""))
-			vI_rdfDatasource.updateRDF(vI_storage.__combineNames(Card.displayName, Card.secondEmail),
+			vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.secondEmail),
 					"email", splitted.email, splitted.name, id, smtp)
 		
 		Card[returnVar.prop] = "";
@@ -134,8 +148,8 @@ vI_upgrade = {
 		return { prop: returnVar.prop, counter : ++returnVar.counter, warning : returnVar.warning };
 	},
 	
-	// by now in vI, not accessible from here. Best change all references to vI.helper.
-	parseAddress : function(address) {
+	// by now in vI, not accessible from here. Best change all references to vI_helper.
+	__parseAddress : function(address) {
 		//~ vI_notificationBar.dump("## v_identity: getAddress: parsing '" + address + "'\n")
 		var name = ""; email = "";
 		// prefer an email address separated with < >, only if not found use any other
