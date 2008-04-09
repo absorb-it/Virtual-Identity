@@ -29,8 +29,8 @@
 <!ENTITY vI_rdfDataEditor.type.accesskey "T">
 <!ENTITY vI_rdfDataEditor.caption.label "stored Virtual Identity:">
 <!ENTITY vI_rdfDataEditor.sender.label "Sender:">
-<!ENTITY vI_rdfDataEditor.sender.accesskey "R">
+<!ENTITY vI_rdfDataEditor.sender.accesskey "S">
 <!ENTITY vI_rdfDataEditor.smtp.label "SMTP:">
-<!ENTITY vI_rdfDataEditor.smtp.accesskey "S">
+<!ENTITY vI_rdfDataEditor.smtp.accesskey "M">
 <!ENTITY vI_rdfDataEditor.identity.label "Base Identity">
 <!ENTITY vI_rdfDataEditor.identity.accesskey "I">
