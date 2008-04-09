@@ -8,7 +8,7 @@ var vI_helper = {
 
 	combineNames : function (fullName, email) {
 		if (fullName && fullName.replace(/^\s+|\s+$/g,"")) return fullName.replace(/^\s+|\s+$/g,"") + " <" + email.replace(/^\s+|\s+$/g,"") + ">"
-		else return email.replace(/^\s+|\s+$/g,"")
+		else return email?email.replace(/^\s+|\s+$/g,""):""
 	},
 
 	addIdentityMenuItem: function(object, identityName, accountName, accountKey, identityKey, base_id_key, smtp_key) {
@@ -52,6 +52,6 @@ var vI_helper = {
 			name + "' email '" + email + "'\n");
 		return { name: name,
 			 email: email,
-			 combinedName: name + " <" + email + ">"}
+			 combinedName: vI_helper.combineNames(name, email)}
 	}
 }
