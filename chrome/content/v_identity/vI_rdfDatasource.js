@@ -105,7 +105,10 @@ vI_rdfDatasource = {
 	__getRDFResourceForVIdentity : function (recDescription, recType) {
 		if (!vI_rdfDatasource.rdfDataSource) return null;
 		recDescription = recDescription.replace(/^\s+|\s+$/g,"")
-		if (!recDescription) return null;
+		if (!recDescription) {
+			vI_notificationBar.dump("## vI_rdfDatasource: __getRDFResourceForVIdentity: no Recipient given.\n");
+			return null;
+		}
 		var rdfNSRecType = null
 		switch (recType) {
 			case "email": rdfNSRecType = vI_rdfDatasource.rdfNSEmail; break;
@@ -116,6 +119,7 @@ vI_rdfDatasource = {
 	},
 	
 	removeVIdentityFromRDF : function (resource) {
+		vI_notificationBar.dump("## vI_rdfDatasource: removeVIdentityFromRDF " + resource.ValueUTF8 + ".\n");
 		vI_rdfDatasource.__unsetRDFValue(resource, "email", vI_rdfDatasource.__getRDFValue(resource, "email"))
 		vI_rdfDatasource.__unsetRDFValue(resource, "fullName", vI_rdfDatasource.__getRDFValue(resource, "fullName"))
 		vI_rdfDatasource.__unsetRDFValue(resource, "id", vI_rdfDatasource.__getRDFValue(resource, "id"))
@@ -123,9 +127,8 @@ vI_rdfDatasource = {
 	},
 	
 	__unsetRDFValue : function (resource, field, value) {
-		if (!value) return; // return if some value was not set.
 		var predicate = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "rdf#" + field);
-		var name = vI_rdfDatasource.rdfService.GetLiteral(value);
+		var name = vI_rdfDatasource.rdfService.GetLiteral(value?value:"");
 		var target = vI_rdfDatasource.rdfDataSource.GetTarget(resource, predicate, true);
 		if (target instanceof Components.interfaces.nsIRDFLiteral)
 			vI_rdfDatasource.rdfDataSource.Unassert(resource, predicate, name, true);
@@ -196,11 +199,13 @@ vI_rdfDatasource = {
 	},
 	
 	updateRDF : function (recDescription, recType, email, fullName, id, smtp) {
-		if (!recDescription.replace(/^\s+|\s+$/g,"")) return;
-		if (!email) return;
+		if (!email) {
+			vI_notificationBar.dump("## vI_rdfDatasource: updateRDF: no Sender-email for Recipient, aborting.\n");
+			return;
+		}
 		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
 		if (!resource) return null;
-
+		vI_notificationBar.dump("## vI_rdfDatasource: updateRDF " + resource.ValueUTF8 + ".\n");
 		vI_rdfDatasource.__setRDFValue(resource, "email", email)
 		vI_rdfDatasource.__setRDFValue(resource, "fullName", fullName)
 		vI_rdfDatasource.__setRDFValue(resource, "id", id)
