@@ -48,7 +48,7 @@
 	<dialogheader title="&vI_rdfDataEditor.header.label;"/>
 	<hbox>
 		<vbox><spacer flex="1"/>
-			<label value="&vI_rdfDataEditor.recipient.label;" accesskey="&vI_rdfDataEditor.recipient.accesskey;" control="textbox"/>
+			<label value="&vI_rdfDataEditor.recipient.label;" accesskey="&vI_rdfDataEditor.recipient.accesskey;" control="recipient"/>
 		<spacer flex="1"/></vbox>
 		<textbox id="recipient" flex="1" />
 		<menulist id="type_menu">
@@ -65,7 +65,7 @@
 		</hbox>
 		<hbox>
 			<vbox><spacer flex="1"/>
-				<label value="&vI_rdfDataEditor.smtp.label;" accesskey="&vI_rdfDataEditor.smtp.accesskey;" control="smtp_server_list_popup"/>
+				<label value="&vI_rdfDataEditor.smtp.label;" accesskey="&vI_rdfDataEditor.smtp.accesskey;" control="smtp_server_list"/>
 			<spacer flex="1"/></vbox>
 			<!-- structure to show SMTP server -->
 			<hbox id="smtpServerListHbox" hidden="true" />
@@ -74,7 +74,7 @@
 			</menulist>
 			
 			<vbox><spacer flex="1"/>
-				<label value="&vI_rdfDataEditor.identity.label;" accesskey="&vI_rdfDataEditor.identity.accesskey;" control="identity_list_popup"/>
+				<label value="&vI_rdfDataEditor.identity.label;" accesskey="&vI_rdfDataEditor.identity.accesskey;" control="identity_list"/>
 			<spacer flex="1"/></vbox>
 			<menulist id="identity_list">
 				<menupopup id="identity_list_popup" />
