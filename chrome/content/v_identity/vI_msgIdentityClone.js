@@ -209,7 +209,7 @@ vI_msgIdentityClone = {
 		vI_msgIdentityClone.initReplyToFields();
 	},
 	
-	setIdentity : function(newName) {
+	setIdentity : function(newName, timeStamp) {
 		vI_notificationBar.dump("## initReplyToFields setIdentity " + newName + "\n");
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = newName;
@@ -218,12 +218,15 @@ vI_msgIdentityClone = {
 		window.setTimeout(vI_msgIdentityClone.markAsNewAccount, 0, newIdentity);
 		if (!newIdentity) window.setTimeout(vI_msgIdentityClone.setMenuToIdentity, 0,
 			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value"));
+		else vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
+						.setAttribute("timeStamp",timeStamp)
 		return newIdentity;
 	},
 	
 	blurEventBlocked : false,
 	blurEvent : function() {
 		if (vI_msgIdentityClone.blurEventBlocked) return;
+		vI_notificationBar.dump("## vI_msgIdentityClone: blurEvent.\n");
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		var address = vI_helper.getAddress();
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = address.combinedName;
@@ -232,10 +235,13 @@ vI_msgIdentityClone = {
 	
 	inputEvent :  function()
 	{
+		vI_notificationBar.dump("## vI_msgIdentityClone: inputEvent.\n");
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		// compare Identity with existant ones and prepare Virtual-Identity if nonexistant found
 		var newIdentity = vI_msgIdentityClone.isNewIdentity();
 		vI_msgIdentityClone.markAsNewAccount(newIdentity);
+		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
+						.setAttribute("timeStamp",null)
 		if (!newIdentity) vI_msgIdentityClone.setMenuToIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value"));
 	},
 	

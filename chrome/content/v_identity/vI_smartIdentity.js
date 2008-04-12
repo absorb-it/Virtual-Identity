@@ -94,7 +94,7 @@ vI_smartIdentity = {
 
 		vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIUsage") + ".",
 					"smart_reply_notification");
-		vI_msgIdentityClone.setIdentity(getCurrentIdentity().fullName + " <" + new_email + ">");
+		vI_msgIdentityClone.setIdentity(getCurrentIdentity().fullName + " <" + new_email + ">", "timeStamp");
 	},
 	
 	SmartNewMail : function() {
@@ -437,7 +437,7 @@ vI_smartIdentity = {
 			vI_msgIdentityClone.setMenuToIdentity(all_addresses.id_keys[selectedValue])
 			vI_smtpSelector.setMenuToKey(all_addresses.smtp_keys[selectedValue])
 		}
-		vI_msgIdentityClone.setIdentity(all_addresses.combinedNames[selectedValue]);
+		vI_msgIdentityClone.setIdentity(all_addresses.combinedNames[selectedValue], null);
 		vI_smartIdentity.removeSmartIdentityFromRecipients(all_addresses, selectedValue);
 	},
 	

@@ -172,13 +172,15 @@ vI_storage = {
 				vI_helper.combineNames(storageData.fullName, storageData.email),
 				storageData.id, storageData.smtp)
 			var warning = vI_storage.__getReplaceVIdentityWarning(recipient, storageData);
-			if (	vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
+			
+			if (	vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("timeStamp") ||
+				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
 				!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
 				vI_storage.promptService.confirm(window,"Warning",warning)) {						
 					vI_msgIdentityClone.setMenuToIdentity(storageData.id)
 					vI_smtpSelector.setMenuToKey(storageData.smtp)
 					if (vI_msgIdentityClone.setIdentity(
-						vI_helper.combineNames(storageData.fullName, storageData.email)))
+						vI_helper.combineNames(storageData.fullName, storageData.email), null))
 					vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
 						"storage_notification");
 			}
