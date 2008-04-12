@@ -112,7 +112,6 @@ vI_smtpSelector = {
 			
 			for (var x in accounts) {
 				vI_notificationBar.dump(".")
-				var server = accounts[x].incomingServer;
 				
 				var identities = queryISupportsArray(accounts[x].identities, Components.interfaces.nsIMsgIdentity);
 				for (var j in identities) {

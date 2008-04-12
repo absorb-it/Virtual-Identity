@@ -166,9 +166,8 @@ vI_smartIdentity = {
 			
 			var server = accounts[i].incomingServer;
 			// ignore newsgroup accounts if not selected in preferences
-			if (!vI.preferences.getBoolPref("smart_reply_for_newsgroups") &&
-				server.type == "nntp") continue;
-			
+			if (server && server.type == "nntp" &&
+				!vI.preferences.getBoolPref("smart_reply_for_newsgroups")) continue;
 			
 			var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 			for (var j in identities) {

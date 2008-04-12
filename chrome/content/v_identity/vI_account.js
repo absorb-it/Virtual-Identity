@@ -131,16 +131,17 @@ vI_account = {
 			return true;
 		} catch (e) { };
 		// check for old (pre 0.5.0) accounts
-		if (account.incomingServer.hostName == "virtualIdentity") return true;
+		if (account.incomingServer && account.incomingServer.hostName == "virtualIdentity") return true;
 		return false;
 	},
 	
 	__removeAccount : function(account) {
-		// in new (post 0.5.0) Virtual Identity accounts the Incoming Server of the account
+		// in new (post 0.5.0) Virtual Identity accounts the incomingServer of the account
 		// points to an incoming server of a different account. Cause the internal
-		// removeAccount function tries to removes the incoming server ether, create
-		// a real one.
+		// removeAccount function tries to removes the incomingServer ether, create
+		// a real one before calling this function.
 		if (!account.incomingServer || account.incomingServer.hostName != "virtualIdentity") {
+			// if not some of the 'old' accounts
 			account.incomingServer = vI_account.AccountManager.
 				createIncomingServer("toRemove","virtualIdentity","pop3");
 		}
@@ -185,7 +186,10 @@ vI_account = {
 		
 		vI_account.account.addIdentity(vI_account.AccountManager.createIdentity());
 	
-		// the new account uses the same incomingServer than the base one, has to be replaced before the account is removed
+		// the new account uses the same incomingServer than the base one,
+		// it's especially required for NNTP cause incomingServer is used for sending newsposts.
+		// by pointing to the same incomingServer stored passwords can be reused
+		// the incomingServer has to be replaced before the account is removed, else it get removed ether
 		var servers = vI_account.AccountManager.GetServersForIdentity(vI_helper.getBaseIdentity());
 		vI_account.account.incomingServer = servers.QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
 		
