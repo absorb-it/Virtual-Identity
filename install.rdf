@@ -40,8 +40,8 @@
     <em:homepageURL>http://www.absorb.it/virtual-id</em:homepageURL>
     <!--
     When no updateURL is found, default addons.mozilla.org is used. So its not needed anymore.
-    <em:updateURL>http://absorb.it/hacked/thunderbird/v_identity_update.rdf</em:updateURL>
-  -->
+    -->
+    <em:updateURL>http://absorb.it/software/virtual_identity/v_identity_update.rdf</em:updateURL>
     <em:optionsURL>chrome://v_identity/content/vI_prefDialog.xul</em:optionsURL>
 
     <!-- Front End Integration Hooks (used by Extension Manager)-->
