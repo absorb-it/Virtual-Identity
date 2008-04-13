@@ -115,7 +115,7 @@
 	<hbox>
 	<spacer flex="1" />
 	<button class="v_identity_logo v_identity_logo_button"
-		label="&vident.compose.vidLogo.label; &vident.version;"
+		label="&vident.vidLogo.label; &vident.version;"
 		oncommand="vI_upgrade.openURL('http://www.absorb.it/virtual-id')" tooltiptext="&vident.prefs.vidLogo.tooltiptext;" />
 	<spacer width="10px" />
 	<label id="extVersion" value="&vident.version;" hidden="true" />

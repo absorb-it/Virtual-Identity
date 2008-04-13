@@ -265,7 +265,7 @@
           <children/>
         </xul:hbox>
         <xul:vbox><xul:spacer flex="1" /><xul:label class="v_identity_logo vINotificationLogo"
-			value="&vident.compose.vidLogo.label; &vident.version;" align="right" />
+			value="&vident.vidLogo.label; &vident.version;" align="right" />
         <xul:spacer flex="1" /></xul:vbox>
         <xul:toolbarbutton ondblclick="event.stopPropagation();"
                            class="messageCloseButton"

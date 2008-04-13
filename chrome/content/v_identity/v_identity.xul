@@ -87,6 +87,6 @@
   </vbox>
   <statusbarpanel id="statusText">
   <label id="v_identity_logo"  class="v_identity_logo"
-			value="&vident.compose.vidLogo.label; &vident.version;" align="right" hidden="true" flex="1"/>
+			value="&vident.vidLogo.label; &vident.version;" align="right" hidden="true" flex="1"/>
     </statusbarpanel>
 </overlay>

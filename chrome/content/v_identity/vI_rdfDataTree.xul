@@ -26,7 +26,7 @@
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
 
 
-<!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/vI_rdfDataEditor.dtd">
+<!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/vI_rdfDataTree.dtd">
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
         width="750"
