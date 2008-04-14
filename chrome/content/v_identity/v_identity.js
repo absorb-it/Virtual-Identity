@@ -321,7 +321,7 @@ var vI = {
 						vI_account.account.defaultIdentity.identityName,
 						" - " +  vI_account.account.incomingServer.prettyName,
 						vI_account.account.key,
-						vI_account.account.defaultIdentity.key, null, null)
+						vI_account.account.defaultIdentity.key, null, null, null)
 		vI.elements.Obj_MsgIdentity.selectedItem = newMenuItem;
 		vI.elements.Obj_MsgIdentity.setAttribute("label", newMenuItem.getAttribute("label"));
 		vI.elements.Obj_MsgIdentity.setAttribute("accountname", newMenuItem.getAttribute("accountname"));

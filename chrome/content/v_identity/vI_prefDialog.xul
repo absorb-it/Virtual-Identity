@@ -414,15 +414,10 @@
 			<caption label="&vI_prefDialog.idSelection.Tab1.caption;"/>
 			<vbox align="left">
 				<description width="500px">&vI_prefDialog.idSelection.reply.desc;</description>
-				<checkbox id="VIdent_identity.idSelection_storage_use_for_smart_reply" label="&vI_prefDialog.idSelection.use_for_smart_reply.label;"
-					prefstring="idSelection_storage_use_for_smart_reply"
-					oncommand="vI_prefDialog.base.idSelectionStorageSmartReplyConstraint();" />
-				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.idSelection_storage_prefer_smart_reply" label="&vI_prefDialog.idSelection.prefer_smart_reply.label;"
+				<checkbox id="VIdent_identity.idSelection_storage_prefer_smart_reply" label="&vI_prefDialog.idSelection.prefer_smart_reply.label;"
 					prefstring="idSelection_storage_prefer_smart_reply"/>
-				</hbox>
-				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.idSelection_storage_ignore_smart_reply" label="&vI_prefDialog.idSelection.ignore_smart_reply.label;"
+				<checkbox id="VIdent_identity.idSelection_storage_ignore_smart_reply" label="&vI_prefDialog.idSelection.ignore_smart_reply.label;"
 					prefstring="idSelection_storage_ignore_smart_reply"/>
-				</hbox>
 			</vbox>
 			</groupbox>
 			<groupbox>

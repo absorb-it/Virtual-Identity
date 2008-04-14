@@ -27,6 +27,19 @@
 * thanks to Mike Krieger and Sebastian Apel
 */
 
+
+function identityCollection() { }
+identityCollection.prototype =
+{
+	number : 0,
+	emails : {},
+	fullNames : {},
+	combinedNames : {},
+	id_keys : {},
+	smtp_keys : {},
+	extra : {}
+};
+
 vI_storage = {
 	multipleRecipients : null,
 	
@@ -118,6 +131,10 @@ vI_storage = {
 	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
 	firstUsedStorageData : null,	// stores the used storage-entry to show a warning if the Identities differ
 	updateVIdentityFromStorage: function(inputElement) {		
+		if (!vI.preferences.getBoolPref("storage"))
+			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
+		vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage()\n");
+
 		var recipientType = document.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
 			.selectedItem.getAttribute("value");
 		if (recipientType == "addr_reply" || recipientType == "addr_followup") {
@@ -210,6 +227,10 @@ vI_storage = {
 	
 	storeVIdentityToAllRecipients : function(msgType) {
 		if (msgType != nsIMsgCompDeliverMode.Now) return;
+		if (!vI.preferences.getBoolPref("storage"))
+			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
+		vI_notificationBar.dump("## vI_storage: storeVIdentityToAllRecipients()\n");
+		
 		if (!vI_storage.elements.Obj_storageSave) {
 			// ugly temp. fix for https://www.absorb.it/virtual-id/ticket/44
 			vI_notificationBar.dump("## vI_storage: Obj_storageSave doesn't exist, shouldn't happen")
@@ -378,8 +399,10 @@ vI_storage = {
 	},
 		
 	getVIdentityFromAllRecipients : function(all_addresses) {
-		// var all_addresses = { number : 0, emails : {}, fullNames : {},
-		//			combinedNames : {}, id_keys : {}, smtp_keys : {} };
+		if (!vI.preferences.getBoolPref("storage"))
+			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
+		vI_notificationBar.dump("## vI_storage: getVIdentityFromAllRecipients()\n");
+
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup") continue;
@@ -393,7 +416,7 @@ vI_storage = {
 				storageData.id,
 				storageData.smtp)
 		}
-		return all_addresses;
+		vI_notificationBar.dump("## vI_storage: found " + all_addresses.number + " address(es)\n")
 	}
 }
 window.addEventListener("unload", function(e) { try {vI_storage.removeObserver();} catch (ex) { } }, false);

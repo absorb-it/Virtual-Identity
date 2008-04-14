@@ -118,9 +118,10 @@ vI_msgIdentityClone = {
 		separator.setAttribute("id", "vid_separator");
 		vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.appendChild(
 			separator)
+		return true;
 	},
 
-	addIdentityToCloneMenu: function(name, id, smtp) {
+	addIdentityToCloneMenu: function(name, id, smtp, extra) {
 		vI_notificationBar.dump("## vI_msgIdentityClone: addIdentityToCloneMenu '" + id + "'\n");
 		var accountname = null; var separator = null;
 		// if a base-id exists, search the account related to this id
@@ -138,15 +139,20 @@ vI_msgIdentityClone = {
 		accountname = document.getElementById("prettyName-Prefix").getAttribute("label") + accountname
 		
 		vI_helper.addIdentityMenuItem(vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone,
-			name, accountname, "", "vid", id, smtp)	
+			name, accountname, "", "vid", id, smtp, extra)	
 	},
 	
 	// adds MenuItem for Identities to the cloned Identity-Select Dropdown Menu
 	addIdentitiesToCloneMenu: function(all_addresses) {
-		vI_msgIdentityClone.addSeparatorToCloneMenu();
+		var separator = null;
 		for (index = 0; index < all_addresses.number; index++) {
-			vI_msgIdentityClone.addIdentityToCloneMenu(
-				all_addresses.combinedNames[index], all_addresses.id_keys[index], all_addresses.smtp_keys[index])
+			if (vI_msgIdentityClone.__isNewAddress(
+				all_addresses.fullNames[index], all_addresses.emails[index], all_addresses.smtp_keys[index])) {
+					if (!separator) separator = vI_msgIdentityClone.addSeparatorToCloneMenu();
+					vI_msgIdentityClone.addIdentityToCloneMenu(
+						all_addresses.combinedNames[index], all_addresses.id_keys[index],
+						all_addresses.smtp_keys[index], all_addresses.extra[index])
+				}
 		}
 	},
 	
@@ -399,13 +405,7 @@ vI_msgIdentityClone = {
 		}
 	},
 	
-	
-	// checks if the Identity currently described by the extension-area fields i still available as
-	// a stored identity. If so, use the stored one.
-	isNewIdentity : function()
-	{
-		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
-		var address = vI_helper.getAddress();
+	__isNewAddress : function(name, email, smtp) {
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		for (var i in accounts) {
 			// check for VirtualIdentity Account
@@ -416,9 +416,9 @@ vI_msgIdentityClone = {
 			for (var j in identites) {
 				var identity = identites[j];
 				var smtpKey = identity.smtpServerKey;
-				if (	identity.getUnicharAttribute("fullName") == address.name &&
-					identity.getUnicharAttribute("useremail") == address.email &&
-					smtpKey == vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key')) {
+				if (	identity.getUnicharAttribute("fullName") == name &&
+					identity.getUnicharAttribute("useremail") == email &&
+					smtpKey == smtp) {
 						// all values are identical to an existing Identity
 						// set Identity combobox to this value
 						vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("value", identity.key);
@@ -427,6 +427,16 @@ vI_msgIdentityClone = {
 					}
 				}
 			}
-		return true;
+		return true;	
+	},
+	
+	// checks if the Identity currently described by the extension-area fields i still available as
+	// a stored identity. If so, use the stored one.
+	isNewIdentity : function()
+	{
+		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
+		var address = vI_helper.getAddress();
+		var smtp = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key')
+		return vI_msgIdentityClone.__isNewAddress(address.name, address.email, smtp);
 	},
 }

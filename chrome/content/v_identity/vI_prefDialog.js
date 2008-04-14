@@ -79,7 +79,6 @@ vI_prefDialog = {
 				"VIdent_identity.storage_openPGP_messageEncryption",
 				"VIdent_identity.storage_openPGP_messageSignature",
 				"VIdent_identity.storage_openPGP_PGPMIME",
-				"VIdent_identity.idSelection_storage_use_for_smart_reply",
 				"VIdent_identity.idSelection_storage_prefer_smart_reply",
 				"VIdent_identity.idSelection_storage_ignore_smart_reply",
 				"VIdent_identity.idSelection_ask",
@@ -145,7 +144,6 @@ vI_prefDialog = {
 
 		idSelectionConstraint1 : function(checked) {
 			var elementIDs = [
-				"VIdent_identity.idSelection_storage_use_for_smart_reply",
 				"VIdent_identity.idSelection_storage_prefer_smart_reply",
 				"VIdent_identity.idSelection_storage_ignore_smart_reply",
 				"idSelection1"];
@@ -207,14 +205,6 @@ vI_prefDialog = {
 			autocreate_desc.setAttribute("hidden", !ask.checked)
 		},
 		
-		idSelectionStorageSmartReplyConstraint : function() {
-			var use_for_smart_reply = document.getElementById("VIdent_identity.idSelection_storage_use_for_smart_reply")
-			var prefer_smart_reply = document.getElementById("VIdent_identity.idSelection_storage_prefer_smart_reply")
-			var ignore_smart_reply = document.getElementById("VIdent_identity.idSelection_storage_ignore_smart_reply")
-			prefer_smart_reply.setAttribute("disabled", !use_for_smart_reply.checked)
-			ignore_smart_reply.setAttribute("disabled", !use_for_smart_reply.checked)
-		},
-
 		smartReplyHeaderReset : function() {
 			var textfield = document.getElementById("VIdent_identity.smart_reply_headers")
 			textfield.value = "envelope-to\nx-original-to\nto\ncc"
@@ -310,6 +300,8 @@ vI_prefDialog = {
 		
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
 		vI_prefDialog.base.smartReplyHideSignature();
+		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
+		vI_prefDialog.base.idSelectionConstraint();
 		
 		//~ if (vI_prefDialog.preferences.getBoolPref("experimental")){
 		//~ }

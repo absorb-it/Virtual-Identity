@@ -94,7 +94,6 @@
 <!ENTITY vI_prefDialog.idSelection.Tab2.caption "Handling of the Results">
 
 <!ENTITY vI_prefDialog.idSelection.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with &apos;Smart Reply&apos; can configured here.">
-<!ENTITY vI_prefDialog.idSelection.use_for_smart_reply.label "use stored Identities together with &apos;Smart-Reply&apos;">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "prefer &apos;Smart Reply&apos;-Identities">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "ignore &apos;Smart Reply&apos;-Identities if Identities for recipients found stored">
 
