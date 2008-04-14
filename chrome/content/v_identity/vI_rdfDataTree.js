@@ -211,9 +211,33 @@ var vI_rdfDataTree = {
 		vI_rdfDataTree.__setFilter("");
 	},
 	
-	updateContextMenu : function() { },
+	__updateMenu : function(modifySelected, removeSelected) {
+		noSelections = (vI_rdfDataTree.__treeElem.view.selection.count == 0)
+		modifySelected.setAttribute("disabled", noSelections)
+		removeSelected.setAttribute("disabled", noSelections)	
+	},
 	
+	updateContextMenu : function() {
+		vI_rdfDataTree.__updateMenu(
+			document.getElementById("context_modifySelected"),
+			document.getElementById("context_removeSelected"))
+	},
+	
+	updateMenu : function() {
+		vI_rdfDataTree.__updateMenu(
+			document.getElementById("menu_modifySelected"),
+			document.getElementById("menu_removeSelected"))
+	},
+
 	modifySelected : function() {
+		if (vI_rdfDataTree.__treeElem.view.selection.count == 0) return;
+		if (vI_rdfDataTree.__treeElem.view.selection.count > 5) {
+			var warning = vI_rdfDataTree.__strings.getString("vI_rdfDataTree.modify.Warning1") + " " +
+				vI_rdfDataTree.__treeElem.view.selection.count + " " +
+				vI_rdfDataTree.__strings.getString("vI_rdfDataTree.modify.Warning2")
+			if (!vI_rdfDataTree.promptService.confirm(window,"Warning",warning)) return;
+		}
+		
 		var start = new Object(); var end = new Object();
 		var numRanges = vI_rdfDataTree.__treeElem.view.selection.getRangeCount();
 
@@ -231,6 +255,7 @@ var vI_rdfDataTree = {
 	},
 	
 	removeSelected : function() {
+		if (vI_rdfDataTree.__treeElem.view.selection.count == 0) return;
 		var warning = vI_rdfDataTree.__strings.getString("vI_rdfDataTree.remove.Warning1") + " " +
 			vI_rdfDataTree.__treeElem.view.selection.count + " " +
 			vI_rdfDataTree.__strings.getString("vI_rdfDataTree.remove.Warning2")

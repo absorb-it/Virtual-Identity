@@ -51,14 +51,14 @@
 </stringbundleset>
 
 <popup id="configContext" onpopupshowing="if (event.target == this) vI_rdfDataTree.updateContextMenu();">
-	<menuitem id="modifySelected" label="&vI_rdfDataTree.modifySelected.label;"
+	<menuitem id="context_modifySelected" label="&vI_rdfDataTree.modifySelected.label;"
 		oncommand="vI_rdfDataTree.modifySelected();"/>
-	<menuitem id="removeSelected" label="&vI_rdfDataTree.removeSelected.label;"
+	<menuitem id="context_removeSelected" label="&vI_rdfDataTree.removeSelected.label;"
 		oncommand="vI_rdfDataTree.removeSelected();"/>
-	<menuitem id="newItem" label="&vI_rdfDataTree.newItem.label;"
+	<menuitem id="context_newItem" label="&vI_rdfDataTree.newItem.label;"
 		oncommand="vI_rdfDataTree.newItem();"/>
 	<menuseparator />
-	<menuitem id="menu_selectAll" label="&selectAllCmd.label;"
+	<menuitem id="context_menu_selectAll" label="&selectAllCmd.label;"
 		oncommand="vI_rdfDataTree.selectAll();"/>
 </popup>
 
@@ -71,7 +71,29 @@
 
 
 <hbox align="center">
-	<button id="newItem" label="&vI_rdfDataTree.newItem.label;" accesskey="&vI_rdfDataTree.newItem.accesskey;" oncommand="vI_rdfDataTree.newItem();" />
+	<spacer width="3px" />
+	<vbox><spacer flex="1"/>
+	<menubar>
+		<menu id="editMenu" label="&vI_rdfDataTree.editMenu.label;" 
+			accesskey="&vI_rdfDataTree.editMenu.accesskey;">
+		<menupopup onpopupshowing="if (event.target == this) vI_rdfDataTree.updateMenu();">
+			<menuitem id="menu_modifySelected" label="&vI_rdfDataTree.modifySelected.label;"
+				accesskey="&vI_rdfDataTree.modifySelected.accesskey;"
+				oncommand="vI_rdfDataTree.modifySelected();"/>
+			<menuitem id="menu_removeSelected" label="&vI_rdfDataTree.removeSelected.label;"
+				accesskey="&vI_rdfDataTree.removeSelected.accesskey;"
+				oncommand="vI_rdfDataTree.removeSelected();"/>
+			<menuitem id="menu_newItem" label="&vI_rdfDataTree.newItem.label;"
+				accesskey="&vI_rdfDataTree.newItem.accesskey;"
+				oncommand="vI_rdfDataTree.newItem();"/>
+			<menuseparator />
+			<menuitem id="menu_menu_selectAll" label="&selectAllCmd.label;" accesskey="&selectAllCmd.accesskey;"
+				oncommand="vI_rdfDataTree.selectAll();"/>
+		</menupopup>
+		</menu>
+	</menubar>
+	<spacer flex="1"/></vbox>
+	<spacer width="20px" />
 	<label value="&vI_rdfDataTree.filterPrefs.label;" accesskey="&vI_rdfDataTree.filterPrefs.accesskey;" control="filter"/>
 	<textbox id="filter" flex="1" type="timed" timeout="500" oninput="vI_rdfDataTree.inputFilter(event);"/>
 	<button id="clearFilter" label="&vI_rdfDataTree.showAll.label;" accesskey="&vI_rdfDataTree.showAll.accesskey;" oncommand="vI_rdfDataTree.clearFilter();" disabled="true"/>
