@@ -251,6 +251,10 @@ var vI_rdfDataTree = {
 		vI_rdfDataTree.loadTable();
 	},
 	
+	selectAll : function() {
+		vI_rdfDataTree.__treeElem.view.selection.selectAll();
+	},
+	
 	newItem : function() {
 		var newItemPreset = { 
 				recipientCol : "",

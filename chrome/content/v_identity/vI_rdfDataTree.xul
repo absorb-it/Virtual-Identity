@@ -25,8 +25,12 @@
 
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
 
-
-<!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/vI_rdfDataTree.dtd">
+<!DOCTYPE overlay [
+<!ENTITY % dataTreeDTD SYSTEM "chrome://v_identity/locale/vI_rdfDataTree.dtd">
+%dataTreeDTD;
+<!ENTITY % editDTD SYSTEM "chrome://global/locale/editMenuOverlay.dtd">
+%editDTD;
+]>
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
         width="750"
@@ -48,17 +52,21 @@
 
 <popup id="configContext" onpopupshowing="if (event.target == this) vI_rdfDataTree.updateContextMenu();">
 	<menuitem id="modifySelected" label="&vI_rdfDataTree.modifySelected.label;"
-		accesskey="&vI_rdfDataTree.modifySelected.accesskey;" oncommand="vI_rdfDataTree.modifySelected();"/>
+		oncommand="vI_rdfDataTree.modifySelected();"/>
 	<menuitem id="removeSelected" label="&vI_rdfDataTree.removeSelected.label;"
-		accesskey="&vI_rdfDataTree.removeSelected.accesskey;" oncommand="vI_rdfDataTree.removeSelected();"/>
+		oncommand="vI_rdfDataTree.removeSelected();"/>
 	<menuitem id="newItem" label="&vI_rdfDataTree.newItem.label;"
-		accesskey="&vI_rdfDataTree.newItem.accesskey;" oncommand="vI_rdfDataTree.newItem();"/>
+		oncommand="vI_rdfDataTree.newItem();"/>
+	<menuseparator />
+	<menuitem id="menu_selectAll" label="&selectAllCmd.label;"
+		oncommand="vI_rdfDataTree.selectAll();"/>
 </popup>
 
 <keyset>
 	<key keycode="VK_ENTER" oncommand="vI_rdfDataTree.modifySelected();"/>
 	<key keycode="VK_RETURN" oncommand="vI_rdfDataTree.modifySelected();"/>
 	<key keycode="VK_DELETE" oncommand="vI_rdfDataTree.removeSelected();"/>
+	<key modifiers="accel" key="&selectAllCmd.accesskey;" oncommand="vI_rdfDataTree.selectAll();"/>
 </keyset>
 
 

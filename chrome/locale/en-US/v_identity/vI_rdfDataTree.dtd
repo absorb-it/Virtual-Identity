@@ -12,9 +12,6 @@
 <!ENTITY vI_rdfDataTree.menuEntry.label "Virtual Identity Data-Storage">
 
 <!ENTITY vI_rdfDataTree.modifySelected.label "modify selected Items">
-<!ENTITY vI_rdfDataTree.modifySelected.accesskey "M">
 <!ENTITY vI_rdfDataTree.removeSelected.label "remove selected Items">
-<!ENTITY vI_rdfDataTree.removeSelected.accesskey "R">
 <!ENTITY vI_rdfDataTree.newItem.label "add new Item">
-<!ENTITY vI_rdfDataTree.newItem.accesskey "N">
 
