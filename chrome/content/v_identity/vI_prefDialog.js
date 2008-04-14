@@ -48,8 +48,6 @@ vI_prefDialog = {
 				"VIdent_identity.copyAttachVCardSettings",
 				"VIdent_identity.smart_reply",
 				"VIdent_identity.smart_reply_for_newsgroups",
-				"VIdent_identity.smart_reply_ask",
-				"VIdent_identity.smart_reply_ask_always",
 				"VIdent_identity.show_smtp",
 				"VIdent_identity.menu_entry",
 				"VIdent_identity.smart_reply_headers",
@@ -59,23 +57,34 @@ vI_prefDialog = {
 				"VIdent_identity.get_header_notification",
 				"VIdent_identity.smart_reply_defaultFullName",
 				"VIdent_identity.smart_reply_ignoreFullName",
-				"VIdent_identity.smart_reply_autocreate",
-				"VIdent_identity.smart_timestamp",
+				"VIdent_identity.autoTimestamp",
 				"VIdent_identity.notification_timeout",
 				"VIdent_identity.debug_notification",
 				"VIdent_identity.warn_nonvirtual",
 				"VIdent_identity.warn_virtual",
 				"VIdent_identity.hide_signature",
+				"VIdent_identity.storage",
 				"VIdent_identity.storage_storedefault",
 				"VIdent_identity.storage_dont_update_multiple",
 				"VIdent_identity.storage_show_switch",
 				"VIdent_identity.storage_warn_update",
-				"VIdent_identity.storage_use_for_smart_reply",
-				"VIdent_identity.storage_prefer_smart_reply",
-				"VIdent_identity.storage_ignore_smart_reply",
 				"VIdent_identity.storage_warn_vI_replace",
 				"VIdent_identity.storage_notification",
 				"VIdent_identity.storage_getOneOnly",
+				"VIdent_identity.storage_returnReciept",
+				"VIdent_identity.storage_characterEncoding",
+				"VIdent_identity.storage_messageFormat",
+				"VIdent_identity.storage_sMime_messageEncryption",
+				"VIdent_identity.storage_sMime_messageSignature",
+				"VIdent_identity.storage_openPGP_messageEncryption",
+				"VIdent_identity.storage_openPGP_messageSignature",
+				"VIdent_identity.storage_openPGP_PGPMIME",
+				"VIdent_identity.idSelection_storage_use_for_smart_reply",
+				"VIdent_identity.idSelection_storage_prefer_smart_reply",
+				"VIdent_identity.idSelection_storage_ignore_smart_reply",
+				"VIdent_identity.idSelection_ask",
+				"VIdent_identity.idSelection_ask_always",
+				"VIdent_identity.idSelection_autocreate",
 				"VIdent_identity.autoReplyToSelf"],
 	
 		init : function() {
@@ -125,22 +134,57 @@ vI_prefDialog = {
 			}
 		},
 		
+		idSelectionConstraint : function() {
+			storage = document.getElementById("VIdent_identity.storage").checked;
+			smartDraft = document.getElementById("VIdent_identity.smart_draft").checked;
+			smartReply = document.getElementById("VIdent_identity.smart_reply").checked;
+			vI_prefDialog.base.idSelectionConstraint1(storage && smartReply);
+			vI_prefDialog.base.idSelectionConstraint2(storage || smartReply || smartDraft);
+			if (storage || smartReply || smartDraft) vI_prefDialog.base.idSelectionResultConstraint()
+		},
+
+		idSelectionConstraint1 : function(checked) {
+			var elementIDs = [
+				"VIdent_identity.idSelection_storage_use_for_smart_reply",
+				"VIdent_identity.idSelection_storage_prefer_smart_reply",
+				"VIdent_identity.idSelection_storage_ignore_smart_reply",
+				"idSelection1"];
+			for( var i = 0; i < elementIDs.length; i++ ) {
+				if (checked)
+					document.getElementById(elementIDs[i])
+						.removeAttribute("disabled");
+				else
+					document.getElementById(elementIDs[i])
+						.setAttribute("disabled", "true");
+			}
+		},
+
+		idSelectionConstraint2 : function(checked) {
+			var elementIDs = [
+				"VIdent_identity.idSelection_ask",
+				"VIdent_identity.idSelection_ask_always",
+				"VIdent_identity.idSelection_autocreate",
+				"VIdent_identity.idSelection_autocreate.desc",
+				"idSelection", "idSelection2"];
+			for( var i = 0; i < elementIDs.length; i++ ) {
+				if (checked)
+					document.getElementById(elementIDs[i])
+						.removeAttribute("disabled");
+				else
+					document.getElementById(elementIDs[i])
+						.setAttribute("disabled", "true");
+			}
+		},
+
 		smartReplyConstraint : function(element) {
 			var elementIDs = [
 				"VIdent_identity.smart_reply_for_newsgroups",
-				"VIdent_identity.smart_reply_ask",
-				"VIdent_identity.smart_reply_ask_always",
 				"VIdent_identity.smart_reply_headers",
 				"VIdent_identity.smart_reply_filter",
 				"VIdent_identity.smart_reply_defaultFullName",
 				"VIdent_identity.smart_reply_ignoreFullName",
-				"VIdent_identity.smart_reply_autocreate",
 				"VIdent_identity.smart_reply_headers_reset",
-				"VIdent_identity.storage_use_for_smart_reply",
-				"VIdent_identity.storage_prefer_smart_reply",
-				"VIdent_identity.storage_ignore_smart_reply",
-				"storageTab2",
-				"smartReplyTab", "smartReplyTab1", "smartReplyTab2", "smartReplyTab3"];
+				"smartReplyTab", "smartReplyTab1", "smartReplyTab2"];
 			for( var i = 0; i < elementIDs.length; i++ ) {
 				if (element.checked)
 					document.getElementById(elementIDs[i])
@@ -149,25 +193,24 @@ vI_prefDialog = {
 					document.getElementById(elementIDs[i])
 						.setAttribute("disabled", "true");
 			}
-			vI_prefDialog.base.smartReplyResultConstraint();
+			vI_prefDialog.base.idSelectionConstraint();
 		},
 		
-		smartReplyResultConstraint : function() {
-			if (!document.getElementById("VIdent_identity.smart_reply").checked) return;
-			var ask = document.getElementById("VIdent_identity.smart_reply_ask")
-			var ask_always = document.getElementById("VIdent_identity.smart_reply_ask_always")
-			var autocreate = document.getElementById("VIdent_identity.smart_reply_autocreate")
-			var autocreate_desc = document.getElementById("VIdent_identity.smart_reply_autocreate.desc")
+		idSelectionResultConstraint : function() {
+			var ask = document.getElementById("VIdent_identity.idSelection_ask")
+			var ask_always = document.getElementById("VIdent_identity.idSelection_ask_always")
+			var autocreate = document.getElementById("VIdent_identity.idSelection_autocreate")
+			var autocreate_desc = document.getElementById("VIdent_identity.idSelection_autocreate.desc")
 			ask_always.setAttribute("disabled", (autocreate.checked || !ask.checked))
 			autocreate.setAttribute("disabled", (ask.checked && ask_always.checked))
 			autocreate_desc.setAttribute("disabled", (ask.checked && ask_always.checked))
 			autocreate_desc.setAttribute("hidden", !ask.checked)
 		},
 		
-		storageSmartReplyConstraint : function() {
-			var use_for_smart_reply = document.getElementById("VIdent_identity.storage_use_for_smart_reply")
-			var prefer_smart_reply = document.getElementById("VIdent_identity.storage_prefer_smart_reply")
-			var ignore_smart_reply = document.getElementById("VIdent_identity.storage_ignore_smart_reply")
+		idSelectionStorageSmartReplyConstraint : function() {
+			var use_for_smart_reply = document.getElementById("VIdent_identity.idSelection_storage_use_for_smart_reply")
+			var prefer_smart_reply = document.getElementById("VIdent_identity.idSelection_storage_prefer_smart_reply")
+			var ignore_smart_reply = document.getElementById("VIdent_identity.idSelection_storage_ignore_smart_reply")
 			prefer_smart_reply.setAttribute("disabled", !use_for_smart_reply.checked)
 			ignore_smart_reply.setAttribute("disabled", !use_for_smart_reply.checked)
 		},
@@ -178,7 +221,7 @@ vI_prefDialog = {
 		},
 		
 		smartReplyHideSignature : function() {
-			// seamonkey has no extsnion-manager
+			// seamonkey has no extension-manager
 			if (("nsIExtensionManager" in Components.interfaces) && ("@mozilla.org/extensions/manager;1" in Components.classes)) {
 				var switch_signature_ID="{2ab1b709-ba03-4361-abf9-c50b964ff75d}"
 				var em = Components.classes["@mozilla.org/extensions/manager;1"]
@@ -202,6 +245,35 @@ vI_prefDialog = {
 				document.getElementById("VIdent_identity.hide_signature").setAttribute("disabled", "false");
 			}
 		},
+		
+		storageConstraint : function(element) {
+			var elementIDs = [
+				"VIdent_identity.storage_storedefault",
+				"VIdent_identity.storage_dont_update_multiple",
+				"VIdent_identity.storage_show_switch",
+				"VIdent_identity.storage_warn_update",
+				"VIdent_identity.storage_warn_vI_replace",
+				"VIdent_identity.storage_notification",
+				"VIdent_identity.storage_getOneOnly",
+				"VIdent_identity.storage_returnReciept",
+				"VIdent_identity.storage_characterEncoding",
+				"VIdent_identity.storage_messageFormat",
+				"VIdent_identity.storage_sMime_messageEncryption",
+				"VIdent_identity.storage_sMime_messageSignature",
+				"VIdent_identity.storage_openPGP_messageEncryption",
+				"VIdent_identity.storage_openPGP_messageSignature",
+				"VIdent_identity.storage_openPGP_PGPMIME",
+				"storageTab", "storageTab1", "storageTab2"];
+			for( var i = 0; i < elementIDs.length; i++ ) {
+				if (element.checked)
+					document.getElementById(elementIDs[i])
+						.removeAttribute("disabled");
+				else
+					document.getElementById(elementIDs[i])
+						.setAttribute("disabled", "true");
+			}
+			vI_prefDialog.base.idSelectionConstraint();
+		}
 	},
 
 	init : function() {

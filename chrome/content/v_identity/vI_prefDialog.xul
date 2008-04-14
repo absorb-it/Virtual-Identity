@@ -85,6 +85,7 @@
 		<tab label="&vI_prefDialog.vIdentityTab.label;" />
 		<tab id="smartReplyTab" label="&vI_prefDialog.smartReplyTab.label;" />
 		<tab id="storageTab" label="&vI_prefDialog.storageTab.label;" />
+		<tab id="idSelection" label="&vI_prefDialog.idSelection.label;" />
 		<tab label="&vI_prefDialog.notificationTab.label;" />
 	</tabs>
 	<tabpanels>
@@ -92,19 +93,24 @@
 		<dialogheader title="&vI_prefDialog.commonTab.header;"/>
 		<groupbox>
 		<caption label="&vI_prefDialog.commonTab.caption;"/>
+			<checkbox id="VIdent_identity.storage" label="&vI_prefDialog.storage.label;"
+				tooltiptext="&vI_prefDialog.storage.tooltiptext;" prefstring="storage"
+				oncommand="vI_prefDialog.base.storageConstraint(this);" />
+			<checkbox id="VIdent_identity.autoTimestamp" label="&vI_prefDialog.autoTimestamp.label;"
+				tooltiptext="&vI_prefDialog.autoTimestamp.tooltiptext;" prefstring="autoTimestamp" />
+			<spacer height="10px"/>
+			<label value="&vI_prefDialog.smartInfo.label;" />
 			<label id="version-warning"
 				value="&vI_prefDialog.versionWarning.label;" hidden="true"/>
 			<checkbox id="VIdent_identity.smart_draft" label="&vI_prefDialog.smartDraft.label;"
-				prefstring="smart_draft"/>
+				tooltiptext="&vI_prefDialog.smartDraft.tooltiptext;" prefstring="smart_draft"
+				oncommand="vI_prefDialog.base.idSelectionConstraint();" />
 			<checkbox id="VIdent_identity.smart_reply" label="&vI_prefDialog.smartReply.label;"
-				prefstring="smart_reply"
-				oncommand="vI_prefDialog.base.smartReplyConstraint(this);"
-				/>
+				tooltiptext="&vI_prefDialog.smartReply.tooltiptext;" prefstring="smart_reply"
+				oncommand="vI_prefDialog.base.smartReplyConstraint(this);" />
 			<hbox><spacer width="20px"/><checkbox id="VIdent_identity.smart_reply_for_newsgroups" label="&vI_prefDialog.smartReplyNewsgroups.label;"
-				prefstring="smart_reply_for_newsgroups" />
+				tooltiptext="&vI_prefDialog.smartReplyNewsgroups.tooltiptext;" prefstring="smart_reply_for_newsgroups" />
 			</hbox>
-			<checkbox id="VIdent_identity.smart_timestamp" label="&vI_prefDialog.smartTimestamp.label;"
-				prefstring="smart_timestamp" />
 		</groupbox>
 		<groupbox>
 		<caption label="&vI_prefDialog.commonTab.caption2;"/>
@@ -285,7 +291,6 @@
 		<tabs>
 			<tab id="smartReplyTab1" label="&vI_prefDialog.smartReplyTab.Tab1.label;" />
 			<tab id="smartReplyTab2" label="&vI_prefDialog.smartReplyTab.Tab2.label;" />
-			<tab id="smartReplyTab3" label="&vI_prefDialog.smartReplyTab.Tab3.label;" />
 		</tabs>
 		<tabpanels>
 			<tabpanel orient="vertical">
@@ -326,32 +331,6 @@
 			</vbox>
 			</groupbox>
 			</tabpanel>
-			<tabpanel orient="vertical">
-			<groupbox>
-			<caption label="&vI_prefDialog.smartReplyTab3.caption;"/>
-			<vbox align="left">
-				<description width="500px">&vI_prefDialog.smartReplyTab.Tab3.desc;</description>
-				<checkbox id="VIdent_identity.smart_reply_ask" label="&vI_prefDialog.smartReply.ask.label;"
-					prefstring="smart_reply_ask"
-					oncommand="vI_prefDialog.base.smartReplyResultConstraint();"/>
-				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.smart_reply_ask_always" label="&vI_prefDialog.smartReply.ask_always.label;"
-					prefstring="smart_reply_ask_always"
-					oncommand="vI_prefDialog.base.smartReplyResultConstraint();"/>
-				</hbox>
-				<hbox>
-				<vbox><spacer flex="1"/>
-				<checkbox id="VIdent_identity.smart_reply_autocreate" label="&vI_prefDialog.smartReply.autocreate.label;"
-					prefstring="smart_reply_autocreate"
-					oncommand="vI_prefDialog.base.smartReplyResultConstraint();"/>
-				<spacer flex="1"/></vbox>
-				<vbox><spacer flex="1"/>
-				<label value="&vI_prefDialog.smartReply.autocreate.desc;" hidden="true"
-					id="VIdent_identity.smart_reply_autocreate.desc" />
-				<spacer flex="1"/></vbox>
-				</hbox>
-			</vbox>
-			</groupbox>
-			</tabpanel>
 		</tabpanels>
 		</tabbox>
 	</tabpanel>
@@ -375,6 +354,8 @@
 					prefstring="storage_warn_update"/>
 				<checkbox id="VIdent_identity.storage_dont_update_multiple" label="&vI_prefDialog.storage.dont_update_multiple.label;"
 					prefstring="storage_dont_update_multiple"/>
+				<spacer height="10px"/>
+				<button id="VIdent_identity.storage.openEditor" label="&vI_prefDialog.storage.openEditor;" oncommand="openDialog('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome,modal');" />
 			</vbox>
 			</groupbox>
 			<groupbox>
@@ -391,22 +372,96 @@
 			<groupbox>
 			<caption label="&vI_prefDialog.storageCap3.caption;"/>
 			<vbox align="left">
-				<description width="500px">&vI_prefDialog.storage.reply.desc;</description>
-				<checkbox id="VIdent_identity.storage_use_for_smart_reply" label="&vI_prefDialog.storage.use_for_smart_reply.label;"
-					prefstring="storage_use_for_smart_reply"
-					oncommand="vI_prefDialog.base.storageSmartReplyConstraint();" />
-				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.storage_prefer_smart_reply" label="&vI_prefDialog.storage.prefer_smart_reply.label;"
-					prefstring="storage_prefer_smart_reply"/>
-				</hbox>
-				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.storage_ignore_smart_reply" label="&vI_prefDialog.storage.ignore_smart_reply.label;"
-					prefstring="storage_ignore_smart_reply"/>
-				</hbox>
+				<checkbox id="VIdent_identity.storage_returnReciept" label="&vI_prefDialog.storage.returnReciept.label;"
+					prefstring="storage_returnReciept"/>
+				<checkbox id="VIdent_identity.storage_characterEncoding" label="&vI_prefDialog.storage.characterEncoding.label;"
+					prefstring="storage_characterEncoding"/>
+				<checkbox id="VIdent_identity.storage_messageFormat" label="&vI_prefDialog.storage.messageFormat.label;"
+					prefstring="storage_messageFormat"/>
+				<spacer height="10px"/>
+				<hbox><vbox>
+				<label value="&vI_prefDialog.storage.sMime.label;"/>
+				<checkbox id="VIdent_identity.storage_sMime_messageEncryption" label="&vI_prefDialog.storage.sMime.messageEncryption.label;"
+					prefstring="storage_sMime_messageEncryption"/>
+				<checkbox id="VIdent_identity.storage_sMime_messageSignature" label="&vI_prefDialog.storage.sMime.messageSignature.label;"
+					prefstring="storage_sMime_messageSignature"/>
+				</vbox><spacer flex="1"/><vbox>
+				<label value="&vI_prefDialog.storage.openPGP.label;"/>
+				<checkbox id="VIdent_identity.storage_openPGP_messageEncryption" label="&vI_prefDialog.storage.openPGP.messageEncryption.label;"
+					prefstring="storage_openPGP_messageEncryption"/>
+				<checkbox id="VIdent_identity.storage_openPGP_messageSignature" label="&vI_prefDialog.storage.openPGP.messageSignature.label;"
+					prefstring="storage_openPGP_messageSignature"/>
+				<checkbox id="VIdent_identity.storage_openPGP_PGPMIME" label="&vI_prefDialog.storage.openPGP.PGPMIME.label;"
+					prefstring="storage_openPGP_PGPMIME"/>
+				</vbox></hbox>
 			</vbox>
 			</groupbox>
 			</tabpanel>
 		</tabpanels>
 		</tabbox>
 	</tabpanel>
+	
+	<tabpanel orient="vertical"  label="&vI_prefDialog.idSelection.header;">
+		<dialogheader title="&vI_prefDialog.idSelection.header;"/>
+		<tabbox>
+		<tabs>
+			<tab id="idSelection1" label="&vI_prefDialog.idSelection.Tab1.label;" />
+			<tab id="idSelection2" label="&vI_prefDialog.idSelection.Tab2.label;" />
+		</tabs>
+		<tabpanels>
+			<tabpanel orient="vertical">
+			<groupbox>
+			<caption label="&vI_prefDialog.idSelection.Tab1.caption;"/>
+			<vbox align="left">
+				<description width="500px">&vI_prefDialog.idSelection.reply.desc;</description>
+				<checkbox id="VIdent_identity.idSelection_storage_use_for_smart_reply" label="&vI_prefDialog.idSelection.use_for_smart_reply.label;"
+					prefstring="idSelection_storage_use_for_smart_reply"
+					oncommand="vI_prefDialog.base.idSelectionStorageSmartReplyConstraint();" />
+				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.idSelection_storage_prefer_smart_reply" label="&vI_prefDialog.idSelection.prefer_smart_reply.label;"
+					prefstring="idSelection_storage_prefer_smart_reply"/>
+				</hbox>
+				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.idSelection_storage_ignore_smart_reply" label="&vI_prefDialog.idSelection.ignore_smart_reply.label;"
+					prefstring="idSelection_storage_ignore_smart_reply"/>
+				</hbox>
+			</vbox>
+			</groupbox>
+			<groupbox>
+			<caption label="&vI_prefDialog.idSelection.Tab1.caption2;"/>
+			<vbox align="left">
+				<description width="500px">&vI_prefDialog.idSelection.draft.desc;</description>
+			</vbox>
+			</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+			<groupbox>
+			<caption label="&vI_prefDialog.idSelection.Tab2.caption;"/>
+				<description width="500px">&vI_prefDialog.idSelection.multiselect.desc;</description>
+				<checkbox id="VIdent_identity.idSelection_ask" label="&vI_prefDialog.idSelection.ask.label;"
+					prefstring="idSelection_ask"
+					oncommand="vI_prefDialog.base.idSelectionResultConstraint();"/>
+				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.idSelection_ask_always" label="&vI_prefDialog.idSelection.ask_always.label;"
+					prefstring="idSelection_ask_always"
+					oncommand="vI_prefDialog.base.idSelectionResultConstraint();"/>
+				</hbox>
+				<hbox>
+				<vbox><spacer flex="1"/>
+				<checkbox id="VIdent_identity.idSelection_autocreate" label="&vI_prefDialog.idSelection.autocreate.label;"
+					prefstring="idSelection_autocreate"
+					oncommand="vI_prefDialog.base.idSelectionResultConstraint();"/>
+				<spacer flex="1"/></vbox>
+				<vbox><spacer flex="1"/>
+				<label value="&vI_prefDialog.idSelection.autocreate.desc;" hidden="true"
+					id="VIdent_identity.idSelection_autocreate.desc" />
+				<spacer flex="1"/></vbox>
+				</hbox>
+			</groupbox>
+			</tabpanel>
+		</tabpanels>
+		</tabbox>
+	</tabpanel>
+	
+	
+	
 	<tabpanel orient="vertical" label="&vI_prefDialog.notificationTab.header;">
 		<dialogheader title="&vI_prefDialog.notificationTab.header;"/>
 		<groupbox id="notificationGroupBox">

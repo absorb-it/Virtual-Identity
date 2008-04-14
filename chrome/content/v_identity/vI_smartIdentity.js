@@ -38,7 +38,7 @@ vI_smartIdentity = {
 		var msgComposeType = Components.interfaces.nsIMsgCompType;
 		vI_notificationBar.dump("## vI_smartIdentity: msgComposeType = " + type + "\n");
 		
-		//~ if (vI.preferences.getBoolPref("smart_timestamp") && 
+		//~ if (vI.preferences.getBoolPref("autoTimestamp") && 
 			//~ ((type == msgComposeType.New) || (type == msgComposeType.NewsPost) || (type == msgComposeType.MailToUrl)))
 					//~ vI_smartIdentity.SmartTimestamp(hdr);
 					
@@ -104,7 +104,7 @@ vI_smartIdentity = {
 
 		if (all_addresses.number > 0)
 			vI_smartIdentity.smartIdentitySelection(all_addresses, false)
-		else if (vI.preferences.getBoolPref("smart_timestamp"))
+		else if (vI.preferences.getBoolPref("autoTimestamp"))
 			vI_smartIdentity.SmartTimestamp();	
 	},
 	
@@ -350,14 +350,14 @@ vI_smartIdentity = {
 		/* first step: collect addresses */
 		
 		// check if Storage-search should be used in SmartReply-case
-		if (vI.preferences.getBoolPref("storage_use_for_smart_reply")) {
+		if (vI.preferences.getBoolPref("idSelection_storage_use_for_smart_reply")) {
 			vI_storage.getVIdentityFromAllRecipients(storage_addresses);
 			vI_notificationBar.dump("## vI_smartIdentity: checked for stored VIdentities and found " + storage_addresses.number + " address(es)\n")
 		}
 		
 		vI_notificationBar.dump("## vI_smartIdentity: ----------------------------------------------------------\n")
 		if (hdr) {
-			if (storage_addresses.number == 0 || !vI.preferences.getBoolPref("storage_ignore_smart_reply")) {
+			if (storage_addresses.number == 0 || !vI.preferences.getBoolPref("idSelection_storage_ignore_smart_reply")) {
 			
 				vI_smartIdentity.collectAddresses(all_addresses, hdr);
 				
@@ -389,7 +389,7 @@ vI_smartIdentity = {
 		vI_notificationBar.dump("## vI_smartIdentity: ----------------------------------------------------------\n")
 		
 		// merge SmartReply-Identities and Storage-Identites
-		if (vI.preferences.getBoolPref("storage_prefer_smart_reply"))
+		if (vI.preferences.getBoolPref("idSelection_storage_prefer_smart_reply"))
 			all_addresses = vI_smartIdentity.mergeWithoutDuplicates(all_addresses, storage_addresses)
 		else
 			all_addresses = vI_smartIdentity.mergeWithoutDuplicates(storage_addresses, all_addresses)
@@ -416,14 +416,14 @@ vI_smartIdentity = {
 	smartIdentitySelection : function(all_addresses, autocreate) {
 		vI_msgIdentityClone.addIdentitiesToCloneMenu(all_addresses);
 		
-		if (!autocreate && vI.preferences.getBoolPref("smart_reply_ask") && 
-			((all_addresses.number == 1 && vI.preferences.getBoolPref("smart_reply_ask_always"))
+		if (!autocreate && vI.preferences.getBoolPref("idSelection_ask") && 
+			((all_addresses.number == 1 && vI.preferences.getBoolPref("idSelection_ask_always"))
 				|| all_addresses.number > 1))
 			window.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul",0, // give the Dialog a unique id
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
 					 all_addresses,
 					/* callback: */ vI_smartIdentity.changeIdentityToSmartIdentity).focus();
-		else if (autocreate || vI.preferences.getBoolPref("smart_reply_autocreate")) {
+		else if (autocreate || vI.preferences.getBoolPref("idSelection_autocreate")) {
 			var label=vI.elements.strings.getString("vident.smartIdentity.vIUsage");
 			if (all_addresses.number > 1) label += " "
 				+ vI.elements.strings.getString("vident.smartIdentity.moreThanOne");
