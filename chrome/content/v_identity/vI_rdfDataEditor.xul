@@ -46,6 +46,7 @@
 <!-- <stringbundle id="vI_rdfDataTreeBundle" src="chrome://v_identity/locale/vI_rdfDataEditor.properties" /> -->
 
 	<dialogheader title="&vI_rdfDataEditor.header.label;"/>
+	<vbox id="vI_rdfDataEditorContent">
 	<hbox>
 		<vbox><spacer flex="1"/>
 			<label value="&vI_rdfDataEditor.recipient.label;" accesskey="&vI_rdfDataEditor.recipient.accesskey;" control="recipient"/>
@@ -81,7 +82,7 @@
 			</menulist>
 		</hbox>
 	</groupbox>
-
+	</vbox>
 	<splitter id="vIDebugBoxSplitter" hidden="true"/>
 	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
 	DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>

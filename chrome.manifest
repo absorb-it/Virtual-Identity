@@ -13,3 +13,4 @@ overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome:
 overlay chrome://messenger/content/messenger.xul				chrome://v_identity/content/vI_context.xul
 overlay chrome://messenger/content/messenger.xul				chrome://v_identity/content/vI_upgradeOverlay.xul
 overlay chrome://messenger/content/mailWindowOverlay.xul			chrome://v_identity/content/vI_getHeader.xul
+overlay	chrome://v_identity/content/vI_rdfDataEditor.xul	chrome://v_identity/content/vI_storageExtras.xul

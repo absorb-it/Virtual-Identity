@@ -32,6 +32,8 @@
 %versionDTD;
 <!ENTITY % vIprefDialogDTD SYSTEM "chrome://v_identity/locale/vI_prefDialog.dtd">
 %vIprefDialogDTD;
+<!ENTITY % vIstorageExtrasDTD SYSTEM "chrome://v_identity/locale/vI_storageExtras.dtd">
+%vIstorageExtrasDTD;
 <!ENTITY % vIdentityDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
 %vIdentityDTD;
 ]>
@@ -372,27 +374,27 @@
 			<groupbox>
 			<caption label="&vI_prefDialog.storageCap3.caption;"/>
 			<vbox align="left">
-				<checkbox id="VIdent_identity.storage_returnReciept" label="&vI_prefDialog.storage.returnReciept.label;"
-					prefstring="storage_returnReciept"/>
-				<checkbox id="VIdent_identity.storage_characterEncoding" label="&vI_prefDialog.storage.characterEncoding.label;"
-					prefstring="storage_characterEncoding"/>
-				<checkbox id="VIdent_identity.storage_messageFormat" label="&vI_prefDialog.storage.messageFormat.label;"
-					prefstring="storage_messageFormat"/>
+				<checkbox id="VIdent_identity.storageExtras_returnReciept" label="&vI_prefDialog.storageExtras.returnReciept.label;"
+					prefstring="storageExtras_returnReciept"/>
+				<checkbox id="VIdent_identity.storageExtras_characterEncoding" label="&vI_prefDialog.storageExtras.characterEncoding.label;"
+					prefstring="storageExtras_characterEncoding"/>
+				<checkbox id="VIdent_identity.storageExtras_messageFormat" label="&vI_prefDialog.storageExtras.messageFormat.label;"
+					prefstring="storageExtras_messageFormat"/>
 				<spacer height="10px"/>
 				<hbox><vbox>
-				<label value="&vI_prefDialog.storage.sMime.label;"/>
-				<checkbox id="VIdent_identity.storage_sMime_messageEncryption" label="&vI_prefDialog.storage.sMime.messageEncryption.label;"
-					prefstring="storage_sMime_messageEncryption"/>
-				<checkbox id="VIdent_identity.storage_sMime_messageSignature" label="&vI_prefDialog.storage.sMime.messageSignature.label;"
-					prefstring="storage_sMime_messageSignature"/>
+				<label value="&vI_prefDialog.storageExtras.sMime.label;"/>
+				<checkbox id="VIdent_identity.storageExtras_sMime_messageEncryption" label="&vI_prefDialog.storageExtras.sMime.messageEncryption.label;"
+					prefstring="storageExtras_sMime_messageEncryption"/>
+				<checkbox id="VIdent_identity.storageExtras_sMime_messageSignature" label="&vI_prefDialog.storageExtras.sMime.messageSignature.label;"
+					prefstring="storageExtras_sMime_messageSignature"/>
 				</vbox><spacer flex="1"/><vbox>
-				<label value="&vI_prefDialog.storage.openPGP.label;"/>
-				<checkbox id="VIdent_identity.storage_openPGP_messageEncryption" label="&vI_prefDialog.storage.openPGP.messageEncryption.label;"
-					prefstring="storage_openPGP_messageEncryption"/>
-				<checkbox id="VIdent_identity.storage_openPGP_messageSignature" label="&vI_prefDialog.storage.openPGP.messageSignature.label;"
-					prefstring="storage_openPGP_messageSignature"/>
-				<checkbox id="VIdent_identity.storage_openPGP_PGPMIME" label="&vI_prefDialog.storage.openPGP.PGPMIME.label;"
-					prefstring="storage_openPGP_PGPMIME"/>
+				<label value="&vI_prefDialog.storageExtras.openPGP.label;"/>
+				<checkbox id="VIdent_identity.storageExtras_openPGP_messageEncryption" label="&vI_prefDialog.storageExtras.openPGP.messageEncryption.label;"
+					prefstring="storageExtras_openPGP_messageEncryption"/>
+				<checkbox id="VIdent_identity.storageExtras_openPGP_messageSignature" label="&vI_prefDialog.storageExtras.openPGP.messageSignature.label;"
+					prefstring="storageExtras_openPGP_messageSignature"/>
+				<checkbox id="VIdent_identity.storageExtras_openPGP_PGPMIME" label="&vI_prefDialog.storageExtras.openPGP.PGPMIME.label;"
+					prefstring="storageExtras_openPGP_PGPMIME"/>
 				</vbox></hbox>
 			</vbox>
 			</groupbox>

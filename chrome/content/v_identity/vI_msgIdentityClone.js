@@ -121,7 +121,7 @@ vI_msgIdentityClone = {
 		return true;
 	},
 
-	addIdentityToCloneMenu: function(name, id, smtp, extra) {
+	addIdentityToCloneMenu: function(name, id, smtp, extras) {
 		vI_notificationBar.dump("## vI_msgIdentityClone: addIdentityToCloneMenu '" + id + "'\n");
 		var accountname = null; var separator = null;
 		// if a base-id exists, search the account related to this id
@@ -139,7 +139,7 @@ vI_msgIdentityClone = {
 		accountname = document.getElementById("prettyName-Prefix").getAttribute("label") + accountname
 		
 		vI_helper.addIdentityMenuItem(vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone,
-			name, accountname, "", "vid", id, smtp, extra)	
+			name, accountname, "", "vid", id, smtp, extras)	
 	},
 	
 	// adds MenuItem for Identities to the cloned Identity-Select Dropdown Menu
@@ -151,7 +151,7 @@ vI_msgIdentityClone = {
 					if (!separator) separator = vI_msgIdentityClone.addSeparatorToCloneMenu();
 					vI_msgIdentityClone.addIdentityToCloneMenu(
 						all_addresses.combinedNames[index], all_addresses.id_keys[index],
-						all_addresses.smtp_keys[index], all_addresses.extra[index])
+						all_addresses.smtp_keys[index], all_addresses.extras[index])
 				}
 		}
 	},

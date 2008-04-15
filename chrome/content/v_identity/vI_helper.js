@@ -11,7 +11,7 @@ var vI_helper = {
 		else return email?email.replace(/^\s+|\s+$/g,""):""
 	},
 
-	addIdentityMenuItem: function(object, identityName, accountName, accountKey, identityKey, base_id_key, smtp_key, extra) {
+	addIdentityMenuItem: function(object, identityName, accountName, accountKey, identityKey, base_id_key, smtp_key, extras) {
 		var MenuItem = document.createElement("menuitem");
 		MenuItem.className = "identity-popup-item";
 		
@@ -23,7 +23,7 @@ var vI_helper = {
 		MenuItem.setAttribute("class", "identity_clone-popup-item new-icon")
 		if (base_id_key) MenuItem.setAttribute("base_id_key", base_id_key)
 		if (smtp_key) MenuItem.setAttribute("smtp_key", smtp_key)
-		if (extra) MenuItem.setAttribute("extra", extra)
+		if (extras) MenuItem.setAttribute("extras", extras)
 		
 		object.appendChild(MenuItem)
 		

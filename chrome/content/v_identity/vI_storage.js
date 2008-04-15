@@ -37,14 +37,14 @@ identityCollection.prototype =
 	combinedNames : {},
 	id_keys : {},
 	smtp_keys : {},
-	extra : {}
+	extras : {}
 };
 
 vI_storage = {
 	multipleRecipients : null,
 	
 	lastCheckedEmail : {}, 	// array of last checked emails per row,
-				// to prevent ugly double dialogs nd time-consuming double-checks
+				// to prevent ugly double dialogs and time-consuming double-checks
 	
 	elements : { Obj_storageSave : null },
 	
@@ -173,11 +173,12 @@ vI_storage = {
 			if (	vI_storage.firstUsedStorageData.email != storageData.email ||
 				vI_storage.firstUsedStorageData.fullName != storageData.fullName ||
 				vI_storage.firstUsedStorageData.id != storageData.id ||
-				vI_storage.firstUsedStorageData.smtp != storageData.smtp ) {
+				vI_storage.firstUsedStorageData.smtp != storageData.smtp ||
+				!vI_storage.firstUsedStorageData.extras.equal(storageData.extras) ) {
 					// add Identity to dropdown-menu
 					vI_msgIdentityClone.addIdentityToCloneMenu(
 						vI_helper.combineNames(storageData.fullName, storageData.email),
-						storageData.id, storageData.smtp)
+						storageData.id, storageData.smtp, storageData.extras)
 					vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageCollidingIdentity"),
 					"storage_notification");
 			}
@@ -187,15 +188,16 @@ vI_storage = {
 			// add Identity to dropdown-menu
 			vI_msgIdentityClone.addIdentityToCloneMenu(
 				vI_helper.combineNames(storageData.fullName, storageData.email),
-				storageData.id, storageData.smtp)
+				storageData.id, storageData.smtp, storageData.extras)
 			var warning = vI_storage.__getReplaceVIdentityWarning(recipient, storageData);
 			
 			if (	vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("timeStamp") ||
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
 				!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
 				vI_storage.promptService.confirm(window,"Warning",warning)) {						
-					vI_msgIdentityClone.setMenuToIdentity(storageData.id)
-					vI_smtpSelector.setMenuToKey(storageData.smtp)
+					vI_msgIdentityClone.setMenuToIdentity(storageData.id);
+					vI_smtpSelector.setMenuToKey(storageData.smtp);
+					storageData.extras.setValues();
 					if (vI_msgIdentityClone.setIdentity(
 						vI_helper.combineNames(storageData.fullName, storageData.email), null))
 					vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
@@ -216,10 +218,14 @@ vI_storage = {
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
 		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
+		var extras = new vI_storageExtras();
+		extras.readValues(); // initialize with current MsgComposeDialog Values
+
 		var equal = (	(id_key == storageData.id) &&
 				(smtp_key == storageData.smtp) &&
 				(curAddress.email == storageData.email) &&
-				(curAddress.name == storageData.fullName)	)
+				(curAddress.name == storageData.fullName) &&
+				(extras.equal(storageData.extras))	)
 		if (equal) vI_notificationBar.dump("## vI_storage: Identities are the same.\n")
 		else vI_notificationBar.dump("## vI_storage: Identities differ.\n")
 		return equal;
@@ -227,6 +233,7 @@ vI_storage = {
 	
 	storeVIdentityToAllRecipients : function(msgType) {
 		if (msgType != nsIMsgCompDeliverMode.Now) return;
+		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n")
 		if (!vI.preferences.getBoolPref("storage"))
 			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
 		vI_notificationBar.dump("## vI_storage: storeVIdentityToAllRecipients()\n");
@@ -273,6 +280,7 @@ vI_storage = {
 			// this is required, else lavascript context might be gone
 			window.setTimeout(vI_storage.__updateStorageFromVIdentity, 0, awGetInputElement(row).value, recipientType)
 		}
+		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n")
 	},
 	
 	__getVIdentityString : function() {
@@ -308,6 +316,7 @@ vI_storage = {
 	},
 	
 	__updateStorageFromVIdentity : function(recipient, recipientType) {
+		vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity.\n")
 		var dontUpdateMultipleNoEqual = (vI.preferences.getBoolPref("storage_dont_update_multiple") &&
 					vI_storage.multipleRecipients)
 		

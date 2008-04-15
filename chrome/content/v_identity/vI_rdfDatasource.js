@@ -124,6 +124,9 @@ vI_rdfDatasource = {
 		vI_rdfDatasource.__unsetRDFValue(resource, "fullName", vI_rdfDatasource.__getRDFValue(resource, "fullName"))
 		vI_rdfDatasource.__unsetRDFValue(resource, "id", vI_rdfDatasource.__getRDFValue(resource, "id"))
 		vI_rdfDatasource.__unsetRDFValue(resource, "smtp", vI_rdfDatasource.__getRDFValue(resource, "smtp"))
+		
+		var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
+		extras.loopForRDF(vI_rdfDatasource.__unsetRDFValue, resource);
 	},
 	
 	__unsetRDFValue : function (resource, field, value) {
@@ -154,7 +157,8 @@ vI_rdfDatasource = {
 			var fullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
 			var id = vI_rdfDatasource.__getRDFValue(resource, "id")
 			var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
-			var values = { email : email, fullName : fullName, id : id, smtp : (smtp=="default"?"":smtp) };
+			var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
+			var values = { email : email, fullName : fullName, id : id, smtp : (smtp=="default"?"":smtp), extras : extras  };
 			
 			callFunction (resource, type, name, values)		
 		}
@@ -179,7 +183,10 @@ vI_rdfDatasource = {
 		vI_notificationBar.dump("## vI_rdfDatasource: id '" + id + "'\n");
 		vI_notificationBar.dump("## vI_rdfDatasource: smtp '" + smtp + "'\n");
 		
-		return { email : email, fullName : fullName, id : id, smtp : (smtp=="default"?"":smtp) };
+		var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
+		vI_notificationBar.dump("## vI_rdfDatasource: extras: " + extras.status() + "\n");
+		
+		return { email : email, fullName : fullName, id : id, smtp : (smtp=="default"?"":smtp), extras : extras };
 	},
 	
 	__getRDFValue : function (resource, field) {
@@ -194,11 +201,13 @@ vI_rdfDatasource = {
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
 		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute("key");
+		var extras = new vI_storageExtras();
+		extras.readValues(); // initialize with current MsgComposeDialog Values
 		
-		vI_rdfDatasource.updateRDF(recDescription, recType, address.email, address.name, id_key, (smtp_key?smtp_key:"default"));
+		vI_rdfDatasource.updateRDF(recDescription, recType, address.email, address.name, id_key, (smtp_key?smtp_key:"default"), extras );
 	},
 	
-	updateRDF : function (recDescription, recType, email, fullName, id, smtp) {
+	updateRDF : function (recDescription, recType, email, fullName, id, smtp, extras) {
 		if (!email) {
 			vI_notificationBar.dump("## vI_rdfDatasource: updateRDF: no Sender-email for Recipient, aborting.\n");
 			return;
@@ -210,9 +219,12 @@ vI_rdfDatasource = {
 		vI_rdfDatasource.__setRDFValue(resource, "fullName", fullName)
 		vI_rdfDatasource.__setRDFValue(resource, "id", id)
 		vI_rdfDatasource.__setRDFValue(resource, "smtp", smtp)
+		
+		if (extras) extras.loopForRDF(vI_rdfDatasource.__setRDFValue, resource);
 	},
 
 	__setRDFValue : function (resource, field, value) {
+		vI_notificationBar.dump("## vI_rdfDatasource: __setRDFValue " + resource.ValueUTF8 + " " + field + " " + value + ".\n");
 		if (!value) return; // return if some value was not set.
 		var predicate = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "rdf#" + field);
 		var name = vI_rdfDatasource.rdfService.GetLiteral(value);

@@ -137,10 +137,10 @@ vI_upgrade = {
 		//~ alert(splitted.email + "++" + splitted.name + "++" + splitted.combinedName)
 		
 		vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.primaryEmail),
-						"email", splitted.email, splitted.name, id, smtp)
+						"email", splitted.email, splitted.name, id, smtp, null)
 		if (Card.secondEmail.replace(/^\s+|\s+$/g,""))
 			vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.secondEmail),
-					"email", splitted.email, splitted.name, id, smtp)
+					"email", splitted.email, splitted.name, id, smtp, null)
 		
 		Card[returnVar.prop] = "";
 		Card.editCardToDatabase("");

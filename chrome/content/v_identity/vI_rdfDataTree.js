@@ -92,6 +92,7 @@ var vI_rdfDataTree = {
 				smtpKey : values.smtp,
 				idCol : idName,
 				idKey : values.id,
+				extras : values.extras,
 				resource : resource }
 		
 		vI_rdfDataTree.__idData.push(pref);

@@ -240,7 +240,7 @@ vI_smartIdentity = {
 				add_addresses.combinedNames[index],
 				add_addresses.id_keys[index],
 				add_addresses.smtp_keys[index],
-				add_addresses.extra[index])
+				add_addresses.extras[index])
 		return all_addresses
 	},
 	
@@ -261,7 +261,7 @@ vI_smartIdentity = {
 				if (!all_addresses.id_keys[index] && id_key) {
 					all_addresses.id_keys[index] = id_key;
 					all_addresses.smtp_keys[index] = smtp_key;
-					all_addresses.extra[index] = extra;
+					all_addresses.extras[index] = extra;
 					vI_notificationBar.dump("## vI_smartIdentity:   added id '" + id_key
 						+ "' smtp '" + smtp_key + "' (+extra) to stored email '" + email +"'\n")
 				}
@@ -327,7 +327,7 @@ vI_smartIdentity = {
 				// mark id, smtp and extra fields as empty
 				all_addresses.id_keys[all_addresses.number] = null;
 				all_addresses.smtp_keys[all_addresses.number] = null;
-				all_addresses.extra[all_addresses.number] = null;
+				all_addresses.extras[all_addresses.number] = null;
 				
 				vI_notificationBar.dump("## vI_smartIdentity:   found '" +
 					all_addresses.combinedNames[all_addresses.number++] + "'\n")

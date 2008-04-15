@@ -1,0 +1,14 @@
+<!ENTITY vI_prefDialog.storageExtras.returnReciept.label "return reciept status">
+<!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "selected character encoding">
+<!ENTITY vI_prefDialog.storageExtras.messageFormat.label "selected message format">
+
+<!ENTITY vI_prefDialog.storageExtras.sMime.label "S/MIME">
+<!ENTITY vI_prefDialog.storageExtras.sMime.messageEncryption.label "encryption status">
+<!ENTITY vI_prefDialog.storageExtras.sMime.messageSignature.label "signature usage">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.label "OpenPGP">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "encryption status">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "signature usage">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "PGP/MIME usage">
+
+<!ENTITY vI_storageExtras.caption.label "additionally stored settings">
+<!ENTITY vI_storageExtras_characterEncoding.label "Character Encoding">

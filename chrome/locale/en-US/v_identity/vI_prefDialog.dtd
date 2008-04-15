@@ -73,17 +73,6 @@
 
 <!ENTITY vI_prefDialog.storageTab.Tab2.label "additional options">
 <!ENTITY vI_prefDialog.storageCap3.caption "store (and recall) the following settings">
-<!ENTITY vI_prefDialog.storage.returnReciept.label "return reciept status">
-<!ENTITY vI_prefDialog.storage.characterEncoding.label "selected character encoding">
-<!ENTITY vI_prefDialog.storage.messageFormat.label "selected message format">
-
-<!ENTITY vI_prefDialog.storage.sMime.label "S/MIME">
-<!ENTITY vI_prefDialog.storage.sMime.messageEncryption.label "encryption status">
-<!ENTITY vI_prefDialog.storage.sMime.messageSignature.label "signature usage">
-<!ENTITY vI_prefDialog.storage.openPGP.label "OpenPGP">
-<!ENTITY vI_prefDialog.storage.openPGP.messageEncryption.label "encryption status">
-<!ENTITY vI_prefDialog.storage.openPGP.messageSignature.label "signature usage">
-<!ENTITY vI_prefDialog.storage.openPGP.PGPMIME.label "PGP/MIME usage">
 
 <!ENTITY vI_prefDialog.idSelection.header "Identity Selection">
 <!ENTITY vI_prefDialog.idSelection.Tab1.label "identity selection">
