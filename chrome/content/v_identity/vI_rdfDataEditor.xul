@@ -33,6 +33,7 @@
 	ondialogaccept="return vI_rdfDataEditor.accept();" >
 
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataEditor.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_smtpSelector.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>

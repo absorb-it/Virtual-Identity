@@ -25,7 +25,7 @@
 vI_rdfDataEditor = {
 	__rdfDatasource : null,
 	
-	extras : new vI_storageExtras(resource, vI_rdfDatasource.__getRDFValue),
+	storageExtras : null,
 
 	init : function() {
 		vI_rdfDataEditor.__rdfDatasource = window.arguments[1]
@@ -59,7 +59,9 @@ vI_rdfDataEditor = {
 		vI_smtpSelector.__loadSMTP_server_list();
 		vI_smtpSelector.setMenuToKey(window.arguments[0]["smtpKey"])
 		
-		vI_rdfDataEditor.extras.setEditorValues();
+		vI_rdfDataEditor.storageExtras = new vI_storageExtras()
+		vI_rdfDataEditor.storageExtras.setEditorValues();
+		vI_storageExtrasHelper.hideUnusedEditorFields();
 	},
 	
 	blurEvent : function(elementId) {
@@ -74,13 +76,14 @@ vI_rdfDataEditor = {
 		if (window.arguments[0]["resource"])
 			vI_rdfDataEditor.__rdfDatasource.removeVIdentityFromRDF(window.arguments[0]["resource"])
 			
-		vI_rdfDataEditor.extras.readEditorValues();
+		vI_rdfDataEditor.storageExtras.readEditorValues();
 		vI_rdfDataEditor.__rdfDatasource.updateRDF(
 				document.getElementById("recipient").value,
 				document.getElementById("type_menu").selectedItem.getAttribute("key"),
 				address.email, address.name,
 				document.getElementById("identity_list").selectedItem.getAttribute("value"),
 				document.getElementById("smtp_server_list").selectedItem.getAttribute("key"),
+				vI_rdfDataEditor.storageExtras
 				)
 	},
 }

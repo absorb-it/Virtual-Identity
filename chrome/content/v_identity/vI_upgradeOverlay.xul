@@ -35,6 +35,7 @@
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_upgradeOverlay.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_account.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js" />
+	<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
 	<!-- following element just stores the Ext-Version, seamonkey has no extensionmanager -->
 	<vbox id="messagepanebox" >
 		<label id="extVersion" value="&vident.version;" hidden="true" />

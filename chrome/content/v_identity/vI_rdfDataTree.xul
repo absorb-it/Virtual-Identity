@@ -41,6 +41,7 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataTree.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
 <script type="application/x-javascript" src="chrome://messenger/content/messengercompose/MsgComposeCommands.js"/>
 
@@ -102,7 +103,7 @@
 <tree id="rdfDataTree" flex="1" class="plain" seltype="multiple"
 	persist="sortDirection sortResource" sortDirection="ascending" sortResource="recipientCol"
 	enableColumnDrag="true" context="configContext">
-	<treecols>
+	<treecols id="rdfDataTreeCols">
 		<treecol id="recipientCol" label="&vI_rdfDataTree.recipientColumn.label;" flex="10"
 			class="sortDirectionIndicator"
 			ignoreincolumnpicker="true"

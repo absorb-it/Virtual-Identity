@@ -44,6 +44,7 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js" />	
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_htmlTextBox.js" />
 
 <stringbundle id="vITextBoxBundle" src="chrome://v_identity/locale/vI_upgrade.properties" />

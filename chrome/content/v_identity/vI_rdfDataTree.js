@@ -47,6 +47,7 @@ var vI_rdfDataTree = {
 		vI_rdfDataTree.__strings = document.getElementById("vI_rdfDataTreeBundle");
 		vI_rdfDataTree.__getSMTPnames();
 		vI_rdfDataTree.__getIDnames();
+		vI_storageExtrasHelper.hideUnusedTreeCols();
 		vI_rdfDataTree.loadTable();
 	},
 
@@ -92,9 +93,9 @@ var vI_rdfDataTree = {
 				smtpKey : values.smtp,
 				idCol : idName,
 				idKey : values.id,
-				extras : values.extras,
 				resource : resource }
 		
+		values.extras.addPrefs(pref);
 		vI_rdfDataTree.__idData.push(pref);
 	},
 	
