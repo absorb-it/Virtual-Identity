@@ -12,3 +12,22 @@
 
 <!ENTITY vI_storageExtras.caption.label "additionally stored settings">
 <!ENTITY vI_storageExtras_characterEncoding.label "Character Encoding">
+
+<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Return Reciept">
+<!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Character Encoding">
+<!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Message Format">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME: encrypt">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME: sign">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "openPGP encrypt">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP: sign">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP: PGP/MIME">
+
+<!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "hide inactive fields">
+<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Return Reciept">
+<!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Character Encoding">
+<!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Message Format">
+<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: encrypt messages">
+<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeSig.label "S/MIME: sign messages">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP encrypt messages">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: sign messages">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: use PGP/MIME">
