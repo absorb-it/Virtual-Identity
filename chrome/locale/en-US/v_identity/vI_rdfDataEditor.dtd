@@ -1,3 +1,5 @@
+<!ENTITY vI_rdfDataEditor.dlgTitle.label "Virtual Identity Data Editor">
+
 <!ENTITY vI_rdfDataEditor.dataType.email "email">
 <!ENTITY vI_rdfDataEditor.dataType.maillist "mailing list">
 <!ENTITY vI_rdfDataEditor.dataType.newsgroup "newsgroup">

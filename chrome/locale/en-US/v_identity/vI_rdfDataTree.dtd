@@ -1,3 +1,5 @@
+<!ENTITY vI_rdfDataTree.dlgTitle.label "Virtual Identity Data Storage">
+
 <!ENTITY vI_rdfDataTree.filterPrefs.label "Filter:">
 <!ENTITY vI_rdfDataTree.filterPrefs.accesskey "i">
 <!ENTITY vI_rdfDataTree.showAll.label "Show All">

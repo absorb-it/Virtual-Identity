@@ -36,7 +36,8 @@
         width="750"
         height="500"
 	persist="width,height,screenX,screenY"
-        onload="vI_rdfDataTree.init();">
+        onload="vI_rdfDataTree.init();"
+	title="&vI_rdfDataTree.dlgTitle.label;">
 
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataTree.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />

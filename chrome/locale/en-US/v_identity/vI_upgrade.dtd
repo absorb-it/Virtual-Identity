@@ -1,3 +1,4 @@
+<!ENTITY vident.upgrade.dlgTitle.label "Virtual Identity Extension Upgrade/Installation">
 <!ENTITY vident.upgrade.intro.label "Virtual Identity Install/Upgrade">
 <!ENTITY vident.upgrade.intro.description "intro">
 <!ENTITY vident.upgrade.intro.caption "Virtual Identity">
