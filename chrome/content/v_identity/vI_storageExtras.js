@@ -43,13 +43,15 @@ vI_storageExtrasHelper = {
 	
 	hideUnusedEditorFields : function() {
 		var storageExtras = new vI_storageExtras();
+		var allHidden = true;
 		var hide = (document.getElementById("vI_storageExtras_hideUnusedEditorFields").getAttribute("checked") == "true")
 		for( var i = 0; i < storageExtras.extras.length; i++ ) {
-			document.getElementById("vI_" + storageExtras.extras[i].option).setAttribute("hidden",
-				hide && !vI_storageExtrasHelper.preferences.getBoolPref(storageExtras.extras[i].option))
-			document.getElementById("vI_" + storageExtras.extras[i].option + "_store").setAttribute("hidden",
-				hide && !vI_storageExtrasHelper.preferences.getBoolPref(storageExtras.extras[i].option))
+			var hidden = hide && !vI_storageExtrasHelper.preferences.getBoolPref(storageExtras.extras[i].option)
+			if (!hidden) allHidden = false
+			document.getElementById("vI_" + storageExtras.extras[i].option).setAttribute("hidden", hidden)
+			document.getElementById("vI_" + storageExtras.extras[i].option + "_store").setAttribute("hidden", hidden)
 		}
+		document.getElementById("storeValue").setAttribute("hidden", allHidden)
 		// resize the window to the content
 		window.sizeToContent();
 	}

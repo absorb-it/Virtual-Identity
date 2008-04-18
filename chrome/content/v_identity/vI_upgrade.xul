@@ -26,13 +26,13 @@
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>   
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
 
-<!DOCTYPE page [
-<!ENTITY % vIdentUpgradeDTD SYSTEM "chrome://v_identity/locale/vI_upgrade.dtd">
-%vIdentUpgradeDTD;
+<!DOCTYPE overlay [
 <!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
 %versionDTD;
 <!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
 %vIdentDTD;
+<!ENTITY % upgradeDTD SYSTEM "chrome://v_identity/locale/vI_upgrade.dtd">
+%upgradeDTD;
 ]>
 
 <wizard id="upgradeWizard" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -117,7 +117,7 @@
 	<spacer flex="1" />
 	<button class="v_identity_logo v_identity_logo_button"
 		label="&vident.vidLogo.label; &vident.version;"
-		oncommand="vI_upgrade.openURL('http://www.absorb.it/virtual-id')" tooltiptext="&vident.prefs.vidLogo.tooltiptext;" />
+		oncommand="vI_upgrade.openURL('http://www.absorb.it/virtual-id')" tooltiptext="&vident.upgrade.vidLogo.tooltiptext;" />
 	<spacer width="10px" />
 	<label id="extVersion" value="&vident.version;" hidden="true" />
 	</hbox>

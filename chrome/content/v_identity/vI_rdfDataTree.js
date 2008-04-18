@@ -57,7 +57,7 @@ var vI_rdfDataTree = {
 	
 	__addNewDatum : function(resource, type, name, values) {
 		var smtpName = vI_rdfDataTree.__keyTranslator.getSMTPname(values.smtp);
-		var idName = vI_rdfDataTree.__keyTranslator.getSMTPname(values.id);
+		var idName = vI_rdfDataTree.__keyTranslator.getIDname(values.id);
 		
 		var pref = { 	recipientCol : name,
 				typeCol : document.getElementById("vI_rdfDataTreeBundle").getString("vI_rdfDataTree.dataType." + type),

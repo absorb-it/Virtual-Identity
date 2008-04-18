@@ -77,14 +77,16 @@ vI_rdfDataEditor = {
 			vI_rdfDataEditor.__rdfDatasource.removeVIdentityFromRDF(window.arguments[0]["resource"])
 			
 		vI_rdfDataEditor.storageExtras.readEditorValues();
+		
+		var localIdentityData = new identityData(address.email, address.name,
+			document.getElementById("identity_list").selectedItem.getAttribute("value"),
+			document.getElementById("smtp_server_list").selectedItem.getAttribute("key"),
+			vI_rdfDataEditor.storageExtras)
+
 		vI_rdfDataEditor.__rdfDatasource.updateRDF(
 				document.getElementById("recipient").value,
 				document.getElementById("type_menu").selectedItem.getAttribute("key"),
-				address.email, address.name,
-				document.getElementById("identity_list").selectedItem.getAttribute("value"),
-				document.getElementById("smtp_server_list").selectedItem.getAttribute("key"),
-				vI_rdfDataEditor.storageExtras
-				)
+				localIdentityData)
 	},
 }
 window.addEventListener("load", vI_rdfDataEditor.init, false);

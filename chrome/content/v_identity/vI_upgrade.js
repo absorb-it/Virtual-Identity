@@ -136,11 +136,13 @@ vI_upgrade = {
 		var splitted = vI_upgrade.__parseAddress(newFullEmail);
 		//~ alert(splitted.email + "++" + splitted.name + "++" + splitted.combinedName)
 		
+		var localIdentityData = new identityData(splitted.email, splitted.name, id, smtp, null)
+		
 		vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.primaryEmail),
-						"email", splitted.email, splitted.name, id, smtp, null)
+						"email", localIdentityData)
 		if (Card.secondEmail.replace(/^\s+|\s+$/g,""))
 			vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.secondEmail),
-					"email", splitted.email, splitted.name, id, smtp, null)
+					"email", localIdentityData)
 		
 		Card[returnVar.prop] = "";
 		Card.editCardToDatabase("");

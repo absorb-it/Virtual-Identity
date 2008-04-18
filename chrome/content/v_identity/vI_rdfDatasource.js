@@ -137,6 +137,7 @@ vI_rdfDatasource = {
 			vI_rdfDatasource.rdfDataSource.Unassert(resource, predicate, name, true);
 	},
 	
+	// this will be used from rdfDataTree to get all RDF values, callFunction is vI_rdfDataTree.__addNewDatum
 	readAllVIdentitiesFromRDF : function (callFunction) {
 		vI_notificationBar.dump("## vI_rdfDatasource: readAllVIdentitiesFromRDF.\n");
 		var enumerator = vI_rdfDatasource.rdfDataSource.GetAllResources();
@@ -205,23 +206,24 @@ vI_rdfDatasource = {
 		var extras = new vI_storageExtras();
 		extras.readValues(); // initialize with current MsgComposeDialog Values
 		
-		vI_rdfDatasource.updateRDF(recDescription, recType, address.email, address.name, id_key, (smtp_key?smtp_key:"default"), extras );
+		var localIdentityData = new identityData(address.email, address.name, id, smtp, extras)
+		vI_rdfDatasource.updateRDF(recDescription, recType, localIdentityData);
 	},
 	
-	updateRDF : function (recDescription, recType, email, fullName, id, smtp, extras) {
-		if (!email) {
+	updateRDF : function (recDescription, recType, localIdentityData) {
+		if (!localIdentityData.email) {
 			vI_notificationBar.dump("## vI_rdfDatasource: updateRDF: no Sender-email for Recipient, aborting.\n");
 			return;
 		}
 		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
 		if (!resource) return null;
 		vI_notificationBar.dump("## vI_rdfDatasource: updateRDF " + resource.ValueUTF8 + ".\n");
-		vI_rdfDatasource.__setRDFValue(resource, "email", email)
-		vI_rdfDatasource.__setRDFValue(resource, "fullName", fullName)
-		vI_rdfDatasource.__setRDFValue(resource, "id", id)
-		vI_rdfDatasource.__setRDFValue(resource, "smtp", smtp)
+		vI_rdfDatasource.__setRDFValue(resource, "email", localIdentityData.email)
+		vI_rdfDatasource.__setRDFValue(resource, "fullName", localIdentityData.fullName)
+		vI_rdfDatasource.__setRDFValue(resource, "id", localIdentityData.id)
+		vI_rdfDatasource.__setRDFValue(resource, "smtp", localIdentityData.smtp)
 		
-		if (extras) extras.loopForRDF(vI_rdfDatasource.__setRDFValue, resource);
+		if (localIdentityData.extras) localIdentityData.extras.loopForRDF(vI_rdfDatasource.__setRDFValue, resource);
 	},
 
 	__setRDFValue : function (resource, field, value) {

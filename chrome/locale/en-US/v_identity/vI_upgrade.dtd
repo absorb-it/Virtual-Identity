@@ -16,3 +16,4 @@
 <!ENTITY vident.upgrade.finish.label "Virtual Identity Install/Upgrade">
 <!ENTITY vident.upgrade.finish.description "finish">
 <!ENTITY vident.upgrade.finish.caption "Virtual Identity">
+<!ENTITY vident.upgrade.vidLogo.tooltiptext "Open Virtual Identity Homepage">

@@ -50,7 +50,7 @@
 			oncommand="vI_storageExtrasHelper.hideUnusedEditorFields();"
 			persist="checked" />
 	</caption>
-		<label value="&vI_storageExtras.storeValue.label;" />
+		<label id="storeValue" value="&vI_storageExtras.storeValue.label;" />
 	<!-- storageExtras_returnReciept -->
 		<hbox>
 		<checkbox id="vI_storageExtras_returnReciept_store" oncommand="vI_storageExtras_adapt(this.id, null);" />
