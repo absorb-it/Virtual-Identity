@@ -21,6 +21,14 @@
 
  * ***** END LICENSE BLOCK ***** */
 
+function vI_storageExtras_adapt(sourceId, targetId) {
+	var checked = document.getElementById(sourceId).getAttribute("checked");
+	if (targetId) var target = document.getElementById(targetId)
+	else var target = document.getElementById(sourceId.replace(/_store/,""))
+	if (checked == "true") target.removeAttribute("disabled")
+	else target.setAttribute("disabled", "true");
+}	
+
 vI_storageExtrasHelper = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
@@ -36,9 +44,14 @@ vI_storageExtrasHelper = {
 	hideUnusedEditorFields : function() {
 		var storageExtras = new vI_storageExtras();
 		var hide = (document.getElementById("vI_storageExtras_hideUnusedEditorFields").getAttribute("checked") == "true")
-		for( var i = 0; i < storageExtras.extras.length; i++ )
+		for( var i = 0; i < storageExtras.extras.length; i++ ) {
 			document.getElementById("vI_" + storageExtras.extras[i].option).setAttribute("hidden",
 				hide && !vI_storageExtrasHelper.preferences.getBoolPref(storageExtras.extras[i].option))
+			document.getElementById("vI_" + storageExtras.extras[i].option + "_store").setAttribute("hidden",
+				hide && !vI_storageExtrasHelper.preferences.getBoolPref(storageExtras.extras[i].option))
+		}
+		// resize the window to the content
+		window.sizeToContent();
 	}
 }
 
@@ -67,38 +80,51 @@ function vI_storageExtras(callFunction, resource) {
 vI_storageExtras.prototype = {
 	loopForRDF : function(callFunction, resource) {
 		for( var i = 0; i < this.extras.length; i++ )
-			this.extras[i].value = callFunction(resource, this.extras[i].field, this.extras[i].value)
+			// only if pref set and feature(element available) or for dataEditor
+			if (!gMsgCompose || this.extras[i].active)
+				this.extras[i].value = callFunction(resource, this.extras[i].field, this.extras[i].value)
 	},
 	equal : function(storageExtras) {
-		for( var i = 0; i < this.extras.length; i++ )
-			if (vI.preferences.getBoolPref(this.extras[i].option) &&
-				this.extras[i].value != storageExtras.extras[i].value) return false
+		for( var i = 0; i < this.extras.length; i++ ) {
+			if (this.extras[i].active) vI_notificationBar.dump("## vI_storageExtras equal "+ this.extras[i].value + " : " + storageExtras.extras[i].value + "\n");
+			if (this.extras[i].active &&
+				(this.extras[i].value != storageExtras.extras[i].value)) {
+					vI_notificationBar.dump("## vI_storageExtras not equal\n"); return false
+			}
+		}
 		return true
 	},
 	status : function() {
 		var returnVal = "";
 		for( var i = 0; i < this.extras.length; i++ )
-			if (vI.preferences.getBoolPref(this.extras[i].option))
+			if (this.extras[i].active && this.extras[i].value)
 				returnVal += " " + this.extras[i].field + "='" + this.extras[i].value + "'";
 		return returnVal
 	},
 	setValues : function() {
-		for( var i = 0; i < this.extras.length; i++ )
-			if (vI.preferences.getBoolPref(this.extras[i].option)) this.extras[i].setValue()
+		for( var i = 0; i < this.extras.length; i++ ) {
+			if (this.extras[i].active) this.extras[i].setValue()
+			vI_notificationBar.dump("## vI_storageExtras setValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
+		}
 	},
 	readValues : function() {
-		for( var i = 0; i < this.extras.length; i++ )
-			if (vI.preferences.getBoolPref(this.extras[i].option)) this.extras[i].readValue()
+		for( var i = 0; i < this.extras.length; i++ ) {
+			if (this.extras[i].active) this.extras[i].readValue()
+			vI_notificationBar.dump("## vI_storageExtras readValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
+		}
 	},
 	setEditorValues : function() {
 		for( var i = 0; i < this.extras.length; i++ ) {
 			this.extras[i].value = window.arguments[0][this.extras[i].field + "Col"]
 			this.extras[i].setEditorValue();
+			vI_notificationBar.dump("## vI_storageExtras setEditorValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 	readEditorValues : function() {
-		for( var i = 0; i < this.extras.length; i++ )
+		for( var i = 0; i < this.extras.length; i++ ) {
 			this.extras[i].readEditorValue();
+			vI_notificationBar.dump("## vI_storageExtras readValue " + this.extras[i].field + "=" + this.extras[i].value + "\n");
+		}
 	},
 	addPrefs : function(pref) {
 		for( var i = 0; i < this.extras.length; i++ )
@@ -115,15 +141,17 @@ function vI_storageExtras_characterEncoding_setMenuMark() {
 		maileditCharsetMenu.removeAttribute("unmarkedValue")
 	}
 }
-function vI_storageExtras_characterEncoding() { }
+function vI_storageExtras_characterEncoding() {
+	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+}
 vI_storageExtras_characterEncoding.prototype = {
+	active : null,
 	value : null,
 	field : "charEnc",
 	option : "storageExtras_characterEncoding",
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
 		if (!this.value) return;
-		
 		var menuitem = document.getElementById(this.value);
 		if (menuitem) menuitem.setAttribute('checked', 'true');
 		else {	// set menumark later if menu is not ready yet
@@ -135,7 +163,6 @@ vI_storageExtras_characterEncoding.prototype = {
 		}
 		gMsgCompose.compFields.characterSet = this.value;
 		SetDocumentCharacterSet(this.value);
-		vI_notificationBar.dump("## vI_storageExtras_characterEncoding setValue " + this.value + "\n");
 	},
 	readValue : function() {
 		this.value = gMsgCompose.compFields.characterSet;
@@ -143,29 +170,34 @@ vI_storageExtras_characterEncoding.prototype = {
 			var charsetAlias = gCharsetConvertManager.getCharsetAlias(this.value);
 			if (charsetAlias == "us-ascii") this.value = "ISO-8859-1";   // no menu item for "us-ascii"
 		}
-		vI_notificationBar.dump("## vI_storageExtras_characterEncoding readValue " + this.value + "\n");
 	},
 	// function to set or read the value from the rdfDataEditor
 	setEditorValue : function() {
 		CreateMenu('mailedit');
-		document.getElementById("maileditCharsetMenu").selectedItem = document.getElementById(this.value);
-		vI_notificationBar.dump("## vI_storageExtras_characterEncoding setEditorValue " + this.value + "\n");
+		if (this.value != null) {
+			document.getElementById("maileditCharsetMenu").selectedItem = document.getElementById(this.value);
+			document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+		}
+		document.getElementById("vI_" + this.option + "_store").doCommand();
 	},
 	readEditorValue : function() {
-		this.value = document.getElementById("maileditCharsetMenu").selectedItem.id
-		vI_notificationBar.dump("## vI_storageExtras_characterEncoding readEditorValue " + this.value + "\n");
+		if (document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true")
+			this.value = document.getElementById("maileditCharsetMenu").selectedItem.id
+		else 	this.value = null;
 	}
 }
 
-function vI_storageExtras_msgFormat() { }
+function vI_storageExtras_msgFormat() {
+	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+}
 vI_storageExtras_msgFormat.prototype = {
+	active : null,
 	value : null,
 	field : "msgFormat",
 	option : "storageExtras_messageFormat",
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
 		if (!this.value) return;
-		vI_notificationBar.dump("## vI_storageExtras_msgFormat setValue " + this.value + "\n");
 		document.getElementById(this.value).setAttribute("checked","true");
 		OutputFormatMenuSelect(document.getElementById(this.value))
 	},
@@ -176,28 +208,34 @@ vI_storageExtras_msgFormat.prototype = {
 			case nsIMsgCompSendFormat.HTML: this.value = "format_html"; break;
 			case nsIMsgCompSendFormat.Both: this.value = "format_both"; break;
 		}
-		vI_notificationBar.dump("## vI_storageExtras_msgFormat readValue " + this.value + "\n");
 	},
 	// function to set or read the value from the rdfDataEditor
 	setEditorValue : function() {
 		//~ document.getElementById(this.value).setAttribute("checked","true");
-		document.getElementById("outputFormatMenu").selectedItem = document.getElementById(this.value);
-		vI_notificationBar.dump("## vI_storageExtras_characterEncoding setEditorValue " + this.value + "\n");
+		if (this.value != null) {
+			document.getElementById("outputFormatMenu").selectedItem = document.getElementById(this.value);
+			document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+		}
+		document.getElementById("vI_" + this.option + "_store").doCommand();
+		
 	},
 	readEditorValue : function() {
-		this.value = document.getElementById("outputFormatMenu").selectedItem.id
-		vI_notificationBar.dump("## vI_storageExtras_characterEncoding readEditorValue " + this.value + "\n");
+		if (document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true")
+			this.value = document.getElementById("outputFormatMenu").selectedItem.id
+		else 	this.value = null;
 	}
 }
 
-function vI_storageExtras_sMime_messageEncryption() { }
+function vI_storageExtras_sMime_messageEncryption() { 
+	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+}
 vI_storageExtras_sMime_messageEncryption.prototype = {
+	active : null,
 	value : null,
 	field : "sMimeEnc",
 	option : "storageExtras_sMime_messageEncryption",
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
-		vI_notificationBar.dump("## vI_storageExtras_sMime_messageEncryption setValue " + this.value + "\n");
 		if (this.value == "true") var element = document.getElementById("menu_securityEncryptRequire1")
 		else var element = document.getElementById("menu_securityNoEncryption1")
 		element.setAttribute("checked", "true");
@@ -206,14 +244,21 @@ vI_storageExtras_sMime_messageEncryption.prototype = {
 	readValue : function() {
 		setSecuritySettings(1)
 		this.value = (document.getElementById("menu_securityEncryptRequire1").getAttribute("checked") == "true")?"true":"false"
-		vI_notificationBar.dump("## vI_storageExtras_sMime_messageEncryption readValue " + this.value + "\n");
 	},
 	// function to set or read the value from the rdfDataEditor
 	setEditorValue : function() { 
-		document.getElementById("vI_" + this.option).setAttribute("checked", this.value) },
+		if (this.value != null) {
+			document.getElementById("vI_" + this.option).setAttribute("checked", this.value);
+			document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+		}
+		document.getElementById("vI_" + this.option + "_store").doCommand();
+	},
 	readEditorValue : function() {
-		var elementValue = document.getElementById("vI_" + this.option).getAttribute("checked");
-		this.value = (elementValue == "true")?"true":"false"
+		if (document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true") {
+			var elementValue = document.getElementById("vI_" + this.option).getAttribute("checked");
+			this.value = (elementValue == "true")?"true":"false"
+		}
+		else 	this.value = null;
 	}
 }
 
@@ -223,8 +268,11 @@ function vI_storageExtras_checkbox(field, option, composeDialogElementID, update
 	this.composeDialogElementID = composeDialogElementID;
 	this.updateFunction = updateFunction;
 	this.updateFunctionParam1 = updateFunctionParam1;
+	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option) &&
+		document.getElementById(this.composeDialogElementID);
 }
 vI_storageExtras_checkbox.prototype = {
+	active : null,
 	value : null,
 	field : null,
 	option : null,
@@ -234,30 +282,33 @@ vI_storageExtras_checkbox.prototype = {
 	
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
-		if (!this.value) return;
 		var element = document.getElementById(this.composeDialogElementID);
-		var elementValue =  element.getAttribute("checked");
-		if ((elementValue == "true") != (this.value == "true")) {
-			vI_notificationBar.dump("## vI_storageExtras_checkbox setValue " + this.composeDialogElementID + "=" +
-				this.value + " (was: " + elementValue + ").\n");
+		if (!this.value || !element) return;
+		if ((element.getAttribute("checked") == "true") != (this.value == "true")) {
 			if (this.value == "true") element.setAttribute("checked","true");
 			else element.removeAttribute("checked");
 			element.doCommand();
 		}
 	},
 	readValue : function() {
+		var element = document.getElementById(this.composeDialogElementID)
+		if (!element) return;
 		if (this.updateFunction) this.updateFunction(this.updateFunctionParam1);
-		var elementValue =  document.getElementById(this.composeDialogElementID).getAttribute("checked");
-		this.value = ((elementValue=="true")?"true":"false")
-		vI_notificationBar.dump("## vI_storageExtras_checkbox readValue " + this.composeDialogElementID + "=" +
-			this.value + "\n");
-
+		this.value = ((element.getAttribute("checked") == "true")?"true":"false")
 	},
 	// function to set or read the value from the rdfDataEditor
-	setEditorValue : function() { 
-		document.getElementById("vI_" + this.option).setAttribute("checked", this.value) },
+	setEditorValue : function() {
+		if (this.value != null) {
+			document.getElementById("vI_" + this.option).setAttribute("checked", this.value);
+			document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+		}
+		document.getElementById("vI_" + this.option + "_store").doCommand();
+	},
 	readEditorValue : function() {
-		var elementValue = document.getElementById("vI_" + this.option).getAttribute("checked");
-		this.value = (elementValue == "true")?"true":"false"
+		if (document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true") {
+			var elementValue = document.getElementById("vI_" + this.option).getAttribute("checked");
+			this.value = (elementValue == "true")?"true":"false"
+		}
+		else 	this.value = null;
 	}
 }

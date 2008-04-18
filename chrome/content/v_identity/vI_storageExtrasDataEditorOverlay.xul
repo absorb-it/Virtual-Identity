@@ -50,12 +50,20 @@
 			oncommand="vI_storageExtrasHelper.hideUnusedEditorFields();"
 			persist="checked" />
 	</caption>
+		<label value="&vI_storageExtras.storeValue.label;" />
 	<!-- storageExtras_returnReciept -->
+		<hbox>
+		<checkbox id="vI_storageExtras_returnReciept_store" oncommand="vI_storageExtras_adapt(this.id, null);" />
 		<checkbox id="vI_storageExtras_returnReciept" label="&vI_storageExtrasDataEditorOverlay.reciept.label;"/>
+		</hbox>
 	<!-- storageExtras_characterEncoding -->
+		<hbox>
+		<checkbox id="vI_storageExtras_characterEncoding_store"
+			oncommand="vI_storageExtras_adapt(this.id, 'maileditCharsetMenuLabel');vI_storageExtras_adapt(this.id, 'maileditCharsetMenu');" />
 		<hbox id="vI_storageExtras_characterEncoding">
 			<vbox><spacer flex="1"/>
-				<label value="&charsetMenu.label;" accesskey="&charsetMenu.accesskey;" control="maileditCharsetMenu" />
+				<label id="maileditCharsetMenuLabel" value="&charsetMenu.label;"
+					accesskey="&charsetMenu.accesskey;" control="maileditCharsetMenu" />
 			<spacer flex="1"/></vbox>
 			<menulist id="maileditCharsetMenu" 
 				datasources="rdf:charset-menu" ref="NC:MaileditCharsetMenuRoot" >
@@ -72,10 +80,15 @@
 			</menupopup>
 			</menulist>
 		</hbox>
+		</hbox>
 	<!-- storageExtras_messageFormat -->
+		<hbox>
+		<checkbox id="vI_storageExtras_messageFormat_store"
+			oncommand="vI_storageExtras_adapt(this.id, 'outputFormatMenuLabel');vI_storageExtras_adapt(this.id, 'outputFormatMenu');" />
 		<hbox id="vI_storageExtras_messageFormat">
 			<vbox><spacer flex="1"/>
-				<label value="&outputFormatMenu.label;" accesskey="&outputFormatMenu.label;" control="outputFormatMenu" />
+				<label id="outputFormatMenuLabel" value="&outputFormatMenu.label;"
+					accesskey="&outputFormatMenu.label;" control="outputFormatMenu" />
 			<spacer flex="1"/></vbox>
 			<menulist id="outputFormatMenu">
 			<menupopup>
@@ -86,21 +99,37 @@
 			</menupopup>
 			</menulist>
 		</hbox>
+		</hbox>
 	<!-- storageExtras_sMime_messageEncryption -->
+		<hbox>
+		<checkbox id="vI_storageExtras_sMime_messageEncryption_store" oncommand="vI_storageExtras_adapt(this.id, null)" />
 		<checkbox id="vI_storageExtras_sMime_messageEncryption"
 			label="&vI_storageExtrasDataEditorOverlay.sMimeEnc.label;"/>
+		</hbox>
 	<!-- storageExtras_sMime_messageSignature -->
+		<hbox>
+		<checkbox id="vI_storageExtras_sMime_messageSignature_store" oncommand="vI_storageExtras_adapt(this.id, null)" />
 		<checkbox id="vI_storageExtras_sMime_messageSignature"
 			label="&vI_storageExtrasDataEditorOverlay.sMimeSig.label;"/>
+		</hbox>
 	<!-- storageExtras_openPGP_messageEncryption -->
+		<hbox>
+		<checkbox id="vI_storageExtras_openPGP_messageEncryption_store" oncommand="vI_storageExtras_adapt(this.id, null)" />
 		<checkbox id="vI_storageExtras_openPGP_messageEncryption"
 			label="&vI_storageExtrasDataEditorOverlay.PGPEnc.label;"/>
+		</hbox>
 	<!-- storageExtras_openPGP_messageSignature -->
+		<hbox>
+		<checkbox id="vI_storageExtras_openPGP_messageSignature_store" oncommand="vI_storageExtras_adapt(this.id, null)" />
 		<checkbox id="vI_storageExtras_openPGP_messageSignature"
 			label="&vI_storageExtrasDataEditorOverlay.PGPSig.label;"/>
+		</hbox>
 	<!-- storageExtras_openPGP_PGPMIME -->
+		<hbox>
+		<checkbox id="vI_storageExtras_openPGP_PGPMIME_store" oncommand="vI_storageExtras_adapt(this.id, null)" />
 		<checkbox id="vI_storageExtras_openPGP_PGPMIME"
 			label="&vI_storageExtrasDataEditorOverlay.PGPMIME.label;"/>
+		</hbox>
 	</groupbox>
 	</vbox>
 </overlay>
