@@ -28,6 +28,38 @@
 */
 
 
+function identityData(email, fullName, id, smtp, extras) {
+	this.email = email;
+	this.fullName = fullName;
+	this.id = id;
+	this.smtp = (smtp=="default"?"":smtp);
+	this.extras = extras;
+	this.__keyTranslator = new keyTranslator();
+}
+identityData.prototype = {
+	email : null,
+	fullName : null,
+	id_key : null,
+	smtp_key : null,
+	extras : null,
+	__keyTranslator : null,
+	__combineStrings : function(stringA, stringB) {
+		var A = stringA.replace(/^\s+|\s+$/g,"");
+		var B = stringB.replace(/^\s+|\s+$/g,"");
+		if (!A) return B;
+		if (!B) return A;
+		return A + ", " + B;
+	},
+	identityDescription : function(index) {
+		var senderName = vI_helper.combineNames(this.fullName, this.email);
+		var idName = this.__keyTranslator.getIDname(this.id);
+		var smtpName = this.__keyTranslator.getSMTPname(this.smtp);
+		var extras = this.extras.status();
+		return senderName + " (" + 
+			this.__combineStrings(this.__combineStrings(idName, smtpName), extras) +  ")"
+	}
+}
+
 function identityCollection() { }
 identityCollection.prototype =
 {
@@ -37,7 +69,7 @@ identityCollection.prototype =
 	combinedNames : {},
 	id_keys : {},
 	smtp_keys : {},
-	extras : {}
+	extras : {},
 };
 
 vI_storage = {
@@ -284,33 +316,31 @@ vI_storage = {
 	},
 	
 	__getVIdentityString : function() {
-		var old_address = vI_helper.getAddress();		
+		var old_address = vI_helper.getAddress();
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
 		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
-		return old_address.combinedName + " (" + id_key + "," + 
-		(smtp_key?smtp_key:document.getElementById("bundle_messenger").getString("defaultServerTag")) +
-		")"
+		var extras = new vI_storageExtras();
+		extras.readValues();
+		var localIdentityData = new identityData(old_address.email, old_address.name,
+			id_key, smtp_key, extras)
+		return localIdentityData.identityDescription();
 	},
 
 	__getReplaceVIdentityWarning : function(recipient, storageData) {
 		return	vI.elements.strings.getString("vident.updateVirtualIdentity.warning1") +
 			recipient.recDesc + " (" + recipient.recType + ")" +
 			vI.elements.strings.getString("vident.updateVirtualIdentity.warning2") +
-			vI_helper.combineNames(storageData.fullName, storageData.email) +
-			" (" + storageData.id + "," + 
-			(storageData.smtp?storageData.smtp:document.getElementById("bundle_messenger").getString("defaultServerTag")) +
-			")" + vI.elements.strings.getString("vident.updateVirtualIdentity.warning3");
+			storageData.identityDescription() +
+			vI.elements.strings.getString("vident.updateVirtualIdentity.warning3");
 	},
 	
 	__getOverwriteStorageWarning : function(recipient, storageData) {
 		return  vI.elements.strings.getString("vident.updateStorage.warning1") +
 			recipient.recDesc + " (" + recipient.recType + ")" +
 			vI.elements.strings.getString("vident.updateStorage.warning2") +
-			vI_helper.combineNames(storageData.fullName, storageData.email) +
-			" (" + storageData.id + "," + 
-			(storageData.smtp?storageData.smtp:document.getElementById("bundle_messenger").getString("defaultServerTag")) +
-			")" + vI.elements.strings.getString("vident.updateStorage.warning3") +
+			storageData.identityDescription() +
+			vI.elements.strings.getString("vident.updateStorage.warning3") +
 			vI_storage.__getVIdentityString() +
 			vI.elements.strings.getString("vident.updateStorage.warning4");
 	},

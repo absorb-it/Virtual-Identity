@@ -158,9 +158,9 @@ vI_rdfDatasource = {
 			var id = vI_rdfDatasource.__getRDFValue(resource, "id")
 			var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
 			var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
-			var values = { email : email, fullName : fullName, id : id, smtp : (smtp=="default"?"":smtp), extras : extras  };
 			
-			callFunction (resource, type, name, values)		
+			var localIdentityData = new identityData(email, fullName, id, smtp, extras)
+			callFunction (resource, type, name, localIdentityData)		
 		}
 	},
 	
@@ -173,7 +173,7 @@ vI_rdfDatasource = {
 		if (!vI_rdfDatasource.rdfDataSource.hasArcOut(resource, email)) return null;
 		vI_notificationBar.dump("## vI_rdfDatasource: readVIdentityFromRDF found stored data.\n");
 		
-		var email = vI_rdfDatasource.__getRDFValue(resource, "email")
+		email = vI_rdfDatasource.__getRDFValue(resource, "email")
 		var fullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
 		var id = vI_rdfDatasource.__getRDFValue(resource, "id")
 		var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
@@ -186,7 +186,8 @@ vI_rdfDatasource = {
 		var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
 		vI_notificationBar.dump("## vI_rdfDatasource: extras: " + extras.status() + "\n");
 		
-		return { email : email, fullName : fullName, id : id, smtp : (smtp=="default"?"":smtp), extras : extras };
+		var localIdentityData = new identityData(email, fullName, id, smtp, extras)
+		return localIdentityData;
 	},
 	
 	__getRDFValue : function (resource, field) {

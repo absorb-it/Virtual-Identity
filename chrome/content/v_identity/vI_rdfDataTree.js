@@ -35,8 +35,7 @@ var vI_rdfDataTree = {
 	filterText : "",
 	
 	__strings : null,
-	__SMTP_NAMES : [],
-	__ID_NAMES : [],
+	__keyTranslator : null,
 
 	promptService : Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 			.getService(Components.interfaces.nsIPromptService),
@@ -45,8 +44,7 @@ var vI_rdfDataTree = {
 		vI_rdfDatasource.init();
 		vI_rdfDataTree.__treeElem = document.getElementById("rdfDataTree");
 		vI_rdfDataTree.__strings = document.getElementById("vI_rdfDataTreeBundle");
-		vI_rdfDataTree.__getSMTPnames();
-		vI_rdfDataTree.__getIDnames();
+		vI_rdfDataTree.__keyTranslator = new keyTranslator();
 		vI_storageExtrasHelper.hideUnusedTreeCols();
 		vI_rdfDataTree.loadTable();
 	},
@@ -57,34 +55,9 @@ var vI_rdfDataTree = {
 		return "";
 	},
 	
-	__getSMTPnames : function () {
-		var smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
-			.getService(Components.interfaces.nsISmtpService);
-		for (var i=0 ; i<smtpService.smtpServers.Count(); i++) {
-			var server = smtpService.smtpServers.QueryElementAt(i, Components.interfaces.nsISmtpServer);
-			if (!server.redirectorType)
-				vI_rdfDataTree.__SMTP_NAMES[server.key] = server.description?server.description:server.hostname
-		}
-	},
-
-	__getIDnames : function () {
-		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
-		accounts.sort(compareAccountSortOrder);
-		for (var i in accounts) {
-			var server = accounts[i].incomingServer;
-			if (!server) continue;
-			var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
-			for (var j in identites)
-				vI_rdfDataTree.__ID_NAMES[identites[j].key] = identites[j].identityName;
-		}
-	},
-	
 	__addNewDatum : function(resource, type, name, values) {
-		var smtpName = ""; var idName = "";
-		if (!values.smtp) smtpName = document.getElementById("bundle_messenger").getString("defaultServerTag")
-		else smtpName = vI_rdfDataTree.__SMTP_NAMES[values.smtp]
-		
-		if (values.id) idName = vI_rdfDataTree.__ID_NAMES[values.id]
+		var smtpName = vI_rdfDataTree.__keyTranslator.getSMTPname(values.smtp);
+		var idName = vI_rdfDataTree.__keyTranslator.getSMTPname(values.id);
 		
 		var pref = { 	recipientCol : name,
 				typeCol : document.getElementById("vI_rdfDataTreeBundle").getString("vI_rdfDataTree.dataType." + type),
