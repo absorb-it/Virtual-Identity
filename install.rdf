@@ -26,7 +26,7 @@
 
     <em:id>{dddd428e-5ac8-4a81-9f78-276c734f75b8}</em:id>
     <em:name>Virtual Identity</em:name>
-    <em:version>0.5.2</em:version>
+    <em:version>0.5.3pre</em:version>
     <em:description>Allows you to modify your Identity settings for a single Mail on the fly.</em:description>
     <em:creator>Rene Ejury</em:creator>
     <em:translator>www.babelzilla.org</em:translator>
@@ -39,7 +39,7 @@
     <em:translator>- Wacław Jacek</em:translator>	<!-- polish translation -->
     <em:homepageURL>http://www.absorb.it/virtual-id</em:homepageURL>
     <!--
-    When no updateURL is found, default addons.mozilla.org is used. So its not needed anymore.
+    restored updateURL to personal site, cause addons.mozilla.org didn't continued publishing the extension
     -->
     <em:updateURL>http://absorb.it/software/virtual_identity/v_identity_update.rdf</em:updateURL>
     <em:optionsURL>chrome://v_identity/content/vI_prefDialog.xul</em:optionsURL>
