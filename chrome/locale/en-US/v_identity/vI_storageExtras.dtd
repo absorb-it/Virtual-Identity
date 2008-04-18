@@ -1,3 +1,5 @@
+<!ENTITY vI_storageExtras.storeValue.label "store">
+
 <!ENTITY vI_prefDialog.storageExtras.returnReciept.label "return reciept status">
 <!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "selected character encoding">
 <!ENTITY vI_prefDialog.storageExtras.messageFormat.label "selected message format">
