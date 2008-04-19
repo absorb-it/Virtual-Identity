@@ -44,13 +44,21 @@ vI_rdfDataEditor = {
 
 		document.getElementById("sender").value = window.arguments[0]["senderCol"]
 		
+		var listitem = document.createElement("menuitem");
+		listitem.setAttribute("label", document.getElementById("bundle_messenger").getString("defaultServerTag"));
+		document.getElementById("identity_list_popup").appendChild(listitem);
+		document.getElementById("identity_list").selectedItem = listitem;
+		var separator = document.createElement("menuseparator");
+		document.getElementById("identity_list_popup").appendChild(separator);
+
 		FillIdentityListPopup(document.getElementById("identity_list_popup"))
 		var MenuItems = document.getElementById("identity_list_popup").childNodes
+		
 		for (index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].getAttribute("value") == window.arguments[0]["idKey"]) {
-					 document.getElementById("identity_list").selectedItem =
+				document.getElementById("identity_list").selectedItem =
 						MenuItems[index];
-					break;
+				break;
 			}
 		}
 
