@@ -9,7 +9,6 @@
 <!ENTITY vI_prefDialog.notificationTab.label "Status Messages">
 
 <!ENTITY vI_prefDialog.commonTab.header "General Configuration">
-
 <!ENTITY vI_prefDialog.commonTab.caption "features">
 <!ENTITY vI_prefDialog.storage.label "store (and recall) used Identities">
 <!ENTITY vI_prefDialog.storage.tooltiptext "Used Identities might be stored related to the reciepients of your email. If you write again to the same reciepient, the same virtual or non-virtual Identity wil be used">
@@ -61,6 +60,7 @@
 
 <!ENTITY vI_prefDialog.storageTab.header "Identity Storage">
 <!ENTITY vI_prefDialog.storageTab.Tab1.label "storage options">
+<!ENTITY vI_prefDialog.storageTab.Tab2.label "additional options">
 <!ENTITY vI_prefDialog.storageCap1.caption "storing of Identities">
 <!ENTITY vI_prefDialog.storageCap2.caption "reading of Identities">
 <!ENTITY vI_prefDialog.storage.storedefault.label "save used Identities while sending emails">
@@ -70,8 +70,6 @@
 <!ENTITY vI_prefDialog.storage.openEditor "edit stored data">
 <!ENTITY vI_prefDialog.storage.warn_vI_replace.label "ask before Virtual Identity in sender-field will be replaced">
 <!ENTITY vI_prefDialog.storage.get_One_Only.label "ignore Storage after first Virtual Identity was retrieved">
-
-<!ENTITY vI_prefDialog.storageTab.Tab2.label "additional options">
 <!ENTITY vI_prefDialog.storageCap3.caption "store (and recall) the following settings">
 
 <!ENTITY vI_prefDialog.idSelection.header "Identity Selection">

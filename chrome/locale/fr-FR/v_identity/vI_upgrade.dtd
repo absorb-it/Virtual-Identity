@@ -1,3 +1,4 @@
+<!ENTITY vident.upgrade.dlgTitle.label "Virtual Identity Extension Upgrade/Installation"> <!-- to translate -->
 <!ENTITY vident.upgrade.intro.label "Virtual Identity - Installation/Mise à jour">
 <!ENTITY vident.upgrade.intro.description "introduction">
 <!ENTITY vident.upgrade.intro.caption "Virtual Identity">
@@ -16,3 +17,4 @@
 <!ENTITY vident.upgrade.finish.label "Virtual Identity - Installation/Mise à jour">
 <!ENTITY vident.upgrade.finish.description "teminé">
 <!ENTITY vident.upgrade.finish.caption "Virtual Identity">
+<!ENTITY vident.upgrade.vidLogo.tooltiptext "Ouvrir la page Web de Virtual Identity">

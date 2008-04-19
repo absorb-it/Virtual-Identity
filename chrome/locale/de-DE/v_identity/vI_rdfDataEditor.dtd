@@ -1,0 +1,18 @@
+<!ENTITY vI_rdfDataEditor.dlgTitle.label "Virtual Identity Daten-Editor">
+
+<!ENTITY vI_rdfDataEditor.dataType.email "Email">
+<!ENTITY vI_rdfDataEditor.dataType.maillist "Mailing-Liste">
+<!ENTITY vI_rdfDataEditor.dataType.newsgroup "News-Gruppe">
+
+<!ENTITY vI_rdfDataEditor.header.label "Virtual Identity Speicher">
+<!ENTITY vI_rdfDataEditor.recipient.label "Empfänger:">
+<!ENTITY vI_rdfDataEditor.recipient.accesskey "E">
+<!ENTITY vI_rdfDataEditor.type.label "Empfänger-Typ">
+<!ENTITY vI_rdfDataEditor.type.accesskey "T">
+<!ENTITY vI_rdfDataEditor.caption.label "gepeicherte Virtuelle Identität:">
+<!ENTITY vI_rdfDataEditor.sender.label "Sender:">
+<!ENTITY vI_rdfDataEditor.sender.accesskey "S">
+<!ENTITY vI_rdfDataEditor.smtp.label "SMTP:">
+<!ENTITY vI_rdfDataEditor.smtp.accesskey "M">
+<!ENTITY vI_rdfDataEditor.identity.label "Basis-Identität">
+<!ENTITY vI_rdfDataEditor.identity.accesskey "B">

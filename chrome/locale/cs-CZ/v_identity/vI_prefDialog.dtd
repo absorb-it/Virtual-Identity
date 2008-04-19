@@ -1,0 +1,104 @@
+<!ENTITY vI_prefDialog.dlgTitle.label "Nastavení Virtual Identity">
+<!ENTITY vI_prefDialog.vidLogo.tooltiptext "Otevřít domovskou stránku rozšíření Virtual Identity">
+
+<!ENTITY vI_prefDialog.commonTab.label "Hlavní">
+<!ENTITY vI_prefDialog.vIdentityTab.label "Virtuální identita">
+<!ENTITY vI_prefDialog.smartReplyTab.label "Smart Reply">
+<!ENTITY vI_prefDialog.storageTab.label "Úložiště">
+<!ENTITY vI_prefDialog.idSelection.label "Identity-Selection"> <!-- to translate -->
+<!ENTITY vI_prefDialog.notificationTab.label "Zprávy o stavu">
+
+<!ENTITY vI_prefDialog.commonTab.header "Všeobecné nastavení">
+<!ENTITY vI_prefDialog.commonTab.caption "použít následující vlastnosti">
+<!ENTITY vI_prefDialog.storage.label "store (and recall) used Identities"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storage.tooltiptext "Used Identities might be stored related to the reciepients of your email. If you write again to the same reciepient, the same virtual or non-virtual Identity wil be used"> <!-- to translate -->
+<!ENTITY vI_prefDialog.autoTimestamp.label "autogenerate Timestamp-Identity for new mails"> <!-- to translate -->
+<!ENTITY vI_prefDialog.autoTimestamp.tooltiptext "On composing a new email, modify your usual sender-address with a timestamp. On easy way to create unique Identities, off by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartInfo.label "detect Identity by analysing the mail-header:"> <!-- to translate -->
+<!ENTITY vI_prefDialog.versionWarning.label "váš poštovní program je pro použití funkce Smart Draft příliš starý">
+<!ENTITY vI_prefDialog.smartDraft.label "použít Smart Draft">
+<!ENTITY vI_prefDialog.smartDraft.tooltiptext "'Smart Draft' tries to detect the to-be used sender of the Draft or Template by analysing the header of the stored email. Recommended, on by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartReply.label "použít Smart Reply">
+<!ENTITY vI_prefDialog.smartReply.tooltiptext "'Smart Reply' tries to detect the to-be used sender of the Reply by analysing the header of the received email. It's relevant if this Identity is not yet in your storage. Best results if configured in the approriate Tab. Recommended, on by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.label "použít Smart Reply i při odpovědi do diskusní skupiny">
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "You can use 'Smart Reply' for detecting your senders Identity while answering to newsposts. If not configured approriate, this won't work nicely. Therefore off by default."> <!-- to translate -->
+
+<!ENTITY vI_prefDialog.commonTab.caption2 "interface"> <!-- to translate -->
+<!ENTITY vI_prefDialog.SMTP.label "zobrazit nabídku SMTP">
+<!ENTITY vI_prefDialog.menuEntry.label "add entry for Settings-Dialog and Storage-Editor to Tools menu"> <!-- to translate -->
+<!ENTITY vI_prefDialog.warnNonvirtual.label "varovat při jakémkoliv použití nevirtuální identity">
+<!ENTITY vI_prefDialog.warnVirtual.label "varovat při jakémkoliv použití virtuální identity">
+
+<!ENTITY vI_prefDialog.vIdentityTab.header "Nastavení virtuálních identit">
+<!ENTITY vI_prefDialog.vIdentityTab.valueTab.label "vlastnosti ke zkopírování">
+<!ENTITY vI_prefDialog.vIdentityTab.fccTab.label "místo pro uložení odeslaných e-mailů">
+<!ENTITY vI_prefDialog.vIdentityTab.draftsTab.label "místo pro uložení konceptů">
+<!ENTITY vI_prefDialog.vIdentityTab.tmplTab.label "místo pro uložení šablon">
+<!ENTITY vI_prefDialog.vIdentityTab.valueTab.caption "při odeslání zprávy s Virtual Identity">
+<!ENTITY vI_prefDialog.vIdentityTab.valueTab.desc "kopírovat následující vlastnosti z předchozí identity:">
+<!ENTITY vI_prefDialog.SMIME.label "Nastavení S/MIME">
+<!ENTITY vI_prefDialog.PGP.label "Nastavení OpenPGP">
+<!ENTITY vI_prefDialog.VCard.label "přílohy vCard">
+<!ENTITY vI_prefDialog.HideSignature.warning.desc "poznámka: pro aktivaci dynamického odstraňování podpisu je potřeba nainstalovat a aktivovat rozšíření &apos;Signature Switch&apos;. Nyní tato volba není dostupná.">
+<!ENTITY vI_prefDialog.HideSignature.label "při použití virtuální identity odstranit podpis">
+<!ENTITY vI_prefDialog.autoReplyToSelf.label "nastavit Virtual Identity jako adresu pro Reply-To">
+<!ENTITY vI_prefDialog.vIdentityTab.fccTab.caption "při odeslání zprávy s Virtual Identity">
+<!ENTITY vI_prefDialog.vidFccAccount.label "Složka používána účtem změněným Virtual Identity">
+<!ENTITY vI_prefDialog.vidFccDefault.label "Složka používána výchozím účtem">
+
+<!ENTITY vI_prefDialog.smartReplyTab.header "Nastavení Smart Reply">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab1.label "1. získat adresu">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab2.label "2. filtrovat adresy">
+<!ENTITY vI_prefDialog.smartReplyTab.caption "Virtual Identity Smart Reply">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab1.desc "Pro nalezení identity pro odpověď musí Smart Reply získat seznam možných identit odesilatele. Analyzuje proto hlavičky &apos;To&apos; a &apos;Cc&apos;. Má-li Smart Reply analyzovat dodatečné hlavičky. Zde můžete zadat tyto a/nebo jiné hlavičky. (Dodatečné možnosti: Pro výběr n-té hlavičky z několika hlaviček stejného jména přidejte &apos;n&apos;. Pokud k některému záznamu přidáte &apos;@&apos;, použije se pouze e-mailová adresa a jméno bude ignorováno.)">
+<!ENTITY vI_prefDialog.smartReply.headers.desc "nové hlavičky - jedna na řádku, bez &apos;:&apos;, například &apos;x-original-to&apos; nebo &apos;x-original-to:@&apos; nebo &apos;x-original-to:2:@&apos;">
+<!ENTITY vI_prefDialog.smartReply.headers.reset "nastavit výchozí hodnoty">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "Adresy se musí po získání filtrovat. Filtry jsou aplikovány postupně, můžete je tedy použít pro seřazení výsledku. První nalezená adresa může být ihned použita jako odesilatelova identita. Pokud nepoužijete filtr, budou přeneseny všechny adresy.">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Filtr Smart Reply - jeden filtr na řádku, je možné použít regulární výrazy (například &apos;/@mozilla.org$/&apos; platí pro všechny e-maily z domény mozilla.org">
+<!ENTITY vI_prefDialog.smartReply.ignoreFullname.label "při porovnání e-mailu s existujícími identitami ignorovat celé jméno">
+<!ENTITY vI_prefDialog.smartReply.defaultFullname.label "pokud k žádné nalezené e-mailové adrese není uvedeno jméno, použít následující:">
+
+<!ENTITY vI_prefDialog.storageTab.header "Ukládání virtuálních identit">
+<!ENTITY vI_prefDialog.storageTab.Tab1.label "storage options"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storageTab.Tab2.label "additional options"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storageCap1.caption "Ukládání virtuálních identit">
+<!ENTITY vI_prefDialog.storageCap2.caption "Načítání virtuálních identit">
+<!ENTITY vI_prefDialog.storage.storedefault.label "uložit virtuální identity při odesílání e-mailů">
+<!ENTITY vI_prefDialog.storage.warn_update.label "zeptat se před přepsáním virtuální identity v úložišti">
+<!ENTITY vI_prefDialog.storage.dont_update_multiple.label "nikdy nepřepsat (zeptat se), pokud má e-mail více příjemců">
+<!ENTITY vI_prefDialog.storage.show_switch.label "zobrazit přepínač pro povolení/zakázání ukládání identit">
+<!ENTITY vI_prefDialog.storage.openEditor "edit stored data"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storage.warn_vI_replace.label "zeptat se před nahrazením virtuální identity v hlavičce Odesílatel">
+<!ENTITY vI_prefDialog.storage.get_One_Only.label "ignorovat úložiště po získání první virtuální identity">
+<!ENTITY vI_prefDialog.storageCap3.caption "store (and recall) the following settings"> <!-- to translate -->
+
+<!ENTITY vI_prefDialog.idSelection.header "Identity Selection"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab1.label "identity selection"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab2.label "results handling"> <!-- to translate -->
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Smart Reply and Storage"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Smart Draft and Storage"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Handling of the Results"> <!-- to translate -->
+
+<!ENTITY vI_prefDialog.idSelection.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with &apos;Smart Reply&apos; can configured here."> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "preferovat identity z &apos;Smart Reply&apos;">
+<!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "pokud je nalezena uložená identita, ignorovat identity z &apos;Smart Reply&apos;">
+
+<!ENTITY vI_prefDialog.idSelection.draft.desc "If you edit a Draft (or a Template) there is nothing to configure. If the extension is able to read the header of the stored email, a related Virtual Identity is created. There is no information about SMTP or any other specific settings in the Draft/Template. This information is, if possible, retrieved from the Virtual Identity Storage."> <!-- to translate -->
+
+<!ENTITY vI_prefDialog.idSelection.multiselect.desc "The results of the search in the Virtual Identity Storage and the Smart Reply or Smart Draft header analysis are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity."> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.ask.label "otevřít dialog pro výběr identity">
+<!ENTITY vI_prefDialog.idSelection.ask_always.label "ptát se i tehdy, když je jen jedna možná adresa">
+<!ENTITY vI_prefDialog.idSelection.autocreate.label "použít automaticky první nalezenou identitu">
+<!ENTITY vI_prefDialog.idSelection.autocreate.desc "(pokud je jen jedna možná adresa)">
+
+<!ENTITY vI_prefDialog.notificationTab.header "Zprávy o stavu">
+<!ENTITY vI_prefDialog.notificationTab.caption "Upozornění">
+<!ENTITY vI_prefDialog.notifyHeaders.label "zobrazit informace o rozpoznaných hlavičkách">
+<!ENTITY vI_prefDialog.notifySmartIdentity.label "aktivovat Smart Reply / zprávy o stavu Smart Draft">
+<!ENTITY vI_prefDialog.notifyStorage.label "povolit stavové zprávy úložiště">
+<!ENTITY vI_prefDialog.notifyTime.prefix.label "doba zobrazení zpráv o stavu (0 = nekonečno)">
+<!ENTITY vI_prefDialog.notifyTime.postfix.label "vteřin">
+<!ENTITY vI_prefDialog.notificationTab.Debug.caption "Ladění">
+<!ENTITY vI_prefDialog.notifyDebug.desc "Chcete-li hledat chyby, vyřešit problémy s konfigurací a porozumět tomu, co Virtual Identity dělá (především s filtry SmartReply), můžete si zobrazovat další informace. Použití této volby však zpomalí váš e-mailový klient, proto by neměla být zapnuta stále.">
+<!ENTITY vI_prefDialog.notifyDebug.label "zobrazit pole s ladícími informacemi">

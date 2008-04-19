@@ -1,0 +1,34 @@
+<!ENTITY vI_storageExtras.storeValue.label "speicher">
+
+<!ENTITY vI_prefDialog.storageExtras.returnReciept.label "Status Empfangsbestätigung">
+<!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "ausgewählter Zeichensatz">
+<!ENTITY vI_prefDialog.storageExtras.messageFormat.label "ausgewähltes Email-Format">
+
+<!ENTITY vI_prefDialog.storageExtras.sMime.label "S/MIME">
+<!ENTITY vI_prefDialog.storageExtras.sMime.messageEncryption.label "Verschlüsselungs-Status">
+<!ENTITY vI_prefDialog.storageExtras.sMime.messageSignature.label "Unterschriften-Nutzung">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.label "OpenPGP">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "Verschlüsselungs-Status">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "Unterschriften-Nutzung">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "PGP/MIME Nutzung">
+
+<!ENTITY vI_storageExtras.caption.label "zusätzlich gespeicherte Einstellungen">
+
+<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Empfangsbestätigung">
+<!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Zeichensatz">
+<!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Email-Format">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME: Verschlüsselung">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME: Signatur">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "openPGP Verschlüsselung">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP: Signatur">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP: PGP/MIME">
+
+<!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "verstecke unbenutzte Felder">
+<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Empfangsbestätigung">
+<!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Zeichensatz">
+<!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Email-Format">
+<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: verschlüssel Emails">
+<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeSig.label "S/MIME: signiere Emails">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP verschlüssel Emails">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: signiere Emails">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: nutze PGP/MIME">

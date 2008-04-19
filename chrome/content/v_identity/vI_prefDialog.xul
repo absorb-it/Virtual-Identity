@@ -432,6 +432,7 @@
 			<tabpanel orient="vertical">
 			<groupbox>
 			<caption label="&vI_prefDialog.idSelection.Tab2.caption;"/>
+			<vbox align="left">
 				<description width="500px">&vI_prefDialog.idSelection.multiselect.desc;</description>
 				<checkbox id="VIdent_identity.idSelection_ask" label="&vI_prefDialog.idSelection.ask.label;"
 					prefstring="idSelection_ask"
@@ -451,6 +452,7 @@
 					id="VIdent_identity.idSelection_autocreate.desc" />
 				<spacer flex="1"/></vbox>
 				</hbox>
+			</vbox>
 			</groupbox>
 			</tabpanel>
 		</tabpanels>

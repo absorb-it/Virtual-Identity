@@ -1,87 +1,13 @@
-<!ENTITY vident.compose.vidLogo.label "Virtual Identity">
-<!ENTITY vident.prefs.dlgTitle.label "Paramètres de Virtual Identity">
-<!ENTITY vident.prefs.vidLogo.tooltiptext "Ouvrir la page Web de Virtual Identity">
-<!ENTITY vident.prefs.commonTab.label "Principaux">
-<!ENTITY vident.prefs.vIdentityTab.label "Identité virtuelle">
-<!ENTITY vident.prefs.smartReplyTab.label "Réponse intelligente">
-<!ENTITY vident.prefs.notificationTab.label "Messages d&apos;état">
-<!ENTITY vident.prefs.commonTab.header "Configuration générale">
-<!ENTITY vident.prefs.commonTab.caption "Utiliser les fonctions suivantes">
-<!ENTITY vident.prefs.versionWarning.label "Votre programme de messagerie est trop ancien pour utiliser la fonction brouillon intelligent">
-<!ENTITY vident.prefs.smartDraft.label "utiliser le brouillon intelligent">
-<!ENTITY vident.prefs.smartReply.label "utiliser une réponse intelligente">
-<!ENTITY vident.prefs.smartReplyNewsgroups.label "utiliser également une réponse intelligente lors d&apos;une réponse à un forum">
-<!ENTITY vident.prefs.smartTimestamp.label "utiliser l&apos;horodatage intelligent">
-<!ENTITY vident.prefs.SMTP.label "montrer le menu SMTP">
-<!ENTITY vident.prefs.menuEntry.label "ajouter une entrée pour les options dans le menu Outils">
-<!ENTITY vident.prefs.warnNonvirtual.label "avertir dès qu&apos;est utilisée une identité non-virtuelle">
-<!ENTITY vident.prefs.warnVirtual.label "avertir dès qu&apos;est utilisée une identité virtuelle">
-<!ENTITY vident.prefs.vIdentityTab.header "Propriétés des identités virtuelles">
-<!ENTITY vident.prefs.vIdentityTab.valueTab.label "Attributs à copier">
-<!ENTITY vident.prefs.vIdentityTab.fccTab.label "Emplacement d&apos;enregistrement des courriels envoyés">
-<!ENTITY vident.prefs.vIdentityTab.draftsTab.label "emplacement de sauvegarde des brouillons">
-<!ENTITY vident.prefs.vIdentityTab.tmplTab.label "emplacement de sauvegarde des modèles">
-<!ENTITY vident.prefs.vIdentityTab.valueTab.caption "Quand j&apos;envoie un message avec une identité virtuelle">
-<!ENTITY vident.prefs.vIdentityTab.valueTab.desc "copier les attributs suivants à partir de l&apos;ancienne identité :">
-<!ENTITY vident.prefs.SMIME.label "paramètres de sécurité S/MIME">
-<!ENTITY vident.prefs.PGP.label "paramètres de sécurité OpenPGP">
-<!ENTITY vident.prefs.VCard.label "pièces jointes vCard">
-<!ENTITY vident.prefs.HideSignature.warning.desc "Remarque : pour lancer la désactivation dynamique des signatures vous devez installer et activer l&apos;extension &apos;Signature Switch&apos;. Pour le moment cette option n&apos;est pas disponible.">
-<!ENTITY vident.prefs.HideSignature.label "supprimer toute &apos;Signature&apos; en utilisant Virtual Identity">
-<!ENTITY vident.prefs.autoReplyToSelf.label "utiliser Virtual Identity pour une adresse de &apos;réponse à&apos;">
-<!ENTITY vident.prefs.vIdentityTab.fccTab.caption "Quand j&apos;envoie un message avec une identité virtuelle">
-<!ENTITY vident.prefs.vidFccAccount.label "Dossier du compte modifié par Virtual Identity">
-<!ENTITY vident.prefs.vidFccDefault.label "Dossier du compte par défaut">
-<!ENTITY vident.prefs.smartReplyTab.header "Paramètres de la réponse intelligente">
-<!ENTITY vident.prefs.smartReplyTab.Tab1.label "1. Obtenir les adresses">
-<!ENTITY vident.prefs.smartReplyTab.Tab2.label "2. Filtrer les adresses">
-<!ENTITY vident.prefs.smartReplyTab.Tab3.label "3. Utiliser les adresses">
-<!ENTITY vident.prefs.smartReplyTab.caption "Réponse intelligente de Virtual Identity">
-<!ENTITY vident.prefs.smartReplyTab3.caption "Réponse intelligente de Virtual Identity / Storage">
-<!ENTITY vident.prefs.smartReplyTab.Tab1.desc "Pour trouver une identité en &apos;Répondre à&apos;, Smart Reply doit parcourir une liste des expéditeurs possibles d&apos;identités. Donc ce sont généralement les en-têtes des champs &apos;À&apos; et &apos;Cc&apos; qui sont analysés. Ici vous pouvez les entrer ainsi que d&apos;autres champs d&apos;en-têtes. (options supplémentaires : pour choisir l&apos;en-tête numéro n parmi tous les en-têtes du même nom, ajoutez &apos;:n&apos;. Si vous ajoutez &apos;:@&apos; à n&apos;importe entrée, seules les adresses mail sont utilisées, les noms sont ignorés.)">
-<!ENTITY vident.prefs.smartReply.headers.desc "en-têtes supplémentaires - un par ligne, par exemple &apos;x-original-to&apos; ou &apos;x-original-to:@&apos; ou &apos;x-original-to:2:@&apos;">
-<!ENTITY vident.prefs.smartReply.headers.reset "Restaurer les valeurs par défaut">
-<!ENTITY vident.prefs.smartReplyTab.Tab2.desc "Après avoir obtenu les adresses il faut les filtrer. Les filtres sont utilisés l&apos;un après l&apos;autre, donc vous pouvez aussi les utiliser pour classer les résultats. À la fin, la première adresse trouvée peut être utilisée instantanément comme identité d&apos;expéditeur. Si vous n&apos;utilisez aucun filtre, toutes les adresses sont transférées.">
-<!ENTITY vident.prefs.smartReply.filter.desc "Filtre(s) de la réponse intelligente - un filtre par ligne, vous pouvez utiliser des expressions régulières (par exemple &apos;/@mozilla.org$/&apos; correspond à toutes les adresses du domaine mozilla.org)">
-<!ENTITY vident.prefs.smartReply.ignoreFullname.label "ignorer le nom complet lors de la comparaison des adresses courriel avec les identités existantes">
-<!ENTITY vident.prefs.smartReply.defaultFullname.label "Si aucune adresse courriel trouvée ne contient un nom, utiliser le nom suivant :">
-<!ENTITY vident.prefs.smartReplyTab.Tab3.desc "Finalement les adresses filtrées sont combinées avec celles qui ont été stockées avant (voir la configuration du stockage). Puis elles sont ajoutées au menu déroulant des identités pour ce message. Vous pouvez aussi choisir comment elles doivent être utilisées comme identités de nouveaux expéditeurs.">
-<!ENTITY vident.prefs.smartReply.ask.label "ouvrir une boîte de dialogue pour choisir l&apos;identité">
-<!ENTITY vident.prefs.smartReply.ask_always.label "également demander si une seule adresse est possible">
-<!ENTITY vident.prefs.smartReply.autocreate.label "utiliser la première identité trouvée sans poser de question">
-<!ENTITY vident.prefs.smartReply.autocreate.desc "(s&apos;il n&apos;existe qu&apos;une seul adresse possible)">
-<!ENTITY vident.prefs.storageTab.label "Stockage">
-<!ENTITY vident.prefs.storageTab.header "Stockage d&apos;identités virtuelles">
-<!ENTITY vident.prefs.storageCap1.caption "Stockage d&apos;identités virtuelles">
-<!ENTITY vident.prefs.storageCap2.caption "Stockage d&apos;identités virtuelles">
-<!ENTITY vident.prefs.storageCap3.caption "Configurer les identités pour &apos;Répondre à&apos;">
-<!ENTITY vident.prefs.storageTab.Tab1.label "1. Configurations communes">
-<!ENTITY vident.prefs.storageTab.Tab2.label "2. Identités pour &apos;Répondre à&apos;">
-<!ENTITY vident.prefs.storage.storedefault.label "enregistrer les identités virtuelles pendant l&apos;envoi de courriels">
-<!ENTITY vident.prefs.storage.warn_update.label "demander avant de remplacer mes identités virtuelles qui sont stockées">
-<!ENTITY vident.prefs.storage.dont_update_multiple.label "ne jamais remplacer (et demander) si le courriel a de multiples destinataires">
-<!ENTITY vident.prefs.storage.show_switch.label "afficher le bouton pour activer/désactiver l&apos;enregistrement d&apos;identités">
-<!ENTITY vident.prefs.storage.warn_vI_replace.label "demander avant de remplacer l&apos;identité virtuelle dans le champ d&apos;expéditeur">
-<!ENTITY vident.prefs.storage.get_One_Only.label "ignorer le stockage dès que la première identité virtuelle a été retrouvée">
-<!ENTITY vident.prefs.storage.reply.desc "Si vous répondez à tous les courriels, vous pouvez configurer ici la priorité des identités virtuelles stockées par rapport à celles qui sont détectées par &apos;Smart Reply&apos;. Le choix entre les identités qui en résultent s&apos;effectue de la même façon que pour celles qui sont configurées avec &apos;Smart Reply&apos;.">
-<!ENTITY vident.prefs.storage.use_for_smart_reply.label "utiliser les identités stockées en même temps que les &apos;Smart-Reply&apos;">
-<!ENTITY vident.prefs.storage.prefer_smart_reply.label "préférer les identités &apos;Smart Reply&apos;">
-<!ENTITY vident.prefs.storage.ignore_smart_reply.label "ignorer les identités &apos;Smart Reply&apos; si des identités ont été trouvées stockées">
-<!ENTITY vident.prefs.notificationTab.header "Messages d&apos;état">
-<!ENTITY vident.prefs.notificationTab.caption "Notifications">
-<!ENTITY vident.prefs.notifyHeaders.label "afficher des informations sur les en-têtes reconnus">
-<!ENTITY vident.prefs.notifySmartIdentity.label "activer les messages d&apos;état de réponse intelligente/brouillon intelligent">
-<!ENTITY vident.prefs.notifyStorage.label "activer le stockage des messages de statut">
-<!ENTITY vident.prefs.notifyTime.prefix.label "durée d&apos;affichage des messages d&apos;état (0 = infini)">
-<!ENTITY vident.prefs.notifyTime.postfix.label "secondes">
-<!ENTITY vident.prefs.notificationTab.Debug.caption "Débogage">
-<!ENTITY vident.prefs.notifyDebug.desc "Pour détecter les bogues, résoudre les problèmes de configuration et comprendre ce que Virtual Identity fait, en particulier avec les filtres de réponse intelligente, vous pouvez activer la production d&apos;informations complémentaires. Cette option ralentit votre client courriel, par conséquent vous ne devriez pas l&apos;activer en l&apos;absence de nécessité.">
-<!ENTITY vident.prefs.notifyDebug.label "afficher les informations de débogage">
+<!ENTITY vident.vidLogo.label "Virtual Identity">
 <!ENTITY vident.accPane.prettyName.prefix "Id virtuelle">
 <!ENTITY vident.composeDialog.storageSave.label "enregistrer">
 <!ENTITY vident.composeDialog.storageSave.tooltiptext "enregistrer une identité pendant l&apos;envoi">
 <!ENTITY vident.replySelector.dialogheader.title "Identité virtuelle">
 <!ENTITY vident.replySelector.caption.label "Choisissez une identité virtuelle">
+<!ENTITY vident.vI_Menu.label "Virtual Identity"> <!-- to translate -->
+<!ENTITY vident.vI_Menu.Settings.label "Settings"> <!-- to translate -->
+<!ENTITY vident.vI_Menu.DataEditor.label "Data-Storage Editor"> <!-- to translate -->
+
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "D">
 <!ENTITY sentInOtherFolder.label "Autre :">

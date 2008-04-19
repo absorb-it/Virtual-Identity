@@ -1,0 +1,22 @@
+<!ENTITY vI_rdfDataTree.dlgTitle.label "Virtual Identity Data Storage"> <!-- to translate -->
+
+<!ENTITY vI_rdfDataTree.filterPrefs.label "Filter:"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.filterPrefs.accesskey "i"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.showAll.label "Show All"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.showAll.accesskey "w"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.recipientColumn.label "Recipient"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.typeColumn.label "Type"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.senderColumn.label "Sender"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.idColumn.label "Identity"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.smtpColumn.label "SMTP"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.menuEntry.label "Virtual Identity Data-Storage"> <!-- to translate -->
+
+<!ENTITY vI_rdfDataTree.editMenu.label "Edit"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.editMenu.accesskey "E"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.modifySelected.label "modify selected Items"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.modifySelected.accesskey "M"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.removeSelected.label "remove selected Items"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.removeSelected.accesskey "R"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.newItem.label "add new Item"> <!-- to translate -->
+<!ENTITY vI_rdfDataTree.newItem.accesskey "N"> <!-- to translate -->
+

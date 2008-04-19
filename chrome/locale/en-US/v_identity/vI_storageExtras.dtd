@@ -13,7 +13,6 @@
 <!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "PGP/MIME usage">
 
 <!ENTITY vI_storageExtras.caption.label "additionally stored settings">
-<!ENTITY vI_storageExtras_characterEncoding.label "Character Encoding">
 
 <!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Return Reciept">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Character Encoding">

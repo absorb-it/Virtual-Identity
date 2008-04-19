@@ -1,0 +1,104 @@
+<!ENTITY vI_prefDialog.dlgTitle.label "Virtual Identity - Opciones">
+<!ENTITY vI_prefDialog.vidLogo.tooltiptext "Visitar la página web de Virtual Identity">
+
+<!ENTITY vI_prefDialog.commonTab.label "Principal">
+<!ENTITY vI_prefDialog.vIdentityTab.label "Virtual Identity">
+<!ENTITY vI_prefDialog.smartReplyTab.label "Respuesta rápida">
+<!ENTITY vI_prefDialog.storageTab.label "Almacenamiento">
+<!ENTITY vI_prefDialog.idSelection.label "Identity-Selection"> <!-- to translate -->
+<!ENTITY vI_prefDialog.notificationTab.label "Estado de mensajes">
+
+<!ENTITY vI_prefDialog.commonTab.header "Configuración general">
+<!ENTITY vI_prefDialog.commonTab.caption "usar las siguientes opciones">
+<!ENTITY vI_prefDialog.storage.label "store (and recall) used Identities"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storage.tooltiptext "Used Identities might be stored related to the reciepients of your email. If you write again to the same reciepient, the same virtual or non-virtual Identity wil be used"> <!-- to translate -->
+<!ENTITY vI_prefDialog.autoTimestamp.label "autogenerate Timestamp-Identity for new mails"> <!-- to translate -->
+<!ENTITY vI_prefDialog.autoTimestamp.tooltiptext "On composing a new email, modify your usual sender-address with a timestamp. On easy way to create unique Identities, off by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartInfo.label "detect Identity by analysing the mail-header:"> <!-- to translate -->
+<!ENTITY vI_prefDialog.versionWarning.label "su versión del programa es antigua para poder usar la opción de borradores rápidos">
+<!ENTITY vI_prefDialog.smartDraft.label "usar borradores rápidos">
+<!ENTITY vI_prefDialog.smartDraft.tooltiptext "'Smart Draft' tries to detect the to-be used sender of the Draft or Template by analysing the header of the stored email. Recommended, on by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartReply.label "usar respuesta rápida">
+<!ENTITY vI_prefDialog.smartReply.tooltiptext "'Smart Reply' tries to detect the to-be used sender of the Reply by analysing the header of the received email. It's relevant if this Identity is not yet in your storage. Best results if configured in the approriate Tab. Recommended, on by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.label "usar la respuesta rápida también para responder a los grupos de noticias">
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "You can use 'Smart Reply' for detecting your senders Identity while answering to newsposts. If not configured approriate, this won't work nicely. Therefore off by default."> <!-- to translate -->
+
+<!ENTITY vI_prefDialog.commonTab.caption2 "interface"> <!-- to translate -->
+<!ENTITY vI_prefDialog.SMTP.label "mostrar menú SMTP">
+<!ENTITY vI_prefDialog.menuEntry.label "add entry for Settings-Dialog and Storage-Editor to Tools menu"> <!-- to translate -->
+<!ENTITY vI_prefDialog.warnNonvirtual.label "avisar si se usa una identidad no virtual">
+<!ENTITY vI_prefDialog.warnVirtual.label "avisar al usar cualquiera de las identidades virtuales">
+
+<!ENTITY vI_prefDialog.vIdentityTab.header "Propiedades de las identidades virtuales">
+<!ENTITY vI_prefDialog.vIdentityTab.valueTab.label "atributos a copiar">
+<!ENTITY vI_prefDialog.vIdentityTab.fccTab.label "ubicación donde guardar los mensajes enviados">
+<!ENTITY vI_prefDialog.vIdentityTab.draftsTab.label "ubicación para guardar los borradores">
+<!ENTITY vI_prefDialog.vIdentityTab.tmplTab.label "ubicación para guardar las plantillas">
+<!ENTITY vI_prefDialog.vIdentityTab.valueTab.caption "al enviar un mensaje usando una identidad virtual">
+<!ENTITY vI_prefDialog.vIdentityTab.valueTab.desc "copiar los siguientes atributos de la identidad correspondiente:">
+<!ENTITY vI_prefDialog.SMIME.label "Opciones de seguridad S/MIME">
+<!ENTITY vI_prefDialog.PGP.label "Opciones de seguridad OpenPGP">
+<!ENTITY vI_prefDialog.VCard.label "adjuntos vCard">
+<!ENTITY vI_prefDialog.HideSignature.warning.desc "nota: para habilitar la desactivación dinámica de firmas tiene que instalar (y activar) la extensión &apos;Signature Switch&apos;. Por ahora, esta opción no está disponible.">
+<!ENTITY vI_prefDialog.HideSignature.label "eliminar cualquier firma cuando se use una identidad virtual">
+<!ENTITY vI_prefDialog.autoReplyToSelf.label "establecer la identidad virtual como la dirección a la que responder">
+<!ENTITY vI_prefDialog.vIdentityTab.fccTab.caption "al enviar un mensaje usando una identidad virtual">
+<!ENTITY vI_prefDialog.vidFccAccount.label "Carpeta usada por la cuenta cambiada con Virtual Identity">
+<!ENTITY vI_prefDialog.vidFccDefault.label "Carpeta usada por la cuenta por defecto">
+
+<!ENTITY vI_prefDialog.smartReplyTab.header "Respuesta rápida - Opciones">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab1.label "1. obtener direcciones">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab2.label "2. filtrar direcciones">
+<!ENTITY vI_prefDialog.smartReplyTab.caption "Virtual Identity - Respuesta rápida">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab1.desc "Para encontrar la identidad con la que responder, la respuesta rápida tiene que obtener la lista de los posibles remitentes. Para ello, las cabeceras &apos;Para&apos; y &apos;Cc&apos; son analizadas. Si Smart Reply tiene que analizar cabeceras adicionales, puede incluirlas aquí (Opciones adicionales: para seleccionar la cabecera número n de varias con el mismo nombre añada &apos;:,&apos;. Si añade &apos;:@&apos; en alguna entrada, sólo se usarán las direcciones de correo, los nombres serán ignorados.)">
+<!ENTITY vI_prefDialog.smartReply.headers.desc "cabeceras adicionales - una por por ejemplo &apos;x-original-to&apos; o &apos;x-original-to:&apos;">
+<!ENTITY vI_prefDialog.smartReply.headers.reset "establecer los valores por defecto">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "Una vez obtenidas las direcciones, éstas son filtradas. Todos los filtros se usan después de los anteriores, por lo que puede usarlos también para ordenar los resultados. Al terminar, la primera dirección encontrada se usará como la identidad del remitente. Si no usa filtros, todas las direcciones serán transferidas.">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Filtros de respuesta rápida - un filtro por línea, con posibilidad de usar expresiones regulares (por ejemplo, &apos;/@mozilla.org$/&apos; coincide con cualquier correo del dominio mozilla.org">
+<!ENTITY vI_prefDialog.smartReply.ignoreFullname.label "ignorar los nombres completos al comparar las direcciones de correo con las identidades existentes">
+<!ENTITY vI_prefDialog.smartReply.defaultFullname.label "si no hay nombres en las direcciones encontradas, usar el siguiente:">
+
+<!ENTITY vI_prefDialog.storageTab.header "Guardar las identidades virtuales">
+<!ENTITY vI_prefDialog.storageTab.Tab1.label "storage options"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storageTab.Tab2.label "additional options"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storageCap1.caption "Guardar las identidades virtuales">
+<!ENTITY vI_prefDialog.storageCap2.caption "Leer las identidades virtuales">
+<!ENTITY vI_prefDialog.storage.storedefault.label "guardar las identidades virtuales al enviar los correos">
+<!ENTITY vI_prefDialog.storage.warn_update.label "preguntar siempre antes de sobreescribir las identidades virtuales en la Storage">
+<!ENTITY vI_prefDialog.storage.dont_update_multiple.label "no sobreescribir (y preguntar) si un correo tiene varios remitentes">
+<!ENTITY vI_prefDialog.storage.show_switch.label "mostrar selector para activar/desactivar la opción de guardar las identidades">
+<!ENTITY vI_prefDialog.storage.openEditor "edit stored data"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storage.warn_vI_replace.label "preguntar antes de reemplazar el campo remitente con la identidad virtual">
+<!ENTITY vI_prefDialog.storage.get_One_Only.label "ignorar el amacenamiento una vez que se recupere la primera identidad virtual">
+<!ENTITY vI_prefDialog.storageCap3.caption "store (and recall) the following settings"> <!-- to translate -->
+
+<!ENTITY vI_prefDialog.idSelection.header "Identity Selection"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab1.label "identity selection"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab2.label "results handling"> <!-- to translate -->
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Smart Reply and Storage"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Smart Draft and Storage"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Handling of the Results"> <!-- to translate -->
+
+<!ENTITY vI_prefDialog.idSelection.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with &apos;Smart Reply&apos; can configured here."> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "preferir las identidades de &apos;respuesta rápida&apos;">
+<!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "Ignorar las identidades de &apos;respuesta rápida&apos; si se encuentran en la Storage">
+
+<!ENTITY vI_prefDialog.idSelection.draft.desc "If you edit a Draft (or a Template) there is nothing to configure. If the extension is able to read the header of the stored email, a related Virtual Identity is created. There is no information about SMTP or any other specific settings in the Draft/Template. This information is, if possible, retrieved from the Virtual Identity Storage."> <!-- to translate -->
+
+<!ENTITY vI_prefDialog.idSelection.multiselect.desc "The results of the search in the Virtual Identity Storage and the Smart Reply or Smart Draft header analysis are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity."> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.ask.label "abrir una ventana para preguntar la identidad">
+<!ENTITY vI_prefDialog.idSelection.ask_always.label "preguntar incluso si solo hay una dirección posible">
+<!ENTITY vI_prefDialog.idSelection.autocreate.label "usar la primera identidad encontrada sin interacción">
+<!ENTITY vI_prefDialog.idSelection.autocreate.desc "(si sólo hay una posible dirección)">
+
+<!ENTITY vI_prefDialog.notificationTab.header "Estado de mensajes">
+<!ENTITY vI_prefDialog.notificationTab.caption "Notificaciones">
+<!ENTITY vI_prefDialog.notifyHeaders.label "mostrar información sobre las cabeceras reconocidas">
+<!ENTITY vI_prefDialog.notifySmartIdentity.label "activar estado de los mensajes en respuesta rápida / borrador rápido">
+<!ENTITY vI_prefDialog.notifyStorage.label "activar el estado de los mensajes en la Storage">
+<!ENTITY vI_prefDialog.notifyTime.prefix.label "tiempo para mostrar el estado de los mensajes (0 = infinito)">
+<!ENTITY vI_prefDialog.notifyTime.postfix.label "segundos">
+<!ENTITY vI_prefDialog.notificationTab.Debug.caption "Depuración">
+<!ENTITY vI_prefDialog.notifyDebug.desc "Para encontrar fallos, resolver problemas y entender lo que está haciendo Virtual Identity, especialmente con los filtros de respuesta rápida, puede habilitar alguna información adicional. Esta información aparecerá mayoritariamente en inglés. Si usa esta opción, el cliente de correo será más lento, por lo que no debe estar activa permanentemente.">
+<!ENTITY vI_prefDialog.notifyDebug.label "mostrar el área con la información de depuración">
