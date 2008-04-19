@@ -4,6 +4,8 @@ function keyTranslator() { }
 keyTranslator.prototype = {
 	SMTP_NAMES : null,
 	ID_NAMES : null,
+	DEFAULT_TAG : null,
+	
 	__getSMTPnames : function () {
 		this.SMTP_NAMES = [];
 		var smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
@@ -13,6 +15,7 @@ keyTranslator.prototype = {
 			if (!server.redirectorType)
 				this.SMTP_NAMES[server.key] = server.description?server.description:server.hostname
 		}
+		if (!this.DEFAULT_TAG) this.DEFAULT_TAG = document.getElementById("bundle_messenger").getString("defaultServerTag");
 	},
 	__getIDnames : function () {
 		this.ID_NAMES = [];
@@ -25,18 +28,23 @@ keyTranslator.prototype = {
 			for (var j in identites)
 				this.ID_NAMES[identites[j].key] = identites[j].identityName;
 		}
+		if (!this.DEFAULT_TAG) this.DEFAULT_TAG = document.getElementById("bundle_messenger").getString("defaultServerTag");
+	},
+	getSMTP : function (smtpKey) {
+		if (!this.SMTP_NAMES) this.__getSMTPnames();
+		return this.SMTP_NAMES[smtpKey];
+	},
+	getID : function (idKey) {
+		if (!this.ID_NAMES) this.__getIDnames();
+		return this.ID_NAMES[idKey];
 	},
 	getSMTPname : function (smtpKey) {
-		if (!smtpKey) return document.getElementById("bundle_messenger").getString("defaultServerTag")
-		else {
-			if (!this.SMTP_NAMES) this.__getSMTPnames();
-			return this.SMTP_NAMES[smtpKey]
-		}
+		if (!this.SMTP_NAMES) this.__getSMTPnames();
+		return this.SMTP_NAMES[smtpKey]?this.SMTP_NAMES[smtpKey]:(smtpKey?this.DEFAULT_TAG+" "+smtpKey+" not found":this.DEFAULT_TAG)
 	},
 	getIDname : function (idKey) {
-		if (!idKey) return "";
 		if (!this.ID_NAMES) this.__getIDnames();
-		return this.ID_NAMES[idKey]
+		return this.ID_NAMES[idKey]?this.ID_NAMES[idKey]:(idKey?this.DEFAULT_TAG+" "+idKey+" not found":this.DEFAULT_TAG)
 	},
 }
 
@@ -92,6 +100,7 @@ var vI_helper = {
 			email = RegExp.lastMatch
 			email = email.replace(/\s+|<|>/g,"")
 			name = name.replace(/^\s+|\s+$/g,"")
+			name = name.replace(/^\"|\"$/g,"")
 		}
 		vI_notificationBar.dump("## v_identity: getAddress: address '" + address + "' name '" + 
 			name + "' email '" + email + "'\n");
