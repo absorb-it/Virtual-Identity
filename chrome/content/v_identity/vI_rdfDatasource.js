@@ -104,18 +104,19 @@ vI_rdfDatasource = {
 	
 	__getRDFResourceForVIdentity : function (recDescription, recType) {
 		if (!vI_rdfDatasource.rdfDataSource) return null;
-		recDescription = recDescription.replace(/^\s+|\s+$/g,"")
-		if (!recDescription) {
+		var parsed = vI_helper.parseAddress(recDescription)
+		if (!parsed.combinedName) {
 			vI_notificationBar.dump("## vI_rdfDatasource: __getRDFResourceForVIdentity: no Recipient given.\n");
 			return null;
 		}
+		vI_notificationBar.dump("## vI_rdfDatasource: __getRDFResourceForVIdentity: recDescription=" + parsed.combinedName + "\n")
 		var rdfNSRecType = null
 		switch (recType) {
 			case "email": rdfNSRecType = vI_rdfDatasource.rdfNSEmail; break;
 			case "newsgroup" : rdfNSRecType = vI_rdfDatasource.rdfNSNewsgroup; break;
 			case "maillist" : rdfNSRecType = vI_rdfDatasource.rdfNSMaillist; break;
 		}
-		return vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + rdfNSRecType + recDescription);
+		return vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + rdfNSRecType + parsed.combinedName);
 	},
 	
 	removeVIdentityFromRDF : function (resource) {
