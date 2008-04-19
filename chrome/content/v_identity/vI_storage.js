@@ -39,13 +39,13 @@ function identityData(email, fullName, id, smtp, extras) {
 identityData.prototype = {
 	email : null,
 	fullName : null,
-	id_key : null,
-	smtp_key : null,
+	id : null,
+	smtp : null,
 	extras : null,
 	__keyTranslator : null,
 	__combineStrings : function(stringA, stringB) {
-		var A = stringA.replace(/^\s+|\s+$/g,"");
-		var B = stringB.replace(/^\s+|\s+$/g,"");
+		var A = (stringA)?stringA.replace(/^\s+|\s+$/g,""):"";
+		var B = (stringB)?stringB.replace(/^\s+|\s+$/g,""):"";
 		if (!A) return B;
 		if (!B) return A;
 		return A + ", " + B;
@@ -57,6 +57,31 @@ identityData.prototype = {
 		var extras = this.extras.status();
 		return senderName + " (" + 
 			this.__combineStrings(this.__combineStrings(idName, smtpName), extras) +  ")"
+	},
+	__equalCurrentSMTP : function() {
+		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
+		return (!this.__keyTranslator.getSMTP(this.smtp) && !smtp_key ||
+			smtp_key == this.smtp)
+	},
+	__equalCurrentID : function() {
+		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
+		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
+		return ((!this.__keyTranslator.getID(this.id) && (id_key == gAccountManager.defaultAccount.defaultIdentity.key)) ||
+			id_key == this.id)
+	},
+	equalsCurrentIdentity : function() {
+		var curAddress = vI_helper.getAddress();		
+		var curExtras = new vI_storageExtras();
+		curExtras.readValues(); // initialize with current MsgComposeDialog Values
+		
+		var equal = (	(this.__equalCurrentID()) &&
+				(this.__equalCurrentSMTP()) &&
+				(curAddress.email == this.email) &&
+				(curAddress.name == this.fullName) &&
+				(this.extras.equal(curExtras))	)
+		if (equal) vI_notificationBar.dump("## identityData: Identities are the same.\n")
+		else vI_notificationBar.dump("## identityData: Identities differ.\n")
+		return equal;
 	}
 }
 
@@ -149,10 +174,20 @@ vI_storage = {
 			// better approach would be to use te onchange event, but this one is not fired in any change case
 			// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
 			// same seems to happen with the ondragdrop event
-			awGetInputElement(1).setAttribute("onblur",
-				"window.setTimeout(vI_storage.awOnBlur, 250, this.parentNode.parentNode.parentNode);")
-			awGetPopupElement(1).setAttribute("oncommand",
-				"window.setTimeout(vI_storage.awPopupOnCommand, 250, this);")
+			for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
+				var input = awGetInputElement(row);
+				if (input) {
+					var oldBlur = input.getAttribute("onblur")
+					input.setAttribute("onblur", (oldBlur?oldBlur+"; ":"") +
+						"window.setTimeout(vI_storage.awOnBlur, 250, this.parentNode.parentNode.parentNode);")
+				}
+				var popup = awGetPopupElement(row);
+				if (popup) {
+					var oldCommand = popup.getAttribute("oncommand")
+					popup.setAttribute("oncommand", (oldCommand?oldCommand+"; ":"") +
+						"window.setTimeout(vI_storage.awPopupOnCommand, 250, this);")
+				}
+			}
 		}
 		vI_storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
 		awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
@@ -216,7 +251,7 @@ vI_storage = {
 			}
 		}
 		// only update fields if new Identity is different than old one.
-		else if (!vI_storage.__equalsCurrentIdentity(storageData)) {
+		else if (!storageData.equalsCurrentIdentity()) {
 			// add Identity to dropdown-menu
 			vI_msgIdentityClone.addIdentityToCloneMenu(
 				vI_helper.combineNames(storageData.fullName, storageData.email),
@@ -244,25 +279,7 @@ vI_storage = {
 			return { recDesc : vI_storage.getMailListName(recipient), recType : "maillist" }
 		else return { recDesc : recipient, recType : "email" }
 	},
-	
-	__equalsCurrentIdentity : function(storageData) {
-		var curAddress = vI_helper.getAddress();		
-		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
-		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
-		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
-		var extras = new vI_storageExtras();
-		extras.readValues(); // initialize with current MsgComposeDialog Values
-
-		var equal = (	(id_key == storageData.id) &&
-				(smtp_key == storageData.smtp) &&
-				(curAddress.email == storageData.email) &&
-				(curAddress.name == storageData.fullName) &&
-				(extras.equal(storageData.extras))	)
-		if (equal) vI_notificationBar.dump("## vI_storage: Identities are the same.\n")
-		else vI_notificationBar.dump("## vI_storage: Identities differ.\n")
-		return equal;
-	},
-	
+		
 	storeVIdentityToAllRecipients : function(msgType) {
 		if (msgType != nsIMsgCompDeliverMode.Now) return;
 		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n")
@@ -353,7 +370,7 @@ vI_storage = {
 		recipient = vI_storage.__getDescriptionAndType(recipient, recipientType);
 		var storageData = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
 		if (storageData) {
-			if (!vI_storage.__equalsCurrentIdentity(storageData) &&
+			if (!storageData.equalsCurrentIdentity(storageData) &&
 				!dontUpdateMultipleNoEqual) {
 				var warning = vI_storage.__getOverwriteStorageWarning(recipient, storageData);
 				vI_notificationBar.dump("## vI_storage: " + warning + ".\n")
