@@ -41,7 +41,7 @@
     <!--
     restored updateURL to personal site, cause addons.mozilla.org didn't continued publishing the extension
     -->
-    <em:updateURL>http://absorb.it/software/virtual_identity/v_identity_update.rdf</em:updateURL>
+    <em:updateURL>http://absorb.it/software/virtual_identity/pre/v_identity_update.rdf</em:updateURL>
     <em:optionsURL>chrome://v_identity/content/vI_prefDialog.xul</em:optionsURL>
 
     <!-- Front End Integration Hooks (used by Extension Manager)-->
