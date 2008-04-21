@@ -26,7 +26,7 @@
 
     <em:id>{dddd428e-5ac8-4a81-9f78-276c734f75b8}</em:id>
     <em:name>Virtual Identity</em:name>
-    <em:version>0.5.3pre2</em:version>
+    <em:version>0.5.3pre3</em:version>
     <em:description>Allows you to modify your Identity settings for a single Mail on the fly.</em:description>
     <em:creator>Rene Ejury</em:creator>
     <em:translator>www.babelzilla.org</em:translator>
