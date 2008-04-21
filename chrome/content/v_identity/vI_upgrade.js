@@ -27,6 +27,9 @@ vI_upgrade = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.virtualIdentity."),
 			
+	versionChecker : Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+			.getService(Components.interfaces.nsIVersionComparator),
+
 	init : function() {
 		document.documentElement.getButton("cancel").setAttribute("hidden", "true")
 		vI_notificationBar.dump("") // this initialises the debug-area
@@ -36,10 +39,8 @@ vI_upgrade = {
 		
 	skipUpgradePages : function() {
 		var preUpdateWizardPage = document.getElementById("license")		
-		var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
-			.getService(Components.interfaces.nsIVersionComparator);
 		// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
-		if (versionChecker.compare(vI_rdfDatasource.getCurrentExtFileVersion(), "0.5.0") >= 0)
+		if (vI_upgrade.versionChecker.compare(vI_rdfDatasource.getCurrentExtFileVersion(), "0.5.0") >= 0)
 			preUpdateWizardPage.setAttribute("next", "upgrade")
 	},
 	
@@ -75,30 +76,69 @@ vI_upgrade = {
 	},
 	
 	extUpgrade : function() {
+		var currentVersion = vI_rdfDatasource.getCurrentExtFileVersion();
 		vI_notificationBar.dump("checking for previous version, found " + 
-			vI_rdfDatasource.getCurrentExtFileVersion() + "\nextension-upgrade required.\n")
-		switch (vI_rdfDatasource.getCurrentExtFileVersion()) {
+			currentVersion + "\nextension-upgrade required.\n")
+		switch (currentVersion) {
 			case null:
-				vI_upgrade.__transferAllVIdentityABookToRDF();
-				vI_upgrade.__removeObsoleteUserPrefs();
+				vI_upgrade.__transferAllVIdentityABookToRDF(); // no break
+			default:
+				vI_upgrade.__transferMovedUserPrefs(currentVersion);
+				vI_upgrade.__removeObsoleteUserPrefs(currentVersion);
 		}
 		vI_rdfDatasource.storeExtVersion();
 		vI_notificationBar.dump("extension-upgrade to " + vI_rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
 	},
 		
-	__removeObsoleteUserPrefs : function() {
+	__transferMovedUserPrefs : function(currentVersion) {
+		// transfer renamed preferences
+		var transferPrefs = [ 	{ version : "0.5.3",
+					prefs : Array({ sourcePref : "smart_reply_ask", targetPref : "idSelection_ask" },
+						{ sourcePref : "smart_reply_ask_always", targetPref : "idSelection_ask_always" },
+						{ sourcePref : "smart_reply_autocreate", targetPref : "idSelection_autocreate" },
+						{ sourcePref : "smart_timestamp", targetPref : "autoTimestamp" },
+						{ sourcePref : "storage_prefer_smart_reply", targetPref : "idSelection_storage_prefer_smart_reply" },
+						{ sourcePref : "storage_ignore_smart_reply", targetPref : "idSelection_storage_ignore_smart_reply" }) }];
 		// remove obsolete preference-tree virtualIdentity
-		
-		// remove any obsolete preferences under extensions.virtualIdentity
-		vI_notificationBar.dump("removing obsolete preferences:\n")
-		for each (pref in Array("aBook_use", "aBook_storedefault", "aBook_dont_update_multiple",
-				"aBook_show_switch", "aBook_warn_update", "aBook_use_for_smart_reply", "aBook_prefer_smart_reply",
-				"aBook_ignore_smart_reply", "aBook_warn_vI_replace", "aBook_use_non_vI", "aBook_notification", "storeVIdentity",
-				"experimental")) {
-			try { vI_upgrade.preferences.clearUserPref(pref); vI_notificationBar.dump(".") }
-			catch (e) { };
+		for (i = 0; i < transferPrefs.length; i++) {
+			// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
+			if (!currentVersion || (vI_upgrade.versionChecker.compare(currentVersion, transferPrefs[i].version) < 0)) {
+				// remove any obsolete preferences under extensions.virtualIdentity
+				vI_notificationBar.dump("transfer changed preferences of pre-" + transferPrefs[i].version + " release:\n")
+				for each (transferPref in transferPrefs[i].prefs) {
+					try {	vI_upgrade.preferences.setBoolPref(transferPref.targetPref, 
+							vI_upgrade.preferences.getBoolPref(transferPref.sourcePref));
+						vI_upgrade.preferences.clearUserPref(transferPref.sourcePref);
+						vI_notificationBar.dump(".") 
+					}
+					catch (e) { };
+				}
+				vI_notificationBar.dump("done.\n")
+			}
 		}
-		vI_notificationBar.dump("done.\n")
+	},
+	
+	__removeObsoleteUserPrefs : function(currentVersion) {
+		var obsoletePrefs = [ 	{ version : "0.5.0",
+					prefs : Array("aBook_use", "aBook_storedefault", "aBook_dont_update_multiple",
+					"aBook_show_switch", "aBook_warn_update", "aBook_use_for_smart_reply",
+					"aBook_prefer_smart_reply", "aBook_ignore_smart_reply", "aBook_warn_vI_replace",
+					"aBook_use_non_vI", "aBook_notification", "storeVIdentity", "experimental",
+					"storage_use_for_smart_reply") },
+					{ version : "0.5.3", prefs : Array("storage_use_for_smart_reply") } ];
+		// remove obsolete preference-tree virtualIdentity
+		for (i = 0; i < obsoletePrefs.length; i++) {
+			// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
+			if (!currentVersion || (vI_upgrade.versionChecker.compare(currentVersion, obsoletePrefs[i].version) < 0)) {
+				// remove any obsolete preferences under extensions.virtualIdentity
+				vI_notificationBar.dump("removing obsolete preferences of pre-" + obsoletePrefs[i].version + " release:\n")
+				for each (pref in obsoletePrefs[i].prefs) {
+					try { vI_upgrade.preferences.clearUserPref(pref); vI_notificationBar.dump(".") }
+					catch (e) { };
+				}
+				vI_notificationBar.dump("done.\n")
+			}
+		}
 	},
 
 	CardFields : Array("Custom1", "Custom2", "Custom3", "Custom4", "Notes"),
