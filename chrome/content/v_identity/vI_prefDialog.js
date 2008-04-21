@@ -303,9 +303,6 @@ vI_prefDialog = {
 		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
 		vI_prefDialog.base.idSelectionConstraint();
 		
-		//~ if (vI_prefDialog.preferences.getBoolPref("experimental")){
-		//~ }
-		
 		dump("## vI_prefDialog: init_prefs done\n");
 	},
 	
