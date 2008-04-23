@@ -38,11 +38,7 @@ vI_smartIdentity = {
 		var msgComposeType = Components.interfaces.nsIMsgCompType;
 		vI_notificationBar.dump("## vI_smartIdentity: msgComposeType = " + type + "\n");
 		
-		//~ if (vI.preferences.getBoolPref("autoTimestamp") && 
-			//~ ((type == msgComposeType.New) || (type == msgComposeType.NewsPost) || (type == msgComposeType.MailToUrl)))
-					//~ vI_smartIdentity.SmartTimestamp(hdr);
-					
-		// if there is no ID of the original Message  (Why?) leave the function
+		// if there is no ID of the original Message (Why? maybe new mail) dumpa notice
 		var uri = gMsgCompose.originalMsgURI; 
 		if (!uri) vI_notificationBar.dump("## vI_smartIdentity: can't get URI of former Message\n");
 		try { var hdr = vI_smartIdentity.messenger.messageServiceFromURI(uri).messageURIToMsgHdr(uri); }
@@ -72,8 +68,8 @@ vI_smartIdentity = {
 	},
 		
 	// this function adds a timestamp to the current sender
-	SmartTimestamp : function() {
-		vI_notificationBar.dump("## vI_smartIdentity: SmartTimestamp()\n");
+	__autoTimestamp : function() {
+		vI_notificationBar.dump("## vI_smartIdentity: __autoTimestamp()\n");
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") == "vid") {
 			vI_notificationBar.dump("## vI_smartIdentity: Virtual Identity in use, aborting\n");
 			return;
@@ -92,116 +88,64 @@ vI_smartIdentity = {
 	},
 	
 	NewMail : function() {
-		var storage_addresses = new identityCollection();
-		vI_storage.getVIdentityFromAllRecipients(storage_addresses);
+		var storageIdentities = new identityCollection();
+		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
-		if (storage_addresses.number > 0) vI_smartIdentity.smartIdentitySelection(storage_addresses, false)
-		else if (vI.preferences.getBoolPref("autoTimestamp")) vI_smartIdentity.SmartTimestamp();	
+		if (storageIdentities.number > 0) vI_smartIdentity.__smartIdentitySelection(storageIdentities, false)
+		else if (vI.preferences.getBoolPref("autoTimestamp")) vI_smartIdentity.__autoTimestamp();	
 	},
 	
 	Draft : function(hdr) {
 		vI_notificationBar.dump("## vI_smartIdentity: Draft()\n");
 		
-		var all_addresses = new identityCollection();
-		vI_smartIdentity.SmartDraft(hdr, all_addresses);
-		var storage_addresses = new identityCollection();
-		vI_storage.getVIdentityFromAllRecipients(storage_addresses);
+		var allIdentities = new identityCollection();
+		vI_smartIdentity.__SmartDraft(hdr, allIdentities);
+		var storageIdentities = new identityCollection();
+		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
-		all_addresses = vI_smartIdentity.mergeWithoutDuplicates(all_addresses, storage_addresses);
+		allIdentities.mergeWithoutDuplicates(storageIdentities);
 			
-		vI_smartIdentity.smartIdentitySelection(all_addresses, true);
+		vI_smartIdentity.__smartIdentitySelection(allIdentities, true);
 	
 	},
 	
 	// this function checks if we have a draft-case and Smart-Draft should replace the Identity
-	SmartDraft : function(hdr, all_addresses) {
+	__SmartDraft : function(hdr, allIdentities) {
 		if (!vI.preferences.getBoolPref("smart_draft"))
 			{ vI_notificationBar.dump("## vI_smartIdentity: SmartDraft deactivated\n"); return; }
-		vI_notificationBar.dump("## vI_smartIdentity: SmartDraft()\n");
+		vI_notificationBar.dump("## vI_smartIdentity: __SmartDraft()\n");
 			
 		if (hdr) {
-			vI.headerParser.parseHeadersWithArray(hdr.author, all_addresses.emails,
-				all_addresses.fullNames, all_addresses.combinedNames);
-			all_addresses.number = 1
-			all_addresses.emails[0] = all_addresses.emails.value[0]
-			all_addresses.fullNames[0] = all_addresses.fullNames.value[0]
-			all_addresses.combinedNames[0] = all_addresses.combinedNames.value[0]
+			vI.headerParser.parseHeadersWithArray(hdr.author, allIdentities.emails,
+				allIdentities.fullNames, allIdentities.combinedNames);
+			allIdentities.number = 1
+			allIdentities.emails[0] = allIdentities.emails.value[0]
+			allIdentities.fullNames[0] = allIdentities.fullNames.value[0]
+			allIdentities.combinedNames[0] = allIdentities.combinedNames.value[0]
 			
-			vI_notificationBar.dump("## vI_smartIdentity: sender '" + all_addresses.combinedNames[0] + "'\n");
+			vI_notificationBar.dump("## vI_smartIdentity: sender '" + allIdentities.combinedNames[0] + "'\n");
 		}
-		else vI_notificationBar.dump("## vI_smartIdentity: SmartDraft: No Header found, shouldn't happen\n");
+		else vI_notificationBar.dump("## vI_smartIdentity: __SmartDraft: No Header found, shouldn't happen\n");
 	},
 	
-	//~ // check if recent email-address (pre-choosen identity) is found in at least one address
-	//~ matchSelectedIdentity : function(all_addresses) {
-		//~ vI_notificationBar.dump("## vI_smartIdentity: search for preselected Identity\n");
-		//~ current_email = getCurrentIdentity().email.toLowerCase();
-		//~ vI_notificationBar.dump("## vI_smartIdentity: preselected email: " + current_email + "\n");
-		//~ current_name =  getCurrentIdentity().fullName.toLowerCase();
-		//~ vI_notificationBar.dump("## vI_smartIdentity: preselected name: " + current_name + "\n");
-		//~ for (index = 0; index < all_addresses.number; index++) {
-			//~ if (current_email == all_addresses.emails[index].toLowerCase()
-				//~ && (vI.preferences.getBoolPref("smart_reply_ignoreFullName") ||
-				//~ current_name == all_addresses.fullNames[index].toLowerCase())) {
-					//~ vI_notificationBar.dump("## vI_smartIdentity:   found preselected Identity in address sets, aborting\n");
-					//~ return true; // direct hit
-				//~ }
-		//~ }
-		//~ vI_notificationBar.dump("## vI_smartIdentity:   collected address(es) doesn't contain preselected Identity, continuing\n");
-		//~ return false;
-	//~ },
-	
-	//~ // checks if any Identity in the collected address-set is already available as
-	//~ // a stored identity. If so, use the stored one.
-	//~ matchAnyIdentity : function(all_addresses) {
-		//~ vI_notificationBar.dump("## vI_smartIdentity: check if any collected address is stored as a (usual) Identity\n");
-		//~ var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
-		//~ for (var i in accounts) {
-			//~ // check for VirtualIdentity Account
-			//~ try {	vI_account.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
-				//~ continue; } catch (e) { };
-			
-			//~ var server = accounts[i].incomingServer;
-			//~ // ignore newsgroup accounts if not selected in preferences
-			//~ if (server && server.type == "nntp" &&
-				//~ !vI.preferences.getBoolPref("smart_reply_for_newsgroups")) continue;
-			
-			//~ var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
-			//~ for (var j in identities) {
-				//~ for (index = 0; index < all_addresses.number; index++) {
-					//~ if (identities[j].getUnicharAttribute("useremail").toLowerCase() ==
-						//~ all_addresses.emails[index].toLowerCase() &&
-						//~ (vI.preferences.getBoolPref("smart_reply_ignoreFullName") ||
-						//~ identities[j].getUnicharAttribute("fullName").toLowerCase() ==
-						//~ all_addresses.fullNames[index].toLowerCase())) {
-							//~ vI_notificationBar.dump("## vI_smartIdentity:   found existing Identity in address sets, aborting\n");
-							//~ return identities[j];
-						//~ }
-					//~ }
-				//~ }
-			//~ }
-		//~ vI_notificationBar.dump("## vI_smartIdentity:   no collected address found stored, continuing\n");
-		//~ return null;
-	//~ },
-
-	
-	filterAddresses : function(all_addresses) {
-		var return_addresses = new identityCollection();
+	__filterAddresses : function(smartIdentities) {
+		var returnIdentities = new identityCollection();
 		
-		var filter_list = vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_filter")).split(/\n/)
-		if (filter_list.length == 0) filter_list[0] == ""
+		var filterList	=
+			vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_filter")).split(/\n/)
+		if (filterList.length == 0) filterList[0] == ""
 		
-		for (i = 0; i < filter_list.length; i++) {
+		for (i = 0; i < filterList.length; i++) {
 			const filterType = { None : 0, RegExp : 1, StrCmp : 2 }
 			var recentfilterType; var skipRegExp = false;
-			if (filter_list.length <= 1 && filter_list[0] == "")
-				{ vI_notificationBar.dump("## vI_smartIdentity: no filters configured\n"); recentfilterType = filterType.None; }
-			else if (/^\/(.*)\/$/.exec(filter_list[i]))
-				{ vI_notificationBar.dump("## vI_smartIdentity: filter emails with RegExp '"
-					+ filter_list[i].replace(/\\/g,"\\\\") + "'\n"); recentfilterType = filterType.RegExp; }
-			else	{ vI_notificationBar.dump("## vI_smartIdentity: filter emails, compare with '"
-					+ filter_list[i] + "'\n"); recentfilterType = filterType.StrCmp; }
-			for (j = 0; j < all_addresses.number; j++) { // check if recent email-address (pre-choosen identity) is found in 
+			if (filterList.length <= 1 && filterList[0] == "")
+				{ vI_notificationBar.dump("## identityCollection: no filters configured\n"); recentfilterType = filterType.None; }
+			else if (/^\/(.*)\/$/.exec(filterList[i]))
+				{ vI_notificationBar.dump("## identityCollection: filter emails with RegExp '"
+					+ filterList[i].replace(/\\/g,"\\\\") + "'\n"); recentfilterType = filterType.RegExp; }
+			else	{ vI_notificationBar.dump("## identityCollection: filter emails, compare with '"
+					+ filterList[i] + "'\n"); recentfilterType = filterType.StrCmp; }
+			for (j = 0; j < smartIdentities.number; j++) { // check if recent email-address (pre-choosen identity) is found in 
 			// copied and adapted from correctIdentity, thank you for the RegExp-idea!
 				var add_addr = false;
 				switch (recentfilterType) {
@@ -209,76 +153,30 @@ vI_smartIdentity = {
 						add_addr = true; break;
 					case filterType.RegExp:
 						if (skipRegExp) break;
-						try { 	/^\/(.*)\/$/.exec(filter_list[i]);
-							add_addr =  (all_addresses.emails[j].match(new RegExp(RegExp.$1,"i")))
+						try { 	/^\/(.*)\/$/.exec(filterList[i]);
+							add_addr =  (smartIdentities.emails[j].match(new RegExp(RegExp.$1,"i")))
 						}
 						catch(vErr) {
 							vI_notificationBar.addNote(
 								vI.elements.strings.getString("vident.smartIdentity.ignoreRegExp") +
-								+filter_list[i].replace(/\\/g,"\\\\") + " .",
+								+filterList[i].replace(/\\/g,"\\\\") + " .",
 								"smart_reply_notification");
 								skipRegExp = true; }
 						break;
 					case filterType.StrCmp:
-						add_addr = (filter_list[i] == all_addresses.emails[j])
+						add_addr = (filterList[i] == smartIdentities.emails[j])
 						break;
 				}
-				if (add_addr)	return_addresses = vI_smartIdentity.addWithoutDuplicates(return_addresses,
-						all_addresses.emails[j],
-						all_addresses.fullNames[j],
-						all_addresses.combinedNames[j], null, null)
+				if (add_addr)	returnIdentities.addWithoutDuplicates(
+							smartIdentities.emails[j],
+							smartIdentities.fullNames[j],
+							smartIdentities.combinedNames[j], null, null)
 			}
 		}
-		return return_addresses;
+		smartIdentities.takeOver(returnIdentities);
 	},
 	
-	mergeWithoutDuplicates : function(all_addresses, add_addresses) {
-		for (index = 0; index < add_addresses.number; index++)
-			vI_smartIdentity.addWithoutDuplicates(all_addresses,
-				add_addresses.emails[index],
-				add_addresses.fullNames[index],
-				add_addresses.combinedNames[index],
-				add_addresses.id_keys[index],
-				add_addresses.smtp_keys[index],
-				add_addresses.extras[index])
-		return all_addresses
-	},
-	
-	addWithoutDuplicates : function(all_addresses, email, fullName, combinedName, id_key, smtp_key, extra) {
-		for (index = 0; index < all_addresses.number; index++) {
-			if (all_addresses.emails[index] == email &&
-				(!all_addresses.id_keys[index] || !id_key || 
-					(all_addresses.id_keys[index] == id_key && all_addresses.smtp_keys[index] == smtp_key))) {
-				// found, so check if we can use the Name of the new field
-				if (all_addresses.fullNames[index] == "" && fullName != "") {
-					all_addresses.fullNames[index] = fullName
-					all_addresses.combinedNames[index] = combinedName
-					vI_notificationBar.dump("## vI_smartIdentity:   added fullName '" + fullName
-						+ "' to stored email '" + email +"'\n")
-				}
-				// check if id_key, smtp_key or extras can be used
-				// only try this once, for the first Identity where id is set)
-				if (!all_addresses.id_keys[index] && id_key) {
-					all_addresses.id_keys[index] = id_key;
-					all_addresses.smtp_keys[index] = smtp_key;
-					all_addresses.extras[index] = extra;
-					vI_notificationBar.dump("## vI_smartIdentity:   added id '" + id_key
-						+ "' smtp '" + smtp_key + "' (+extra) to stored email '" + email +"'\n")
-				}
-				return all_addresses;
-			}
-		}
-		vI_notificationBar.dump("## vI_smartIdentity:   add new address to result:" + combinedName + "\n")
-		all_addresses.emails[index] = email;
-		all_addresses.fullNames[index] = fullName;
-		all_addresses.combinedNames[index] = combinedName;
-		all_addresses.id_keys[index] = id_key;
-		all_addresses.smtp_keys[index] = smtp_key;
-		all_addresses.number = index + 1;
-		return all_addresses;
-	},
-	
-	collectAddresses : function(hdr, all_addresses) {
+	__smartReplyCollectAddresses : function(hdr, allIdentities) {
 		// add emails from selected headers (stored by vI_getHeader.xul/js)
 		var reply_headers = vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_headers")).split(/\n/)
 					
@@ -308,29 +206,26 @@ vI_smartIdentity = {
 			splitted.number = vI.headerParser.parseHeadersWithArray(value, splitted.emails,
 				splitted.fullNames, splitted.combinedNames);
 			
-			// move found addresses step by step to all_addresses, and change values if requested
+			// move found addresses step by step to allIdentities, and change values if requested
 			for (i = 0; i < splitted.number; i++) {
-				all_addresses.emails[all_addresses.number] = splitted.emails.value[i]
+				allIdentities.emails[allIdentities.number] = splitted.emails.value[i]
 				
 				// empty FullName if requested
-				if (replyHeaderEmptyFullNames) splitted.fullNames.value[i] = ""
-				all_addresses.fullNames[all_addresses.number] = splitted.fullNames.value[i]	
+				if (replyHeaderEmptyFullNames) allIdentities.fullNames[allIdentities.number] = ""
+				else allIdentities.fullNames[allIdentities.number] = splitted.fullNames.value[i]	
 				
 				// set CombinedName related to new values
-				if (all_addresses.fullNames[all_addresses.number] != "")
-					all_addresses.combinedNames[all_addresses.number] =
-						all_addresses.fullNames[all_addresses.number] + " <" +
-						all_addresses.emails[all_addresses.number] + ">"
-				else all_addresses.combinedNames[all_addresses.number] =
-					all_addresses.emails[all_addresses.number]
+				allIdentities.combinedNames[allIdentities.number] = vI_helper.combineNames(
+					allIdentities.fullNames[allIdentities.number],
+					allIdentities.emails[allIdentities.number])					
 					
 				// mark id, smtp and extra fields as empty
-				all_addresses.id_keys[all_addresses.number] = null;
-				all_addresses.smtp_keys[all_addresses.number] = null;
-				all_addresses.extras[all_addresses.number] = null;
+				allIdentities.id_keys[allIdentities.number] = null;
+				allIdentities.smtp_keys[allIdentities.number] = null;
+				allIdentities.extras[allIdentities.number] = null;
 				
 				vI_notificationBar.dump("## vI_smartIdentity:   found '" +
-					all_addresses.combinedNames[all_addresses.number++] + "'\n")
+					allIdentities.combinedNames[allIdentities.number++] + "'\n")
 			}
 		}
 	},
@@ -338,40 +233,29 @@ vI_smartIdentity = {
 	Reply : function(hdr) {
 		vI_notificationBar.dump("## vI_smartIdentity: Reply()\n");
 				
-		var storage_addresses = new identityCollection();
-		vI_storage.getVIdentityFromAllRecipients(storage_addresses);
+		var storageIdentities = new identityCollection();
+		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
-		var all_addresses = new identityCollection();
-		if (storage_addresses.number == 0 || !vI.preferences.getBoolPref("idSelection_storage_ignore_smart_reply"))
-			vI_smartIdentity.SmartReply(hdr, all_addresses);
+		var smartIdentities = new identityCollection();
+		if (storageIdentities.number == 0 || !vI.preferences.getBoolPref("idSelection_storage_ignore_smart_reply"))
+			vI_smartIdentity.__SmartReply(hdr, smartIdentities);
 		else vI_notificationBar.dump("## vI_smartIdentity: SmartReply skipped, Identities in Storage found.\n");
 
 		// merge SmartReply-Identities and Storage-Identites
 		if (vI.preferences.getBoolPref("idSelection_storage_prefer_smart_reply"))
-			all_addresses = vI_smartIdentity.mergeWithoutDuplicates(all_addresses, storage_addresses)
+			{ smartIdentities.mergeWithoutDuplicates(storageIdentities); allIdentities = smartIdentities; }
 		else
-			all_addresses = vI_smartIdentity.mergeWithoutDuplicates(storage_addresses, all_addresses)
+			{ storageIdentities.mergeWithoutDuplicates(smartIdentities); allIdentities = storageIdentities; }
 		
-		vI_notificationBar.dump("## vI_smartIdentity: merged SmartReply & Storage, " + all_addresses.number + " address(es) left\n")
+		vI_notificationBar.dump("## vI_smartIdentity: merged SmartReply & Storage, " + allIdentities.number + " address(es) left\n")
 		
-		if (all_addresses.number == 0) return;
+		if (allIdentities.number == 0) return;
 		
-		//~ if (vI_smartIdentity.matchSelectedIdentity(all_addresses)) return;
-		
-		//~ if (vI_smartIdentity.smartIdentity_BaseIdentity = vI_smartIdentity.matchAnyIdentity(all_addresses)) {
-			//~ vI_notificationBar.dump("## vI_smartIdentity:  existing Identity key: " + vI_smartIdentity.smartIdentity_BaseIdentity.key + "\n")
-			//~ vI_notificationBar.addNote(
-				//~ vI.elements.strings.getString("vident.smartIdentity.matchExisting"),
-				//~ "smart_reply_notification");
-			//~ window.setTimeout(vI_smartIdentity.updateMsgComposeDialog, 0);
-			//~ return;
-		//~ }
-
-		vI_smartIdentity.smartIdentitySelection(all_addresses, false);
+		vI_smartIdentity.__smartIdentitySelection(allIdentities, false);
 	},
 	
 	// this function checks if we have a reply-case and Smart-Reply should replace the Identity
-	SmartReply : function(hdr, all_addresses) {
+	__SmartReply : function(hdr, smartIdentities) {
 		if (!vI.preferences.getBoolPref("smart_reply"))
 			{ vI_notificationBar.dump("## vI_smartIdentity: SmartReply deactivated\n"); return; }
 		if (gMsgCompose.compFields.newsgroups && !vI.preferences.getBoolPref("smart_reply_for_newsgroups")) {
@@ -379,28 +263,28 @@ vI_smartIdentity = {
 			return;
 		}
 
-		vI_notificationBar.dump("## vI_smartIdentity: SmartReply()\n");
+		vI_notificationBar.dump("## vI_smartIdentity: __SmartReply()\n");
 		vI_notificationBar.dump("## vI_smartIdentity: ----------------------------------------------------------\n")
 		if (hdr) {
 			/* first step: collect addresses */
-			vI_smartIdentity.collectAddresses(hdr, all_addresses);
-			vI_notificationBar.dump("## vI_smartIdentity: " + all_addresses.number + " address(es) after parsing, before filtering\n")
+			vI_smartIdentity.__smartReplyCollectAddresses(hdr, smartIdentities);
+			vI_notificationBar.dump("## vI_smartIdentity: " + smartIdentities.number + " address(es) after parsing, before filtering\n")
 			
 			/* second step: filter (and sort) addresses */
-			vI_smartIdentity.filterAddresses(all_addresses);
+			vI_smartIdentity.__filterAddresses(smartIdentities);
 			
-			vI_notificationBar.dump("## vI_smartIdentity: filtering done, " + all_addresses.number + " address(es) left\n")
+			vI_notificationBar.dump("## vI_smartIdentity: filtering done, " + smartIdentities.number + " address(es) left\n")
 			
 			/* set default FullName */
 			var smart_reply_defaultFullName = vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_defaultFullName"))
 			if (smart_reply_defaultFullName != "") {
-				for (index = 0; index < all_addresses.number; index++) {
-					if (all_addresses.fullNames[index] == "") {
-						all_addresses.fullNames[index] = smart_reply_defaultFullName
-						all_addresses.combinedNames[index] =
-							smart_reply_defaultFullName + " <" + all_addresses.emails[index] + ">"
+				for (index = 0; index < smartIdentities.number; index++) {
+					if (smartIdentities.fullNames[index] == "") {
+						smartIdentities.fullNames[index] = smart_reply_defaultFullName
+						smartIdentities.combinedNames[index] =
+							smart_reply_defaultFullName + " <" + smartIdentities.emails[index] + ">"
 						vI_notificationBar.dump("## vI_smartIdentity: added default FullName '" + 
-							smart_reply_defaultFullName + "' to '" + all_addresses.emails[index] + "'\n")
+							smart_reply_defaultFullName + "' to '" + smartIdentities.emails[index] + "'\n")
 					}
 				}
 			}	
@@ -410,37 +294,37 @@ vI_smartIdentity = {
 		vI_notificationBar.dump("## vI_smartIdentity: ----------------------------------------------------------\n")
 	},
 	
-	smartIdentitySelection : function(all_addresses, autocreate) {
-		vI_msgIdentityClone.addIdentitiesToCloneMenu(all_addresses);
+	__smartIdentitySelection : function(allIdentities, autocreate) {
+		vI_msgIdentityClone.addIdentitiesToCloneMenu(allIdentities);
 		
 		if (!autocreate && vI.preferences.getBoolPref("idSelection_ask") && 
-			((all_addresses.number == 1 && vI.preferences.getBoolPref("idSelection_ask_always"))
-				|| all_addresses.number > 1))
+			((allIdentities.number == 1 && vI.preferences.getBoolPref("idSelection_ask_always"))
+				|| allIdentities.number > 1))
 			window.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul",0, // give the Dialog a unique id
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
-					 all_addresses,
+					 allIdentities,
 					/* callback: */ vI_smartIdentity.changeIdentityToSmartIdentity).focus();
 		else if (autocreate || vI.preferences.getBoolPref("idSelection_autocreate")) {
-			vI_smartIdentity.changeIdentityToSmartIdentity(all_addresses, 0);
+			vI_smartIdentity.changeIdentityToSmartIdentity(allIdentities, 0);
 		}	
 	},
 	
-	changeIdentityToSmartIdentity : function(all_addresses, selectedValue) {
-		if (all_addresses.id_keys[selectedValue]) {
-			vI_msgIdentityClone.setMenuToIdentity(all_addresses.id_keys[selectedValue])
-			vI_smtpSelector.setMenuToKey(all_addresses.smtp_keys[selectedValue])
+	changeIdentityToSmartIdentity : function(allIdentities, selectedValue) {
+		if (allIdentities.id_keys[selectedValue]) {
+			vI_msgIdentityClone.setMenuToIdentity(allIdentities.id_keys[selectedValue])
+			vI_smtpSelector.setMenuToKey(allIdentities.smtp_keys[selectedValue])
 		}
-		vI_msgIdentityClone.setIdentity(all_addresses.combinedNames[selectedValue], null);
+		vI_msgIdentityClone.setIdentity(allIdentities.combinedNames[selectedValue], null);
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") == "vid") {
 			var label=vI.elements.strings.getString("vident.smartIdentity.vIUsage");
-			if (all_addresses.number > 1) label += " "
+			if (allIdentities.number > 1) label += " "
 				+ vI.elements.strings.getString("vident.smartIdentity.moreThanOne");
 			vI_notificationBar.addNote(label + ".", "smart_reply_notification");
 		}
-		vI_smartIdentity.removeSmartIdentityFromRecipients(all_addresses, selectedValue);
+		vI_smartIdentity.__removeSmartIdentityFromRecipients(allIdentities, selectedValue);
 	},
 	
-	removeSmartIdentityFromRecipients : function(all_addresses, index) {
+	__removeSmartIdentityFromRecipients : function(allIdentities, index) {
 		var bcc_addresses = { number : 1, emails : {}, fullNames : {}, combinedNames : {} };
 		var skip_bcc = false;
 		
@@ -449,7 +333,7 @@ vI_smartIdentity = {
 				bcc_addresses.fullNames, bcc_addresses.combinedNames);
 			
 			for (index = 0; index < bcc_addresses.number; index++) {
-				if (all_addresses.emails[index] == bcc_addresses.emails.value[index]) {
+				if (allIdentities.emails[index] == bcc_addresses.emails.value[index]) {
 					skip_bcc = true; break;
 				}
 			}
@@ -461,8 +345,8 @@ vI_smartIdentity = {
 			// check if the entry is used as a BCC selected in account settings
 			if ((awGetPopupElement(row).selectedItem.getAttribute("value") == "addr_bcc") && skip_bcc) continue;
 			// check if entry is matching senders address, if so, remove it
-			if (input.value == all_addresses.emails[index] ||
-				input.value == all_addresses.combinedNames[index]) {
+			if (input.value == allIdentities.emails[index] ||
+				input.value == allIdentities.combinedNames[index]) {
 					awSetInputAndPopupValue(input, "", popup, "addr_to", -1);
 					awCleanupRows()
 					vI_notificationBar.addNote(" " +
@@ -471,13 +355,5 @@ vI_smartIdentity = {
 					break;
 			}
 		}
-	},
-	
-	//~ updateMsgComposeDialog : function() {
-		//~ vI_msgIdentityClone.setMenuToIdentity(vI_smartIdentity.smartIdentity_BaseIdentity.key);
-		//~ // after inserting a new signature (as part of the new identity) the cursor is not at the right place.
-		//~ // there is no easy way to set the cursor at the end, before the signature, so set it at the beginning.
-		//~ if (vI_smartIdentity.smartIdentity_BaseIdentity.attachSignature)
-			//~ gMsgCompose.editor.beginningOfDocument();
-	//~ },
+	}
 }

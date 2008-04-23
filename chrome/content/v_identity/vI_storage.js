@@ -95,6 +95,60 @@ identityCollection.prototype =
 	id_keys : {},
 	smtp_keys : {},
 	extras : {},
+	
+	mergeWithoutDuplicates : function(addIdentityCollection) {
+		for (index = 0; index < addIdentityCollection.number; index++)
+			this.addWithoutDuplicates(
+				addIdentityCollection.emails[index],
+				addIdentityCollection.fullNames[index],
+				addIdentityCollection.combinedNames[index],
+				addIdentityCollection.id_keys[index],
+				addIdentityCollection.smtp_keys[index],
+				addIdentityCollection.extras[index])
+	},
+
+	addWithoutDuplicates : function(email, fullName, combinedName, id_key, smtp_key, extra) {
+		for (index = 0; index < this.number; index++) {
+			if (this.emails[index] == email &&
+				(!this.id_keys[index] || !id_key || 
+					(this.id_keys[index] == id_key && this.smtp_keys[index] == smtp_key))) {
+				// found, so check if we can use the Name of the new field
+				if (this.fullNames[index] == "" && fullName != "") {
+					this.fullNames[index] = fullName
+					this.combinedNames[index] = combinedName
+					vI_notificationBar.dump("## identityCollection:   added fullName '" + fullName
+						+ "' to stored email '" + email +"'\n")
+				}
+				// check if id_key, smtp_key or extras can be used
+				// only try this once, for the first Identity where id is set)
+				if (!this.id_keys[index] && id_key) {
+					this.id_keys[index] = id_key;
+					this.smtp_keys[index] = smtp_key;
+					this.extras[index] = extra;
+					vI_notificationBar.dump("## identityCollection:   added id '" + id_key
+						+ "' smtp '" + smtp_key + "' (+extra) to stored email '" + email +"'\n")
+				}
+				return;
+			}
+		}
+		vI_notificationBar.dump("## identityCollection:   add new address to result:" + combinedName + "\n")
+		this.emails[index] = email;
+		this.fullNames[index] = fullName;
+		this.combinedNames[index] = combinedName;
+		this.id_keys[index] = id_key;
+		this.smtp_keys[index] = smtp_key;
+		this.number = index + 1;
+	},
+	
+	takeOver : function(newIdentityCollection) {
+		this.number = newIdentityCollection.number
+		this.emails = newIdentityCollection.emails
+		this.fullNames = newIdentityCollection.fullNames
+		this.combinedNames = newIdentityCollection.combinedNames
+		this.id_keys = newIdentityCollection.id_keys
+		this.smtp_keys = newIdentityCollection.smtp_keys
+		this.extras = newIdentityCollection.extras
+	}
 };
 
 vI_storage = {
@@ -454,7 +508,7 @@ vI_storage = {
 		return mailListName;
 	},
 		
-	getVIdentityFromAllRecipients : function(all_addresses) {
+	getVIdentityFromAllRecipients : function(allIdentities) {
 		if (!vI.preferences.getBoolPref("storage"))
 			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
 		vI_notificationBar.dump("## vI_storage: getVIdentityFromAllRecipients()\n");
@@ -465,14 +519,14 @@ vI_storage = {
 			vI_storage.lastCheckedEmail[row] = awGetInputElement(row).value;
 			recipient = vI_storage.__getDescriptionAndType(awGetInputElement(row).value, recipientType);
 			var storageData = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
-			if (storageData) vI_smartIdentity.addWithoutDuplicates(all_addresses,
+			if (storageData) allIdentities.addWithoutDuplicates(
 				storageData.email,
 				storageData.fullName,
 				vI_helper.combineNames(storageData.fullName, storageData.email),
 				storageData.id,
 				storageData.smtp)
 		}
-		vI_notificationBar.dump("## vI_storage: found " + all_addresses.number + " address(es)\n")
+		vI_notificationBar.dump("## vI_storage: found " + allIdentities.number + " address(es)\n")
 	}
 }
 window.addEventListener("unload", function(e) { try {vI_storage.removeObserver();} catch (ex) { } }, false);
