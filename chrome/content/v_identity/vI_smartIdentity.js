@@ -105,8 +105,7 @@ vI_smartIdentity = {
 		
 		allIdentities.mergeWithoutDuplicates(storageIdentities);
 			
-		vI_smartIdentity.__smartIdentitySelection(allIdentities, true);
-	
+		if (allIdentities.number > 0) vI_smartIdentity.__smartIdentitySelection(allIdentities, true);
 	},
 	
 	// this function checks if we have a draft-case and Smart-Draft should replace the Identity
@@ -249,9 +248,7 @@ vI_smartIdentity = {
 		
 		vI_notificationBar.dump("## vI_smartIdentity: merged SmartReply & Storage, " + allIdentities.number + " address(es) left\n")
 		
-		if (allIdentities.number == 0) return;
-		
-		vI_smartIdentity.__smartIdentitySelection(allIdentities, false);
+		if (allIdentities.number > 0) vI_smartIdentity.__smartIdentitySelection(allIdentities, false);
 	},
 	
 	// this function checks if we have a reply-case and Smart-Reply should replace the Identity
