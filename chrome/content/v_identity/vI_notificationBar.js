@@ -23,6 +23,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 var vI_notificationBar = {
+	quiet : null,
 	timer : null,
 	timeout : 5000,
 	
@@ -118,6 +119,7 @@ var vI_notificationBar = {
 	},
 	
 	dump : function(note) {
+		if (vI_notificationBar.quiet) return;
 		if (!vI_notificationBar.Obj_DebugBox) vI_notificationBar.init();
 		if (!vI_notificationBar.Obj_DebugBox) return;
 		if (!vI_notificationBar.Obj_DebugBox.getAttribute("upgrade") && 
