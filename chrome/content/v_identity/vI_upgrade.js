@@ -54,7 +54,7 @@ vI_upgrade = {
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "false")
 		document.documentElement.getButton('next').setAttribute('disabled','true');
 		
-		if (vI_rdfDatasource.extUpgrade()) vI_upgrade.extUpgrade();
+		if (vI_rdfDatasource.extUpgradeRequired()) vI_upgrade.extUpgrade();
 		if (vI_rdfDatasource.rdfUpgradeRequired()) vI_upgrade.rdfUpgrade();
 		
 		vI_account.cleanupSystem();
@@ -69,10 +69,26 @@ vI_upgrade = {
 		vI_notificationBar.dump("checking for previous version of rdf, found " + 
 			vI_rdfDatasource.getCurrentRDFFileVersion() + "\nrdf-upgrade required.\n")
 		switch (vI_rdfDatasource.getCurrentRDFFileVersion()) {
-			case null:
-				vI_rdfDatasource.initRDFDataSource();
+			case "0.0.1":
+				vI_upgrade.__removeQuotesFromResourceName(); break;
 		}
+		vI_rdfDatasource.storeRDFVersion();
 		vI_notificationBar.dump("rdf-upgrade to " + vI_rdfDatasource.getCurrentRDFFileVersion() + " done.\n\n");
+	},
+	
+	__removeQuotesFromResourceName : function() {
+		vI_notificationBar.quiet = true;
+		vI_rdfDatasource.readAllVIdentitiesFromRDF(vI_upgrade.__removeQuotesFromResourceNameCallback)
+		vI_notificationBar.quiet = null;
+		vI_notificationBar.dump("done.\n");
+	},
+	
+	__removeQuotesFromResourceNameCallback : function(resource, type, name, localIdentityData) {
+		vI_rdfDatasource.removeVIdentityFromRDF(resource);
+		vI_rdfDatasource.updateRDF(name, type, localIdentityData);
+		vI_notificationBar.quiet = null;
+		vI_notificationBar.dump(".");
+		vI_notificationBar.quiet = true;
 	},
 	
 	extUpgrade : function() {

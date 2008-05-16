@@ -37,7 +37,7 @@ vI_rdfDatasource = {
 	// extensionManager : Components.classes["@mozilla.org/extensions/manager;1"]
 	//		.getService(Components.interfaces.nsIExtensionManager),
 	
-	rdfVersion : "0.0.1",	// version of current implemented RDF-schema, internal only to trigger updates
+	rdfVersion : "0.0.2",	// version of current implemented RDF-schema, internal only to trigger updates
 	
 	virtualIdentityID : "{dddd428e-5ac8-4a81-9f78-276c734f75b8}",
 	
@@ -61,7 +61,7 @@ vI_rdfDatasource = {
 		return (!oldRdfVersion || versionChecker.compare(oldRdfVersion, vI_rdfDatasource.rdfVersion) < 0)
 	},
 	
-	extUpgrade: function() {
+	extUpgradeRequired: function() {
 		oldExtVersion = vI_rdfDatasource.getCurrentExtFileVersion()
 		var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 			.getService(Components.interfaces.nsIVersionComparator);
@@ -81,7 +81,7 @@ vI_rdfDatasource = {
 			vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "virtualIdentity"), "version");
 	},
 	
-	initRDFDataSource: function() {
+	storeRDFVersion: function() {
 		vI_rdfDatasource.__setRDFValue(
 			vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "virtualIdentity"), "rdfVersion",
 			vI_rdfDatasource.rdfVersion);
