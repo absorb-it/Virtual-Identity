@@ -172,7 +172,10 @@ vI_rdfDatasource = {
 		if (!resource) return null;
 		
 		var email = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "rdf#email");
-		if (!vI_rdfDatasource.rdfDataSource.hasArcOut(resource, email)) return null;
+		if (!vI_rdfDatasource.rdfDataSource.hasArcOut(resource, email)) {
+			vI_notificationBar.dump("## vI_rdfDatasource: readVIdentityFromRDF no data found.\n");
+			return null;
+		}
 		vI_notificationBar.dump("## vI_rdfDatasource: readVIdentityFromRDF found stored data.\n");
 		
 		email = vI_rdfDatasource.__getRDFValue(resource, "email")
