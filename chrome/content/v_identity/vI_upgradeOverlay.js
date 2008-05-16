@@ -28,7 +28,13 @@ vI_upgradeOverlay = {
 		if (vI_rdfDatasource.rdfUpgradeRequired() || vI_rdfDatasource.extUpgradeRequired())		
 			window.openDialog("chrome://v_identity/content/vI_upgrade.xul",0, // give the Dialog a unique id
 				"chrome, dialog, modal, alwaysRaised, resizable=yes").focus();
-		else vI_account.cleanupSystem(); // always clean leftover accounts and directories
+		else {
+			vI_account.cleanupSystem(); // always clean leftover accounts and directories
+			
+			// just to recognize downgrades later
+			vI_rdfDatasource.storeRDFVersion();
+			vI_rdfDatasource.storeExtVersion();
+		}
 	}
 }
 addEventListener('messagepane-loaded', vI_upgradeOverlay.init, true);
