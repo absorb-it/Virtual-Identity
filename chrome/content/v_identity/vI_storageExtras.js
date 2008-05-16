@@ -83,7 +83,7 @@ vI_storageExtras.prototype = {
 	loopForRDF : function(callFunction, resource) {
 		for( var i = 0; i < this.extras.length; i++ )
 			// only if pref set and feature(element available) or for dataEditor
-			if (!gMsgCompose || this.extras[i].active)
+			if (typeof(gMsgCompose) == "undefined" || !gMsgCompose || this.extras[i].active)
 				this.extras[i].value = callFunction(resource, this.extras[i].field, this.extras[i].value)
 	},
 	equal : function(storageExtras) {
