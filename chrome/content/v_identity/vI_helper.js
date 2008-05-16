@@ -101,6 +101,7 @@ var vI_helper = {
 			email = email.replace(/\s+|<|>/g,"")
 			name = name.replace(/^\s+|\s+$/g,"")
 			name = name.replace(/^\"|\"$/g,"")
+			name = name.replace(/^\'|\'$/g,"")
 		}
 		vI_notificationBar.dump("## v_identity: getAddress: address '" + address + "' name '" + 
 			name + "' email '" + email + "'\n");
