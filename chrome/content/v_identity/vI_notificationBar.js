@@ -53,6 +53,7 @@ var vI_notificationBar = {
 
 	init : function() {
 		vI_notificationBar.Obj_DebugBox = document.getElementById("vIDebugBox");
+		if (!vI_notificationBar.Obj_DebugBox) return;
 		if (vI_notificationBar.Obj_DebugBox.getAttribute("upgrade")) return;
 		vI_notificationBar.Obj_vINotification = document.getElementById("vINotification");
 		vI_notificationBar.checkVersion();
@@ -63,6 +64,7 @@ var vI_notificationBar = {
 	},
 	
 	clear : function() {
+		if (!vI_notificationBar.Obj_vINotification) return;
 		// workaround, seems that my usage of notificationbox doesn't display multiple lines
 		vI_notificationBar.Obj_vINotification.height = 0;
 		vI_notificationBar.Obj_vINotification.removeAllNotifications(false);
@@ -140,14 +142,15 @@ var vI_notificationBar = {
 	},
 	
 	setNote: function(note, prefstring) {
-		if (vI_notificationBar.Obj_vINotification) vI_notificationBar.clear();
+		vI_notificationBar.clear();
 		vI_notificationBar.addNote(note, prefstring);
 	},
 	
 	addNote: function(note, prefstring) {
 		vI_notificationBar.dump("** " + note + "\n");
 		if (!vI_notificationBar.preferences.getBoolPref(prefstring)) return;
-		if (!vI_notificationBar.Obj_vINotification) vI_notificationBar.init(false);
+		if (!vI_notificationBar.Obj_vINotification) vI_notificationBar.init();
+		if (!vI_notificationBar.Obj_vINotification) return;
 		if (!vI_notificationBar.versionOk) return;
 		if (vI_notificationBar.timer) window.clearTimeout(vI_notificationBar.timer);
 		var oldNotification = vI_notificationBar.Obj_vINotification.currentNotification
