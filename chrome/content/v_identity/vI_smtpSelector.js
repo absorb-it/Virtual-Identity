@@ -145,13 +145,20 @@ var vI_smtpSelector = {
 		vI_smtpSelector.elements.Obj_SMTPServerListPopup.appendChild(separator);
 
 		var servers = vI_smtpSelector.smtpService.smtpServers;
-		for (var i=0 ; i<servers.Count(); i++) {
-			var server = servers.QueryElementAt(i, Components.interfaces.nsISmtpServer);
+		
+		function addServer (server) {
 			if (!server.redirectorType) {
 				var listitem = vI_smtpSelector.__createSmtpListItem(server);
 				vI_smtpSelector.elements.Obj_SMTPServerListPopup.appendChild(listitem);
 			}
 		}
+
+		if (typeof(servers.Count == "undefined"))		// TB 3.x
+			while (servers && servers.hasMoreElements())
+				addServer(servers.getNext());
+		else							// TB 2.x
+			for (var i=0 ; i<servers.Count(); i++)
+				addServer(servers.QueryElementAt(i, Components.interfaces.nsISmtpServer));
 	},
 	
 	__createDefaultSmtpListItem : function () {
