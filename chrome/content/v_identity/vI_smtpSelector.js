@@ -147,7 +147,8 @@ var vI_smtpSelector = {
 		var servers = vI_smtpSelector.smtpService.smtpServers;
 		
 		function addServer (server) {
-			if (!server.redirectorType) {
+			if (server instanceof Components.interfaces.nsISmtpServer &&
+        !server.redirectorType) {
 				var listitem = vI_smtpSelector.__createSmtpListItem(server);
 				vI_smtpSelector.elements.Obj_SMTPServerListPopup.appendChild(listitem);
 			}

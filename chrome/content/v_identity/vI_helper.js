@@ -12,17 +12,18 @@ keyTranslator.prototype = {
 			.getService(Components.interfaces.nsISmtpService);
 		var servers = smtpService.smtpServers;
 		
-		function addServer (server) {
-			if (!server.redirectorType)
-				this.SMTP_NAMES[server.key] = server.description?server.description:server.hostname
+		function addServer (SMTP_NAMES, server) {
+			if (server instanceof Components.interfaces.nsISmtpServer &&
+        !server.redirectorType)
+				SMTP_NAMES[server.key] = server.description?server.description:server.hostname
 		}
 		
 		if (typeof(servers.Count == "undefined"))		// TB 3.x
 			while (servers && servers.hasMoreElements())
-				addServer(servers.getNext());
+				addServer(this.SMTP_NAMES, servers.getNext());
 		else							// TB 2.x
 			for (var i=0 ; i<servers.Count(); i++)
-				addServer( servers.QueryElementAt(i,Components.interfaces.nsISmtpServer));
+				addServer(this.SMTP_NAMES,  servers.QueryElementAt(i,Components.interfaces.nsISmtpServer));
 
 		if (!this.DEFAULT_TAG) this.DEFAULT_TAG = document.getElementById("bundle_messenger").getString("defaultServerTag");
 	},
