@@ -105,7 +105,7 @@ var vI_helper = {
 	
 	parseAddress : function(address) {
 		//~ vI_notificationBar.dump("## v_identity: getAddress: parsing '" + address + "'\n")
-		var name = ""; email = "";
+		var name = ""; var email = "";
 		// prefer an email address separated with < >, only if not found use any other
 		if (address.match(/<\s*[^>\s]*@[^>\s]*\s*>/) || address.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/) || address.match(/$/)) {
 			name = RegExp.leftContext + RegExp.rightContext
