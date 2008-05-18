@@ -70,7 +70,7 @@ var vI_msgIdentityClone = {
 			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.doCommand();
 		}
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentityPopup.childNodes
-		for (index = 0; index < MenuItems.length; index++) {
+		for (var index = 0; index < MenuItems.length; index++) {
 			var newMenuItem = MenuItems[index].cloneNode(true);
 			newMenuItem.setAttribute("class", "identity_clone-popup-item person-icon")
 			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.appendChild(newMenuItem)
@@ -99,7 +99,7 @@ var vI_msgIdentityClone = {
 	setMenuToIdentity : function (identitykey) {
 		vI_notificationBar.dump("## vI_msgIdentityClone: setMenuToIdentity key " + identitykey + "\n");
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.childNodes
-		for (index = 0; index < MenuItems.length; index++) {
+		for (var index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].getAttribute("value") ==
 				identitykey) {
 					vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem =
@@ -126,7 +126,7 @@ var vI_msgIdentityClone = {
 		var accountname = null; var separator = null;
 		// if a base-id exists, search the account related to this id
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.firstChild.childNodes
-		for (j = 0; j < MenuItems.length; j++) {
+		for (var j = 0; j < MenuItems.length; j++) {
 			if (MenuItems[j].localName == "menuseparator") {
 				separator = true; break;
 			}
@@ -145,7 +145,7 @@ var vI_msgIdentityClone = {
 	// adds MenuItem for Identities to the cloned Identity-Select Dropdown Menu
 	addIdentitiesToCloneMenu: function(all_addresses) {
 		var separator = null;
-		for (index = 0; index < all_addresses.number; index++) {
+		for (var index = 0; index < all_addresses.number; index++) {
 			if (vI_msgIdentityClone.__isNewAddress(
 				all_addresses.fullNames[index], all_addresses.emails[index], all_addresses.smtp_keys[index])) {
 					if (!separator) separator = vI_msgIdentityClone.addSeparatorToCloneMenu();
@@ -160,7 +160,7 @@ var vI_msgIdentityClone = {
 		vI_notificationBar.dump("## vI_msgIdentityClone: copySelectedIdentity\n");
 		// copy selected Menu-Value from clone to orig.
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.childNodes
-		for (index = 0; index < MenuItems.length; index++) {
+		for (var index = 0; index < MenuItems.length; index++) {
 			if ( MenuItems[index].getAttribute("value") == id_key ) {
 				vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem = MenuItems[index];
 				vI_msgIdentityClone.elements.Obj_MsgIdentity.value = MenuItems[index].getAttribute("value");
