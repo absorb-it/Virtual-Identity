@@ -372,5 +372,5 @@ var vI = {
 
 
 vI.replacement_functions.replace_FillIdentityList();
-window.addEventListener('compose-window-init', vI.init, false);
+window.addEventListener('compose-window-init', vI.init, true);
 // window.addEventListener("unload", vI.remove, false);
