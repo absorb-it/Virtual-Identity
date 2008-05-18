@@ -228,7 +228,8 @@ var vI_storage = {
 			// better approach would be to use te onchange event, but this one is not fired in any change case
 			// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
 			// same seems to happen with the ondragdrop event
-			for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
+			if (top.MAX_RECIPIENTS == 0) top.MAX_RECIPIENTS = 1;
+			for (var row = 1; row <= top.MAX_RECIPIENTS ; row ++) {
 				var input = awGetInputElement(row);
 				if (input) {
 					var oldBlur = input.getAttribute("onblur")
@@ -484,9 +485,9 @@ var vI_storage = {
 	// see also https://bugzilla.mozilla.org/show_bug.cgi?id=408575
 	isMailingList: function(recipient) {
 		vI_notificationBar.dump("## vI_storage: isMailingList '" + recipient + "' \n")
-		queryString = "?(or(DisplayName,c," + encodeURIComponent(vI_storage.getMailListName(recipient)) + "))"
+		var queryString = "?(or(DisplayName,c," + encodeURIComponent(vI_storage.getMailListName(recipient)) + "))"
 		var returnVar = vI_storage._walkTroughCards(queryString, vI_storage._isMailingListCard,
-			{ mailListName : mailListName, isMailList : false } )
+			{ mailListName : recipient, isMailList : false } )
 		vI_notificationBar.dump("## vI_storage: isMailList  " + returnVar.isMailList + ".\n")
 		return returnVar.isMailList;
 	},	
@@ -502,7 +503,7 @@ var vI_storage = {
 	
 	getMailListName : function(recipient) {
 		if (recipient.match(/<[^>]*>/) || recipient.match(/$/)) {
-			mailListName = RegExp.leftContext + RegExp.rightContext
+			var mailListName = RegExp.leftContext + RegExp.rightContext
 			mailListName = mailListName.replace(/^\s+|\s+$/g,"")
 		}
 		return mailListName;
