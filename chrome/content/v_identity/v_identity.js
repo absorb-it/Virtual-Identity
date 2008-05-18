@@ -106,7 +106,8 @@ var vI = {
 		FillIdentityList: function(menulist) {
 			vI_notificationBar.dump("## v_identity: mod. FillIdentityList\n");
 			var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
-			accounts.sort(compareAccountSortOrder);
+			if (typeof(sortAccounts)=="function") // TB 3.x
+				accounts.sort(sortAccounts);
 
 			for (var i in accounts) {
 				var server = accounts[i].incomingServer;
@@ -371,5 +372,5 @@ var vI = {
 
 
 vI.replacement_functions.replace_FillIdentityList();
-window.addEventListener("load", vI.init, false);
+window.addEventListener("compose-window-open", vI.init, false);
 window.addEventListener("unload", vI.remove, false);

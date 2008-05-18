@@ -108,7 +108,11 @@ vI_smtpSelector = {
 			//~ vI_notificationBar.dump("## v_smtpSelector: __selectUsedSMTPServer else\n")
 			// find the account related to the identity, to get the account-related default smtp, if it exists.
 			var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
-			accounts.sort(compareAccountSortOrder);
+			
+			if (typeof(sortAccounts)=="function") // TB 3.x
+				accounts.sort(sortAccounts);
+			else if (typeof(compareAccountSortOrder)=="function") // TB 2.x
+				accounts.sort(compareAccountSortOrder);
 			
 			for (var x in accounts) {
 				vI_notificationBar.dump(".")

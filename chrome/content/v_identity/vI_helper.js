@@ -20,7 +20,10 @@ keyTranslator.prototype = {
 	__getIDnames : function () {
 		this.ID_NAMES = [];
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
-		accounts.sort(compareAccountSortOrder);
+		if (typeof(sortAccounts)=="function") // TB 3.x
+			accounts.sort(sortAccounts);
+		else if (typeof(compareAccountSortOrder)=="function") // TB 2.x
+			accounts.sort(compareAccountSortOrder);
 		for (var i in accounts) {
 			var server = accounts[i].incomingServer;
 			if (!server) continue;
