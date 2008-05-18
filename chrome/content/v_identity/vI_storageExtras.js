@@ -29,7 +29,7 @@ function vI_storageExtras_adapt(sourceId, targetId) {
 	else target.setAttribute("disabled", "true");
 }	
 
-vI_storageExtrasHelper = {
+var vI_storageExtrasHelper = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.virtualIdentity."),

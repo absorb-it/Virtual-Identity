@@ -151,7 +151,7 @@ identityCollection.prototype =
 	}
 };
 
-vI_storage = {
+var vI_storage = {
 	multipleRecipients : null,
 	
 	lastCheckedEmail : {}, 	// array of last checked emails per row,

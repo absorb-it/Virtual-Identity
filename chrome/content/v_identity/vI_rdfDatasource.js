@@ -22,7 +22,7 @@
     Contributor(s):
  * ***** END LICENSE BLOCK ***** */
  
-vI_rdfDatasource = {			
+var vI_rdfDatasource = {			
 	rdfService : Components.classes["@mozilla.org/rdf/rdf-service;1"]
 			.getService(Components.interfaces.nsIRDFService),
 	

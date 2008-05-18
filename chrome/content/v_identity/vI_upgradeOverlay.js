@@ -22,7 +22,7 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-vI_upgradeOverlay = {
+var vI_upgradeOverlay = {
 	init: function() {
 		vI_rdfDatasource.init() // just to be sure that Datasource is available
 		if (vI_rdfDatasource.rdfUpgradeRequired() || vI_rdfDatasource.extUpgradeRequired())		

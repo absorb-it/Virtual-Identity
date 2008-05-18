@@ -22,7 +22,7 @@
     Contributor(s):
  * ***** END LICENSE BLOCK ***** */
 
-vI_smtpSelector = {
+var vI_smtpSelector = {
 	smtpService : Components.classes["@mozilla.org/messengercompose/smtp;1"]
 					.getService(Components.interfaces.nsISmtpService),
 	

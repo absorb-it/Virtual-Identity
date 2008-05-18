@@ -22,7 +22,7 @@
     Contributor(s): Thunderbird Developers
  * ***** END LICENSE BLOCK ***** */
 
-vI_msgIdentityClone = {
+var vI_msgIdentityClone = {
 	icon_usualId_class : "identity_clone-menulist person-icon",
 	icon_virtualId_class : "identity_clone-menulist person-icon new-icon",
 	text_usualId_class : "plain menulist_clone-textbox",

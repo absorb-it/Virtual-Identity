@@ -22,7 +22,7 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-vI_smartIdentity = {
+var vI_smartIdentity = {
 	messenger : Components.classes["@mozilla.org/messenger;1"].createInstance()
 		.QueryInterface(Components.interfaces.nsIMessenger),
 		

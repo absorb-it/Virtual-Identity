@@ -22,7 +22,7 @@
     Contributor(s):
  * ***** END LICENSE BLOCK ***** */
 
-vI_account = {
+var vI_account = {
 	account : null,
 	
 	AccountManager : Components.classes["@mozilla.org/messenger/account-manager;1"]
