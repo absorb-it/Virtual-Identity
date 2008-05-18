@@ -167,7 +167,7 @@ var vI_storage = {
 
 	prefroot : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
-			.getBranch(null),
+			.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2),
 	
 	clean: function() {
 		vI_notificationBar.dump("## vI_storage: clean.\n");
