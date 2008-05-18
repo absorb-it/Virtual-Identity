@@ -52,7 +52,7 @@ var vI_rdfDataEditor = {
 		document.getElementById("identity_list_popup").appendChild(separator);
 
 		if (typeof(FillIdentityList)=="function")		// TB 3.x
-			FillIdentityList(document.getElementById("identity_list_popup"))
+			FillIdentityList(document.getElementById("identity_list"))
 		else							// TB 2.x
 			FillIdentityListPopup(document.getElementById("identity_list_popup"))
 
