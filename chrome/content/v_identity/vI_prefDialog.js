@@ -27,7 +27,7 @@
 * thanks to all Thunderbird Developers
 */
 
-vI_prefDialog = {
+var vI_prefDialog = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 				.getService(Components.interfaces.nsIPrefService)
 				.getBranch("extensions.virtualIdentity."),
@@ -134,9 +134,9 @@ vI_prefDialog = {
 		},
 		
 		idSelectionConstraint : function() {
-			storage = document.getElementById("VIdent_identity.storage").checked;
-			smartDraft = document.getElementById("VIdent_identity.smart_draft").checked;
-			smartReply = document.getElementById("VIdent_identity.smart_reply").checked;
+			var storage = document.getElementById("VIdent_identity.storage").checked;
+			var smartDraft = document.getElementById("VIdent_identity.smart_draft").checked;
+			var smartReply = document.getElementById("VIdent_identity.smart_reply").checked;
 			vI_prefDialog.base.idSelectionConstraint1(storage && smartReply);
 			vI_prefDialog.base.idSelectionConstraint2(storage || smartReply || smartDraft);
 			if (storage || smartReply || smartDraft) vI_prefDialog.base.idSelectionResultConstraint()
