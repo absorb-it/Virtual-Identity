@@ -22,7 +22,7 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-vI_rdfDataEditor = {
+var vI_rdfDataEditor = {
 	__rdfDatasource : null,
 	
 	storageExtras : null,
@@ -51,7 +51,11 @@ vI_rdfDataEditor = {
 		var separator = document.createElement("menuseparator");
 		document.getElementById("identity_list_popup").appendChild(separator);
 
-		FillIdentityListPopup(document.getElementById("identity_list_popup"))
+		if (typeof(FillIdentityList)=="function")		// TB 3.x
+			FillIdentityList(document.getElementById("identity_list_popup"))
+		else							// TB 2.x
+			FillIdentityListPopup(document.getElementById("identity_list_popup"))
+
 		var MenuItems = document.getElementById("identity_list_popup").childNodes
 		
 		for (index = 0; index < MenuItems.length; index++) {
