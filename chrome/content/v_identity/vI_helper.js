@@ -18,7 +18,7 @@ keyTranslator.prototype = {
 				SMTP_NAMES[server.key] = server.description?server.description:server.hostname
 		}
 		
-		if (typeof(servers.Count == "undefined"))		// TB 3.x
+		if (typeof(servers.Count) == "undefined")		// TB 3.x
 			while (servers && servers.hasMoreElements())
 				addServer(this.SMTP_NAMES, servers.getNext());
 		else							// TB 2.x

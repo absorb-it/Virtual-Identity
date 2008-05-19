@@ -153,8 +153,8 @@ var vI_smtpSelector = {
 				vI_smtpSelector.elements.Obj_SMTPServerListPopup.appendChild(listitem);
 			}
 		}
-
-		if (typeof(servers.Count == "undefined"))		// TB 3.x
+		
+		if (typeof(servers.Count) == "undefined")		// TB 3.x
 			while (servers && servers.hasMoreElements())
 				addServer(servers.getNext());
 		else							// TB 2.x
