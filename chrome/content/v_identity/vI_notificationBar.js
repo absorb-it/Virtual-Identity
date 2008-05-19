@@ -31,9 +31,14 @@ var vI_notificationBar = {
 		.getService(Components.interfaces.nsIPrefService)
 		.getBranch("extensions.virtualIdentity."),
 	
+	prefroot : Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2),
+
 	Obj_vINotification : null,
 	Obj_DebugBox : null,
-	
+	Obj_DebugBoxSplitter : null,
+
 	versionOk : false,
 	
 	checkVersion : function() {
@@ -52,16 +57,36 @@ var vI_notificationBar = {
 		}
 	},
 
+	observe: function() {
+		var showDebugArea = vI_notificationBar.preferences.getBoolPref("debug_notification")
+		vI_notificationBar.Obj_DebugBox.setAttribute("hidden", !showDebugArea)
+		vI_notificationBar.Obj_DebugBoxSplitter.setAttribute("hidden", !showDebugArea)
+	},
+	
+	addObserver: function() {
+		vI_notificationBar.prefroot.addObserver("extensions.virtualIdentity.debug_notification", vI_notificationBar, false);
+	},
+	
+	removeObserver: function() {
+		vI_notificationBar.prefroot.removeObserver("extensions.virtualIdentity.debug_notification", vI_notificationBar);
+	},
+
 	init : function() {
 		vI_notificationBar.Obj_DebugBox = document.getElementById("vIDebugBox");
-		if (!vI_notificationBar.Obj_DebugBox) return;
-		if (vI_notificationBar.Obj_DebugBox.getAttribute("upgrade")) return;
+		if (!vI_notificationBar.Obj_DebugBox) return false;
+		
+		// nothing else to do for the upgrade dialog
+		if (vI_notificationBar.Obj_DebugBox.getAttribute("upgrade")) return true;
+		
 		vI_notificationBar.Obj_vINotification = document.getElementById("vINotification");
+		vI_notificationBar.Obj_DebugBoxSplitter = document.getElementById("vIDebugBoxSplitter")
+		
+		vI_notificationBar.addObserver();
+		vI_notificationBar.observe();
 		vI_notificationBar.checkVersion();
-		if (!vI_notificationBar.preferences.getBoolPref("debug_notification")) return;
-		vI_notificationBar.Obj_DebugBox.setAttribute("hidden","false");
-		document.getElementById("vIDebugBoxSplitter").setAttribute("hidden","false");
 		vI_notificationBar.dump_app_version();
+
+		return true;
 	},
 	
 	clear : function() {
@@ -87,9 +112,9 @@ var vI_notificationBar = {
 				.getService(Components.interfaces.nsIXULAppInfo);
 			var protohandler = Components.classes["@mozilla.org/network/protocol;1?name=http"]
 				.getService(Components.interfaces.nsIHttpProtocolHandler);
-			vI_notificationBar.dump(appInfo.name + " " + appInfo.version + " (" + appInfo.appBuildID + "; " + protohandler.oscpu + ")\n")
+			vI_notificationBar.__dumpDebugBox(appInfo.name + " " + appInfo.version + " (" + appInfo.appBuildID + "; " + protohandler.oscpu + ")\n")
 		}
-		else vI_notificationBar.dump("mail-client seems not supported by Virtual Identity Extension")
+		else vI_notificationBar.__dumpDebugBox("mail-client seems not supported by Virtual Identity Extension")
 		
 		// copied and adapted from nightly tester tools from Dave Townsend (http://www.oxymoronical.com/web/firefox/nightly)
 		try { 	var em = Components.classes["@mozilla.org/extensions/manager;1"]
@@ -111,24 +136,24 @@ var vI_notificationBar = {
 					if (disabled.Value=="true") output += " [DISABLED]";
 				}
 				catch (e) { }
-				vI_notificationBar.dump(output + "\n")
+				vI_notificationBar.__dumpDebugBox(output + "\n")
 			}
 		}
 		catch (e) {};
-		vI_notificationBar.dump("--------------------------------------------------------------------------------\n")
+		vI_notificationBar.__dumpDebugBox("--------------------------------------------------------------------------------\n")
 	},
 	
 	dump : function(note) {
-		if (vI_notificationBar.quiet) return;
-		if (!vI_notificationBar.Obj_DebugBox) vI_notificationBar.init();
-		if (!vI_notificationBar.Obj_DebugBox) return;
-		if (!vI_notificationBar.Obj_DebugBox.getAttribute("upgrade") && 
-			!vI_notificationBar.preferences.getBoolPref("debug_notification")) {
-			vI_notificationBar.Obj_DebugBox.setAttribute("hidden","true");
-			document.getElementById("vIDebugBoxSplitter").setAttribute("hidden","true");
-			vI_notificationBar.Obj_DebugBox = null;
-			return
-		}
+		if (!vI_notificationBar.preferences.getBoolPref("debug_notification")) return;
+		dump(note); vI_notificationBar.__dumpDebugBox(note);
+	},
+
+	__dumpDebugBox : function(note) {
+		if (!vI_notificationBar.preferences.getBoolPref("debug_notification") ||
+			vI_notificationBar.quiet) return;
+		if (!vI_notificationBar.Obj_DebugBox &&
+			!vI_notificationBar.init()) return;
+
 		var new_text = document.createTextNode(note);
 		var new_br = document.createElementNS("http://www.w3.org/1999/xhtml", 'br');
 		vI_notificationBar.Obj_DebugBox.inputField.appendChild(new_text);
@@ -176,3 +201,4 @@ var vI_notificationBar = {
 	},
 	
 }
+window.addEventListener("unload", function(e) { try {vI_notificationBar.removeObserver();} catch (ex) { } }, false);
