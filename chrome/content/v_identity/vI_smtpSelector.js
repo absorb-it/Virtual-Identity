@@ -26,6 +26,10 @@ var vI_smtpSelector = {
 	smtpService : Components.classes["@mozilla.org/messengercompose/smtp;1"]
 					.getService(Components.interfaces.nsISmtpService),
 	
+	prefroot : Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2),
+	
 	elements : {
 		Area_SMTPServerList : null,
 		Obj_SMTPServerList : null,
@@ -57,11 +61,11 @@ var vI_smtpSelector = {
 	},
 	
 	addObserver: function() {
-		vI_storage.prefroot.addObserver("extensions.virtualIdentity.show_smtp", vI_smtpSelector, false);
+		vI_smtpSelector.prefroot.addObserver("extensions.virtualIdentity.show_smtp", vI_smtpSelector, false);
 	},
 	
 	removeObserver: function() {
-		vI_storage.prefroot.removeObserver("extensions.virtualIdentity.show_smtp", vI_smtpSelector);
+		vI_smtpSelector.prefroot.removeObserver("extensions.virtualIdentity.show_smtp", vI_smtpSelector);
 	},
 
 	loadSMTP : function()
