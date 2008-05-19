@@ -302,8 +302,6 @@ var vI_prefDialog = {
 		vI_prefDialog.base.smartReplyHideSignature();
 		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
 		vI_prefDialog.base.idSelectionConstraint();
-		
-		dump("## vI_prefDialog: init_prefs done\n");
 	},
 	
 	savePrefs : function() {
