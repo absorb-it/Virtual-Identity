@@ -310,6 +310,7 @@ var vI_smartIdentity = {
 		if (allIdentities.id_keys[selectedValue]) {
 			vI_msgIdentityClone.setMenuToIdentity(allIdentities.id_keys[selectedValue])
 			vI_smtpSelector.setMenuToKey(allIdentities.smtp_keys[selectedValue])
+			allIdentities.extras[selectedValue].setValues();
 		}
 		vI_msgIdentityClone.setIdentity(allIdentities.combinedNames[selectedValue], null);
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") == "vid") {
