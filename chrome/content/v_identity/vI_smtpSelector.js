@@ -82,7 +82,7 @@ var vI_smtpSelector = {
 	},
 	
 	setMenuToKey : function (smtpKey) {
-		(smtpKey == null?"":smtpKey) // replace unset smtpServers with default
+		if (!smtpKey) smtpKey = "";
 		vI_notificationBar.dump("## v_smtpSelector: setMenuToKey '" + smtpKey + "'\n")
 		MenuItems = vI_smtpSelector.elements.Obj_SMTPServerListPopup.childNodes
 		for (index = 0; index < MenuItems.length; index++) {
