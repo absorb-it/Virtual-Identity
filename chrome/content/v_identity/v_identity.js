@@ -209,6 +209,7 @@ var vI = {
 
 	// initialization //
 	init: function() {
+		if (vI.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
 		vI_notificationBar.dump("## v_identity: init.\n")
 		vI.unicodeConverter.charset="UTF-8";
 		vI.adapt_interface();
