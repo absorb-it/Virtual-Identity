@@ -1,34 +1,34 @@
-<!ENTITY vI_storageExtras.storeValue.label "store"> <!-- to translate -->
+<!ENTITY vI_storageExtras.storeValue.label "stocker">
 
-<!ENTITY vI_prefDialog.storageExtras.returnReciept.label "return reciept status"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "selected character encoding"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storageExtras.messageFormat.label "selected message format"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storageExtras.returnReciept.label "statut de l&apos;accusé de réception">
+<!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "chriffrement du caractère sélectionné">
+<!ENTITY vI_prefDialog.storageExtras.messageFormat.label "format du message sélectionné">
 
-<!ENTITY vI_prefDialog.storageExtras.sMime.label "S/MIME"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storageExtras.sMime.messageEncryption.label "encryption status"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storageExtras.sMime.messageSignature.label "signature usage"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storageExtras.openPGP.label "OpenPGP"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "encryption status"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "signature usage"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "PGP/MIME usage"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storageExtras.sMime.label "S/MIME">
+<!ENTITY vI_prefDialog.storageExtras.sMime.messageEncryption.label "état du chiffrement">
+<!ENTITY vI_prefDialog.storageExtras.sMime.messageSignature.label "usage de la signature">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.label "OpenPGP">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "état du chiffrement">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "usage de la signature">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "usage de PGP/MIME">
 
-<!ENTITY vI_storageExtras.caption.label "additionally stored settings"> <!-- to translate -->
+<!ENTITY vI_storageExtras.caption.label "paramètres supplémentaires stockés">
 
-<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Return Reciept"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Character Encoding"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Message Format"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME: encrypt"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME: sign"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "openPGP encrypt"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP: sign"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP: PGP/MIME"> <!-- to translate -->
+<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Accusé de réception">
+<!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Chiffrement des caractères">
+<!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Format du message">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME : chiffrer">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME : signer">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "chiffrement openPGP">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP : signer">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP : PGP/MIME">
 
-<!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "hide inactive fields"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Return Reciept"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Character Encoding"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Message Format"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: encrypt messages"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeSig.label "S/MIME: sign messages"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP encrypt messages"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: sign messages"> <!-- to translate -->
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: use PGP/MIME"> <!-- to translate -->
+<!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "cacher les champs inactifs">
+<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Accusé de réception">
+<!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Chiffrement des caractères">
+<!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Format du message">
+<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME : chiffrer les messages">
+<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeSig.label "S/MIME : signer les messages">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "Chiffrer les messages avec openPGP">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP : signer les messages">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP : utiliser PGP/MIME">

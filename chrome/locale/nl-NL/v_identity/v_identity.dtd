@@ -4,9 +4,9 @@
 <!ENTITY vident.composeDialog.storageSave.tooltiptext "Identiteit opslaan bij verzenden">
 <!ENTITY vident.replySelector.dialogheader.title "Virtual Identity">
 <!ENTITY vident.replySelector.caption.label "Kies een virtuele identiteit">
-<!ENTITY vident.vI_Menu.label "Virtual Identity"> <!-- to translate -->
-<!ENTITY vident.vI_Menu.Settings.label "Settings"> <!-- to translate -->
-<!ENTITY vident.vI_Menu.DataEditor.label "Data-Storage Editor"> <!-- to translate -->
+<!ENTITY vident.vI_Menu.label "Virtual Identity">
+<!ENTITY vident.vI_Menu.Settings.label "Instellingen">
+<!ENTITY vident.vI_Menu.DataEditor.label "Gegevensopslagbewerking">
 
 <!ENTITY fccMailFolder.accesskey "l">
 <!ENTITY sentFolderOn.accesskey "z">

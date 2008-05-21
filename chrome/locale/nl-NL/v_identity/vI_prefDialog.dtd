@@ -5,27 +5,27 @@
 <!ENTITY vI_prefDialog.vIdentityTab.label "Virtuele identiteit">
 <!ENTITY vI_prefDialog.smartReplyTab.label "Slim Antwoorden">
 <!ENTITY vI_prefDialog.storageTab.label "Opslaan">
-<!ENTITY vI_prefDialog.idSelection.label "Identity-Selection"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.label "Identiteitselectie">
 <!ENTITY vI_prefDialog.notificationTab.label "Statusberichten">
 
 <!ENTITY vI_prefDialog.commonTab.header "Algemene configuratie">
 <!ENTITY vI_prefDialog.commonTab.caption "De volgende mogelijkheden gebruiken">
-<!ENTITY vI_prefDialog.storage.label "store (and recall) used Identities"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storage.tooltiptext "Used Identities might be stored related to the reciepients of your email. If you write again to the same reciepient, the same virtual or non-virtual Identity wil be used"> <!-- to translate -->
-<!ENTITY vI_prefDialog.autoTimestamp.label "autogenerate Timestamp-Identity for new mails"> <!-- to translate -->
-<!ENTITY vI_prefDialog.autoTimestamp.tooltiptext "On composing a new email, modify your usual sender-address with a timestamp. On easy way to create unique Identities, off by default."> <!-- to translate -->
-<!ENTITY vI_prefDialog.smartInfo.label "detect Identity by analysing the mail-header:"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storage.label "Gebruikte identiteiten opslaan (en ophalen)">
+<!ENTITY vI_prefDialog.storage.tooltiptext "Gebruikte identiteiten kunnen in relatie tot de ontvangers van uw bericht worden opgeslagen. Als u opnieuw een bericht aan dezelfde ontvanger stuurt wordt dezelfde virtuele of niet-virtuele identiteit gebruikt">
+<!ENTITY vI_prefDialog.autoTimestamp.label "Tijdsafdruk-identiteit voor nieuwe berichten automatisch aanmaken">
+<!ENTITY vI_prefDialog.autoTimestamp.tooltiptext "Bij het schrijven van een nieuw bericht kunt u uw gebruikelijke afzendersadres aanpassen met een tijdsafdruk. Een eenvoudige manier om unieke identiteiten aan te maken, staat standaard uit.">
+<!ENTITY vI_prefDialog.smartInfo.label "Identiteit detecteren door berichtkoptekst te analyseren:">
 <!ENTITY vI_prefDialog.versionWarning.label "Uw e-mailprogramma is te oud om de Slim Concept-mogelijkheid te kunnen gebruiken">
 <!ENTITY vI_prefDialog.smartDraft.label "Slim Concept gebruiken">
-<!ENTITY vI_prefDialog.smartDraft.tooltiptext "'Smart Draft' tries to detect the to-be used sender of the Draft or Template by analysing the header of the stored email. Recommended, on by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartDraft.tooltiptext "&apos;Slim Concept&apos; probeert de te gebruiken afzender van het Concept of het Sjabloon te detecteren door de koptekst van het opgeslagen bericht te analyseren. Aanbevolen, staat standaard aan.">
 <!ENTITY vI_prefDialog.smartReply.label "Slim Antwoorden gebruiken">
-<!ENTITY vI_prefDialog.smartReply.tooltiptext "'Smart Reply' tries to detect the to-be used sender of the Reply by analysing the header of the received email. It's relevant if this Identity is not yet in your storage. Best results if configured in the approriate Tab. Recommended, on by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartReply.tooltiptext "&apos;Slim antwoorden&apos; probeert de te gebruiken afzender van het antwoord te detecteren door de koptekst van het ontvangen e-mailbericht te analyseren. Dit is relevant als de identiteit nog niet is opgeslagen. U krijgt de beste resultaten als dit is geconfigureerd in het bijbehorende tabblad. Aanbevolen, staat standaard aan.">
 <!ENTITY vI_prefDialog.smartReplyNewsgroups.label "Slim Antwoorden ook gebruiken als aan een nieuwsgroep wordt geantwoord">
-<!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "You can use 'Smart Reply' for detecting your senders Identity while answering to newsposts. If not configured approriate, this won't work nicely. Therefore off by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "U kunt &apos;Slim antwoorden&apos; gebruiken om de identiteit van de afzender te detecteren terwijl u antwoord geeft op nieuwsposts. Dit werkt niet goed indien niet correct ingesteld. Daarom standaard uitgeschakeld.">
 
-<!ENTITY vI_prefDialog.commonTab.caption2 "interface"> <!-- to translate -->
+<!ENTITY vI_prefDialog.commonTab.caption2 "Interface">
 <!ENTITY vI_prefDialog.SMTP.label "SMTP menu weergeven">
-<!ENTITY vI_prefDialog.menuEntry.label "add entry for Settings-Dialog and Storage-Editor to Tools menu"> <!-- to translate -->
+<!ENTITY vI_prefDialog.menuEntry.label "Onderdeel voor Instellingendialoog en Opslagbewerking aan menu Extra toevoegen">
 <!ENTITY vI_prefDialog.warnNonvirtual.label "Waarschuwen bij gebruik van niet-virtuele identiteiten">
 <!ENTITY vI_prefDialog.warnVirtual.label "Waarschuwen bij elk gebruik van virtuele identiteiten">
 
@@ -59,34 +59,34 @@
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "Als er geen naam bij een gevonden e-mailadres staat de volgende gebruiken:">
 
 <!ENTITY vI_prefDialog.storageTab.header "Virtuele identiteiten worden opgeslagen">
-<!ENTITY vI_prefDialog.storageTab.Tab1.label "storage options"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storageTab.Tab2.label "additional options"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storageTab.Tab1.label "Opslagopties">
+<!ENTITY vI_prefDialog.storageTab.Tab2.label "Aanvullende opties">
 <!ENTITY vI_prefDialog.storageCap1.caption "Opslaan van virtuele identiteiten">
 <!ENTITY vI_prefDialog.storageCap2.caption "Lezen van virtuele identiteiten">
 <!ENTITY vI_prefDialog.storage.storedefault.label "Virtuele identiteiten opslaan bij verzenden e-mailberichten">
 <!ENTITY vI_prefDialog.storage.warn_update.label "Vragen voordat opgeslagen virtuele identiteiten worden overschreven">
 <!ENTITY vI_prefDialog.storage.dont_update_multiple.label "Nooit overschrijven (en vragen) als het e-mailbericht meerdere ontvangers heeft">
 <!ENTITY vI_prefDialog.storage.show_switch.label "Schakelaar om opslaan van identiteiten te activeren/deactiveren laten zien">
-<!ENTITY vI_prefDialog.storage.openEditor "edit stored data"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storage.openEditor "Opgeslagen gegevens bewerken">
 <!ENTITY vI_prefDialog.storage.warn_vI_replace.label "Vragen voordat de virtuele identiteit in het afzendersveld wordt vervangen">
 <!ENTITY vI_prefDialog.storage.get_One_Only.label "Opslaan negeren na ophalen van eerste virtuele identiteit">
-<!ENTITY vI_prefDialog.storageCap3.caption "store (and recall) the following settings"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storageCap3.caption "De volgende instellingen opslaan (en onthouden)">
 
-<!ENTITY vI_prefDialog.idSelection.header "Identity Selection"> <!-- to translate -->
-<!ENTITY vI_prefDialog.idSelection.Tab1.label "identity selection"> <!-- to translate -->
-<!ENTITY vI_prefDialog.idSelection.Tab2.label "results handling"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.header "Identiteitsselectie">
+<!ENTITY vI_prefDialog.idSelection.Tab1.label "Identiteitsselectie">
+<!ENTITY vI_prefDialog.idSelection.Tab2.label "Resultaatverwerking">
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Smart Reply and Storage"> <!-- to translate -->
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Smart Draft and Storage"> <!-- to translate -->
-<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Handling of the Results"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Slim Antwoorden en Opslaan">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Slim Concept en Opslaan">
+<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Resultaatverwerking">
 
-<!ENTITY vI_prefDialog.idSelection.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with &apos;Smart Reply&apos; can configured here."> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.reply.desc "Als u antwoordt op e-mailberichten kan de prioriteit van opgeslagen virtuele identiteiten in vergelijking met de identiteiten die met Slim Antwoorden worden verkregen hier worden ingesteld.">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "Voorkeur geven aan Slim Antwoorden-identiteiten">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "Slim Antwoorden-identiteiten negeren indien opgeslagen identiteiten worden aangetroffen">
 
-<!ENTITY vI_prefDialog.idSelection.draft.desc "If you edit a Draft (or a Template) there is nothing to configure. If the extension is able to read the header of the stored email, a related Virtual Identity is created. There is no information about SMTP or any other specific settings in the Draft/Template. This information is, if possible, retrieved from the Virtual Identity Storage."> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.draft.desc "Indien u een Concept (of Sjabloon) bewerkt is er niets in te stellen. Als de extensie in staat is om de koptekst van het opgeslagen bericht te lezen wordt een eraan gerelateerde virtuele identiteit gecreëerd. Er is geen informatie over SMTP of een andere specifieke instelling in het Concept/de Sjabloon. Deze informatie wordt, indien mogelijk, opgehaald uit de opgeslagen virtuele identiteiten.">
 
-<!ENTITY vI_prefDialog.idSelection.multiselect.desc "The results of the search in the Virtual Identity Storage and the Smart Reply or Smart Draft header analysis are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity."> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.multiselect.desc "De resultaten van de zoekopdracht in de opgeslagen virtuele identiteiten en de koptekstanalyse van Slim Antwoorden of Slim Concept worden toegevoegd aan het dropdownmenu van de berichtidentiteit. U kunt ook selecteren hoe ze kunnen worden gebruikt als de identiteit van de nieuwe afzender.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "Dialoogvenster openen om identiteit te kiezen">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "Ook vragen als er slechts één adres mogelijk is">
 <!ENTITY vI_prefDialog.idSelection.autocreate.label "Eerst aangetroffen identiteit gebruiken zonder interactie">

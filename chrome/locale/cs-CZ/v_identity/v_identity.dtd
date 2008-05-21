@@ -4,10 +4,9 @@
 <!ENTITY vident.composeDialog.storageSave.tooltiptext "uložit identitu při odesílání">
 <!ENTITY vident.replySelector.dialogheader.title "Virtuální identita">
 <!ENTITY vident.replySelector.caption.label "Zvolte si virtuální identitu">
-<!ENTITY vident.vI_Menu.label "Virtual Identity"> <!-- to translate -->
-<!ENTITY vident.vI_Menu.Settings.label "Settings"> <!-- to translate -->
-<!ENTITY vident.vI_Menu.DataEditor.label "Data-Storage Editor"> <!-- to translate -->
-
+<!ENTITY vident.vI_Menu.label "Virtual Identity">
+<!ENTITY vident.vI_Menu.Settings.label "Nastavení">
+<!ENTITY vident.vI_Menu.DataEditor.label "Editor úložiště dat">
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">
 <!ENTITY sentInOtherFolder.label "Další:">

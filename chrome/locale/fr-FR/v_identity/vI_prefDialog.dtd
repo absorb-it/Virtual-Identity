@@ -5,27 +5,27 @@
 <!ENTITY vI_prefDialog.vIdentityTab.label "Identité virtuelle">
 <!ENTITY vI_prefDialog.smartReplyTab.label "Réponse intelligente">
 <!ENTITY vI_prefDialog.storageTab.label "Stockage">
-<!ENTITY vI_prefDialog.idSelection.label "Identity-Selection"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.label "Choix d&apos;identité">
 <!ENTITY vI_prefDialog.notificationTab.label "Messages d&apos;état">
 
 <!ENTITY vI_prefDialog.commonTab.header "Configuration générale">
 <!ENTITY vI_prefDialog.commonTab.caption "Utiliser les fonctions suivantes">
-<!ENTITY vI_prefDialog.storage.label "store (and recall) used Identities"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storage.tooltiptext "Used Identities might be stored related to the reciepients of your email. If you write again to the same reciepient, the same virtual or non-virtual Identity wil be used"> <!-- to translate -->
-<!ENTITY vI_prefDialog.autoTimestamp.label "autogenerate Timestamp-Identity for new mails"> <!-- to translate -->
-<!ENTITY vI_prefDialog.autoTimestamp.tooltiptext "On composing a new email, modify your usual sender-address with a timestamp. On easy way to create unique Identities, off by default."> <!-- to translate -->
-<!ENTITY vI_prefDialog.smartInfo.label "detect Identity by analysing the mail-header:"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storage.label "stocker (et retrouver) les identités utilisées">
+<!ENTITY vI_prefDialog.storage.tooltiptext "Les identités utilisées peuvent avoir été stockées en fonction des destinataires. Si vous écrivez à nouveau au même destinataire, la même identité, virtuelle ou non, sera utilisée.">
+<!ENTITY vI_prefDialog.autoTimestamp.label "Génération automatique d&apos;identités avec horodatage pour les nouveaux courriers.">
+<!ENTITY vI_prefDialog.autoTimestamp.tooltiptext "Lors de la composition d&apos;un nouveau message, modifiez votre adresse d&apos;expéditeur habituelle avec un horodatage">
+<!ENTITY vI_prefDialog.smartInfo.label "détection de l&apos;identité par l&apos;analyse de l&apos;en-tête du message :">
 <!ENTITY vI_prefDialog.versionWarning.label "Votre programme de messagerie est trop ancien pour utiliser la fonction brouillon intelligent">
 <!ENTITY vI_prefDialog.smartDraft.label "utiliser le brouillon intelligent">
-<!ENTITY vI_prefDialog.smartDraft.tooltiptext "'Smart Draft' tries to detect the to-be used sender of the Draft or Template by analysing the header of the stored email. Recommended, on by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartDraft.tooltiptext "&apos;Brouillon intelligent&apos; essaie de détecter l&apos;expéditeur à utiliser pour le brouillon ou le modèle en analysant l&apos;en-tête du message stocké. Recommandé, activé par défaut.">
 <!ENTITY vI_prefDialog.smartReply.label "utiliser une réponse intelligente">
-<!ENTITY vI_prefDialog.smartReply.tooltiptext "'Smart Reply' tries to detect the to-be used sender of the Reply by analysing the header of the received email. It's relevant if this Identity is not yet in your storage. Best results if configured in the approriate Tab. Recommended, on by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartReply.tooltiptext "&apos;Réponse intelligente&quot; essaie de détecter l&apos;expéditeur à utiliser pour &apos;Répondre à&apos; en analysant l&apos;en-tête du message reçu. C&apos;est pertinent si cette identité n&apos;est pas encore dans votre stockage. Les meilleurs résultats sont obtenus">
 <!ENTITY vI_prefDialog.smartReplyNewsgroups.label "utiliser également une réponse intelligente lors d&apos;une réponse à un forum">
-<!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "You can use 'Smart Reply' for detecting your senders Identity while answering to newsposts. If not configured approriate, this won't work nicely. Therefore off by default."> <!-- to translate -->
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "You can use &apos;Smart Reply&apos; for detecting your senders Identity while answering to newsposts. If not configured approriate, this won&apos;t work nicely. Therefore off by default.">
 
-<!ENTITY vI_prefDialog.commonTab.caption2 "interface"> <!-- to translate -->
+<!ENTITY vI_prefDialog.commonTab.caption2 "interface">
 <!ENTITY vI_prefDialog.SMTP.label "montrer le menu SMTP">
-<!ENTITY vI_prefDialog.menuEntry.label "add entry for Settings-Dialog and Storage-Editor to Tools menu"> <!-- to translate -->
+<!ENTITY vI_prefDialog.menuEntry.label "add entry for Settings-Dialog and Storage-Editor to Tools menu">
 <!ENTITY vI_prefDialog.warnNonvirtual.label "avertir dès qu&apos;est utilisée une identité non-virtuelle">
 <!ENTITY vI_prefDialog.warnVirtual.label "avertir dès qu&apos;est utilisée une identité virtuelle">
 
@@ -59,34 +59,34 @@
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "Si aucune adresse courriel trouvée ne contient un nom, utiliser le nom suivant :">
 
 <!ENTITY vI_prefDialog.storageTab.header "Stockage d&apos;identités virtuelles">
-<!ENTITY vI_prefDialog.storageTab.Tab1.label "storage options"> <!-- to translate -->
-<!ENTITY vI_prefDialog.storageTab.Tab2.label "additional options"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storageTab.Tab1.label "storage options">
+<!ENTITY vI_prefDialog.storageTab.Tab2.label "additional options">
 <!ENTITY vI_prefDialog.storageCap1.caption "Stockage d&apos;identités virtuelles">
 <!ENTITY vI_prefDialog.storageCap2.caption "Stockage d&apos;identités virtuelles">
 <!ENTITY vI_prefDialog.storage.storedefault.label "enregistrer les identités virtuelles pendant l&apos;envoi de courriels">
 <!ENTITY vI_prefDialog.storage.warn_update.label "demander avant de remplacer mes identités virtuelles qui sont stockées">
 <!ENTITY vI_prefDialog.storage.dont_update_multiple.label "ne jamais remplacer (et demander) si le courriel a de multiples destinataires">
 <!ENTITY vI_prefDialog.storage.show_switch.label "afficher le bouton pour activer/désactiver l&apos;enregistrement d&apos;identités">
-<!ENTITY vI_prefDialog.storage.openEditor "edit stored data"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storage.openEditor "edit stored data">
 <!ENTITY vI_prefDialog.storage.warn_vI_replace.label "demander avant de remplacer l&apos;identité virtuelle dans le champ d&apos;expéditeur">
 <!ENTITY vI_prefDialog.storage.get_One_Only.label "ignorer le stockage dès que la première identité virtuelle a été retrouvée">
-<!ENTITY vI_prefDialog.storageCap3.caption "store (and recall) the following settings"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storageCap3.caption "store (and recall) the following settings">
 
-<!ENTITY vI_prefDialog.idSelection.header "Identity Selection"> <!-- to translate -->
-<!ENTITY vI_prefDialog.idSelection.Tab1.label "identity selection"> <!-- to translate -->
-<!ENTITY vI_prefDialog.idSelection.Tab2.label "results handling"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.header "Identity Selection">
+<!ENTITY vI_prefDialog.idSelection.Tab1.label "identity selection">
+<!ENTITY vI_prefDialog.idSelection.Tab2.label "results handling">
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Smart Reply and Storage"> <!-- to translate -->
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Smart Draft and Storage"> <!-- to translate -->
-<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Handling of the Results"> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Smart Reply and Storage">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Smart Draft and Storage">
+<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Handling of the Results">
 
-<!ENTITY vI_prefDialog.idSelection.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with &apos;Smart Reply&apos; can configured here."> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with &apos;Smart Reply&apos; can configured here.">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "préférer les identités &apos;Smart Reply&apos;">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "ignorer les identités &apos;Smart Reply&apos; si des identités ont été trouvées stockées">
 
-<!ENTITY vI_prefDialog.idSelection.draft.desc "If you edit a Draft (or a Template) there is nothing to configure. If the extension is able to read the header of the stored email, a related Virtual Identity is created. There is no information about SMTP or any other specific settings in the Draft/Template. This information is, if possible, retrieved from the Virtual Identity Storage."> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.draft.desc "If you edit a Draft (or a Template) there is nothing to configure. If the extension is able to read the header of the stored email, a related Virtual Identity is created. There is no information about SMTP or any other specific settings in the Draft/Template. This information is, if possible, retrieved from the Virtual Identity Storage.">
 
-<!ENTITY vI_prefDialog.idSelection.multiselect.desc "The results of the search in the Virtual Identity Storage and the Smart Reply or Smart Draft header analysis are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity."> <!-- to translate -->
+<!ENTITY vI_prefDialog.idSelection.multiselect.desc "The results of the search in the Virtual Identity Storage and the Smart Reply or Smart Draft header analysis are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "ouvrir une boîte de dialogue pour choisir l&apos;identité">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "également demander si une seule adresse est possible">
 <!ENTITY vI_prefDialog.idSelection.autocreate.label "utiliser la première identité trouvée sans poser de question">

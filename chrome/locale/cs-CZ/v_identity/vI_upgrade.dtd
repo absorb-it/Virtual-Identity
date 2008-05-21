@@ -1,4 +1,4 @@
-<!ENTITY vident.upgrade.dlgTitle.label "Virtual Identity Extension Upgrade/Installation"> <!-- to translate -->
+<!ENTITY vident.upgrade.dlgTitle.label "Aktualizace/instalace rozšíření Virtual Identity">
 <!ENTITY vident.upgrade.intro.label "Instalace/aktualizace Virtual Identity">
 <!ENTITY vident.upgrade.intro.description "intro">
 <!ENTITY vident.upgrade.intro.caption "Virtual Identity">

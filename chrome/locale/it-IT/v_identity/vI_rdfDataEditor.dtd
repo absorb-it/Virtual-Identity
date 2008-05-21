@@ -1,18 +1,18 @@
-<!ENTITY vI_rdfDataEditor.dlgTitle.label "Virtual Identity Data Editor"> <!-- to translate -->
+<!ENTITY vI_rdfDataEditor.dlgTitle.label "Editor dei dati di Virtual Identity">
 
-<!ENTITY vI_rdfDataEditor.dataType.email "email"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.dataType.maillist "mailing list"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.dataType.newsgroup "newsgroup"> <!-- to translate -->
+<!ENTITY vI_rdfDataEditor.dataType.email "e-mail">
+<!ENTITY vI_rdfDataEditor.dataType.maillist "lista di distribuzione">
+<!ENTITY vI_rdfDataEditor.dataType.newsgroup "newsgroup">
 
-<!ENTITY vI_rdfDataEditor.header.label "Add/Modify Storage-Data"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.recipient.label "Recipient:"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.recipient.accesskey "R"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.type.label "recipient-type"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.type.accesskey "T"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.caption.label "stored Virtual Identity:"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.sender.label "Sender:"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.sender.accesskey "S"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.smtp.label "SMTP:"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.smtp.accesskey "M"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.identity.label "Base Identity"> <!-- to translate -->
-<!ENTITY vI_rdfDataEditor.identity.accesskey "I"> <!-- to translate -->
+<!ENTITY vI_rdfDataEditor.header.label "Aggiungi modifica dati">
+<!ENTITY vI_rdfDataEditor.recipient.label "Destinatario">
+<!ENTITY vI_rdfDataEditor.recipient.accesskey "D">
+<!ENTITY vI_rdfDataEditor.type.label "Tipo di destinatario">
+<!ENTITY vI_rdfDataEditor.type.accesskey "T">
+<!ENTITY vI_rdfDataEditor.caption.label "Identità virtuale salvata:">
+<!ENTITY vI_rdfDataEditor.sender.label "Mittente:">
+<!ENTITY vI_rdfDataEditor.sender.accesskey "M">
+<!ENTITY vI_rdfDataEditor.smtp.label "SMTP">
+<!ENTITY vI_rdfDataEditor.smtp.accesskey "S">
+<!ENTITY vI_rdfDataEditor.identity.label "Identità di base">
+<!ENTITY vI_rdfDataEditor.identity.accesskey "I">
