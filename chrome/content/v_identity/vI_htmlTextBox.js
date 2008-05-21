@@ -25,17 +25,20 @@
 var vI_htmlTextBox = {
 	Obj_TextBox : null,
 	string : null,
+	objectID : null,
 	
 	init : function(objectID, stringName) {
-		vI_htmlTextBox.Obj_TextBox = document.getElementById(objectID);
+		vI_htmlTextBox.objectID = objectID;
 		vI_htmlTextBox.string = document.getElementById("vITextBoxBundle").getString(stringName);
-		window.setTimeout(vI_htmlTextBox.__init, 0)
+		window.setTimeout(vI_htmlTextBox.__init, 200)
 	},
 	
 	__init : function () {
+		vI_htmlTextBox.Obj_TextBox = document.getElementById(vI_htmlTextBox.objectID);
 		vI_htmlTextBox.Obj_TextBox.contentDocument
 			.lastChild.setAttribute("style", "background-color: -moz-dialog; font: -moz-dialog;");
 		vI_htmlTextBox.__echo(vI_htmlTextBox.string);
+// 		vI_htmlTextBox.Obj_TextBox.setAttribute("hidden", "false");
 	},
 	
 	// background-color: -moz-dialog; font: -moz-dialog;
