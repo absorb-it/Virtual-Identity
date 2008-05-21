@@ -26,6 +26,7 @@ var vI_notificationBar = {
 	quiet : null,
 	timer : null,
 	timeout : 5000,
+	upgrade : true,
 	
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 		.getService(Components.interfaces.nsIPrefService)
@@ -74,9 +75,10 @@ var vI_notificationBar = {
 	init : function() {
 		vI_notificationBar.Obj_DebugBox = document.getElementById("vIDebugBox");
 		if (!vI_notificationBar.Obj_DebugBox) return false;
-		
+		vI_notificationBar.upgrade = vI_notificationBar.Obj_DebugBox.getAttribute("upgrade")
+
 		// nothing else to do for the upgrade dialog
-		if (vI_notificationBar.Obj_DebugBox.getAttribute("upgrade")) return true;
+		if (vI_notificationBar.upgrade) return true;
 		
 		vI_notificationBar.Obj_vINotification = document.getElementById("vINotification");
 		vI_notificationBar.Obj_DebugBoxSplitter = document.getElementById("vIDebugBoxSplitter")
@@ -144,12 +146,15 @@ var vI_notificationBar = {
 	},
 	
 	dump : function(note) {
-		if (!vI_notificationBar.preferences.getBoolPref("debug_notification")) return;
+		if (!vI_notificationBar.Obj_DebugBox) vI_notificationBar.init()
+		if (!vI_notificationBar.preferences.getBoolPref("debug_notification") &&
+			!vI_notificationBar.upgrade) return;
 		dump(note); vI_notificationBar.__dumpDebugBox(note);
 	},
 
 	__dumpDebugBox : function(note) {
-		if (!vI_notificationBar.preferences.getBoolPref("debug_notification") ||
+		if ((!vI_notificationBar.preferences.getBoolPref("debug_notification") &&
+			!vI_notificationBar.upgrade) ||
 			vI_notificationBar.quiet) return;
 		if (!vI_notificationBar.Obj_DebugBox &&
 			!vI_notificationBar.init()) return;
