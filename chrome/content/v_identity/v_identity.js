@@ -209,6 +209,8 @@ var vI = {
 
 	// initialization //
 	init: function() {
+		window.removeEventListener('load', vI.init, false);
+		window.removeEventListener('compose-window-init', vI.init, true);
 		if (vI.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
 		vI_notificationBar.dump("## v_identity: init.\n")
 		vI.unicodeConverter.charset="UTF-8";
@@ -373,5 +375,5 @@ var vI = {
 
 
 vI.replacement_functions.replace_FillIdentityList();
-window.addEventListener('compose-window-init', vI.init, true);
-// window.addEventListener("unload", vI.remove, false);
+window.addEventListener('load', vI.init, false);		// TB 1.5x, SM
+window.addEventListener('compose-window-init', vI.init, true);	// TB 2.x 3.x
