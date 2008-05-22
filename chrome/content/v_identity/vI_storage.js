@@ -259,13 +259,14 @@ var vI_storage = {
 
 		var recipientType = document.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
 			.selectedItem.getAttribute("value");
-		if (recipientType == "addr_reply" || recipientType == "addr_followup") {
-			// reset firstUsedInputElement and firstUsedStorageData if recipientType was changed
+		var row = inputElement.id.replace(/^addressCol2#/,"")
+		if (recipientType == "addr_reply" || recipientType == "addr_followup" || vI_storage.__isDoBcc(row)) {
+			// reset firstUsedInputElement and firstUsedStorageData if recipientType was changed (and don't care about doBcc fields)
 			if (vI_storage.firstUsedInputElement == inputElement) {
 				vI_storage.firstUsedInputElement = null;
 				vI_storage.firstUsedStorageData = null;
 			}
-			vI_notificationBar.dump("## vI_storage: field is a 'reply-to' or 'followup-to'. not searched.\n")
+			vI_notificationBar.dump("## vI_storage: field is a 'reply-to' or 'followup-to' or preconfigured 'doBcc'. not searched.\n")
 			return;
 		}
 		
@@ -368,7 +369,7 @@ var vI_storage = {
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
-				awGetInputElement(row).value.match(/^\s*$/) ) continue;
+				vI_storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
 			if (recipients++ == 1) {
 				vI_storage.multipleRecipients = true
 				vI_notificationBar.dump("## vI_storage: multiple recipients found.\n")
@@ -379,7 +380,7 @@ var vI_storage = {
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
-				awGetInputElement(row).value.match(/^\s*$/) ) continue;
+				vI_storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
 			// by using a Timeout the possible prompt stopps the MessageSending
 			// this is required, else lavascript context might be gone
 			window.setTimeout(vI_storage.__updateStorageFromVIdentity, 0, awGetInputElement(row).value, recipientType)
@@ -508,7 +509,21 @@ var vI_storage = {
 		}
 		return mailListName;
 	},
-		
+	
+	__isDoBcc : function(row) {
+		var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
+		if (recipientType != "addr_bcc" || !getCurrentIdentity().doBcc) return false
+		var doBccArray = gMsgCompose.compFields.SplitRecipients(getCurrentIdentity().doBccList, false);
+		for ( var index = 0; index < doBccArray.count; index++ ) {
+			if (doBccArray.StringAt(index) == awGetInputElement(row).value) {
+				vI_notificationBar.dump("## vI_storage: ignoring doBcc field '" +
+					doBccArray.StringAt(index) + "'.\n");
+				return true;
+			}
+		}		
+		return false
+	},
+
 	getVIdentityFromAllRecipients : function(allIdentities) {
 		if (!vI.preferences.getBoolPref("storage"))
 			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
@@ -516,7 +531,7 @@ var vI_storage = {
 
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
-			if (recipientType == "addr_reply" || recipientType == "addr_followup") continue;
+			if (recipientType == "addr_reply" || recipientType == "addr_followup" || vI_storage.__isDoBcc(row)) continue;
 			vI_storage.lastCheckedEmail[row] = awGetInputElement(row).value;
 			recipient = vI_storage.__getDescriptionAndType(awGetInputElement(row).value, recipientType);
 			var storageData = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
