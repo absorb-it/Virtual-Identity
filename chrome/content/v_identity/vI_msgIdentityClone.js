@@ -204,6 +204,8 @@ var vI_msgIdentityClone = {
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.base_id_key);
 			vI_smtpSelector.setMenuToKey(
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.smtp_key);
+			if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.extras)
+				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.extras.setValues();
 			label = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.label
 		}
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("label", label);
