@@ -86,9 +86,9 @@ var vI_helper = {
 		MenuItem.setAttribute("accountkey", accountKey);
 		MenuItem.setAttribute("value", identityKey);
 		MenuItem.setAttribute("class", "identity_clone-popup-item new-icon")
-		if (base_id_key) MenuItem.setAttribute("base_id_key", base_id_key)
-		if (smtp_key) MenuItem.setAttribute("smtp_key", smtp_key)
-		if (extras) MenuItem.setAttribute("extras", extras)
+		if (base_id_key) MenuItem.base_id_key = base_id_key
+		if (smtp_key) MenuItem.smtp_key = smtp_key
+		if (extras) MenuItem.extras = extras
 		
 		object.appendChild(MenuItem)
 		
