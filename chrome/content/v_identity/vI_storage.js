@@ -50,6 +50,7 @@ identityData.prototype = {
 		if (!B) return A;
 		return A + ", " + B;
 	},
+	
 	identityDescription : function(index) {
 		var senderName = vI_helper.combineNames(this.fullName, this.email);
 		var idName = this.__keyTranslator.getIDname(this.id);
@@ -58,22 +59,30 @@ identityData.prototype = {
 		return senderName + " (" + 
 			this.__combineStrings(this.__combineStrings(idName, smtpName), extras) +  ")"
 	},
+	
 	__equalCurrentSMTP : function() {
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
 		return (!this.__keyTranslator.getSMTP(this.smtp) && !smtp_key ||
 			smtp_key == this.smtp)
 	},
+	
 	__equalCurrentID : function() {
-		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
+		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key;
 		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		return ((!this.__keyTranslator.getID(this.id) && (id_key == gAccountManager.defaultAccount.defaultIdentity.key)) ||
 			id_key == this.id)
 	},
+	
 	equalsCurrentIdentity : function() {
 		var curAddress = vI_helper.getAddress();		
 		var curExtras = new vI_storageExtras();
 		curExtras.readValues(); // initialize with current MsgComposeDialog Values
-		
+		vI_notificationBar.dump("## identityData: __equalCurrentID = '" + this.__equalCurrentID() + "'.\n")
+		vI_notificationBar.dump("## identityData: __equalCurrentSMTP = '" + this.__equalCurrentSMTP() + "'.\n")
+		vI_notificationBar.dump("## identityData: curAddress.email = '" + (curAddress.email == this.email) + "'.\n")
+		vI_notificationBar.dump("## identityData: curAddress.name = '" + (curAddress.name == this.fullName) + "'.\n")
+		vI_notificationBar.dump("## identityData: this.extras.equal(curExtras) = '" + this.extras.equal(curExtras) + "'.\n")
+
 		var equal = (	(this.__equalCurrentID()) &&
 				(this.__equalCurrentSMTP()) &&
 				(curAddress.email == this.email) &&
@@ -82,6 +91,30 @@ identityData.prototype = {
 		if (equal) vI_notificationBar.dump("## identityData: Identities are the same.\n")
 		else vI_notificationBar.dump("## identityData: Identities differ.\n")
 		return equal;
+	},
+
+	isExistingIdentity : function() {
+		var identity = gAccountManager.defaultAccount.defaultIdentity
+		if (this.__keyTranslator.getID(this.id))
+			identity = gAccountManager.getIdentity(this.id)
+		
+		var defaultSMTP = null;
+		for (var i in gAccountManager.accounts) {
+			for (var j in gAccountManager.accounts[i].identities) {
+				if (this.id == gAccountManager.accounts[i].identities[j].key)
+					defaultSMTP = gAccountManager.accounts[i].defaultIdentity.smtpServerKey;
+			}
+		}
+		if (!defaultSMTP) defaultSMTP = gAccountManager.defaultAccount.defaultIdentity.smtpServerKey
+
+		equal = ((this.smtp == identity.smtpServerKey ||
+			(!this.__keyTranslator.getSMTP(this.smtp) && identity.smtpServerKey == defaultSMTP) ||
+			(!this.__keyTranslator.getSMTP(identity.smtpServerKey) && this.smtp == defaultSMTP)) &&
+			identity.getUnicharAttribute("fullName") == this.fullName &&
+			identity.getUnicharAttribute("useremail") == this.email)
+		
+		if (equal) return identity.key
+		else return null
 	}
 }
 
@@ -95,6 +128,7 @@ identityCollection.prototype =
 	id_keys : {},
 	smtp_keys : {},
 	extras : {},
+	menuItems : {},
 	
 	mergeWithoutDuplicates : function(addIdentityCollection) {
 		for (index = 0; index < addIdentityCollection.number; index++)
@@ -107,7 +141,7 @@ identityCollection.prototype =
 				addIdentityCollection.extras[index])
 	},
 
-	addWithoutDuplicates : function(email, fullName, combinedName, id_key, smtp_key, extra) {
+	addWithoutDuplicates : function(email, fullName, combinedName, id_key, smtp_key, extras) {
 		for (index = 0; index < this.number; index++) {
 			if (this.emails[index] == email &&
 				(!this.id_keys[index] || !id_key || 
@@ -124,9 +158,9 @@ identityCollection.prototype =
 				if (!this.id_keys[index] && id_key) {
 					this.id_keys[index] = id_key;
 					this.smtp_keys[index] = smtp_key;
-					this.extras[index] = extra;
+					this.extras[index] = extras;
 					vI_notificationBar.dump("## identityCollection:   added id '" + id_key
-						+ "' smtp '" + smtp_key + "' (+extra) to stored email '" + email +"'\n")
+						+ "' smtp '" + smtp_key + "' (+extras) to stored email '" + email +"'\n")
 				}
 				return;
 			}
@@ -137,6 +171,7 @@ identityCollection.prototype =
 		this.combinedNames[index] = combinedName;
 		this.id_keys[index] = id_key;
 		this.smtp_keys[index] = smtp_key;
+		this.extras[index] = extras;
 		this.number = index + 1;
 	},
 	
@@ -148,6 +183,16 @@ identityCollection.prototype =
 		this.id_keys = newIdentityCollection.id_keys
 		this.smtp_keys = newIdentityCollection.smtp_keys
 		this.extras = newIdentityCollection.extras
+	},
+
+	getIdentityData : function(index) {
+		var newIdentityData =
+			new identityData(this.emails[index],
+				this.fullNames[index],
+				this.id_keys[index],
+				this.smtp_keys[index],
+				this.extras[index])
+		return newIdentityData
 	}
 };
 
@@ -174,7 +219,6 @@ var vI_storage = {
 		vI_storage.multipleRecipients = null;
 		vI_storage.lastCheckedEmail = {};
 		vI_storage.firstUsedInputElement = null;
-		vI_storage.firstUsedStorageData = null;
 		awSetInputAndPopupValue = vI_storage.original_functions.awSetInputAndPopupValue;
 	},
 	
@@ -251,7 +295,6 @@ var vI_storage = {
 	
 	
 	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
-	firstUsedStorageData : null,	// stores the used storage-entry to show a warning if the Identities differ
 	updateVIdentityFromStorage: function(inputElement) {		
 		if (!vI.preferences.getBoolPref("storage"))
 			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
@@ -261,11 +304,9 @@ var vI_storage = {
 			.selectedItem.getAttribute("value");
 		var row = inputElement.id.replace(/^addressCol2#/,"")
 		if (recipientType == "addr_reply" || recipientType == "addr_followup" || vI_storage.__isDoBcc(row)) {
-			// reset firstUsedInputElement and firstUsedStorageData if recipientType was changed (and don't care about doBcc fields)
-			if (vI_storage.firstUsedInputElement == inputElement) {
+			// reset firstUsedInputElement if recipientType was changed (and don't care about doBcc fields)
+			if (vI_storage.firstUsedInputElement == inputElement)
 				vI_storage.firstUsedInputElement = null;
-				vI_storage.firstUsedStorageData = null;
-			}
 			vI_notificationBar.dump("## vI_storage: field is a 'reply-to' or 'followup-to' or preconfigured 'doBcc'. not searched.\n")
 			return;
 		}
@@ -288,20 +329,12 @@ var vI_storage = {
 		
 		vI_notificationBar.dump("## vI_storage: compare with current Identity\n");
 		
-		if (vI_storage.firstUsedInputElement == inputElement)
-			vI_storage.firstUsedStorageData = storageData
 		if (vI.preferences.getBoolPref("storage_getOneOnly") && vI_storage.firstUsedInputElement &&
 			vI_storage.firstUsedInputElement != inputElement) {
 			vI_notificationBar.dump("## vI_storage: retrieved Identity for other recipient-field before. ignoring\n");
-			if (	vI_storage.firstUsedStorageData.email != storageData.email ||
-				vI_storage.firstUsedStorageData.fullName != storageData.fullName ||
-				vI_storage.firstUsedStorageData.id != storageData.id ||
-				vI_storage.firstUsedStorageData.smtp != storageData.smtp ||
-				!vI_storage.firstUsedStorageData.extras.equal(storageData.extras) ) {
+			if (!storageData.equalsCurrentIdentity()) {
 					// add Identity to dropdown-menu
-					vI_msgIdentityClone.addIdentityToCloneMenu(
-						vI_helper.combineNames(storageData.fullName, storageData.email),
-						storageData.id, storageData.smtp, storageData.extras)
+					vI_msgIdentityClone.addIdentityToCloneMenu(storageData)
 					vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageCollidingIdentity"),
 					"storage_notification");
 			}
@@ -309,21 +342,21 @@ var vI_storage = {
 		// only update fields if new Identity is different than old one.
 		else if (!storageData.equalsCurrentIdentity()) {
 			// add Identity to dropdown-menu
-			vI_msgIdentityClone.addIdentityToCloneMenu(
-				vI_helper.combineNames(storageData.fullName, storageData.email),
-				storageData.id, storageData.smtp, storageData.extras)
+			var menuItem = vI_msgIdentityClone.addIdentityToCloneMenu(storageData)
 			var warning = vI_storage.__getReplaceVIdentityWarning(recipient, storageData);
 			
 			if (	vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("timeStamp") ||
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
 				!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
-				vI_storage.promptService.confirm(window,"Warning",warning)) {						
-					vI_msgIdentityClone.setMenuToIdentity(storageData.id);
+				vI_storage.promptService.confirm(window,"Warning",warning)) {
+					vI_msgIdentityClone.setMenuToMenuItem(menuItem)
+/*					vI_msgIdentityClone.setMenuToIdentity(storageData.id);
 					vI_smtpSelector.setMenuToKey(storageData.smtp);
-					storageData.extras.setValues();
-					if (vI_msgIdentityClone.setIdentity(
-						vI_helper.combineNames(storageData.fullName, storageData.email), null))
-					vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
+					storageData.extras.setValues();*/
+/*					if (vI_msgIdentityClone.setIdentity(
+						vI_helper.combineNames(storageData.fullName, storageData.email), null))*/
+					if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") == "vid")
+						vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
 						"storage_notification");
 			}
 		}
@@ -390,7 +423,7 @@ var vI_storage = {
 	
 	__getVIdentityString : function() {
 		var old_address = vI_helper.getAddress();
-		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
+		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key;
 		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
 		var extras = new vI_storageExtras();
@@ -540,7 +573,8 @@ var vI_storage = {
 				storageData.fullName,
 				vI_helper.combineNames(storageData.fullName, storageData.email),
 				storageData.id,
-				storageData.smtp)
+				storageData.smtp,
+				storageData.extras)
 		}
 		vI_notificationBar.dump("## vI_storage: found " + allIdentities.number + " address(es)\n")
 	}

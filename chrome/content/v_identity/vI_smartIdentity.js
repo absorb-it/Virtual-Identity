@@ -169,7 +169,8 @@ var vI_smartIdentity = {
 				if (add_addr)	returnIdentities.addWithoutDuplicates(
 							smartIdentities.emails[j],
 							smartIdentities.fullNames[j],
-							smartIdentities.combinedNames[j], null, null)
+							smartIdentities.combinedNames[j],
+							null, null, null)
 			}
 		}
 		smartIdentities.takeOver(returnIdentities);
@@ -307,12 +308,8 @@ var vI_smartIdentity = {
 	},
 	
 	changeIdentityToSmartIdentity : function(allIdentities, selectedValue) {
-		if (allIdentities.id_keys[selectedValue]) {
-			vI_msgIdentityClone.setMenuToIdentity(allIdentities.id_keys[selectedValue])
-			vI_smtpSelector.setMenuToKey(allIdentities.smtp_keys[selectedValue])
-			allIdentities.extras[selectedValue].setValues();
-		}
-		vI_msgIdentityClone.setIdentity(allIdentities.combinedNames[selectedValue], null);
+		vI_msgIdentityClone.setMenuToMenuItem(allIdentities.menuItems[selectedValue])
+		
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") == "vid") {
 			var label=vI.elements.strings.getString("vident.smartIdentity.vIUsage");
 			if (allIdentities.number > 1) label += " "

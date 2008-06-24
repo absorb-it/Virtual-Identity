@@ -204,7 +204,7 @@ var vI_rdfDatasource = {
 	
 	updateRDFFromVIdentity : function(recDescription, recType) {
 		var address = vI_helper.getAddress();	
-		var id = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("oldvalue");
+		var id = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key;
 		if (!id) id = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		// unset id if using default identity
 		if (id == gAccountManager.defaultAccount.defaultIdentity.key) id = null;
