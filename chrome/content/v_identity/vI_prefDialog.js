@@ -39,6 +39,7 @@ var vI_prefDialog = {
 		_elementIDs : [	"VIdent_identity.doFcc",
 				"VIdent_identity.fccFolderPickerMode",
 				"VIdent_identity.fccFolder",
+				"VIdent_identity.fccReplyFollowsParent",
 				"VIdent_identity.draftFolderPickerMode",
 				"VIdent_identity.draftFolder",
 				"VIdent_identity.stationeryFolderPickerMode",
@@ -670,7 +671,7 @@ function setPickersState(enablePickerId, disablePickerId, event)
 
     var selectedElementUri;
     var radioElemValue = event.target.value;
-
+    
     switch (event.target.id) {
 	case "VIdent_fcc_Settings_Of_Account":
 	case "VIdent_fcc_Settings_Of_Default":
@@ -698,6 +699,16 @@ function setPickersState(enablePickerId, disablePickerId, event)
             return;
     }
     
+    switch (event.target.id) {
+    	case "VIdent_fcc_Settings_Of_Account":
+	case "VIdent_fcc_Settings_Of_Default":
+	    document.getElementById("VIdent_identity.fccReplyFollowsParent").setAttribute("disabled","true");
+	    break;
+        case "VIdent_fcc_selectAccount":
+        case "VIdent_fcc_selectFolder" :
+	    document.getElementById("VIdent_identity.fccReplyFollowsParent").removeAttribute("disabled")
+            break;
+     }
     //~ SetFolderPicker(selectedElementUri, enablePickerId);
 }
 
