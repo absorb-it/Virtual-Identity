@@ -51,7 +51,7 @@ var vI_msgIdentityClone = {
 
 		vI_msgIdentityClone.clone_Obj_MsgIdentity();
 		if (!reopen) {
-// 			vI_msgIdentityClone.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
+			vI_msgIdentityClone.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
 			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("hidden", "false");
 			vI_msgIdentityClone.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
 		}
