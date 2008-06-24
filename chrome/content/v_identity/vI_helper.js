@@ -77,6 +77,7 @@ var vI_helper = {
 	},
 
 	addIdentityMenuItem: function(object, identityName, accountName, accountKey, identityKey, base_id_key, smtp_key, extras) {
+		vI_notificationBar.dump("## vI_helper: addIdentityMenuItem '" + accountName + "'\n");
 		var MenuItem = document.createElement("menuitem");
 		MenuItem.className = "identity-popup-item";
 		
