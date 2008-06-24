@@ -1,6 +1,7 @@
 pref("extensions.virtualIdentity.doFcc", true);
 pref("extensions.virtualIdentity.fccFolder", "");
 pref("extensions.virtualIdentity.fccFolderPickerMode", "3");
+pref("extensions.virtualIdentity.fccReplyFollowsParent", false);
 pref("extensions.virtualIdentity.draftFolder", "");
 pref("extensions.virtualIdentity.draftFolderPickerMode", "3");
 pref("extensions.virtualIdentity.stationeryFolder", "");
