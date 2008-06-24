@@ -181,9 +181,10 @@
                 this.currentNotification.style.marginTop = "0px";
                 this.currentNotification.style.opacity = 1;
               }
-              if (this._closedNotification)
+              try { if (this._closedNotification)
                 this._closedNotification.parentNode.
-                  removeChild(this._closedNotification);
+                  removeChild(this._closedNotification); }
+	      catch (e) {};
             }
 
             var height = aNotification.boxObject.height;
