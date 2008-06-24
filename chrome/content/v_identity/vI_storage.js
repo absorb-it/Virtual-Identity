@@ -30,7 +30,7 @@
 
 function identityData(email, fullName, id, smtp, extras) {
 	this.email = email;
-	this.fullName = fullName;
+	this.fullName = (fullName?fullName:'');
 	this.id = id;
 	this.smtp = (smtp=="default"?"":smtp);
 	this.extras = extras;
