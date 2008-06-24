@@ -57,10 +57,10 @@ var vI = {
 	ComposeStateListener : {
 		NotifyComposeBodyReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeBodyReady\n");
+			vI.initSystemStage2();
 		},
 		NotifyComposeFieldsReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeFieldsReady\n");
-			vI.initSystemStage2();
 		},
 		ComposeProcessDone: function(aResult) {
 			vI_notificationBar.dump("## v_identity: StateListener reports ComposeProcessDone\n");
