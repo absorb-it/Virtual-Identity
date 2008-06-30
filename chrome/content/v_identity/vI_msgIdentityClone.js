@@ -433,7 +433,7 @@ var vI_msgIdentityClone = {
 		vI_msgIdentityClone.localIdentityData.id = id_key;
 		vI_msgIdentityClone.localIdentityData.smtp = smtp;
 		
-		var existingIdentity = localIdentityData.isExistingIdentity();
+		var existingIdentity = vI_msgIdentityClone.localIdentityData.isExistingIdentity();
 		vI_notificationBar.dump("## vI_msgIdentityClone: isExistingIdentity " + existingIdentity + "\n");
 		return existingIdentity
 	},
