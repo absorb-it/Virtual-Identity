@@ -221,21 +221,21 @@ var vI_account = {
 			switch (vI.preferences.getCharPref("fccFolderPickerMode"))
 			{
 			    case "2"  :
-				dump ("## vI_account: preparing Fcc --- use Settings of Default Account\n");
+				vI_notificationBar.dump ("## vI_account: preparing Fcc --- use Settings of Default Account\n");
 				vI_account.account.defaultIdentity.doFcc = vI_account.AccountManager.defaultAccount.defaultIdentity.doFcc;
 				vI_account.account.defaultIdentity.fccFolder = vI_account.AccountManager.defaultAccount.defaultIdentity.fccFolder;
 				vI_account.account.defaultIdentity.fccFolderPickerMode = vI_account.AccountManager.defaultAccount.defaultIdentity.fccFolderPickerMode;
 				vI_account.account.defaultIdentity.fccReplyFollowsParent = vI_account.AccountManager.defaultAccount.defaultIdentity.fccReplyFollowsParent;
 				break;
 			    case "3"  :
-				dump ("## vI_account: preparing Fcc --- use Settings of Modified Account\n");
+				vI_notificationBar.dump ("## vI_account: preparing Fcc --- use Settings of Modified Account\n");
 				vI_account.account.defaultIdentity.doFcc = vI_helper.getBaseIdentity().doFcc;
 				vI_account.account.defaultIdentity.fccFolder = vI_helper.getBaseIdentity().fccFolder;
 				vI_account.account.defaultIdentity.fccFolderPickerMode = vI_helper.getBaseIdentity().fccFolderPickerMode;
 				vI_account.account.defaultIdentity.fccReplyFollowsParent = vI_helper.getBaseIdentity().fccReplyFollowsParent;
 				break;
 			    default  :
-				dump ("## vI_account: preparing Fcc --- use Virtual Identity Settings\n");
+				vI_notificationBar.dump ("## vI_account: preparing Fcc --- use Virtual Identity Settings\n");
 				vI_account.account.defaultIdentity.doFcc
 					= vI.preferences.getBoolPref("doFcc");
 				vI_account.account.defaultIdentity.fccFolder
@@ -261,17 +261,17 @@ var vI_account = {
 		switch (vI.preferences.getCharPref("draftFolderPickerMode"))
 		{
 		    case "2"  :
-			dump ("## vI_account: preparing Draft --- use Settings of Default Account\n");
+			vI_notificationBar.dump ("## vI_account: preparing Draft --- use Settings of Default Account\n");
 			vI_account.account.defaultIdentity.draftFolder = vI_account.AccountManager.defaultAccount.defaultIdentity.draftFolder;
 			vI_account.account.defaultIdentity.draftsFolderPickerMode = vI_account.AccountManager.defaultAccount.defaultIdentity.draftsFolderPickerMode;
 			break;
 		    case "3"  :
-			dump ("## vI_account: preparing Draft --- use Settings of Modified Account\n");
+			vI_notificationBar.dump ("## vI_account: preparing Draft --- use Settings of Modified Account\n");
 			vI_account.account.defaultIdentity.draftFolder = vI_helper.getBaseIdentity().draftFolder;
 			vI_account.account.defaultIdentity.draftsFolderPickerMode = vI_helper.getBaseIdentity().draftsFolderPickerMode;
 			break;
 		    default  :
-			dump ("## vI_account: preparing Draft --- use Virtual Identity Settings\n");
+			vI_notificationBar.dump ("## vI_account: preparing Draft --- use Virtual Identity Settings\n");
 			vI_account.account.defaultIdentity.draftFolder
 				= vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("draftFolder"));
 			vI_account.account.defaultIdentity.draftsFolderPickerMode
@@ -288,17 +288,17 @@ var vI_account = {
 		switch (vI.preferences.getCharPref("stationeryFolderPickerMode"))
 		{
 		    case "2"  :
-			dump ("## vI_account: preparing Templates --- use Settings of Default Account\n");
+			vI_notificationBar.dump ("## vI_account: preparing Templates --- use Settings of Default Account\n");
 			vI_account.account.defaultIdentity.stationeryFolder = vI_account.AccountManager.defaultAccount.defaultIdentity.stationeryFolder;
 			vI_account.account.defaultIdentity.tmplFolderPickerMode = vI_account.AccountManager.defaultAccount.defaultIdentity.tmplFolderPickerMode;
 			break;
 		    case "3"  :
-			dump ("## vI_account: preparing Templates --- use Settings of Modified Account\n");
+			vI_notificationBar.dump ("## vI_account: preparing Templates --- use Settings of Modified Account\n");
 			vI_account.account.defaultIdentity.stationeryFolder = vI_helper.getBaseIdentity().stationeryFolder;
 			vI_account.account.defaultIdentity.tmplFolderPickerMode = vI_helper.getBaseIdentity().tmplFolderPickerMode;
 			break;
 		    default  :
-			dump ("## vI_account: preparing Templates --- use Virtual Identity Settings\n");
+			vI_notificationBar.dump ("## vI_account: preparing Templates --- use Virtual Identity Settings\n");
 			vI_account.account.defaultIdentity.stationeryFolder
 				= vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("stationeryFolder"));
 			vI_account.account.defaultIdentity.tmplFolderPickerMode
