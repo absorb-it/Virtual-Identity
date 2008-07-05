@@ -214,6 +214,13 @@ var vI_smartIdentity = {
 			
 			// move found addresses step by step to allIdentities, and change values if requested
 			for (i = 0; i < splitted.number; i++) {
+				// if there is no email than it makes no sense to use it as a sender
+				if (!splitted.emails.value[i].match(/^.*@.*$/)) {
+					vI_notificationBar.dump("## vI_smartIdentity:   skipping '" +
+					splitted.emails.value[i] + "', no email\n")
+					continue;
+				}
+
 				allIdentities.emails[allIdentities.number] = splitted.emails.value[i]
 				
 				// empty FullName if requested
