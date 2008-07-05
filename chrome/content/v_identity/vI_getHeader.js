@@ -97,6 +97,14 @@ var vI_getHeader = {
 		// loop through the headers
 		for (header in currentHeaderData) {
 			headerName = currentHeaderData[header].headerName.toLowerCase()
+
+			// remember list-id header to prevent using Mailing-List addresses as sender
+			if (headerName == "list-id") {
+				hdr.setStringProperty("vI_list-id","found");
+				vI_notificationBar.dump("## vI_getHeader: found header: list-id  ...stored to recognize mailing-list\n");
+				continue;
+			}
+
 			if (currentHeadersCounter[headerName]) currentHeadersCounter[headerName]++
 			else currentHeadersCounter[headerName] = 1
 			vI_notificationBar.dump("## vI_getHeader: found header: " + headerName + 
@@ -205,6 +213,10 @@ var vI_prepareHeader = {
 		vI_notificationBar.dump("## vI_prepareHeader: addExtraHeader\n");
 		vI_prepareHeader.unicodeConverter.charset = "UTF-8";
 		var header_list = vI_prepareHeader.unicodeConverter.ConvertToUnicode(vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_headers")).split(/\n/)
+		
+		// add List-Id to recognizable headers to prevent using Mailing-List addresses as sender
+		header_list.push("List-Id")
+
 		try {
 			var extraHdrs = " " + 
 				vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase()

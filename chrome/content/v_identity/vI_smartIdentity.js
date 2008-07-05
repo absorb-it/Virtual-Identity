@@ -195,7 +195,13 @@ var vI_smartIdentity = {
 			// create header name to find the value
 			var replyHeaderNameToRead = replyHeaderName
 			if (!isNaN(replyHeaderNumber)) replyHeaderNameToRead += ":" + replyHeaderNumber
-
+			
+			// if mailing-list ignore to-header (usually the mailing list address)
+			if (replyHeaderNameToRead == "to" && hdr.getStringProperty("vI_list-id")) {
+				vI_notificationBar.dump("## vI_smartIdentity: header 'list-id' found (mailinglist), skipping header 'to'\n");
+				continue;
+			}
+			
 			// ------------- read the stored header -------------------------------
 			var value = vI.unicodeConverter.ConvertToUnicode(hdr.getStringProperty("vI_" + replyHeaderNameToRead))
 			vI_notificationBar.dump("## vI_smartIdentity: reading header '" +
