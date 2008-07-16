@@ -197,8 +197,10 @@ var vI_msgIdentityClone = {
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		
 		var label = null;
-		
-		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value != "vid") {
+
+		// use getAttribute to be sure it works with TB 2.x versions
+		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value != "vid" &&
+			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.getAttribute("value") != "vid") {
 			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = null;
 			vI_msgIdentityClone.copySelectedIdentity(
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value);
@@ -220,6 +222,11 @@ var vI_msgIdentityClone = {
 			if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.extras)
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.extras.setValues();
 			label = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.label
+			vI_notificationBar.dump("## vI_msgIdentityClone: label: '" + label + "'\n");
+			if (!label) {	// TB 2.x has problems without getAttribute
+				label = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.getAttribute("label")
+				vI_notificationBar.dump("## vI_msgIdentityClone: new label: '" + label + "'\n");
+			}
 		}
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("label", label);
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = label;
