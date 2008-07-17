@@ -30,6 +30,8 @@
 %dataTreeDTD;
 <!ENTITY % editDTD SYSTEM "chrome://global/locale/editMenuOverlay.dtd">
 %editDTD;
+<!ENTITY % communicatorDTD SYSTEM "chrome://communicator/locale/contentAreaCommands.dtd" >
+  %communicatorDTD;
 ]>
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
