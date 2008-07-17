@@ -279,11 +279,12 @@ var vI_msgIdentityClone = {
 	replyToSynchronize : true,
 	
 	cleanReplyToFields : function() {
-		replyToInputElem = null;
-		replyToPopupElem = null;
-		replyToInitValue = null;
-		replyToStoredLastValue = null;
-		replyToSynchronize = true;
+		vI_msgIdentityClone.replyToInputElem = null;
+		vI_msgIdentityClone.replyToPopupElem = null;
+		vI_msgIdentityClone.replyToInitValue = null;
+		vI_msgIdentityClone.replyToStoredLastValue = null;
+		vI_msgIdentityClone.replyToSynchronize = true;
+		vI_msgIdentityClone.blurEventBlocked = true;
 	},
 	
 	// called directly after a change of the Identity with the dropdown menu
