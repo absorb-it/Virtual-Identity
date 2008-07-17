@@ -303,6 +303,8 @@ var vI_prefDialog = {
 		vI_prefDialog.base.smartReplyHideSignature();
 		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
 		vI_prefDialog.base.idSelectionConstraint();
+		if (vI_storageExtrasHelper.seamonkey_to_old())
+			document.getElementById("storageTab2").setAttribute("hidden", "true")
 	},
 	
 	savePrefs : function() {

@@ -30,11 +30,14 @@ function vI_storageExtras_adapt(sourceId, targetId) {
 }	
 
 var vI_storageExtrasHelper = {
+	seamonkey_old : null,
+
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.virtualIdentity."),
 	
 	hideUnusedTreeCols : function() {
+		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		var storageExtras = new vI_storageExtras();
 		for( var i = 0; i < storageExtras.extras.length; i++ )
 			if (!vI_storageExtrasHelper.preferences.getBoolPref(storageExtras.extras[i].option))
@@ -42,6 +45,7 @@ var vI_storageExtrasHelper = {
 	},
 	
 	hideUnusedEditorFields : function() {
+		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		var storageExtras = new vI_storageExtras();
 		var allHidden = true;
 		var hide = (document.getElementById("vI_storageExtras_hideUnusedEditorFields").getAttribute("checked") == "true")
@@ -54,6 +58,25 @@ var vI_storageExtrasHelper = {
 		document.getElementById("storeValue").setAttribute("hidden", allHidden)
 		// resize the window to the content
 		window.sizeToContent();
+	},
+
+	seamonkey_to_old : function() {
+		if (vI_storageExtrasHelper.seamonkey_old == "true") return true;
+		var versionChecker;
+		if("@mozilla.org/xre/app-info;1" in Components.classes) {
+			var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
+				.getService(Components.interfaces.nsIXULAppInfo);
+			appID = appInfo.ID
+			appVersion = appInfo.version
+		}
+		if("@mozilla.org/xpcom/version-comparator;1" in Components.classes)
+			versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+				.getService(Components.interfaces.nsIVersionComparator);
+		else appID = null;
+		const SEAMONKEY_ID = "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
+		if (appID == SEAMONKEY_ID && versionChecker.compare(appVersion, "1.5a") < 0)
+			vI_storageExtrasHelper.seamonkey_old = "true"
+		return (vI_storageExtrasHelper.seamonkey_old == "true")
 	}
 }
 
@@ -97,6 +120,7 @@ vI_storageExtras.prototype = {
 		return true
 	},
 	status : function() {
+		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		var returnVal = "";
 		for( var i = 0; i < this.extras.length; i++ )
 			if (this.extras[i].active && this.extras[i].value)
@@ -104,18 +128,21 @@ vI_storageExtras.prototype = {
 		return returnVal
 	},
 	setValues : function() {
+		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) this.extras[i].setValue()
 			vI_notificationBar.dump("## vI_storageExtras setValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 	readValues : function() {
+		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) this.extras[i].readValue()
 			vI_notificationBar.dump("## vI_storageExtras readValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 	setEditorValues : function() {
+		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) {
 			this.extras[i].value = window.arguments[0][this.extras[i].field + "Col"]
 			this.extras[i].setEditorValue();
@@ -123,12 +150,14 @@ vI_storageExtras.prototype = {
 		}
 	},
 	readEditorValues : function() {
+		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) {
 			this.extras[i].readEditorValue();
 			vI_notificationBar.dump("## vI_storageExtras readValue " + this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 	addPrefs : function(pref) {
+		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ )
 			pref[this.extras[i].field + "Col"] = this.extras[i].value;
 	},
