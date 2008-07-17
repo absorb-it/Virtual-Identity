@@ -294,7 +294,7 @@ var vI_msgIdentityClone = {
 		var id = (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value ||
 			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.getAttribute("value"))
 		if (id == "vid") return;
-		var replyTo = gAccountManager.getIdentity(value).replyTo
+		var replyTo = gAccountManager.getIdentity(id).replyTo
 		vI_notificationBar.dump("## initReplyToFields identity.replyTo: " + replyTo + "\n");
 		if (replyTo == "") return
 		
