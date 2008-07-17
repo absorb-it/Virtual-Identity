@@ -290,8 +290,11 @@ var vI_msgIdentityClone = {
 	// called directly after a change of the Identity with the dropdown menu
 	// searches the first reply-to row and assumes that this is the one we like to adapt
 	initReplyToFields : function() {
-		var replyTo = gAccountManager.getIdentity(vI_msgIdentityClone.elements.
-				Obj_MsgIdentity_clone.selectedItem.value).replyTo
+		// TB 1.x doesn'T accept the value without the getAttribute
+		var id = (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value ||
+			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.getAttribute("value"))
+		if (id == "vid") return;
+		var replyTo = gAccountManager.getIdentity(value).replyTo
 		vI_notificationBar.dump("## initReplyToFields identity.replyTo: " + replyTo + "\n");
 		if (replyTo == "") return
 		
