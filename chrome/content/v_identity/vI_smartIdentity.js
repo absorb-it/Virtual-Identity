@@ -350,8 +350,11 @@ var vI_smartIdentity = {
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var popup = awGetPopupElement(row);
 			var input = awGetInputElement(row);
+			var recipientType = popup.selectedItem.getAttribute("value");
+			// if the entry is not a recipient, just continue
+			if (recipientType == "addr_reply" || recipientType == "addr_followup") continue;
 			// check if the entry is used as a BCC selected in account settings
-			if ((awGetPopupElement(row).selectedItem.getAttribute("value") == "addr_bcc") && skip_bcc) continue;
+			if (recipientType == "addr_bcc" && skip_bcc) continue;
 			// check if entry is matching senders address, if so, remove it
 			if (input.value == allIdentities.emails[index] ||
 				input.value == allIdentities.combinedNames[index]) {
