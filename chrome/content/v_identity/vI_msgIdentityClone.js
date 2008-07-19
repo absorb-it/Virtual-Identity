@@ -27,7 +27,7 @@ var vI_msgIdentityClone = {
 	icon_virtualId_class : "identity_clone-menulist person-icon new-icon",
 	text_usualId_class : "plain menulist_clone-textbox",
 	text_virtualId_class : "plain menulist_clone-textbox vIactiv",
-	
+
 	localIdentityData : null,
 	
 	elements : {
@@ -188,12 +188,19 @@ var vI_msgIdentityClone = {
 				= document.getElementById("msgIdentity_clone_textbox");
 	},
 	
+	__setIdentity : function (id) {
+			// set orignal Identity-Menu to the selected Identity
+			vI_msgIdentityClone.copySelectedIdentity(id);
+			// set smtp-selector to the smtp of the selcted Identity
+			vI_smtpSelector.resetMenuToMsgIdentity(id);
+			// recognize reply-to fields for auto-reply
+			vI_msgIdentityClone.initReplyToFields(id);
+	},
+
 	// this LoadIdentity - oncommand is used by our clone MsgIdentity Menu
 	// remove the Virtual Account if a different (usual) Account is choosen in the cloned dropdown-menu
-	LoadIdentity : function()
-	{
+	LoadIdentity : function() {
 		vI_notificationBar.dump("## vI_msgIdentityClone: LoadIdentity\n");
-		vI_msgIdentityClone.cleanupReplyTo();
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		
 		var label = null;
@@ -201,11 +208,14 @@ var vI_msgIdentityClone = {
 		// use getAttribute to be sure it works with TB 2.x versions
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value != "vid" &&
 			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.getAttribute("value") != "vid") {
+
+			// clean reply-to fields before reinit
+			vI_msgIdentityClone.cleanupReplyTo();
+			// remove possibly stored base_id_key
 			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = null;
-			vI_msgIdentityClone.copySelectedIdentity(
-				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value);
-			vI_smtpSelector.resetMenuToMsgIdentity(
-				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value);
+			
+			vI_msgIdentityClone.__setIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value);
+			
 			// Identitys might have IdentityName set differently to 'name <email>',
 			// so retrieve name and email directly from Identity
 			var identity = gAccountManager.getIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"))
@@ -213,12 +223,20 @@ var vI_msgIdentityClone = {
 		}
 		else {
 			vI_notificationBar.dump("## vI_msgIdentityClone: LoadIdentity virtual Identity\n");
-			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = 
-				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.base_id_key
-			vI_msgIdentityClone.copySelectedIdentity(
-				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key);
+			
+			var base_id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.base_id_key
+			// if MenuItem has a base_id_key set,first set Identity to base_id
+			if (base_id_key) {
+				vI_notificationBar.dump("## vI_msgIdentityClone: base_id found, set menu temporarily to base_id\n");
+				vI_msgIdentityClone.__setIdentity(base_id_key);
+				// store base_id_key if available
+				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = base_id_key
+			}
+			
+			// set smtp-selector to the smtp of the selected Identity
 			vI_smtpSelector.setMenuToKey(
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.smtp_key);
+
 			if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.extras)
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.extras.setValues();
 			label = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.label
@@ -234,11 +252,12 @@ var vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("accountname",
 			vI_helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem));
 		vI_msgIdentityClone.markAsNewAccount(vI_msgIdentityClone.isExistingIdentity());
-		vI_msgIdentityClone.initReplyToFields();
+
+
 	},
 	
 	setIdentity : function(newName, timeStamp) {
-		vI_notificationBar.dump("## initReplyToFields setIdentity " + newName + "\n");
+		vI_notificationBar.dump("## vI_msgIdentityClone: setIdentity " + newName + "\n");
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = newName;
 		vI_msgIdentityClone.blurEvent()
@@ -279,6 +298,7 @@ var vI_msgIdentityClone = {
 	replyToSynchronize : true,
 	
 	cleanReplyToFields : function() {
+		vI_notificationBar.dump("## vI_msgIdentityClone: cleanReplyToFields\n");
 		vI_msgIdentityClone.replyToInputElem = null;
 		vI_msgIdentityClone.replyToPopupElem = null;
 		vI_msgIdentityClone.replyToInitValue = null;
@@ -289,13 +309,13 @@ var vI_msgIdentityClone = {
 	
 	// called directly after a change of the Identity with the dropdown menu
 	// searches the first reply-to row and assumes that this is the one we like to adapt
-	initReplyToFields : function() {
-		// TB 1.x doesn'T accept the value without the getAttribute
-		var id = (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value ||
-			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.getAttribute("value"))
-		if (id == "vid") return;
+	initReplyToFields : function(id) {
+		// v_identity calls initReplyToFields in stage2 without id
+		if (!id) id = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value;
+
+		vI_notificationBar.dump("## vI_msgIdentityClone: initReplyToFields id=" + id + "\n");
 		var replyTo = gAccountManager.getIdentity(id).replyTo
-		vI_notificationBar.dump("## initReplyToFields identity.replyTo: " + replyTo + "\n");
+		vI_notificationBar.dump("## vI_msgIdentityClone: initReplyToFields identity.replyTo: " + replyTo + "\n");
 		if (replyTo == "") return
 		
 		vI_msgIdentityClone.replyToInitValue = replyTo;
@@ -303,25 +323,25 @@ var vI_msgIdentityClone = {
 			var awType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			var awValue = awGetInputElement(row).value
 			if (awType == "addr_reply" && awValue == replyTo) {
-				vI_notificationBar.dump("## vI_msgIdentityClone: Reply-To found in row " + row + "\n");
+				vI_notificationBar.dump("## vI_msgIdentityClone: initReplyToFields Reply-To found in row " + row + "\n");
 				vI_msgIdentityClone.replyToPopupElem = awGetPopupElement(row)
 				vI_msgIdentityClone.replyToInputElem = awGetInputElement(row)
 				break;
 				}
 		}
-		if (!vI_msgIdentityClone.replyToInputElem) vI_notificationBar.dump("## vI_msgIdentityClone: no Reply-To row found\n");
+		if (!vI_msgIdentityClone.replyToInputElem) vI_notificationBar.dump("## vI_msgIdentityClone: initReplyToFields no Reply-To row found\n");
 	},
 	
 	cleanupReplyTo : function() {
 		if (!vI_msgIdentityClone.replyToSynchronize) return
-		vI_notificationBar.dump("## cleanupReplyTo\n");
+		vI_notificationBar.dump("## vI_msgIdentityClone: cleanupReplyTo\n");
 		
 		// check if sychronizing should still be done (will be stopped if value was modified by hand)
 		// if still in synchronizing mode reset the fields
 		if ( vI_msgIdentityClone.replyToInputElem && vI_msgIdentityClone.synchroneReplyTo() ) {
 			if (vI_msgIdentityClone.replyToInitValue) {
 				var replyTo = vI_msgIdentityClone.replyToInitValue;
-				vI_notificationBar.dump("## restore ReplyTo: " + replyTo + "\n");
+				vI_notificationBar.dump("## vI_msgIdentityClone: cleanupReplyTo restore ReplyTo: " + replyTo + "\n");
 				vI_msgIdentityClone.replyToInputElem.value = replyTo;
 				vI_msgIdentityClone.replyToInputElem.setAttribute("value",replyTo)
 			}
@@ -337,7 +357,7 @@ var vI_msgIdentityClone = {
 	},
 	
 	synchroneReplyTo : function() {
-		vI_notificationBar.dump("## synchroneReplyTo\n");
+		vI_notificationBar.dump("## vI_msgIdentityClone: synchroneReplyTo\n");
 		if ( (vI_msgIdentityClone.replyToPopupElem.selectedItem.value != "addr_reply") ||
 			(vI_msgIdentityClone.replyToStoredLastValue &&
 			vI_msgIdentityClone.replyToInputElem.value != vI_msgIdentityClone.replyToStoredLastValue)) {
@@ -351,10 +371,10 @@ var vI_msgIdentityClone = {
 	updateReplyTo : function() {
 		if (!vI.preferences.getBoolPref("autoReplyToSelf")) return
 		if (!vI_msgIdentityClone.replyToSynchronize) {
-			vI_notificationBar.dump("## updateReplyTo stopped Synchronizing\n") 
+			vI_notificationBar.dump("## vI_msgIdentityClone: updateReplyTo stopped Synchronizing\n") 
 			return
 		}
-		vI_notificationBar.dump("## updateReplyTo replyToStoredLastValue=" 
+		vI_notificationBar.dump("## vI_msgIdentityClone: updateReplyTo replyToStoredLastValue=" 
 				+ vI_msgIdentityClone.replyToStoredLastValue + "\n");
 
 		// if replyToInputElem not set (so no initial Reply-To row was found) add a row now
