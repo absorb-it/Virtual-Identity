@@ -227,11 +227,11 @@ var vI = {
 		vI_notificationBar.dump("## v_identity: initSystemStage1.\n")
 		vI_smtpSelector.init();
 		vI_msgIdentityClone.init();
-		vI_msgIdentityClone.initReplyToFields();
 	},
 	
 	initSystemStage2 : function() {
 		vI_notificationBar.dump("## v_identity: initSystemStage2.\n")
+		vI_msgIdentityClone.initReplyToFields();
 		vI_storage.init();
 		vI_smartIdentity.init();	
 	},
