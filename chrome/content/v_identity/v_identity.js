@@ -57,10 +57,11 @@ var vI = {
 	ComposeStateListener : {
 		NotifyComposeBodyReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeBodyReady\n");
-			vI.initSystemStage2();
+			if (!vI_helper.olderVersion("TB", "2.0a")) vI.initSystemStage2();
 		},
 		NotifyComposeFieldsReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeFieldsReady\n");
+			if (vI_helper.olderVersion("TB", "2.0a")) vI.initSystemStage2();
 		},
 		ComposeProcessDone: function(aResult) {
 			vI_notificationBar.dump("## v_identity: StateListener reports ComposeProcessDone\n");
@@ -133,7 +134,7 @@ var vI = {
 			
 			// dont allow user to fake identity if Message is not sended NOW and thunderbird-version is below 2.0 !!!!
 			if (msgType != nsIMsgCompDeliverMode.Now &&
-				((vI_helper.olderVersion("TB", "2.0b") || vI_helper.olderVersion("SM", "1.5a"))) {
+				(vI_helper.olderVersion("TB", "2.0b") || vI_helper.olderVersion("SM", "1.5a"))) {
 				var server = gAccountManager.defaultAccount.incomingServer.prettyName
 				var name = gAccountManager.defaultAccount.defaultIdentity.fullName
 				var email = gAccountManager.defaultAccount.defaultIdentity.email
