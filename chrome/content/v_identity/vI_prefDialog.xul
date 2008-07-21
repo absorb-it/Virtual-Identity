@@ -204,7 +204,7 @@
 				</rows>
 			</grid>
 			</radiogroup>
-			<hbox align="center" class="fccReplyFollowsParent">
+			<hbox id="fccReplyFollowsParentBox" align="center" class="fccReplyFollowsParent">
 				<checkbox wsm_persist="true" id="VIdent_identity.fccReplyFollowsParent"
 					  label="&fccReplyFollowsParent.label;"
 					  accesskey="&fccReplyFollowsParent.accesskey;"

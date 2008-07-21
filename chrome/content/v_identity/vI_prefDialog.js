@@ -293,7 +293,10 @@ var vI_prefDialog = {
 			document.getElementById("VIdent_identity.smart_draft").setAttribute("disabled", "true");
 		}
 		if ((!appID) || (appID == THUNDERBIRD_ID && versionChecker.compare(appVersion, "1.5.0.7") < 0)) {
-			document.getElementById("notificationGroupBox").setAttribute("hidden", "true");
+			document.getElementById("notificationGroupBox").setAttribute("hidden", "true");	
+		}
+		if ((!appID) || (appID == THUNDERBIRD_ID && versionChecker.compare(appVersion, "2.0") < 0)) {
+			document.getElementById("fccReplyFollowsParentBox").setAttribute("hidden", "true");
 		}
 		if ((!appID) || (appID != THUNDERBIRD_ID)) {
 			document.getElementById("VIdent_identity.menu_entry").setAttribute("hidden", "true");
