@@ -102,3 +102,8 @@
 <!ENTITY vI_prefDialog.notificationTab.Debug.caption "Ladění">
 <!ENTITY vI_prefDialog.notifyDebug.desc "Chcete-li hledat chyby, vyřešit problémy s konfigurací a porozumět tomu, co Virtual Identity dělá (především s filtry SmartReply), můžete si zobrazovat další informace. Použití této volby však zpomalí váš e-mailový klient, proto by neměla být zapnuta stále.">
 <!ENTITY vI_prefDialog.notifyDebug.label "zobrazit pole s ladícími informacemi">
+
+<!-- just for TB 1.5. ReplyFollowsParent not available -->
+<!-- fields will be hidden, dont have to be translated -->
+<!ENTITY fccReplyFollowsParent.label "">
+<!ENTITY fccReplyFollowsParent.accesskey "">

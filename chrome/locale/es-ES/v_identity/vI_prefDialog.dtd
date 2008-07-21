@@ -102,3 +102,8 @@
 <!ENTITY vI_prefDialog.notificationTab.Debug.caption "Depuración">
 <!ENTITY vI_prefDialog.notifyDebug.desc "Para encontrar fallos, resolver problemas y entender lo que está haciendo Virtual Identity, especialmente con los filtros de respuesta rápida, puede habilitar alguna información adicional. Esta información aparecerá mayoritariamente en inglés. Si usa esta opción, el cliente de correo será más lento, por lo que no debe estar activa permanentemente.">
 <!ENTITY vI_prefDialog.notifyDebug.label "mostrar el área con la información de depuración">
+
+<!-- just for TB 1.5. ReplyFollowsParent not available -->
+<!-- fields will be hidden, dont have to be translated -->
+<!ENTITY fccReplyFollowsParent.label "">
+<!ENTITY fccReplyFollowsParent.accesskey "">

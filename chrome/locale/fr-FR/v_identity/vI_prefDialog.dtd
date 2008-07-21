@@ -102,3 +102,8 @@
 <!ENTITY vI_prefDialog.notificationTab.Debug.caption "Débogage">
 <!ENTITY vI_prefDialog.notifyDebug.desc "Pour détecter les bogues, résoudre les problèmes de configuration et comprendre ce que Virtual Identity fait, en particulier avec les filtres de réponse intelligente, vous pouvez activer la production d&apos;informations complémentaires. Cette option ralentit votre client courriel, par conséquent vous ne devriez pas l&apos;activer en l&apos;absence de nécessité.">
 <!ENTITY vI_prefDialog.notifyDebug.label "afficher les informations de débogage">
+
+<!-- just for TB 1.5. ReplyFollowsParent not available -->
+<!-- fields will be hidden, dont have to be translated -->
+<!ENTITY fccReplyFollowsParent.label "">
+<!ENTITY fccReplyFollowsParent.accesskey "">

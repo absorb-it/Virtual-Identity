@@ -102,3 +102,8 @@
 <!ENTITY vI_prefDialog.notificationTab.Debug.caption "Risoluzione dei problemi">
 <!ENTITY vI_prefDialog.notifyDebug.desc "Al fine di identificare i bug, risolvere problemi di configurazione e comprendere le operazioni compiute da Virtual Identity, è possibile ottenere alcune informazioni aggiuntive. L&apos;utilizzo di questa opzione causerà rallentamenti al programma di posta, e per questo motivo si consiglia di attivarla soltanto per brevi periodi.">
 <!ENTITY vI_prefDialog.notifyDebug.label "Visualizza informazioni relative al debug">
+
+<!-- just for TB 1.5. ReplyFollowsParent not available -->
+<!-- fields will be hidden, dont have to be translated -->
+<!ENTITY fccReplyFollowsParent.label "">
+<!ENTITY fccReplyFollowsParent.accesskey "">
