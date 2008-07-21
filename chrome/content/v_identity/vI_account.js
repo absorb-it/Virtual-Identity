@@ -225,14 +225,16 @@ var vI_account = {
 				vI_account.account.defaultIdentity.doFcc = vI_account.AccountManager.defaultAccount.defaultIdentity.doFcc;
 				vI_account.account.defaultIdentity.fccFolder = vI_account.AccountManager.defaultAccount.defaultIdentity.fccFolder;
 				vI_account.account.defaultIdentity.fccFolderPickerMode = vI_account.AccountManager.defaultAccount.defaultIdentity.fccFolderPickerMode;
-				vI_account.account.defaultIdentity.fccReplyFollowsParent = vI_account.AccountManager.defaultAccount.defaultIdentity.fccReplyFollowsParent;
+				if (!vI_helper.olderVersion("TB", "2.0"))
+					vI_account.account.defaultIdentity.fccReplyFollowsParent = vI_account.AccountManager.defaultAccount.defaultIdentity.fccReplyFollowsParent;
 				break;
 			    case "3"  :
 				vI_notificationBar.dump ("## vI_account: preparing Fcc --- use Settings of Modified Account\n");
 				vI_account.account.defaultIdentity.doFcc = vI_helper.getBaseIdentity().doFcc;
 				vI_account.account.defaultIdentity.fccFolder = vI_helper.getBaseIdentity().fccFolder;
 				vI_account.account.defaultIdentity.fccFolderPickerMode = vI_helper.getBaseIdentity().fccFolderPickerMode;
-				vI_account.account.defaultIdentity.fccReplyFollowsParent = vI_helper.getBaseIdentity().fccReplyFollowsParent;
+				if (!vI_helper.olderVersion("TB", "2.0"))
+					vI_account.account.defaultIdentity.fccReplyFollowsParent = vI_helper.getBaseIdentity().fccReplyFollowsParent;
 				break;
 			    default  :
 				vI_notificationBar.dump ("## vI_account: preparing Fcc --- use Virtual Identity Settings\n");
@@ -242,7 +244,8 @@ var vI_account = {
 					= vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("fccFolder"));
 				vI_account.account.defaultIdentity.fccFolderPickerMode
 					= vI.preferences.getCharPref("fccFolderPickerMode");
-				vI_account.account.defaultIdentity.fccReplyFollowsParent = vI.preferences.getBoolPref("fccReplyFollowsParent");
+				if (!vI_helper.olderVersion("TB", "2.0"))
+					vI_account.account.defaultIdentity.fccReplyFollowsParent = vI.preferences.getBoolPref("fccReplyFollowsParent");
 
 				break;
 			}
