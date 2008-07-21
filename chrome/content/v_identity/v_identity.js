@@ -130,25 +130,10 @@ var vI = {
 				.getService(Components.interfaces.nsIPromptService);
 			vI_notificationBar.dump("## v_identity: VIdentity_GenericSendMessage\n");
 			vI.msgType = msgType; 
+			
 			// dont allow user to fake identity if Message is not sended NOW and thunderbird-version is below 2.0 !!!!
-			var appID = null;
-			var appVersion = null;
-			var versionChecker;
-			if("@mozilla.org/xre/app-info;1" in Components.classes) {
-				var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
-					.getService(Components.interfaces.nsIXULAppInfo);
-				appID = appInfo.ID
-				appVersion = appInfo.version
-			}
-			if("@mozilla.org/xpcom/version-comparator;1" in Components.classes)
-				versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
-					.getService(Components.interfaces.nsIVersionComparator);
-			else appID = null;
-			const THUNDERBIRD_ID = "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
-			const SEAMONKEY_ID = "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
 			if (msgType != nsIMsgCompDeliverMode.Now &&
-				((!appID) || (appID == THUNDERBIRD_ID && versionChecker.compare(appVersion, "2.0b") < 0) ||
-				(appID == SEAMONKEY_ID && versionChecker.compare(appVersion, "1.5a") < 0)))	{
+				((vI_helper.olderVersion("TB", "2.0b") || vI_helper.olderVersion("SM", "1.5a"))) {
 				var server = gAccountManager.defaultAccount.incomingServer.prettyName
 				var name = gAccountManager.defaultAccount.defaultIdentity.fullName
 				var email = gAccountManager.defaultAccount.defaultIdentity.email

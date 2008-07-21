@@ -272,33 +272,17 @@ var vI_prefDialog = {
 		vI_prefDialog.base.init();
 		onInitCopiesAndFolders()
 
-		var appID = null;
-		var appVersion = null;
-		var versionChecker;
-		if("@mozilla.org/xre/app-info;1" in Components.classes) {
-			var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
-				.getService(Components.interfaces.nsIXULAppInfo);
-			appID = appInfo.ID
-			appVersion = appInfo.version
-		}
-		if("@mozilla.org/xpcom/version-comparator;1" in Components.classes)
-			versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
-				.getService(Components.interfaces.nsIVersionComparator);
-		else appID = null;
-		const THUNDERBIRD_ID = "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
-		const SEAMONKEY_ID = "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
-		if ((!appID) || (appID == THUNDERBIRD_ID && versionChecker.compare(appVersion, "2.0b") < 0) ||
-			(appID == SEAMONKEY_ID && versionChecker.compare(appVersion, "1.5a") < 0)) {
+		if (vI_helper.olderVersion("TB", "2.0b") || vI_helper.olderVersion("SM", "1.5a")) {
 			document.getElementById("version-warning").setAttribute("hidden", "false");
 			document.getElementById("VIdent_identity.smart_draft").setAttribute("disabled", "true");
 		}
-		if ((!appID) || (appID == THUNDERBIRD_ID && versionChecker.compare(appVersion, "1.5.0.7") < 0)) {
+		if (vI_helper.olderVersion("TB", "1.5.0.7")) {
 			document.getElementById("notificationGroupBox").setAttribute("hidden", "true");	
 		}
-		if ((!appID) || (appID == THUNDERBIRD_ID && versionChecker.compare(appVersion, "2.0") < 0)) {
+		if (vI_helper.olderVersion("TB", "2.0")) {
 			document.getElementById("fccReplyFollowsParentBox").setAttribute("hidden", "true");
 		}
-		if ((!appID) || (appID != THUNDERBIRD_ID)) {
+		if (vI_helper.olderVersion("SM", null)) { // any known seamonkey version
 			document.getElementById("VIdent_identity.menu_entry").setAttribute("hidden", "true");
 		}
 		

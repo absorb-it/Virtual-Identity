@@ -54,6 +54,8 @@
             src="chrome://v_identity/content/vI_prefDialog.js" />
 <script type="application/x-javascript"
             src="chrome://v_identity/content/vI_storageExtras.js" />
+<script type="application/x-javascript"
+            src="chrome://v_identity/content/vI_helper.js" />
 
   <stringbundleset id="stringbundleset">
     <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />

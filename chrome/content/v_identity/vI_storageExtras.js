@@ -61,22 +61,9 @@ var vI_storageExtrasHelper = {
 	},
 
 	seamonkey_to_old : function() {
-		if (vI_storageExtrasHelper.seamonkey_old == "true") return true;
-		var versionChecker;
-		if("@mozilla.org/xre/app-info;1" in Components.classes) {
-			var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
-				.getService(Components.interfaces.nsIXULAppInfo);
-			appID = appInfo.ID
-			appVersion = appInfo.version
-		}
-		if("@mozilla.org/xpcom/version-comparator;1" in Components.classes)
-			versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
-				.getService(Components.interfaces.nsIVersionComparator);
-		else appID = null;
-		const SEAMONKEY_ID = "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
-		if (appID == SEAMONKEY_ID && versionChecker.compare(appVersion, "1.5a") < 0)
-			vI_storageExtrasHelper.seamonkey_old = "true"
-		return (vI_storageExtrasHelper.seamonkey_old == "true")
+		if (vI_storageExtrasHelper.seamonkey_old != "true")
+			vI_storageExtrasHelper.seamonkey_old = vI_helper.olderVersion("SM", "1.5a")
+		return (vI_storageExtrasHelper.seamonkey_old)	
 	}
 }
 

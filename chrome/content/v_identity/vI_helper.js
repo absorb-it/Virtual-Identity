@@ -64,6 +64,34 @@ keyTranslator.prototype = {
 
 
 var vI_helper = {
+	// simplified versionChecker, type is "TB" or "SM"
+	// returns true if appVersion is smaller or equal version
+	olderVersion : function (type, version) {
+		var appID = null; var appVersion = null;
+		const THUNDERBIRD_ID = "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
+		const SEAMONKEY_ID = "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}";
+
+		var versionChecker;
+		if("@mozilla.org/xre/app-info;1" in Components.classes) {
+			var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
+				.getService(Components.interfaces.nsIXULAppInfo);
+			appID = appInfo.ID
+			appVersion = appInfo.version
+		}
+		if ((type == "TB" && appID != THUNDERBIRD_ID) ||
+			(type == "SM" && appID != SEAMONKEY_ID)) return null;
+
+		if (!version) return ((type == "TB" && appID == THUNDERBIRD_ID) ||
+			(type == "SM" && appID == SEAMONKEY_ID))
+
+		if("@mozilla.org/xpcom/version-comparator;1" in Components.classes)
+			versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+				.getService(Components.interfaces.nsIVersionComparator);
+		else return null;
+		
+		return (versionChecker.compare(appVersion, version) < 0)
+	},
+
 	// "accountname" property changed in Thunderbird 3.x, Seamonkey 1.5x to "description"
 	getAccountname: function(elem) {
 		if (elem.getAttribute("accountname") == "" && elem.getAttribute("description") != "")
