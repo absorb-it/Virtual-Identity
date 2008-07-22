@@ -31,12 +31,38 @@ vI_upgrade = {
 			.getService(Components.interfaces.nsIVersionComparator),
 
 	init : function() {
+		vI_upgrade.__initRequirements();
 		document.documentElement.getButton("cancel").setAttribute("hidden", "true")
-		vI_notificationBar.dump("") // this initialises the debug-area
-		vI_rdfDatasource.init(); // just to be sure that Datasource is initialised
 		vI_upgrade.skipUpgradePages(); // skip obsolete upgrade Pages
 	},
-		
+
+	__initRequirements : function() {
+		vI_notificationBar.dump("") // this initialises the debug-area
+		vI_rdfDatasource.init(); // just to be sure that Datasource is initialised
+	},
+	
+	// this function checks for the chance to ugrade without shoing the complete wizard
+	// if so, perform the upgrade and return true
+	// by default the wizard is not shown if it is a one-version-forward upgrade
+	quick_upgrade : function() {
+		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
+		var currentVersion = vI_rdfDatasource.getCurrentExtFileVersion().split(/\./);
+		var nextVersion = currentVersion[0] + "." + currentVersion[1] + "."
+		if (currentVersion[2].match(/pre/))
+		 	nextVersion += parseInt(currentVersion[2])
+		else nextVersion += eval(parseInt(currentVersion[2])+1)
+		var extVersion = document.getElementById("extVersion").getAttribute("value");
+				
+		// don't show the dialog if we do a one-step upgrade
+		if (vI_upgrade.versionChecker.compare(extVersion, nextVersion) <= 0) {
+			vI_notificationBar.dump("starting quick_upgrade.\n")
+			vI_upgrade.__initRequirements();
+			vI_upgrade.__upgrade();
+			return true;
+		}
+		return false;
+	},
+
 	skipUpgradePages : function() {
 		var preUpdateWizardPage = document.getElementById("license")		
 		// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
@@ -49,16 +75,20 @@ vI_upgrade = {
 		document.documentElement.getButton('next').focus();
 	},
 	
+	__upgrade : function() {
+		if (vI_rdfDatasource.extUpgradeRequired()) vI_upgrade.extUpgrade();
+		if (vI_rdfDatasource.rdfUpgradeRequired()) vI_upgrade.rdfUpgrade();
+		
+		vI_account.cleanupSystem();
+	},			
+
 	upgrade : function() {
 		vI_notificationBar.dump("starting upgrade.\n\n")
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "false")
 		document.documentElement.getButton('next').setAttribute('disabled','true');
 		
-		if (vI_rdfDatasource.extUpgradeRequired()) vI_upgrade.extUpgrade();
-		if (vI_rdfDatasource.rdfUpgradeRequired()) vI_upgrade.rdfUpgrade();
-		
-		vI_account.cleanupSystem();
-		
+		vI_upgrade.__upgrade();
+	
 		vI_notificationBar.dump("\n\nupgrade finished.\n");
 		
 		document.documentElement.getButton('next').setAttribute('disabled','false');
@@ -232,4 +262,5 @@ vI_upgrade = {
             protocolSvc.loadUrl(uri);
         }
 }
-window.addEventListener('load', vI_upgrade.init, true);
+// start init only if wizard is shown, so it is done in vI_upgrade.xul
+// window.addEventListener('load', vI_upgrade.init, true);
