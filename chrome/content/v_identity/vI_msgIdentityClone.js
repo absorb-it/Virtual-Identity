@@ -141,15 +141,17 @@ var vI_msgIdentityClone = {
 		vI_notificationBar.dump("## vI_msgIdentityClone: addIdentityToCloneMenu existingId '" + existingId + "'\n");
 		if (!existingId) {
 			var separator = null;
-			if (!localIdentityData.id) localIdentityData.id = gAccountManager.defaultAccount.defaultIdentity.key
-			// search the account related to this id
+			var accountname = document.getElementById("prettyName-Prefix").getAttribute("label");
+// 			if (!localIdentityData.id) localIdentityData.id = gAccountManager.defaultAccount.defaultIdentity.key
+
+			// search the account related to this id and check if there is a seperator added
 			MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.firstChild.childNodes
 			for (var j = 0; j < MenuItems.length; j++) {
 				if (MenuItems[j].localName == "menuseparator") {
 					separator = true; break;
 				}
-				if (MenuItems[j].getAttribute("value") == localIdentityData.id )
-					accountname = document.getElementById("prettyName-Prefix").getAttribute("label") + MenuItems[j].getAttribute("accountname")
+				if (localIdentityData.id && MenuItems[j].getAttribute("value") == localIdentityData.id)
+					accountname += MenuItems[j].getAttribute("accountname")
 			}
 			if (!separator) vI_msgIdentityClone.addSeparatorToCloneMenu();
 		
@@ -204,6 +206,7 @@ var vI_msgIdentityClone = {
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		
 		var label = null;
+		var accountname = vI_helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem);
 
 		// use getAttribute to be sure it works with TB 2.x versions
 		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value != "vid" &&
@@ -219,7 +222,7 @@ var vI_msgIdentityClone = {
 			// Identitys might have IdentityName set differently to 'name <email>',
 			// so retrieve name and email directly from Identity
 			var identity = gAccountManager.getIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"))
-			label = identity.getUnicharAttribute("fullName") + " <" + identity.getUnicharAttribute("useremail") + ">"			
+			label = identity.getUnicharAttribute("fullName") + " <" + identity.getUnicharAttribute("useremail") + ">"
 		}
 		else {
 			vI_notificationBar.dump("## vI_msgIdentityClone: LoadIdentity virtual Identity\n");
@@ -232,7 +235,8 @@ var vI_msgIdentityClone = {
 				// store base_id_key if available
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = base_id_key
 			}
-			
+			else // change presented accountname (add accountname from current MsgIdentity (original))
+				accountname += vI_helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity);	
 			// set smtp-selector to the smtp of the selected Identity
 			vI_smtpSelector.setMenuToKey(
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.smtp_key);
@@ -249,8 +253,8 @@ var vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("label", label);
 		vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value = label;
 
-		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("accountname",
-			vI_helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem));
+		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("accountname", accountname);
+			
 		vI_msgIdentityClone.markAsNewAccount(vI_msgIdentityClone.isExistingIdentity());
 
 
