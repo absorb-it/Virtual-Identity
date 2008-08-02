@@ -35,6 +35,8 @@ function identityData(email, fullName, id, smtp, extras) {
 	this.smtp = (smtp=="default"?"":smtp);
 	this.extras = extras;
 	this.__keyTranslator = new keyTranslator();
+	if (!this.__keyTranslator.isValidID(this.id)) this.id = ""
+	if (!this.__keyTranslator.isValidSMTP(this.smtp)) this.smtp = "";
 }
 identityData.prototype = {
 	email : null,

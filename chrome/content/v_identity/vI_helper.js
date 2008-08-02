@@ -53,12 +53,20 @@ keyTranslator.prototype = {
 	},
 	getSMTPname : function (smtpKey) {
 		if (!this.SMTP_NAMES) this.__getSMTPnames();
-		return this.SMTP_NAMES[smtpKey]?this.SMTP_NAMES[smtpKey]:(smtpKey?this.DEFAULT_TAG+" "+smtpKey+" not found":this.DEFAULT_TAG)
+		return this.SMTP_NAMES[smtpKey]?this.SMTP_NAMES[smtpKey]:this.DEFAULT_TAG
 	},
 	getIDname : function (idKey) {
 		if (!this.ID_NAMES) this.__getIDnames();
-		return this.ID_NAMES[idKey]?this.ID_NAMES[idKey]:(idKey?this.DEFAULT_TAG+" "+idKey+" not found":this.DEFAULT_TAG)
+		return this.ID_NAMES[idKey]?this.ID_NAMES[idKey]:this.DEFAULT_TAG
 	},
+	isValidSMTP : function (smtpKey) {
+		if (!this.SMTP_NAMES) this.__getSMTPnames();
+		return (!smtpKey || this.SMTP_NAMES[smtpKey]?true:false)
+	},
+	isValidID : function (idKey) {
+		if (!this.ID_NAMES) this.__getIDnames();
+		return (!idKey || this.ID_NAMES[idKey]?true:false)
+	}
 }
 
 
