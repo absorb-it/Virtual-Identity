@@ -55,7 +55,7 @@ identityData.prototype = {
 		var senderName = vI_helper.combineNames(this.fullName, this.email);
 		var idName = this.__keyTranslator.getIDname(this.id);
 		var smtpName = this.__keyTranslator.getSMTPname(this.smtp);
-		var extras = this.extras.status();
+		var extras = this.extras?this.extras.status():"";
 		return senderName + " (" + 
 			this.__combineStrings(this.__combineStrings(idName, smtpName), extras) +  ")"
 	},
@@ -118,17 +118,26 @@ identityData.prototype = {
 	}
 }
 
-function identityCollection() { }
+function identityCollection() {
+	this.number = 0;
+	this.emails = {};
+	this.fullNames = {};
+	this.combinedNames = {};
+	this.id_keys = {};
+	this.smtp_keys = {};
+	this.extras = {};
+	this.menuItems = {};
+}
 identityCollection.prototype =
 {
-	number : 0,
-	emails : {},
-	fullNames : {},
-	combinedNames : {},
-	id_keys : {},
-	smtp_keys : {},
-	extras : {},
-	menuItems : {},
+	number : null,
+	emails : null,
+	fullNames : null,
+	combinedNames : null,
+	id_keys : null,
+	smtp_keys : null,
+	extras : null,
+	menuItems : null,
 	
 	mergeWithoutDuplicates : function(addIdentityCollection) {
 		for (index = 0; index < addIdentityCollection.number; index++)
