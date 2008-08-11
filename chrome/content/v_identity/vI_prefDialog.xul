@@ -362,6 +362,8 @@
 			<vbox align="left">
 				<checkbox id="VIdent_identity.storage_storedefault" label="&vI_prefDialog.storage.storedefault.label;"
 					prefstring="storage_storedefault"/>
+				<checkbox id="VIdent_identity.storage_store_base_id" label="&vI_prefDialog.storage.store_base_id.label;"
+					  prefstring="storage_store_base_id"/>
 				<checkbox id="VIdent_identity.storage_show_switch" label="&vI_prefDialog.storage.show_switch.label;"
 					prefstring="storage_show_switch"/>
 				<checkbox id="VIdent_identity.storage_warn_update" label="&vI_prefDialog.storage.warn_update.label;"

@@ -66,6 +66,7 @@ var vI_prefDialog = {
 				"VIdent_identity.hide_signature",
 				"VIdent_identity.storage",
 				"VIdent_identity.storage_storedefault",
+				"VIdent_identity.storage_store_base_id",
 				"VIdent_identity.storage_dont_update_multiple",
 				"VIdent_identity.storage_show_switch",
 				"VIdent_identity.storage_warn_update",
@@ -240,6 +241,7 @@ var vI_prefDialog = {
 		storageConstraint : function(element) {
 			var elementIDs = [
 				"VIdent_identity.storage_storedefault",
+				"VIdent_identity.storage_store_base_id",
 				"VIdent_identity.storage_dont_update_multiple",
 				"VIdent_identity.storage_show_switch",
 				"VIdent_identity.storage_warn_update",
