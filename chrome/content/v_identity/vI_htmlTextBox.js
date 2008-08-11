@@ -25,25 +25,56 @@
 var vI_htmlTextBox = {
 	Obj_TextBox : null,
 	string : null,
+	cssSource : null,
 	objectID : null,
 	
-	init : function(objectID, stringName) {
+	init : function(objectID, stringName, outputString, cssSource) {
 		vI_htmlTextBox.objectID = objectID;
-		vI_htmlTextBox.string = document.getElementById("vITextBoxBundle").getString(stringName);
+		if (stringName)
+			vI_htmlTextBox.string = document.getElementById("vITextBoxBundle").getString(stringName);
+		else if (outputString)
+			vI_htmlTextBox.string = outputString;
+		vI_htmlTextBox.cssSource = cssSource;
 		window.setTimeout(vI_htmlTextBox.__init, 200)
+	},
+
+	// read the chrome file (copied from http://forums.mozillazine.org/viewtopic.php?p=921150)
+	__getContents : function (aURL){
+		var ioService=Components.classes["@mozilla.org/network/io-service;1"]
+			.getService(Components.interfaces.nsIIOService);
+		var scriptableStream=Components
+			.classes["@mozilla.org/scriptableinputstream;1"]
+			.getService(Components.interfaces.nsIScriptableInputStream);
+		
+		var channel=ioService.newChannel(aURL,null,null);
+		var input=channel.open();
+		scriptableStream.init(input);
+		var str=scriptableStream.read(input.available());
+		scriptableStream.close();
+		input.close();
+		return str;
+	},
+
+	__setCSS : function () {
+		var head = vI_htmlTextBox.Obj_TextBox.contentDocument.getElementsByTagName("HEAD").item(0);
+		var range = document.createRange();
+		range.selectNode(head);
+		var css_text = vI_htmlTextBox.__getContents("chrome://v_identity/skin/" + vI_htmlTextBox.cssSource);
+		var documentFragment = range.createContextualFragment("<style type='text/css'>" + css_text + "</style>");
+		head.appendChild(documentFragment);
 	},
 	
 	__init : function () {
 		vI_htmlTextBox.Obj_TextBox = document.getElementById(vI_htmlTextBox.objectID);
 		vI_htmlTextBox.Obj_TextBox.contentDocument
 			.lastChild.setAttribute("style", "background-color: -moz-dialog; font: -moz-dialog;");
+
+		if (vI_htmlTextBox.cssSource) vI_htmlTextBox.__setCSS();
+
 		vI_htmlTextBox.__echo(vI_htmlTextBox.string);
-// 		vI_htmlTextBox.Obj_TextBox.setAttribute("hidden", "false");
 	},
 	
-	// background-color: -moz-dialog; font: -moz-dialog;
 	__echo : function (text) {
-		//~ alert("echo");
 		var text_list = text.split(/\n/)
 		for (i = 0; i < text_list.length; i++) {
 			if (vI_htmlTextBox.__isHR(text_list[i])) continue;
@@ -55,8 +86,6 @@ var vI_htmlTextBox = {
 				vI_htmlTextBox.Obj_TextBox.contentDocument.body.appendChild(new_br);
 			}
 		}
-		//~ vI_htmlTextBox.Obj_TextBox.inputField.scrollTop = 
-			//~ vI_htmlTextBox.Obj_TextBox.inputField.scrollHeight - vI_htmlTextBox.Obj_TextBox.inputField.clientHeight
 	},
 	
 	__isHR : function(text) {
@@ -98,8 +127,10 @@ var vI_htmlTextBox = {
 	},
 	
 	__addText : function (text) {
-		var new_text = vI_htmlTextBox.Obj_TextBox.contentDocument.createTextNode(text);
-		vI_htmlTextBox.currentBaseNode.appendChild(new_text);
+		var range = document.createRange();
+		range.selectNode(vI_htmlTextBox.currentBaseNode);
+		var documentFragment = range.createContextualFragment(text);
+		vI_htmlTextBox.currentBaseNode.appendChild(documentFragment);
 	},
 	
 	__addLink : function (text) {
