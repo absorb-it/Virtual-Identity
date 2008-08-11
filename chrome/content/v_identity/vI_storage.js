@@ -27,24 +27,37 @@
 * thanks to Mike Krieger and Sebastian Apel
 */
 
-
 function identityData(email, fullName, id, smtp, extras) {
+	this.__keyTranslator = new keyTranslator();
+	this.smtpService =
+    		Components.classes["@mozilla.org/messengercompose/smtp;1"].getService(Components.interfaces.nsISmtpService);
 	this.email = email;
 	this.fullName = (fullName?fullName:'');
-	this.id = id;
-	this.smtp = (smtp=="default"?"":smtp);
+	this.id = (this.__keyTranslator.isValidID(id))?id:"";
+	this.idName = this.__keyTranslator.getIDname(this.id);
+	this.smtp = (this.__keyTranslator.isValidSMTP(smtp))?smtp:""
+	this.smtpName = this.__keyTranslator.getSMTPname(this.smtp);
 	this.extras = extras;
-	this.__keyTranslator = new keyTranslator();
-	if (!this.__keyTranslator.isValidID(this.id)) this.id = ""
-	if (!this.__keyTranslator.isValidSMTP(this.smtp)) this.smtp = "";
+	this.comp = {
+		compareID : null,
+		labels : { fullName : {}, email : {}, smtpName : {}, idName : {}, extras : {} },
+		equals : { fullName : {}, email : {}, smtpName : {}, idName : {}, extras : {} }
+	}
 }
 identityData.prototype = {
 	email : null,
 	fullName : null,
 	id : null,
+	idName : null,
 	smtp : null,
+	smtpName : null,
 	extras : null,
+
+	comp : null,	
+
 	__keyTranslator : null,
+	smtpService : null,
+
 	__combineStrings : function(stringA, stringB) {
 		var A = (stringA)?stringA.replace(/^\s+|\s+$/g,""):"";
 		var B = (stringB)?stringB.replace(/^\s+|\s+$/g,""):"";
@@ -55,69 +68,89 @@ identityData.prototype = {
 	
 	identityDescription : function(index) {
 		var senderName = vI_helper.combineNames(this.fullName, this.email);
-		var idName = this.__keyTranslator.getIDname(this.id);
-		var smtpName = this.__keyTranslator.getSMTPname(this.smtp);
 		var extras = this.extras?this.extras.status():"";
 		return senderName + " (" + 
-			this.__combineStrings(this.__combineStrings(idName, smtpName), extras) +  ")"
+			this.__combineStrings(this.__combineStrings(this.idName, this.smtpName), extras) +  ")"
 	},
 	
-	__equalCurrentSMTP : function() {
-		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
-		return (!this.__keyTranslator.getSMTP(this.smtp) && !smtp_key ||
-			smtp_key == this.smtp)
-	},
-	
-	__equalCurrentID : function() {
-		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key;
-		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
-		return ((!this.__keyTranslator.getID(this.id) && (id_key == gAccountManager.defaultAccount.defaultIdentity.key)) ||
-			id_key == this.id)
-	},
-	
-	equalsCurrentIdentity : function() {
-		var curAddress = vI_helper.getAddress();		
-		var curExtras = new vI_storageExtras();
-		curExtras.readValues(); // initialize with current MsgComposeDialog Values
-		vI_notificationBar.dump("## identityData: __equalCurrentID = '" + this.__equalCurrentID() + "'.\n")
-		vI_notificationBar.dump("## identityData: __equalCurrentSMTP = '" + this.__equalCurrentSMTP() + "'.\n")
-		vI_notificationBar.dump("## identityData: curAddress.email = '" + (curAddress.email == this.email) + "'.\n")
-		vI_notificationBar.dump("## identityData: curAddress.name = '" + (curAddress.name == this.fullName) + "'.\n")
-		vI_notificationBar.dump("## identityData: this.extras.equal(curExtras) = '" + this.extras.equal(curExtras) + "'.\n")
-
-		var equal = (	(this.__equalCurrentID()) &&
-				(this.__equalCurrentSMTP()) &&
-				(curAddress.email == this.email) &&
-				(curAddress.name == this.fullName) &&
-				(this.extras.equal(curExtras))	)
-		if (equal) vI_notificationBar.dump("## identityData: Identities are the same.\n")
-		else vI_notificationBar.dump("## identityData: Identities differ.\n")
-		return equal;
-	},
-
 	isExistingIdentity : function() {
 		var identity = gAccountManager.defaultAccount.defaultIdentity
 		if (this.__keyTranslator.getID(this.id))
 			identity = gAccountManager.getIdentity(this.id)
-		
-		var defaultSMTP = null;
-		for (var i in gAccountManager.accounts) {
-			for (var j in gAccountManager.accounts[i].identities) {
-				if (this.id == gAccountManager.accounts[i].identities[j].key)
-					defaultSMTP = gAccountManager.accounts[i].defaultIdentity.smtpServerKey;
-			}
-		}
-		if (!defaultSMTP) defaultSMTP = gAccountManager.defaultAccount.defaultIdentity.smtpServerKey
-
-		equal = ((this.smtp == identity.smtpServerKey ||
-			(!this.__keyTranslator.getSMTP(this.smtp) && identity.smtpServerKey == defaultSMTP) ||
-			(!this.__keyTranslator.getSMTP(identity.smtpServerKey) && this.smtp == defaultSMTP)) &&
+		equal = (this.__keyTranslator.getSMTP(this.smtp) == this.__keyTranslator.getSMTP(identity.smtpServerKey) &&
 			identity.getUnicharAttribute("fullName") == this.fullName &&
 			identity.getUnicharAttribute("useremail") == this.email)
 		
 		if (equal) return identity.key
 		else return null
-	}
+	},
+
+	__equalSMTP : function(compareSmtp) {
+		var mainSmtp = this.smtp;
+		if (!mainSmtp || !this.__keyTranslator.isValidSMTP(mainSmtp)) mainSmtp = this.smtpService.defaultServer.key;
+		if (!compareSmtp || !this.__keyTranslator.isValidSMTP(compareSmtp)) compareSmtp = this.smtpService.defaultServer.key;
+		return (mainSmtp == compareSmtp);
+	},
+	
+	__equalID : function(compareID) {
+		// if basic ID is not set (default) than answer equal
+		if (!this.__keyTranslator.getID(this.id)) return true;
+		return (this.id == compareID);
+	},
+
+	__getCurrentIdentityData : function() {
+		var curAddress = vI_helper.getAddress();
+		var curIdKey = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key;
+		var curSmtpKey = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
+		
+		var curExtras = new vI_storageExtras();
+		curExtras.readValues(); // initialize with current MsgComposeDialog Values
+		var curIdentity = new identityData(curAddress.email,
+				curAddress.name, curIdKey, curSmtpKey, curExtras)
+		
+		return curIdentity;
+	},
+
+	__equals : function(compareIdentityData) {
+		this.comp.compareID = compareIdentityData;
+
+		this.comp.equals.fullName = (this.fullName == compareIdentityData.fullName)
+		this.comp.equals.email = (this.email == compareIdentityData.email)
+		this.comp.equals.smtpName = this.__equalSMTP(compareIdentityData.smtp);
+		this.comp.equals.idName = this.__equalID(compareIdentityData.id);
+		this.comp.equals.extras = this.extras.equal(compareIdentityData.extras)
+
+		return (this.comp.equals.fullName && this.comp.equals.email && this.comp.equals.smtpName && this.comp.equals.idName && this.comp.equals.extras)
+	},
+
+	equalsCurrentIdentity : function() {
+		var compareIdentityData = this.__getCurrentIdentityData();
+
+		return this.__equals(compareIdentityData);
+	},
+
+	// vI only exists in composeDialog, not in storageEditor, so initialize only if getCompareMatrix is called
+	__setLabels : function() {
+		this.comp.labels.fullName = vI.elements.strings.getString("vident.identityData.Name") + ":";
+		this.comp.labels.email = vI.elements.strings.getString("vident.identityData.Address") + ":";
+		this.comp.labels.smtpName = vI.elements.strings.getString("vident.identityData.SMTP") + ":";
+		this.comp.labels.idName = vI.elements.strings.getString("vident.identityData.baseID") + ":";
+	},
+
+	getCompareMatrix : function() {
+		const Items = Array("fullName", "email", "smtpName", "idName");
+		this.__setLabels();
+		var string = "";
+		for each (item in Items) {
+			var classEqual = (this.comp.equals[item])?"equal":"nonequal";
+			string += "<tr>" +
+				"<td class='col1 " + classEqual + "'>" + this.comp.labels[item] + "</td>" +
+				"<td class='col2 " + classEqual + "'>" + this.comp.compareID[item].replace(/>/g,"&gt;").replace(/</g,"&lt;") + "</td>" +
+				"<td class='col3 " + classEqual + "'>" + this[item].replace(/>/g,"&gt;").replace(/</g,"&lt;") + "</td>" +
+				"</tr>"
+		}
+		return string;
+	},
 }
 
 function identityCollection() {
@@ -213,8 +246,6 @@ var vI_storage = {
 	lastCheckedEmail : {}, 	// array of last checked emails per row,
 				// to prevent ugly double dialogs and time-consuming double-checks
 	
-	elements : { Obj_storageSave : null },
-	
 	promptService : Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 			.getService(Components.interfaces.nsIPromptService),
 			
@@ -244,23 +275,7 @@ var vI_storage = {
 			vI_storage.updateVIdentityFromStorage(inputElem);
 		},
 	},
-	
-	observe: function() {
-		vI_storage.elements.Obj_storageSave.setAttribute("hidden",
-			!vI.preferences.getBoolPref("storage_show_switch"));
-		vI_storage.elements.Obj_storageSave.checked = vI.preferences.getBoolPref("storage_storedefault");
-	},
-	
-	addObserver: function() {
-		vI_storage.prefroot.addObserver("extensions.virtualIdentity.storage_show_switch", vI_storage, false);
-		vI_storage.prefroot.addObserver("extensions.virtualIdentity.storage_storedefault", vI_storage, false);	
-	},
-	
-	removeObserver: function() {
-		vI_storage.prefroot.removeObserver("extensions.virtualIdentity.storage_show_switch", vI_storage);
-		vI_storage.prefroot.removeObserver("extensions.virtualIdentity.storage_storedefault", vI_storage);
-	},
-	
+		
 	awOnBlur : function (element) {
 		// only react on events triggered by addressCol2 - textinput Elements
 		if (! element.id.match(/^addressCol2*/)) return;
@@ -273,13 +288,9 @@ var vI_storage = {
 		vI_storage.updateVIdentityFromStorage(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")))
 	},
 	
-	
+	initialized : null,
 	init: function() {
-		if (!vI_storage.elements.Obj_storageSave) {
-			vI_storage.elements.Obj_storageSave = document.getElementById("storage_save");
-			vI_storage.addObserver();
-			vI_storage.observe();
-			
+		if (!vI_storage.initialized) {
 			// better approach would be to use te onchange event, but this one is not fired in any change case
 			// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
 			// same seems to happen with the ondragdrop event
@@ -298,6 +309,7 @@ var vI_storage = {
 						"window.setTimeout(vI_storage.awPopupOnCommand, 250, this);")
 				}
 			}
+			vI_storage.initialized = true;
 		}
 		vI_storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
 		awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
@@ -354,12 +366,12 @@ var vI_storage = {
 		else if (!storageData.equalsCurrentIdentity()) {
 			// add Identity to dropdown-menu
 			var menuItem = vI_msgIdentityClone.addIdentityToCloneMenu(storageData)
-			var warning = vI_storage.__getReplaceVIdentityWarning(recipient, storageData);
+			var warning = vI_storage.__getWarning("replaceVIdentity", recipient, storageData.getCompareMatrix());
 			
 			if (	vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("timeStamp") ||
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
 				!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
-				vI_storage.promptService.confirm(window,"Warning",warning)) {
+				vI_storage.__askWarning(warning)) {
 					vI_msgIdentityClone.setMenuToMenuItem(menuItem)
 /*					vI_msgIdentityClone.setMenuToIdentity(storageData.id);
 					vI_smtpSelector.setMenuToKey(storageData.smtp);
@@ -385,27 +397,13 @@ var vI_storage = {
 		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n")
 		if (!vI.preferences.getBoolPref("storage"))
 			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
-		vI_notificationBar.dump("## vI_storage: storeVIdentityToAllRecipients()\n");
 		
-		if (!vI_storage.elements.Obj_storageSave) {
-			// ugly temp. fix for https://www.absorb.it/virtual-id/ticket/44
-			vI_notificationBar.dump("## vI_storage: Obj_storageSave doesn't exist, shouldn't happen")
-			vI_storage.elements.Obj_storageSave = document.getElementById("storage_save");
+		if (vI_statusmenu.objStorageSaveMenuItem.getAttribute("checked") != "true") {
+			vI_notificationBar.dump("## vI_storage: SaveMenuItem not checked.\n")
+			return;
 		}
-		if (vI_storage.elements.Obj_storageSave.getAttribute("hidden") == "false" ) {
-			vI_notificationBar.dump("## vI_storage: switch shown.\n")
-			if (!vI_storage.elements.Obj_storageSave.checked) {
-				vI_notificationBar.dump("## vI_storage: save button not checked.\n")
-				return;
-			}
-		}
-		else {
-			vI_notificationBar.dump("## vI_storage: switch hidden.\n")
-			if (!vI.preferences.getBoolPref("storage_storedefault")) {
-				vI_notificationBar.dump("## vI_storage: not be safed by default.\n")
-				return;
-			}
-		}
+		
+		vI_notificationBar.dump("## vI_storage: storeVIdentityToAllRecipients()\n");
 		
 		// check if there are multiple recipients
 		vI_storage.multipleRecipients = false;
@@ -435,7 +433,6 @@ var vI_storage = {
 	__getVIdentityString : function() {
 		var old_address = vI_helper.getAddress();
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key;
-		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
 		var extras = new vI_storageExtras();
 		extras.readValues();
@@ -444,22 +441,32 @@ var vI_storage = {
 		return localIdentityData.identityDescription();
 	},
 
-	__getReplaceVIdentityWarning : function(recipient, storageData) {
-		return	vI.elements.strings.getString("vident.updateVirtualIdentity.warning1") +
-			recipient.recDesc + " (" + recipient.recType + ")" +
-			vI.elements.strings.getString("vident.updateVirtualIdentity.warning2") +
-			storageData.identityDescription() +
-			vI.elements.strings.getString("vident.updateVirtualIdentity.warning3");
+	__getWarning : function(warningCase, recipient, compareMatrix) {
+		return 	"<h1> " +
+				vI.elements.strings.getString("vident." + warningCase + ".title") + "</h1>" +
+			"<h2> " +
+			"<span class='recLabel'>" +
+				vI.elements.strings.getString("vident." + warningCase + ".recipient") +
+				" (" + recipient.recType + "):</span>" +
+			"<span class='recipient'>" +
+				recipient.recDesc.replace(/>/g,"&gt;").replace(/</g,"&lt;") + "</span></h2>" +
+			"<table><thead><tr><th class='col1'/>" +
+				"<th class='col2'>" + vI.elements.strings.getString("vident." + warningCase + ".currentIdentity") + "</th>" +
+				"<th class='col3'>" + vI.elements.strings.getString("vident." + warningCase + ".storedIdentity") + "</th>" +
+			"</tr></thead>" +
+			"<tbody>" + compareMatrix + "</tbody>" +
+			"</table>" +
+			"<div class='question'>" +
+				vI.elements.strings.getString("vident." + warningCase + ".query") +
+				"</div>"
 	},
-	
-	__getOverwriteStorageWarning : function(recipient, storageData) {
-		return  vI.elements.strings.getString("vident.updateStorage.warning1") +
-			recipient.recDesc + " (" + recipient.recType + ")" +
-			vI.elements.strings.getString("vident.updateStorage.warning2") +
-			storageData.identityDescription() +
-			vI.elements.strings.getString("vident.updateStorage.warning3") +
-			vI_storage.__getVIdentityString() +
-			vI.elements.strings.getString("vident.updateStorage.warning4");
+
+	__askWarning : function(warning) {
+		retVar = { return: null };				
+		var answer = window.openDialog("chrome://v_identity/content/vI_Dialog.xul",0,
+					"chrome, dialog, modal, alwaysRaised, resizable=yes",
+					 warning, "vI_DialogBrowser.css", retVar)
+		return retVar.return;
 	},
 	
 	__updateStorageFromVIdentity : function(recipient, recipientType) {
@@ -470,12 +477,13 @@ var vI_storage = {
 		recipient = vI_storage.__getDescriptionAndType(recipient, recipientType);
 		var storageData = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
 		if (storageData) {
-			if (!storageData.equalsCurrentIdentity(storageData) &&
+			if (!storageData.equalsCurrentIdentity() &&
 				!dontUpdateMultipleNoEqual) {
-				var warning = vI_storage.__getOverwriteStorageWarning(recipient, storageData);
+				var warning = vI_storage.__getWarning("updateStorage", recipient, storageData.getCompareMatrix());
 				vI_notificationBar.dump("## vI_storage: " + warning + ".\n")
 				if (!vI.preferences.getBoolPref("storage_warn_update") ||
-						vI_storage.promptService.confirm(window,"Warning",warning))
+						vI_storage.__askWarning(warning))
+// 						vI_storage.promptService.confirm(window,"Warning",warning))
 				vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
 			}
 		}
@@ -590,4 +598,3 @@ var vI_storage = {
 		vI_notificationBar.dump("## vI_storage: found " + allIdentities.number + " address(es)\n")
 	}
 }
-window.addEventListener("unload", function(e) { try {vI_storage.removeObserver();} catch (ex) { } }, false);
