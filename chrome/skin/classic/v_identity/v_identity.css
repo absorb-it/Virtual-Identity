@@ -2,6 +2,21 @@
 @import url("chrome://v_identity/locale/logo.css"); 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
+#vI-status-menu[save="off"] {
+	list-style-image: url("chrome://v_identity/skin/vI_gr.png");
+	visibility: visible;
+}
+
+#vI-status-menu[save="ok"] {
+	list-style-image: url("chrome://v_identity/skin/vI_gn.png");
+	visibility: visible;
+}
+
+#vI-status-menu[save="base"] {
+	list-style-image: url("chrome://v_identity/skin/vI_ge.png");
+	visibility: visible;
+}
+
 treechildren::-moz-tree-cell-text(user)
 {
   font-weight: bold;
@@ -12,10 +27,9 @@ treechildren::-moz-tree-cell-text(locked)
   font-style: italic;
 }
 
-
-#upgradeWizard {
+#upgradeWizard, #vi_Dialog {
 	width: 550px;
-	height: 370px
+	height: 370px;
 }
 
 #upgradeWizard wizardpage {
@@ -24,6 +38,10 @@ treechildren::-moz-tree-cell-text(locked)
 
 #upgradeWizard browser {
 	height:		185px;
+}
+
+#vi_Dialog browser {
+	height:		300px;
 }
 
 #upgradeWizard textbox {
