@@ -28,6 +28,7 @@ pref("extensions.virtualIdentity.warn_virtual", false);
 pref("extensions.virtualIdentity.hide_signature", false);
 pref("extensions.virtualIdentity.storage", true);
 pref("extensions.virtualIdentity.storage_storedefault", true);
+pref("extensions.virtualIdentity.storage_store_base_id", true);
 pref("extensions.virtualIdentity.storage_dont_update_multiple", true);
 pref("extensions.virtualIdentity.storage_show_switch", true);
 pref("extensions.virtualIdentity.storage_warn_update", true);
