@@ -75,7 +75,11 @@
 	</menulist>
 	</hbox>
 	<checkbox id="storage_save" label="&vident.composeDialog.storageSave.label;" 
-		tooltiptext="&vident.composeDialog.storageSave.tooltiptext;" hidden="true" />
+		  tooltiptext="&vident.composeDialog.storageSave.tooltiptext;" hidden="true"
+		  oncommand="vI_statusmenu.menuConstraint(this);" >
+		<observes element="vI_statusMenu_storage_save" attribute="checked" />
+	</checkbox>
+	<box class="base_id_label" observe="msgIdentity_clone" />
 </hbox>
    
   <!-- Some of "Dynamic part of labels" are placed here.-->
@@ -83,8 +87,31 @@
   <data id="prettyName-Prefix" label="&vident.accPane.prettyName.prefix;" />
   
   </vbox>
-  <statusbarpanel id="statusText">
-  <label id="v_identity_logo"  class="v_identity_logo"
-			value="&vident.vidLogo.label; &vident.version;" align="right" hidden="true" flex="1"/>
-    </statusbarpanel>
+  
+  <popupset>
+	  <popup id="vI_statusMenu">
+		  <menuitem type="checkbox" id="vI_statusMenu_storage_save" label="&vident.vI_Menu.storageSave.label;" oncommand="vI_statusmenu.menuConstraint(this);"/>
+		  <menuitem type="checkbox" id="vI_statusMenu_storage_saveBaseID" label="&vident.vI_Menu.saveBaseID.label;" oncommand="vI_statusmenu.menuConstraint(vI_statusmenu.objStorageSaveMenuItem);"/>
+		  <menuseparator id="vI_statusMenu_separator" /> 		
+		  <menuitem id="vI_settingsMenu" class="menuitem-iconic" label="&vident.vI_Menu.Settings.label;"
+			    oncommand="window.openDialog('chrome://v_identity/content/vI_prefDialog.xul', '', 'chrome,modal');" />
+		  <menuitem id="vI_rdfDataTree" class="menuitem-iconic" label="&vident.vI_Menu.DataEditor.label;"
+			    oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome,modal');" />
+	  </popup>
+  </popupset>
+    
+  <statusbar id="status-bar">
+	  <statusbarpanel class="v_identity_logo"
+			  id="v_identity_logo"
+			  insertafter="statusText"
+			  label="&vident.vidLogo.label; &vident.version;" align="right" hidden="true" />
+	  <statusbarpanel id="vI-status-menu" save="off"
+			  class="statusbarpanel-menu-iconic"
+			  collapsed="true"
+			  insertafter="totalMessageCount"
+			  context="vI_statusMenu"
+			  tooltip="vI_statusMenuTooltip"
+			  onclick="vI_statusmenu.clicked(event.button);" />
+</statusbar>
+  
 </overlay>
