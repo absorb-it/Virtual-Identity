@@ -5,6 +5,8 @@ keyTranslator.prototype = {
 	SMTP_NAMES : null,
 	ID_NAMES : null,
 	DEFAULT_TAG : null,
+	AccountManager : Components.classes["@mozilla.org/messenger/account-manager;1"]
+				.getService(Components.interfaces.nsIMsgAccountManager),
 	
 	__getSMTPnames : function () {
 		this.SMTP_NAMES = [];
@@ -29,7 +31,7 @@ keyTranslator.prototype = {
 	},
 	__getIDnames : function () {
 		this.ID_NAMES = [];
-		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
+		var accounts = queryISupportsArray(this.AccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		if (typeof(sortAccounts)=="function") // TB 3.x
 			accounts.sort(sortAccounts);
 		else if (typeof(compareAccountSortOrder)=="function") // TB 2.x
