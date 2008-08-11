@@ -45,7 +45,8 @@ var vI_rdfDataEditor = {
 		document.getElementById("sender").value = window.arguments[0]["senderCol"]
 		
 		var listitem = document.createElement("menuitem");
-		listitem.setAttribute("label", document.getElementById("bundle_messenger").getString("defaultServerTag"));
+// 		listitem.setAttribute("label", document.getElementById("bundle_messenger").getString("defaultServerTag"));
+		listitem.setAttribute("label", "");
 		document.getElementById("identity_list_popup").appendChild(listitem);
 		document.getElementById("identity_list").selectedItem = listitem;
 		var separator = document.createElement("menuseparator");

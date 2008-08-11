@@ -59,7 +59,7 @@ keyTranslator.prototype = {
 	},
 	getIDname : function (idKey) {
 		if (!this.ID_NAMES) this.__getIDnames();
-		return this.ID_NAMES[idKey]?this.ID_NAMES[idKey]:this.DEFAULT_TAG
+		return this.ID_NAMES[idKey]?this.ID_NAMES[idKey]:""
 	},
 	isValidSMTP : function (smtpKey) {
 		if (!this.SMTP_NAMES) this.__getSMTPnames();
