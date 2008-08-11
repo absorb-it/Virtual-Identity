@@ -81,7 +81,9 @@ var vI_msgIdentityClone = {
 			newMenuItem.setAttribute("class", "identity_clone-popup-item person-icon")
 			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.appendChild(newMenuItem)
 			if (vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem == MenuItems[index]) {
-				vI_notificationBar.dump("## vI_msgIdentityClone: '" + vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.value + "'\n");
+				var value = vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.value;
+				vI_notificationBar.dump("## vI_msgIdentityClone: '" + value + "'\n");
+				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = value;
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem = newMenuItem;
 			}
 			// "accountname" property changed in Thunderbird 3.x, Seamonkey 1.5x to "description"
@@ -142,7 +144,6 @@ var vI_msgIdentityClone = {
 		if (!existingId) {
 			var separator = null;
 			var accountname = document.getElementById("prettyName-Prefix").getAttribute("label");
-// 			if (!localIdentityData.id) localIdentityData.id = gAccountManager.defaultAccount.defaultIdentity.key
 
 			// search the account related to this id and check if there is a seperator added
 			MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.firstChild.childNodes
@@ -193,6 +194,8 @@ var vI_msgIdentityClone = {
 	__setIdentity : function (id) {
 			// set orignal Identity-Menu to the selected Identity
 			vI_msgIdentityClone.copySelectedIdentity(id);
+			// remember this value
+			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = id;
 			// set smtp-selector to the smtp of the selcted Identity
 			vI_smtpSelector.resetMenuToMsgIdentity(id);
 			// recognize reply-to fields for auto-reply
@@ -214,8 +217,6 @@ var vI_msgIdentityClone = {
 
 			// clean reply-to fields before reinit
 			vI_msgIdentityClone.cleanupReplyTo();
-			// remove possibly stored base_id_key
-			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = null;
 			
 			vI_msgIdentityClone.__setIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value);
 			
@@ -232,11 +233,10 @@ var vI_msgIdentityClone = {
 			if (base_id_key) {
 				vI_notificationBar.dump("## vI_msgIdentityClone: base_id found, set menu temporarily to base_id\n");
 				vI_msgIdentityClone.__setIdentity(base_id_key);
-				// store base_id_key if available
-				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = base_id_key
 			}
 			else // change presented accountname (add accountname from current MsgIdentity (original))
-				accountname += vI_helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity);	
+				accountname += vI_helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity);
+			
 			// set smtp-selector to the smtp of the selected Identity
 			vI_smtpSelector.setMenuToKey(
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.smtp_key);
@@ -256,8 +256,6 @@ var vI_msgIdentityClone = {
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("accountname", accountname);
 			
 		vI_msgIdentityClone.markAsNewAccount(vI_msgIdentityClone.isExistingIdentity());
-
-
 	},
 	
 	setIdentity : function(newName, timeStamp) {
@@ -394,8 +392,6 @@ var vI_msgIdentityClone = {
 		if (vI_msgIdentityClone.synchroneReplyTo()) {
 			vI_msgIdentityClone.replyToInputElem.value =
 				vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value
-			//~ vI_msgIdentityClone.replyToInputElem.setAttribute("value",
-				//~ vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone.value)
 			vI_msgIdentityClone.replyToStoredLastValue = vI_msgIdentityClone.replyToInputElem.value
 		}		
 	},
@@ -411,10 +407,7 @@ var vI_msgIdentityClone = {
 					.setAttribute("class", vI_msgIdentityClone.icon_virtualId_class);
 				if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 					.getAttribute("value") != "vid") {
-					vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = 
-						vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value")
-					vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
-						.setAttribute("value","vid")
+					vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("value","vid")
 					var accountname = document.getElementById("prettyName-Prefix")
 								.getAttribute("label")
 								+ vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
@@ -423,8 +416,6 @@ var vI_msgIdentityClone = {
 						.setAttribute("accountname", accountname)
 				}
 				vI.elements.Obj_vILogo.setAttribute("hidden","false");
-				//~ vI_storage.elements.Obj_storageSave.setAttribute("hidden",
-					//~ !vI.preferences.getBoolPref("storage_show_switch"));
 			}
 			// code to hide the signature
 			try { if (vI.preferences.getBoolPref("hide_signature") && ss_signature.length == 0)
@@ -441,10 +432,6 @@ var vI_msgIdentityClone = {
 					.setAttribute("class", vI_msgIdentityClone.icon_usualId_class);
 				vI.Cleanup();
 				vI.elements.Obj_vILogo.setAttribute("hidden","true");
-				//~ vI_storage.elements.Obj_storageSave.setAttribute("hidden",
-					//~ !vI.preferences.getBoolPref("storage_show_switch"));
-				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = null;
-				//~ vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.doCommand();
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("value",existingIdentity)
 			}
 			// code to show the signature
@@ -461,7 +448,6 @@ var vI_msgIdentityClone = {
 		var address = vI_helper.getAddress();
 		var smtp = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key')
 		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key;
-		if (!id_key) id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value");
 		
 		vI_msgIdentityClone.localIdentityData.email = address.email;
 		vI_msgIdentityClone.localIdentityData.fullName = address.name;
