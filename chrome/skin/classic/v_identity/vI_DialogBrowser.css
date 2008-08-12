@@ -4,6 +4,25 @@ The css will be loaded with vI_htmlTextBox.__setCSS() because the
 embedded browser is not able to access chrome
 */
 
+label.bool {
+	background-repeat:no-repeat;
+	background-position: center;
+	color: transparent;
+}
+
+td.equal label.bool {
+	background-image: url("chrome://v_identity/skin/notchecked-equal.png");
+}
+td.unequal label.bool {
+	background-image: url("chrome://v_identity/skin/notchecked-unequal.png");
+}
+td.equal label.bool.checked {
+	background-image: url("chrome://v_identity/skin/checked-equal.png");
+}
+td.unequal label.bool.checked {
+	background-image: url("chrome://v_identity/skin/checked-unequal.png");
+}
+
 h1 {
 	font-size: medium;
 	font-weight:bold;
@@ -32,7 +51,7 @@ table {
 }
 
 th {
-	font-weight: normal;
+	/*font-weight: normal;*/
 	border-bottom: 1px solid;
 }
 
@@ -44,8 +63,8 @@ th {
 
 .equal { }
 
-.nonequal.col2, .nonequal.col3 {
-/*	background-color: red; */
+.unequal.col2, .unequal.col3 {
+	background-color: #eaa;
 	font-weight: bold;
 }
 
@@ -53,7 +72,9 @@ th {
 
 .col2 { }
 
-.col3 { }
+.col3 {
+	background: #eee;
+ }
 
 .question {
 	text-align: right;

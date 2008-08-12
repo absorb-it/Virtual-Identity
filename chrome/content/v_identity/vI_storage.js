@@ -142,13 +142,15 @@ identityData.prototype = {
 		this.__setLabels();
 		var string = "";
 		for each (item in Items) {
-			var classEqual = (this.comp.equals[item])?"equal":"nonequal";
+			var classEqual = (this.comp.equals[item])?"equal":"unequal";
 			string += "<tr>" +
 				"<td class='col1 " + classEqual + "'>" + this.comp.labels[item] + "</td>" +
 				"<td class='col2 " + classEqual + "'>" + this.comp.compareID[item].replace(/>/g,"&gt;").replace(/</g,"&lt;") + "</td>" +
 				"<td class='col3 " + classEqual + "'>" + this[item].replace(/>/g,"&gt;").replace(/</g,"&lt;") + "</td>" +
 				"</tr>"
 		}
+		string += "<tr />"
+		string += this.extras.getCompareMatrix();
 		return string;
 	},
 }

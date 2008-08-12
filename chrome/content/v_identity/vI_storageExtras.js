@@ -97,14 +97,30 @@ vI_storageExtras.prototype = {
 				this.extras[i].value = callFunction(resource, this.extras[i].field, this.extras[i].value)
 	},
 	equal : function(storageExtras) {
+		var equal = true;
 		for( var i = 0; i < this.extras.length; i++ ) {
-			if (this.extras[i].active) vI_notificationBar.dump("## vI_storageExtras equal "+ this.extras[i].value + " : " + storageExtras.extras[i].value + "\n");
-			if (this.extras[i].active &&
-				(this.extras[i].value != storageExtras.extras[i].value)) {
-					vI_notificationBar.dump("## vI_storageExtras not equal\n"); return false
+			if (this.extras[i].active) {
+				vI_notificationBar.dump("## vI_storageExtras equal "+ this.extras[i].value + " : " + storageExtras.extras[i].value + "\n");
+				equal = (this.extras[i].equal(storageExtras.extras[i].value) && equal) // in this order to compare all fields
 			}
 		}
-		return true
+		return equal;
+	},
+	getCompareMatrix : function() {
+		var prefStrings = document.getElementById("vIStorageExtrasBundle");
+		var string = "";
+		for( var i = 0; i < this.extras.length; i++ ) {
+			if (this.extras[i].active) {
+				var classEqual = (this.extras[i].comp.equal)?"equal":"unequal";
+				string += "<tr>" +
+					"<td class='col1 extras " + classEqual + "'>" + prefStrings.getString("vident.identityData.extras." + this.extras[i].field) + "</td>" +
+					"<td class='col2 extras " + classEqual + "'>" + this.extras[i].comp.compareValue + "</td>" +
+					"<td class='col3 extras " + classEqual + "'>" + this.extras[i].comp.value + "</td>" +
+					"</tr>"
+			}
+		}
+		vI_notificationBar.dump("## vI_storageExtras getCompareMatrix "+string + "\n")
+		return string;
 	},
 	status : function() {
 		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
@@ -161,12 +177,21 @@ function vI_storageExtras_characterEncoding_setMenuMark() {
 }
 function vI_storageExtras_characterEncoding() {
 	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+	this.comp = { value : null, compareValue : null, equal : null }
 }
 vI_storageExtras_characterEncoding.prototype = {
 	active : null,
 	value : null,
 	field : "charEnc",
 	option : "storageExtras_characterEncoding",
+	comp : null,
+	
+	equal : function(compareValue) {
+		this.comp.compareValue = compareValue?compareValue:"";
+		this.comp.value = this.value?this.value:"";
+		this.comp.equal = (this.value == null || this.value == compareValue);
+		return this.comp.equal;
+	},
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
 		if (!this.value) return;
@@ -207,12 +232,21 @@ vI_storageExtras_characterEncoding.prototype = {
 
 function vI_storageExtras_msgFormat() {
 	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+	this.comp = { value : null, compareValue : null, equal : null }
 }
 vI_storageExtras_msgFormat.prototype = {
 	active : null,
 	value : null,
 	field : "msgFormat",
 	option : "storageExtras_messageFormat",
+	comp : null,
+
+	equal : function(compareValue) {
+		this.comp.compareValue = compareValue?document.getElementById(compareValue).label:"";
+		this.comp.value = this.value?document.getElementById(this.value).label:"";
+		this.comp.equal = (this.value == null || this.value == compareValue);
+		return this.comp.equal;
+	},
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
 		if (!this.value) return;
@@ -246,12 +280,32 @@ vI_storageExtras_msgFormat.prototype = {
 
 function vI_storageExtras_sMime_messageEncryption() { 
 	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+	this.comp = { value : null, compareValue : null, equal : null }
 }
 vI_storageExtras_sMime_messageEncryption.prototype = {
 	active : null,
 	value : null,
 	field : "sMimeEnc",
 	option : "storageExtras_sMime_messageEncryption",
+	comp : null,
+
+	__getLabel : function(value) {
+		switch (value) {
+			case null:
+				return "<label />";
+			case "true":
+				return "<label class='bool checked'>yes</label>"
+			case "false":
+				return "<label class='bool'>no</label>"
+		}
+	},
+
+	equal : function(compareValue) {
+		this.comp.value = this.__getLabel(this.value);
+		this.comp.compareValue = this.__getLabel(compareValue);
+		this.comp.equal = (this.value == null || this.value == compareValue);
+		return this.comp.equal;
+	},
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
 		if (this.value == "true") var element = document.getElementById("menu_securityEncryptRequire1")
@@ -288,16 +342,35 @@ function vI_storageExtras_checkbox(field, option, composeDialogElementID, update
 	this.updateFunctionParam1 = updateFunctionParam1;
 	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option) &&
 		document.getElementById(this.composeDialogElementID);
+	this.comp = { value : null, compareValue : null, equal : null }
 }
 vI_storageExtras_checkbox.prototype = {
 	active : null,
 	value : null,
 	field : null,
 	option : null,
+	comp : null,
 	composeDialogElementID : null,
 	updateFunction : null, // some elements have to be updated before the can be read
 	updateFunctionParam1 : null,
 	
+	__getLabel : function(value) {
+		switch (value) {
+			case null:
+				return "<label />";
+			case "true":
+				return "<label class='bool checked'>yes</label>"
+			case "false":
+				return "<label class='bool'>no</label>"
+		}
+	},
+
+	equal : function(compareValue) {
+		this.comp.value = this.__getLabel(this.value);
+		this.comp.compareValue = this.__getLabel(compareValue);
+		this.comp.equal = (this.value == null || this.value == compareValue);
+		return this.comp.equal;
+	},
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
 		var element = document.getElementById(this.composeDialogElementID);
