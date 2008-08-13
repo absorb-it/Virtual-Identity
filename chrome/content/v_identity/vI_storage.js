@@ -370,7 +370,7 @@ var vI_storage = {
 			var menuItem = vI_msgIdentityClone.addIdentityToCloneMenu(storageData)
 			var warning = vI_storage.__getWarning("replaceVIdentity", recipient, storageData.getCompareMatrix());
 			
-			if (	vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("timeStamp") ||
+			if (	// vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("timeStamp") ||
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
 				!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
 				vI_storage.__askWarning(warning)) {
