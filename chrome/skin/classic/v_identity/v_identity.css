@@ -40,10 +40,6 @@ treechildren::-moz-tree-cell-text(locked)
 	height:		185px;
 }
 
-#vi_Dialog browser {
-	height:		300px;
-}
-
 #upgradeWizard textbox {
 	height:		175px;
 }

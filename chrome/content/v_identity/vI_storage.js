@@ -444,30 +444,27 @@ var vI_storage = {
 	},
 
 	__getWarning : function(warningCase, recipient, compareMatrix) {
-		return 	"<h1> " +
-				vI.elements.strings.getString("vident." + warningCase + ".title") + "</h1>" +
-			"<h2> " +
-			"<span class='recLabel'>" +
-				vI.elements.strings.getString("vident." + warningCase + ".recipient") +
-				" (" + recipient.recType + "):</span>" +
-			"<span class='recipient'>" +
-				recipient.recDesc.replace(/>/g,"&gt;").replace(/</g,"&lt;") + "</span></h2>" +
+		var warning = { title: null, recLabel : null, recipient : null, warning : null, css: null, query : null };
+		warning.title = vI.elements.strings.getString("vident." + warningCase + ".title")
+		warning.recLabel = vI.elements.strings.getString("vident." + warningCase + ".recipient") +	" (" + recipient.recType + "):"
+		warning.recipient = recipient.recDesc.replace(/>/g,"&gt;").replace(/</g,"&lt;")
+		warning.warning = 
 			"<table><thead><tr><th class='col1'/>" +
 				"<th class='col2'>" + vI.elements.strings.getString("vident." + warningCase + ".currentIdentity") + "</th>" +
 				"<th class='col3'>" + vI.elements.strings.getString("vident." + warningCase + ".storedIdentity") + "</th>" +
 			"</tr></thead>" +
 			"<tbody>" + compareMatrix + "</tbody>" +
-			"</table>" +
-			"<div class='question'>" +
-				vI.elements.strings.getString("vident." + warningCase + ".query") +
-				"</div>"
+			"</table>"
+		warning.css = "vI_DialogBrowser.css";
+		warning.query = vI.elements.strings.getString("vident." + warningCase + ".query")
+		return warning;
 	},
 
 	__askWarning : function(warning) {
 		retVar = { return: null };				
 		var answer = window.openDialog("chrome://v_identity/content/vI_Dialog.xul",0,
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
-					 warning, "vI_DialogBrowser.css", retVar)
+					 warning, retVar)
 		return retVar.return;
 	},
 	

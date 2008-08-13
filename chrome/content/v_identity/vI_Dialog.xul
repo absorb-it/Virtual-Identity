@@ -24,7 +24,7 @@
    - ***** END LICENSE BLOCK ***** -->
    
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>   
-<?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+<?xml-stylesheet href="chrome://v_identity/skin/vI_Dialog.css" type="text/css"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/v_identity.dtd">
 
@@ -32,12 +32,18 @@
 	buttons="accept,cancel"
         title="Virtual Identity"
 	zlevel="6"
-	onload="vI_htmlTextBox.init('vI_Dialog_browser', null, window.arguments[0], window.arguments[1]);"
-	ondialogaccept="window.arguments[2].return = true;"
-	ondialogcancel="window.close(); window.arguments[2].return = false;">
+	onload="vI_Dialog.init(window.arguments[0]);"
+	ondialogaccept="window.arguments[1].return = true;"
+	ondialogcancel="window.close(); window.arguments[1].return = false;"
+	persist="height width">
 
 	<script type="application/x-javascript"
+		src="chrome://v_identity/content/vI_Dialog.js" />
+	<script type="application/x-javascript"
 		src="chrome://v_identity/content/vI_htmlTextBox.js" />
-	
-	<browser id="vI_Dialog_browser" disablehistory="true" />
+	<label id="vI_Dialog_title" />
+	<label id="vI_Dialog_recLabel" />
+	<label id="vI_Dialog_recipient" />
+	<browser id="vI_Dialog_browser" disablehistory="true" flex="1" />
+	<label id="vI_Dialog_query" />
 </dialog>
