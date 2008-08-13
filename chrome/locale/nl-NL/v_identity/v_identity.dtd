@@ -7,6 +7,8 @@
 <!ENTITY vident.vI_Menu.label "Virtual Identity">
 <!ENTITY vident.vI_Menu.Settings.label "Instellingen">
 <!ENTITY vident.vI_Menu.DataEditor.label "Gegevensopslagbewerking">
+<!ENTITY vident.vI_Menu.storageSave.label "save Identity while sending"> <!-- to translate -->
+<!ENTITY vident.vI_Menu.saveBaseID.label "store underlying base Identity"> <!-- to translate -->
 
 <!ENTITY fccMailFolder.accesskey "l">
 <!ENTITY sentFolderOn.accesskey "z">

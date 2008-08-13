@@ -64,6 +64,7 @@
 <!ENTITY vI_prefDialog.storageCap1.caption "Speichern Virtual Identitäten">
 <!ENTITY vI_prefDialog.storageCap2.caption "Lesen Virtueller Identitäten">
 <!ENTITY vI_prefDialog.storage.storedefault.label "speichere Virtuelle Identitäten beim Senden von Emails">
+<!ENTITY vI_prefDialog.storage.store_base_id.label "speichere zugrunde liegende Basis-Identität">
 <!ENTITY vI_prefDialog.storage.warn_update.label "frage nach, bevor Virtuelle Identitäten im Identity-Speicher überschrieben werden">
 <!ENTITY vI_prefDialog.storage.dont_update_multiple.label "überschreibe keine Einträge wenn Email an mehrere Empfänger geht">
 <!ENTITY vI_prefDialog.storage.show_switch.label "zeige Schalter zum Aktivieren/Deaktivieren der Speicherung">

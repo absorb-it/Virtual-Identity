@@ -17,11 +17,11 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Ricevuta di ritorno">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Codifica caratteri">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Formato del messaggio">
-<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME: crittografia">
-<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME: firma">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "OpenPGP: crittografia">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "OpenPGP: firma">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "OpenPGP: PGP/MIME">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME crittografia">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME firma">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "OpenPGP crittografia">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "OpenPGP firma">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "OpenPGP PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "Nascondi i campi inattivi">
 <!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Ricevuta di ritorno">

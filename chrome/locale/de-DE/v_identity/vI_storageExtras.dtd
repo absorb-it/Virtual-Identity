@@ -17,11 +17,11 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Empfangsbestätigung">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Zeichensatz">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Email-Format">
-<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME: Verschlüsselung">
-<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME: Signatur">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME Verschlüsselung">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME Signatur">
 <!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "openPGP Verschlüsselung">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP: Signatur">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP: PGP/MIME">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP Signatur">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "verstecke unbenutzte Felder">
 <!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Empfangsbestätigung">
@@ -29,6 +29,6 @@
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Email-Format">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: verschlüssel Emails">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeSig.label "S/MIME: signiere Emails">
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP verschlüssel Emails">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP: verschlüssel Emails">
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: signiere Emails">
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: nutze PGP/MIME">

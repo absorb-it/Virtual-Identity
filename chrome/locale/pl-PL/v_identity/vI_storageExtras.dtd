@@ -17,11 +17,11 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Potwierdzenie odbioru">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Kodowanie znaków">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Format wiadomości">
-<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME: szyfruj">
-<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME: podpisuj">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "OpenPGP: szyfruj">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "OpenPGP: podpisuj">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "OpenPGP: PGP/MIME">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME szyfruj">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME podpisuj">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "OpenPGP szyfruj">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "OpenPGP podpisuj">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "OpenPGP PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "ukryj nieaktywne pola">
 <!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Potwierdzenie odbioru">

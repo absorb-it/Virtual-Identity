@@ -64,6 +64,7 @@
 <!ENTITY vI_prefDialog.storageCap1.caption "guardar las identidades virtuales">
 <!ENTITY vI_prefDialog.storageCap2.caption "leer las identidades virtuales">
 <!ENTITY vI_prefDialog.storage.storedefault.label "guardar las identidades virtuales al enviar los correos">
+<!ENTITY vI_prefDialog.storage.store_base_id.label "store underlying base Identity"> <!-- to translate -->
 <!ENTITY vI_prefDialog.storage.warn_update.label "preguntar siempre antes de sobreescribir las identidades virtuales en la Storage">
 <!ENTITY vI_prefDialog.storage.dont_update_multiple.label "no sobreescribir (y preguntar) si un correo tiene varios remitentes">
 <!ENTITY vI_prefDialog.storage.show_switch.label "mostrar selector para activar/desactivar la opción de guardar las identidades">

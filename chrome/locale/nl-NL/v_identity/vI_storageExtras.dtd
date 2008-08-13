@@ -17,11 +17,11 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Ontvangstbevestiging">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Codering">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Berichtopmaak">
-<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME: versleutelen">
-<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME: ondertekenen">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME versleutelen">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME ondertekenen">
 <!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "openPGP versleutelen">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP: ondertekenen">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP: PGP/MIME">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP ondertekenen">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "Inactieve velden verbergen">
 <!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Ontvangstbevestiging">

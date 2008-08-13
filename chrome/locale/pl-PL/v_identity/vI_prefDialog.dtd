@@ -64,6 +64,7 @@
 <!ENTITY vI_prefDialog.storageCap1.caption "Przechowywanie wirtualnych tożsamości">
 <!ENTITY vI_prefDialog.storageCap2.caption "Odczytywanie wirtualnych tożsamości">
 <!ENTITY vI_prefDialog.storage.storedefault.label "zapisz wirtualne tożsamości podczas wysyłania e-maili">
+<!ENTITY vI_prefDialog.storage.store_base_id.label "store underlying base Identity"> <!-- to translate -->
 <!ENTITY vI_prefDialog.storage.warn_update.label "pytaj przed nadpisaniem wirtualnych tożsamości w przechowalni">
 <!ENTITY vI_prefDialog.storage.dont_update_multiple.label "nigdy nie nadpisuj (i pytaj), jeżeli e-mail ma kilku odbiorców">
 <!ENTITY vI_prefDialog.storage.show_switch.label "pokaż przełącznik pozwalający na aktywację/dezaktywację zapisywania tożsamości">

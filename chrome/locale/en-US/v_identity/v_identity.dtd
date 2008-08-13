@@ -8,7 +8,7 @@
 <!ENTITY vident.vI_Menu.Settings.label "Settings">
 <!ENTITY vident.vI_Menu.DataEditor.label "Data-Storage Editor">
 <!ENTITY vident.vI_Menu.storageSave.label "save Identity while sending">
-<!ENTITY vident.vI_Menu.saveBaseID.label "store underlaying base Identity">
+<!ENTITY vident.vI_Menu.saveBaseID.label "store underlying base Identity">
 
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">
