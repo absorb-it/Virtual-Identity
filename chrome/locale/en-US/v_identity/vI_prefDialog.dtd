@@ -35,7 +35,7 @@
 <!ENTITY vI_prefDialog.vIdentityTab.draftsTab.label "place to save drafts">
 <!ENTITY vI_prefDialog.vIdentityTab.tmplTab.label "place to save templates">
 <!ENTITY vI_prefDialog.vIdentityTab.valueTab.caption "while sending a message with a Virtual Identity">
-<!ENTITY vI_prefDialog.vIdentityTab.valueTab.desc "copy following Attributes from former Identity:">
+<!ENTITY vI_prefDialog.vIdentityTab.valueTab.desc "copy following Attributes from underlying base Identity:">
 <!ENTITY vI_prefDialog.SMIME.label "S/MIME security settings">
 <!ENTITY vI_prefDialog.PGP.label "OpenPGP security settings">
 <!ENTITY vI_prefDialog.VCard.label "vCard attachments">
