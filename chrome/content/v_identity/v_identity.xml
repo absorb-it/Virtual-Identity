@@ -58,6 +58,11 @@
       <xul:vbox><xul:spacer flex="1" />
       <xul:label id="msgIdentity_clone_label" class="menu-description composemenu-text-2" xbl:inherits="value=accountname" crop="right"/>
       <xul:spacer flex="1" /></xul:vbox>
+<!-- enable for debugging from here -->
+	<xul:vbox><xul:spacer flex="1" />
+	<xul:label id="msgIdentity_base_id_label" class="menu-description composemenu-text-2" xbl:inherits="value=base_id_key" crop="right"/>
+	<xul:spacer flex="1" /></xul:vbox>
+<!-- enable for debugging till here-->
     </xul:hbox>
     <!-- <xul:dropmarker class="menulist-dropmarker" type="menu"/> -->
     <children includes="menupopup"/>

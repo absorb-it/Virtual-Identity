@@ -84,6 +84,7 @@ var vI_msgIdentityClone = {
 				var value = vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.value;
 				vI_notificationBar.dump("## vI_msgIdentityClone: '" + value + "'\n");
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = value;
+				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("base_id_key", value);
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem = newMenuItem;
 			}
 			// "accountname" property changed in Thunderbird 3.x, Seamonkey 1.5x to "description"
@@ -196,6 +197,7 @@ var vI_msgIdentityClone = {
 			vI_msgIdentityClone.copySelectedIdentity(id);
 			// remember this value
 			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = id;
+			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("base_id_key", id);
 			// set smtp-selector to the smtp of the selcted Identity
 			vI_smtpSelector.resetMenuToMsgIdentity(id);
 			// recognize reply-to fields for auto-reply
