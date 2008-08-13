@@ -39,7 +39,8 @@ var vI_notificationBar = {
 	Obj_vINotification : null,
 	Obj_DebugBox : null,
 	Obj_DebugBoxSplitter : null,
-
+	Obj_DebugBaseID : null,
+	
 	versionOk : false,
 	
 	checkVersion : function() {
@@ -62,6 +63,7 @@ var vI_notificationBar = {
 		var showDebugArea = vI_notificationBar.preferences.getBoolPref("debug_notification")
 		vI_notificationBar.Obj_DebugBox.setAttribute("hidden", !showDebugArea)
 		vI_notificationBar.Obj_DebugBoxSplitter.setAttribute("hidden", !showDebugArea)
+		if (vI_notificationBar.Obj_DebugBaseID) vI_notificationBar.Obj_DebugBaseID.setAttribute("base_id_key_hidden", !showDebugArea)
 	},
 	
 	addObserver: function() {
@@ -82,6 +84,7 @@ var vI_notificationBar = {
 		
 		vI_notificationBar.Obj_vINotification = document.getElementById("vINotification");
 		vI_notificationBar.Obj_DebugBoxSplitter = document.getElementById("vIDebugBoxSplitter")
+		vI_notificationBar.Obj_DebugBaseID = document.getElementById("msgIdentity_clone")
 		
 		vI_notificationBar.addObserver();
 		vI_notificationBar.observe();
