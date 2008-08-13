@@ -149,7 +149,6 @@ identityData.prototype = {
 				"<td class='col3 " + classEqual + "'>" + this[item].replace(/>/g,"&gt;").replace(/</g,"&lt;") + "</td>" +
 				"</tr>"
 		}
-		string += "<tr />"
 		string += this.extras.getCompareMatrix();
 		return string;
 	},
@@ -449,7 +448,7 @@ var vI_storage = {
 		warning.recLabel = vI.elements.strings.getString("vident." + warningCase + ".recipient") +	" (" + recipient.recType + "):"
 		warning.recipient = recipient.recDesc.replace(/>/g,"&gt;").replace(/</g,"&lt;")
 		warning.warning = 
-			"<table><thead><tr><th class='col1'/>" +
+			"<table class='" + warningCase + "'><thead><tr><th class='col1'/>" +
 				"<th class='col2'>" + vI.elements.strings.getString("vident." + warningCase + ".currentIdentity") + "</th>" +
 				"<th class='col3'>" + vI.elements.strings.getString("vident." + warningCase + ".storedIdentity") + "</th>" +
 			"</tr></thead>" +

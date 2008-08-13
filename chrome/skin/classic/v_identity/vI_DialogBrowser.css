@@ -61,20 +61,14 @@ th {
 	border-right: 1px solid;
 }
 
-.equal { }
+.updateStorage .col2, .replaceVIdentity .col3 {
+	background: #eee;
+ }
 
 .unequal.col2, .unequal.col3 {
 	background-color: #eaa;
 	font-weight: bold;
 }
-
-.col1 { }
-
-.col2 { }
-
-.col3 {
-	background: #eee;
- }
 
 .question {
 	text-align: right;
