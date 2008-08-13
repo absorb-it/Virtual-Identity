@@ -39,7 +39,7 @@ var vI_msgIdentityClone = {
 	},
 	
 	init : function() {
-		var reopen = vI_msgIdentityClone.elements.Obj_MsgIdentity
+		var reopen = vI_msgIdentityClone.elements.Obj_MsgIdentity;
 		if (!reopen) {
 			vI_msgIdentityClone.elements.Obj_MsgIdentity = document.getElementById("msgIdentity");
 			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup = document.getElementById("msgIdentityPopup");
@@ -82,6 +82,8 @@ var vI_msgIdentityClone = {
 			vI_msgIdentityClone.elements.Obj_MsgIdentityPopup_clone.appendChild(newMenuItem)
 			if (vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem == MenuItems[index]) {
 				var value = vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.value;
+				// seamonkey 1.1.11 has a problem with getting the attribute, so ask nicely
+				if (!value) value = vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value");
 				vI_notificationBar.dump("## vI_msgIdentityClone: '" + value + "'\n");
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key = value;
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("base_id_key", value);
