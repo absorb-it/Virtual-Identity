@@ -201,7 +201,7 @@ var vI = {
 				try {	vI_account.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
 					continue; } catch (e) { };
 
-				var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
+				var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 				for (var j in identities) {
 					var identity = identities[j];
 					var item = document.createElement("menuitem");
@@ -229,7 +229,7 @@ var vI = {
 				try {	vI_account.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
 					continue; } catch (e) { };
 
-				var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
+				var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 				for (var j in identities) {
 					var identity = identities[j];
 					var item = menulist.appendItem(identity.identityName, identity.key, server.prettyName);
