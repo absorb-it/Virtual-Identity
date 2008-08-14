@@ -73,16 +73,36 @@ identityData.prototype = {
 			this.__combineStrings(this.__combineStrings(this.idName, this.smtpName), extras) +  ")"
 	},
 	
-	isExistingIdentity : function() {
-		var identity = gAccountManager.defaultAccount.defaultIdentity
-		if (this.__keyTranslator.getID(this.id))
+	isExistingIdentity : function(ignoreFullName) {
+		if (this.__keyTranslator.getID(this.id)) {
+			vI_notificationBar.dump("## vI_storage: isExistingIdentity compare with Identity " + this.id + "\n");
+
 			identity = gAccountManager.getIdentity(this.id)
-		equal = (this.__keyTranslator.getSMTP(this.smtp) == this.__keyTranslator.getSMTP(identity.smtpServerKey) &&
-			identity.getUnicharAttribute("fullName") == this.fullName &&
-			identity.getUnicharAttribute("useremail") == this.email)
+			if (this.__equalsIdentity(identity, ignoreFullName)) {
+				vI_notificationBar.dump("## vI_storage: existing Identity found: " + this.id + "\n");
+				return identity.key;
+			}
+		}
+		else {
+			vI_notificationBar.dump("## vI_storage: isExistingIdentity compare with all Identities\n");
+			// loop through all identities
+			var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
+			for (var i in accounts) {
+				// check for VirtualIdentity Account
+				try {	vI_account.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
+					continue; } catch (e) { };
 		
-		if (equal) return identity.key
-		else return null
+				var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
+				for (var j in identities) {
+					if (this.__equalsIdentity(identities[j], ignoreFullName)) {
+						vI_notificationBar.dump("## vI_storage: existing Identity found: " + identities[j].key + "\n");
+						return identities[j].key;
+					}
+				}
+			}
+		}
+		vI_notificationBar.dump("## vI_storage: none existing Identity found.\n");
+		return null;
 	},
 
 	__equalSMTP : function(compareSmtp) {
@@ -111,14 +131,23 @@ identityData.prototype = {
 		return curIdentity;
 	},
 
-	__equals : function(compareIdentityData) {
+	__equalsIdentity : function(identity, ignoreFullName) {
+		var testIdentity = new identityData(
+			identity.email,
+			identity.fullName,
+			identity.key,
+			identity.smtpServerKey, null)
+		return (this.__equals(testIdentity, ignoreFullName));
+	},
+
+	__equals : function(compareIdentityData, ignoreFullName) {
 		this.comp.compareID = compareIdentityData;
 
-		this.comp.equals.fullName = (this.fullName == compareIdentityData.fullName)
+		this.comp.equals.fullName = (ignoreFullName || this.fullName == compareIdentityData.fullName)
 		this.comp.equals.email = (this.email == compareIdentityData.email)
 		this.comp.equals.smtpName = this.__equalSMTP(compareIdentityData.smtp);
 		this.comp.equals.idName = this.__equalID(compareIdentityData.id);
-		this.comp.equals.extras = this.extras.equal(compareIdentityData.extras)
+		this.comp.equals.extras = (!this.extras || this.extras.equal(compareIdentityData.extras))
 
 		return (this.comp.equals.fullName && this.comp.equals.email && this.comp.equals.smtpName && this.comp.equals.idName && this.comp.equals.extras)
 	},
@@ -126,7 +155,7 @@ identityData.prototype = {
 	equalsCurrentIdentity : function() {
 		var compareIdentityData = this.__getCurrentIdentityData();
 
-		return this.__equals(compareIdentityData);
+		return this.__equals(compareIdentityData, null);
 	},
 
 	// vI only exists in composeDialog, not in storageEditor, so initialize only if getCompareMatrix is called

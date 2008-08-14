@@ -142,7 +142,7 @@ var vI_msgIdentityClone = {
 	addIdentityToCloneMenu: function(localIdentityData) {
 		vI_notificationBar.dump("## vI_msgIdentityClone: addIdentityToCloneMenu '" + localIdentityData.id + "'\n");
 		
-		var existingId = localIdentityData.isExistingIdentity();
+		var existingId = localIdentityData.isExistingIdentity(null);
 		vI_notificationBar.dump("## vI_msgIdentityClone: addIdentityToCloneMenu existingId '" + existingId + "'\n");
 		if (!existingId) {
 			var separator = null;
@@ -458,8 +458,6 @@ var vI_msgIdentityClone = {
 		vI_msgIdentityClone.localIdentityData.id = id_key;
 		vI_msgIdentityClone.localIdentityData.smtp = smtp;
 		
-		var existingIdentity = vI_msgIdentityClone.localIdentityData.isExistingIdentity();
-		vI_notificationBar.dump("## vI_msgIdentityClone: isExistingIdentity " + existingIdentity + "\n");
-		return existingIdentity
+		return vI_msgIdentityClone.localIdentityData.isExistingIdentity(null);
 	},
 }

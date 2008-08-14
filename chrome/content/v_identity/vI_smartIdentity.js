@@ -299,6 +299,24 @@ var vI_smartIdentity = {
 					}
 				}
 			}	
+
+			/* smart_reply_ignoreFullName: compare email with other Identities			*/
+			/* if match replace FullName with existing one, keep identity in list by now 		*/
+			/* will not be added to the menu but probably choosen with __smartIdentitySelection 	*/
+			if (vI.preferences.getBoolPref("smart_reply_ignoreFullName")) {
+				vI_notificationBar.dump("## vI_smartIdentity: compare with existing Identities (ignoring FullNames).\n")
+			
+				for (index = 0; index < smartIdentities.number; index++) {
+					var idKey = smartIdentities.getIdentityData(index).isExistingIdentity(true);
+					if (idKey) {
+						var newFullName = gAccountManager.getIdentity(idKey).fullName;
+						vI_notificationBar.dump("## vI_smartIdentity: replaced Fullname of '" + smartIdentities.emails[index] + "' with '" + newFullName + "' \n");
+						smartIdentities.fullNames[index] = newFullName;
+						smartIdentities.combinedNames[index] =
+							newFullName + " <" + smartIdentities.emails[index] + ">";
+					}
+				}
+			}
 		}
 		else vI_notificationBar.dump("## vI_smartIdentity: SmartReply skipped. No Header-information found.\n");
 		
