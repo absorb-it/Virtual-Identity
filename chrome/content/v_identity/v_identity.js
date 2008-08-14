@@ -202,8 +202,8 @@ var vI = {
 					continue; } catch (e) { };
 
 				var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
-				for (var j in identites) {
-					var identity = identites[j];
+				for (var j in identities) {
+					var identity = identities[j];
 					var item = document.createElement("menuitem");
 					item.className = "identity-popup-item";
 					item.setAttribute("label", identity.identityName);
@@ -230,8 +230,8 @@ var vI = {
 					continue; } catch (e) { };
 
 				var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
-				for (var j in identites) {
-					var identity = identites[j];
+				for (var j in identities) {
+					var identity = identities[j];
 					var item = menulist.appendItem(identity.identityName, identity.key, server.prettyName);
 					item.setAttribute("accountkey", accounts[i].key);
 				}
