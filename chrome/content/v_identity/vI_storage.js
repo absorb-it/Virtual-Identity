@@ -147,7 +147,7 @@ identityData.prototype = {
 		this.comp.equals.email = (this.email == compareIdentityData.email)
 		this.comp.equals.smtpName = this.__equalSMTP(compareIdentityData.smtp);
 		this.comp.equals.idName = this.__equalID(compareIdentityData.id);
-		this.comp.equals.extras = (!this.extras || this.extras.equal(compareIdentityData.extras))
+		this.comp.equals.extras = (!this.extras || !compareIdentityData.extras || this.extras.equal(compareIdentityData.extras))
 
 		return (this.comp.equals.fullName && this.comp.equals.email && this.comp.equals.smtpName && this.comp.equals.idName && this.comp.equals.extras)
 	},
