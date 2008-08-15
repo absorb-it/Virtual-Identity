@@ -245,6 +245,11 @@ var vI_smartIdentity = {
 	
 	Reply : function(hdr) {
 		vI_notificationBar.dump("## vI_smartIdentity: Reply()\n");
+		if (hdr.folder.flags & 0x0200) {	// MSG_FOLDER_FLAG_SENTMAIL
+			vI_notificationBar.dump("## vI_smartIdentity: reply from Sent folder, using SmartDraft. \n");
+			vI_smartIdentity.Draft(hdr);
+			return;
+		}
 				
 		var storageIdentities = new identityCollection();
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
