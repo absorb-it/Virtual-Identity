@@ -33,8 +33,8 @@
         title="Virtual Identity"
 	zlevel="6"
 	onload="vI_Dialog.init(window.arguments[0]);"
-	ondialogaccept="window.arguments[1].return = true;"
-	ondialogcancel="window.close(); window.arguments[1].return = false;"
+	ondialogaccept="window.arguments[1].returnValue = true;"
+	ondialogcancel="window.close(); window.arguments[1].returnValue = false;"
 	persist="height width">
 
 	<script type="application/x-javascript"

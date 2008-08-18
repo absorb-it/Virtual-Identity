@@ -489,11 +489,11 @@ var vI_storage = {
 	},
 
 	__askWarning : function(warning) {
-		retVar = { return: null };				
+		var retVar = { returnValue: null };
 		var answer = window.openDialog("chrome://v_identity/content/vI_Dialog.xul",0,
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
 					 warning, retVar)
-		return retVar.return;
+		return retVar.returnValue;
 	},
 	
 	__updateStorageFromVIdentity : function(recipient, recipientType) {
