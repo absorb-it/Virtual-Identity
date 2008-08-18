@@ -95,11 +95,33 @@ var vI_smartIdentity = {
 		else if (vI.preferences.getBoolPref("autoTimestamp")) vI_smartIdentity.__autoTimestamp();	
 	},
 	
+	ReplyOnSent : function(hdr) {
+		vI_notificationBar.dump("## vI_smartIdentity: ReplyOnSent() (rules like SmartDraft)\n");
+		
+		var allIdentities = new identityCollection();
+
+		vI_smartIdentity.__SmartDraftOrReplyOnSent(hdr, allIdentities);
+		var storageIdentities = new identityCollection();
+		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
+		
+		allIdentities.mergeWithoutDuplicates(storageIdentities);
+			
+		if (allIdentities.number > 0) vI_smartIdentity.__smartIdentitySelection(allIdentities, true);
+
+	},
+
 	Draft : function(hdr) {
 		vI_notificationBar.dump("## vI_smartIdentity: Draft()\n");
 		
 		var allIdentities = new identityCollection();
-		vI_smartIdentity.__SmartDraft(hdr, allIdentities);
+
+		var draftHdr = null;
+		// fails with seamonkey 1.1.11, so just try it
+		try { draftHdr = vI_smartIdentity.messenger.
+			messageServiceFromURI(gMsgCompose.compFields.draftId).messageURIToMsgHdr(gMsgCompose.compFields.draftId);
+		} catch (ex) { };
+
+		vI_smartIdentity.__SmartDraftOrReplyOnSent(draftHdr, allIdentities);
 		var storageIdentities = new identityCollection();
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
@@ -109,11 +131,12 @@ var vI_smartIdentity = {
 	},
 	
 	// this function checks if we have a draft-case and Smart-Draft should replace the Identity
-	__SmartDraft : function(hdr, allIdentities) {
+	__SmartDraftOrReplyOnSent : function(hdr, allIdentities) {
 		if (!vI.preferences.getBoolPref("smart_draft"))
 			{ vI_notificationBar.dump("## vI_smartIdentity: SmartDraft deactivated\n"); return; }
-		vI_notificationBar.dump("## vI_smartIdentity: __SmartDraft()\n");
-			
+
+		vI_notificationBar.dump("## vI_smartIdentity: __SmartDraftOrReplyOnSent()\n");
+
 		if (hdr) {
 			vI.headerParser.parseHeadersWithArray(hdr.author, allIdentities.emails,
 				allIdentities.fullNames, allIdentities.combinedNames);
@@ -124,7 +147,7 @@ var vI_smartIdentity = {
 			
 			vI_notificationBar.dump("## vI_smartIdentity: sender '" + allIdentities.combinedNames[0] + "'\n");
 		}
-		else vI_notificationBar.dump("## vI_smartIdentity: __SmartDraft: No Header found, shouldn't happen\n");
+		else vI_notificationBar.dump("## vI_smartIdentity: __SmartDraftOrReplyOnSent: No Header found, shouldn't happen\n");
 	},
 	
 	__filterAddresses : function(smartIdentities) {
@@ -247,7 +270,7 @@ var vI_smartIdentity = {
 		vI_notificationBar.dump("## vI_smartIdentity: Reply()\n");
 		if (hdr.folder.flags & 0x0200) {	// MSG_FOLDER_FLAG_SENTMAIL
 			vI_notificationBar.dump("## vI_smartIdentity: reply from Sent folder, using SmartDraft. \n");
-			vI_smartIdentity.Draft(hdr);
+			vI_smartIdentity.ReplyOnSent(hdr);
 			return;
 		}
 				
