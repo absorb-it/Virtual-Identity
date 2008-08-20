@@ -180,6 +180,7 @@ var vI_notificationBar = {
 		// height will be cut off from messagepane (in 3pane window)
 		var objMessagepane = document.getElementById("messagepane");
 		var maxHeight = (objMessagepane)?parseInt(objMessagepane.boxObject.height / 2)+1:null;
+		if (maxHeight < 60) maxHeight = 60; // set a minimum size, if to small scrollbars are hidden
 		var tooBig = (maxHeight)?(elem.inputField.scrollHeight > maxHeight):false;
 		var newHeight = (tooBig)?maxHeight:elem.inputField.scrollHeight;
 		elem.height = newHeight;
