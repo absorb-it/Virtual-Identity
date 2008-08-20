@@ -152,10 +152,13 @@ identityData.prototype = {
 		return (this.comp.equals.fullName && this.comp.equals.email && this.comp.equals.smtpName && this.comp.equals.idName && this.comp.equals.extras)
 	},
 
-	equalsCurrentIdentity : function() {
+	equalsCurrentIdentity : function(getCompareMatrix) {
 		var compareIdentityData = this.__getCurrentIdentityData();
-
-		return this.__equals(compareIdentityData, null);
+		var retValue = { equal : null, compareMatrix : null };
+		retValue.equal = this.__equals(compareIdentityData, null);
+		if (getCompareMatrix && !retValue.equal) // generate CompareMatrix only if non-equal
+			retValue.compareMatrix = this.getCompareMatrix();
+		return retValue;
 	},
 
 	// vI only exists in composeDialog, not in storageEditor, so initialize only if getCompareMatrix is called
@@ -276,9 +279,6 @@ var vI_storage = {
 	lastCheckedEmail : {}, 	// array of last checked emails per row,
 				// to prevent ugly double dialogs and time-consuming double-checks
 	
-	promptService : Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			.getService(Components.interfaces.nsIPromptService),
-			
 	rdfService : Components.classes["@mozilla.org/rdf/rdf-service;1"]
 			.getService(Components.interfaces.nsIRDFService),
 
@@ -385,7 +385,7 @@ var vI_storage = {
 		if (vI.preferences.getBoolPref("storage_getOneOnly") && vI_storage.firstUsedInputElement &&
 			vI_storage.firstUsedInputElement != inputElement) {
 			vI_notificationBar.dump("## vI_storage: retrieved Identity for other recipient-field before. ignoring\n");
-			if (!storageData.equalsCurrentIdentity()) {
+			if (!storageData.equalsCurrentIdentity(false).equal) {
 					// add Identity to dropdown-menu
 					vI_msgIdentityClone.addIdentityToCloneMenu(storageData)
 					vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageCollidingIdentity"),
@@ -393,24 +393,22 @@ var vI_storage = {
 			}
 		}
 		// only update fields if new Identity is different than old one.
-		else if (!storageData.equalsCurrentIdentity()) {
-			// add Identity to dropdown-menu
-			var menuItem = vI_msgIdentityClone.addIdentityToCloneMenu(storageData)
-			var warning = vI_storage.__getWarning("replaceVIdentity", recipient, storageData.getCompareMatrix());
-			
-			if (	// vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("timeStamp") ||
-				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
-				!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
-				vI_storage.__askWarning(warning)) {
-					vI_msgIdentityClone.setMenuToMenuItem(menuItem)
-/*					vI_msgIdentityClone.setMenuToIdentity(storageData.id);
-					vI_smtpSelector.setMenuToKey(storageData.smtp);
-					storageData.extras.setValues();*/
-/*					if (vI_msgIdentityClone.setIdentity(
-						vI_helper.combineNames(storageData.fullName, storageData.email), null))*/
-					if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") == "vid")
-						vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
-						"storage_notification");
+		else {
+			var compResult = storageData.equalsCurrentIdentity(true);
+			if (!compResult.equal) {
+				// add Identity to dropdown-menu
+				var menuItem = vI_msgIdentityClone.addIdentityToCloneMenu(storageData)
+				var warning = vI_storage.__getWarning("replaceVIdentity", recipient, compResult.compareMatrix);
+				
+				if (	// vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("timeStamp") ||
+					vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") != "vid" ||
+					!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
+					vI_storage.__askWarning(warning)) {
+						vI_msgIdentityClone.setMenuToMenuItem(menuItem)
+						if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") == "vid")
+							vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
+							"storage_notification");
+				}
 			}
 		}
 	},
@@ -453,29 +451,17 @@ var vI_storage = {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
 				vI_storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
-			// by using a Timeout the possible prompt stopps the MessageSending
-			// this is required, else lavascript context might be gone
+			// by using a setTimeout the possible prompt doesn't stopp the MessageSending
 			window.setTimeout(vI_storage.__updateStorageFromVIdentity, 0, awGetInputElement(row).value, recipientType)
 		}
 		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n")
 	},
 	
-	__getVIdentityString : function() {
-		var old_address = vI_helper.getAddress();
-		var id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.base_id_key;
-		var smtp_key = vI_smtpSelector.elements.Obj_SMTPServerList.selectedItem.getAttribute('key');
-		var extras = new vI_storageExtras();
-		extras.readValues();
-		var localIdentityData = new identityData(old_address.email, old_address.name,
-			id_key, smtp_key, extras)
-		return localIdentityData.identityDescription();
-	},
-
 	__getWarning : function(warningCase, recipient, compareMatrix) {
 		var warning = { title: null, recLabel : null, recipient : null, warning : null, css: null, query : null };
 		warning.title = vI.elements.strings.getString("vident." + warningCase + ".title")
 		warning.recLabel = vI.elements.strings.getString("vident." + warningCase + ".recipient") +	" (" + recipient.recType + "):"
-		warning.recipient = recipient.recDesc.replace(/>/g,"&gt;").replace(/</g,"&lt;")
+		warning.recipient = recipient.recDesc;
 		warning.warning = 
 			"<table class='" + warningCase + "'><thead><tr><th class='col1'/>" +
 				"<th class='col2'>" + vI.elements.strings.getString("vident." + warningCase + ".currentIdentity") + "</th>" +
@@ -504,13 +490,12 @@ var vI_storage = {
 		recipient = vI_storage.__getDescriptionAndType(recipient, recipientType);
 		var storageData = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
 		if (storageData) {
-			if (!storageData.equalsCurrentIdentity() &&
-				!dontUpdateMultipleNoEqual) {
-				var warning = vI_storage.__getWarning("updateStorage", recipient, storageData.getCompareMatrix());
+			var compResult = storageData.equalsCurrentIdentity(true);
+			if (!compResult.equal && !dontUpdateMultipleNoEqual) {
+				var warning = vI_storage.__getWarning("updateStorage", recipient, compResult.compareMatrix);
 				vI_notificationBar.dump("## vI_storage: " + warning + ".\n")
 				if (!vI.preferences.getBoolPref("storage_warn_update") ||
 						vI_storage.__askWarning(warning))
-// 						vI_storage.promptService.confirm(window,"Warning",warning))
 				vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
 			}
 		}
@@ -530,8 +515,6 @@ var vI_storage = {
 			var addrbook = enumerator.getNext();  // an addressbook directory
 			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
 			var searchUri = (addrbook.directoryProperties?addrbook.directoryProperties.URI:addrbook.URI) + queryString;
-			//~ vI_notificationBar.dump("## vI_storage: searchUri '" + searchUri + "'\n");
-			//~ var directory = vI_storage.rdfService.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory);
 			
 			// just try the following steps, they might fail if addressbook wasn't configured the right way
 			// not completely reproducible, but caused bug https://www.absorb.it/virtual-id/ticket/41
@@ -548,10 +531,7 @@ var vI_storage = {
 			
 			while (keepGoing == 1) {
 				currentCard = childCards.currentItem();
-			//~ while (directory.childNodes && directory.childNodes.hasMoreElements()) {
-				//~ currentCard = directory.childNodes.getNext();
 				currentCard.QueryInterface(Components.interfaces.nsIAbCard);
-				//~ vI_notificationBar.dump("## vI_storage:             checking '" + currentCard.displayName + "'.\n")
 				returnVar = callFunction(addrbook, currentCard, returnVar);
 				try { childCards.next(); } catch (ex) {	keepGoing = 0; }
 			}
