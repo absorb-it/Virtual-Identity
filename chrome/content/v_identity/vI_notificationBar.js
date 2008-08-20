@@ -83,8 +83,8 @@ var vI_notificationBar = {
 		if (vI_notificationBar.upgrade) return true;
 		
 		vI_notificationBar.Obj_vINotification = document.getElementById("vINotification");
-		vI_notificationBar.Obj_DebugBoxSplitter = document.getElementById("vIDebugBoxSplitter")
-		vI_notificationBar.Obj_DebugBaseID = document.getElementById("msgIdentity_clone")
+		vI_notificationBar.Obj_DebugBoxSplitter = document.getElementById("vIDebugBoxSplitter");
+		vI_notificationBar.Obj_DebugBaseID = document.getElementById("msgIdentity_clone");
 		
 		vI_notificationBar.addObserver();
 		vI_notificationBar.observe();
@@ -176,12 +176,33 @@ var vI_notificationBar = {
 		vI_notificationBar.clear()
 	},
 	
-	setNote: function(note, prefstring) {
+	setNote: function(note, prefstring, title) {
 		vI_notificationBar.clear();
-		vI_notificationBar.addNote(note, prefstring);
+		vI_notificationBar.addNote(note, prefstring, title);
 	},
-	
-	addNote: function(note, prefstring) {
+
+	overflow : function(elem) {
+		// height will be cut off from messagepane (in 3pane window)
+		var objMessagepane = document.getElementById("messagepane");
+		var maxHeight = 1000;
+		if (objMessagepane) maxHeight = parseInt(objMessagepane.boxObject.height / 2) +1
+		var tooBig = (elem.inputField.scrollHeight > maxHeight)
+		var newHeight = (tooBig)?maxHeight:elem.inputField.scrollHeight
+		elem.height = newHeight;
+		vI_notificationBar.Obj_vINotification.height = newHeight + 24; // a little bigger
+		// give the box a frame if it is to bigger
+		if (tooBig) document.getElementById("vINotificationTextbox").setAttribute("class", "plain border")
+	},
+
+	__setTitle: function(title) {
+		if (!title) return;
+		vI_notificationBar.dump("** setTitle: " + title + "\n");
+		var Obj_vvINotificationTitle = document.getElementById("vINotificationTitle");
+		Obj_vvINotificationTitle.setAttribute("value", title);
+		Obj_vvINotificationTitle.removeAttribute("hidden");
+	},
+
+	addNote: function(note, prefstring, title) {
 		vI_notificationBar.dump("** " + note + "\n");
 		if (!vI_notificationBar.preferences.getBoolPref(prefstring)) return;
 		if (!vI_notificationBar.Obj_vINotification) vI_notificationBar.init();
@@ -189,20 +210,12 @@ var vI_notificationBar = {
 		if (!vI_notificationBar.versionOk) return;
 		if (vI_notificationBar.timer) window.clearTimeout(vI_notificationBar.timer);
 		var oldNotification = vI_notificationBar.Obj_vINotification.currentNotification
-		
-		var newNotification;
-		if (oldNotification) {
-			var oldLabel = oldNotification.label
-			vI_notificationBar.clear();
-			newNotification = vI_notificationBar.Obj_vINotification
-				.appendNotification(oldLabel + note, "", "chrome://messenger/skin/icons/flag.png");
-		}
-		else newNotification = vI_notificationBar.Obj_vINotification
-				.appendNotification(note, "", "chrome://messenger/skin/icons/flag.png");
-		
-		// workaround, seems that my usage of notificationbox doesn't display multiple lines
-		vI_notificationBar.Obj_vINotification.height = newNotification.boxObject.height;
-		
+		var newLabel = (oldNotification)?oldNotification.label + note:note;
+		vI_notificationBar.clear();
+		vI_notificationBar.Obj_vINotification
+				.appendNotification(newLabel, "", "chrome://messenger/skin/icons/flag.png");
+		vI_notificationBar.__setTitle(title);
+
 		if (vI_notificationBar.preferences.getIntPref("notification_timeout") != 0)
 			vI_notificationBar.timer = window.setTimeout(vI_notificationBar.hide,
 				vI_notificationBar.preferences.getIntPref("notification_timeout") * 1000);

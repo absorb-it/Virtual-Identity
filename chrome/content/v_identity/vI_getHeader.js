@@ -90,8 +90,8 @@ var vI_getHeader = {
 
 		if (!vI_getHeader.headerToSearch) vI_getHeader.prepareHeaderToSearchArray()
 
-		var found = false;
-		var label = vI_getHeader.strings.getString("vident.getHeader.noHeader");
+		var found = false; var label = "";
+		var subtitle = vI_getHeader.strings.getString("vident.getHeader.noHeader");
 		// create array to count the header
 		var currentHeadersCounter = []
 		// loop through the headers
@@ -125,17 +125,18 @@ var vI_getHeader = {
 					storedConvValue = vI_getHeader.unicodeConverter.ConvertToUnicode(storedValue)
 					vI_notificationBar.dump(" ...stored as '" + storedConvValue + "'");
 					if (!found) { 
-						label = vI_getHeader.strings.getString("vident.getHeader.headerFound");
+						subtitle = vI_getHeader.strings.getString("vident.getHeader.headerFound");
 						found = true;
 					}
-					label += " " + currentHeaderData[header].headerName + 
-					"[:" + currentHeadersCounter[headerName] + "]:" + currentHeaderData[header].headerValue
+					label += (label)?"\n":""
+					label += currentHeaderData[header].headerName + 
+					"[:" + currentHeadersCounter[headerName] + "]:\t" + currentHeaderData[header].headerValue
 					break;
 				}
 			}
 			vI_notificationBar.dump("\n");
 		}
-		vI_notificationBar.setNote(label, "get_header_notification");
+		vI_notificationBar.setNote(label, "get_header_notification", subtitle);
 	},
 	
 	hideExtraHeader: function() {

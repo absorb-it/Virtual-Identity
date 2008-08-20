@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<!DOCTYPE overlay [
+<!DOCTYPE bindings [
 <!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
 %versionDTD;
 <!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
@@ -38,7 +38,7 @@
 
       <field name="_timer">null</field>
       <field name="_closedNotification">null</field>
-      <field name="_blockBox">null</field>
+      <field name="_blockingCanvas">null</field>
 
       <property name="notificationsHidden"
                 onget="return this.getAttribute('notificationshidden') == 'true';">
@@ -46,6 +46,7 @@
           if (val)
             this.setAttribute('notificationshidden', true);
           else this.removeAttribute('notificationshidden');
+          return val;
         </setter>
       </property>
 
@@ -92,7 +93,8 @@
             var newitem = document.createElementNS(XULNS, "notification");
             newitem.setAttribute("label", aLabel);
             newitem.setAttribute("value", aValue);
-            newitem.setAttribute("image", aImage);
+            if (aImage)
+                newitem.setAttribute("image", aImage);
             if (!insertPos) {
               newitem.style.position = "fixed";
               newitem.style.top = "100%";
@@ -170,6 +172,21 @@
         </body>
       </method>
 
+      <method name="removeTransientNotifications">
+        <body>
+          <![CDATA[
+            var notifications = this.allNotifications;
+            for (var n = notifications.length - 1; n >= 0; n--) {
+              var notification = notifications[n];
+              if (notification.persistence)
+                notification.persistence--;
+              else if (Date.now() > notification.timeout)
+                this.removeNotification(notification);
+            }
+          ]]>
+        </body>
+      </method>
+
       <method name="_showNotification">
         <parameter name="aNotification"/>
         <parameter name="aSlideIn"/>
@@ -185,6 +202,7 @@
                 this._closedNotification.parentNode.
                   removeChild(this._closedNotification); }
 	      catch (e) {};
+              this._setBlockingState(this.currentNotification);
             }
 
             var height = aNotification.boxObject.height;
@@ -244,6 +262,7 @@
                 if (self._closedNotification)
                   self._closedNotification.parentNode.
                     removeChild(self._closedNotification);
+                self._setBlockingState(self.currentNotification);
               }
             }
 
@@ -252,24 +271,82 @@
         </body>
       </method>
 
+      <method name="_setBlockingState">
+        <parameter name="aNotification"/>
+        <body>
+          <![CDATA[
+            var isblock = aNotification &&
+                          aNotification.priority == this.PRIORITY_CRITICAL_BLOCK;
+            var canvas = this._blockingCanvas;
+            if (isblock) {
+              if (!canvas)
+                canvas = document.createElementNS("http://www.w3.org/1999/xhtml", "canvas");
+              const XULNS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+              var content = this.firstChild;
+              if (!content ||
+                   content.namespaceURI != XULNS ||
+                   content.localName != "browser")
+                return;
+
+              var width = content.boxObject.width;
+              var height = content.boxObject.height;
+              content.collapsed = true;
+
+              canvas.setAttribute("width", width);
+              canvas.setAttribute("height", height);
+              canvas.setAttribute("flex", "1");
+
+              this.appendChild(canvas);
+              this._blockingCanvas = canvas;
+
+              var bgcolor = "white";
+              try {
+                var prefService = Components.classes["@mozilla.org/preferences-service;1"].
+                                    getService(Components.interfaces.nsIPrefBranch);
+                bgcolor = prefService.getCharPref("browser.display.background_color");
+
+                var win = content.contentWindow;
+                var context = canvas.getContext("2d");
+                context.globalAlpha = 0.5;
+                context.drawWindow(win, win.scrollX, win.scrollY,
+                                   width, height, bgcolor);
+              }
+              catch(ex) { };
+            }
+            else if (canvas) {
+              canvas.parentNode.removeChild(canvas);
+              this._blockingCanvas = null;
+              var content = this.firstChild;
+              if (content)
+                content.collapsed = false;
+            }
+          ]]>
+        </body>
+      </method>
+
     </implementation>
   </binding>
-      
+
   <binding id="notification">
     <content>
       <xul:hbox class="notification-inner outset" flex="1" xbl:inherits="type">
         <xul:hbox anonid="details" align="center" flex="1"
                   oncommand="this.parentNode.parentNode._doButtonCommand(event);">
           <xul:image anonid="messageImage" class="messageImage" xbl:inherits="src=image"/>
-          <xul:description anonid="messageText" class="messageText" flex="1" xbl:inherits="xbl:text=label"/>
-          <xul:spacer flex="1"/>
+	  <xul:vbox><xul:spacer flex="1" />
+		  <xul:label id="vINotificationTitle" hidden="true" align="right" />
+		  <xul:label class="v_identity_logo vINotificationLogo"
+						      value="&vident.vidLogo.label; &vident.version;" align="right" />
+          <xul:spacer flex="1" /></xul:vbox>
+          <xul:textbox id="vINotificationTextbox" anonid="messageText" class="plain" height="3"
+			value="" flex="1" multiline="true" readonly="true" 
+			xbl:inherits="value=label"
+			DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"
+			onoverflow="vI_notificationBar.overflow(this);" oncontextmenu="" />
           <children/>
         </xul:hbox>
-        <xul:vbox><xul:spacer flex="1" /><xul:label class="v_identity_logo vINotificationLogo"
-			value="&vident.vidLogo.label; &vident.version;" align="right" />
-        <xul:spacer flex="1" /></xul:vbox>
         <xul:toolbarbutton ondblclick="event.stopPropagation();"
-                           class="messageCloseButton"
+                           class="messageCloseButton tabbable"
                            xbl:inherits="hidden=hideclose"
                            oncommand="vI_notificationBar.clear();"/>
       </xul:hbox>
@@ -278,25 +355,27 @@
       <stylesheet src="chrome://global/skin/notification.css"/>
     </resources>
     <implementation implements="nsIAccessibleProvider">
-      <property name="accessible" readonly="true">
+      <property name="accessibleType" readonly="true">
         <getter>
           <![CDATA[
-            var accService = Components.classes["@mozilla.org/accessibilityService;1"].getService(Components.interfaces.nsIAccessibilityService);
-            return accService.createXULAlertAccessible(this);
+            return Components.interfaces.nsIAccessibleProvider.XULAlert;
           ]]>
         </getter>
       </property>
 
-      <property name="label" onset="return this.setAttribute('label', val);"
+      <property name="label" onset="this.setAttribute('label', val); return val;"
                              onget="return this.getAttribute('label');"/>
-      <property name="value" onset="return this.setAttribute('value', val);"
+      <property name="value" onset="this.setAttribute('value', val); return val;"
                              onget="return this.getAttribute('value');"/>
-      <property name="image" onset="return this.setAttribute('image', val);"
+      <property name="image" onset="this.setAttribute('image', val); return val;"
                              onget="return this.getAttribute('image');"/>
-      <property name="type" onget="return this.getAttribute('type');"
-                            onset="this.setAttribute('type', val); return val;"/>
-      <property name="priority" onget="return this.getAttribute('priority');"
+      <property name="type" onset="this.setAttribute('type', val); return val;"
+                            onget="return this.getAttribute('type');"/>
+      <property name="priority" onget="return parseInt(this.getAttribute('priority')) || 0;"
                                 onset="this.setAttribute('priority', val); return val;"/>
+      <property name="persistence" onget="return parseInt(this.getAttribute('persistence')) || 0;"
+                                   onset="this.setAttribute('persistence', val); return val;"/>
+      <field name="timeout">0</field>
 
       <property name="control" readonly="true">
         <getter>
@@ -333,6 +412,7 @@
 
             var button = aEvent.target.buttonInfo;
             if (button.popup) {
+              document.popupNode = aEvent.target;
               document.getElementById(button.popup).
                 showPopup(aEvent.originalTarget, -1, -1, "popup", "bottomleft", "topleft");
               aEvent.stopPropagation();

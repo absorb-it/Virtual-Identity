@@ -2,6 +2,29 @@
 @import url("chrome://v_identity/locale/logo.css"); 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
+#vINotificationTitle {
+	text-align: right;
+	font-weight: bold;
+}
+
+#vINotificationTextbox
+    {
+	background-color: transparent;
+        margin: 5px !important;
+	margin-left: 20px !important;
+        -moz-border-top-colors: grey;
+        -moz-border-right-colors: grey;
+        -moz-border-bottom-colors: grey;
+        -moz-border-left-colors: grey;
+    }
+
+#vINotificationTextbox.border
+    {
+      border-style: solid !important;
+      border-right-style: none !important;
+      border-width: 1px !important;
+    }
+
 #vI-status-menu[save="off"] {
 	list-style-image: url("chrome://v_identity/skin/vI_gr.png");
 	visibility: visible;
@@ -137,7 +160,7 @@ notification[type="critical"] {
 .messageImage {
   width: 16px;
   height: 16px;
-  margin: 0px 1px 0px 6px;
+  margin: 0px 6px 0px 6px;
 }
 
 .messageText {
