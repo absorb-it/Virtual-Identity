@@ -96,8 +96,8 @@ var vI_notificationBar = {
 	
 	clear : function() {
 		if (!vI_notificationBar.Obj_vINotification) return;
-		// workaround, seems that my usage of notificationbox doesn't display multiple lines
-		vI_notificationBar.Obj_vINotification.height = 0;
+		if (vI_notificationBar.timer) window.clearTimeout(vI_notificationBar.timer);
+		vI_notificationBar.timer = null;
 		vI_notificationBar.Obj_vINotification.removeAllNotifications(false);
 	},
 	
@@ -171,11 +171,6 @@ var vI_notificationBar = {
 			vI_notificationBar.Obj_DebugBox.inputField.clientHeight
 	},
 	
-	hide : function() {
-		vI_notificationBar.timer = null;
-		vI_notificationBar.clear()
-	},
-	
 	setNote: function(note, prefstring, title) {
 		vI_notificationBar.clear();
 		vI_notificationBar.addNote(note, prefstring, title);
@@ -184,22 +179,20 @@ var vI_notificationBar = {
 	overflow : function(elem) {
 		// height will be cut off from messagepane (in 3pane window)
 		var objMessagepane = document.getElementById("messagepane");
-		var maxHeight = 1000;
-		if (objMessagepane) maxHeight = parseInt(objMessagepane.boxObject.height / 2) +1
-		var tooBig = (elem.inputField.scrollHeight > maxHeight)
-		var newHeight = (tooBig)?maxHeight:elem.inputField.scrollHeight
+		var maxHeight = (objMessagepane)?parseInt(objMessagepane.boxObject.height / 2)+1:null;
+		var tooBig = (maxHeight)?(elem.inputField.scrollHeight > maxHeight):false;
+		var newHeight = (tooBig)?maxHeight:elem.inputField.scrollHeight;
 		elem.height = newHeight;
-		vI_notificationBar.Obj_vINotification.height = newHeight + 24; // a little bigger
-		// give the box a frame if it is to bigger
+		// give the box a frame if it is to big
 		if (tooBig) document.getElementById("vINotificationTextbox").setAttribute("class", "plain border")
 	},
 
 	__setTitle: function(title) {
 		if (!title) return;
 		vI_notificationBar.dump("** setTitle: " + title + "\n");
-		var Obj_vvINotificationTitle = document.getElementById("vINotificationTitle");
-		Obj_vvINotificationTitle.setAttribute("value", title);
-		Obj_vvINotificationTitle.removeAttribute("hidden");
+		var Obj_vINotificationTitle = document.getElementById("vINotificationTitle");
+		Obj_vINotificationTitle.setAttribute("value", title);
+		Obj_vINotificationTitle.removeAttribute("hidden");
 	},
 
 	addNote: function(note, prefstring, title) {
@@ -208,7 +201,6 @@ var vI_notificationBar = {
 		if (!vI_notificationBar.Obj_vINotification) vI_notificationBar.init();
 		if (!vI_notificationBar.Obj_vINotification) return;
 		if (!vI_notificationBar.versionOk) return;
-		if (vI_notificationBar.timer) window.clearTimeout(vI_notificationBar.timer);
 		var oldNotification = vI_notificationBar.Obj_vINotification.currentNotification
 		var newLabel = (oldNotification)?oldNotification.label + note:note;
 		vI_notificationBar.clear();
@@ -217,7 +209,7 @@ var vI_notificationBar = {
 		vI_notificationBar.__setTitle(title);
 
 		if (vI_notificationBar.preferences.getIntPref("notification_timeout") != 0)
-			vI_notificationBar.timer = window.setTimeout(vI_notificationBar.hide,
+			vI_notificationBar.timer = window.setTimeout(vI_notificationBar.clear,
 				vI_notificationBar.preferences.getIntPref("notification_timeout") * 1000);
 	},
 	

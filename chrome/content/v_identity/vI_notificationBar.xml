@@ -40,6 +40,11 @@
       <field name="_closedNotification">null</field>
       <field name="_blockingCanvas">null</field>
 
+      
+      <property name="height"
+		onget="return this.height;">
+      </property>
+      
       <property name="notificationsHidden"
                 onget="return this.getAttribute('notificationshidden') == 'true';">
         <setter>
