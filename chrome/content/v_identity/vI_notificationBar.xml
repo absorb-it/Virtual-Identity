@@ -351,7 +351,7 @@
           <children/>
         </xul:hbox>
         <xul:toolbarbutton ondblclick="event.stopPropagation();"
-                           class="messageCloseButton tabbable"
+			   class="tab-close-button vINotificationCloseButton"
                            xbl:inherits="hidden=hideclose"
                            oncommand="vI_notificationBar.clear();"/>
       </xul:hbox>

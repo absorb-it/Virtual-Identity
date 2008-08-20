@@ -171,19 +171,27 @@ notification[type="critical"] {
   margin: 0px 5px 0px 5px;
 }
 
-.messageCloseButton {
-  list-style-image: url("chrome://global/skin/icons/close.png");
+.vINotificationCloseButton {
+  display: inline;
+  padding: 4px 2px !important;
   -moz-appearance: none;
-  -moz-image-region: rect(0px, 16px, 16px, 0px);
-  padding: 4px 2px;
+  -moz-image-region: rect(0px, 56px, 14px, 42px);
+  height: 24px;
   border: none !important;
+  cursor: default;
+  list-style-image: url("chrome://v_identity/skin/close.png");
 }
 
-.messageCloseButton:hover {
-  -moz-image-region: rect(0px, 32px, 16px, 16px);
+.vINotificationCloseButton:hover {
+  -moz-image-region: rect(0px, 28px, 14px, 14px);
+  opacity: 1.0;
 }
 
-.messageCloseButton:hover:active {
-  -moz-image-region: rect(0px, 48px, 16px, 32px);
+.vINotificationCloseButton:hover:active {
+  -moz-image-region: rect(0px, 42px, 14px, 28px);
+  opacity: 1.0;
 }
-/* the previous styles are copied from notification.css, cause its not included in pre2.0 */
+
+.vINotificationCloseButton:focus {
+  outline: none !important;
+}
