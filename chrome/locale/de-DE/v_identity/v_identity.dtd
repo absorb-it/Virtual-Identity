@@ -9,6 +9,8 @@
 <!ENTITY vident.vI_Menu.DataEditor.label "Daten-Speicher">
 <!ENTITY vident.vI_Menu.storageSave.label "speichere Identität beim Senden">
 <!ENTITY vident.vI_Menu.saveBaseID.label "speichere zugrunde liegende Identität">
+<!ENTITY vident.vI_Menu.TooltipTitle.label "Virtual Identity Status">
+<!ENTITY vident.vI_Menu.TooltipChange.label "ändere durch Maus-Klick">
 
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">

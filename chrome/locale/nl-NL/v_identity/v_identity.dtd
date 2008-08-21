@@ -9,6 +9,8 @@
 <!ENTITY vident.vI_Menu.DataEditor.label "Gegevensopslagbewerking">
 <!ENTITY vident.vI_Menu.storageSave.label "save Identity while sending"> <!-- to translate -->
 <!ENTITY vident.vI_Menu.saveBaseID.label "store underlying base Identity"> <!-- to translate -->
+<!ENTITY vident.vI_Menu.TooltipTitle.label "Virtual Identity Status"> <!-- to translate -->
+<!ENTITY vident.vI_Menu.TooltipChange.label "click to change"> <!-- to translate -->
 
 <!ENTITY fccMailFolder.accesskey "l">
 <!ENTITY sentFolderOn.accesskey "z">

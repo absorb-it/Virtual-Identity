@@ -84,6 +84,8 @@ var vI_statusmenu = {
 		vI_statusmenu.objStatusMenuSeparator = document.getElementById("vI_statusMenu_separator");
 		vI_statusmenu.objSaveSwitch = document.getElementById("storage_save");
 		vI_statusmenu.objStatusText = document.getElementById("statusText");
+		vI_statusmenu.objStatusTooltipLine1 = document.getElementById("vI_statusMenuTooltip_StatusValueLine1");
+		vI_statusmenu.objStatusTooltipLine2 = document.getElementById("vI_statusMenuTooltip_StatusValueLine2");
 
 		vI_statusmenu.addObserver();
 		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.storage_show_switch");
@@ -97,8 +99,19 @@ var vI_statusmenu = {
 
 	__timeout : 5,	// timeout for status messages in seconds
 	__addStatusMessage : function(save) {
-		var message = vI.elements.strings.getString("vident.statusText.save." + save);
-		vI_statusmenu.objStatusText.setAttribute("label", message);
+		var messageLine1 = vI.elements.strings.getString("vident.statusText.save." + save + ".line1");
+		var messageLine2 = vI.elements.strings.getString("vident.statusText.save." + save + ".line2");
+		if (!messageLine2) {
+			vI_statusmenu.objStatusText.setAttribute("label", messageLine1);
+			vI_statusmenu.objStatusTooltipLine1.setAttribute("value", messageLine1);
+			vI_statusmenu.objStatusTooltipLine2.setAttribute("hidden", "true");
+		}	
+		else {
+			vI_statusmenu.objStatusText.setAttribute("label", messageLine1 + " " + messageLine2);
+			vI_statusmenu.objStatusTooltipLine1.setAttribute("value", messageLine1);
+			vI_statusmenu.objStatusTooltipLine2.setAttribute("value", messageLine2);
+			vI_statusmenu.objStatusTooltipLine2.removeAttribute("hidden");
+		}
 		window.setTimeout(vI_statusmenu.__clearStatusMessage, vI_statusmenu.__timeout * 1000);
 	},
 

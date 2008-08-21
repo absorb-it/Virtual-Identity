@@ -101,7 +101,16 @@
 			    oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome,modal');" />
 	  </popup>
   </popupset>
-    
+
+  <popupset>
+	  <tooltip id="vI_statusMenuTooltip" orient="vertical" >
+		<label id="vI_statusMenuTooltip_Title" value="&vident.vI_Menu.TooltipTitle.label;" />
+		<label id="vI_statusMenuTooltip_StatusValueLine1" />
+		<label id="vI_statusMenuTooltip_StatusValueLine2" />
+		<label id="vI_statusMenuTooltip_Change" value="&vident.vI_Menu.TooltipChange.label;" />
+	  </tooltip>
+  </popupset>
+  
   <statusbar id="status-bar">
 	  <statusbarpanel class="v_identity_logo"
 			  id="v_identity_logo"
