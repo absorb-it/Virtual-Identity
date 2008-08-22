@@ -23,8 +23,6 @@
    - Contributor(s):
    - ***** END LICENSE BLOCK ***** -->
 
-<?xul-overlay href="chrome://messenger/content/msgFolderPickerOverlay.xul"?>
-
 <!DOCTYPE page [
 <!ENTITY % amCopiesDTD SYSTEM "chrome://messenger/locale/am-copies.dtd">
 %amCopiesDTD;
@@ -43,15 +41,14 @@
 <?xml-stylesheet href="chrome://messenger/skin/accountManage.css" type="text/css"?>
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
 
-<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        onload="vI_prefDialog.init();"
-        buttons="accept,cancel"
-        ondialogaccept="vI_prefDialog.savePrefs();"
-        persist="screenX screenY"
-        title="&vI_prefDialog.dlgTitle.label;">
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<dialog id="vI_prefDialog">
 
 <script type="application/x-javascript"
             src="chrome://v_identity/content/vI_prefDialog.js" />
+<script type="application/x-javascript"
+	    src="chrome://v_identity/content/vI_prefDialog_FolderPicker.js" />
 <script type="application/x-javascript"
             src="chrome://v_identity/content/vI_storageExtras.js" />
 <script type="application/x-javascript"
@@ -183,25 +180,19 @@
 						value="2" label="&vI_prefDialog.vidFccDefault.label;"
 						oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
 						observes="VIdent_broadcaster_doFcc"/>
-					<row align="center">
+					<row align="center" id="msgFccAccountPickerRow">
 						<radio id="VIdent_fcc_selectAccount" 
 							value="0" label="&sentFolderOn.label;"
 							accesskey="&sentFolderOn.accesskey;"
 							oncommand="setPickersState('msgFccAccountPicker', 'msgFccFolderPicker', event)" 
 							observes="VIdent_broadcaster_doFcc"/>
-						<menulist id="msgFccAccountPicker"
-							oncommand="noteSelectionChange('VIdent_fcc_selectAccount')" 
-							flex="1" observes="VIdent_broadcaster_doFcc"/>
 					</row> 
-					<row align="center">
+					<row align="center" id="msgFccFolderPickerRow">
 						<radio id="VIdent_fcc_selectFolder" 
 							value="1" label="&sentInOtherFolder.label;"
 							accesskey="&sentInOtherFolder.accesskey;"
 							oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
 							observes="VIdent_broadcaster_doFcc"/>
-						<menulist id="msgFccFolderPicker" 
-							oncommand="noteSelectionChange('VIdent_fcc_selectFolder')" 
-							flex="1" observes="VIdent_broadcaster_doFcc"/>
 					</row>
 				</rows>
 			</grid>
@@ -233,22 +224,17 @@
 					<radio id="VIdent_draft_Settings_Of_Default" 
 						value="2" label="&vI_prefDialog.vidFccDefault.label;"
 						oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
-					<row align="center">
+					<row align="center" id="msgDraftsAccountPickerRow">
 						<radio id="VIdent_draft_selectAccount" 
 							value="0" label="&draftsFolderOn.label;"
 							accesskey="&draftsFolderOn.accesskey;"
 							oncommand="setPickersState('msgDraftsAccountPicker', 'msgDraftsFolderPicker', event)" />
-						<menulist id="msgDraftsAccountPicker"
-							oncommand="noteSelectionChange('VIdent_draft_selectAccount')" />
 					</row> 
-					<row align="center">
+					<row align="center" id="msgDraftsFolderPickerRow">
 						<radio id="VIdent_draft_selectFolder" 
 							value="1" label="&draftInOtherFolder.label;"
 							accesskey="&draftInOtherFolder.accesskey;"
 							oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
-						<menulist id="msgDraftsFolderPicker" 
-							oncommand="noteSelectionChange('VIdent_draft_selectFolder')" 
-							flex="1" />
 					</row>
 				</rows>
 			</grid>
@@ -272,23 +258,17 @@
 					<radio id="VIdent_fcc_Settings_Of_Default" 
 						value="2" label="&vI_prefDialog.vidFccDefault.label;"
 						oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
-					<row align="center">
+					<row align="center" id="msgStationeryAccountPickerRow">
 						<radio id="VIdent_tmpl_selectAccount" 
 							value="0" label="&templatesFolderOn.label;"
 							accesskey="&templatesFolderOn.accesskey;"
 							oncommand="setPickersState('msgStationeryAccountPicker', 'msgStationeryFolderPicker', event)" />
-						<menulist id="msgStationeryAccountPicker"
-							oncommand="noteSelectionChange('VIdent_tmpl_selectAccount')" 
-							flex="1" />
 					</row> 
-					<row align="center">
+					<row align="center" id="msgStationeryFolderPickerRow">
 						<radio id="VIdent_tmpl_selectFolder" 
 							value="1" label="&templateInOtherFolder.label;"
 							accesskey="&templateInOtherFolder.accesskey;"
 							oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
-						<menulist id="msgStationeryFolderPicker" 
-							oncommand="noteSelectionChange('VIdent_tmpl_selectFolder')" 
-							flex="1" />
 					</row>
 				</rows>
 			</grid>
@@ -506,3 +486,4 @@
 	</tabpanels>
 </tabbox>
 </dialog>
+</overlay>
