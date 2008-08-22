@@ -22,11 +22,6 @@
     Contributor(s): Thunderbird Developers
  * ***** END LICENSE BLOCK ***** */
 
-/**
-* some code copied and adapted from Thunderbird Sources
-* thanks to all Thunderbird Developers
-*/
-
 var vI_prefDialog = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 				.getService(Components.interfaces.nsIPrefService)
