@@ -272,15 +272,14 @@ var vI_prefDialog = {
 		if (vI_helper.olderVersion("TB", "2.0b") || vI_helper.olderVersion("SM", "1.5a")) {
 			document.getElementById("version-warning").setAttribute("hidden", "false");
 			document.getElementById("VIdent_identity.smart_draft").setAttribute("disabled", "true");
+			document.getElementById("VIdent_messageDraftsTab").setAttribute("hidden", "true");
+			document.getElementById("VIdent_messageTemplatesTab").setAttribute("hidden", "true");
 		}
 		if (vI_helper.olderVersion("TB", "1.5.0.7")) {
 			document.getElementById("notificationGroupBox").setAttribute("hidden", "true");	
 		}
 		if (vI_helper.olderVersion("TB", "2.0")) {
 			document.getElementById("fccReplyFollowsParentBox").setAttribute("hidden", "true");
-		}
-		if (vI_helper.olderVersion("SM", null)) { // any known seamonkey version
-			document.getElementById("VIdent_identity.menu_entry").setAttribute("hidden", "true");
 		}
 		
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));

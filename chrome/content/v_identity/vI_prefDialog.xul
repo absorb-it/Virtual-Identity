@@ -134,8 +134,8 @@
 		<tabs>
 			<tab label="&vI_prefDialog.vIdentityTab.valueTab.label;" />
 			<tab label="&vI_prefDialog.vIdentityTab.fccTab.label;" />
-			<tab label="&vI_prefDialog.vIdentityTab.draftsTab.label;" />
-			<tab label="&vI_prefDialog.vIdentityTab.tmplTab.label;" />
+			<tab id="VIdent_messageDraftsTab" label="&vI_prefDialog.vIdentityTab.draftsTab.label;" />
+			<tab id="VIdent_messageTemplatesTab" label="&vI_prefDialog.vIdentityTab.tmplTab.label;" />
 		</tabs>
 		<tabpanels>
 		<tabpanel orient="vertical">
