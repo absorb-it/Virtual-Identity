@@ -7,7 +7,6 @@ pref("extensions.virtualIdentity.draftFolderPickerMode", "3");
 pref("extensions.virtualIdentity.stationeryFolder", "");
 pref("extensions.virtualIdentity.stationeryFolderPickerMode", "3");
 pref("extensions.virtualIdentity.copySMIMESettings", false);
-pref("extensions.virtualIdentity.copyEnigmailSettings", false);
 pref("extensions.virtualIdentity.copyAttachVCardSettings", false);
 pref("extensions.virtualIdentity.show_smtp", false);
 pref("extensions.virtualIdentity.smart_draft", true);

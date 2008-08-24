@@ -144,8 +144,6 @@
 			<description width="500px">&vI_prefDialog.vIdentityTab.valueTab.desc;</description>
 			<checkbox id="VIdent_identity.copySMIMESettings" label="&vI_prefDialog.SMIME.label;"
 				prefstring="copySMIMESettings"/>
-			<checkbox id="VIdent_identity.copyEnigmailSettings" label="&vI_prefDialog.PGP.label;"
-				prefstring="copyEnigmailSettings"/>
 			<checkbox id="VIdent_identity.copyAttachVCardSettings" label="&vI_prefDialog.VCard.label;"
 				prefstring="copyAttachVCardSettings"/>
 			<spacer height="10px"/>
@@ -381,7 +379,7 @@
 					prefstring="storageExtras_sMime_messageEncryption"/>
 				<checkbox id="VIdent_identity.storageExtras_sMime_messageSignature" label="&vI_prefDialog.storageExtras.sMime.messageSignature.label;"
 					prefstring="storageExtras_sMime_messageSignature"/>
-				</vbox><spacer flex="1"/><vbox>
+				</vbox><spacer flex="1"/><vbox id="openPGPencryption">
 				<label value="&vI_prefDialog.storageExtras.openPGP.label;"/>
 				<checkbox id="VIdent_identity.storageExtras_openPGP_messageEncryption" label="&vI_prefDialog.storageExtras.openPGP.messageEncryption.label;"
 					prefstring="storageExtras_openPGP_messageEncryption"/>

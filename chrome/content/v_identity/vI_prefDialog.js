@@ -40,7 +40,6 @@ var vI_prefDialog = {
 				"VIdent_identity.stationeryFolderPickerMode",
 				"VIdent_identity.stationeryFolder",
 				"VIdent_identity.copySMIMESettings",
-				"VIdent_identity.copyEnigmailSettings",
 				"VIdent_identity.copyAttachVCardSettings",
 				"VIdent_identity.smart_reply",
 				"VIdent_identity.smart_reply_for_newsgroups",
@@ -281,7 +280,10 @@ var vI_prefDialog = {
 		if (vI_helper.olderVersion("TB", "2.0")) {
 			document.getElementById("fccReplyFollowsParentBox").setAttribute("hidden", "true");
 		}
-		
+		if (!(typeof(enigSetMenuSettings)=="function")) {
+			document.getElementById("openPGPencryption").setAttribute("hidden", "true");
+		}
+
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
 		vI_prefDialog.base.smartReplyHideSignature();
 		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));

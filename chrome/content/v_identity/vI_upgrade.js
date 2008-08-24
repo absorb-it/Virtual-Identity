@@ -171,7 +171,8 @@ vI_upgrade = {
 					"aBook_prefer_smart_reply", "aBook_ignore_smart_reply", "aBook_warn_vI_replace",
 					"aBook_use_non_vI", "aBook_notification", "storeVIdentity", "experimental",
 					"storage_use_for_smart_reply") },
-					{ version : "0.5.3", prefs : Array("storage_use_for_smart_reply") } ];
+					{ version : "0.5.3", prefs : Array("storage_use_for_smart_reply") },
+					{ version : "0.5.6", prefs : Array("copyEnigmailSettings") } ];
 		// remove obsolete preference-tree virtualIdentity
 		for (i = 0; i < obsoletePrefs.length; i++) {
 			// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2

@@ -61,6 +61,7 @@ var vI_account = {
 			vI_account._copyUnicharAttribute("encryption_cert_name");
 			vI_account._copyIntAttribute("encryptionpolicy");
 		}
+/*		seems not required, encryption happens before Virtual Identity account is created
 		if (vI.preferences.getBoolPref("copyEnigmailSettings")) {
 			// pgp/enigmail settings
 			vI_notificationBar.dump("## vI_account: copy PGP settings\n")
@@ -72,10 +73,8 @@ var vI_account = {
 			vI_account._copyIntAttribute("openPgpHeaderMode");
 			vI_account._copyCharAttribute("openPgpUrlName");
 		
-			vI_account._copyBoolAttribute("pgpSignEncrypted");
-			vI_account._copyBoolAttribute("pgpSignPlain");
 			vI_account._copyIntAttribute("defaultEncryptionPolicy");
-		}
+		}	*/
 		if (vI.preferences.getBoolPref("copyAttachVCardSettings")) {
 			// attach vcard
 			vI_notificationBar.dump("## vI_account: copy VCard settings\n")
