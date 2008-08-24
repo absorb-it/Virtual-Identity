@@ -29,7 +29,8 @@
 
 <!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/vI_rdfDataEditor.dtd">
 
-<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+<dialog id="vI_rdfDataEditor"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	ondialogaccept="return vI_rdfDataEditor.accept();"
 	title="&vI_rdfDataEditor.dlgTitle.label;" >
 

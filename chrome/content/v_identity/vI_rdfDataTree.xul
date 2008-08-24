@@ -34,7 +34,8 @@
   %communicatorDTD;
 ]>
 
-<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+<window id="vI_rdfDataTreeWindow"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
         width="750"
         height="500"
 	persist="width,height,screenX,screenY"
