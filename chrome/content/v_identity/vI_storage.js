@@ -308,7 +308,7 @@ var vI_storage = {
 		
 	awOnBlur : function (element) {
 		// only react on events triggered by addressCol2 - textinput Elements
-		if (! element.id.match(/^addressCol2*/)) return;
+		if (!element || ! element.id.match(/^addressCol2*/)) return;
 		vI_notificationBar.dump("## vI_storage: awOnBlur '" + element.id +"'\n");
 		vI_storage.updateVIdentityFromStorage(element);
 	},
