@@ -158,6 +158,8 @@ var vI = {
 	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
 				.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 
+	gMsgCompose : null, // to store the global gMsgCompose after MsgComposeDialog is closed
+
 	// Those variables keep pointers to original functions which might get replaced later
 	original_functions : {
 		GenericSendMessage : null,
@@ -336,6 +338,7 @@ var vI = {
 	
 	initSystemStage1 : function() {
 		vI_notificationBar.dump("## v_identity: initSystemStage1.\n")
+		vI.gMsgCompose = gMsgCompose;
 		vI_smtpSelector.init();
 		vI_msgIdentityClone.init();
 		vI_statusmenu.init();
