@@ -157,7 +157,7 @@ var vI_smartIdentity = {
 			vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_filter")).split(/\n/)
 		if (filterList.length == 0) filterList[0] == ""
 		
-		for (i = 0; i < filterList.length; i++) {
+		for (var i = 0; i < filterList.length; i++) {
 			const filterType = { None : 0, RegExp : 1, StrCmp : 2 }
 			var recentfilterType; var skipRegExp = false;
 			if (filterList.length <= 1 && filterList[0] == "")
@@ -167,7 +167,7 @@ var vI_smartIdentity = {
 					+ filterList[i].replace(/\\/g,"\\\\") + "'\n"); recentfilterType = filterType.RegExp; }
 			else	{ vI_notificationBar.dump("## vI_smartIdentity: filter emails, compare with '"
 					+ filterList[i] + "'\n"); recentfilterType = filterType.StrCmp; }
-			for (j = 0; j < smartIdentities.number; j++) { // check if recent email-address (pre-choosen identity) is found in 
+			for (var j = 0; j < smartIdentities.number; j++) { // check if recent email-address (pre-choosen identity) is found in 
 			// copied and adapted from correctIdentity, thank you for the RegExp-idea!
 				var add_addr = false;
 				switch (recentfilterType) {
@@ -203,7 +203,7 @@ var vI_smartIdentity = {
 		// add emails from selected headers (stored by vI_getHeader.xul/js)
 		var reply_headers = vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_headers")).split(/\n/)
 					
-		for (index = 0; index < reply_headers.length; index++) {
+		for (var index = 0; index < reply_headers.length; index++) {
 			// ------------- prepare fields to read the stored header ----------------
 			var replyHeader_splitted = reply_headers[index].split(/:/)
 			// use first part (all before ':') as the header name
@@ -236,7 +236,7 @@ var vI_smartIdentity = {
 				splitted.fullNames, splitted.combinedNames);
 			
 			// move found addresses step by step to allIdentities, and change values if requested
-			for (i = 0; i < splitted.number; i++) {
+			for (var i = 0; i < splitted.number; i++) {
 				// if there is no email than it makes no sense to use it as a sender
 				if (!splitted.emails.value[i].match(/^.*@.*$/)) {
 					vI_notificationBar.dump("## vI_smartIdentity:   skipping '" +
@@ -317,7 +317,7 @@ var vI_smartIdentity = {
 			/* set default FullName */
 			var smart_reply_defaultFullName = vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_defaultFullName"))
 			if (smart_reply_defaultFullName != "") {
-				for (index = 0; index < smartIdentities.number; index++) {
+				for (var index = 0; index < smartIdentities.number; index++) {
 					if (smartIdentities.fullNames[index] == "") {
 						smartIdentities.fullNames[index] = smart_reply_defaultFullName
 						smartIdentities.combinedNames[index] =
@@ -334,7 +334,7 @@ var vI_smartIdentity = {
 			if (vI.preferences.getBoolPref("smart_reply_ignoreFullName")) {
 				vI_notificationBar.dump("## vI_smartIdentity: compare with existing Identities (ignoring FullNames).\n")
 			
-				for (index = 0; index < smartIdentities.number; index++) {
+				for (var index = 0; index < smartIdentities.number; index++) {
 					var idKey = smartIdentities.getIdentityData(index).isExistingIdentity(true);
 					if (idKey) {
 						var newFullName = gAccountManager.getIdentity(idKey).fullName;
@@ -386,7 +386,7 @@ var vI_smartIdentity = {
 			vI.headerParser.parseHeadersWithArray(getCurrentIdentity().doBccList, bcc_addresses.emails,
 				bcc_addresses.fullNames, bcc_addresses.combinedNames);
 			
-			for (index = 0; index < bcc_addresses.number; index++) {
+			for (var index = 0; index < bcc_addresses.number; index++) {
 				if (allIdentities.emails[index] == bcc_addresses.emails.value[index]) {
 					skip_bcc = true; break;
 				}

@@ -51,7 +51,7 @@ keyTranslator.prototype = {
 	},
 	getID : function (idKey) {
 		if (!this.ID_NAMES) this.__getIDnames();
-		return this.ID_NAMES[idKey];
+		return (this.ID_NAMES[idKey])?this.ID_NAMES[idKey]:null;
 	},
 	getSMTPname : function (smtpKey) {
 		if (!this.SMTP_NAMES) this.__getSMTPnames();

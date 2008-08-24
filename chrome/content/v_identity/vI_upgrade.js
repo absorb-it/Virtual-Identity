@@ -22,7 +22,7 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-vI_upgrade = {
+var vI_upgrade = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.virtualIdentity."),
@@ -146,7 +146,7 @@ vI_upgrade = {
 						{ sourcePref : "storage_prefer_smart_reply", targetPref : "idSelection_storage_prefer_smart_reply" },
 						{ sourcePref : "storage_ignore_smart_reply", targetPref : "idSelection_storage_ignore_smart_reply" }) }];
 		// remove obsolete preference-tree virtualIdentity
-		for (i = 0; i < transferPrefs.length; i++) {
+		for (var i = 0; i < transferPrefs.length; i++) {
 			// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
 			if (!currentVersion || (vI_upgrade.versionChecker.compare(currentVersion, transferPrefs[i].version) < 0)) {
 				// remove any obsolete preferences under extensions.virtualIdentity
@@ -174,7 +174,7 @@ vI_upgrade = {
 					{ version : "0.5.3", prefs : Array("storage_use_for_smart_reply") },
 					{ version : "0.5.6", prefs : Array("copyEnigmailSettings") } ];
 		// remove obsolete preference-tree virtualIdentity
-		for (i = 0; i < obsoletePrefs.length; i++) {
+		for (var i = 0; i < obsoletePrefs.length; i++) {
 			// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
 			if (!currentVersion || (vI_upgrade.versionChecker.compare(currentVersion, obsoletePrefs[i].version) < 0)) {
 				// remove any obsolete preferences under extensions.virtualIdentity

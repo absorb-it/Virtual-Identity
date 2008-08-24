@@ -44,7 +44,7 @@ vI_smartReply_dialog = {
 		// var all_addresses = { number : 0, emails : {}, fullNames : {}, combinedNames : {},
 		//			id_keys : {}, smtp_keys : {} };
 		vI_smartReply_dialog.all_addresses = window.arguments[0];
-		for (index = 0; index < vI_smartReply_dialog.all_addresses.number; index++) {
+		for (var index = 0; index < vI_smartReply_dialog.all_addresses.number; index++) {
 			var menuentry = vI_smartReply_dialog.all_addresses.combinedNames[index]
 			var id = null; var smtp = null;
 			if (vI_smartReply_dialog.all_addresses.id_keys[index])

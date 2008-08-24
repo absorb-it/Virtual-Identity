@@ -76,7 +76,7 @@ var vI_htmlTextBox = {
 	
 	__echo : function (text) {
 		var text_list = text.split(/\n/)
-		for (i = 0; i < text_list.length; i++) {
+		for (var i = 0; i < text_list.length; i++) {
 			if (vI_htmlTextBox.__isHR(text_list[i])) continue;
 			var text_item = vI_htmlTextBox.__checkList(text_list[i]);
 			vI_htmlTextBox.__add(text_item);

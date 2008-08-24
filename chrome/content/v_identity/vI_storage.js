@@ -77,7 +77,7 @@ identityData.prototype = {
 		if (this.__keyTranslator.getID(this.id)) {
 			vI_notificationBar.dump("## vI_storage: isExistingIdentity compare with Identity " + this.id + "\n");
 
-			identity = gAccountManager.getIdentity(this.id)
+			var identity = gAccountManager.getIdentity(this.id)
 			if (this.__equalsIdentity(identity, ignoreFullName)) {
 				vI_notificationBar.dump("## vI_storage: existing Identity found: " + this.id + "\n");
 				return identity.key;
@@ -208,7 +208,7 @@ identityCollection.prototype =
 	menuItems : null,
 	
 	mergeWithoutDuplicates : function(addIdentityCollection) {
-		for (index = 0; index < addIdentityCollection.number; index++)
+		for (var index = 0; index < addIdentityCollection.number; index++)
 			this.addWithoutDuplicates(
 				addIdentityCollection.emails[index],
 				addIdentityCollection.fullNames[index],
@@ -219,7 +219,7 @@ identityCollection.prototype =
 	},
 
 	addWithoutDuplicates : function(email, fullName, combinedName, id_key, smtp_key, extras) {
-		for (index = 0; index < this.number; index++) {
+		for (var index = 0; index < this.number; index++) {
 			if (this.emails[index] == email &&
 				(!this.id_keys[index] || !id_key || 
 					(this.id_keys[index] == id_key && this.smtp_keys[index] == smtp_key))) {
@@ -573,7 +573,7 @@ var vI_storage = {
 		var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 		if (recipientType != "addr_bcc" || !getCurrentIdentity().doBcc) return false
 		var doBccArray = gMsgCompose.compFields.SplitRecipients(getCurrentIdentity().doBccList, false);
-		for ( var index = 0; index < doBccArray.count; index++ ) {
+		for (var index = 0; index < doBccArray.count; index++ ) {
 			if (doBccArray.StringAt(index) == awGetInputElement(row).value) {
 				vI_notificationBar.dump("## vI_storage: ignoring doBcc field '" +
 					doBccArray.StringAt(index) + "'.\n");

@@ -89,7 +89,7 @@ var vI_smtpSelector = {
 		if (!smtpKey) smtpKey = "";
 		vI_notificationBar.dump("## v_smtpSelector: setMenuToKey '" + smtpKey + "'\n")
 		MenuItems = vI_smtpSelector.elements.Obj_SMTPServerListPopup.childNodes
-		for (index = 0; index < MenuItems.length; index++) {
+		for (var index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].localName == "menuseparator") continue;
 			//~ vI_notificationBar.dump("## v_smtpSelector: compare with '" + MenuItems[index].getAttribute("key") + "'\n")
 			if (MenuItems[index].getAttribute("key") == smtpKey) {

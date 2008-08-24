@@ -51,8 +51,7 @@ var vI_getHeader = {
 		vI_getHeader.headerToSearch = [];
 		
 		// prepare headerToSearch for speedup.
-		var index
-		for (index = 0; index < headerList.length; index++) {
+		for (var index = 0; index < headerList.length; index++) {
 			var headerToSearch_splitted = headerList[index].split(/:/)
 			// use first part (all before ':') as the header name
 			var headerNameToSearch = headerToSearch_splitted[0].toLowerCase()
@@ -95,8 +94,8 @@ var vI_getHeader = {
 		// create array to count the header
 		var currentHeadersCounter = []
 		// loop through the headers
-		for (header in currentHeaderData) {
-			headerName = currentHeaderData[header].headerName.toLowerCase()
+		for (var header in currentHeaderData) {
+			var headerName = currentHeaderData[header].headerName.toLowerCase()
 
 			// remember list-id header to prevent using Mailing-List addresses as sender
 			if (headerName == "list-id") {
@@ -110,7 +109,7 @@ var vI_getHeader = {
 			vI_notificationBar.dump("## vI_getHeader: found header: " + headerName + 
 					"[:" + currentHeadersCounter[headerName] + "]");
 			
-			for (index = 0; index < vI_getHeader.headerToSearch.length; index++) {
+			for (var index = 0; index < vI_getHeader.headerToSearch.length; index++) {
 				if (headerName == vI_getHeader.headerToSearch[index].headerNameToSearch &&
 					(isNaN(vI_getHeader.headerToSearch[index].headerNumberToSearch) ||
 						vI_getHeader.headerToSearch[index].headerNumberToSearch == currentHeadersCounter[headerName])) {
@@ -140,9 +139,8 @@ var vI_getHeader = {
 	},
 	
 	hideExtraHeader: function() {
-		var index;
 		var header_list = vI_prepareHeader.addedHeaders
-		for (index = 0; index < header_list.length; index++) {
+		for (var index = 0; index < header_list.length; index++) {
 			var header_to_search_splitted=header_list[index].split(/:/)
 			var header_to_search=header_to_search_splitted[0].toLowerCase()
 			if (typeof(gExpandedHeaderView[header_to_search]) == "object") {
@@ -223,13 +221,13 @@ var vI_prepareHeader = {
 				vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase()
 				+ " ";
 
-			for (index = 0; index < header_list.length; index++) {
+			for (var index = 0; index < header_list.length; index++) {
 				var headerToSearch_splitted = header_list[index].split(/:/)
 				var headerToSearch = headerToSearch_splitted[0].toLowerCase()
 				
 				var j; var found = false;
 				// check if Header is included in collapsed HeaderView
-				for (j = 0; j < gCollapsedHeaderList.length; j++) {
+				for (var j = 0; j < gCollapsedHeaderList.length; j++) {
 					if (gCollapsedHeaderList[j].name == headerToSearch) {
 						vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' in gCollapsedHeaderList\n");
 						found = true; break;
@@ -237,7 +235,7 @@ var vI_prepareHeader = {
 				}
 				if (found) continue;
 				// check if Header is included in expanded HeaderView
-				for (j = 0; j < gExpandedHeaderList.length; j++) {
+				for (var j = 0; j < gExpandedHeaderList.length; j++) {
 					if (gExpandedHeaderList[j].name == headerToSearch) {
 						vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' in gExpandedHeaderList\n");
 						found = true; break;
@@ -275,8 +273,8 @@ var vI_prepareHeader = {
 		if (vI_prepareHeader.addedHeaders.length > 0) {
 			var extraHdrs = vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase().split(/ /);
 		
-			for (i = 0; i < vI_prepareHeader.addedHeaders.length; i++) {
-				for (j = 0; j < extraHdrs.length; j++) {
+			for (var i = 0; i < vI_prepareHeader.addedHeaders.length; i++) {
+				for (var j = 0; j < extraHdrs.length; j++) {
 					if (extraHdrs[j] == vI_prepareHeader.addedHeaders[i]) {
 						extraHdrs.splice(j,1);
 						break;

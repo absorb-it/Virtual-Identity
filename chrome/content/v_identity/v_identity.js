@@ -451,7 +451,7 @@ var vI = {
 	remVirtualIdentityFromMsgIdentityMenu : function()
 	{
 		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.childNodes
-		for (index = 1; index <= MenuItems.length; index++) {
+		for (var index = 1; index <= MenuItems.length; index++) {
 			if ( MenuItems[MenuItems.length - index].getAttribute("value") == vI_account.account.defaultIdentity.key )
 				vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.removeChild(MenuItems[MenuItems.length - index])
 		}

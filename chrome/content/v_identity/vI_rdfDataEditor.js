@@ -59,7 +59,7 @@ var vI_rdfDataEditor = {
 
 		var MenuItems = document.getElementById("identity_list_popup").childNodes
 		
-		for (index = 0; index < MenuItems.length; index++) {
+		for (var index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].getAttribute("value") == window.arguments[0]["idKey"]) {
 				document.getElementById("identity_list").selectedItem =
 						MenuItems[index];
