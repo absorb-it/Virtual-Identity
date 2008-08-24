@@ -4,24 +4,27 @@ The css will be loaded with vI_htmlTextBox.__setCSS() because the
 embedded browser is not able to access chrome
 */
 
-label.bool {
+div.bool {
 	background-repeat:no-repeat;
 	background-position: center;
 	color: transparent;
 }
 
-td.equal label.bool {
+td.equal div.bool {
 	background-image: url("chrome://v_identity/skin/notchecked-equal.png");
 }
-td.unequal label.bool {
+td.unequal div.bool {
 	background-image: url("chrome://v_identity/skin/notchecked-unequal.png");
 }
-td.equal label.bool.checked {
+td.equal div.bool.checked {
 	background-image: url("chrome://v_identity/skin/checked-equal.png");
 }
-td.unequal label.bool.checked {
+td.unequal div.bool.checked {
 	background-image: url("chrome://v_identity/skin/checked-unequal.png");
 }
+
+@media braille { label.screen { display:none; } }
+@media screen { label.braille { display:none; } }
 
 h1 {
 	font-size: medium;

@@ -296,9 +296,9 @@ vI_storageExtras_sMime_messageEncryption.prototype = {
 			case null:
 				return "<label />";
 			case "true":
-				return "<label class='bool checked'>yes</label>"
+				return "<div class='bool checked'><label class='screen'>&nbsp;<label><label class='braille'>yes</label></div>"
 			case "false":
-				return "<label class='bool'>no</label>"
+				return "<div class='bool'><label class='screen'>&nbsp;<label><label class='braille'>no</label></div>"
 		}
 	},
 
@@ -361,9 +361,9 @@ vI_storageExtras_checkbox.prototype = {
 			case null:
 				return "<label />";
 			case "true":
-				return "<label class='bool checked'>yes</label>"
+				return "<div class='bool checked'><label class='screen'>&nbsp;<label><label class='braille'>yes</label></div>"
 			case "false":
-				return "<label class='bool'>no</label>"
+				return "<div class='bool'><label class='screen'>&nbsp;<label><label class='braille'>no</label></div>"
 		}
 	},
 
