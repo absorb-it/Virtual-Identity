@@ -45,13 +45,24 @@ var vI_rdfDatasource = {
 		.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 	
 	init: function() {
-		if (vI_rdfDatasource.rdfDataSource) return;
+		if (vI_rdfDatasource.rdfDataSource) return;		
+		var protoHandler = Components.classes["@mozilla.org/network/protocol;1?name=file"]
+			.getService(Components.interfaces.nsIFileProtocolHandler)
+		var newFile = Components.classes["@mozilla.org/file/local;1"]
+            		.createInstance(Components.interfaces.nsILocalFile);
+		
 		var file = Components.classes["@mozilla.org/file/directory_service;1"]
 			.getService(Components.interfaces.nsIProperties)
 			.get("ProfD", Components.interfaces.nsIFile);
-		vI_notificationBar.dump("## vI_rdfDatasource read rdf from '" + file.path + "/" + vI_rdfDatasource.rdfFileName + "'\n");
+		var delimiter = (file.path.match(/\\/))?"\\":"/";
+
+		newFile.initWithPath(file.path + delimiter + vI_rdfDatasource.rdfFileName);
+		var fileURI = protoHandler.newFileURI(newFile);
+
+		vI_notificationBar.dump("## vI_rdfDatasource read rdf from '" + fileURI.spec + "'\n");
+
 		vI_rdfDatasource.rdfDataSource =
-			vI_rdfDatasource.rdfService.GetDataSourceBlocking("file://" + file.path + "/" + vI_rdfDatasource.rdfFileName);
+			vI_rdfDatasource.rdfService.GetDataSourceBlocking(fileURI.spec);
 	},
 	
 	rdfUpgradeRequired: function() {
