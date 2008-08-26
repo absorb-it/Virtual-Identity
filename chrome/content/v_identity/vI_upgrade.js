@@ -46,7 +46,9 @@ var vI_upgrade = {
 	// by default the wizard is not shown if it is a one-version-forward upgrade
 	quick_upgrade : function() {
 		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
-		var currentVersion = vI_rdfDatasource.getCurrentExtFileVersion().split(/\./);
+		var currentVersion = vI_rdfDatasource.getCurrentExtFileVersion()
+		if (!currentVersion) return false;
+		currentVersion = currentVersion.split(/\./);
 		var nextVersion = currentVersion[0] + "." + currentVersion[1] + "."
 		if (currentVersion[2].match(/pre/))
 		 	nextVersion += parseInt(currentVersion[2])
