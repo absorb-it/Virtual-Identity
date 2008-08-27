@@ -282,8 +282,8 @@ var vI = {
 				vI.Cleanup_Account();
 				vI_account.createAccount();
 				vI.addVirtualIdentityToMsgIdentityMenu();
-				vI.original_functions.GenericSendMessage(msgType);
 				vI_storage.storeVIdentityToAllRecipients(msgType);
+				vI.original_functions.GenericSendMessage(msgType);
 				if (window.cancelSendMessage) {
 					vI.Cleanup_Account();
 					vI_notificationBar.dump("## v_identity: SendMessage cancelled\n");

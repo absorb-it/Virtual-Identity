@@ -451,8 +451,7 @@ var vI_storage = {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
 				vI_storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
-			// by using a setTimeout the possible prompt doesn't stopp the MessageSending
-			window.setTimeout(vI_storage.__updateStorageFromVIdentity, 0, awGetInputElement(row).value, recipientType)
+			vI_storage.__updateStorageFromVIdentity(awGetInputElement(row).value, recipientType);
 		}
 		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n")
 	},
