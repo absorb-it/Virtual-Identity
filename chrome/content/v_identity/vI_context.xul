@@ -57,9 +57,9 @@
 		<menu id="vI_Menu" hidden="true" label="&vident.vI_Menu.label;">
 			<menupopup>
 				<menuitem label="&vident.vI_Menu.Settings.label;"
-					  oncommand="var chromeURL=(!vI_helper.olderVersion('TB', null) || vI_helper.olderVersion('TB', '3.0a1pre'))?'preTB3.xul':'TB3.xul';	window.openDialog('chrome://v_identity/content/vI_prefDialog_' + chromeURL, '', 'chrome,modal');" />
+					  oncommand="window.openDialog('chrome://v_identity/content/vI_prefDialogOpener.xul', '', 'chrome');" />
 				<menuitem label="&vident.vI_Menu.DataEditor.label;"
-					  oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome,modal');" />
+					  oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome');" />
 			</menupopup>
 		</menu>
 	</menupopup> 
