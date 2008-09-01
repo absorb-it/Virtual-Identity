@@ -403,7 +403,6 @@ var vI_msgIdentityClone = {
 	markAsNewAccount : function(existingIdentity) {
 		vI_msgIdentityClone.initMsgIdentityTextbox_clone();
 		if (!existingIdentity) {
-			vI.replacement_functions.replaceGenericFunction()
 			if (vI.elements.Obj_vILogo.getAttribute("hidden") != "false") {
 				vI_msgIdentityClone.elements.Obj_MsgIdentityTextbox_clone
 					.setAttribute("class", vI_msgIdentityClone.text_virtualId_class);
@@ -434,7 +433,6 @@ var vI_msgIdentityClone = {
 					.setAttribute("class", vI_msgIdentityClone.text_usualId_class);
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone
 					.setAttribute("class", vI_msgIdentityClone.icon_usualId_class);
-				vI.Cleanup();
 				vI.elements.Obj_vILogo.setAttribute("hidden","true");
 				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("value",existingIdentity)
 			}

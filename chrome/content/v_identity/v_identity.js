@@ -192,12 +192,12 @@ var vI = {
 		},
 		ComposeProcessDone: function(aResult) {
 			vI_notificationBar.dump("## v_identity: StateListener reports ComposeProcessDone\n");
-			vI.Cleanup_Account(); // not really required, parallel handled by vI.close
+			vI.Cleanup(); // not really required, parallel handled by vI.close
 			vI_storage.clean();
 		},
 		SaveInFolderDone: function(folderURI) { 
 			vI_notificationBar.dump("## v_identity: SaveInFolderDone\n");
-			vI.Cleanup_Account();
+			vI.Cleanup();
 			vI_storage.clean();
 		}
 	},
@@ -257,38 +257,36 @@ var vI = {
 			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 				.getService(Components.interfaces.nsIPromptService);
 			vI_notificationBar.dump("## v_identity: VIdentity_GenericSendMessage\n");
-			vI.msgType = msgType; 
 			
-			// dont allow user to fake identity if Message is not sended NOW and thunderbird-version is below 2.0 !!!!
-			if (msgType != nsIMsgCompDeliverMode.Now &&
-				(vI_helper.olderVersion("TB", "2.0b") || vI_helper.olderVersion("SM", "1.5a"))) {
-				var server = gAccountManager.defaultAccount.incomingServer.prettyName
-				var name = gAccountManager.defaultAccount.defaultIdentity.fullName
-				var email = gAccountManager.defaultAccount.defaultIdentity.email
+			var vid = (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.getAttribute("value") == "vid");
 
-				//Get the bundled string file.
-				if (promptService.confirm(window,"Error",vI.elements.strings.getString("vident.sendLater.warning") +
-					vI.elements.strings.getString("vident.sendLater.prefix") +
-					name + " " + email + " [" + server + "]" + vI.elements.strings.getString("vident.sendLater.postfix")))
-					{
-						vI_msgIdentityClone.resetMenuToDefault();
-						GenericSendMessage( msgType );
-					}
-				else { return; }
-			}
-			else if ( msgType != nsIMsgCompDeliverMode.Now || !vI.preferences.getBoolPref("warn_virtual") || 
-				promptService.confirm(window,"Warning",vI.elements.strings.getString("vident.sendVirtual.warning")) ) {
-				// just to be sure to use the recent settings if account was left by cancelled Send Operation
-				vI.Cleanup_Account();
-				vI_account.createAccount();
-				vI.addVirtualIdentityToMsgIdentityMenu();
-				vI_storage.storeVIdentityToAllRecipients(msgType);
-				vI.original_functions.GenericSendMessage(msgType);
-				if (window.cancelSendMessage) {
-					vI.Cleanup_Account();
-					vI_notificationBar.dump("## v_identity: SendMessage cancelled\n");
+			if (msgType != nsIMsgCompDeliverMode.Now) {
+				// dont allow user to fake identity if Message is not sended NOW and thunderbird-version is below 2.0 !!!!
+				if (vid && (vI_helper.olderVersion("TB", "2.0b") || vI_helper.olderVersion("SM", "1.5a"))) {
+					var server = gAccountManager.defaultAccount.incomingServer.prettyName
+					var name = gAccountManager.defaultAccount.defaultIdentity.fullName
+					var email = gAccountManager.defaultAccount.defaultIdentity.email
+					var query = vI.elements.strings.getString("vident.sendLater.warning") +
+						vI.elements.strings.getString("vident.sendLater.prefix") +
+						name + " " + email + " [" + server + "]" + 
+						vI.elements.strings.getString("vident.sendLater.postfix")
+					
+					if (!promptService.confirm(window,"Error",query)) return;
+					else vI_msgIdentityClone.resetMenuToDefault();
 				}
+				vI.original_functions.GenericSendMessage(msgType);
 			}
+			else if ( (vid && vI.preferences.getBoolPref("warn_virtual") &&
+					!(promptService.confirm(window,"Warning",
+						vI.elements.strings.getString("vident.sendVirtual.warning")))) ||
+				  (!vid && vI.preferences.getBoolPref("warn_nonvirtual") &&
+					!(promptService.confirm(window,"Warning",
+						vI.elements.strings.getString("vident.sendNonvirtual.warning")))) )
+					return;
+			
+			if (vid) vI.prepareAccount();
+			vI_storage.storeVIdentityToAllRecipients(msgType);
+			vI.original_functions.GenericSendMessage(msgType);
 		},
 		
 		replace_FillIdentityList : function() {
@@ -302,21 +300,14 @@ var vI = {
 				vI.original_functions.FillIdentityListPopup = FillIdentityListPopup;
 				FillIdentityListPopup = vI.replacement_functions.FillIdentityListPopup;
 			}
-		},
-		
-		replaceGenericFunction : function()
-		{
-			if (GenericSendMessage == vI.replacement_functions.GenericSendMessage) return;
-			vI_notificationBar.dump("## v_identity: replace GenericSendMessage (Virtual Identity activated)\n");
-			GenericSendMessage = vI.replacement_functions.GenericSendMessage;
-		},
+		}
 	},
 
 	remove: function() {
 		window.removeEventListener('compose-window-reopen', vI.reopen, true);
 		window.removeEventListener('compose-window-close', vI.close, true);
 		vI_notificationBar.dump("## v_identity: end. remove Account if there.\n")
-		vI.Cleanup_Account();
+		vI.Cleanup();
 		vI_storage.clean();
 	},
 
@@ -352,7 +343,7 @@ var vI = {
 	},
 	
 	close : function() {
-		vI.Cleanup_Account();
+		vI.Cleanup();
 		vI_storage.clean();
 	},
 	
@@ -375,14 +366,9 @@ var vI = {
 	
 	adapt_genericSendMessage : function() {
 		if (vI.original_functions.GenericSendMessage) return; // only initialize this once
-	
-		// adapt GenericSendMessage to know SendMsgType
 		vI_notificationBar.dump("## v_identity: adapt GenericSendMessage\n");
 		vI.original_functions.GenericSendMessage = GenericSendMessage;
-		GenericSendMessage = function (msgType) {
-				vI.msgType = msgType; if (vI.warning(msgType)) {
-					vI.original_functions.GenericSendMessage(msgType);
-					vI_storage.storeVIdentityToAllRecipients(msgType); } }		
+		GenericSendMessage = vI.replacement_functions.GenericSendMessage;
 	},
 	
 	reopen: function() {
@@ -424,67 +410,46 @@ var vI = {
 		vI_notificationBar.dump("## v_identity: reopen done.\n")
 	},
 	
-	// show a warning if you are using a usual (non-virtual) identity
-	warning : function(msgType) {
-		var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-			.getService(Components.interfaces.nsIPromptService);
-		return ((msgType != nsIMsgCompDeliverMode.Now) || !vI.preferences.getBoolPref("warn_nonvirtual") || 
-			promptService.confirm(window,"Warning",vI.elements.strings.getString("vident.sendNonvirtual.warning")))
+	tempStorage: { BaseIdentity : null, NewIdentity : null },
+
+	__setSelectedIdentity : function(menuItem) {
+		vI.elements.Obj_MsgIdentity.selectedItem = menuItem;
+		vI.elements.Obj_MsgIdentity.setAttribute("label", menuItem.getAttribute("label"));
+		vI.elements.Obj_MsgIdentity.setAttribute("accountname", menuItem.getAttribute("accountname"));
+		vI.elements.Obj_MsgIdentity.setAttribute("value", menuItem.getAttribute("value"));
 	},
-	
+
 	// sets the values of the dropdown-menu to the ones of the newly created account
 	addVirtualIdentityToMsgIdentityMenu : function()
 	{
-		vI.storeBaseIdentity = vI.elements.Obj_MsgIdentity.selectedItem
-		var newMenuItem = vI_helper.addIdentityMenuItem(vI.elements.Obj_MsgIdentityPopup,
+		vI.tempStorage.BaseIdentity = vI.elements.Obj_MsgIdentity.selectedItem;
+		vI.tempStorage.NewIdentity =
+			vI_helper.addIdentityMenuItem(vI.elements.Obj_MsgIdentityPopup,
 						vI_account.account.defaultIdentity.identityName,
 						" - " +  vI_account.account.incomingServer.prettyName,
 						vI_account.account.key,
-						vI_account.account.defaultIdentity.key, null, null, null)
-		vI.elements.Obj_MsgIdentity.selectedItem = newMenuItem;
-		vI.elements.Obj_MsgIdentity.setAttribute("label", newMenuItem.getAttribute("label"));
-		vI.elements.Obj_MsgIdentity.setAttribute("accountname", newMenuItem.getAttribute("accountname"));
-		vI.elements.Obj_MsgIdentity.setAttribute("value", newMenuItem.getAttribute("value"));
+						vI_account.account.defaultIdentity.key, null, null, null);
+		vI.__setSelectedIdentity(vI.tempStorage.NewIdentity);
 	},
 	
-	// sets the values of the dropdown-menu to the ones of the newly created account
-	remVirtualIdentityFromMsgIdentityMenu : function()
+	removeVirtualIdentityFromMsgIdentityMenu : function()
 	{
-		MenuItems = vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.childNodes
-		for (var index = 1; index <= MenuItems.length; index++) {
-			if ( MenuItems[MenuItems.length - index].getAttribute("value") == vI_account.account.defaultIdentity.key )
-				vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.removeChild(MenuItems[MenuItems.length - index])
-		}
-		vI.elements.Obj_MsgIdentity.selectedItem = vI.storeBaseIdentity;
-		vI.elements.Obj_MsgIdentity.setAttribute("label", vI.storeBaseIdentity.getAttribute("label"));
-		vI.elements.Obj_MsgIdentity.setAttribute("accountname", vI.storeBaseIdentity.getAttribute("accountname"));
-		vI.elements.Obj_MsgIdentity.setAttribute("value", vI.storeBaseIdentity.getAttribute("value"));
-		vI.storeBaseIdentity = null;
+		if (!vI.tempStorage.BaseIdentity) return; // don't try to remove Item twice
+		vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.removeChild(vI.tempStorage.NewIdentity);
+		vI.__setSelectedIdentity(vI.tempStorage.BaseIdentity);
+		vI.tempStorage.NewIdentity = null;
+		vI.tempStorage.BaseIdentity = null;
 	},
 
-	// Clean all the things I had changed (except the FillIdentityListPopup)
-	Cleanup : function()
-	{
-		vI_notificationBar.dump("## v_identity: Cleanup\n");
-		vI.Cleanup_Account();
-		
-		// restore function
-		if (GenericSendMessage == vI.replacement_functions.GenericSendMessage) {
-			GenericSendMessage = function (msgType) {
-				vI.msgType = msgType; if (vI.warning(msgType)) {
-					vI.original_functions.GenericSendMessage(msgType);
-					vI_storage.storeVIdentityToAllRecipients(msgType); } }
-			vI_notificationBar.dump("## v_identity: restored GenericSendMessage (Virtual Identity deactivated)\n");
-		}
+	prepareAccount : function() {
+		vI.Cleanup(); // just to be sure that nothing is left (maybe last time sending was irregularily stopped)
+		vI_account.createAccount();
+		vI.addVirtualIdentityToMsgIdentityMenu();
 	},
 
-	// removes the account
-	Cleanup_Account : function() {
-		// remove temporary Account
-		if (vI_account.account) {
-			vI.remVirtualIdentityFromMsgIdentityMenu();
-			vI_account.removeUsedVIAccount();
-		}
+	Cleanup : function() {
+		vI.removeVirtualIdentityFromMsgIdentityMenu();
+		vI_account.removeUsedVIAccount();
 	},
 }
 
