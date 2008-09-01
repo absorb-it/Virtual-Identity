@@ -24,6 +24,9 @@
    - ***** END LICENSE BLOCK ***** -->
    
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+<?xml-stylesheet href="chrome://global/content/console.css" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/console/console.css" type="text/css"?> 
+
 <!DOCTYPE overlay [
 <!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
 %versionDTD;
@@ -44,8 +47,11 @@
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_htmlTextBox.js" />
 
-	<!-- following element just stores the Ext-Version, seamonkey has no extensionmanager -->
 	<vbox id="messagepanebox" >
+		<!-- following element just stores the Ext-Version, seamonkey has no extensionmanager -->
 		<label id="extVersion" value="&vident.version;" hidden="true" />
+	  	<splitter id="vIErrorBoxSplitter" hidden="true" />
+		<vbox id="vIErrorBox" context="ConsoleContext" sortOrder="reverse" hidden="true" />
+
 	</vbox>
 </overlay>

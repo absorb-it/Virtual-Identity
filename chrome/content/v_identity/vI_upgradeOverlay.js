@@ -37,6 +37,18 @@ var vI_upgradeOverlay = {
 			vI_rdfDatasource.storeRDFVersion();
 			vI_rdfDatasource.storeExtVersion();
 		}
+		// show error-Console if required
+		var prefroot = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch(null);
+		if (prefroot.getBoolPref("extensions.virtualIdentity.error_console")) {
+			document.getElementById("vIErrorBoxSplitter").removeAttribute("hidden");
+			document.getElementById("vIErrorBox").removeAttribute("hidden");
+			document.getElementById("vIErrorBox").setAttribute("class", "console-box");
+			prefroot.setBoolPref("javascript.options.showInConsole", true);
+			prefroot.setBoolPref("browser.dom.window.dump.enabled", true);
+			prefroot.setBoolPref("javascript.options.strict", true);
+		}
 	}
 }
 addEventListener('messagepane-loaded', vI_upgradeOverlay.init, true);

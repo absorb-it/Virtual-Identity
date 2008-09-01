@@ -102,7 +102,7 @@ notification {
 	padding: 0;
 }
 
-#vIDebugBox {
+#vIDebugBox, #vIErrorBox{
 	overflow: auto;
 	font-size: x-small;
 	height: 10em;

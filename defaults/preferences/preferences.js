@@ -20,6 +20,7 @@ pref("extensions.virtualIdentity.smart_reply_ignoreFullName", false);
 pref("extensions.virtualIdentity.smart_reply_for_newsgroups", false);
 pref("extensions.virtualIdentity.autoTimestamp", false);
 pref("extensions.virtualIdentity.get_header_notification", true);
+pref("extensions.virtualIdentity.error_console", false);
 pref("extensions.virtualIdentity.debug_notification", false);
 pref("extensions.virtualIdentity.notification_timeout", 5);
 pref("extensions.virtualIdentity.warn_nonvirtual", false);
