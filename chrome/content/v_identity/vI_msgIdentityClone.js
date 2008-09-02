@@ -37,7 +37,11 @@ var vI_msgIdentityClone = {
 		Obj_MsgIdentityPopup_clone : null,
 		Obj_MsgIdentityTextbox_clone : null
 	},
-	
+
+	AccountManager : Components.classes["@mozilla.org/messenger/account-manager;1"]
+		.getService(Components.interfaces.nsIMsgAccountManager),
+
+
 	init : function() {
 		var reopen = vI_msgIdentityClone.elements.Obj_MsgIdentity;
 		if (!reopen) {
@@ -98,13 +102,13 @@ var vI_msgIdentityClone = {
 			.setAttribute("accountname", vI_helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem));
 		// Identitys might have IdentityName set differently to 'name <email>',
 		// so retrieve name and email directly from Identity
-		var identity = gAccountManager.getIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"))
+		var identity = vI_msgIdentityClone.AccountManager.getIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"))
 		var label = identity.getUnicharAttribute("fullName") + " <" + identity.getUnicharAttribute("useremail") + ">"
 		vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.setAttribute("label", label);
 	},
 	
 	resetMenuToDefault : function () {
-		vI_msgIdentityClone.setMenuToIdentity(gAccountManager.defaultAccount.defaultIdentity.key);
+		vI_msgIdentityClone.setMenuToIdentity(vI_msgIdentityClone.AccountManager.defaultAccount.defaultIdentity.key);
 	},
 
 	setMenuToMenuItem : function (menuItem) {
@@ -226,7 +230,7 @@ var vI_msgIdentityClone = {
 			
 			// Identitys might have IdentityName set differently to 'name <email>',
 			// so retrieve name and email directly from Identity
-			var identity = gAccountManager.getIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"))
+			var identity = vI_msgIdentityClone.AccountManager.getIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity.selectedItem.getAttribute("value"))
 			label = identity.getUnicharAttribute("fullName") + " <" + identity.getUnicharAttribute("useremail") + ">"
 		}
 		else {
@@ -318,7 +322,7 @@ var vI_msgIdentityClone = {
 		if (!id) id = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value;
 
 		vI_notificationBar.dump("## vI_msgIdentityClone: initReplyToFields id=" + id + "\n");
-		var replyTo = gAccountManager.getIdentity(id).replyTo
+		var replyTo = vI_msgIdentityClone.AccountManager.getIdentity(id).replyTo
 		vI_notificationBar.dump("## vI_msgIdentityClone: initReplyToFields identity.replyTo: " + replyTo + "\n");
 		if (replyTo == "") return
 		
