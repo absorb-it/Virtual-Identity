@@ -122,6 +122,7 @@ var vI_notificationBar = {
 		else vI_notificationBar.__dumpDebugBox("mail-client seems not supported by Virtual Identity Extension")
 		
 		// copied and adapted from nightly tester tools from Dave Townsend (http://www.oxymoronical.com/web/firefox/nightly)
+		if (Components.classes["@mozilla.org/extensions/manager;1"]) { // only works if extensionsmanager is available
 		try { 	var em = Components.classes["@mozilla.org/extensions/manager;1"]
 				.getService(Components.interfaces.nsIExtensionManager);
 			var items = em.getItemList(Components.interfaces.nsIUpdateItem.TYPE_EXTENSION, {});
@@ -145,6 +146,7 @@ var vI_notificationBar = {
 			}
 		}
 		catch (e) {};
+		};
 		vI_notificationBar.__dumpDebugBox("--------------------------------------------------------------------------------\n")
 	},
 	

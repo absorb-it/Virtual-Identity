@@ -95,6 +95,7 @@ var vI_htmlTextBox = {
 			vI_htmlTextBox.Obj_TextBox.contentDocument.body.appendChild(new_hr);
 			return true;
 		}
+		return false;
 	},
 	
 	currentList : null,
