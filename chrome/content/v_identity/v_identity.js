@@ -435,8 +435,10 @@ var vI = {
 	removeVirtualIdentityFromMsgIdentityMenu : function()
 	{
 		if (!vI.tempStorage.BaseIdentity) return; // don't try to remove Item twice
-		vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.removeChild(vI.tempStorage.NewIdentity);
-		vI.__setSelectedIdentity(vI.tempStorage.BaseIdentity);
+		try {	// might not exist anymore (window closed), so just try to remove it
+			vI_msgIdentityClone.elements.Obj_MsgIdentity.firstChild.removeChild(vI.tempStorage.NewIdentity);
+			vI.__setSelectedIdentity(vI.tempStorage.BaseIdentity);
+		} catch (e) { };
 		vI.tempStorage.NewIdentity = null;
 		vI.tempStorage.BaseIdentity = null;
 	},
