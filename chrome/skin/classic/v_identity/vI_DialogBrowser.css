@@ -7,7 +7,6 @@ embedded browser is not able to access chrome
 div.bool {
 	background-repeat:no-repeat;
 	background-position: center;
-	color: transparent;
 }
 
 td.equal div.bool {
