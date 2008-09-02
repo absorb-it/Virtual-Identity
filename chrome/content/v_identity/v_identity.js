@@ -272,20 +272,20 @@ var vI = {
 						vI.elements.strings.getString("vident.sendLater.postfix")
 					
 					if (!promptService.confirm(window,"Error",query)) return;
-					else vI_msgIdentityClone.resetMenuToDefault();
+					else { vI_msgIdentityClone.resetMenuToDefault(); vid = false; }
 				}
-				vI.original_functions.GenericSendMessage(msgType);
 			}
-			else if ( (vid && vI.preferences.getBoolPref("warn_virtual") &&
+			else {
+				if ( (vid && vI.preferences.getBoolPref("warn_virtual") &&
 					!(promptService.confirm(window,"Warning",
 						vI.elements.strings.getString("vident.sendVirtual.warning")))) ||
 				  (!vid && vI.preferences.getBoolPref("warn_nonvirtual") &&
 					!(promptService.confirm(window,"Warning",
 						vI.elements.strings.getString("vident.sendNonvirtual.warning")))) )
 					return;
-			
+				vI_storage.storeVIdentityToAllRecipients(msgType);	
+			}
 			if (vid) vI.prepareAccount();
-			vI_storage.storeVIdentityToAllRecipients(msgType);
 			vI.original_functions.GenericSendMessage(msgType);
 		},
 		
