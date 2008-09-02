@@ -319,8 +319,14 @@ var vI_msgIdentityClone = {
 	// searches the first reply-to row and assumes that this is the one we like to adapt
 	initReplyToFields : function(id) {
 		// v_identity calls initReplyToFields in stage2 without id
-		if (!id) id = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value;
-
+		if (!id) {
+			var selectedItem = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem;
+			if (selectedItem) id = selectedItem.value;
+			else {	// just wait a while and try again
+				window.setTimeout(vI_msgIdentityClone.initReplyToFields, 100);
+				return;
+			}
+		}
 		vI_notificationBar.dump("## vI_msgIdentityClone: initReplyToFields id=" + id + "\n");
 		var replyTo = vI_msgIdentityClone.AccountManager.getIdentity(id).replyTo
 		vI_notificationBar.dump("## vI_msgIdentityClone: initReplyToFields identity.replyTo: " + replyTo + "\n");
