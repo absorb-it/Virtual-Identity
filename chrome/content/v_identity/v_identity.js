@@ -144,7 +144,7 @@ var vI_statusmenu = {
 
 		var elem = vI_statusmenu.objStorageSaveMenuItem;
 		vI_statusmenu.menuConstraint(elem);
-	},
+	}
 }
 
 var vI = {
@@ -164,7 +164,7 @@ var vI = {
 	original_functions : {
 		GenericSendMessage : null,
 		FillIdentityListPopup : null,	// TB 2.x
-		FillIdentityList : null,	// TB 3.x
+		FillIdentityList : null		// TB 3.x
 	},
 
 	// some pointers to the layout-elements of the extension
@@ -452,7 +452,7 @@ var vI = {
 	Cleanup : function() {
 		vI.removeVirtualIdentityFromMsgIdentityMenu();
 		vI_account.removeUsedVIAccount();
-	},
+	}
 }
 
 

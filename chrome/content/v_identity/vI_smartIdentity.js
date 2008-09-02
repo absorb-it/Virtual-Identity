@@ -386,8 +386,8 @@ var vI_smartIdentity = {
 			vI.headerParser.parseHeadersWithArray(getCurrentIdentity().doBccList, bcc_addresses.emails,
 				bcc_addresses.fullNames, bcc_addresses.combinedNames);
 			
-			for (var index = 0; index < bcc_addresses.number; index++) {
-				if (allIdentities.emails[index] == bcc_addresses.emails.value[index]) {
+			for (var i = 0; i < bcc_addresses.number; i++) {
+				if (allIdentities.emails[index] == bcc_addresses.emails.value[i]) {
 					skip_bcc = true; break;
 				}
 			}

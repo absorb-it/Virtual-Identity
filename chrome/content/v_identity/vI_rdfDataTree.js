@@ -187,7 +187,7 @@ var vI_rdfDataTree = {
 	},
 	
 	__updateMenu : function(modifySelected, removeSelected) {
-		noSelections = (vI_rdfDataTree.__treeElem.view.selection.count == 0)
+		var noSelections = (vI_rdfDataTree.__treeElem.view.selection.count == 0)
 		modifySelected.setAttribute("disabled", noSelections)
 		removeSelected.setAttribute("disabled", noSelections)	
 	},

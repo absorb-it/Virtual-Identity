@@ -141,5 +141,5 @@ var vI_htmlTextBox = {
 		vI_htmlTextBox.currentBaseNode.appendChild(new_a);
 		var new_text = vI_htmlTextBox.Obj_TextBox.contentDocument.createTextNode(text);
 		new_a.appendChild(new_text);
-	},
+	}
 }

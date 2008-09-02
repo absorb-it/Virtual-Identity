@@ -100,6 +100,6 @@ var vI_rdfDataEditor = {
 				document.getElementById("recipient").value,
 				document.getElementById("type_menu").selectedItem.getAttribute("key"),
 				localIdentityData)
-	},
+	}
 }
 window.addEventListener("load", vI_rdfDataEditor.init, false);

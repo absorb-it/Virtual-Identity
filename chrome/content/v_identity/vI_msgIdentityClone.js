@@ -126,7 +126,7 @@ var vI_msgIdentityClone = {
 			if (MenuItems[index].getAttribute("value") == identitykey)
 				return MenuItems[index]
 		}
-
+		return null;
 	},
 	
 	addSeparatorToCloneMenu: function() {
@@ -214,15 +214,15 @@ var vI_msgIdentityClone = {
 		
 		var label = null;
 		var accountname = vI_helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem);
-
+		var selectedItem = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem
+		
 		// use getAttribute to be sure it works with TB 2.x versions
-		if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value != "vid" &&
-			vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.getAttribute("value") != "vid") {
+		if ((!selectedItem.value || selectedItem.value != "vid") && selectedItem.getAttribute("value") != "vid") {
 
 			// clean reply-to fields before reinit
 			vI_msgIdentityClone.cleanupReplyTo();
 			
-			vI_msgIdentityClone.__setIdentity(vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.value);
+			vI_msgIdentityClone.__setIdentity(selectedItem.value);
 			
 			// Identitys might have IdentityName set differently to 'name <email>',
 			// so retrieve name and email directly from Identity
@@ -232,25 +232,23 @@ var vI_msgIdentityClone = {
 		else {
 			vI_notificationBar.dump("## vI_msgIdentityClone: LoadIdentity virtual Identity\n");
 			
-			var base_id_key = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.base_id_key
 			// if MenuItem has a base_id_key set,first set Identity to base_id
-			if (base_id_key) {
+			if (selectedItem.base_id_key) {
 				vI_notificationBar.dump("## vI_msgIdentityClone: base_id found, set menu temporarily to base_id\n");
-				vI_msgIdentityClone.__setIdentity(base_id_key);
+				vI_msgIdentityClone.__setIdentity(selectedItem.base_id_key);
 			}
 			else // change presented accountname (add accountname from current MsgIdentity (original))
 				accountname += vI_helper.getAccountname(vI_msgIdentityClone.elements.Obj_MsgIdentity);
 			
+			
 			// set smtp-selector to the smtp of the selected Identity
-			vI_smtpSelector.setMenuToKey(
-				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.smtp_key);
+			vI_smtpSelector.setMenuToKey(selectedItem.smtp_key?selectedItem.smtp_key:"");
 
-			if (vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.extras)
-				vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.extras.setValues();
-			label = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.label
+			if (selectedItem.extras) selectedItem.extras.setValues();
+			label = selectedItem.label
 			vI_notificationBar.dump("## vI_msgIdentityClone: label: '" + label + "'\n");
 			if (!label) {	// TB 2.x has problems without getAttribute
-				label = vI_msgIdentityClone.elements.Obj_MsgIdentity_clone.selectedItem.getAttribute("label")
+				label = selectedItem.getAttribute("label")
 				vI_notificationBar.dump("## vI_msgIdentityClone: new label: '" + label + "'\n");
 			}
 		}
@@ -457,5 +455,5 @@ var vI_msgIdentityClone = {
 		vI_msgIdentityClone.localIdentityData.smtp = smtp;
 		
 		return vI_msgIdentityClone.localIdentityData.isExistingIdentity(null);
-	},
+	}
 }

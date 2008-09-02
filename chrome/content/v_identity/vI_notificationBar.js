@@ -212,7 +212,6 @@ var vI_notificationBar = {
 		if (vI_notificationBar.preferences.getIntPref("notification_timeout") != 0)
 			vI_notificationBar.timer = window.setTimeout(vI_notificationBar.clear,
 				vI_notificationBar.preferences.getIntPref("notification_timeout") * 1000);
-	},
-	
+	}
 }
 window.addEventListener("unload", function(e) { try {vI_notificationBar.removeObserver();} catch (ex) { } }, false);

@@ -22,7 +22,7 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-vI_smartReply_dialog = {
+var vI_smartReply_dialog = {
 	Obj_radioGroup : null,
 	all_addresses : null,
 	AccountManager : Components.classes["@mozilla.org/messenger/account-manager;1"]

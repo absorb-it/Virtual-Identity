@@ -123,7 +123,7 @@ vI_storageExtras.prototype = {
 		return string;
 	},
 	status : function() {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
+		if (vI_storageExtrasHelper.seamonkey_to_old()) return null;
 		var returnVal = "";
 		for( var i = 0; i < this.extras.length; i++ )
 			if (this.extras[i].active && this.extras[i].value)
@@ -163,7 +163,7 @@ vI_storageExtras.prototype = {
 		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ )
 			pref[this.extras[i].field + "Col"] = this.extras[i].value;
-	},
+	}
 }
 
 function vI_storageExtras_characterEncoding_setMenuMark() {
@@ -293,13 +293,12 @@ vI_storageExtras_sMime_messageEncryption.prototype = {
 
 	__getLabel : function(value) {
 		switch (value) {
-			case null:
-				return "<label />";
 			case "true":
 				return "<div class='bool checked'><label class='screen'>&nbsp;<label><label class='braille'>yes</label></div>"
 			case "false":
 				return "<div class='bool'><label class='screen'>&nbsp;<label><label class='braille'>no</label></div>"
 		}
+		return "<label />";
 	},
 
 	equal : function(compareValue) {
@@ -358,13 +357,12 @@ vI_storageExtras_checkbox.prototype = {
 	
 	__getLabel : function(value) {
 		switch (value) {
-			case null:
-				return "<label />";
 			case "true":
 				return "<div class='bool checked'><label class='screen'>&nbsp;<label><label class='braille'>yes</label></div>"
 			case "false":
 				return "<div class='bool'><label class='screen'>&nbsp;<label><label class='braille'>no</label></div>"
 		}
+		return "<label />";
 	},
 
 	equal : function(compareValue) {

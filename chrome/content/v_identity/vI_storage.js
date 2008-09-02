@@ -183,7 +183,7 @@ identityData.prototype = {
 		}
 		string += this.extras.getCompareMatrix();
 		return string;
-	},
+	}
 }
 
 function identityCollection() {
@@ -295,7 +295,7 @@ var vI_storage = {
 	},
 	
 	original_functions : {
-		awSetInputAndPopupValue : null,
+		awSetInputAndPopupValue : null
 	},
 
 	replacement_functions : {
@@ -303,7 +303,7 @@ var vI_storage = {
 			vI_notificationBar.dump("## vI_storage: awSetInputAndPopupValue '" + inputElem.id +"'\n");
 			vI_storage.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
 			vI_storage.updateVIdentityFromStorage(inputElem);
-		},
+		}
 	},
 		
 	awOnBlur : function (element) {
@@ -529,7 +529,7 @@ var vI_storage = {
 			try { childCards = directory.childCards; childCards.first(); } catch (ex) { keepGoing = 0; }
 			
 			while (keepGoing == 1) {
-				currentCard = childCards.currentItem();
+				var currentCard = childCards.currentItem();
 				currentCard.QueryInterface(Components.interfaces.nsIAbCard);
 				returnVar = callFunction(addrbook, currentCard, returnVar);
 				try { childCards.next(); } catch (ex) {	keepGoing = 0; }

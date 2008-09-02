@@ -235,7 +235,7 @@ var vI_rdfDatasource = {
 			return;
 		}
 		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
-		if (!resource) return null;
+		if (!resource) return;
 		vI_notificationBar.dump("## vI_rdfDatasource: updateRDF " + resource.ValueUTF8 + ".\n");
 		vI_rdfDatasource.__setRDFValue(resource, "email", localIdentityData.email)
 		vI_rdfDatasource.__setRDFValue(resource, "fullName", localIdentityData.fullName)
@@ -255,7 +255,7 @@ var vI_rdfDatasource = {
 		if (target instanceof Components.interfaces.nsIRDFLiteral)
 			vI_rdfDatasource.rdfDataSource.Change(resource, predicate, target, name);
 		else	vI_rdfDatasource.rdfDataSource.Assert(resource, predicate, name, true);
-	},
+	}
 }
 window.addEventListener("load", vI_rdfDatasource.init, false);
 window.addEventListener("unload", vI_rdfDatasource.flush, false);
