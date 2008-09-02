@@ -72,6 +72,11 @@ th {
 	font-weight: bold;
 }
 
+.updateStorage .ignoreBaseId.col2 {
+	font-weight: normal;
+	text-decoration: line-through;
+}
+
 .question {
 	text-align: right;
 	font-size: medium;

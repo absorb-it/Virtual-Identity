@@ -116,7 +116,6 @@ var vI_upgrade = {
 	},
 	
 	__removeQuotesFromResourceNameCallback : function(resource, type, name, localIdentityData) {
-		vI_rdfDatasource.removeVIdentityFromRDF(resource);
 		vI_rdfDatasource.updateRDF(name, type, localIdentityData);
 		vI_notificationBar.quiet = null;
 		vI_notificationBar.dump(".");

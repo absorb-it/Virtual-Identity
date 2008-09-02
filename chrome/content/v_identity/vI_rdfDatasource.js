@@ -236,6 +236,8 @@ var vI_rdfDatasource = {
 		}
 		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
 		if (!resource) return;
+		else vI_rdfDatasource.removeVIdentityFromRDF(resource); // just to have a clean base
+
 		vI_notificationBar.dump("## vI_rdfDatasource: updateRDF " + resource.ValueUTF8 + ".\n");
 		vI_rdfDatasource.__setRDFValue(resource, "email", localIdentityData.email)
 		vI_rdfDatasource.__setRDFValue(resource, "fullName", localIdentityData.fullName)

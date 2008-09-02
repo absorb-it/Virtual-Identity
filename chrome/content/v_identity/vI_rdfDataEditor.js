@@ -85,10 +85,7 @@ var vI_rdfDataEditor = {
 	
 	accept : function() {
 		var address = vI_helper.parseAddress(document.getElementById("sender").value)
-		
-		if (window.arguments[0]["resource"])
-			vI_rdfDataEditor.__rdfDatasource.removeVIdentityFromRDF(window.arguments[0]["resource"])
-			
+					
 		vI_rdfDataEditor.storageExtras.readEditorValues();
 		
 		var localIdentityData = new identityData(address.email, address.name,
