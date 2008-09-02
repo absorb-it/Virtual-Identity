@@ -37,16 +37,7 @@ var vI_smartIdentity = {
 		var type = gMsgCompose.type;
 		var msgComposeType = Components.interfaces.nsIMsgCompType;
 		vI_notificationBar.dump("## vI_smartIdentity: msgComposeType = " + type + "\n");
-		
-		// if there is no ID of the original Message (Why? maybe new mail) dumpa notice
-		var uri = gMsgCompose.originalMsgURI; 
-		if (!uri) vI_notificationBar.dump("## vI_smartIdentity: can't get URI of former Message\n");
-		try { var hdr = vI_smartIdentity.messenger.messageServiceFromURI(uri).messageURIToMsgHdr(uri); }
-		catch(vErr) {
-			vI_notificationBar.dump("## vI_smartIdentity: can't get Message Header of former Message.\n");
-			hdr = null;
-		};
-		
+			
 		switch (type) {
 			case msgComposeType.ForwardAsAttachment:
 			case msgComposeType.ForwardInline:
@@ -56,10 +47,10 @@ var vI_smartIdentity = {
 			case msgComposeType.ReplyToSender:
 			case msgComposeType.ReplyToSenderAndGroup: // reply to a newsgroup, would possibly be stopped later
 			case msgComposeType.ReplyWithTemplate:
-				vI_smartIdentity.Reply(hdr); break;
+				vI_smartIdentity.Reply(); break;
 			case msgComposeType.Draft:
 			case msgComposeType.Template:
-				vI_smartIdentity.Draft(hdr); break;
+				vI_smartIdentity.Draft(); break;
 			case msgComposeType.New:
 			case msgComposeType.NewsPost:
 			case msgComposeType.MailToUrl:
@@ -110,7 +101,7 @@ var vI_smartIdentity = {
 
 	},
 
-	Draft : function(hdr) {
+	Draft : function() {
 		vI_notificationBar.dump("## vI_smartIdentity: Draft()\n");
 		
 		var allIdentities = new identityCollection();
@@ -266,9 +257,12 @@ var vI_smartIdentity = {
 		}
 	},
 	
-	Reply : function(hdr) {
+	Reply : function() {
+		var hdr = vI_smartIdentity.messenger.
+			messageServiceFromURI(gMsgCompose.originalMsgURI).messageURIToMsgHdr(gMsgCompose.originalMsgURI);
+
 		vI_notificationBar.dump("## vI_smartIdentity: Reply()\n");
-		if (hdr.folder.flags & 0x0200) {	// MSG_FOLDER_FLAG_SENTMAIL
+		if (hdr && (hdr.folder.flags & 0x0200)) {	// MSG_FOLDER_FLAG_SENTMAIL
 			vI_notificationBar.dump("## vI_smartIdentity: reply from Sent folder, using SmartDraft. \n");
 			vI_smartIdentity.ReplyOnSent(hdr);
 			return;
