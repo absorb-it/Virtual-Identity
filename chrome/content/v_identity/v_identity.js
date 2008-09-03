@@ -372,6 +372,7 @@ var vI = {
 	},
 	
 	reopen: function() {
+		vI_notificationBar.clear();
 		vI_notificationBar.clear_dump();
 		vI_notificationBar.dump("## v_identity: composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
 		
