@@ -372,9 +372,10 @@ var vI_msgIdentityClone = {
 	
 	synchroneReplyTo : function() {
 		vI_notificationBar.dump("## vI_msgIdentityClone: synchroneReplyTo\n");
-		if ( (vI_msgIdentityClone.replyToPopupElem.selectedItem.value != "addr_reply") ||
+		if ( (vI_msgIdentityClone.replyToPopupElem.selectedItem) && // might be destroyed...
+			(vI_msgIdentityClone.replyToPopupElem.selectedItem.value != "addr_reply" ||
 			(vI_msgIdentityClone.replyToStoredLastValue &&
-			vI_msgIdentityClone.replyToInputElem.value != vI_msgIdentityClone.replyToStoredLastValue)) {
+			vI_msgIdentityClone.replyToInputElem.value != vI_msgIdentityClone.replyToStoredLastValue) ) ) {
 			vI_msgIdentityClone.replyToSynchronize = false;
 			vI_notificationBar.dump("## vI_msgIdentityClone: (former) Reply-To entry changed, stop synchronizing\n");
 		}
