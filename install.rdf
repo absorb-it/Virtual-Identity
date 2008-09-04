@@ -17,9 +17,7 @@
                    em:skin="skin/classic/v_identity/">
     <em:locale>locale/en-US/v_identity/</em:locale>
     <em:locale>locale/de-DE/v_identity/</em:locale>
-    <em:locale>locale/fr-FR/v_identity/</em:locale>
     <em:locale>locale/nl-NL/v_identity/</em:locale>
-    <em:locale>locale/it-IT/v_identity/</em:locale>
     <em:locale>locale/cs-CZ/v_identity/</em:locale>
     <em:locale>locale/pl-PL/v_identity/</em:locale>
     <em:locale>locale/es-ES/v_identity/</em:locale>
@@ -39,9 +37,6 @@
     <em:translator>www.babelzilla.org</em:translator>
     <em:translator>- Proyecto Nave</em:translator>
     <em:translator>- Rmarkh</em:translator>
-    <em:translator>- Underpass</em:translator>
-    <em:translator>- Goofy</em:translator>
-    <em:translator>- PatheticCockroach</em:translator>
     <em:translator>- Michal Kec (MiK)</em:translator>
     <em:translator>- Wacław Jacek</em:translator>
     <em:file RDF:resource="urn:mozilla:extension:file:v_identity.jar"/>

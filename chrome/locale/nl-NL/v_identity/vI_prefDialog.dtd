@@ -64,7 +64,7 @@
 <!ENTITY vI_prefDialog.storageCap1.caption "Opslaan van virtuele identiteiten">
 <!ENTITY vI_prefDialog.storageCap2.caption "Lezen van virtuele identiteiten">
 <!ENTITY vI_prefDialog.storage.storedefault.label "Virtuele identiteiten opslaan bij verzenden e-mailberichten">
-<!ENTITY vI_prefDialog.storage.store_base_id.label "store underlying base Identity"> <!-- to translate -->
+<!ENTITY vI_prefDialog.storage.store_base_id.label "Onderliggende basisidentiteit opslaan">
 <!ENTITY vI_prefDialog.storage.warn_update.label "Vragen voordat opgeslagen virtuele identiteiten worden overschreven">
 <!ENTITY vI_prefDialog.storage.dont_update_multiple.label "Nooit overschrijven (en vragen) als het e-mailbericht meerdere ontvangers heeft">
 <!ENTITY vI_prefDialog.storage.show_switch.label "Schakelaar om opslaan van identiteiten te activeren/deactiveren laten zien">

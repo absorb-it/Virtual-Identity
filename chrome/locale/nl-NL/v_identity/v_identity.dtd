@@ -7,10 +7,10 @@
 <!ENTITY vident.vI_Menu.label "Virtual Identity">
 <!ENTITY vident.vI_Menu.Settings.label "Instellingen">
 <!ENTITY vident.vI_Menu.DataEditor.label "Gegevensopslagbewerking">
-<!ENTITY vident.vI_Menu.storageSave.label "save Identity while sending"> <!-- to translate -->
-<!ENTITY vident.vI_Menu.saveBaseID.label "store underlying base Identity"> <!-- to translate -->
-<!ENTITY vident.vI_Menu.TooltipTitle.label "Virtual Identity Status"> <!-- to translate -->
-<!ENTITY vident.vI_Menu.TooltipChange.label "click to change"> <!-- to translate -->
+<!ENTITY vident.vI_Menu.storageSave.label "Identiteit opslaan bij verzenden">
+<!ENTITY vident.vI_Menu.saveBaseID.label "Onderliggende basisidentiteit opslaan">
+<!ENTITY vident.vI_Menu.TooltipTitle.label "Virtual Identity status">
+<!ENTITY vident.vI_Menu.TooltipChange.label "Klik om te wijzigen">
 
 <!ENTITY fccMailFolder.accesskey "l">
 <!ENTITY sentFolderOn.accesskey "z">
