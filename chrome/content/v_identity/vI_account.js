@@ -83,6 +83,23 @@ var vI_account = {
 		}
 	},
 	
+	// checks if directory is empty, not really used
+	// ignores files ending with *.msf, else reports if a non-zero file is found.
+	__dirEmpty : function(directory) {
+		var dirEnumerator = directory.directoryEntries;
+		while (dirEnumerator.hasMoreElements()) {
+			var maildir = dirEnumerator.getNext();
+			maildir.QueryInterface(Components.interfaces.nsIFile);
+			// recurse into all subdirectories
+			if (maildir.isDirectory() &&
+				!vI_account.__dirEmpty(maildir)) return false;
+			// ignore files with ending "*.msf"
+			if (!maildir.path.match(new RegExp(".*\.msf$","i")) &&
+				maildir.fileSize != 0) return false;
+		}
+		return true;
+	},
+
 	__cleanupDirectories : function() {
 		var file = Components.classes["@mozilla.org/file/directory_service;1"]
 		.getService(Components.interfaces.nsIProperties)
@@ -97,10 +114,15 @@ var vI_account = {
 				while (dirEnumerator.hasMoreElements()) {
 					var maildir = dirEnumerator.getNext()
 					maildir.QueryInterface(Components.interfaces.nsIFile);
-					if (maildir.path.match(new RegExp("[/\\\\]virtualIdentity.*$","i"))) {// match Windows and Linux/Mac separators
+					// match Windows and Linux/Mac separators
+					if (maildir.path.match(new RegExp("[/\\\\]virtualIdentity.*$","i"))) {
 						// should be empty, VirtualIdentity never uses those directories
-						try {maildir.remove(false)} catch(e) { };
-						vI_notificationBar.dump(".")
+						if (vI_account.__dirEmpty(maildir)) {
+							try {maildir.remove(true)} catch(e) { }
+							vI_notificationBar.dump("x");
+						}
+						else vI_notificationBar.dump(".");
+						
 					}
 				}
 			}
