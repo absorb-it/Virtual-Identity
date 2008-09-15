@@ -1,0 +1,52 @@
+/*
+This css is used in the improved Tooltip
+The css will be loaded with htmlTextBox.__setCSS() because the
+embedded browser is not able to access chrome
+*/
+
+.image, .identityTable {
+	vertical-align:top;
+}
+
+img {
+	margin-right: 20px;
+}
+
+div.bool {
+	background-repeat:no-repeat;
+	background-position: center;
+}
+
+div.bool {
+	background-image: url("chrome://v_identity/skin/notchecked-unequal.png");
+}
+div.bool.checked {
+	background-image: url("chrome://v_identity/skin/checked-unequal.png");
+}
+
+@media braille { label.screen { display:none; } }
+@media screen { label.braille { display:none; } }
+
+body {
+	margin: 0px;
+}
+
+table {
+	font-size: small;
+	border-collapse: collapse;
+	margin: auto;
+	margin-bottom: 0.7em;
+}
+
+td.name {
+	font-weight: bold;
+	text-align: center;
+	padding-bottom: 10px;
+	padding-top: 0.5em;
+	font-size: medium;
+}
+
+.col2 {
+	padding-left: 1em;
+	text-align: center;
+}

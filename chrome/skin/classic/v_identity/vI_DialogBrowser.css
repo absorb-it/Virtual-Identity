@@ -1,0 +1,84 @@
+/*
+This css is used in the improved Dialogbox for vI_storage-Warnings
+The css will be loaded with vI_htmlTextBox.__setCSS() because the
+embedded browser is not able to access chrome
+*/
+
+div.bool {
+	background-repeat:no-repeat;
+	background-position: center;
+}
+
+td.equal div.bool {
+	background-image: url("chrome://v_identity/skin/notchecked-equal.png");
+}
+td.unequal div.bool {
+	background-image: url("chrome://v_identity/skin/notchecked-unequal.png");
+}
+td.equal div.bool.checked {
+	background-image: url("chrome://v_identity/skin/checked-equal.png");
+}
+td.unequal div.bool.checked {
+	background-image: url("chrome://v_identity/skin/checked-unequal.png");
+}
+
+@media braille { label.screen { display:none; } }
+@media screen { label.braille { display:none; } }
+
+h1 {
+	font-size: medium;
+	font-weight:bold;
+	margin-bottom:2em;
+}
+
+h2 {
+	font-size: small;
+}
+
+h2 .recLabel {
+	font-weight: normal;
+	display: block;
+}
+h2 .recipient {
+	text-align: center;
+	display: block;
+	margin-bottom:2em;
+}
+
+table {
+	width: 95%;
+	margin: auto;
+	font-size: small;
+	border-collapse: collapse;
+}
+
+th {
+	/*font-weight: normal;*/
+	border-bottom: 1px solid;
+}
+
+.col2, .col3 {
+	text-align: center;
+	border-left: 1px solid;
+	border-right: 1px solid;
+}
+
+.updateStorage .col2, .replaceVIdentity .col3 {
+	background: #eee;
+ }
+
+.unequal.col2, .unequal.col3 {
+	background-color: #eaa;
+	font-weight: bold;
+}
+
+.updateStorage .ignoreBaseId.col2 {
+	text-decoration: line-through;
+}
+
+.question {
+	text-align: right;
+	font-size: medium;
+	font-weight:bold;
+	margin-top:4em;
+}

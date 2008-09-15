@@ -1,0 +1,520 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+
+<!DOCTYPE overlay [
+<!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
+%vIdentDTD;
+]>
+
+
+<bindings id="mailComposeBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:xbl="http://www.mozilla.org/xbl">
+	
+	<binding id="autoReplyTo" extends="chrome://global/content/bindings/autocomplete.xml#autocomplete">
+	<content>
+		<children />
+		<xul:label class="menupopup_clone-description" value="autoReplyTo" />
+		<xul:observes element="msgIdentity_clone" attribute="label" onbroadcast="alert(document.getBindingParent(this).label); document.getBindingParent(this).value = document.getBindingParent(this).label" />
+	</content>
+	</binding>
+	
+	<binding id="tooltipPopupset">
+	<implementation>
+	<method name="addTooltip">
+	<parameter name="identityData" />
+	<parameter name="randID" />
+        	<body><![CDATA[
+		this.removeTooltip(randID);
+		if (!randID) randID = "tooltip_" + parseInt((new Date()).getTime());
+		var toolTip = document.createElement("tooltip");
+		toolTip.setAttribute("class", "identityDataTooltip");
+		toolTip.setAttribute("id", randID);
+		toolTip.identityData = identityData;
+		this.appendChild(toolTip);
+		return randID;
+		]]></body>
+	</method>
+	<method name="removeTooltip">
+	<parameter name="randID" />
+        	<body><![CDATA[
+		if (randID) this.removeChild(document.getElementById(randID))
+		]]></body>
+	</method>
+	</implementation>
+	</binding>
+	
+	<binding id="vI_identityDataTooltip" extends="chrome://global/content/bindings/popup.xml#tooltip">
+ 	<content onpopupshowing="this.popupshowing();this.resize()" onpopupshown="this.resize()" >
+			<xul:browser style="overflow:hidden" anonid="tooltipBrowser" class="vI_htmlTextBox" flex="1" disablehistory="true" onoverflow="document.getBindingParent(this).resize()"/>
+			<children />
+	</content>
+	<implementation>
+	<method name="popupshowing">
+        	<body><![CDATA[
+		if (this.identityData && !this._initialized) {
+			if (!this._identityInfo) this._identityInfo = 
+				"<table><tr><td colspan='2' class='name'>" +
+					this.identityData.combinedNameHtml +
+				"</td></tr>" +
+				"<tr><td class='image'><img src='chrome://v_identity/skin/vi-info.png' /></td>" +
+				"<td class='identityTable'>" +
+					"<table><tbody>" + this.identityData.getMatrix() + "</tbody></table>" +
+				"</td></tr></table>"
+			this._tooltipBrowser.outputString = this._identityInfo;
+			this._tooltipBrowser.cssSource = "vI_TooltipBrowser.css";
+			this._initialized = true;
+		}
+		]]></body>
+	</method>
+	<method name="resize">
+		<body><![CDATA[
+		var width = document.getElementById("msgIdentity_clone").boxObject.width * 0.7;
+		var height = this._tooltipBrowser.contentDocument.lastChild.scrollHeight + 5;
+		this.sizeTo(width, height);
+		width = document.getElementById("msgIdentity_clone").boxObject.width * 0.75;
+		this.sizeTo(width, height);
+		]]></body>
+	</method>
+	<field name="blocked">false</field>
+	<field name="identityData" />
+	<field name="_identityInfo">false</field>
+	<field name="_initialized">false</field>
+	<field name="_tooltipBrowser">document.getAnonymousElementByAttribute(this, "anonid", "tooltipBrowser")</field>
+	</implementation>
+	</binding>	
+	
+	<binding id="fromPopupItem_clone" extends="chrome://global/content/bindings/menu.xml#menuitem">
+  	<content excludes="template,observes,menupopup">
+		<xul:image class="menupopup_clone-icon" xbl:inherits="src"/>
+		<xul:label class="menupopup_clone-text" xbl:inherits="value=label,accesskey,crop" crop="right" flex="1"/>
+		<xul:label value="&vident.accPane.prettyName.prefix;" class="menu_clone-description virtIdLabel" vid="false" xbl:inherits="vid" crop="right"/>
+      		<xul:label class="menupopup_clone-description" xbl:inherits="value=description" crop="right"/>
+  	</content>
+  	<implementation>
+	<constructor>
+		<![CDATA[
+		this._identityDataStorage = this.identityData;
+		
+		this.label = this._identityDataStorage.combinedName;
+		this.value = this._identityDataStorage.id;
+		this.description = this._identityDataStorage.sideDescription;
+		
+		this.setAttribute("tooltip",
+			document.getElementById("vI_tooltipPopupset")
+			.addTooltip(this._identityDataStorage, this.getAttribute("tooltip")));
+		]]>
+	</constructor>
+	<method name="clean">
+        	<body><![CDATA[
+		document.getElementById("vI_tooltipPopupset")
+			.removeTooltip(this.getAttribute("tooltip"));
+		]]></body>
+	</method>
+	<destructor>
+		<![CDATA[
+		this.clean();
+		]]>
+	</destructor>
+	<property name="_identityData" onget="return this._identityDataStorage;" />
+	<property name="vid" onget="return this.getAttribute('vid');" onset="this.setAttribute('vid', val); return val;" />
+	<property name="label" onget="return this.getAttribute('label');" onset="this.setAttribute('label', val); return val;" />
+	<property name="value" onget="return this.getAttribute('value');" onset="this.setAttribute('value', val); return val;" />
+	<property name="description" onget="return this.getAttribute('description');" onset="this.setAttribute('description', val); return val;" />
+	</implementation>
+	</binding>
+
+	<binding id="smtpServerList" >
+ 	<resources>
+      		<stylesheet src="chrome://global/skin/menu.css"/>
+  	</resources>
+ 	<content sizetopopup="pref">
+		<xul:spacer flex="1" />
+			<xul:menulist class="smtpServerMenuList" anonid="smtpServerMenuList" allowevents="true" id="smtp_server_list">
+	   			<xul:menupopup anonid="smtp_server_list_popup" />
+			</xul:menulist>
+	</content>
+	<implementation>
+	<method name="_addDefaultServer">
+        	<body><![CDATA[
+		var listitem = document.createElement("menuitem");
+		listitem.setAttribute("label", document.getElementById("bundle_messenger").getString("defaultServerTag"));
+		this._smtpPopup.appendChild(listitem);
+		this._smtpMenu.selectedItem = listitem;
+		]]></body>
+	</method>
+	<method name="_addServer">
+		<parameter name="server" />
+        	<body><![CDATA[
+		if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) {
+			var listitem = document.createElement("menuitem");
+			listitem.setAttribute("label", (server.description?server.description:server.hostname));
+			listitem.setAttribute("key", server.key);
+			this._smtpPopup.appendChild(listitem);
+		}
+		]]></body>
+	</method>	
+	<constructor>
+		<![CDATA[		
+		this._addDefaultServer();
+		this._smtpPopup.appendChild(document.createElement("menuseparator"));
+
+		var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+			.getService(Components.interfaces.nsISmtpService).smtpServers;
+		
+		if (typeof(servers.Count) == "undefined")		// TB 3.x
+			while (servers && servers.hasMoreElements())
+				this._addServer(servers.getNext());
+		else							// TB 2.x
+			for (var i=0 ; i<servers.Count(); i++)
+				this._addServer(servers.QueryElementAt(i, Components.interfaces.nsISmtpServer));
+		
+		this._prefroot.addObserver("extensions.virtualIdentity.show_smtp", this._observer, false);
+		this._observer.observe();
+		]]>
+	</constructor>
+	<destructor>
+		<![CDATA[
+		this._prefroot.removeObserver("extensions.virtualIdentity.show_smtp", this._observer);
+		]]>
+	</destructor>
+	<property name="smtp" onget="return this._smtpMenu.selectedItem.getAttribute('key');" >
+		<setter><![CDATA[
+		var MenuItems = this._smtpPopup.childNodes
+		for (var index = 0; index < MenuItems.length; index++) {
+			if (MenuItems[index].localName == "menuseparator") continue;
+			if (MenuItems[index].getAttribute("key") == val?val:"") {
+				this._smtpMenu.selectedItem = MenuItems[index];
+				break;
+			}
+		}
+		]]></setter>
+	</property>
+	<field name="_observer"><![CDATA[({
+		_self: this,
+	        observe: function(aSubject, aTopic, aPrefName) {
+			if (this._self._prefroot.getBoolPref("extensions.virtualIdentity.show_smtp"))
+				this._self.removeAttribute("hidden")
+			else	this._self.setAttribute("hidden","true")
+		}
+      	})]]></field>
+	<field name="_prefroot">Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService)
+			.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2)</field>
+	<field name="_smtpPopup">document.getAnonymousElementByAttribute(this, "anonid", "smtp_server_list_popup")</field>
+	<field name="_smtpMenu">document.getAnonymousElementByAttribute(this, "anonid", "smtpServerMenuList")</field>
+	<field name="_smtpService"></field>
+
+	</implementation>
+	</binding>
+	
+	
+	
+	
+	<binding id="fromMenuList_clone" display="xul:menu" extends="chrome://global/content/bindings/menulist.xml#menulist-description">
+  	<resources>
+      		<stylesheet src="chrome://global/skin/menu.css"/>
+  	</resources>
+  	<content sizetopopup="pref">
+		<xul:hbox anonid="contentHBox" flex="1"  >
+      			<xul:vbox><xul:spacer flex="1" />
+      				<xul:image class="menulist_clone-icon" id="msgIdentity_clone_image" xbl:inherits="src"/>
+      			<xul:spacer flex="1" /></xul:vbox>
+      			<xul:vbox flex="1"><xul:spacer flex="1" />
+      				<xul:textbox anonid="textBox" type="search" id="msgIdentity_clonetextBoxElem" class="plain menulist_clone-textbox" xbl:inherits="value=label,crop,accesskey,vid" allowevents="true" oncommand="event.stopPropagation();document.getBindingParent(this).inputEvent();" crop="right" />
+      			<xul:spacer flex="1" /></xul:vbox>
+			<xul:vbox><xul:spacer flex="1" />
+				<xul:hbox>
+					<xul:label value="&vident.accPane.prettyName.prefix;" class="menu_clone-description virtIdLabel" xbl:inherits="vid" crop="right"/>
+					<xul:label id="msgIdentity_clone_label" class="menu_clone-description" xbl:inherits="value=description" crop="right"/>
+					<xul:label id="msgIdentity_base_id_label" class="menu_clone-description" xbl:inherits="value,hidden=base_id_key_hidden" crop="right" hidden="true"/>
+				</xul:hbox>
+			<xul:spacer flex="1" /></xul:vbox>
+		</xul:hbox>
+		<xul:hbox oncommand="event.stopPropagation();document.getBindingParent(this).smtp = this.smtp" anonid="smtpServerListHbox" class="smtpServerListHbox" />
+		<children />
+	</content>
+      	<implementation>
+	<constructor>
+		<![CDATA[		
+		var inputTextbox = document.getAnonymousElementByAttribute(this, "class", "plain menulist_clone-textbox");
+		
+		// check if 'search' textboxes are implemented, if not change to 'timed'
+		if (!inputTextbox.timeout) inputTextbox.setAttribute("type", "timed");
+		inputTextbox.setAttribute("timeout", "300")
+		
+		this._msgIdentityElem.setAttribute("hidden", "true");
+		this._msgIdentityElem.previousSibling.setAttribute("control", "msgIdentity_clone");
+		]]>
+	</constructor>
+	<destructor>
+		<![CDATA[
+		document.getElementById("vI_tooltipPopupset")
+			.removeTooltip(this.getAttribute("tooltip"));
+		]]>
+	</destructor>
+
+	<!--
+	double the Identity-Select Dropdown-Menu to be more flexible with modifying it
+	the original Identity Dropdown Menu is hidden and stores the base Identity, on which one
+	the Virtual Identity is build upon
+	-->
+	<method name="command">
+		<body><![CDATA[
+		this.identityData = this.selectedMenuItem.identityData.getDuplicate();
+		// clean reply-to fields before reinit
+		vI_msgIdentityCloneTools.cleanupReplyTo();
+		// set orignal Identity-Menu to the selected Identity
+		vI_msgIdentityCloneTools.copySelectedIdentity(this.value);
+		// recognize reply-to fields for auto-reply
+		vI_msgIdentityCloneTools.initReplyToFields(this.value);
+		]]></body>
+	</method>	
+	<method name="init">
+		<body><![CDATA[
+		vI_notificationBar.dump("** v_identity.xml: clone_Obj_MsgIdentity\n");
+		
+		this.dontInitExtras = true;
+		var MenuItems = this._msgIdentityPopupElem.childNodes
+		for (var index = 0; index < MenuItems.length; index++) {
+			var identity = gAccountManager.getIdentity(MenuItems[index].getAttribute("value"));
+			
+			var newExtras = new vI_storageExtras();	newExtras.readValues();
+			var newIdentity = new identityData(	identity.email, identity.fullName, identity.key,
+								identity.smtpServerKey, newExtras,
+								vI_helper.getAccountname(MenuItems[index]))
+
+			var menuItem = this.addIdentityToCloneMenu(newIdentity)
+
+			if (this._msgIdentity_selectedItem == MenuItems[index]) {
+				this.selectedItem = menuItem;
+				vI_notificationBar.dump("** v_identity.xml: clone_Obj_MsgIdentity selectedMenuItem " + menuItem.value + " found\n");
+				this.identityData = newIdentity.getDuplicate();
+			}
+		}
+		this._popupMenu_separator = true;
+		this.dontInitExtras = false;
+		
+		vI_msgIdentityCloneTools.initReplyToFields(this.value);
+		]]></body>
+	</method>
+	<method name="clean">
+		<body><![CDATA[
+		vI_notificationBar.dump("** v_identity.xml: clean\n");
+		var MenuItems = this._popupElem.childNodes;
+		while (MenuItems.length > 0) {
+			try {MenuItems[0].clean();} catch (e) { };
+			this._popupElem.removeChild(MenuItems[0])
+		}
+		this.selectedItem = null;
+		]]></body>
+	</method>	
+	<method name="addIdentityToCloneMenu">
+		<parameter name="localIdentityData" />
+		<body><![CDATA[
+		vI_notificationBar.dump("** v_identity.xml: addIdentityToCloneMenu '" + localIdentityData.id + "'\n");
+		
+		var existingItem = this._isExistingCloneMenuItem(localIdentityData);
+		if (!existingItem) {
+			var MenuItem = document.createElement("menuitem");
+		    	MenuItem.identityData = localIdentityData;
+			MenuItem.setAttribute("class", "identity_clone-popup-item");
+			MenuItem.value = localIdentityData.id;
+
+			// set vid explicitely
+			if (this._popupMenu_separator) MenuItem.setAttribute("vid", "true");
+			else	MenuItem.setAttribute("vid", "false");
+						
+			this._popupElem.appendChild(MenuItem);
+			return MenuItem;
+		}
+		else return existingItem;
+		]]></body>
+	</method>
+	<method name="addIdentitiesToCloneMenu">
+		<parameter name="identityCollection" />
+		<body><![CDATA[
+		for (var index = 0; index < identityCollection.number; index++)
+			identityCollection.menuItems[index] =
+				this.addIdentityToCloneMenu(identityCollection.identityDataCollection[index])
+		]]></body>
+	</method>
+	<method name="_getMenuItemForIdentity">
+		<parameter name="identitykey" />
+		<body><![CDATA[
+		var MenuItems = this._popupElem.childNodes;
+		vI_notificationBar.dump("** v_identity.xml: getMenuItemForIdentity key " + identitykey + " menulength " + MenuItems.length + "\n");
+		for (var index = 0; index < MenuItems.length; index++) {
+			if (MenuItems[index].value == identitykey)
+				return MenuItems[index]
+		}
+		return null;
+		]]></body>
+	</method>
+	<property name="_popupMenu_separator" >
+		<getter><![CDATA[
+			if (this._menu_separator) this._menu_separator.removeAttribute("hidden");
+			return this._menu_separator;
+		]]></getter>
+		<setter><![CDATA[
+			if (!val) return;
+			// add hidden separator as indicator that now only virtual identities are added
+			this._menu_separator = document.createElement("menuseparator");
+			this._menu_separator.setAttribute("id", "vid_separator");
+			this._menu_separator.setAttribute("hidden", "true");
+			this._popupElem.appendChild(this._menu_separator)
+		]]></setter>	
+	</property>
+	<property name="selectedMenuItem" >
+		<getter><![CDATA[
+			return this.selectedItem;
+		]]></getter>
+		<setter><![CDATA[
+			if (typeof(val) == "object") this.selectedItem = val
+			else if (val == "default")
+				this.selectedItem = this._getMenuItemForIdentity(gAccountManager.defaultAccount.defaultIdentity.key)
+			else this.selectedItem = this._getMenuItemForIdentity(val)
+			this.doCommand();
+		]]></setter>	
+	</property>
+	<method name="_isExistingCloneMenuItem">
+		<parameter name="localIdentityData" />
+		<body><![CDATA[
+		vI_notificationBar.dump("** _isExistingCloneMenuItem\n");
+			
+		var MenuItems = this._popupElem.childNodes
+		for (var j = 0; j < MenuItems.length; j++) {
+			if (MenuItems[j].localName == "menuseparator") continue;
+			vI_notificationBar.dump("** comparing id " + MenuItems[j].identityData.id + " with " + localIdentityData.id + "\n");
+			if (MenuItems[j].identityData.equals(localIdentityData)) {
+				vI_notificationBar.dump("** _isExistingCloneMenuItem: found existing one\n");
+				return MenuItems[j];
+			}
+		}
+		vI_notificationBar.dump("** _isExistingCloneMenuItem: none found\n");
+		return null;
+		]]></body>
+	</method>
+	<field name="_msgIdentityElem">document.getElementById("msgIdentity")</field>
+	<field name="_msgIdentityPopupElem">document.getElementById("msgIdentityPopup")</field>
+	<property name="_msgIdentity_selectedItem" >
+		<getter><![CDATA[
+			if (!this._msgIdentityElem.selectedItem) {
+				vI_notificationBar.dump("** v_identity.xml: msgIdentityElem.selectedItem not set, using first Menuitem\n");
+				this._msgIdentityElem.selectedItem = this._msgIdentityPopupElem.firstChild
+				vI_notificationBar.dump("** v_identity.xml: msgIdentityElem.doCommand()\n");
+				this._msgIdentityElem.doCommand();
+			}
+			return this._msgIdentityElem.selectedItem;
+		]]></getter>
+	</property>
+	
+	<method name="inputEvent">
+        	<body><![CDATA[		
+		this.identityData.combinedName = this.label;
+		this.label = this.identityData.combinedName; // reset to possibly changed value
+		this.setAttribute("label", this.label);
+		
+		this.tooltipElem.setAttribute("tooltip",
+			document.getElementById("vI_tooltipPopupset")
+			.addTooltip(this._identityDataStorage, this.tooltipElem.getAttribute("tooltip")));
+
+		var existingIdentity = this.checkForVirtualIdentity();
+		if (existingIdentity) this.selectedMenuItem = existingIdentity;
+		
+		vI_msgIdentityCloneTools.updateReplyTo();
+		]]></body>
+	</method>
+	<method name="checkForVirtualIdentity">
+		<body><![CDATA[
+		var existingIdentity = this.identityData.isExistingIdentity();
+		if (!existingIdentity) { this.vid = true; vI_msgIdentityCloneTools.updateReplyTo(); }
+		else this.vid = false;
+		
+		vI_msgIdentityCloneTools.signatureSwitch(existingIdentity);
+		
+		return existingIdentity;
+		]]></body>
+	</method>
+	<property name="smtp" onget="return this.identityData.smtp;" >
+		<setter><![CDATA[
+		this.identityData.smtp = val;
+		
+		this.tooltipElem.setAttribute("tooltip",
+			document.getElementById("vI_tooltipPopupset")
+			.addTooltip(this._identityDataStorage, this.tooltipElem.getAttribute("tooltip")));
+
+		var existingIdentity = this.checkForVirtualIdentity();
+		if (existingIdentity) this.selectedMenuItem = existingIdentity;
+		]]></setter>
+	</property>
+	<field name="dontInitExtras" />
+	<property name="identityData" onget="return this._identityDataStorage;" >
+		<setter><![CDATA[
+		vI_notificationBar.dump("** v_identity.xml: updating DataStorage.\n");
+		var oldIdentityData = this._identityDataStorage;
+		this._identityDataStorage = val;		
+		if (!this._identityDataStorage.id) {
+			this._identityDataStorage.id = oldIdentityData.id;
+			var idName = this._identityDataStorage.idName;
+			this._identityDataStorage.sideDescription = (idName)?" - "+idName:"";
+		}
+		this.label = this._identityDataStorage.combinedName;
+		this.value = this._identityDataStorage.id;
+		this.description = this._identityDataStorage.sideDescription;
+		document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this._identityDataStorage.smtp;
+		
+		if (!this.dontInitExtras && this._identityDataStorage.extras) {
+			vI_notificationBar.dump("** v_identity.xml: set extra Values\n");
+			this._identityDataStorage.extras.setValues();
+		}
+		if (!this._identityDataStorage.extras)
+			this._identityDataStorage.extras = new vI_storageExtras();
+		
+		vI_notificationBar.dump("** v_identity.xml: read extra Values\n");
+		this._identityDataStorage.extras.readValues(); // fill in the missing Values
+		
+		this.checkForVirtualIdentity();
+		
+		this.tooltipElem.setAttribute("tooltip",
+			document.getElementById("vI_tooltipPopupset")
+			.addTooltip(this._identityDataStorage, this.tooltipElem.getAttribute("tooltip")));
+		
+		vI_notificationBar.dump("** v_identity.xml: updating DataStorage done.\n");
+		]]></setter>
+	</property>
+	<field name="_popupElem">document.getElementById("msgIdentityPopup_clone")</field>
+	<field name="tooltipElem">document.getAnonymousElementByAttribute(this, "anonid", "contentHBox")</field>
+	<field name="textBoxElem">document.getAnonymousElementByAttribute(this, "anonid", "textBox");</field>
+	<property name="email" onset="this.identityData.email = val; this.label = this.identityData.combinedName; this.inputEvent()" />
+	<property name="vid" onget="return (this.getAttribute('vid') == 'true');" onset="this.setAttribute('vid',val?'true':'false'); return val;" />
+	<property name="label" onget="return this.textBoxElem.value;" onset="this.textBoxElem.value = val; return val;" />
+	<property name="value" onget="return this.getAttribute('value');" onset="this.setAttribute('value', val); return val;" />
+	<property name="extras" onget="return this.identityData.extras;" />
+	<property name="description" onget="return this.getAttribute('description');" onset="this.setAttribute('description', val); return val;" />
+	</implementation>
+	</binding>
+</bindings>

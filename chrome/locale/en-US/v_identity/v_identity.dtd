@@ -1,0 +1,18 @@
+<!ENTITY vident.vidLogo.label "virtual identity">
+<!ENTITY vident.accPane.prettyName.prefix "virtual Id">
+<!ENTITY vident.composeDialog.storageSave.label "save">
+<!ENTITY vident.composeDialog.storageSave.tooltiptext "save Identity while sending">
+<!ENTITY vident.replySelector.dialogheader.title "Virtual Identity">
+<!ENTITY vident.replySelector.caption.label "Choose a Virtual Identity">
+<!ENTITY vident.vI_Menu.label "Virtual Identity">
+<!ENTITY vident.vI_Menu.Settings.label "Settings">
+<!ENTITY vident.vI_Menu.DataEditor.label "Data-Storage Editor">
+<!ENTITY vident.vI_Menu.storageSave.label "save Identity while sending">
+<!ENTITY vident.vI_Menu.saveBaseID.label "store underlying base Identity">
+<!ENTITY vident.vI_Menu.TooltipTitle.label "Virtual Identity Status">
+<!ENTITY vident.vI_Menu.TooltipChange.label "click to change">
+
+<!ENTITY fccMailFolder.accesskey "P">
+<!ENTITY sentFolderOn.accesskey "e">
+<!ENTITY sentInOtherFolder.label "Other:">
+<!ENTITY sentInOtherFolder.accesskey "O">

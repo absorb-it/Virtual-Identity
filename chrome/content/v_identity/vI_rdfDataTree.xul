@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+
+<?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+
+<!DOCTYPE overlay [
+<!ENTITY % dataTreeDTD SYSTEM "chrome://v_identity/locale/vI_rdfDataTree.dtd">
+%dataTreeDTD;
+<!ENTITY % editDTD SYSTEM "chrome://global/locale/editMenuOverlay.dtd">
+%editDTD;
+<!ENTITY % communicatorDTD SYSTEM "chrome://communicator/locale/contentAreaCommands.dtd" >
+  %communicatorDTD;
+]>
+
+<window id="vI_rdfDataTreeWindow"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
+        width="750"
+        height="500"
+	persist="width,height,screenX,screenY"
+        onload="vI_rdfDataTree.init();"
+	title="&vI_rdfDataTree.dlgTitle.label;">
+
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataTree.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
+<script type="application/x-javascript" src="chrome://messenger/content/messengercompose/MsgComposeCommands.js"/>
+
+
+<stringbundleset id="stringbundleset">
+	<stringbundle id="vI_rdfDataTreeBundle" src="chrome://v_identity/locale/vI_rdfDataEditor.properties" />
+	<stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />
+</stringbundleset>
+
+<popup id="configContext" onpopupshowing="if (event.target == this) vI_rdfDataTree.updateContextMenu();">
+	<menuitem id="context_modifySelected" label="&vI_rdfDataTree.modifySelected.label;"
+		oncommand="vI_rdfDataTree.modifySelected();"/>
+	<menuitem id="context_removeSelected" label="&vI_rdfDataTree.removeSelected.label;"
+		oncommand="vI_rdfDataTree.removeSelected();"/>
+	<menuitem id="context_newItem" label="&vI_rdfDataTree.newItem.label;"
+		oncommand="vI_rdfDataTree.newItem();"/>
+	<menuseparator />
+	<menuitem id="context_menu_selectAll" label="&selectAllCmd.label;"
+		oncommand="vI_rdfDataTree.selectAll();"/>
+</popup>
+
+<keyset>
+	<key keycode="VK_ENTER" oncommand="vI_rdfDataTree.modifySelected();"/>
+	<key keycode="VK_RETURN" oncommand="vI_rdfDataTree.modifySelected();"/>
+	<key keycode="VK_DELETE" oncommand="vI_rdfDataTree.removeSelected();"/>
+	<key modifiers="accel" key="&selectAllCmd.accesskey;" oncommand="vI_rdfDataTree.selectAll();"/>
+</keyset>
+
+
+<hbox align="center">
+	<spacer width="3px" />
+	<vbox><spacer flex="1"/>
+	<menubar>
+		<menu id="editMenu" label="&vI_rdfDataTree.editMenu.label;" 
+			accesskey="&vI_rdfDataTree.editMenu.accesskey;">
+		<menupopup onpopupshowing="if (event.target == this) vI_rdfDataTree.updateMenu();">
+			<menuitem id="menu_modifySelected" label="&vI_rdfDataTree.modifySelected.label;"
+				accesskey="&vI_rdfDataTree.modifySelected.accesskey;"
+				oncommand="vI_rdfDataTree.modifySelected();"/>
+			<menuitem id="menu_removeSelected" label="&vI_rdfDataTree.removeSelected.label;"
+				accesskey="&vI_rdfDataTree.removeSelected.accesskey;"
+				oncommand="vI_rdfDataTree.removeSelected();"/>
+			<menuitem id="menu_newItem" label="&vI_rdfDataTree.newItem.label;"
+				accesskey="&vI_rdfDataTree.newItem.accesskey;"
+				oncommand="vI_rdfDataTree.newItem();"/>
+			<menuseparator />
+			<menuitem id="menu_menu_selectAll" label="&selectAllCmd.label;" accesskey="&selectAllCmd.accesskey;"
+				oncommand="vI_rdfDataTree.selectAll();"/>
+		</menupopup>
+		</menu>
+	</menubar>
+	<spacer flex="1"/></vbox>
+	<spacer width="20px" />
+	<label value="&vI_rdfDataTree.filterPrefs.label;" accesskey="&vI_rdfDataTree.filterPrefs.accesskey;" control="filter"/>
+	<textbox id="filter" flex="1" oninput="vI_rdfDataTree.inputFilter(event);"/>
+	<button id="clearFilter" label="&vI_rdfDataTree.showAll.label;" accesskey="&vI_rdfDataTree.showAll.accesskey;" oncommand="vI_rdfDataTree.clearFilter();" disabled="true"/>
+</hbox>
+
+<tree id="rdfDataTree" flex="1" class="plain" seltype="multiple"
+	persist="sortDirection sortResource" sortDirection="ascending" sortResource="recipientCol"
+	enableColumnDrag="true" context="configContext">
+	<treecols id="rdfDataTreeCols">
+		<treecol id="recipientCol" label="&vI_rdfDataTree.recipientColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			ignoreincolumnpicker="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="typeCol" label="&vI_rdfDataTree.typeColumn.label;" flex="5"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="senderCol" label="&vI_rdfDataTree.senderColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="smtpCol" label="&vI_rdfDataTree.smtpColumn.label;" flex="5"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="idCol" label="&vI_rdfDataTree.idColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>		
+	</treecols>
+	<treechildren id="configTreeBody" ondblclick="if (event.button == 0) vI_rdfDataTree.modifySelected();" onmouseover="vI_notificationBar.dump('## vI_rdfDataTree.xul mouseover ' + vI_rdfDataTree.__treeElem.currentIndex + '\n');" />
+</tree>
+	
+	<splitter id="vIDebugBoxSplitter" hidden="true"/>
+	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
+	DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
+
+</window>

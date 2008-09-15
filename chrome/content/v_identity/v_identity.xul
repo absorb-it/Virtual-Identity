@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+
+<?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/tabmail.css" type="text/css"?>
+
+<!DOCTYPE overlay [
+<!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
+%versionDTD;
+<!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
+%vIdentDTD;
+]>
+
+  <overlay id="v_identity" 
+          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script type="application/x-javascript" src="chrome://v_identity/content/v_identity.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_account.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_msgIdentityCloneTools.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />
+<!-- <script type="application/x-javascript" src="chrome://v_identity/content/vI_smtpSelector.js" /> -->
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js"/>
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js"/>
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js"/>
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_htmlTextBox.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
+    <stringbundle id="vIStorageExtrasBundle" src="chrome://v_identity/locale/vI_storageExtras.properties" />
+    <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />
+  </stringbundleset>
+
+<vbox id="appcontent" >
+	<splitter id="vIDebugBoxSplitter" hidden="true"/>
+	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
+	DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
+</vbox>
+
+<toolbox id="headers-box">
+	<notificationbox id="vINotification" position="1" insertbefore="MsgHeadersToolbar" />
+</toolbox>
+
+<vbox flex="1" id="addresses-box"> <!-- this is used as a strorage, elements will be rearranged by v_identity_init -->
+	
+<hbox id="msgIdentityHbox" flex="1">
+	<menulist id="msgIdentity_clone" class="identity_clone-menulist" vid="false"
+		label="..." flex="1" oncommand="this.command();">
+		<menupopup id="msgIdentityPopup_clone"/>
+	</menulist>
+	<checkbox id="storage_save" label="&vident.composeDialog.storageSave.label;" 
+		  tooltiptext="&vident.composeDialog.storageSave.tooltiptext;" hidden="true"
+		  oncommand="vI_statusmenu.menuConstraint(this);" >
+		<observes element="vI_statusMenu_storage_save" attribute="checked" />
+	</checkbox>
+	<popupset id="vI_tooltipPopupset" />
+</hbox>
+  </vbox>
+  
+  <popupset>
+	  <popup id="vI_statusMenu">
+		  <menuitem type="checkbox" id="vI_statusMenu_storage_save" label="&vident.vI_Menu.storageSave.label;" 				oncommand="vI_statusmenu.menuConstraint(this);"/>
+		  <menuitem type="checkbox" id="vI_statusMenu_storage_saveBaseID" label="&vident.vI_Menu.saveBaseID.label;" 			oncommand="vI_statusmenu.menuConstraint(vI_statusmenu.objStorageSaveMenuItem);"/>
+		  <menuseparator id="vI_statusMenu_separator" /> 		
+		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.Settings.label;"
+			oncommand="window.openDialog('chrome://v_identity/content/vI_prefDialogOpener.xul', '', 'chrome');" />
+		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.DataEditor.label;"
+			oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome');" />
+	  </popup>
+  </popupset>
+  
+  <popupset>
+	  <tooltip id="vI_statusMenuTooltip" orient="vertical" >
+		<label id="vI_statusMenuTooltip_Title" value="&vident.vI_Menu.TooltipTitle.label;" />
+		<label id="vI_statusMenuTooltip_StatusValueLine1" />
+		<label id="vI_statusMenuTooltip_StatusValueLine2" />
+		<label id="vI_statusMenuTooltip_Change" value="&vident.vI_Menu.TooltipChange.label;" />
+	  </tooltip>
+  </popupset>
+
+  <statusbar id="status-bar">
+	  <statusbarpanel class="v_identity_logo"
+			  id="v_identity_logo"
+			  insertafter="statusText"
+			  align="right">
+		<label value="&vident.vidLogo.label; &vident.version;" />
+		<observes element="msgIdentity_clone" attribute="vid" />
+	</statusbarpanel>
+	  <statusbarpanel id="vI-status-menu" save="off"
+			  class="statusbarpanel-menu-iconic"
+			  collapsed="true"
+			  insertafter="totalMessageCount"
+			  context="vI_statusMenu"
+			  tooltip="vI_statusMenuTooltip"
+			  onclick="vI_statusmenu.clicked(event.button);" />
+</statusbar>
+  
+</overlay>

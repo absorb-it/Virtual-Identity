@@ -1,0 +1,33 @@
+#vi_Dialog {
+	width: 550px;
+	height: 320px;
+}
+
+#vI_Dialog_title {
+	font-size: medium;
+	font-weight:bold;
+	margin-bottom:2em;
+}
+
+#vI_Dialog_recLabel {
+	font-size: small;
+	font-weight: normal;
+}
+
+#vI_Dialog_recipient {
+	font-size: small;
+	font-weight:bold;
+	text-align: center;
+	margin-bottom:2em;
+}
+
+#vI_Dialog_browser {
+	height:		100px;
+}
+
+#vI_Dialog_query {
+	text-align: right;
+	font-size: medium;
+	font-weight:bold;
+	margin-top:2em;
+}

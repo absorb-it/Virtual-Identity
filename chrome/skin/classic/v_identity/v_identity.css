@@ -1,0 +1,286 @@
+@import url("chrome://global/skin/");
+@import url("chrome://v_identity/locale/logo.css"); 
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+
+#vI_statusMenuTooltip {
+	text-align: center;
+	font-size: x-small;
+}
+
+#vI_statusMenuTooltip_StatusValueLine1, #vI_statusMenuTooltip_StatusValueLine2 {
+	font-weight: bold;
+	font-size: small;
+}
+
+#vI_statusMenuTooltip_Change {
+	margin-top: 1em;
+	font-style: italic;
+}
+
+#vINotificationTitle {
+	text-align: right;
+	font-weight: bold;
+}
+
+#vINotificationTextbox
+    {
+	background-color: transparent;
+        margin: 5px !important;
+	margin-left: 20px !important;
+        -moz-border-top-colors: grey;
+        -moz-border-right-colors: grey;
+        -moz-border-bottom-colors: grey;
+        -moz-border-left-colors: grey;
+    }
+
+#vINotificationTextbox.border
+    {
+      border-style: solid !important;
+      border-right-style: none !important;
+      border-width: 1px !important;
+    }
+
+#vI-status-menu[save="off"] {
+	list-style-image: url("chrome://v_identity/skin/vI_gr.png");
+	visibility: visible;
+}
+
+#vI-status-menu[save="ok"] {
+	list-style-image: url("chrome://v_identity/skin/vI_gn.png");
+	visibility: visible;
+}
+
+#vI-status-menu[save="base"] {
+	list-style-image: url("chrome://v_identity/skin/vI_ge.png");
+	visibility: visible;
+}
+
+treechildren::-moz-tree-cell-text(user)
+{
+  font-weight: bold;
+}
+
+treechildren::-moz-tree-cell-text(locked)
+{
+  font-style: italic;
+}
+
+#upgradeWizard, #vi_Dialog {
+	width: 550px;
+	height: 370px;
+}
+
+#upgradeWizard wizardpage {
+	overflow:	hidden;
+}
+
+#upgradeWizard browser {
+	height:		185px;
+}
+
+#upgradeWizard textbox {
+	height:		175px;
+}
+	
+.v_identity_logo_button {
+	-moz-appearance: toolbarbutton;
+}
+
+notificationbox {
+  -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#notificationbox");
+  -moz-box-orient: vertical;
+  overflow-y: hidden;
+}
+
+notification {
+  -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#notification");
+}
+
+.vINotificationLogo {
+	margin: 0;
+	padding: 0;
+}
+
+#vIDebugBox, #vIErrorBox{
+	overflow: auto;
+	font-size: x-small;
+	height: 10em;
+}
+
+.identity_clone-menulist {
+  -moz-binding: url(chrome://v_identity/content/v_identity.xml#fromMenuList_clone);
+  -moz-appearance: textfield;
+  margin: 2px 4px;
+  border: 2px solid;
+  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
+  -moz-border-right-colors: ThreeDHighlight ThreeDLightShadow;
+  -moz-border-bottom-colors: ThreeDHighlight ThreeDLightShadow;
+  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow;
+  padding: 1px 0px 1px 2px;
+  background-color: -moz-Field;
+  color: -moz-FieldText;
+}
+
+
+.smtpServerListHbox {
+  -moz-binding: url("chrome://v_identity/content/v_identity.xml#smtpServerList");
+}
+
+.smtpServerMenuList {
+  -moz-appearance: textfield;
+  margin: 0px;
+  border: 1px solid;
+  padding: 0px;
+  background-color: -moz-Field;
+  color:		graytext;
+  text-align:	center;
+}
+
+.smtpServerMenuList .menuitem-label {
+  text-align:	center;
+}
+
+.smtpServerMenuList .menulist-icon, .smtpServerMenuList .menulist-dropmarker {
+	display: none;
+}
+
+.autoReplyTo {
+  -moz-binding: url("chrome://v_identity/content/v_identity.xml#autoReplyTo");
+}
+
+
+.identityDataTooltip {
+  -moz-binding: url("chrome://v_identity/content/v_identity.xml#vI_identityDataTooltip");
+}
+
+#vI_tooltipPopupset {
+  -moz-binding: url("chrome://v_identity/content/v_identity.xml#tooltipPopupset");
+}
+
+.vI_htmlTextBox {
+  -moz-binding: url("chrome://v_identity/content/vI_htmlTextBox.xml#vI_htmlTextBox");
+}
+
+.identity_clone-popup-item {
+  -moz-binding: url("chrome://v_identity/content/v_identity.xml#fromPopupItem_clone");
+  padding: 0;
+  margin: 0;
+}
+
+.auto-reply-to {
+  -moz-binding: url("chrome://v_identity/content/v_identity.xml#autoReplyTo");
+}
+
+.menulist_clone-icon {
+	margin: 	0 3px;
+}
+
+.menupopup_clone-icon{
+	margin: 	0 3px;
+	padding:	0;
+}
+
+.menulist_clone-textbox, .menupopup_clone-text, .menupopup_clone-description {
+	margin:		0;
+	padding: 	1px;
+	background-color: transparent;
+}
+
+
+.menulist_clone-textbox .textbox-search-icons {
+	display:	none;
+}
+
+.menupopup_clone-description, .menu_clone-description {
+	margin-left: 	0px;
+	font-style:	italic;
+	color:		graytext;
+}
+
+.identity_clone-menulist[vid="true"], .identity_clone-popup-item[vid="true"] {
+  list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook-toolbar-small.png");
+  -moz-image-region: rect(0px 16px 16px 0px);	
+}
+
+.identity_clone-menulist[vid="false"], .identity_clone-popup-item[vid="false"] {
+  margin: 0 3px;
+  list-style-image: url("chrome://messenger/skin/addressbook/icons/abcard.png");
+}
+
+.menulist_clone-textbox[vid="true"] {
+  	color: red;
+}
+
+.virtIdLabel[vid="false"], .v_identity_logo[vid="false"] {
+	display:	none;
+}
+.virtIdLabel {
+	margin-right: 0px;
+}
+
+
+/* indicates a new indetity in menu */
+/* the alternate is the person-icon, which is defined elsewhere */
+.new-icon {
+  list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook-toolbar-small.png");
+  -moz-image-region: rect(0px 16px 16px 0px);
+}
+
+
+/* the following styles are copied from notification.css, cause its not included in pre2.0 */
+notification {
+  background-color: InfoBackground;
+  color: InfoText;
+}
+
+notification[type="info"] {
+  background-color: -moz-Dialog;
+}
+
+notification[type="critical"] {
+  background-color: red;
+}
+
+#fromPopupItem_clone .menulist-menupopup {
+	padding: 0;
+}
+
+.messageImage {
+  width: 16px;
+  height: 16px;
+  margin: 0px 6px 0px 6px;
+}
+
+.messageText {
+  -moz-margin-start: 5px;
+}
+
+.messageButton {
+  margin: 0px 5px 0px 5px;
+}
+
+.vINotificationCloseButton {
+  display: inline;
+  padding: 4px 2px !important;
+  -moz-appearance: none;
+  -moz-image-region: rect(0px, 56px, 14px, 42px);
+  height: 24px;
+  border: none !important;
+  cursor: default;
+  list-style-image: url("chrome://v_identity/skin/close.png");
+}
+
+.vINotificationCloseButton:hover {
+  -moz-image-region: rect(0px, 28px, 14px, 14px);
+  opacity: 1.0;
+}
+
+.vINotificationCloseButton:hover:active {
+  -moz-image-region: rect(0px, 42px, 14px, 28px);
+  opacity: 1.0;
+}
+
+.vINotificationCloseButton:focus {
+  outline: none !important;
+}

@@ -1,0 +1,18 @@
+<!ENTITY vI_rdfDataEditor.dlgTitle.label "Editor de datos de Virtual Identity">
+
+<!ENTITY vI_rdfDataEditor.dataType.email "correo">
+<!ENTITY vI_rdfDataEditor.dataType.maillist "lista de correo">
+<!ENTITY vI_rdfDataEditor.dataType.newsgroup "grupo de noticias">
+
+<!ENTITY vI_rdfDataEditor.header.label "Añadir/Modificar el almacén de datos">
+<!ENTITY vI_rdfDataEditor.recipient.label "Destinatario">
+<!ENTITY vI_rdfDataEditor.recipient.accesskey "D">
+<!ENTITY vI_rdfDataEditor.type.label "tipo de destinatario">
+<!ENTITY vI_rdfDataEditor.type.accesskey "t">
+<!ENTITY vI_rdfDataEditor.caption.label "Identidad virtual guardada:">
+<!ENTITY vI_rdfDataEditor.sender.label "Remitente:">
+<!ENTITY vI_rdfDataEditor.sender.accesskey "R">
+<!ENTITY vI_rdfDataEditor.smtp.label "SMTP:">
+<!ENTITY vI_rdfDataEditor.smtp.accesskey "M">
+<!ENTITY vI_rdfDataEditor.identity.label "Identidad base">
+<!ENTITY vI_rdfDataEditor.identity.accesskey "I">

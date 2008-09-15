@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+
+<!DOCTYPE window [
+<!ENTITY % vIstorageExtrasDTD SYSTEM "chrome://v_identity/locale/vI_storageExtras.dtd" >
+%vIstorageExtrasDTD;
+<!ENTITY % charsetDTD SYSTEM "chrome://global/locale/charsetOverlay.dtd" >
+%charsetDTD;
+]>
+
+<overlay id="vI_storageExtrasOverlay" 
+          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
+
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
+
+	<treecols id="rdfDataTreeCols">
+		<splitter class="tree-splitter" />
+		<treecol id="recieptCol" label="&vI_storageExtrasDataTreeOverlay.recieptCol.label;" flex="2"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="charEncCol" label="&vI_storageExtrasDataTreeOverlay.charEncCol.label;" flex="2"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="msgFormatCol" label="&vI_storageExtrasDataTreeOverlay.msgFormatCol.label;" flex="2"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="sMimeEncCol" label="&vI_storageExtrasDataTreeOverlay.sMimeEncCol.label;" flex="2"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="sMimeSigCol" label="&vI_storageExtrasDataTreeOverlay.sMimeSigCol.label;" flex="2"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPEncCol" label="&vI_storageExtrasDataTreeOverlay.PGPEncCol.label;" flex="2"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPSigCol" label="&vI_storageExtrasDataTreeOverlay.PGPSigCol.label;" flex="2"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPMIMECol" label="&vI_storageExtrasDataTreeOverlay.PGPMIMECol.label;" flex="2"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+	</treecols>
+</overlay>

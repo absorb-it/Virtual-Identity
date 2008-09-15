@@ -1,0 +1,21 @@
+<!ENTITY vI_rdfDataTree.dlgTitle.label "Datové úložiště Virtual Identity">
+
+<!ENTITY vI_rdfDataTree.filterPrefs.label "Filtr:">
+<!ENTITY vI_rdfDataTree.filterPrefs.accesskey "i">
+<!ENTITY vI_rdfDataTree.showAll.label "Zobrazit vše">
+<!ENTITY vI_rdfDataTree.showAll.accesskey "o">
+<!ENTITY vI_rdfDataTree.recipientColumn.label "Příjemce">
+<!ENTITY vI_rdfDataTree.typeColumn.label "Typ">
+<!ENTITY vI_rdfDataTree.senderColumn.label "Odesilatel">
+<!ENTITY vI_rdfDataTree.idColumn.label "Identita">
+<!ENTITY vI_rdfDataTree.smtpColumn.label "SMTP">
+<!ENTITY vI_rdfDataTree.menuEntry.label "Datové úložiště Virtual Identity">
+
+<!ENTITY vI_rdfDataTree.editMenu.label "Úpravy">
+<!ENTITY vI_rdfDataTree.editMenu.accesskey "p">
+<!ENTITY vI_rdfDataTree.modifySelected.label "upravit zvolené položky">
+<!ENTITY vI_rdfDataTree.modifySelected.accesskey "u">
+<!ENTITY vI_rdfDataTree.removeSelected.label "odstranit zvolené položky">
+<!ENTITY vI_rdfDataTree.removeSelected.accesskey "d">
+<!ENTITY vI_rdfDataTree.newItem.label "přidat novou položku">
+<!ENTITY vI_rdfDataTree.newItem.accesskey "n">

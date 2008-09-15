@@ -1,0 +1,20 @@
+<!ENTITY vident.upgrade.dlgTitle.label "Virtual Identity extensie-update/-installatie">
+<!ENTITY vident.upgrade.intro.label "Virtual Identity installeren/bijwerken">
+<!ENTITY vident.upgrade.intro.description "introductie">
+<!ENTITY vident.upgrade.intro.caption "Virtual Identity">
+<!ENTITY vident.upgrade.features.label "Virtual Identity installeren/bijwerken">
+<!ENTITY vident.upgrade.features.description "functies">
+<!ENTITY vident.upgrade.features.caption "Virtual Identity">
+<!ENTITY vident.upgrade.license.label "Virtual Identity installeren/bijwerken">
+<!ENTITY vident.upgrade.license.description "licentie">
+<!ENTITY vident.upgrade.license.caption "GNU General Public License">
+<!ENTITY vident.upgrade.0.5.0.label "Virtual Identity installeren/bijwerken">
+<!ENTITY vident.upgrade.0.5.0.description "bijwerken stap 1/2">
+<!ENTITY vident.upgrade.0.5.0.caption "Virtual Identity gegevens opslaan">
+<!ENTITY vident.upgrade.upgrade.label "Virtual Identity installeren/bijwerken">
+<!ENTITY vident.upgrade.upgrade.description "bijwerken stap 2/2">
+<!ENTITY vident.upgrade.upgrade.caption "Virtual Identity bijwerken">
+<!ENTITY vident.upgrade.finish.label "Virtual Identity installeren/bijwerken">
+<!ENTITY vident.upgrade.finish.description "Afronden">
+<!ENTITY vident.upgrade.finish.caption "Virtual Identity">
+<!ENTITY vident.upgrade.vidLogo.tooltiptext "Virtual Identity startpagina openen">

@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+   
+<?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+<?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
+
+
+<!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/vI_rdfDataEditor.dtd">
+
+<dialog id="vI_rdfDataEditor"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	ondialogaccept="return vI_rdfDataEditor.accept();"
+	title="&vI_rdfDataEditor.dlgTitle.label;" >
+
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataEditor.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_smtpSelector.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
+<script type="application/x-javascript" src="chrome://messenger/content/messengercompose/MsgComposeCommands.js"/>
+
+  <stringbundleset id="stringbundleset">
+	<stringbundle id="vI_rdfDataTreeBundle" src="chrome://v_identity/locale/vI_rdfDataEditor.properties" />
+	<stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />
+  </stringbundleset>
+
+<!-- <stringbundle id="vI_rdfDataTreeBundle" src="chrome://v_identity/locale/vI_rdfDataEditor.properties" /> -->
+
+	<dialogheader title="&vI_rdfDataEditor.header.label;"/>
+	<vbox id="vI_rdfDataEditorContent">
+	<hbox>
+		<vbox><spacer flex="1"/>
+			<label value="&vI_rdfDataEditor.recipient.label;" accesskey="&vI_rdfDataEditor.recipient.accesskey;" control="recipient"/>
+		<spacer flex="1"/></vbox>
+		<textbox id="recipient" flex="1" />
+		<menulist id="type_menu">
+		   <menupopup id="type_menu_popup" />
+		</menulist>
+	</hbox>
+	<groupbox>
+		<caption label="&vI_rdfDataEditor.caption.label;" />
+		<hbox>
+			<vbox><spacer flex="1"/>
+				<label value="&vI_rdfDataEditor.sender.label;" accesskey="&vI_rdfDataEditor.sender.accesskey;" control="sender"/>
+			<spacer flex="1"/></vbox>
+			<textbox id="sender" flex="1"  onblur="vI_rdfDataEditor.blurEvent('sender')" />
+		</hbox>
+		<hbox>
+			<vbox><spacer flex="1"/>
+				<label value="&vI_rdfDataEditor.smtp.label;" accesskey="&vI_rdfDataEditor.smtp.accesskey;" control="smtp_server_list"/>
+			<spacer flex="1"/></vbox>
+			<!-- structure to show SMTP server -->
+			<hbox id="smtpServerListHbox" class="smtpServerListHbox" />
+			
+			<vbox><spacer flex="1"/>
+				<label value="&vI_rdfDataEditor.identity.label;" accesskey="&vI_rdfDataEditor.identity.accesskey;" control="identity_list"/>
+			<spacer flex="1"/></vbox>
+			<menulist id="identity_list">
+				<menupopup id="identity_list_popup" />
+			</menulist>
+		</hbox>
+	</groupbox>
+	</vbox>
+	<splitter id="vIDebugBoxSplitter" hidden="true"/>
+	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
+	DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
+
+</dialog>

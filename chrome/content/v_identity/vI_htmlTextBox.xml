@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+
+<bindings id="vI_htmlTextBoxBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:xbl="http://www.mozilla.org/xbl">
+	<binding id="vI_htmlTextBox" extends="chrome://global/content/bindings/browser.xml#browser">
+	<implementation>
+	<constructor>
+		<![CDATA[		
+//		vI_notificationBar.dump('******* vI_htmlTextBox.xml constructor\n');
+		]]>
+	</constructor>
+	<property name="outputString" >
+		<setter><![CDATA[
+		var text_list = val.split(/\n/)
+		for (var i = 0; i < text_list.length; i++) {
+			if (this._isHR(text_list[i])) continue;
+			var text_item = this._checkList(text_list[i]);
+			this._add(text_item);
+			if (!this._currentList && (i + 1) < text_list.length) {
+				var new_br = this.contentDocument
+					.createElementNS("http://www.w3.org/1999/xhtml", 'html:br');
+				this.contentDocument.body.appendChild(new_br);
+			}
+		}
+		]]></setter>
+	</property>
+	<property name="cssSource" >
+		<setter><![CDATA[
+		var head = this.contentDocument.getElementsByTagName("HEAD").item(0);
+		var range = document.createRange();
+		range.selectNode(head);
+		var css_text = this._getContents("chrome://v_identity/skin/" + val);
+		var documentFragment = range.createContextualFragment("<style type='text/css'>" + css_text + "</style>");
+		head.appendChild(documentFragment);
+		]]></setter>
+	</property>
+	<field name="_currentList">null</field>
+	<field name="_currentBaseNode">null</field>
+	<method name="_getContents">
+        <parameter name="aURL" />
+		<body><![CDATA[		
+		// read the chrome file (copied from http://forums.mozillazine.org/viewtopic.php?p=921150)
+		var ioService=Components.classes["@mozilla.org/network/io-service;1"]
+			.getService(Components.interfaces.nsIIOService);
+		var scriptableStream=Components
+			.classes["@mozilla.org/scriptableinputstream;1"]
+			.getService(Components.interfaces.nsIScriptableInputStream);
+		
+		var channel=ioService.newChannel(aURL,null,null);
+		var input=channel.open();
+		scriptableStream.init(input);
+		var str=scriptableStream.read(input.available());
+		scriptableStream.close();
+		input.close();
+		return str;
+		]]></body>
+	</method>
+	<method name="_isHR">
+        <parameter name="text" />
+		<body><![CDATA[		
+		if (text == "---") {
+			var new_hr = this.contentDocument
+				.createElementNS("http://www.w3.org/1999/xhtml", 'html:hr');
+			this.contentDocument.body.appendChild(new_hr);
+			return true;
+		}
+		return false;
+		]]></body>
+	</method>
+	<method name="_checkList">
+        <parameter name="text" />
+		<body><![CDATA[
+		if (text.match(/^\*\s/)) {
+			if (!this._currentList) {
+				this._currentList = this.contentDocument
+					.createElementNS("http://www.w3.org/1999/xhtml", 'html:ul');
+				this.contentDocument.body.appendChild(vI_htmlTextBox.currentList);
+			}
+			this._currentBaseNode = this.contentDocument
+								.createElementNS("http://www.w3.org/1999/xhtml", 'html:li');
+			this._currentList.appendChild(vI_htmlTextBox.currentBaseNode);
+		}
+		else {
+			this._currentList = null;
+			this._currentBaseNode = this.contentDocument.body;
+		}
+		return text.replace(/^\*\s/,"")
+		]]></body>
+	</method>
+	<method name="_add">
+        <parameter name="text" />
+		<body><![CDATA[
+		if (text.match(/http[s]?:\/\/\S+/)) {
+			if (RegExp.leftContext) this._addText(RegExp.leftContext)
+			if (RegExp.lastMatch) this._addLink(RegExp.lastMatch)
+			if (RegExp.rightContext) this._add(RegExp.rightContext)
+		}
+		else this._addText(text);
+		]]></body>
+	</method>
+	<method name="_addText">
+        <parameter name="text" />
+		<body><![CDATA[		
+		var range = document.createRange();
+		range.selectNode(this._currentBaseNode);
+		var documentFragment = range.createContextualFragment(text);
+		this._currentBaseNode.appendChild(documentFragment);
+		]]></body>
+	</method>
+	<method name="_addLink">
+        <parameter name="text" />
+		<body><![CDATA[		
+		var new_a = this.contentDocument
+			.createElementNS("http://www.w3.org/1999/xhtml", 'html:a');
+		new_a.setAttribute("href", text)
+		new_a.setAttribute("style", "text-decoration: underline")
+		this._currentBaseNode.appendChild(new_a);
+		var new_text = this.contentDocument.createTextNode(text);
+		new_a.appendChild(new_text);
+		]]></body>
+	</method>
+	</implementation>
+	</binding>
+
+</bindings>
