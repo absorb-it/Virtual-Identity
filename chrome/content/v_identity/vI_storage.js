@@ -98,26 +98,18 @@ identityData.prototype = {
 
 	isExistingIdentity : function() {
 		vI_notificationBar.dump("## vI_storage: isExistingIdentity\n");
-		if (this.__keyTranslator.getID(this.id)) {
-			// if id is set, just grab the related identity and compare	
-			if (this.__equalsIdentity(gAccountManager.getIdentity(this.id))) {
-				vI_notificationBar.dump("## vI_storage: existing Identity found: " + this.id + "\n");
-				return this.id;
-			}
-		}
-		else {
-			// loop and compare with all Identities
-			var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
-			for (var i in accounts) {
-				// skip possible active VirtualIdentity Accounts
-				try { vI_account.prefroot.getBoolPref("mail.account."+accounts[i].key+".vIdentity"); continue; } catch (e) { };
-		
-				var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
-				for (var j in identities) {
-					if (this.__equalsIdentity(identities[j])) {
-						vI_notificationBar.dump("## vI_storage: existing Identity found: " + identities[j].key + "\n");
-						return identities[j].key;
-					}
+		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
+		for (var i in accounts) {
+			// skip possible active VirtualIdentity Accounts
+			try { vI_account.prefroot.getBoolPref("mail.account."+accounts[i].key+".vIdentity"); continue; } catch (e) { };
+	
+			var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
+			for (var j in identities) {
+				if (	(this.ignoreFullNameWhileComparing || this.fullName == identities[j].fullName) &&
+					(this.email == identities[j].email) &&
+					this.__equalSMTP(identities[j].smtpServerKey)	) {
+					vI_notificationBar.dump("## vI_storage: existing Identity found: " + identities[j].key + "\n");
+					return identities[j].key;
 				}
 			}
 		}
@@ -432,7 +424,7 @@ var vI_storage = {
 	__getWarning : function(warningCase, recipient, compareMatrix) {
 		var warning = { title: null, recLabel : null, recipient : null, warning : null, css: null, query : null };
 		warning.title = vI.elements.strings.getString("vident." + warningCase + ".title")
-		warning.recLabel = vI.elements.strings.getString("vident." + warningCase + ".recipient") +	" (" + recipient.recType + "):"
+		warning.recLabel = vI.elements.strings.getString("vident." + warningCase + ".recipient") + " (" + recipient.recType + "):"
 		warning.recipient = recipient.recDesc;
 		warning.warning = 
 			"<table class='" + warningCase + "'><thead><tr><th class='col1'/>" +

@@ -68,24 +68,34 @@ var vI_storageExtrasHelper = {
 }
 
 function vI_storageExtras(callFunction, resource) {
-	this.extras = [ 
+// function vI_storageExtras_checkbox(field, option, composeDialogElementID, updateFunction, identityValue) {
+	this.extras = [
+
+//	gReceiptOptionChanged
+
+
 		new vI_storageExtras_checkbox(
-			"reciept", "storageExtras_returnReciept", "returnReceiptMenu", null, null),
+			"reciept", "storageExtras_returnReciept", "returnReceiptMenu", null, "identity.requestReturnReceipt;"),
 		new vI_storageExtras_characterEncoding(),
 		new vI_storageExtras_msgFormat(),
 		new vI_storageExtras_sMime_messageEncryption(),
 		new vI_storageExtras_checkbox(
 			"sMimeSig", "storageExtras_sMime_messageSignature", "menu_securitySign1",
-				(typeof(setSecuritySettings)=="function")?setSecuritySettings:null, 1),
+				"(typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null;",
+				"identity.getBoolAttribute('sign_mail')"),
 		new vI_storageExtras_checkbox(
 			"PGPEnc", "storageExtras_openPGP_messageEncryption", "enigmail_encrypted_send",
-				(typeof(enigSetMenuSettings)=="function")?enigSetMenuSettings:null, ''),
+				"(typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null;",
+				"identity.getIntAttribute('defaultEncryptionPolicy') > 0"),
 		new vI_storageExtras_checkbox(
 			"PGPSig", "storageExtras_openPGP_messageSignature", "enigmail_signed_send",
-				(typeof(enigSetMenuSettings)=="function")?enigSetMenuSettings:null, ''),
+				"(typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null;",
+				"(identity.getIntAttribute('defaultEncryptionPolicy') > 0)?identity.getBoolAttribute('pgpSignEncrypted'):identity.getBoolAttribute('pgpSignPlain')"),
 		new vI_storageExtras_checkbox(
 			"PGPMIME", "storageExtras_openPGP_PGPMIME", "enigmail_sendPGPMime",
-				(typeof(enigSetMenuSettings)=="function")?enigSetMenuSettings:null, '')]
+				"(typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null;",
+				"identity.getBoolAttribute('pgpMimeMode')")
+		]
 	if (callFunction) this.loopForRDF(callFunction, resource)
 }
 
@@ -111,7 +121,7 @@ vI_storageExtras.prototype = {
 		var equal = true;
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) {
-				equal = (this.extras[i].equal(storageExtras.extras[i].value) && equal) // in this order to compare all fields (required for Matrix)
+				equal = (this.extras[i].equal(storageExtras.extras[i]) && equal) // in this order to compare all fields (required for Matrix)
 			}
 		}
 		return equal;
@@ -121,10 +131,10 @@ vI_storageExtras.prototype = {
 		var string = "";
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) {
-				if (this.extras[i].getLabel(null))
+				if (this.extras[i].valueHtml)
 					string += "<tr>" +
 					"<td class='col1 extras '>" + prefStrings.getString("vident.identityData.extras." + this.extras[i].field) + "</td>" +
-					"<td class='col2 extras '>" + this.extras[i].getLabel(null) + "</td>" +
+					"<td class='col2 extras '>" + this.extras[i].valueHtml + "</td>" +
 					"</tr>"
 			}
 		}
@@ -139,7 +149,7 @@ vI_storageExtras.prototype = {
 				string += "<tr>" +
 					"<td class='col1 extras " + classEqual + "'>" + prefStrings.getString("vident.identityData.extras." + this.extras[i].field) + "</td>" +
 					"<td class='col2 extras " + classEqual + "'>" + this.extras[i].comp.compareValue + "</td>" +
-					"<td class='col3 extras " + classEqual + "'>" + this.extras[i].comp.value + "</td>" +
+					"<td class='col3 extras " + classEqual + "'>" + this.extras[i].valueHtml + "</td>" +
 					"</tr>"
 			}
 		}
@@ -155,7 +165,11 @@ vI_storageExtras.prototype = {
 	},
 
 	readIdentityValues : function(identity) {
-		this.readValues();	// has to be build for all extras
+		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
+		for( var i = 0; i < this.extras.length; i++ ) {
+			if (this.extras[i].active) this.extras[i].readIdentityValue(identity)
+// 			vI_notificationBar.dump("## vI_storageExtras readIdentityValues "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
+		}
 	},
 
 	setValues : function() {
@@ -168,8 +182,9 @@ vI_storageExtras.prototype = {
 	readValues : function() {
 		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) {
+// 			vI_notificationBar.dump("## vI_storageExtras preparing readValue "+ this.extras[i].field +"\n");
 			if (this.extras[i].active) this.extras[i].readValue()
-// 			vI_notificationBar.dump("## vI_storageExtras readValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
+//  			vI_notificationBar.dump("## vI_storageExtras readValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 	setEditorValues : function() {
@@ -207,7 +222,7 @@ function vI_storageExtras_characterEncoding_setMenuMark() {
 }
 function vI_storageExtras_characterEncoding() {
 	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option)
-	this.comp = { value : null, compareValue : null, equal : null }
+	this.comp = { compareValue : null, equal : null }
 }
 vI_storageExtras_characterEncoding.prototype = {
 	active : null,
@@ -215,15 +230,18 @@ vI_storageExtras_characterEncoding.prototype = {
 	field : "charEnc",
 	option : "storageExtras_characterEncoding",
 	comp : null,
-	
-	getLabel : function() {
+
+	get valueHtml() {
 		return this.value?gCharsetConvertManager
 					.getCharsetTitle(gCharsetConvertManager.getCharsetAlias(this.value)):"";
 	},
-	equal : function(compareValue) {
-		this.comp.compareValue = compareValue?compareValue:"";
-		this.comp.value = this.value?this.value:"";
-		this.comp.equal = (this.value == null || this.value == compareValue);
+
+	// function to read the value from a given identity
+	readIdentityValue : function(identity) { }, // no charset per identity
+
+	equal : function(compareStorageExtra) {
+		this.comp.compareValue = compareStorageExtra.valueHtml;
+		this.comp.equal = (!this.value || !compareStorageExtra.value || this.value == compareStorageExtra.value);
 		return this.comp.equal;
 	},
 	// function to set or read the value from/to the MessageCompose Dialog
@@ -277,13 +295,16 @@ vI_storageExtras_msgFormat.prototype = {
 	option : "storageExtras_messageFormat",
 	comp : null,
 
-	getLabel : function() {
+	get valueHtml() {
 		return this.value?document.getElementById(this.value).label:"";
 	},
-	equal : function(compareValue) {
-		this.comp.compareValue = compareValue?document.getElementById(compareValue).label:"";
-		this.comp.value = this.value?document.getElementById(this.value).label:"";
-		this.comp.equal = (this.value == null || this.value == compareValue);
+
+	// function to read the value from a given identity
+	readIdentityValue : function(identity) { }, // no msgFormat per identity
+
+	equal : function(compareStorageExtra) {
+		this.comp.compareValue = compareStorageExtra.valueHtml;
+		this.comp.equal = (!this.value || !compareStorageExtra.value || this.value == compareStorageExtra.value);
 		return this.comp.equal;
 	},
 	// function to set or read the value from/to the MessageCompose Dialog
@@ -328,22 +349,23 @@ vI_storageExtras_sMime_messageEncryption.prototype = {
 	option : "storageExtras_sMime_messageEncryption",
 	comp : null,
 
-	getLabel : function(value) {
-		if (value == null) value = this.value; 
-		switch (value) {
-			case "true":
-				return "<div class='bool checked'><label class='screen'>&nbsp;<label><label class='braille'>yes</label></div>"
-			case "false":
-				return "<div class='bool'><label class='screen'>&nbsp;<label><label class='braille'>no</label></div>"
-		}
-		return "";
+	get valueHtml() {
+		if (!this.value) return "";
+		return	"<div class='bool" + ((this.value=="true")?" checked":"") + "'>" +
+				"<label class='screen'>&nbsp;</label>" +
+				"<label class='braille'>" + ((this.value=="true")?"yes":"no") + "</label>" +
+			"</div>"
 	},
 
-	equal : function(compareValue) {
-		this.comp.value = this.getLabel(this.value);
-		this.comp.compareValue = this.getLabel(compareValue);
-		this.comp.equal = (this.value == null || this.value == compareValue);
+	equal : function(compareStorageExtra) {
+		this.comp.compareValue = compareStorageExtra.valueHtml;
+		this.comp.equal = (this.value == null || this.value == compareStorageExtra.value);
 		return this.comp.equal;
+	},
+
+	// function to read the value from a given identity
+	readIdentityValue : function(identity) {
+		this.value = (identity.getIntAttribute("encryptionpolicy") == 2)?"true":"false"
 	},
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
@@ -373,15 +395,16 @@ vI_storageExtras_sMime_messageEncryption.prototype = {
 	}
 }
 
-function vI_storageExtras_checkbox(field, option, composeDialogElementID, updateFunction, updateFunctionParam1) {
-	this.field = field;
-	this.option = option;
+// a general checkbox for extra options. Has to provide some additional information
+function vI_storageExtras_checkbox(field, option, composeDialogElementID, updateFunction, identityValue) {
+	this.field = field;		// description of the option
+	this.option = option;		// option string to get preference settings
 	this.composeDialogElementID = composeDialogElementID;
 	this.updateFunction = updateFunction;
-	this.updateFunctionParam1 = updateFunctionParam1;
+	this.valueFromIdentityFunction = identityValue;
 	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option) &&
 		document.getElementById(this.composeDialogElementID);
-	this.comp = { value : null, compareValue : null, equal : null }
+	this.comp = { compareValue : null, equal : null }
 }
 vI_storageExtras_checkbox.prototype = {
 	active : null,
@@ -391,24 +414,25 @@ vI_storageExtras_checkbox.prototype = {
 	comp : null,
 	composeDialogElementID : null,
 	updateFunction : null, // some elements have to be updated before the can be read
-	updateFunctionParam1 : null,
+	valueFromIdentityFunction : null,
 	
-	getLabel : function(value) {
-		if (value == null) value = this.value;
-		switch (value) {
-			case "true":
-				return "<div class='bool checked'><label class='screen'>&nbsp;<label><label class='braille'>yes</label></div>"
-			case "false":
-				return "<div class='bool'><label class='screen'>&nbsp;<label><label class='braille'>no</label></div>"
-		}
-		return "";
+	get valueHtml() {
+		if (!this.value) return "";
+		return	"<div class='bool" + ((this.value=="true")?" checked":"") + "'>" +
+				"<label class='screen'>&nbsp;</label>" +
+				"<label class='braille'>" + ((this.value=="true")?"yes":"no") + "</label>" +
+			"</div>"
 	},
 
-	equal : function(compareValue) {
-		this.comp.value = this.getLabel(this.value);
-		this.comp.compareValue = this.getLabel(compareValue);
-		this.comp.equal = (this.value == null || this.value == compareValue);
+	equal : function(compareStorageExtra) {
+		this.comp.compareValue = compareStorageExtra.valueHtml;
+		this.comp.equal = (this.value == null || this.value == compareStorageExtra.value);
 		return this.comp.equal;
+	},
+
+	// function to read the value from a given identity
+	readIdentityValue : function(identity) {
+		this.value = eval(this.valueFromIdentityFunction)?"true":"false";
 	},
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
@@ -423,7 +447,7 @@ vI_storageExtras_checkbox.prototype = {
 	readValue : function() {
 		var element = document.getElementById(this.composeDialogElementID)
 		if (!element) return;
-		if (this.updateFunction) this.updateFunction(this.updateFunctionParam1);
+		if (this.updateFunction) eval(this.updateFunction);
 		this.value = ((element.getAttribute("checked") == "true")?"true":"false")
 	},
 	// function to set or read the value from the rdfDataEditor

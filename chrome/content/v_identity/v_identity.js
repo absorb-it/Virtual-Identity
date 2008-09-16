@@ -311,15 +311,15 @@ var vI = {
 	{
 		vI.tempStorage.BaseIdentity = vI.elements.Obj_MsgIdentity.selectedItem;
 		vI.tempStorage.NewIdentity = document.createElement("menuitem");
-		MenuItem.className = "identity-popup-item";
+		vI.tempStorage.NewIdentity.className = "identity-popup-item";
 		
 		// set the account name in the choosen menu item
-		MenuItem.setAttribute("label", vI_account.account.defaultIdentity.identityName);
-		MenuItem.setAttribute("accountname", " - " +  vI_account.account.incomingServer.prettyName);
-		MenuItem.setAttribute("accountkey", vI_account.account.key);
-		MenuItem.setAttribute("value", vI_account.account.defaultIdentity.key);
+		vI.tempStorage.NewIdentity.setAttribute("label", vI_account.account.defaultIdentity.identityName);
+		vI.tempStorage.NewIdentity.setAttribute("accountname", " - " +  vI_account.account.incomingServer.prettyName);
+		vI.tempStorage.NewIdentity.setAttribute("accountkey", vI_account.account.key);
+		vI.tempStorage.NewIdentity.setAttribute("value", vI_account.account.defaultIdentity.key);
 		
-		vI.elements.Obj_MsgIdentityPopup.appendChild(MenuItem);
+		vI.elements.Obj_MsgIdentityPopup.appendChild(vI.tempStorage.NewIdentity);
 		vI.__setSelectedIdentity(vI.tempStorage.NewIdentity);
 	},
 	

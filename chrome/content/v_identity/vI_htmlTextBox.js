@@ -38,16 +38,6 @@ var vI_htmlTextBox = {
 		window.setTimeout(vI_htmlTextBox.__init, 200)
 	},
 
-	initByObject :  function(object, stringName, outputString, cssSource) {
-		vI_htmlTextBox.Obj_TextBox = object;
-		if (stringName)
-			vI_htmlTextBox.string = document.getElementById("vITextBoxBundle").getString(stringName);
-		else if (outputString)
-			vI_htmlTextBox.string = outputString;
-		vI_htmlTextBox.cssSource = cssSource;
-		vI_htmlTextBox.__init();
-	},
-
 	// read the chrome file (copied from http://forums.mozillazine.org/viewtopic.php?p=921150)
 	__getContents : function (aURL){
 		var ioService=Components.classes["@mozilla.org/network/io-service;1"]
@@ -75,9 +65,9 @@ var vI_htmlTextBox = {
 	},
 	
 	__init : function () {
-		if(!vI_htmlTextBox.Obj_TextBox) vI_htmlTextBox.Obj_TextBox = document.getElementById(vI_htmlTextBox.objectID);
-// 		vI_htmlTextBox.Obj_TextBox.contentDocument
-// 			.lastChild.setAttribute("style", "background-color: -moz-dialog; font: -moz-dialog;");
+		vI_htmlTextBox.Obj_TextBox = document.getElementById(vI_htmlTextBox.objectID);
+		vI_htmlTextBox.Obj_TextBox.contentDocument
+			.lastChild.setAttribute("style", "background-color: -moz-dialog; font: -moz-dialog;");
 
 		if (vI_htmlTextBox.cssSource) vI_htmlTextBox.__setCSS();
 

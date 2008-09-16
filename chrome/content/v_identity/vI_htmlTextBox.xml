@@ -36,6 +36,11 @@
 	</constructor>
 	<property name="outputString" >
 		<setter><![CDATA[
+		if (!this._cssRead) this.cssSource = this.getAttribute('cssSource');	// read initial Attribute.
+		
+		var oldChilds = this.contentDocument.body.childNodes;
+		while (oldChilds.length > 0) this.contentDocument.body.removeChild(oldChilds[0])
+
 		var text_list = val.split(/\n/)
 		for (var i = 0; i < text_list.length; i++) {
 			if (this._isHR(text_list[i])) continue;
@@ -49,14 +54,17 @@
 		}
 		]]></setter>
 	</property>
+	<field name="_cssRead">false</field>
 	<property name="cssSource" >
 		<setter><![CDATA[
+		if (!val) return;
 		var head = this.contentDocument.getElementsByTagName("HEAD").item(0);
 		var range = document.createRange();
 		range.selectNode(head);
 		var css_text = this._getContents("chrome://v_identity/skin/" + val);
 		var documentFragment = range.createContextualFragment("<style type='text/css'>" + css_text + "</style>");
 		head.appendChild(documentFragment);
+		this._cssRead = true;
 		]]></setter>
 	</property>
 	<field name="_currentList">null</field>

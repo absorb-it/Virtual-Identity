@@ -45,17 +45,24 @@
 	<binding id="tooltipPopupset">
 	<implementation>
 	<method name="addTooltip">
-	<parameter name="identityData" />
-	<parameter name="randID" />
+	<parameter name="elem" />
+	<parameter name="permanent" />
         	<body><![CDATA[
+		vI_notificationBar.dump("** v_identity.xml: addTooltip.\n");
+		var randID = elem.tooltipElem.getAttribute("tooltip");
 		this.removeTooltip(randID);
-		if (!randID) randID = "tooltip_" + parseInt((new Date()).getTime());
+		if (!randID) {
+			randID = "tooltip_" + parseInt((new Date()).getTime());
+			elem.tooltipElem.setAttribute("tooltip", randID);
+		}
 		var toolTip = document.createElement("tooltip");
 		toolTip.setAttribute("class", "identityDataTooltip");
 		toolTip.setAttribute("id", randID);
-		toolTip.identityData = identityData;
+		toolTip.elem = elem;
+		toolTip.permanent = permanent;
+		vI_notificationBar.dump("** v_identity.xml: addTooltip 3.\n");
 		this.appendChild(toolTip);
-		return randID;
+		vI_notificationBar.dump("** v_identity.xml: addTooltip done.\n");
 		]]></body>
 	</method>
 	<method name="removeTooltip">
@@ -68,41 +75,53 @@
 	</binding>
 	
 	<binding id="vI_identityDataTooltip" extends="chrome://global/content/bindings/popup.xml#tooltip">
- 	<content onpopupshowing="this.popupshowing();this.resize()" onpopupshown="this.resize()" >
-			<xul:browser style="overflow:hidden" anonid="tooltipBrowser" class="vI_htmlTextBox" flex="1" disablehistory="true" onoverflow="document.getBindingParent(this).resize()"/>
+ 	<content onpopuphidden="popuphidden();" onpopupshowing="this.popupshowing();this.resize()" onpopupshown="this.resize()" >
+			<xul:browser style="overflow:hidden" anonid="tooltipBrowser" class="vI_htmlTextBox" cssSource="vI_TooltipBrowser.css" flex="1" disablehistory="true" onoverflow="document.getBindingParent(this).resize()"/>
 			<children />
 	</content>
 	<implementation>
 	<method name="popupshowing">
         	<body><![CDATA[
-		if (this.identityData && !this._initialized) {
-			if (!this._identityInfo) this._identityInfo = 
-				"<table><tr><td colspan='2' class='name'>" +
-					this.identityData.combinedNameHtml +
-				"</td></tr>" +
-				"<tr><td class='image'><img src='chrome://v_identity/skin/vi-info.png' /></td>" +
-				"<td class='identityTable'>" +
-					"<table><tbody>" + this.identityData.getMatrix() + "</tbody></table>" +
-				"</td></tr></table>"
+		vI_notificationBar.dump("** v_identity.xml: popupshowing\n");
+		if (!this._identityInfo) {
+			vI_notificationBar.dump("** v_identity.xml: popupshowing 2\n");
+			this._identityInfo = 
+				"<table>" + 
+				"<tr>" +
+					"<td colspan='2' class='name'>" + this.elem.identityData.combinedNameHtml + "</td>" +
+				"</tr><tr>" +
+					"<td class='image'><img src='chrome://v_identity/skin/vi-info.png' /></td>" +
+					"<td class='identityTable'><table><tbody>" + this.elem.identityData.getMatrix() + "</tbody></table></td>" +
+				"</tr>" +
+				"</table>"
 			this._tooltipBrowser.outputString = this._identityInfo;
-			this._tooltipBrowser.cssSource = "vI_TooltipBrowser.css";
-			this._initialized = true;
 		}
+		vI_notificationBar.dump("** v_identity.xml: popupshowing done.\n");
 		]]></body>
 	</method>
+	<method name ="popuphidden">
+        	<body><![CDATA[	
+		vI_notificationBar.dump("** v_identity.xml: popuphidden\n");
+		if (!this.permanent) this._identityInfo = null;
+		]]></body>
+	</method>	
 	<method name="resize">
 		<body><![CDATA[
+		if (!this._identityInfo) return;
+		vI_notificationBar.dump("** v_identity.xml: resize.\n");
 		var width = document.getElementById("msgIdentity_clone").boxObject.width * 0.7;
 		var height = this._tooltipBrowser.contentDocument.lastChild.scrollHeight + 5;
 		this.sizeTo(width, height);
 		width = document.getElementById("msgIdentity_clone").boxObject.width * 0.75;
 		this.sizeTo(width, height);
+		vI_notificationBar.dump("** v_identity.xml: resize done.\n");
 		]]></body>
 	</method>
-	<field name="blocked">false</field>
-	<field name="identityData" />
+	<field name="permanent" />
+	<field name="elem" />
+<!-- 	<field name="identityData">this.elem.identityData</field> -->
 	<field name="_identityInfo">false</field>
-	<field name="_initialized">false</field>
+<!-- 	<field name="_initialized">false</field> -->
 	<field name="_tooltipBrowser">document.getAnonymousElementByAttribute(this, "anonid", "tooltipBrowser")</field>
 	</implementation>
 	</binding>	
@@ -123,15 +142,13 @@
 		this.value = this._identityDataStorage.id;
 		this.description = this._identityDataStorage.sideDescription;
 		
-		this.setAttribute("tooltip",
-			document.getElementById("vI_tooltipPopupset")
-			.addTooltip(this._identityDataStorage, this.getAttribute("tooltip")));
+		document.getElementById("vI_tooltipPopupset").addTooltip(this, true);
 		]]>
 	</constructor>
 	<method name="clean">
         	<body><![CDATA[
 		document.getElementById("vI_tooltipPopupset")
-			.removeTooltip(this.getAttribute("tooltip"));
+			.removeTooltip(this.tooltipElem.getAttribute("tooltip"));
 		]]></body>
 	</method>
 	<destructor>
@@ -140,6 +157,7 @@
 		]]>
 	</destructor>
 	<property name="_identityData" onget="return this._identityDataStorage;" />
+	<field name="tooltipElem">this</field>
 	<property name="vid" onget="return this.getAttribute('vid');" onset="this.setAttribute('vid', val); return val;" />
 	<property name="label" onget="return this.getAttribute('label');" onset="this.setAttribute('label', val); return val;" />
 	<property name="value" onget="return this.getAttribute('value');" onset="this.setAttribute('value', val); return val;" />
@@ -266,12 +284,14 @@
 		// check if 'search' textboxes are implemented, if not change to 'timed'
 		if (!inputTextbox.timeout) inputTextbox.setAttribute("type", "timed");
 		inputTextbox.setAttribute("timeout", "300")
+		
+		document.getElementById("vI_tooltipPopupset").addTooltip(this, false);
 		]]>
 	</constructor>
 	<destructor>
 		<![CDATA[
 		document.getElementById("vI_tooltipPopupset")
-			.removeTooltip(this.getAttribute("tooltip"));
+			.removeTooltip(this.tooltipElem.getAttribute("tooltip"));
 		]]>
 	</destructor>
 
@@ -295,7 +315,6 @@
 		<body><![CDATA[
 		vI_notificationBar.dump("** v_identity.xml: clone_Obj_MsgIdentity\n");
 		
-		this.dontInitExtras = true;
 		var MenuItems = this._msgIdentityPopupElem.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
 			var identity = gAccountManager.getIdentity(MenuItems[index].getAttribute("value"));
@@ -314,7 +333,6 @@
 			}
 		}
 		this._popupMenu_separator = true;
-		this.dontInitExtras = false;
 		
 		vI_msgIdentityCloneTools.initReplyToFields(this.value);
 		]]></body>
@@ -328,6 +346,7 @@
 			this._popupElem.removeChild(MenuItems[0])
 		}
 		this.selectedItem = null;
+		this.identityData = null;
 		]]></body>
 	</method>	
 	<method name="addIdentityToCloneMenu">
@@ -436,10 +455,6 @@
 		this.label = this.identityData.combinedName; // reset to possibly changed value
 		this.setAttribute("label", this.label);
 		
-		this.tooltipElem.setAttribute("tooltip",
-			document.getElementById("vI_tooltipPopupset")
-			.addTooltip(this._identityDataStorage, this.tooltipElem.getAttribute("tooltip")));
-
 		var existingIdentity = this.checkForVirtualIdentity();
 		if (existingIdentity) this.selectedMenuItem = existingIdentity;
 		
@@ -461,44 +476,46 @@
 		<setter><![CDATA[
 		this.identityData.smtp = val;
 		
-		this.tooltipElem.setAttribute("tooltip",
-			document.getElementById("vI_tooltipPopupset")
-			.addTooltip(this._identityDataStorage, this.tooltipElem.getAttribute("tooltip")));
+		document.getElementById("vI_tooltipPopupset").addTooltip(this);
 
 		var existingIdentity = this.checkForVirtualIdentity();
 		if (existingIdentity) this.selectedMenuItem = existingIdentity;
 		]]></setter>
 	</property>
-	<field name="dontInitExtras" />
-	<property name="identityData" onget="return this._identityDataStorage;" >
+	<property name="identityData">
+		<getter><![CDATA[
+		vI_notificationBar.dump("** v_identity.xml: read identityData.\n");
+		this._identityDataStorage.extras.readValues(); // update with current data
+		vI_notificationBar.dump("** v_identity.xml: extras update done identityData.\n");
+		return this._identityDataStorage;
+		]]></getter>
 		<setter><![CDATA[
-		vI_notificationBar.dump("** v_identity.xml: updating DataStorage.\n");
-		var oldIdentityData = this._identityDataStorage;
-		this._identityDataStorage = val;		
-		if (!this._identityDataStorage.id) {
-			this._identityDataStorage.id = oldIdentityData.id;
-			var idName = this._identityDataStorage.idName;
-			this._identityDataStorage.sideDescription = (idName)?" - "+idName:"";
+		if (!val) this._identityDataStorage = null
+		else {
+			vI_notificationBar.dump("** v_identity.xml: updating DataStorage.\n");
+			var oldIdentityData = this._identityDataStorage;
+			this._identityDataStorage = val;
+			
+			if (oldIdentityData) { // indicates that it's not first time after clean
+				if (!this._identityDataStorage.id) {
+					this._identityDataStorage.id = oldIdentityData.id;
+					var idName = this._identityDataStorage.idName;
+					this._identityDataStorage.sideDescription = (idName)?" - "+idName:"";
+				}
+				vI_notificationBar.dump("** v_identity.xml: set extra Values\n");
+				this._identityDataStorage.extras.setValues();
+			
+				this.checkForVirtualIdentity();
+			}
+			else	this.vid = false;		// first time after clean it's always a real identity
+			
+			this.label = this._identityDataStorage.combinedName;
+			this.value = this._identityDataStorage.id;
+			this.description = this._identityDataStorage.sideDescription;
+			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this._identityDataStorage.smtp;
+			
+			vI_notificationBar.dump("** v_identity.xml: updating DataStorage done.\n");
 		}
-		this.label = this._identityDataStorage.combinedName;
-		this.value = this._identityDataStorage.id;
-		this.description = this._identityDataStorage.sideDescription;
-		document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this._identityDataStorage.smtp;
-		
-		if (!this.dontInitExtras) {
-			vI_notificationBar.dump("** v_identity.xml: set extra Values\n");
-			this._identityDataStorage.extras.setValues();
-		}
-		vI_notificationBar.dump("** v_identity.xml: read extra Values\n");
-		this._identityDataStorage.extras.readValues(); // fill in the missing Values
-		
-		this.checkForVirtualIdentity();
-		
-		this.tooltipElem.setAttribute("tooltip",
-			document.getElementById("vI_tooltipPopupset")
-			.addTooltip(this._identityDataStorage, this.tooltipElem.getAttribute("tooltip")));
-		
-		vI_notificationBar.dump("** v_identity.xml: updating DataStorage done.\n");
 		]]></setter>
 	</property>
 	<field name="_popupElem">document.getElementById("msgIdentityPopup_clone")</field>
