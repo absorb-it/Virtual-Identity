@@ -45,7 +45,6 @@
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
-	<script type="application/x-javascript" src="chrome://v_identity/content/vI_htmlTextBox.js" />
 
 	<vbox id="messagepanebox" >
 		<!-- following element just stores the Ext-Version, seamonkey has no extensionmanager -->

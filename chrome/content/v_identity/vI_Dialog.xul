@@ -39,8 +39,7 @@
 
 	<script type="application/x-javascript"
 		src="chrome://v_identity/content/vI_Dialog.js" />
-	<script type="application/x-javascript"
-		src="chrome://v_identity/content/vI_htmlTextBox.js" />
+
 	<description id="vI_Dialog_title" />
 	<description id="vI_Dialog_recLabel" />
 	<description id="vI_Dialog_recipient" />
