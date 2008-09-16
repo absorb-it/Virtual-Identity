@@ -23,12 +23,17 @@
  * ***** END LICENSE BLOCK ***** */
 
 var vI_Dialog = {
+	setDescription : function(object, description) {
+		var new_text = document.createTextNode(description);
+		object.appendChild(new_text);
+	},
+
 	init : function(warning) {
-		document.getElementById("vI_Dialog_title").setAttribute("value", warning.title);
-		document.getElementById("vI_Dialog_recLabel").setAttribute("value", warning.recLabel);
-		document.getElementById("vI_Dialog_recipient").setAttribute("value", warning.recipient);
+		vI_Dialog.setDescription(document.getElementById("vI_Dialog_title"), warning.title);
+		vI_Dialog.setDescription(document.getElementById("vI_Dialog_recLabel"), warning.recLabel);
+		vI_Dialog.setDescription(document.getElementById("vI_Dialog_recipient"), warning.recipient);
 		vI_htmlTextBox.init("vI_Dialog_browser", null, warning.warning, warning.css);		
-		document.getElementById("vI_Dialog_query").setAttribute("value", warning.query);
+		vI_Dialog.setDescription(document.getElementById("vI_Dialog_query"), warning.query);
 	}
 }
 

@@ -41,9 +41,9 @@
 		src="chrome://v_identity/content/vI_Dialog.js" />
 	<script type="application/x-javascript"
 		src="chrome://v_identity/content/vI_htmlTextBox.js" />
-	<label id="vI_Dialog_title" />
-	<label id="vI_Dialog_recLabel" />
-	<label id="vI_Dialog_recipient" />
+	<description id="vI_Dialog_title" />
+	<description id="vI_Dialog_recLabel" />
+	<description id="vI_Dialog_recipient" />
 	<browser id="vI_Dialog_browser" disablehistory="true" flex="1" />
-	<label id="vI_Dialog_query" />
+	<description id="vI_Dialog_query" />
 </dialog>
