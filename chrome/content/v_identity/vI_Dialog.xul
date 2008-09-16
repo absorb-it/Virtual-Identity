@@ -44,6 +44,8 @@
 	<description id="vI_Dialog_title" />
 	<description id="vI_Dialog_recLabel" />
 	<description id="vI_Dialog_recipient" />
-	<browser id="vI_Dialog_browser" disablehistory="true" flex="1" />
+	<browser id="vI_Dialog_browser" class="vI_htmlTextBox"
+		 documentStyle="background-color: -moz-dialog; font: -moz-dialog;"
+		 cssSource="vI_DialogBrowser.css" flex="1" disablehistory="true" />
 	<description id="vI_Dialog_query" />
 </dialog>

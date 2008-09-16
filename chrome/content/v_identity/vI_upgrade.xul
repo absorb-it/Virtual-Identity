@@ -37,7 +37,7 @@
 
 <wizard id="upgradeWizard" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         title="&vident.upgrade.dlgTitle.label;"
-	zlevel="6" onload="vI_upgrade.init();">
+	zlevel="6" onload="vI_upgrade.init(); vI_upgrade.prepare(document.getElementById('introPage'));" >
 
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_upgrade.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_account.js" />
@@ -50,54 +50,38 @@
 
 <stringbundle id="vITextBoxBundle" src="chrome://v_identity/locale/vI_upgrade.properties" />
 	
-	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.intro', 'vident.intro');"
+	<wizardpage id="introPage"
 		label="&vident.upgrade.intro.label;" description="&vident.upgrade.intro.description;"
 		pageid="intro" next="features" >
 		<groupbox>
 			<caption label="&vident.upgrade.intro.caption;"/>
-			<browser id="vITextBox.intro" disablehistory="true" />
+			<browser id="vITextBox.intro" class="vI_htmlTextBox" disablehistory="true"
+	 			documentStyle="background-color: -moz-dialog; font: -moz-dialog;" />
 		</groupbox>
 	</wizardpage>
 	<!-- features -->
-	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.features', 'vident.features');"
+	<wizardpage onpageshow="vI_upgrade.prepare(this);"
 		label="&vident.upgrade.features.label;" description="&vident.upgrade.features.description;" 
 		pageid="features" next="license" >
 		<groupbox>
 			<caption label="&vident.upgrade.features.caption;"/>
-			<browser id="vITextBox.features" disablehistory="true" />
+			<browser id="vITextBox.features" class="vI_htmlTextBox" disablehistory="true"
+	 			documentStyle="background-color: -moz-dialog; font: -moz-dialog;" />
 		</groupbox>
 	</wizardpage>
 	<!-- GPL license -->
-	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.license', 'vident.license');"
+	<wizardpage onpageshow="vI_upgrade.prepare(this);"
 		label="&vident.upgrade.license.label;" description="&vident.upgrade.license.description;"
-		id="license" pageid="license" next="0.5.0" >
+		pageid="license" next="upgrade" >
 		<groupbox>
 			<caption label="&vident.upgrade.license.caption;"/>
-			<browser id="vITextBox.license" disablehistory="true" />
+			<browser id="vITextBox.license" class="vI_htmlTextBox" disablehistory="true"
+	 			 cssSource="vI_upgrade_license.css"
+				 documentStyle="background-color: -moz-dialog; font: -moz-dialog;" />
 		</groupbox>
 	</wizardpage>
-	<!-- upgrade information -->
-	<!-- 0.5.0 -->
-	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.0.5.0', 'vident.0.5.0');"
-		label="&vident.upgrade.0.5.0.label;" description="&vident.upgrade.0.5.0.description;"
-		pageid="0.5.0" next="upgrade" >
-		<groupbox>
-			<caption label="&vident.upgrade.0.5.0.caption;"/>
-			<browser id="vITextBox.0.5.0" disablehistory="true" />
-		</groupbox>
-	</wizardpage>
-	<!-- 0.5.3 -->
-<!--	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.0.5.3', 'vident.0.5.3');"
-		label="&vident.upgrade.0.5.3.label;" description="&vident.upgrade.0.5.3.description;"
-		pageid="0.5.3" next="upgrade" >
-		<groupbox>
-			<caption label="&vident.upgrade.0.5.3.caption;"/>
-			<browser id="vITextBox.0.5.3" disablehistory="true" />
-		</groupbox>
-	</wizardpage>	
--->
 	<!-- upgrade procedure -->
-	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_upgrade.upgrade();"
+	<wizardpage onpageshow="vI_upgrade.prepare(this);vI_upgrade.upgrade();"
 		label="&vident.upgrade.upgrade.label;" description="&vident.upgrade.upgrade.description;" 
 		pageid="upgrade" next="finish" >
 		<groupbox>
@@ -106,12 +90,13 @@
 		</groupbox>
 	</wizardpage>	
 	<!-- finish -->
-	<wizardpage onpageshow="vI_upgrade.adaptButtons();vI_htmlTextBox.init('vITextBox.finish', 'vident.finish');"
+	<wizardpage onpageshow="vI_upgrade.prepare(this);"
 		label="&vident.upgrade.finish.label;" description="&vident.upgrade.finish.description;" 
 		pageid="finish" >
 		<groupbox>
 			<caption label="&vident.upgrade.finish.caption;"/>
-			<browser id="vITextBox.finish" disablehistory="true" />
+			<browser id="vITextBox.finish" class="vI_htmlTextBox" disablehistory="true"
+	 			documentStyle="background-color: -moz-dialog; font: -moz-dialog;" />
 		</groupbox>
 	</wizardpage>	
 	<hbox>

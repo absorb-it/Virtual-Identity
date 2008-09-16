@@ -48,7 +48,6 @@
 	<parameter name="elem" />
 	<parameter name="permanent" />
         	<body><![CDATA[
-		vI_notificationBar.dump("** v_identity.xml: addTooltip.\n");
 		var randID = elem.tooltipElem.getAttribute("tooltip");
 		this.removeTooltip(randID);
 		if (!randID) {
@@ -60,9 +59,7 @@
 		toolTip.setAttribute("id", randID);
 		toolTip.elem = elem;
 		toolTip.permanent = permanent;
-		vI_notificationBar.dump("** v_identity.xml: addTooltip 3.\n");
 		this.appendChild(toolTip);
-		vI_notificationBar.dump("** v_identity.xml: addTooltip done.\n");
 		]]></body>
 	</method>
 	<method name="removeTooltip">
@@ -82,9 +79,7 @@
 	<implementation>
 	<method name="popupshowing">
         	<body><![CDATA[
-		vI_notificationBar.dump("** v_identity.xml: popupshowing\n");
 		if (!this._identityInfo) {
-			vI_notificationBar.dump("** v_identity.xml: popupshowing 2\n");
 			this._identityInfo = 
 				"<table>" + 
 				"<tr>" +
@@ -96,25 +91,21 @@
 				"</table>"
 			this._tooltipBrowser.outputString = this._identityInfo;
 		}
-		vI_notificationBar.dump("** v_identity.xml: popupshowing done.\n");
 		]]></body>
 	</method>
 	<method name ="popuphidden">
         	<body><![CDATA[	
-		vI_notificationBar.dump("** v_identity.xml: popuphidden\n");
 		if (!this.permanent) this._identityInfo = null;
 		]]></body>
 	</method>	
 	<method name="resize">
 		<body><![CDATA[
 		if (!this._identityInfo) return;
-		vI_notificationBar.dump("** v_identity.xml: resize.\n");
 		var width = document.getElementById("msgIdentity_clone").boxObject.width * 0.7;
 		var height = this._tooltipBrowser.contentDocument.lastChild.scrollHeight + 5;
 		this.sizeTo(width, height);
 		width = document.getElementById("msgIdentity_clone").boxObject.width * 0.75;
 		this.sizeTo(width, height);
-		vI_notificationBar.dump("** v_identity.xml: resize done.\n");
 		]]></body>
 	</method>
 	<field name="permanent" />
@@ -313,8 +304,6 @@
 	</method>	
 	<method name="init">
 		<body><![CDATA[
-		vI_notificationBar.dump("** v_identity.xml: clone_Obj_MsgIdentity\n");
-		
 		var MenuItems = this._msgIdentityPopupElem.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
 			var identity = gAccountManager.getIdentity(MenuItems[index].getAttribute("value"));
@@ -328,7 +317,6 @@
 
 			if (this._msgIdentity_selectedItem == MenuItems[index]) {
 				this.selectedItem = menuItem;
-				vI_notificationBar.dump("** v_identity.xml: clone_Obj_MsgIdentity selectedMenuItem " + menuItem.value + " found\n");
 				this.identityData = newIdentity.getDuplicate();
 			}
 		}
@@ -339,7 +327,6 @@
 	</method>
 	<method name="clean">
 		<body><![CDATA[
-		vI_notificationBar.dump("** v_identity.xml: clean\n");
 		var MenuItems = this._popupElem.childNodes;
 		while (MenuItems.length > 0) {
 			try {MenuItems[0].clean();} catch (e) { };
@@ -352,8 +339,6 @@
 	<method name="addIdentityToCloneMenu">
 		<parameter name="localIdentityData" />
 		<body><![CDATA[
-		vI_notificationBar.dump("** v_identity.xml: addIdentityToCloneMenu '" + localIdentityData.id + "'\n");
-		
 		var existingItem = this._isExistingCloneMenuItem(localIdentityData);
 		if (!existingItem) {
 			var MenuItem = document.createElement("menuitem");
@@ -383,7 +368,6 @@
 		<parameter name="identitykey" />
 		<body><![CDATA[
 		var MenuItems = this._popupElem.childNodes;
-		vI_notificationBar.dump("** v_identity.xml: getMenuItemForIdentity key " + identitykey + " menulength " + MenuItems.length + "\n");
 		for (var index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].value == identitykey)
 				return MenuItems[index]
@@ -420,18 +404,11 @@
 	<method name="_isExistingCloneMenuItem">
 		<parameter name="localIdentityData" />
 		<body><![CDATA[
-		vI_notificationBar.dump("** _isExistingCloneMenuItem\n");
-			
 		var MenuItems = this._popupElem.childNodes
 		for (var j = 0; j < MenuItems.length; j++) {
 			if (MenuItems[j].localName == "menuseparator") continue;
-			vI_notificationBar.dump("** comparing id " + MenuItems[j].identityData.id + " with " + localIdentityData.id + "\n");
-			if (MenuItems[j].identityData.equals(localIdentityData)) {
-				vI_notificationBar.dump("** _isExistingCloneMenuItem: found existing one\n");
-				return MenuItems[j];
-			}
+			if (MenuItems[j].identityData.equals(localIdentityData)) return MenuItems[j];
 		}
-		vI_notificationBar.dump("** _isExistingCloneMenuItem: none found\n");
 		return null;
 		]]></body>
 	</method>
@@ -484,15 +461,12 @@
 	</property>
 	<property name="identityData">
 		<getter><![CDATA[
-		vI_notificationBar.dump("** v_identity.xml: read identityData.\n");
 		this._identityDataStorage.extras.readValues(); // update with current data
-		vI_notificationBar.dump("** v_identity.xml: extras update done identityData.\n");
 		return this._identityDataStorage;
 		]]></getter>
 		<setter><![CDATA[
 		if (!val) this._identityDataStorage = null
 		else {
-			vI_notificationBar.dump("** v_identity.xml: updating DataStorage.\n");
 			var oldIdentityData = this._identityDataStorage;
 			this._identityDataStorage = val;
 			
@@ -502,7 +476,6 @@
 					var idName = this._identityDataStorage.idName;
 					this._identityDataStorage.sideDescription = (idName)?" - "+idName:"";
 				}
-				vI_notificationBar.dump("** v_identity.xml: set extra Values\n");
 				this._identityDataStorage.extras.setValues();
 			
 				this.checkForVirtualIdentity();
@@ -514,7 +487,6 @@
 			this.description = this._identityDataStorage.sideDescription;
 			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this._identityDataStorage.smtp;
 			
-			vI_notificationBar.dump("** v_identity.xml: updating DataStorage done.\n");
 		}
 		]]></setter>
 	</property>

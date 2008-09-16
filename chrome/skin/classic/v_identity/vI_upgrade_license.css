@@ -1,0 +1,11 @@
+/*
+This css is used in the improved Tooltip
+The css will be loaded with htmlTextBox.__setCSS() because the
+embedded browser is not able to access chrome
+*/
+
+body {
+	font-size: 		x-small;
+	background-color:	white;
+	padding:		10px;
+}

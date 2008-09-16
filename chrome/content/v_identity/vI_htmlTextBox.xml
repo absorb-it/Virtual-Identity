@@ -31,12 +31,13 @@
 	<implementation>
 	<constructor>
 		<![CDATA[		
-//		vI_notificationBar.dump('******* vI_htmlTextBox.xml constructor\n');
+<!-- 		vI_notificationBar.dump('******* vI_htmlTextBox.xml constructor\n'); -->
 		]]>
 	</constructor>
 	<property name="outputString" >
 		<setter><![CDATA[
-		if (!this._cssRead) this.cssSource = this.getAttribute('cssSource');	// read initial Attribute.
+		if (!this._cssRead) this.cssSource = this.getAttribute('cssSource');	// read initial Attributes
+		this.contentDocument.lastChild.setAttribute("style", this.getAttribute('documentStyle'));
 		
 		var oldChilds = this.contentDocument.body.childNodes;
 		while (oldChilds.length > 0) this.contentDocument.body.removeChild(oldChilds[0])
@@ -107,11 +108,11 @@
 			if (!this._currentList) {
 				this._currentList = this.contentDocument
 					.createElementNS("http://www.w3.org/1999/xhtml", 'html:ul');
-				this.contentDocument.body.appendChild(vI_htmlTextBox.currentList);
+				this.contentDocument.body.appendChild(this._currentList);
 			}
 			this._currentBaseNode = this.contentDocument
 								.createElementNS("http://www.w3.org/1999/xhtml", 'html:li');
-			this._currentList.appendChild(vI_htmlTextBox.currentBaseNode);
+			this._currentList.appendChild(this._currentBaseNode);
 		}
 		else {
 			this._currentList = null;

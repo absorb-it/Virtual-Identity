@@ -32,7 +32,7 @@ var vI_Dialog = {
 		vI_Dialog.setDescription(document.getElementById("vI_Dialog_title"), warning.title);
 		vI_Dialog.setDescription(document.getElementById("vI_Dialog_recLabel"), warning.recLabel);
 		vI_Dialog.setDescription(document.getElementById("vI_Dialog_recipient"), warning.recipient);
-		vI_htmlTextBox.init("vI_Dialog_browser", null, warning.warning, warning.css);		
+		document.getElementById("vI_Dialog_browser").outputString = warning.warning;
 		vI_Dialog.setDescription(document.getElementById("vI_Dialog_query"), warning.query);
 	}
 }

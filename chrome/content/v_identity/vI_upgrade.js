@@ -33,7 +33,6 @@ var vI_upgrade = {
 	init : function() {
 		vI_upgrade.__initRequirements();
 		document.documentElement.getButton("cancel").setAttribute("hidden", "true")
-		vI_upgrade.skipUpgradePages(); // skip obsolete upgrade Pages
 	},
 
 	__initRequirements : function() {
@@ -65,16 +64,14 @@ var vI_upgrade = {
 		return false;
 	},
 
-	skipUpgradePages : function() {
-		var preUpdateWizardPage = document.getElementById("license")		
-		// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
-		if (vI_upgrade.versionChecker.compare(vI_rdfDatasource.getCurrentExtFileVersion(), "0.5.0") >= 0)
-			preUpdateWizardPage.setAttribute("next", "upgrade")
-	},
-	
-	adaptButtons : function() {
+	prepare : function(elem) {
 		document.documentElement.getButton('back').setAttribute('hidden','true');
 		document.documentElement.getButton('next').focus();
+		var pageid = elem.getAttribute("pageid");
+		var browser = document.getElementById('vITextBox.' + pageid)
+		if (browser) 
+			browser.outputString =
+		    		document.getElementById('vITextBoxBundle').getString('vident.' + pageid);
 	},
 	
 	__upgrade : function() {
