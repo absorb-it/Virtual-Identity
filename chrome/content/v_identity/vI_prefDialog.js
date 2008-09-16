@@ -280,9 +280,9 @@ var vI_prefDialog = {
 		if (vI_helper.olderVersion("TB", "2.0")) {
 			document.getElementById("fccReplyFollowsParentBox").setAttribute("hidden", "true");
 		}
-		if (!(typeof(enigSetMenuSettings)=="function")) {
-			document.getElementById("openPGPencryption").setAttribute("hidden", "true");
-		}
+// 		if (!(typeof(enigSetMenuSettings)=="function")) {
+// 			document.getElementById("openPGPencryption").setAttribute("hidden", "true");
+// 		}
 
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
 		vI_prefDialog.base.smartReplyHideSignature();
