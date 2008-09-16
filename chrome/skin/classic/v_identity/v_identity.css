@@ -127,7 +127,7 @@ notification {
   -moz-binding: url("chrome://v_identity/content/v_identity.xml#smtpServerList");
 }
 
-.smtpServerMenuList {
+.identity_clone-menulist .smtpServerMenuList {
   -moz-appearance: textfield;
   margin: 0px;
   border: 1px solid;
@@ -137,11 +137,15 @@ notification {
   text-align:	center;
 }
 
-.smtpServerMenuList .menuitem-label {
+.identity_clone-menulist .smtpServerMenuList .menuitem-label {
   text-align:	center;
 }
 
-.smtpServerMenuList .menulist-icon, .smtpServerMenuList .menulist-dropmarker {
+.identity_clone-menulist .smtpServerMenuList .menulist-icon, .smtpServerMenuList .menulist-dropmarker {
+	display: none;
+}
+
+.identity_clone-menulist [showSmtp="false"] .smtpServerMenuList {
 	display: none;
 }
 

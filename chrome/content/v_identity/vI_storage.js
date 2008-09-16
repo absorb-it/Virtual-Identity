@@ -35,7 +35,7 @@ function identityData(email, fullName, id, smtp, extras, sideDescription) {
 	this.fullName = (fullName?fullName:'');
 	this.id = (this.__keyTranslator.isValidID(id))?id:"";
 	this.smtp = (this.__keyTranslator.isValidSMTP(smtp))?smtp:""
-	this.extras = extras;
+	this.extras = extras?extras:new vI_storageExtras();
 	this.comp = {	// holds the results of the last comparison for later creation of a compareMatrix
 		compareID : null,
 		equals : { fullName : {}, email : {}, smtpName : {}, idName : {}, extras : {} }
@@ -93,8 +93,7 @@ identityData.prototype = {
 
 	// creates an Duplicate of the current IdentityData, cause usually we are working with a pointer
 	getDuplicate : function() {
-		var newExtras = this.extras?this.extras.getDuplicate():null;
-		return new identityData(this.email, this.fullName, this.id, this.smtp, newExtras, this.sideDescription);
+		return new identityData(this.email, this.fullName, this.id, this.smtp, this.extras.getDuplicate(), this.sideDescription);
 	},
 
 	isExistingIdentity : function() {
@@ -140,13 +139,12 @@ identityData.prototype = {
 	},
 
 	__equalsIdentity : function(identity) {
-		var newExtras = new vI_storageExtras();
-		newExtras.readValues(identity);
 		var testIdentity = new identityData(
 			identity.email,
 			identity.fullName,
 			identity.key,
-			identity.smtpServerKey, newExtras)
+			identity.smtpServerKey)
+		testIdentity.extras.readIdentityValues(identity);
 		return (this.equals(testIdentity));
 	},
 
@@ -157,7 +155,7 @@ identityData.prototype = {
 		this.comp.equals.email = (this.email == compareIdentityData.email)
 		this.comp.equals.smtpName = this.__equalSMTP(compareIdentityData.smtp);
 		this.comp.equals.idName = this.__equalID(compareIdentityData.id);
-		this.comp.equals.extras = (!this.extras || !compareIdentityData.extras || this.extras.equal(compareIdentityData.extras))
+		this.comp.equals.extras = this.extras.equal(compareIdentityData.extras);
 
 		return (this.comp.equals.fullName && this.comp.equals.email && this.comp.equals.smtpName && this.comp.equals.idName && this.comp.equals.extras)
 	},
@@ -194,7 +192,7 @@ identityData.prototype = {
 		for each (item in Items) if (this[item+"Html"])
 			string += "<tr><td class='col1'>" + this[item+"Label"] + ":</td>" +
 				"<td class='col2'>" + this[item+"Html"] + "</td></tr>"
-		if (this.extras) string += this.extras.getMatrix();
+		string += this.extras.getMatrix();
 		return string;		
 	}
 }

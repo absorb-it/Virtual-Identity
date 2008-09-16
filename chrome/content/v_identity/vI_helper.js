@@ -102,44 +102,20 @@ var vI_helper = {
 		return (versionChecker.compare(appVersion, version) < 0)
 	},
 
-	// "accountname" property changed in Thunderbird 3.x, Seamonkey 1.5x to "description"
-	getAccountname: function(elem) {
-		if (elem.getAttribute("accountname") == "" && elem.getAttribute("description") != "")
-			return "- " + elem.getAttribute("description")
-		else return elem.getAttribute("accountname")
-	},
-
+/*vI_upgrade.js:229:
+vI_upgrade.js:232:*/
 	combineNames : function (fullName, email) {
 		if (fullName && fullName.replace(/^\s+|\s+$/g,"")) return fullName.replace(/^\s+|\s+$/g,"") + " <" + email.replace(/^\s+|\s+$/g,"") + ">"
 		else return email?email.replace(/^\s+|\s+$/g,""):""
 	},
-
-	addIdentityMenuItem: function(object, identityName, accountName, accountKey, identityKey, base_id_key, smtp_key, extras) {
-		vI_notificationBar.dump("## vI_helper: addIdentityMenuItem '" + accountName + "'\n");
-		var MenuItem = document.createElement("menuitem");
-		MenuItem.className = "identity-popup-item";
-		
-		// set the account name in the choosen menu item
-		MenuItem.setAttribute("label", identityName);
-		MenuItem.setAttribute("accountname", accountName);
-		MenuItem.setAttribute("accountkey", accountKey);
-		MenuItem.setAttribute("value", identityKey);
-		MenuItem.setAttribute("class", "identity_clone-popup-item new-icon")
-		if (base_id_key) MenuItem.base_id_key = base_id_key
-		if (smtp_key) MenuItem.smtp_key = smtp_key
-		if (extras) MenuItem.extras = extras
-
-	    	MenuItem.identityData = new identityData("test@identityData", identityName, base_id_key, smtp_key, extras);
-
-		object.appendChild(MenuItem)
-		
-		return MenuItem
-	},
-
-	getBaseIdentity : function () {
-		return gAccountManager.getIdentity(vI.elements.Obj_MsgIdentity.value);
-	},
 	
+// vI_rdfDataEditor.js:80:         elem.value = address.combinedName;
+// vI_rdfDatasource.js:119:                if (!parsed.combinedName) {
+// vI_rdfDatasource.js:123:                vI_notificationBar.dump("## vI_rdfDatasource: __getRDFResourceForVIdentity: recDescription=" + parsed.combinedName + "\n")
+// vI_rdfDatasource.js:130:                return vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + rdfNSRecType + parsed.combinedName);
+// vI_upgrade.js:225:              //~ alert(splitted.email + "++" + splitted.name + "++" + splitted.combinedName)
+// vI_upgrade.js:256:                       combinedName: name + " <" + email + ">"}
+
 	parseAddress : function(address) {
 		//~ vI_notificationBar.dump("## v_identity: getAddress: parsing '" + address + "'\n")
 		var name = ""; var email = "";

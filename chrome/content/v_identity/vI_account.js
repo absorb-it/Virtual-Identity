@@ -33,24 +33,28 @@ var vI_account = {
 		.getService(Components.interfaces.nsIPrefService)
 		.getBranch(null),
 
+	_getBaseIdentity : function () {
+		return gAccountManager.getIdentity(vI.elements.Obj_MsgIdentity.value);
+	},
+
 	_copyBoolAttribute : function(name) {
 		vI_account.account.defaultIdentity.setBoolAttribute(name,
-				vI_helper.getBaseIdentity().getBoolAttribute(name));
+				vI_account._getBaseIdentity().getBoolAttribute(name));
 	},
 	
 	_copyIntAttribute : function(name) {
 		vI_account.account.defaultIdentity.setIntAttribute(name,
-				vI_helper.getBaseIdentity().getIntAttribute(name));
+				vI_account._getBaseIdentity().getIntAttribute(name));
 	},
 
 	_copyCharAttribute : function(name) {
 		vI_account.account.defaultIdentity.setCharAttribute(name,
-				vI_helper.getBaseIdentity().getCharAttribute(name));
+				vI_account._getBaseIdentity().getCharAttribute(name));
 	},
 
 	_copyUnicharAttribute : function(name) {
 		vI_account.account.defaultIdentity.setUnicharAttribute(name,
-				vI_helper.getBaseIdentity().getUnicharAttribute(name));
+				vI_account._getBaseIdentity().getUnicharAttribute(name));
 	},
 
 	copyPreferences : function() {
@@ -211,7 +215,7 @@ var vI_account = {
 		// it's especially required for NNTP cause incomingServer is used for sending newsposts.
 		// by pointing to the same incomingServer stored passwords can be reused
 		// the incomingServer has to be replaced before the account is removed, else it get removed ether
-		var servers = vI_account.AccountManager.GetServersForIdentity(vI_helper.getBaseIdentity());
+		var servers = vI_account.AccountManager.GetServersForIdentity(vI_account._getBaseIdentity());
 		vI_account.account.incomingServer = servers.QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
 		
 		vI_account.copyMsgIdentityClone();
@@ -249,11 +253,11 @@ var vI_account = {
 				break;
 			    case "3"  :
 				vI_notificationBar.dump ("## vI_account: preparing Fcc --- use Settings of Modified Account\n");
-				vI_account.account.defaultIdentity.doFcc = vI_helper.getBaseIdentity().doFcc;
-				vI_account.account.defaultIdentity.fccFolder = vI_helper.getBaseIdentity().fccFolder;
-				vI_account.account.defaultIdentity.fccFolderPickerMode = vI_helper.getBaseIdentity().fccFolderPickerMode;
+				vI_account.account.defaultIdentity.doFcc = vI_account._getBaseIdentity().doFcc;
+				vI_account.account.defaultIdentity.fccFolder = vI_account._getBaseIdentity().fccFolder;
+				vI_account.account.defaultIdentity.fccFolderPickerMode = vI_account._getBaseIdentity().fccFolderPickerMode;
 				if (!vI_helper.olderVersion("TB", "2.0"))
-					vI_account.account.defaultIdentity.fccReplyFollowsParent = vI_helper.getBaseIdentity().fccReplyFollowsParent;
+					vI_account.account.defaultIdentity.fccReplyFollowsParent = vI_account._getBaseIdentity().fccReplyFollowsParent;
 				break;
 			    default  :
 				vI_notificationBar.dump ("## vI_account: preparing Fcc --- use Virtual Identity Settings\n");
@@ -289,8 +293,8 @@ var vI_account = {
 			break;
 		    case "3"  :
 			vI_notificationBar.dump ("## vI_account: preparing Draft --- use Settings of Modified Account\n");
-			vI_account.account.defaultIdentity.draftFolder = vI_helper.getBaseIdentity().draftFolder;
-			vI_account.account.defaultIdentity.draftsFolderPickerMode = vI_helper.getBaseIdentity().draftsFolderPickerMode;
+			vI_account.account.defaultIdentity.draftFolder = vI_account._getBaseIdentity().draftFolder;
+			vI_account.account.defaultIdentity.draftsFolderPickerMode = vI_account._getBaseIdentity().draftsFolderPickerMode;
 			break;
 		    default  :
 			vI_notificationBar.dump ("## vI_account: preparing Draft --- use Virtual Identity Settings\n");
@@ -316,8 +320,8 @@ var vI_account = {
 			break;
 		    case "3"  :
 			vI_notificationBar.dump ("## vI_account: preparing Templates --- use Settings of Modified Account\n");
-			vI_account.account.defaultIdentity.stationeryFolder = vI_helper.getBaseIdentity().stationeryFolder;
-			vI_account.account.defaultIdentity.tmplFolderPickerMode = vI_helper.getBaseIdentity().tmplFolderPickerMode;
+			vI_account.account.defaultIdentity.stationeryFolder = vI_account._getBaseIdentity().stationeryFolder;
+			vI_account.account.defaultIdentity.tmplFolderPickerMode = vI_account._getBaseIdentity().tmplFolderPickerMode;
 			break;
 		    default  :
 			vI_notificationBar.dump ("## vI_account: preparing Templates --- use Virtual Identity Settings\n");

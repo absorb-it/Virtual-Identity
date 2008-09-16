@@ -216,11 +216,12 @@
 	<field name="_observer"><![CDATA[({
 		_self: this,
 	        observe: function(aSubject, aTopic, aPrefName) {
-			if (this._self._prefroot.getBoolPref("extensions.virtualIdentity.show_smtp"))
-				this._self.removeAttribute("hidden")
-			else	this._self.setAttribute("hidden","true")
+			if (this._self._prefroot)
+				this._self.showSmtp = 
+				this._self._prefroot.getBoolPref("extensions.virtualIdentity.show_smtp")
 		}
       	})]]></field>
+	<property name="showSmtp" onget="return (this.getAttribute('showSmtp') == 'true');" onset="this.setAttribute('showSmtp',val?'true':'false'); return val;" />
 	<field name="_prefroot">Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2)</field>
@@ -265,9 +266,6 @@
 		// check if 'search' textboxes are implemented, if not change to 'timed'
 		if (!inputTextbox.timeout) inputTextbox.setAttribute("type", "timed");
 		inputTextbox.setAttribute("timeout", "300")
-		
-		this._msgIdentityElem.setAttribute("hidden", "true");
-		this._msgIdentityElem.previousSibling.setAttribute("control", "msgIdentity_clone");
 		]]>
 	</constructor>
 	<destructor>
@@ -302,10 +300,10 @@
 		for (var index = 0; index < MenuItems.length; index++) {
 			var identity = gAccountManager.getIdentity(MenuItems[index].getAttribute("value"));
 			
-			var newExtras = new vI_storageExtras();	newExtras.readValues();
-			var newIdentity = new identityData(	identity.email, identity.fullName, identity.key,
-								identity.smtpServerKey, newExtras,
-								vI_helper.getAccountname(MenuItems[index]))
+			var newIdentity = new identityData(identity.email, identity.fullName, identity.key,
+						identity.smtpServerKey, null,
+						identity.description?"- "+identity.description:identity.accountname)
+			newIdentity.extras.readIdentityValues(identity);
 
 			var menuItem = this.addIdentityToCloneMenu(newIdentity)
 
@@ -487,13 +485,10 @@
 		this.description = this._identityDataStorage.sideDescription;
 		document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this._identityDataStorage.smtp;
 		
-		if (!this.dontInitExtras && this._identityDataStorage.extras) {
+		if (!this.dontInitExtras) {
 			vI_notificationBar.dump("** v_identity.xml: set extra Values\n");
 			this._identityDataStorage.extras.setValues();
 		}
-		if (!this._identityDataStorage.extras)
-			this._identityDataStorage.extras = new vI_storageExtras();
-		
 		vI_notificationBar.dump("** v_identity.xml: read extra Values\n");
 		this._identityDataStorage.extras.readValues(); // fill in the missing Values
 		

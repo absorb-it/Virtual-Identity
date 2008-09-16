@@ -234,7 +234,7 @@ var vI_rdfDatasource = {
 		if (storeBaseID) vI_rdfDatasource.__setRDFValue(resource, "id", localIdentityData.id)
 		vI_rdfDatasource.__setRDFValue(resource, "smtp", localIdentityData.smtp)
 		
-		if (localIdentityData.extras) localIdentityData.extras.loopForRDF(vI_rdfDatasource.__setRDFValue, resource);
+		localIdentityData.extras.loopForRDF(vI_rdfDatasource.__setRDFValue, resource);
 	},
 
 	__setRDFValue : function (resource, field, value) {

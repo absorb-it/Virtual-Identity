@@ -154,6 +154,9 @@ vI_storageExtras.prototype = {
 		return returnVal
 	},
 
+	readIdentityValues : function(identity) {
+		this.readValues();	// has to be build for all extras
+	},
 
 	setValues : function() {
 		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
