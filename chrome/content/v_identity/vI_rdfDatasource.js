@@ -227,8 +227,8 @@ var vI_rdfDatasource = {
 		vI_notificationBar.dump("## vI_rdfDatasource: updateRDF " + resource.ValueUTF8 + ".\n");
 		vI_rdfDatasource.__setRDFValue(resource, "email", localIdentityData.email)
 		vI_rdfDatasource.__setRDFValue(resource, "fullName", localIdentityData.fullName)
-		if (storeBaseID) vI_rdfDatasource.__setRDFValue(resource, "id", localIdentityData.id)
-		vI_rdfDatasource.__setRDFValue(resource, "smtp", localIdentityData.smtp)
+		if (storeBaseID) vI_rdfDatasource.__setRDFValue(resource, "id", localIdentityData.id.key)
+		vI_rdfDatasource.__setRDFValue(resource, "smtp", localIdentityData.smtp.key)
 		
 		localIdentityData.extras.loopForRDF(vI_rdfDatasource.__setRDFValue, resource);
 	},

@@ -263,10 +263,8 @@ var vI = {
 		vI_notificationBar.dump("## v_identity: composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
 		
 		// clean all elements
-// 		vI_smtpSelector.clean();
 		document.getElementById("msgIdentity_clone").clean();
 		vI_msgIdentityCloneTools.cleanReplyToFields();
-		//~ vI_storage.clean();
 		vI_smartIdentity.clean();
 		vI_notificationBar.dump("## v_identity: everything cleaned.\n")
 		

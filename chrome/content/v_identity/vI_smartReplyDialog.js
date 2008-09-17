@@ -35,9 +35,9 @@ var vI_smartReply_dialog = {
 			var id = null; var smtp = null;
 
 			if (vI_smartReply_dialog.all_addresses.identityDataCollection[index].id)
-				id = vI_smartReply_dialog.all_addresses.identityDataCollection[index].idName;
+				id = vI_smartReply_dialog.all_addresses.identityDataCollection[index].id.value;
 			if (vI_smartReply_dialog.all_addresses.identityDataCollection[index].smtp)
-				smtp = vI_smartReply_dialog.all_addresses.identityDataCollection[index].smtpName;
+				smtp = vI_smartReply_dialog.all_addresses.identityDataCollection[index].smtp.value;
 
 			menuentry += (id?" (" + id + "," + 
 					(smtp?smtp:document.getElementById("bundle_messenger").getString("defaultServerTag")) +

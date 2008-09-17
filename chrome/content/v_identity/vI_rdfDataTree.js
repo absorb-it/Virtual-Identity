@@ -57,10 +57,10 @@ var vI_rdfDataTree = {
 		var pref = { 	recipientCol : name,
 				typeCol : document.getElementById("vI_rdfDataTreeBundle").getString("vI_rdfDataTree.dataType." + type),
 				senderCol : localIdentityData.combinedName,
-				smtpCol : localIdentityData.smtpName,
-				smtpKey : localIdentityData.smtp,
-				idCol : localIdentityData.idName,
-				idKey : localIdentityData.id,
+				smtpCol : localIdentityData.smtp.value,
+				smtpKey : localIdentityData.smtp.key,
+				idCol : localIdentityData.id.value,
+				idKey : localIdentityData.id.key,
 				resource : resource }
 		
 		localIdentityData.extras.addPrefs(pref);

@@ -38,6 +38,7 @@
 
 <script type="application/x-javascript" src="chrome://v_identity/content/v_identity.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_identityData.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_account.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_msgIdentityCloneTools.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />

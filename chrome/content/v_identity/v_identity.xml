@@ -130,7 +130,7 @@
 		this._identityDataStorage = this.identityData;
 		
 		this.label = this._identityDataStorage.combinedName;
-		this.value = this._identityDataStorage.id;
+		this.value = this._identityDataStorage.id.key;
 		this.description = this._identityDataStorage.sideDescription;
 		
 		document.getElementById("vI_tooltipPopupset").addTooltip(this, true);
@@ -345,7 +345,7 @@
 			var MenuItem = document.createElement("menuitem");
 		    	MenuItem.identityData = localIdentityData;
 			MenuItem.setAttribute("class", "identity_clone-popup-item");
-			MenuItem.value = localIdentityData.id;
+			MenuItem.value = localIdentityData.id.value;
 
 			// set vid explicitely
 			if (this._popupMenu_separator) MenuItem.setAttribute("vid", "true");
@@ -452,9 +452,9 @@
 		return existingIdentity;
 		]]></body>
 	</method>
-	<property name="smtp" onget="return this.identityData.smtp;" >
+	<property name="smtp" onget="return this.identityData.smtp.key;" >
 		<setter><![CDATA[
-		this.identityData.smtp = val;
+		this.identityData.smtp.key = val;
 		
 		document.getElementById("vI_tooltipPopupset").addTooltip(this);
 
@@ -474,9 +474,9 @@
 			this._identityDataStorage = val;
 			
 			if (oldIdentityData) { // indicates that it's not first time after clean
-				if (!this._identityDataStorage.id) {
-					this._identityDataStorage.id = oldIdentityData.id;
-					var idName = this._identityDataStorage.idName;
+				if (!this._identityDataStorage.id.key) {
+					this._identityDataStorage.id.key = oldIdentityData.id.key;
+					var idName = this._identityDataStorage.id.value;
 					this._identityDataStorage.sideDescription = (idName)?" - "+idName:"";
 				}
 				this._identityDataStorage.extras.setValues();
@@ -486,7 +486,7 @@
 			else	this.vid = false;		// first time after clean it's always a real identity
 			
 			this.label = this._identityDataStorage.combinedName;
-			this.value = this._identityDataStorage.id;
+			this.value = this._identityDataStorage.id.key;
 			this.description = this._identityDataStorage.sideDescription;
 			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this._identityDataStorage.smtp;
 			

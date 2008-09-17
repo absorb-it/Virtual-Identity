@@ -43,6 +43,7 @@
 	// include following scripts to enable quick_upgrade
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_upgrade.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
+	<script type="application/x-javascript" src="chrome://v_identity/content/vI_identityData.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
 
