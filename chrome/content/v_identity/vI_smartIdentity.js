@@ -107,8 +107,9 @@ var vI_smartIdentity = {
 		
 		var allIdentities = new identityCollection();
 
-		var draftHdr = null;
-		// fails with seamonkey 1.1.11, so just try it
+		var draftHdr = vI_smartIdentity.messenger.
+			messageServiceFromURI(gMsgCompose.originalMsgURI).messageURIToMsgHdr(gMsgCompose.originalMsgURI);
+		// fails with seamonkey 1.1.11, so just try to read to draft id
 		try { draftHdr = vI_smartIdentity.messenger.
 			messageServiceFromURI(gMsgCompose.compFields.draftId).messageURIToMsgHdr(gMsgCompose.compFields.draftId);
 		} catch (ex) { };
