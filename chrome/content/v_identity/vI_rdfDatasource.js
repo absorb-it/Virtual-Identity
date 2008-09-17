@@ -115,8 +115,7 @@ var vI_rdfDatasource = {
 	
 	__getRDFResourceForVIdentity : function (recDescription, recType) {
 		if (!vI_rdfDatasource.rdfDataSource) return null;
-		var parsed = vI_helper.parseAddress(recDescription)
-		if (!parsed.combinedName) {
+		if (!recDescription) {
 			vI_notificationBar.dump("## vI_rdfDatasource: __getRDFResourceForVIdentity: no Recipient given.\n");
 			return null;
 		}
@@ -127,7 +126,7 @@ var vI_rdfDatasource = {
 			case "newsgroup" : rdfNSRecType = vI_rdfDatasource.rdfNSNewsgroup; break;
 			case "maillist" : rdfNSRecType = vI_rdfDatasource.rdfNSMaillist; break;
 		}
-		return vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + rdfNSRecType + parsed.combinedName);
+		return vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + rdfNSRecType + recDescription);
 	},
 	
 	removeVIdentityFromRDF : function (resource) {

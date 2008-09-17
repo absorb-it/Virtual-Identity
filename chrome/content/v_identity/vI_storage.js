@@ -419,7 +419,8 @@ var vI_storage = {
 		if (recipientType == "addr_newsgroups")	return { recDesc : recipient, recType : "newsgroup" }
 		else if (vI_storage.isMailingList(recipient))
 			return { recDesc : vI_storage.getMailListName(recipient), recType : "maillist" }
-		else return { recDesc : recipient, recType : "email" }
+		else
+			return { recDesc : vI_helper.parseAddress(recipient).combinedName, recType : "email" }
 	},
 		
 	storeVIdentityToAllRecipients : function(msgType) {
@@ -548,7 +549,7 @@ var vI_storage = {
 		vI_notificationBar.dump("## vI_storage: isMailingList '" + recipient + "' \n")
 		var queryString = "?(or(DisplayName,c," + encodeURIComponent(vI_storage.getMailListName(recipient)) + "))"
 		var returnVar = vI_storage._walkTroughCards(queryString, vI_storage._isMailingListCard,
-			{ mailListName : recipient, isMailList : false } )
+			{ mailListName : vI_storage.getMailListName(recipient), isMailList : false } )
 		vI_notificationBar.dump("## vI_storage: isMailList  " + returnVar.isMailList + ".\n")
 		return returnVar.isMailList;
 	},	
