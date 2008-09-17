@@ -293,6 +293,7 @@
 	-->
 	<method name="command">
 		<body><![CDATA[
+		vI_notificationBar.dump("\n** v_identity.xml msgIdentityCloneElem.doCommand() \n")
 		this.identityData = this.selectedMenuItem.identityData.getDuplicate();
 		// clean reply-to fields before reinit
 		vI_msgIdentityCloneTools.cleanupReplyTo();
@@ -428,6 +429,8 @@
 	
 	<method name="inputEvent">
         	<body><![CDATA[		
+		vI_notificationBar.dump("\n** v_identity.xml inputEvent\n")
+		
 		this.identityData.combinedName = this.label;
 		this.label = this.identityData.combinedName; // reset to possibly changed value
 		this.setAttribute("label", this.label);

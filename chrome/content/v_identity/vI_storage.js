@@ -97,7 +97,6 @@ identityData.prototype = {
 	},
 
 	isExistingIdentity : function() {
-		vI_notificationBar.dump("## vI_storage: isExistingIdentity\n");
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		for (var i in accounts) {
 			// skip possible active VirtualIdentity Accounts
@@ -108,12 +107,12 @@ identityData.prototype = {
 				if (	(this.ignoreFullNameWhileComparing || this.fullName == identities[j].fullName) &&
 					(this.email == identities[j].email) &&
 					this.__equalSMTP(identities[j].smtpServerKey)	) {
-					vI_notificationBar.dump("## vI_storage: existing Identity found: " + identities[j].key + "\n");
+					vI_notificationBar.dump("## vI_storage: isExistingIdentity: " + this.combinedName + " found, id='" + identities[j].key + "'\n");
 					return identities[j].key;
 				}
 			}
 		}
-		vI_notificationBar.dump("## vI_storage: none existing Identity found.\n");
+		vI_notificationBar.dump("## vI_storage: isExistingIdentity: " + this.combinedName + " not found\n");
 		return null;
 	},
 
@@ -229,7 +228,7 @@ identityCollection.prototype =
 				return;
 			}
 		}
-		vI_notificationBar.dump("## identityCollection:   add new address to result:" + identityData.combinedName + "\n")
+		vI_notificationBar.dump("## identityCollection:   add new address to result: " + identityData.combinedName + "\n")
 		this.identityDataCollection[index] = identityData;
 		this.number = index + 1;
 	},
@@ -278,12 +277,12 @@ var vI_storage = {
 	awOnBlur : function (element) {
 		// only react on events triggered by addressCol2 - textinput Elements
 		if (!element || ! element.id.match(/^addressCol2*/)) return;
-		vI_notificationBar.dump("## vI_storage: awOnBlur '" + element.id +"'\n");
+		vI_notificationBar.dump("\n## vI_storage: awOnBlur '" + element.id +"'\n");
 		vI_storage.updateVIdentityFromStorage(element);
 	},
 
 	awPopupOnCommand : function (element) {
-		vI_notificationBar.dump("## vI_storage: awPopupOnCommand'" + element.id +"'\n");
+		vI_notificationBar.dump("\n## vI_storage: awPopupOnCommand'" + element.id +"'\n");
 		vI_storage.updateVIdentityFromStorage(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")))
 	},
 	
@@ -508,11 +507,9 @@ var vI_storage = {
 	// Similiar to Thunderbird, if there are muliple cards with the same displayName the mailinglist is preferred
 	// see also https://bugzilla.mozilla.org/show_bug.cgi?id=408575
 	isMailingList: function(recipient) {
-		vI_notificationBar.dump("## vI_storage: isMailingList '" + recipient + "' \n")
 		var queryString = "?(or(DisplayName,c," + encodeURIComponent(vI_storage.getMailListName(recipient)) + "))"
 		var returnVar = vI_storage._walkTroughCards(queryString, vI_storage._isMailingListCard,
 			{ mailListName : recipient, isMailList : false } )
-		vI_notificationBar.dump("## vI_storage: isMailList  " + returnVar.isMailList + ".\n")
 		return returnVar.isMailList;
 	},	
 	

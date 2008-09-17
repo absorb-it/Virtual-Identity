@@ -24,9 +24,9 @@
 
 var vI_msgIdentityCloneTools = {	
 	copySelectedIdentity : function(id_key) {
+		vI_notificationBar.dump("## vI_msgIdentityCloneTools: copySelectedIdentity\n");
 		var msgIdentityElem = document.getElementById("msgIdentity");
 		var msgIdentityPopupElem = document.getElementById("msgIdentityPopup");
-		vI_notificationBar.dump("## vI_msgIdentityCloneTools: copySelectedIdentity\n");
 		// copy selected Menu-Value from clone to orig.
 		var MenuItems = msgIdentityPopupElem.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
@@ -36,7 +36,6 @@ var vI_msgIdentityCloneTools = {
 				break;
 			}
 		}
-		vI_notificationBar.dump("## vI_msgIdentityCloneTools: copySelectedIdentity MsgIdentityPopup.doCommand()\n");
 		msgIdentityPopupElem.doCommand();
 	},
 		
@@ -73,10 +72,8 @@ var vI_msgIdentityCloneTools = {
 	// called directly after a change of the Identity with the dropdown menu
 	// searches the first reply-to row and assumes that this is the one we like to adapt
 	initReplyToFields : function(id) {
-		vI_notificationBar.dump("## vI_msgIdentityCloneTools: initReplyToFields id=" + id + "\n");
+// 		vI_notificationBar.dump("## vI_msgIdentityCloneTools: initReplyToFields id=" + id + "\n");
 		var replyTo = gAccountManager.getIdentity(id).replyTo
-		
-		vI_notificationBar.dump("## vI_msgIdentityCloneTools: initReplyToFields identity.replyTo: " + replyTo + "\n");
 		if (replyTo == "") return
 		
 		vI_msgIdentityCloneTools.replyToInitValue = replyTo;
@@ -84,13 +81,12 @@ var vI_msgIdentityCloneTools = {
 			var awType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			var awValue = awGetInputElement(row).value
 			if (awType == "addr_reply" && awValue == replyTo) {
-				vI_notificationBar.dump("## vI_msgIdentityCloneTools: initReplyToFields Reply-To found in row " + row + "\n");
+				vI_notificationBar.dump("## vI_msgIdentityCloneTools: initReplyToFields identity.replyTo: " + replyTo + " found in row " + row + "\n");
 				vI_msgIdentityCloneTools.replyToPopupElem = awGetPopupElement(row)
 				vI_msgIdentityCloneTools.replyToInputElem = awGetInputElement(row)
 				break;
 			}
 		}
-		if (!vI_msgIdentityCloneTools.replyToInputElem) vI_notificationBar.dump("## vI_msgIdentityCloneTools: initReplyToFields no Reply-To row found\n");
 	},
 	
 	cleanupReplyTo : function() {

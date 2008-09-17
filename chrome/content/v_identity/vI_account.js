@@ -105,6 +105,8 @@ var vI_account = {
 	},
 
 	__cleanupDirectories : function() {
+		vI_notificationBar.dump("## vI_account: checking for leftover VirtualIdentity directories ")
+
 		var file = Components.classes["@mozilla.org/file/directory_service;1"]
 		.getService(Components.interfaces.nsIProperties)
 			.get("ProfD", Components.interfaces.nsIFile);
@@ -131,11 +133,10 @@ var vI_account = {
 				}
 			}
 		}
-		vI_notificationBar.dump("\n")
+		vI_notificationBar.dump(" - done\n")
 	},
 	
 	cleanupSystem : function() {
-		vI_notificationBar.dump("## vI_account: cleanupSystem:\n")
 		vI_notificationBar.dump("## vI_account: checking for leftover VirtualIdentity accounts ")
 		for (var i=0; i < vI_account.AccountManager.accounts.Count(); i++) {
 			var account = vI_account.AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
@@ -144,10 +145,8 @@ var vI_account = {
 				vI_account.__removeAccount(account);
 			}
 		}
-		vI_notificationBar.dump("\n## vI_account: checking for leftover VirtualIdentity directories ")
+		vI_notificationBar.dump(" - done\n")
 		vI_account.__cleanupDirectories();
-		
-		vI_notificationBar.dump("## vI_account: cleanupSystem done.\n")
 	},
 	
 	__isVIdentityAccount : function(account) {

@@ -135,7 +135,7 @@ var vI = {
 			
 			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 				.getService(Components.interfaces.nsIPromptService);
-			vI_notificationBar.dump("## v_identity: VIdentity_GenericSendMessage\n");
+			vI_notificationBar.dump("\n## v_identity: VIdentity_GenericSendMessage\n");
 			
 			var vid = document.getElementById("msgIdentity_clone").vid
 
@@ -201,7 +201,7 @@ var vI = {
 		window.removeEventListener('load', vI.init, false);
 		window.removeEventListener('compose-window-init', vI.init, true);
 		if (vI.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
-		vI_notificationBar.dump("## v_identity: init.\n")
+		vI_notificationBar.dump("\n## v_identity: init.\n")
 		vI.unicodeConverter.charset="UTF-8";
 		vI.adapt_interface();
 		vI.adapt_genericSendMessage();
@@ -209,7 +209,7 @@ var vI = {
 		window.addEventListener('compose-window-reopen', vI.reopen, true);
 		window.addEventListener('compose-window-close', vI.close, true);
 		vI.initSystemStage1();
-		vI_notificationBar.dump("## v_identity: init done.\n")
+		vI_notificationBar.dump("## v_identity: init done.\n\n")
 	},
 	
 	initSystemStage1 : function() {

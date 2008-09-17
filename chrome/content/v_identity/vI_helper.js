@@ -128,8 +128,6 @@ vI_upgrade.js:232:*/
 			name = name.replace(/^\"|\"$/g,"")
 			name = name.replace(/^\'|\'$/g,"")
 		}
-		vI_notificationBar.dump("## v_identity: getAddress: address '" + address + "' name '" + 
-			name + "' email '" + email + "'\n");
 		return { name: name,
 			 email: email,
 			 combinedName: vI_helper.combineNames(name, email)}

@@ -120,7 +120,6 @@ var vI_rdfDatasource = {
 			vI_notificationBar.dump("## vI_rdfDatasource: __getRDFResourceForVIdentity: no Recipient given.\n");
 			return null;
 		}
-		vI_notificationBar.dump("## vI_rdfDatasource: __getRDFResourceForVIdentity: recDescription=" + parsed.combinedName + "\n")
 		var rdfNSRecType = null
 		switch (recType) {
 			case "email": rdfNSRecType = vI_rdfDatasource.rdfNSEmail; break;
@@ -178,7 +177,6 @@ var vI_rdfDatasource = {
 	},
 	
 	readVIdentityFromRDF : function (recDescription, recType) {
-		vI_notificationBar.dump("## vI_rdfDatasource: readVIdentityFromRDF.\n");
 		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
 		if (!resource) return null;
 		
@@ -194,13 +192,11 @@ var vI_rdfDatasource = {
 		var id = vI_rdfDatasource.__getRDFValue(resource, "id")
 		var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
 		
-		vI_notificationBar.dump("## vI_rdfDatasource: email '" + email + "'\n");
-		vI_notificationBar.dump("## vI_rdfDatasource: fullName '" + fullName + "'\n");
-		vI_notificationBar.dump("## vI_rdfDatasource: id '" + id + "'\n");
-		vI_notificationBar.dump("## vI_rdfDatasource: smtp '" + smtp + "'\n");
+		vI_notificationBar.dump("## vI_rdfDatasource: email='" + email + 
+			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'\n");
 		
 		var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
-		vI_notificationBar.dump("## vI_rdfDatasource: extras: " + extras.status() + "\n");
+		vI_notificationBar.dump("## vI_rdfDatasource: extras:" + extras.status() + "\n");
 		
 		var localIdentityData = new identityData(email, fullName, id, smtp, extras)
 		return localIdentityData;

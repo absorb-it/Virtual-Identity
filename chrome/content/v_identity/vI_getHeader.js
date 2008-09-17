@@ -70,7 +70,6 @@ var vI_getHeader = {
 
 	getHeader: function() {
 		vI_notificationBar.clear_dump()
-		vI_notificationBar.dump("## vI_getHeader: onEndHeaders\n")
 		var index;
 
 		var srcMsgURI = GetLoadedMessage();
@@ -106,8 +105,6 @@ var vI_getHeader = {
 
 			if (currentHeadersCounter[headerName]) currentHeadersCounter[headerName]++
 			else currentHeadersCounter[headerName] = 1
-			vI_notificationBar.dump("## vI_getHeader: found header: " + headerName + 
-					"[:" + currentHeadersCounter[headerName] + "]");
 			
 			for (var index = 0; index < vI_getHeader.headerToSearch.length; index++) {
 				if (headerName == vI_getHeader.headerToSearch[index].headerNameToSearch &&
@@ -122,7 +119,9 @@ var vI_getHeader = {
 
 					storedValue = hdr.getProperty(vI_getHeader.headerToSearch[index].headerNameToStore)
 					storedConvValue = vI_getHeader.unicodeConverter.ConvertToUnicode(storedValue)
-					vI_notificationBar.dump(" ...stored as '" + storedConvValue + "'");
+					vI_notificationBar.dump("## vI_getHeader: found header: " + headerName +
+						"[:" + currentHeadersCounter[headerName] + "] - stored as '" + 
+						storedConvValue + "'\n");
 					if (!found) { 
 						subtitle = vI_getHeader.strings.getString("vident.getHeader.headerFound");
 						found = true;
@@ -133,7 +132,6 @@ var vI_getHeader = {
 					break;
 				}
 			}
-			vI_notificationBar.dump("\n");
 		}
 		vI_notificationBar.setNote(label, "get_header_notification", subtitle);
 	},
@@ -182,12 +180,10 @@ var vI_prepareHeader = {
 	observer_added : false,
 	
 	init : function() {
-		vI_notificationBar.dump("## vI_prepareHeader: init\n");
 		if (vI_prepareHeader.addExtraHeader()) vI_prepareHeader.addObserver();
 	},
 	
 	cleanup : function() {
-		vI_notificationBar.dump("## vI_prepareHeader: cleanup\n");
 		vI_prepareHeader.removeObserver();
 		vI_prepareHeader.removeExtraHeader();
 	},
@@ -197,19 +193,16 @@ var vI_prepareHeader = {
 		vI_prepareHeader.prefroot.QueryInterface(Components.interfaces.nsIPrefBranch2);
 		vI_prepareHeader.prefroot.addObserver("extensions.virtualIdentity.smart_reply_headers", this, false);
 		vI_prepareHeader.observer_added = true;
-		vI_notificationBar.dump("## vI_prepareHeader: prefs observer added\n");
 	},
 	
 	removeObserver : function() {
 		if (!vI_prepareHeader.observer_added) return;
 		vI_prepareHeader.prefroot.removeObserver("extensions.virtualIdentity.smart_reply_headers", this);
-		vI_notificationBar.dump("## vI_prepareHeader: prefs observer removed\n");
 		vI_prepareHeader.observer_added = false;
 	},
 	
 	// this is a adapted copy of enigEnsureExtraHeaders() from enigmail, thanks
 	addExtraHeader : function() {
-		vI_notificationBar.dump("## vI_prepareHeader: addExtraHeader\n");
 		vI_prepareHeader.unicodeConverter.charset = "UTF-8";
 		var header_list = vI_prepareHeader.unicodeConverter.ConvertToUnicode(vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_headers")).split(/\n/)
 		
@@ -229,7 +222,7 @@ var vI_prepareHeader = {
 				// check if Header is included in collapsed HeaderView
 				for (var j = 0; j < gCollapsedHeaderList.length; j++) {
 					if (gCollapsedHeaderList[j].name == headerToSearch) {
-						vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' in gCollapsedHeaderList\n");
+// 						vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' in gCollapsedHeaderList\n");
 						found = true; break;
 					}
 				}
@@ -237,7 +230,7 @@ var vI_prepareHeader = {
 				// check if Header is included in expanded HeaderView
 				for (var j = 0; j < gExpandedHeaderList.length; j++) {
 					if (gExpandedHeaderList[j].name == headerToSearch) {
-						vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' in gExpandedHeaderList\n");
+// 						vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' in gExpandedHeaderList\n");
 						found = true; break;
 					}
 				}
@@ -247,18 +240,16 @@ var vI_prepareHeader = {
 				if ((extraHdrs.indexOf(" " + headerToSearch + " ") < 0) &&
 					(addedHeadersString.indexOf(" " + headerToSearch + " ") < 0))
 					vI_prepareHeader.addedHeaders.push(headerToSearch);
-				else vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' already in extraExpandedHeaders\n");
+// 				else vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' already in extraExpandedHeaders\n");
 			}
 			
 			if (vI_prepareHeader.addedHeaders.length > 0) {
 				extraHdrs += vI_prepareHeader.addedHeaders.join(" ");
 				extraHdrs = extraHdrs.replace(/^\s+|\s+$/g,"")
 				vI_prepareHeader.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", extraHdrs)
-			}
-			vI_notificationBar.dump("## vI_prepareHeader: extraExpandedHeaders '" + vI_prepareHeader.addedHeaders.join(" ") + "' added\n");
-			
-			
-			vI_notificationBar.dump("## vI_prepareHeader: done\n");
+				vI_notificationBar.dump("## vI_prepareHeader: extraExpandedHeaders '" + vI_prepareHeader.addedHeaders.join(" ") + "' added\n");
+			}		
+
 			return true;
 		}
 		catch (e) {

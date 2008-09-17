@@ -192,14 +192,14 @@ var vI_notificationBar = {
 
 	__setTitle: function(title) {
 		if (!title) return;
-		vI_notificationBar.dump("** setTitle: " + title + "\n");
+// 		vI_notificationBar.dump("** setTitle: " + title + "\n");
 		var Obj_vINotificationTitle = document.getElementById("vINotificationTitle");
 		Obj_vINotificationTitle.setAttribute("value", title);
 		Obj_vINotificationTitle.removeAttribute("hidden");
 	},
 
 	addNote: function(note, prefstring, title) {
-		vI_notificationBar.dump("** " + note + "\n");
+// 		vI_notificationBar.dump("** " + note + "\n\n");
 		if (!vI_notificationBar.preferences.getBoolPref(prefstring)) return;
 		if (!vI_notificationBar.Obj_vINotification) vI_notificationBar.init();
 		if (!vI_notificationBar.Obj_vINotification) return;
