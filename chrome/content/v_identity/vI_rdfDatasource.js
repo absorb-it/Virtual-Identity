@@ -119,7 +119,7 @@ var vI_rdfDatasource = {
 			vI_notificationBar.dump("## vI_rdfDatasource: __getRDFResourceForVIdentity: no Recipient given.\n");
 			return null;
 		}
-		vI_notificationBar.dump("## vI_rdfDatasource: __getRDFResourceForVIdentity: recDescription=" + parsed.combinedName + "\n")
+		vI_notificationBar.dump("## vI_rdfDatasource: __getRDFResourceForVIdentity: recDescription=" + recDescription + "\n")
 		var rdfNSRecType = null
 		switch (recType) {
 			case "email": rdfNSRecType = vI_rdfDatasource.rdfNSEmail; break;
