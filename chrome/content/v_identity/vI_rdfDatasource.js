@@ -169,6 +169,7 @@ var vI_rdfDatasource = {
 			var fullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
 			var id = vI_rdfDatasource.__getRDFValue(resource, "id")
 			var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
+			if (!smtp) smtp = ""; // to indicate default SMTP (different than null like with SmartReply)
 			var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
 			
 			var localIdentityData = new identityData(email, fullName, id, smtp, extras)
@@ -192,7 +193,8 @@ var vI_rdfDatasource = {
 		var fullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
 		var id = vI_rdfDatasource.__getRDFValue(resource, "id")
 		var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
-		
+		if (!smtp) smtp = ""; // to indicate default SMTP (different than null like with SmartReply)
+
 		vI_notificationBar.dump("## vI_rdfDatasource: email '" + email + "'\n");
 		vI_notificationBar.dump("## vI_rdfDatasource: fullName '" + fullName + "'\n");
 		vI_notificationBar.dump("## vI_rdfDatasource: id '" + id + "'\n");

@@ -106,6 +106,8 @@ identityData.prototype = {
 	},
 
 	__equalSMTP : function(compareSmtp) {
+		if (this.smtp == null) return true; 	// it is only null if from SmartReply
+							// default SMTP is indicated with ""
 		var mainSmtp = this.smtp;
 		if (!mainSmtp || !this.__keyTranslator.isValidSMTP(mainSmtp)) mainSmtp = this.smtpService.defaultServer.key;
 		if (!compareSmtp || !this.__keyTranslator.isValidSMTP(compareSmtp)) compareSmtp = this.smtpService.defaultServer.key;
