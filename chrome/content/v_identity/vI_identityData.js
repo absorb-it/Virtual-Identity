@@ -231,9 +231,9 @@ smtpObj.prototype = {
 	set key(key) { this._key = key; this._value = null; },
 	get key() { if (this._value == null) var dummy = this.value; return this._key },
 	get value() {
-		// if key == null, it is not known / if it is "" it's the Default SMTP
-		if (this._value != null) {
+		if (this._value == null) {
 			this._value = "";
+			// if key == null, it is not known / if it is "" it's the Default SMTP
 			if (this._key == "") this._value = this.DEFAULT_TAG;
 			else if (this._key != null) {
 				var smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
@@ -255,19 +255,18 @@ function idObj(key) { this.key = key; }
 idObj.prototype = {
 	_key : null,
 	_value : null,
-	_valid : null,
 
 	set key(key) { this._key = key; this._value = null; },
 	get key() { if (this._value == null) var dummy = this.value; return this._key },
 	get value() {
-		if (this._value != null) {
+		if (this._value == null) {
 			this._value = "";
 			if (this._key) {
 				var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
 					.getService(Components.interfaces.nsIMsgAccountManager);
 				var identity = accountManager.getIdentity(this._key);
 				if (identity) this._value = identity.identityName
-				this._key = null;	// if non-existant ID handle like non available
+				else this._key = null;	// if non-existant ID handle like non available
 			}
 		}
 		return this._value;

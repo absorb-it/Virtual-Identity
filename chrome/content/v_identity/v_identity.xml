@@ -89,6 +89,7 @@
 					"<td class='identityTable'><table><tbody>" + this.elem.identityData.getMatrix() + "</tbody></table></td>" +
 				"</tr>" +
 				"</table>"
+//			vI_notificationBar.dump("** v_identity.xml added tooltip with id='" +  this.elem.identityData.id.key + "'\n")
 			this._tooltipBrowser.outputString = this._identityInfo;
 		}
 		]]></body>
@@ -131,6 +132,8 @@
 		
 		this.label = this._identityDataStorage.combinedName;
 		this.value = this._identityDataStorage.id.key;
+//		vI_notificationBar.dump("** v_identity.xml fromPopupItem_clone constructor id='" + this.value + "'.\n")
+
 		this.description = this._identityDataStorage.sideDescription;
 		
 		document.getElementById("vI_tooltipPopupset").addTooltip(this, true);
@@ -212,10 +215,12 @@
 	</destructor>
 	<property name="smtp" onget="return this._smtpMenu.selectedItem.getAttribute('key');" >
 		<setter><![CDATA[
+		if (val == null) return; // dont overwrite if not set
+//		vI_notificationBar.dump("** v_identity.xml smtp set to '" + val + "'\n")
 		var MenuItems = this._smtpPopup.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].localName == "menuseparator") continue;
-			if (MenuItems[index].getAttribute("key") == val?val:"") {
+			if (MenuItems[index].getAttribute("key") == val) {
 				this._smtpMenu.selectedItem = MenuItems[index];
 				break;
 			}
@@ -468,6 +473,7 @@
 		return this._identityDataStorage;
 		]]></getter>
 		<setter><![CDATA[
+//		vI_notificationBar.dump("** v_identity.xml identityData setter'\n")
 		if (!val) this._identityDataStorage = null
 		else {
 			var oldIdentityData = this._identityDataStorage;
@@ -479,6 +485,10 @@
 					var idName = this._identityDataStorage.id.value;
 					this._identityDataStorage.sideDescription = (idName)?" - "+idName:"";
 				}
+				
+				if (this._identityDataStorage.smtp.key == null)
+					this._identityDataStorage.smtp.key = oldIdentityData.smtp.key;
+				
 				this._identityDataStorage.extras.setValues();
 			
 				this.checkForVirtualIdentity();
@@ -487,10 +497,12 @@
 			
 			this.label = this._identityDataStorage.combinedName;
 			this.value = this._identityDataStorage.id.key;
+//			vI_notificationBar.dump("** v_identity.xml identityData setter value='" + this.value + "'\n")
 			this.description = this._identityDataStorage.sideDescription;
-			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this._identityDataStorage.smtp;
+			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this._identityDataStorage.smtp.key;
 			
 		}
+//		vI_notificationBar.dump("** v_identity.xml identityData setter done.'\n")
 		]]></setter>
 	</property>
 	<field name="_popupElem">document.getElementById("msgIdentityPopup_clone")</field>
