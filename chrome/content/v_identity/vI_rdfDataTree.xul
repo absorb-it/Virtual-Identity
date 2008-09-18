@@ -43,6 +43,7 @@
 	title="&vI_rdfDataTree.dlgTitle.label;">
 
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataTree.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_identityData.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />

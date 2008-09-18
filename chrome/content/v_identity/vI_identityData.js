@@ -97,7 +97,7 @@ identityData.prototype = {
 			for (var j in identities) {
 				if (	(this.ignoreFullNameWhileComparing || this.fullName == identities[j].fullName) &&
 					(this.email == identities[j].email) &&
-					this.__equalSMTP(new smtpObj(identities[j].smtpServerKey))	) {
+					this.smtp.equal(new smtpObj(identities[j].smtpServerKey))	) {
 					vI_notificationBar.dump("## vI_identityData: isExistingIdentity: " + this.combinedName + " found, id='" + identities[j].key + "'\n");
 					return identities[j].key;
 				}
@@ -106,22 +106,7 @@ identityData.prototype = {
 		vI_notificationBar.dump("## vI_identityData: isExistingIdentity: " + this.combinedName + " not found\n");
 		return null;
 	},
-
-	__equalSMTP : function(compareSmtp) {
-// 		vI_notificationBar.dump("## vI_identityData: compare: '" + this.smtp.key + "' with '" + compareSmtp.key + "'\n");
-		var mainSmtpKey = this.smtp.key; var compareSmtpKey = compareSmtp.key;
-		if (!this.smtp.key || !this.smtp.valid) mainSmtpKey = this.smtpService.defaultServer.key;
-		if (!compareSmtp.key || !compareSmtp.valid) compareSmtpKey = this.smtpService.defaultServer.key;
-		return (mainSmtpKey == compareSmtpKey);
-	},
 	
-	__equalID : function(compareID) {
-// 		vI_notificationBar.dump("## vI_identityData: compare: '" + this.id.key + "' with '" + compareID.key + "'\n");
-		// if basic ID is not set (default) than answer equal
-		if (!this.id.key) return true;
-		return (this.id.key == compareID.key);
-	},
-
 	__equalsIdentity : function(identity) {
 		var testIdentity = new identityData(
 			identity.email,
@@ -137,8 +122,8 @@ identityData.prototype = {
 
 		this.comp.equals.fullName = (this.ignoreFullNameWhileComparing || this.fullName == compareIdentityData.fullName)
 		this.comp.equals.email = (this.email == compareIdentityData.email)
-		this.comp.equals.smtp = this.__equalSMTP(compareIdentityData.smtp);
-		this.comp.equals.id = this.__equalID(compareIdentityData.id);
+		this.comp.equals.smtp = this.smtp.equal(compareIdentityData.smtp);
+		this.comp.equals.id = this.id.equal(compareIdentityData.id);
 		this.comp.equals.extras = this.extras.equal(compareIdentityData.extras);
 // 		vI_notificationBar.dump("## vI_identityData: smtp:'" + this.comp.equals.smtp + "' id:'" + this.comp.equals.id + "'\n");
 		return (this.comp.equals.fullName && this.comp.equals.email && this.comp.equals.smtp && this.comp.equals.id && this.comp.equals.extras)
@@ -242,24 +227,28 @@ smtpObj.prototype = {
 	DEFAULT_TAG : null,
 	_key : null,
 	_value : null,
-	_valid : null,
-	get valueOf() { return this.key },
-
-	set key(key) { this._key = key; this._value = null; this._valid = null; },
-	get key() { return this._key },
+	
+	set key(key) { this._key = key; this._value = null; },
+	get key() { if (this._value == null) var dummy = this.value; return this._key },
 	get value() {
-		if (!this._value) {
+		// if key == null, it is not known / if it is "" it's the Default SMTP
+		if (this._value != null) {
 			this._value = "";
-			if (this._key) {
+			if (this._key == "") this._value = this.DEFAULT_TAG;
+			else if (this._key != null) {
 				var smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
 					.getService(Components.interfaces.nsISmtpService);
 				var server = smtpService.getServerByKey(this.key);
-				if (server) { this._value = server.description?server.description:server.hostname; this._valid = true }
+				if (server) this._value = server.description?server.description:server.hostname
+				else this._key = null;	// if non-existant SMTP handle like non available	
 			}
 		}
 		return this._value;
 	},
-	get valid() { var dummy = this.value; return this._valid; }
+	equal : function(compareSmtpObj) {
+		if (this.key == null || compareSmtpObj.key == null) return true;
+		return (this.key == compareSmtpObj.key);
+	}
 }
 
 function idObj(key) { this.key = key; }
@@ -268,20 +257,23 @@ idObj.prototype = {
 	_value : null,
 	_valid : null,
 
-	get valueOf() { return this.key },
-	set key(key) { this._key = key; this._value = null; this._valid = null; },
-	get key() { return this._key },
+	set key(key) { this._key = key; this._value = null; },
+	get key() { if (this._value == null) var dummy = this.value; return this._key },
 	get value() {
-		if (!this._value) {
+		if (this._value != null) {
 			this._value = "";
 			if (this._key) {
 				var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
 					.getService(Components.interfaces.nsIMsgAccountManager);
 				var identity = accountManager.getIdentity(this._key);
-				if (identity) { this._value = identity.identityName; this._valid = true }
+				if (identity) this._value = identity.identityName
+				this._key = null;	// if non-existant ID handle like non available
 			}
 		}
 		return this._value;
 	},
-	get valid() { var dummy = this.value; return this._valid; }
+	equal : function(compareIdObj) {
+		if (!this.key || !compareIdObj.key) return true;
+		return (this.key == compareIdObj.key);
+	}
 }
