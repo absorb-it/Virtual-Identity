@@ -197,7 +197,7 @@ notification {
 }
 
 .menupopup_clone-description, .menu_clone-description {
-	margin-left: 	0px;
+	margin: 	0 5px 0 0;
 	font-style:	italic;
 	color:		graytext;
 }

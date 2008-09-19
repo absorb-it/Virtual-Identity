@@ -122,7 +122,7 @@
   	<content excludes="template,observes,menupopup">
 		<xul:image class="menupopup_clone-icon" xbl:inherits="src"/>
 		<xul:label class="menupopup_clone-text" xbl:inherits="value=label,accesskey,crop" crop="right" flex="1"/>
-		<xul:label value="&vident.accPane.prettyName.prefix;" class="menu_clone-description virtIdLabel" vid="false" xbl:inherits="vid" crop="right"/>
+		<xul:label value="&vident.accPane.prettyName.prefix;" class="menupopup_clone-description virtIdLabel" vid="false" xbl:inherits="vid" crop="right"/>
       		<xul:label class="menupopup_clone-description" xbl:inherits="value=description" crop="right"/>
   	</content>
   	<implementation>
@@ -132,7 +132,7 @@
 		
 		this.label = this._identityDataStorage.combinedName;
 		this.value = this._identityDataStorage.id.key;
-//		vI_notificationBar.dump("** v_identity.xml fromPopupItem_clone constructor id='" + this.value + "'.\n")
+		vI_notificationBar.dump("** v_identity.xml fromPopupItem_clone constructor id='" + this.value + "'.\n")
 
 		this.description = this._identityDataStorage.sideDescription;
 		
@@ -350,7 +350,7 @@
 			var MenuItem = document.createElement("menuitem");
 		    	MenuItem.identityData = localIdentityData;
 			MenuItem.setAttribute("class", "identity_clone-popup-item");
-			MenuItem.value = localIdentityData.id.value;
+			MenuItem.value = localIdentityData.id.key; // might be accessed before item is constructed
 
 			// set vid explicitely
 			if (this._popupMenu_separator) MenuItem.setAttribute("vid", "true");

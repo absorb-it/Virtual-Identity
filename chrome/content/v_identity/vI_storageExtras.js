@@ -221,7 +221,8 @@ function vI_storageExtras_characterEncoding_setMenuMark() {
 	}
 }
 function vI_storageExtras_characterEncoding() {
-	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+	this.active = vI_storageExtrasHelper.preferences.getBoolPref("storage") &&
+				vI_storageExtrasHelper.preferences.getBoolPref(this.option)
 	this.comp = { compareValue : null, equal : null }
 }
 vI_storageExtras_characterEncoding.prototype = {
@@ -285,7 +286,8 @@ vI_storageExtras_characterEncoding.prototype = {
 }
 
 function vI_storageExtras_msgFormat() {
-	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+	this.active = vI_storageExtrasHelper.preferences.getBoolPref("storage") &&
+				vI_storageExtrasHelper.preferences.getBoolPref(this.option)
 	this.comp = { value : null, compareValue : null, equal : null }
 }
 vI_storageExtras_msgFormat.prototype = {
@@ -339,7 +341,8 @@ vI_storageExtras_msgFormat.prototype = {
 }
 
 function vI_storageExtras_sMime_messageEncryption() { 
-	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+	this.active = vI_storageExtrasHelper.preferences.getBoolPref("storage") &&
+				vI_storageExtrasHelper.preferences.getBoolPref(this.option)
 	this.comp = { value : null, compareValue : null, equal : null }
 }
 vI_storageExtras_sMime_messageEncryption.prototype = {
@@ -402,7 +405,8 @@ function vI_storageExtras_checkbox(field, option, composeDialogElementID, update
 	this.composeDialogElementID = composeDialogElementID;
 	this.updateFunction = updateFunction;
 	this.valueFromIdentityFunction = identityValue;
-	this.active = vI_storageExtrasHelper.preferences.getBoolPref(this.option) &&
+	this.active = vI_storageExtrasHelper.preferences.getBoolPref("storage") &&
+				vI_storageExtrasHelper.preferences.getBoolPref(this.option) &&
 		document.getElementById(this.composeDialogElementID);
 	this.comp = { compareValue : null, equal : null }
 }
