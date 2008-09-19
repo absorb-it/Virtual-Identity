@@ -23,8 +23,6 @@
  * ***** END LICENSE BLOCK ***** */
 
 function identityData(email, fullName, id, smtp, extras, sideDescription) {
-	this.smtpService =
-    		Components.classes["@mozilla.org/messengercompose/smtp;1"].getService(Components.interfaces.nsISmtpService);
 	this.email = email;
 	this.fullName = (fullName?fullName:'');
 	this.id = new idObj(id);
@@ -46,9 +44,6 @@ identityData.prototype = {
 	sideDescription : null,
 
 	comp : null,	
-
-	smtpService : null,
-	ignoreFullNameWhileComparing : false,
 
 	get combinedName() {
 		var email = this.email?this.email.replace(/^\s+|\s+$/g,""):"";
@@ -87,7 +82,7 @@ identityData.prototype = {
 		return new identityData(this.email, this.fullName, this.id.key, this.smtp.key, this.extras.getDuplicate(), this.sideDescription);
 	},
 
-	isExistingIdentity : function() {
+	isExistingIdentity : function(ignoreFullNameWhileComparing) {
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		for (var i in accounts) {
 			// skip possible active VirtualIdentity Accounts
@@ -95,7 +90,7 @@ identityData.prototype = {
 	
 			var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 			for (var j in identities) {
-				if (	(this.ignoreFullNameWhileComparing || this.fullName == identities[j].fullName) &&
+				if (	(ignoreFullNameWhileComparing || this.fullName == identities[j].fullName) &&
 					(this.email == identities[j].email) &&
 					this.smtp.equal(new smtpObj(identities[j].smtpServerKey))	) {
 					vI_notificationBar.dump("## vI_identityData: isExistingIdentity: " + this.combinedName + " found, id='" + identities[j].key + "'\n");
@@ -120,7 +115,7 @@ identityData.prototype = {
 	equals : function(compareIdentityData) {
 		this.comp.compareID = compareIdentityData;
 
-		this.comp.equals.fullName = (this.ignoreFullNameWhileComparing || this.fullName == compareIdentityData.fullName)
+		this.comp.equals.fullName = (this.fullName == compareIdentityData.fullName)
 		this.comp.equals.email = (this.email == compareIdentityData.email)
 		this.comp.equals.smtp = this.smtp.equal(compareIdentityData.smtp);
 		this.comp.equals.id = this.id.equal(compareIdentityData.id);
@@ -130,12 +125,11 @@ identityData.prototype = {
 	},
 
 	equalsCurrentIdentity : function(getCompareMatrix) {
-		var compareIdentityData = document.getElementById("msgIdentity_clone").identityData;
-		var retValue = { equal : null, compareMatrix : null };
-		retValue.equal = this.equals(compareIdentityData);
-		if (getCompareMatrix && !retValue.equal) // generate CompareMatrix only if asked and non-equal
-			retValue.compareMatrix = this.getCompareMatrix();
-		return retValue;
+		var equal = this.equals(document.getElementById("msgIdentity_clone").identityData);
+		var compareMatrix = null;
+ 		// generate CompareMatrix only if asked and non-equal
+		if (getCompareMatrix && !equal) compareMatrix = this.getCompareMatrix();
+		return { equal : equal, compareMatrix : compareMatrix };
 	},
 
 	getCompareMatrix : function() {

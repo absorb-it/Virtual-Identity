@@ -316,9 +316,7 @@ var vI_smartIdentity = {
 				vI_notificationBar.dump("## vI_smartIdentity: compare with existing Identities (ignoring FullNames).\n")
 			
 				for (var index = 0; index < smartIdentities.number; index++) {
-					smartIdentities.identityDataCollection[index].ignoreFullNameWhileComparing = true;
-					var idKey = smartIdentities.identityDataCollection[index].isExistingIdentity();
-					smartIdentities.identityDataCollection[index].ignoreFullNameWhileComparing = false;
+					var idKey = smartIdentities.identityDataCollection[index].isExistingIdentity(true);
 					if (idKey) {
 						var newFullName = gAccountManager.getIdentity(idKey).fullName;
 						smartIdentities.identityDataCollection[index].fullName = newFullName;

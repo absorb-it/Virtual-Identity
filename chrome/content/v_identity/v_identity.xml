@@ -448,7 +448,7 @@
 	</method>
 	<method name="checkForVirtualIdentity">
 		<body><![CDATA[
-		var existingIdentity = this.identityData.isExistingIdentity();
+		var existingIdentity = this.identityData.isExistingIdentity(false);
 		if (!existingIdentity) { this.vid = true; vI_msgIdentityCloneTools.updateReplyTo(); }
 		else this.vid = false;
 		
