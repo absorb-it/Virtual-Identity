@@ -8,9 +8,6 @@
 <!ENTITY vident.upgrade.license.label "Instalación/Actualización de Virtual Identity">
 <!ENTITY vident.upgrade.license.description "licencia">
 <!ENTITY vident.upgrade.license.caption "GNU General Public License">
-<!ENTITY vident.upgrade.0.5.0.label "Virtual Identity Install/Upgrade">
-<!ENTITY vident.upgrade.0.5.0.description "Actualización - paso 1/2">
-<!ENTITY vident.upgrade.0.5.0.caption "Almacenamiento de datos de Virtual Identity">
 <!ENTITY vident.upgrade.upgrade.label "Virtual Identity Install/Upgrade">
 <!ENTITY vident.upgrade.upgrade.description "Actualización - paso 2/2">
 <!ENTITY vident.upgrade.upgrade.caption "Actualización de Virtual Identity">

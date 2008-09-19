@@ -8,9 +8,6 @@
 <!ENTITY vident.upgrade.license.label "Virtual Identity installeren/bijwerken">
 <!ENTITY vident.upgrade.license.description "licentie">
 <!ENTITY vident.upgrade.license.caption "GNU General Public License">
-<!ENTITY vident.upgrade.0.5.0.label "Virtual Identity installeren/bijwerken">
-<!ENTITY vident.upgrade.0.5.0.description "bijwerken stap 1/2">
-<!ENTITY vident.upgrade.0.5.0.caption "Virtual Identity gegevens opslaan">
 <!ENTITY vident.upgrade.upgrade.label "Virtual Identity installeren/bijwerken">
 <!ENTITY vident.upgrade.upgrade.description "bijwerken stap 2/2">
 <!ENTITY vident.upgrade.upgrade.caption "Virtual Identity bijwerken">
