@@ -81,14 +81,13 @@
         	<body><![CDATA[
 		if (!this._identityInfo) {
 			this._identityInfo = 
-				"<table>" + 
-				"<tr>" +
-					"<td colspan='2' class='name'>" + this.elem.identityData.combinedNameHtml + "</td>" +
-				"</tr><tr>" +
+				"<table><tr>" +
 					"<td class='image'><img src='chrome://v_identity/skin/vi-info.png' /></td>" +
-					"<td class='identityTable'><table><tbody>" + this.elem.identityData.getMatrix() + "</tbody></table></td>" +
-				"</tr>" +
-				"</table>"
+					"<td class='identityTable'>" +
+						"<div class='name'>" + this.elem.identityData.combinedNameHtml + "</div>" +	
+						"<table><tbody>" + this.elem.identityData.getMatrix() + "</tbody></table>" +
+					"</td>" +
+				"</tr></table>"
 //			vI_notificationBar.dump("** v_identity.xml added tooltip with id='" +  this.elem.identityData.id.key + "'\n")
 			this._tooltipBrowser.outputString = this._identityInfo;
 		}

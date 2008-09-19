@@ -5,11 +5,12 @@ embedded browser is not able to access chrome
 */
 
 .image, .identityTable {
-	vertical-align:top;
+	vertical-align:center;
 }
 
 img {
 	margin-right: 20px;
+	margin-top: 5px;
 }
 
 div.bool {
@@ -38,7 +39,7 @@ table {
 	margin-bottom: 0.7em;
 }
 
-td.name {
+div.name {
 	font-weight: bold;
 	text-align: center;
 	padding-bottom: 10px;
