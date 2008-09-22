@@ -34,14 +34,6 @@
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
           xmlns:xbl="http://www.mozilla.org/xbl">
 	
-	<binding id="autoReplyTo" extends="chrome://global/content/bindings/autocomplete.xml#autocomplete">
-	<content>
-		<children />
-		<xul:label class="menupopup_clone-description" value="autoReplyTo" />
-		<xul:observes element="msgIdentity_clone" attribute="label" onbroadcast="alert(document.getBindingParent(this).label); document.getBindingParent(this).value = document.getBindingParent(this).label" />
-	</content>
-	</binding>
-	
 	<binding id="tooltipPopupset">
 	<implementation>
 	<method name="addTooltip">
