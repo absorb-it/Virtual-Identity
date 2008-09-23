@@ -34,6 +34,7 @@ function identityData(email, fullName, id, smtp, extras, sideDescription) {
 	}
 	if (sideDescription) this.sideDescription = sideDescription;
 	else if (this.id.value) this.sideDescription = " - " + this.id.value;
+	this.stringBundle = document.getElementById("vIdentBundle");
 }
 identityData.prototype = {
 	email : null,
@@ -42,7 +43,8 @@ identityData.prototype = {
 	smtp : null,
 	extras : null,
 	sideDescription : null,
-
+	
+	stringBundle : null,
 	comp : null,	
 
 	get combinedName() {
@@ -72,10 +74,10 @@ identityData.prototype = {
 	get emailHtml() { return this.__makeHtml(this.email); },
 	get combinedNameHtml() { return this.__makeHtml(this.combinedName); },
 
-	get idLabel() { return vI.elements.strings.getString("vident.identityData.baseID") },
-	get smtpLabel() { return vI.elements.strings.getString("vident.identityData.SMTP") },
-	get fullNameLabel() { return vI.elements.strings.getString("vident.identityData.Name") },
-	get emailLabel() { return vI.elements.strings.getString("vident.identityData.Address") },
+	get idLabel() { return this.stringBundle.getString("vident.identityData.baseID") },
+	get smtpLabel() { return this.stringBundle.getString("vident.identityData.SMTP") },
+	get fullNameLabel() { return this.stringBundle.getString("vident.identityData.Name") },
+	get emailLabel() { return this.stringBundle.getString("vident.identityData.Address") },
 
 	// creates an Duplicate of the current IdentityData, cause usually we are working with a pointer
 	getDuplicate : function() {
@@ -214,7 +216,7 @@ identityCollection.prototype =
 };
 
 function smtpObj(key) {
-	this.key = key;
+	this._key = key;
 	this.DEFAULT_TAG = document.getElementById("bundle_messenger").getString("defaultServerTag");
 }
 smtpObj.prototype = {
@@ -229,12 +231,28 @@ smtpObj.prototype = {
 			this._value = "";
 			// if key == null, it is not known / if it is "" it's the Default SMTP
 			if (this._key == "") this._value = this.DEFAULT_TAG;
-			else if (this._key != null) {
-				var smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
-					.getService(Components.interfaces.nsISmtpService);
-				var server = smtpService.getServerByKey(this.key);
-				if (server) this._value = server.description?server.description:server.hostname
-				else this._key = null;	// if non-existant SMTP handle like non available	
+			else if (this._key) {
+				var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+					.getService(Components.interfaces.nsISmtpService).smtpServers;
+				if (typeof(servers.Count) == "undefined")		// TB 3.x
+					while (servers && servers.hasMoreElements()) {
+						var server = servers.getNext();
+						if (server instanceof Components.interfaces.nsISmtpServer && 
+							!server.redirectorType && this._key == server.key) {
+							this._value = server.description?server.description:server.hostname;
+							break;
+						}
+					}
+				else							// TB 2.x
+					for (var i=0 ; i < servers.Count(); i++) {
+						var server = servers.QueryElementAt(i,
+							Components.interfaces.nsISmtpServer);
+						if (!server.redirectorType && this._key == server.key) {
+							this._value = server.description?server.description:server.hostname;
+							break;
+						}
+					}
+				if (!this._value) this._key = null; // if non-existant SMTP handle like non available
 			}
 		}
 		return this._value;
@@ -245,7 +263,7 @@ smtpObj.prototype = {
 	}
 }
 
-function idObj(key) { this.key = key; }
+function idObj(key) { this._key = key; }
 idObj.prototype = {
 	_key : null,
 	_value : null,
@@ -258,9 +276,19 @@ idObj.prototype = {
 			if (this._key) {
 				var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
 					.getService(Components.interfaces.nsIMsgAccountManager);
-				var identity = accountManager.getIdentity(this._key);
-				if (identity) this._value = identity.identityName
-				else this._key = null;	// if non-existant ID handle like non available
+				for (var i = 0; i < accountManager.accounts.Count(); i++) {
+					var account = accountManager.accounts.GetElementAt(i)
+						.QueryInterface(Components.interfaces.nsIMsgAccount);
+					for (var j = 0; j < account.identities.Count(); j++) {
+						var identity = account.identities.GetElementAt(j)
+							.QueryInterface(Components.interfaces.nsIMsgIdentity);
+						if (this._key == identity.key) {
+							this._value = identity.identityName;
+							break;
+						}
+					}
+				}
+				if (!this._value) this._key = null;
 			}
 		}
 		return this._value;
