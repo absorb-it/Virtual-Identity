@@ -41,7 +41,7 @@ var vI_rdfDataTree = {
 
 	init : function() {
 		vI_rdfDatasource.init();
-		vI_rdfDataTree.__treeElem = document.getElementById("rdfDataTree");
+		vI_rdfDataTree.__treeElem = document.getElementById("threadTree");
 		vI_rdfDataTree.__strings = document.getElementById("vI_rdfDataTreeBundle");
 		vI_storageExtrasHelper.hideUnusedTreeCols();
 		vI_rdfDataTree.loadTable();
@@ -61,7 +61,9 @@ var vI_rdfDataTree = {
 				smtpKey : localIdentityData.smtp.key,
 				idCol : localIdentityData.id.value,
 				idKey : localIdentityData.id.key,
-				resource : resource }
+				resource : resource,
+				type : type,
+				identityData : localIdentityData }
 		
 		localIdentityData.extras.addPrefs(pref);
 		vI_rdfDataTree.__idData.push(pref);
@@ -222,6 +224,7 @@ var vI_rdfDataTree = {
 		
 		vI_rdfDataTree.__idData = null; vI_rdfDataTree.__idTable = null;
 		vI_rdfDataTree.loadTable();
+		vI_rdfDataTree.hideInfoBox();
 	},
 	
 	removeSelected : function() {
@@ -238,14 +241,53 @@ var vI_rdfDataTree = {
 		for (var t=0; t<numRanges; t++){
 			vI_rdfDataTree.__treeElem.view.selection.getRangeAt(t,start,end);
 			for (var v=start.value; v<=end.value; v++){
+				vI_rdfDatasource.removeBagForResource(vI_rdfDataTree.__idTable[v]["resource"], vI_rdfDataTree.__idTable[v]["type"])
 				vI_rdfDatasource.removeVIdentityFromRDF(vI_rdfDataTree.__idTable[v]["resource"])
 			}
 		}
 		
 		vI_rdfDataTree.__idData = null; vI_rdfDataTree.__idTable = null;
 		vI_rdfDataTree.loadTable();
+		vI_rdfDataTree.hideInfoBox();
 	},
 	
+	onselect : function() {
+		var htmlBox = document.getElementById("vI_rdfDataTreeInfoBox")
+		if (vI_rdfDataTree.__treeElem.view.selection.count != 1)
+			{ vI_rdfDataTree.hideInfoBox(); return; }
+		
+		var identityData = vI_rdfDataTree.__idTable[vI_rdfDataTree.__treeElem.currentIndex]["identityData"];
+		var _identityInfo = 
+			"<div id='recipientLabel'>" +
+				vI_rdfDataTree.__idTable[vI_rdfDataTree.__treeElem.currentIndex]["recipientCol"].replace(/>/g,"&gt;").replace(/</g,"&lt;") +
+			"</div><div id='vICard'>" +
+			"<table><tr>" +
+				"<td class='image'><img src='chrome://v_identity/skin/vi-info.png' /></td>" +
+				"<td class='identityTable'>" +
+					"<div class='name'>" + identityData.combinedNameHtml + "</div>" +	
+					"<table><tbody>" + identityData.getMatrix() + "</tbody></table>" +
+				"</td>" +
+			"</tr></table></div>"
+
+		htmlBox.outputString = _identityInfo;
+		vI_rdfDataTree.infoBoxHidden = false;
+		htmlBox.setAttribute("style", "height:" + htmlBox.contentDocument.lastChild.scrollHeight +"px");
+		vI_rdfDataTree.overflow(); // better resize one time too much :)
+	},
+
+	infoBoxHidden : true,
+	overflow : function() {
+		if (vI_rdfDataTree.infoBoxHidden) return;
+		var htmlBox = document.getElementById("vI_rdfDataTreeInfoBox")
+		htmlBox.setAttribute("style", "height:" + htmlBox.contentDocument.lastChild.scrollHeight +"px");
+
+	},
+
+	hideInfoBox : function() {
+		vI_rdfDataTree.infoBoxHidden = true;
+		document.getElementById("vI_rdfDataTreeInfoBox").setAttribute("style", "height:0px");
+	},
+
 	selectAll : function() {
 		vI_rdfDataTree.__treeElem.view.selection.selectAll();
 	},
@@ -264,5 +306,6 @@ var vI_rdfDataTree = {
 			vI_rdfDatasource).focus();
 		vI_rdfDataTree.__idData = null; vI_rdfDataTree.__idTable = null;
 		vI_rdfDataTree.loadTable();
+		vI_rdfDataTree.hideInfoBox();
 	}
 };

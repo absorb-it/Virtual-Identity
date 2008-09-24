@@ -24,6 +24,8 @@
    - ***** END LICENSE BLOCK ***** -->
 
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+<?xml-stylesheet href="chrome://global/skin/tree.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/mailWindow1.css" type="text/css"?>
 
 <!DOCTYPE overlay [
 <!ENTITY % dataTreeDTD SYSTEM "chrome://v_identity/locale/vI_rdfDataTree.dtd">
@@ -32,6 +34,8 @@
 %editDTD;
 <!ENTITY % communicatorDTD SYSTEM "chrome://communicator/locale/contentAreaCommands.dtd" >
   %communicatorDTD;
+  <!ENTITY % messengercomposeDTD SYSTEM "chrome://messenger/locale/messengercompose/messengercompose.dtd" >
+%messengercomposeDTD;
 ]>
 
 <window id="vI_rdfDataTreeWindow"
@@ -55,7 +59,16 @@
 <stringbundleset id="stringbundleset">
 	<stringbundle id="vI_rdfDataTreeBundle" src="chrome://v_identity/locale/vI_rdfDataEditor.properties" />
 	<stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />
+    <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
+        <stringbundle id="vIStorageExtrasBundle" src="chrome://v_identity/locale/vI_storageExtras.properties" />
 </stringbundleset>
+
+<menupopup hidden="true">  <!--just to hold the localized labels-->
+	<menuitem label="&autoFormatCmd.label;" accesskey="&autoFormatCmd.accesskey;" id="format_auto"/>
+	<menuitem label="&plainTextFormatCmd.label;" accesskey="&plainTextFormatCmd.accesskey;" id="format_plain"/>
+	<menuitem label="&htmlFormatCmd.label;" accesskey="&htmlFormatCmd.accesskey;" id="format_html"/>
+	<menuitem label="&bothFormatCmd.label;" accesskey="&bothFormatCmd.accesskey;" id="format_both"/>
+</menupopup>
 
 <popup id="configContext" onpopupshowing="if (event.target == this) vI_rdfDataTree.updateContextMenu();">
 	<menuitem id="context_modifySelected" label="&vI_rdfDataTree.modifySelected.label;"
@@ -106,9 +119,10 @@
 	<button id="clearFilter" label="&vI_rdfDataTree.showAll.label;" accesskey="&vI_rdfDataTree.showAll.accesskey;" oncommand="vI_rdfDataTree.clearFilter();" disabled="true"/>
 </hbox>
 
-<tree id="rdfDataTree" flex="1" class="plain" seltype="multiple"
+<!-- just to use the same style like the threadTree -->
+<tree id="threadTree" flex="1" class="plain" seltype="multiple"
 	persist="sortDirection sortResource" sortDirection="ascending" sortResource="recipientCol"
-	enableColumnDrag="true" context="configContext">
+	enableColumnDrag="true" context="configContext" onselect="vI_rdfDataTree.onselect();">
 	<treecols id="rdfDataTreeCols">
 		<treecol id="recipientCol" label="&vI_rdfDataTree.recipientColumn.label;" flex="10"
 			class="sortDirectionIndicator"
@@ -131,9 +145,11 @@
 			class="sortDirectionIndicator"
 			persist="hidden width ordinal sortDirection"/>		
 	</treecols>
-	<treechildren id="configTreeBody" ondblclick="if (event.button == 0) vI_rdfDataTree.modifySelected();" onmouseover="vI_notificationBar.dump('## vI_rdfDataTree.xul mouseover ' + vI_rdfDataTree.__treeElem.currentIndex + '\n');" />
+	<treechildren id="configTreeBody" ondblclick="if (event.button == 0) vI_rdfDataTree.modifySelected();" />
 </tree>
-	
+<splitter />
+<browser id="vI_rdfDataTreeInfoBox" class="vI_htmlTextBox" cssSource="vI_rdfTreeInfo.css" disablehistory="true" onoverflow="vI_rdfDataTree.overflow();"/>
+
 	<splitter id="vIDebugBoxSplitter" hidden="true"/>
 	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
 	DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
