@@ -406,8 +406,9 @@ function vI_storageExtras_checkbox(field, option, composeDialogElementID, update
 	this.updateFunction = updateFunction;
 	this.valueFromIdentityFunction = identityValue;
 	this.active = vI_storageExtrasHelper.preferences.getBoolPref("storage") &&
-				vI_storageExtrasHelper.preferences.getBoolPref(this.option) &&
-		document.getElementById(this.composeDialogElementID);
+				vI_storageExtrasHelper.preferences.getBoolPref(this.option) 
+//		elements are never available in DataTree, so leave this out.
+// 		&& document.getElementById(this.composeDialogElementID);
 	this.comp = { compareValue : null, equal : null }
 }
 vI_storageExtras_checkbox.prototype = {
