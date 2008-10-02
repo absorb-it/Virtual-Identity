@@ -50,7 +50,7 @@ identityData.prototype = {
 	get combinedName() {
 		var email = this.email?this.email.replace(/^\s+|\s+$/g,""):"";
 		var fullName = this.fullName?this.fullName.replace(/^\s+|\s+$/g,""):"";
-		return fullName?fullName+" <"+email+">":email
+		return fullName?fullName+(email?" <"+email+">":""):email
 	},
 	set combinedName(combinedName) {
 		var name = ""; var email = "";
