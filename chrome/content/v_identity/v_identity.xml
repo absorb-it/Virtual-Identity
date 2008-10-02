@@ -250,7 +250,11 @@
       				<xul:image class="menulist_clone-icon" id="msgIdentity_clone_image" xbl:inherits="src"/>
       			<xul:spacer flex="1" /></xul:vbox>
       			<xul:vbox flex="1"><xul:spacer flex="1" />
-      				<xul:textbox anonid="textBox" type="search" id="msgIdentity_clonetextBoxElem" class="plain menulist_clone-textbox" xbl:inherits="value=label,crop,accesskey,vid" allowevents="true" oncommand="event.stopPropagation();document.getBindingParent(this).inputEvent();" crop="right" />
+<!-- 				textbox is internally an html:input field which inherits the onblur event.
+				Thats why we have to search the textbox before calling blurEvent() -->
+      				<xul:textbox anonid="textBox" type="search" id="msgIdentity_clonetextBoxElem" class="plain menulist_clone-textbox" allowevents="true" xbl:inherits="value=label,crop,accesskey,vid" oncommand="event.stopPropagation(); document.getBindingParent(this).inputEvent();"
+				onblur="event.stopPropagation(); var elem = this; while (elem.localName != 'textbox') elem = elem.parentNode; document.getBindingParent(elem).blurEvent();"
+				 crop="right" />
       			<xul:spacer flex="1" /></xul:vbox>
 			<xul:vbox><xul:spacer flex="1" />
 				<xul:hbox>
@@ -421,15 +425,21 @@
 			}
 			return this._msgIdentityElem.selectedItem;
 		]]></getter>
-	</property>
-	
+	</property>	
+	<method name="blurEvent">
+        	<body><![CDATA[
+		vI_notificationBar.dump("\n** v_identity.xml blurEvent")
+		this.inputEvent(); // timeout might prevent inputEvent to fire before blurEvent
+		
+		this.label = this.identityData.combinedName; // add "<" and ">" to email if required
+		this.setAttribute("label", this.label);
+		]]></body>
+	</method>
 	<method name="inputEvent">
         	<body><![CDATA[		
 		vI_notificationBar.dump("\n** v_identity.xml inputEvent\n")
 		
 		this.identityData.combinedName = this.label;
-		this.label = this.identityData.combinedName; // reset to possibly changed value
-		this.setAttribute("label", this.label);
 		
 		var existingIdentity = this.checkForVirtualIdentity();
 		if (existingIdentity) this.selectedMenuItem = existingIdentity;
