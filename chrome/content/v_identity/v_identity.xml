@@ -243,6 +243,7 @@
 	<binding id="fromMenuList_clone" display="xul:menu" extends="chrome://global/content/bindings/menulist.xml#menulist-description">
   	<resources>
       		<stylesheet src="chrome://global/skin/menu.css"/>
+		<stylesheet src="chrome://global/skin/autocomplete.css"/>
   	</resources>
   	<content sizetopopup="pref">
 		<xul:hbox anonid="contentHBox" flex="1"  >
@@ -252,9 +253,9 @@
       			<xul:vbox flex="1"><xul:spacer flex="1" />
 <!-- 				textbox is internally an html:input field which inherits the onblur event.
 				Thats why we have to search the textbox before calling blurEvent() -->
-      				<xul:textbox anonid="textBox" type="search" id="msgIdentity_clonetextBoxElem" class="plain menulist_clone-textbox" allowevents="true" xbl:inherits="value=label,crop,accesskey,vid" oncommand="event.stopPropagation(); document.getBindingParent(this).inputEvent();"
+      				<xul:textbox anonid="textBox" type="search" id="msgIdentity_clonetextBoxElem" class="plain menulist_clone-textbox" allowevents="true" xbl:inherits="value=label,crop,accesskey,nomatch=vid" oncommand="event.stopPropagation(); document.getBindingParent(this).inputEvent();"
 				onblur="event.stopPropagation(); var elem = this; while (elem.localName != 'textbox') elem = elem.parentNode; document.getBindingParent(elem).blurEvent();"
-				 crop="right" />
+				 crop="right" highlightnonmatches="true" />
       			<xul:spacer flex="1" /></xul:vbox>
 			<xul:vbox><xul:spacer flex="1" />
 				<xul:hbox>

@@ -122,6 +122,10 @@ notification {
   color: -moz-FieldText;
 }
 
+.description-treecell {
+  -moz-binding: url("chrome://v_identity/content/v_identity.xml#descriptionTreeCell");
+	color: red;
+}
 
 .smtpServerListHbox {
   -moz-binding: url("chrome://v_identity/content/v_identity.xml#smtpServerList");
@@ -212,9 +216,10 @@ notification {
   list-style-image: url("chrome://messenger/skin/addressbook/icons/abcard.png");
 }
 
-.menulist_clone-textbox[vid="true"] {
-  	color: red;
-}
+/*  this is only for TB < 3 to indicate virtual Identity, now done with autocomplete css */
+/*.menulist_clone-textbox[nomatch="true"] {
+  	color: green;
+}*/
 
 .virtIdLabel[vid="false"], .v_identity_logo[vid="false"] {
 	display:	none;
@@ -224,7 +229,7 @@ notification {
 }
 
 
-/* indicates a new indetity in menu */
+/* indicates a new indentity in menu */
 /* the alternate is the person-icon, which is defined elsewhere */
 .new-icon {
   list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook-toolbar-small.png");
