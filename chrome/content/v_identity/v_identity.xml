@@ -255,7 +255,7 @@
 				Thats why we have to search the textbox before calling blurEvent() -->
       				<xul:textbox anonid="textBox" type="search" id="msgIdentity_clonetextBoxElem" class="plain menulist_clone-textbox" allowevents="true" xbl:inherits="value=label,crop,accesskey,nomatch=vid" oncommand="event.stopPropagation(); document.getBindingParent(this).inputEvent();"
 				onblur="event.stopPropagation(); var elem = this; while (elem.localName != 'textbox') elem = elem.parentNode; document.getBindingParent(elem).blurEvent();"
-				 crop="right" highlightnonmatches="true" searchbutton="false" />
+				 crop="right" highlightnonmatches="true"/>
       			<xul:spacer flex="1" /></xul:vbox>
 			<xul:vbox><xul:spacer flex="1" />
 				<xul:hbox>

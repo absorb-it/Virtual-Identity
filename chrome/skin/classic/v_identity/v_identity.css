@@ -193,6 +193,8 @@ notification {
 	margin:		0;
 	padding: 	1px;
 	background-color: transparent;
+	background-image: none;
+	outline:	none;
 }
 
 
