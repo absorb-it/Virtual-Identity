@@ -238,21 +238,6 @@ notification {
   -moz-image-region: rect(0px 16px 16px 0px);
 }
 
-
-/* the following styles are copied from notification.css, cause its not included in pre2.0 */
-notification {
-  background-color: InfoBackground;
-  color: InfoText;
-}
-
-notification[type="info"] {
-  background-color: -moz-Dialog;
-}
-
-notification[type="critical"] {
-  background-color: red;
-}
-
 #fromPopupItem_clone .menulist-menupopup {
 	padding: 0;
 }
