@@ -1,12 +1,28 @@
-#vi_Dialog {
+#vI_Dialog {
 	width: 550px;
 	height: 320px;
+	padding: 0;
 }
+
+.dialog-button-box {
+	padding: 0pt 10px 10px;
+}
+
+.replaceVIdentity .dialog-content-box { border: 10px solid #d8e0e8; }
+.replaceVIdentity .dialog-button-box,
+.replaceVIdentity #vI_Dialog_title,
+.replaceVIdentity #vI_Dialog_query { background-color: #d8e0e8; }
+
+.updateStorage .dialog-content-box { border: 10px solid infobackground; }
+.updateStorage .dialog-button-box,
+.updateStorage #vI_Dialog_title,
+.updateStorage #vI_Dialog_query { background-color: infobackground; }
 
 #vI_Dialog_title {
 	font-size: medium;
 	font-weight:bold;
-	margin-bottom:2em;
+	margin: 0pt 0pt 1em;
+	padding: 1px 5px 2em 6px;
 }
 
 #vI_Dialog_recLabel {
@@ -29,5 +45,6 @@
 	text-align: right;
 	font-size: medium;
 	font-weight:bold;
-	margin-top:2em;
+	margin: 1em 0pt 0pt;
+	padding: 1em 5px 1px 6px;
 }
