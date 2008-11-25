@@ -92,18 +92,27 @@ var vI_getHeader = {
 		var found = false; var label = "";
 		var subtitle = vI_getHeader.strings.getString("vident.getHeader.noHeader");
 		// create array to count the header
-		var currentHeadersCounter = []
+		var currentHeadersCounter = [];
+		
+		var vI_listId = false; var vI_received = false;
 		// loop through the headers
 		for (var header in currentHeaderData) {
-			var headerName = currentHeaderData[header].headerName.toLowerCase()
+			var headerName = currentHeaderData[header].headerName.toLowerCase();
 
 			// remember list-id header to prevent using Mailing-List addresses as sender
-			if (headerName == "list-id") {
-				hdr.setStringProperty("vI_list-id","found");
+			if (!vI_listId && headerName == "list-id") {
+				hdr.setStringProperty("vI_list-id","found"); vI_listId = true;
 				vI_notificationBar.dump("## vI_getHeader: found header: list-id  ...stored to recognize mailing-list\n");
-				continue;
+// 				continue;
 			}
 
+			// remember received header to prevent using Mailing-List addresses as sender
+			if (!vI_received && headerName == "received") {
+				hdr.setStringProperty("vI_received","found"); vI_received = true;
+				vI_notificationBar.dump("## vI_getHeader: found header: received  ...stored to recognize received mail\n");
+// 				continue;
+			}
+			
 			if (currentHeadersCounter[headerName]) currentHeadersCounter[headerName]++
 			else currentHeadersCounter[headerName] = 1
 			vI_notificationBar.dump("## vI_getHeader: found header: " + headerName + 
@@ -215,6 +224,9 @@ var vI_prepareHeader = {
 		
 		// add List-Id to recognizable headers to prevent using Mailing-List addresses as sender
 		header_list.push("List-Id")
+		
+		// add Received to recognizable headers to detect if mail was sent or received
+		header_list.push("Received")
 
 		try {
 			var extraHdrs = " " + 

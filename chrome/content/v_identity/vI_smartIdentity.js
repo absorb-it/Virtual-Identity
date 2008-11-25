@@ -264,20 +264,12 @@ var vI_smartIdentity = {
 
 		vI_notificationBar.dump("## vI_smartIdentity: Reply()\n");
 		
-		const MSG_FOLDER_FLAG_INBOX = 0x1000
-		const MSG_FOLDER_FLAG_SENTMAIL = 0x0200;
-
-		if (hdr && (hdr.folder.flags & MSG_FOLDER_FLAG_SENTMAIL)) {
-			vI_notificationBar.dump("## vI_smartIdentity: reply from Sent folder.");
-			if (hdr.folder.flags & MSG_FOLDER_FLAG_INBOX)
-				vI_notificationBar.dump(" Folder is INBOX, assuming Reply-Case. \n");
-			else {
-				vI_notificationBar.dump(" Using SmartDraft. \n");
+		if (hdr && !hdr.getStringProperty("vI_received")) { // mail was not received
+				vI_notificationBar.dump("## vI_smartIdentity: reply on non-received (sent?) mail. Using SmartDraft. \n");
 				vI_smartIdentity.ReplyOnSent(hdr);
 				return;
-			}
 		}
-		
+
 		var storageIdentities = new identityCollection();
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
