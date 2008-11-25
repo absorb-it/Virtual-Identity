@@ -263,12 +263,21 @@ var vI_smartIdentity = {
 			messageServiceFromURI(gMsgCompose.originalMsgURI).messageURIToMsgHdr(gMsgCompose.originalMsgURI);
 
 		vI_notificationBar.dump("## vI_smartIdentity: Reply()\n");
-		if (hdr && (hdr.folder.flags & 0x0200)) {	// MSG_FOLDER_FLAG_SENTMAIL
-			vI_notificationBar.dump("## vI_smartIdentity: reply from Sent folder, using SmartDraft. \n");
-			vI_smartIdentity.ReplyOnSent(hdr);
-			return;
+		
+		const MSG_FOLDER_FLAG_INBOX = 0x1000
+		const MSG_FOLDER_FLAG_SENTMAIL = 0x0200;
+
+		if (hdr && (hdr.folder.flags & MSG_FOLDER_FLAG_SENTMAIL)) {
+			vI_notificationBar.dump("## vI_smartIdentity: reply from Sent folder.");
+			if (hdr.folder.flags & MSG_FOLDER_FLAG_INBOX)
+				vI_notificationBar.dump(" Folder is INBOX, assuming Reply-Case. \n");
+			else {
+				vI_notificationBar.dump(" Using SmartDraft. \n");
+				vI_smartIdentity.ReplyOnSent(hdr);
+				return;
+			}
 		}
-				
+		
 		var storageIdentities = new identityCollection();
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
