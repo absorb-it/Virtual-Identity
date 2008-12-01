@@ -251,10 +251,11 @@ var vI_smartIdentity = {
 			messageServiceFromURI(gMsgCompose.originalMsgURI).messageURIToMsgHdr(gMsgCompose.originalMsgURI);
 
 		vI_notificationBar.dump("## vI_smartIdentity: Reply()\n");
-		if (hdr && (hdr.folder.flags & 0x0200)) {	// MSG_FOLDER_FLAG_SENTMAIL
-			vI_notificationBar.dump("## vI_smartIdentity: reply from Sent folder, using SmartDraft. \n");
-			vI_smartIdentity.ReplyOnSent(hdr);
-			return;
+		
+		if (hdr && !hdr.getStringProperty("vI_received")) { // mail was not received
+				vI_notificationBar.dump("## vI_smartIdentity: reply on non-received (sent?) mail. Using SmartDraft. \n");
+				vI_smartIdentity.ReplyOnSent(hdr);
+				return;
 		}
 				
 		var storageIdentities = new identityCollection();
