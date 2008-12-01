@@ -209,6 +209,7 @@ var vI_upgrade = {
 			vI_notificationBar.dump("transferring VirtualIdentity information from AddressBook to RDF file,\nthis might take a while:\n");
 			returnVar.warning = false
 		}
+		vI_notificationBar.quiet = true;
 		
 		var newFullEmail=Card[returnVar.prop].replace(/vIdentity: /,"");
 		var infoIndex = newFullEmail.indexOf(" (id")
@@ -234,6 +235,7 @@ var vI_upgrade = {
 		
 		Card[returnVar.prop] = "";
 		Card.editCardToDatabase("");
+		vI_notificationBar.quiet = null;
 		vI_notificationBar.dump(".");
 		return { prop: returnVar.prop, counter : ++returnVar.counter, warning : returnVar.warning };
 	},
