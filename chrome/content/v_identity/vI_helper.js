@@ -29,9 +29,19 @@ keyTranslator.prototype = {
 
 		if (!this.DEFAULT_TAG) this.DEFAULT_TAG = document.getElementById("bundle_messenger").getString("defaultServerTag");
 	},
+	
+	__queryISupportsArray : function(supportsArray, iid) {
+		var result = new Array;
+		for (var i=0; i<supportsArray.Count(); i++) {
+		// dump(i + "," + result[i] + "\n");
+		result[i] = supportsArray.QueryElementAt(i, iid);
+		}
+		return result;
+	},
+	
 	__getIDnames : function () {
 		this.ID_NAMES = [];
-		var accounts = queryISupportsArray(this.AccountManager.accounts, Components.interfaces.nsIMsgAccount);
+		var accounts = this.__queryISupportsArray(this.AccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		if (typeof(sortAccounts)=="function") // TB 3.x
 			accounts.sort(sortAccounts);
 		else if (typeof(compareAccountSortOrder)=="function") // TB 2.x
@@ -39,7 +49,7 @@ keyTranslator.prototype = {
 		for (var i in accounts) {
 			var server = accounts[i].incomingServer;
 			if (!server) continue;
-			var identites = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
+			var identites = this.__queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 			for (var j in identites)
 				this.ID_NAMES[identites[j].key] = identites[j].identityName;
 		}
