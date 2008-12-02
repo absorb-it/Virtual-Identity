@@ -206,6 +206,8 @@ var vI = {
 		vI.adapt_interface();
 		vI.adapt_genericSendMessage();
 		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
+		document.getElementById("vI_tooltipPopupset")
+			.addTooltip(document.getElementById("msgIdentity_clone"), false);
 		window.addEventListener('compose-window-reopen', vI.reopen, true);
 		window.addEventListener('compose-window-close', vI.close, true);
 		vI.initSystemStage1();

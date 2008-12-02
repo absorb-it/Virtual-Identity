@@ -273,11 +273,13 @@
 		<![CDATA[		
 		var inputTextbox = document.getAnonymousElementByAttribute(this, "class", "plain menulist_clone-textbox");
 		
-		// check if 'search' textboxes are implemented, if not change to 'timed'
+		// check if 'search' textboxes are not implemented change to 'timed'
 		if (!inputTextbox.timeout) inputTextbox.setAttribute("type", "timed");
 		inputTextbox.setAttribute("timeout", "300")
 		
-		document.getElementById("vI_tooltipPopupset").addTooltip(this, false);
+		// to ealy to access vI_tooltipPopupset, this might break the interface
+		// it will be done in v_identity.js init
+		// document.getElementById("vI_tooltipPopupset").addTooltip(this, false);
 		]]>
 	</constructor>
 	<destructor>
