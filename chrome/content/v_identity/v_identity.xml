@@ -348,6 +348,7 @@
 			var MenuItem = document.createElement("menuitem");
 		    	MenuItem.identityData = localIdentityData;
 			MenuItem.setAttribute("class", "identity_clone-popup-item");
+			MenuItem.setAttribute("type", "vIdentity"); // to prevent overriding with menuitem:not([type])
 			MenuItem.value = localIdentityData.id.key; // might be accessed before item is constructed
 
 			// set vid explicitely
