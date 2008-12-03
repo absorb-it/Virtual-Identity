@@ -208,7 +208,7 @@ var vI_storage = {
 	},
 	
 	__getWarning : function(warningCase, recipient, compareMatrix) {
-		var warning = { title: null, recLabel : null, recipient : null, warning : null, css: null, query : null };
+		var warning = { title: null, recLabel : null, recipient : null, warning : null, css: null, query : null, class : null };
 		warning.title = vI.elements.strings.getString("vident." + warningCase + ".title")
 		warning.recLabel = vI.elements.strings.getString("vident." + warningCase + ".recipient") + " (" + recipient.recType + "):"
 		warning.recipient = recipient.recDesc;
@@ -220,7 +220,8 @@ var vI_storage = {
 			"<tbody>" + compareMatrix + "</tbody>" +
 			"</table>"
 		warning.css = "vI_DialogBrowser.css";
-		warning.query = vI.elements.strings.getString("vident." + warningCase + ".query")
+		warning.query = vI.elements.strings.getString("vident." + warningCase + ".query");
+		warning.class = warningCase;
 		return warning;
 	},
 
