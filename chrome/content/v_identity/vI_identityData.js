@@ -84,6 +84,7 @@ identityData.prototype = {
 		return new identityData(this.email, this.fullName, this.id.key, this.smtp.key, this.extras.getDuplicate(), this.sideDescription);
 	},
 
+	// dependent on MsgComposeCommands, should/will only be called in ComposeDialog
 	isExistingIdentity : function(ignoreFullNameWhileComparing) {
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		for (var i in accounts) {
