@@ -36,47 +36,57 @@ function prepareForComparison (o) {
 };
 
 
-function rdfDataTree(sourceName) {
-	this.treeElem = document.getElementById("rdfDataTree_" + sourceName);
+function rdfDataTree(treeType) {
+	this.treeType = treeType;
 	this.filterText = "";
+	this.loadTable();
 }
 rdfDataTree.prototype = {
 	idTable : null,
 	idData : null,
-	treeElem : null,
 	filterText : null,
+	treeType : null,
+
+	get treeElem() { return document.getElementById("rdfDataTree_" + this.treeType); },
+	get tabElem() { return document.getElementById(this.treeType + "Tab"); },
 	
 	//this function is called every time the tree is sorted, filtered, or reloaded
-	loadTable : function(container) {
+	loadTable : function() {
 		//remember scroll position. this is useful if this is an editable table
 		//to prevent the user from losing the row they edited
 		var topVisibleRow = null;
 		if (this.idTable) { topVisibleRow = this.treeElem.treeBoxObject.getFirstVisibleRow(); }
 		if (this.idData == null) {
 			this.idData = [];
-			vI_rdfDatasource.readAllEntriesFromRDF(container, this);
+			vI_rdfDatasource.readAllEntriesFromRDF(this.addNewDatum, this.treeType, this.idData);
 		}
 		if (this.filterText == "") {
 			//show all of them
 			this.idTable = this.idData;
 		} else {
 			//filter out the ones we want to display
-			this.idTable = [];
+			var curTable = [];
+			var curFilterText = this.filterText;
 			this.idData.forEach(function(element) {
 				//we'll match on every property
 				for (var i in element) {
-					if (prepareForComparison(element[i]).indexOf(this.filterText) != -1) {
-						this.idTable.push(element);
+					if (prepareForComparison(element[i]).indexOf(curFilterText) != -1) {
+						curTable.push(element);
 						break;
 					}
 				}
 			});
+			this.idTable = curTable;
 		}	
 		this.sort();
+		
 		//restore scroll position
 		if (topVisibleRow) {
 			this.treeElem.treeBoxObject.scrollToRow(topVisibleRow);
 		}
+
+		// set Tab label
+		this.tabElem.setAttribute("label", this.treeType + " (" + this.idTable.length + ")");
 	},
 
 	addNewDatum : function(resource, name, localIdentityData, idData) {
@@ -132,13 +142,14 @@ var vI_rdfDataTree = {
 	promptService : Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 			.getService(Components.interfaces.nsIPromptService),
 
+	treeTypes : Array("email", "maillist", "newsgroup", "filter"),
+
 	trees : {},
 	tabbox : null,
 	
 	_strings : null,
 	
 	onselect : function () {
-vI_notificationBar.dump("## onselect " + vI_rdfDataTree.tabbox.selectedPanel.id + ".\n");
 		var tree = vI_rdfDataTree.trees[vI_rdfDataTree.tabbox.selectedPanel.id];
 		var htmlBox = document.getElementById("vI_rdfDataTreeInfoBox")
 		if (tree.treeElem.view.selection.count != 1)
@@ -170,14 +181,9 @@ vI_notificationBar.dump("## onselect " + vI_rdfDataTree.tabbox.selectedPanel.id 
 		vI_rdfDatasource.init();
 		vI_storageExtrasHelper.hideUnusedTreeCols(); // XXX what happens heree ?? :)
 		
-		vI_rdfDataTree.trees["email"] = new rdfDataTree("email");
-		vI_rdfDataTree.trees["email"].loadTable(vI_rdfDatasource.emailContainer);
-		vI_rdfDataTree.trees["maillist"] = new rdfDataTree("maillist");
-		vI_rdfDataTree.trees["maillist"].loadTable(vI_rdfDatasource.maillistContainer);
-		vI_rdfDataTree.trees["newsgroup"] = new rdfDataTree("newsgroup");
-		vI_rdfDataTree.trees["newsgroup"].loadTable(vI_rdfDatasource.newsgroupContainer);
-		vI_rdfDataTree.trees["filter"] = new rdfDataTree("filter");
-		vI_rdfDataTree.trees["filter"].loadTable(vI_rdfDatasource.filterContainer);
+		for each (var treeType in vI_rdfDataTree.treeTypes) {
+			vI_rdfDataTree.trees[treeType] = new rdfDataTree(treeType);
+		}
 	},
 	
 	//generic custom tree view stuff
@@ -203,19 +209,25 @@ vI_notificationBar.dump("## onselect " + vI_rdfDataTree.tabbox.selectedPanel.id 
 		this.getRowProperties = function(row,props){};
 		this.getCellProperties = function(row,col,props){};
 		this.getColumnProperties = function(colid,col,props){};
-		this.cycleHeader = function(col, elem) { vI_rdfDataTree.sort(col) };
+		this.cycleHeader = function(col, elem) {
+			var tree = vI_rdfDataTree.trees[vI_rdfDataTree.tabbox.selectedPanel.id];
+			tree.sort(col)
+		};
 	},
 
 	
 	__setFilter : function (text) {
-// loop trough all trees
-		vI_rdfDataTree.filterText = text;
-		vI_rdfDataTree.loadTable();
+		// loop trough all trees
+		for each (var treeType in vI_rdfDataTree.treeTypes) {
+			var tree = vI_rdfDataTree.trees[treeType];
+			tree.filterText = text;
+			tree.loadTable();
+		}
 	},
 
 	inputFilter : function(event) {
 		//do this now rather than doing it at every comparison
-		var value = vI_rdfDataTree.__prepareForComparison(event.target.value);
+		var value = prepareForComparison(event.target.value);
 		vI_rdfDataTree.__setFilter(value);
 		document.getElementById("clearFilter").disabled = value.length == 0;
 	},
@@ -248,7 +260,8 @@ vI_notificationBar.dump("## onselect " + vI_rdfDataTree.tabbox.selectedPanel.id 
 	},
 
 	modifySelected : function() {
-		var tree = vI_rdfDataTree.trees[vI_rdfDataTree.tabbox.selectedPanel.id];
+		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var tree = vI_rdfDataTree.trees[treeType];
 		if (tree.treeElem.view.selection.count == 0) return;
 		if (tree.treeElem.view.selection.count > 5) {
 			var warning = vI_rdfDataTree._strings.getString("vI_rdfDataTree.modify.Warning1") + " " +
@@ -270,31 +283,33 @@ vI_notificationBar.dump("## onselect " + vI_rdfDataTree.tabbox.selectedPanel.id 
 		}
 		
 		tree.idData = null; tree.idTable = null;
-		vI_rdfDataTree.loadTable(vI_rdfDataTree.tabbox.selectedPanel.id);
+		tree.loadTable()
 		vI_rdfDataTree.hideInfoBox();
 	},
 	
 	removeSelected : function() {
-		if (vI_rdfDataTree.__treeElem.view.selection.count == 0) return;
-		var warning = vI_rdfDataTree.__strings.getString("vI_rdfDataTree.remove.Warning1") + " " +
-			vI_rdfDataTree.__treeElem.view.selection.count + " " +
-			vI_rdfDataTree.__strings.getString("vI_rdfDataTree.remove.Warning2")
+		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var tree = vI_rdfDataTree.trees[treeType];
+		if (tree.treeElem.view.selection.count == 0) return;
+		var warning = vI_rdfDataTree._strings.getString("vI_rdfDataTree.remove.Warning1") + " " +
+			tree.treeElem.view.selection.count + " " +
+			vI_rdfDataTree._strings.getString("vI_rdfDataTree.remove.Warning2")
 		
 		if (!vI_rdfDataTree.promptService.confirm(window,"Warning",warning)) return;
 		
 		var start = new Object(); var end = new Object();
-		var numRanges = vI_rdfDataTree.__treeElem.view.selection.getRangeCount();
+		var numRanges = tree.treeElem.view.selection.getRangeCount();
 
 		for (var t=0; t<numRanges; t++){
-			vI_rdfDataTree.__treeElem.view.selection.getRangeAt(t,start,end);
+			tree.treeElem.view.selection.getRangeAt(t,start,end);
 			for (var v=start.value; v<=end.value; v++){
-				vI_rdfDatasource.removeBagForResource(vI_rdfDataTree.__idTable[v]["resource"], vI_rdfDataTree.__idTable[v]["type"])
-				vI_rdfDatasource.removeVIdentityFromRDF(vI_rdfDataTree.__idTable[v]["resource"])
+				vI_rdfDatasource.removeBagForResource(tree.idTable[v]["resource"], tree.idTable[v]["type"])
+				vI_rdfDatasource.removeVIdentityFromRDF(tree.idTable[v]["resource"])
 			}
 		}
 		
-		vI_rdfDataTree.__idData = null; vI_rdfDataTree.__idTable = null;
-		vI_rdfDataTree.loadTable();
+		tree.idData = null; tree.idTable = null;
+		tree.loadTable();
 		vI_rdfDataTree.hideInfoBox();
 	},
 	
@@ -313,10 +328,13 @@ vI_notificationBar.dump("## onselect " + vI_rdfDataTree.tabbox.selectedPanel.id 
 	},
 
 	selectAll : function() {
-		vI_rdfDataTree.__treeElem.view.selection.selectAll();
+		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var tree = vI_rdfDataTree.trees[treeType];
+		tree.treeElem.view.selection.selectAll();
 	},
 	
 	newItem : function() {
+		alert("XXX repair this");
 		var newItemPreset = { 
 				recipientCol : "",
 				typeCol : document.getElementById("vI_rdfDataTreeBundle").getString("vI_rdfDataTree.dataType.email"),

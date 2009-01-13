@@ -58,6 +58,15 @@ var vI_rdfDatasource = {
 	filterContainer : Components.classes["@mozilla.org/rdf/container;1"]
 			.createInstance(Components.interfaces.nsIRDFContainer),
 
+	getContainer : function (type) {
+		switch (type) {
+			case "email": return vI_rdfDatasource.emailContainer;
+			case "maillist": return vI_rdfDatasource.maillistContainer;
+			case "newsgroup": return vI_rdfDatasource.newsgroupContainer;
+			case "filter": return vI_rdfDatasource.filterContainer;
+		}
+	},
+
 	init: function() {
 		if (vI_rdfDatasource.rdfDataSource) return;		
 		var protoHandler = Components.classes["@mozilla.org/network/protocol;1?name=file"]
@@ -200,9 +209,9 @@ var vI_rdfDatasource = {
 	},
 	
 	// this will be used from rdfDataTree to get all RDF values, callFunction is vI_rdfDataTree.__addNewDatum
-	readAllEntriesFromRDF : function (container, rdfDataTree) {
+	readAllEntriesFromRDF : function (addNewDatum, treeType, idData) {
 		vI_notificationBar.dump("## vI_rdfDatasource: readAllEntriesFromRDF.\n");
-		var enumerator = container.GetElements();
+		var enumerator = vI_rdfDatasource.getContainer(treeType).GetElements();
 		while (enumerator && enumerator.hasMoreElements()) {
 			var resource = enumerator.getNext();
 			resource.QueryInterface(Components.interfaces.nsIRDFResource);
@@ -216,7 +225,7 @@ var vI_rdfDatasource = {
 			var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
 			
 			var localIdentityData = new identityData(email, fullName, id, smtp, extras)
-			rdfDataTree.addNewDatum (resource, name, localIdentityData, rdfDataTree.idData)
+			addNewDatum (resource, name, localIdentityData, idData)
 		}
 	},
 	
