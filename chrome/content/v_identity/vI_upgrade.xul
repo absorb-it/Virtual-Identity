@@ -49,6 +49,7 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
 
 <stringbundle id="vITextBoxBundle" src="chrome://v_identity/locale/vI_upgrade.properties" />
+<stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />
 	
 	<wizardpage id="introPage"
 		label="&vident.upgrade.intro.label;" description="&vident.upgrade.intro.description;"

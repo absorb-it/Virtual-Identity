@@ -97,26 +97,60 @@ var vI_upgrade = {
 	rdfUpgrade : function() {
 		vI_notificationBar.dump("checking for previous version of rdf, found " + 
 			vI_rdfDatasource.getCurrentRDFFileVersion() + "\nrdf-upgrade required.\n")
-		switch (vI_rdfDatasource.getCurrentRDFFileVersion()) {
-			case "0.0.1":
-				vI_upgrade.__removeQuotesFromResourceName(); break;
-		}
+		vI_upgrade.__createRDFContainers();
 		vI_rdfDatasource.storeRDFVersion();
 		vI_notificationBar.dump("rdf-upgrade to " + vI_rdfDatasource.getCurrentRDFFileVersion() + " done.\n\n");
 	},
 	
-	__removeQuotesFromResourceName : function() {
-		vI_notificationBar.quiet = true;
-		vI_rdfDatasource.readAllVIdentitiesFromRDF(vI_upgrade.__removeQuotesFromResourceNameCallback)
-		vI_notificationBar.quiet = null;
-		vI_notificationBar.dump("done.\n");
+	__createContainersUpgradeElems: function(resource, type, name) {
+		var container;
+		
+		switch (type) {
+			case "email": container = vI_rdfDatasource.emailContainer; break;
+			case "newsgroup" : container = vI_rdfDatasource.newsgroupContainer; break;
+			case "maillist" : container = vI_rdfDatasource.maillistContainer; break;
+		}
+		vI_rdfDatasource.__setRDFValue(resource, "name", name);
+		if (container.IndexOf(resource) == -1) container.AppendElement(resource);
 	},
-	
-	__removeQuotesFromResourceNameCallback : function(resource, type, name, localIdentityData) {
-		vI_rdfDatasource.updateRDF(name, type, localIdentityData, true);
-		vI_notificationBar.quiet = null;
-		vI_notificationBar.dump(".");
-		vI_notificationBar.quiet = true;
+
+	__createRDFContainers: function() {
+		var rdfContainerUtils = Components.classes["@mozilla.org/rdf/container-utils;1"].
+			getService(Components.interfaces.nsIRDFContainerUtils);
+
+		var storageRes = vI_rdfDatasource.rdfService
+			.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSStorage);
+		var emailRes = vI_rdfDatasource.rdfService
+			.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSEmail);
+		var maillistRes = vI_rdfDatasource.rdfService
+			.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSMaillist);
+		var newsgroupRes = vI_rdfDatasource.rdfService
+			.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSNewsgroup);
+		var filterRes = vI_rdfDatasource.rdfService
+			.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSFilter);
+		vI_rdfDatasource.__setRDFValue(emailRes, "name", "E-Mail");
+		vI_rdfDatasource.__setRDFValue(maillistRes, "name", "Mailing-List");
+		vI_rdfDatasource.__setRDFValue(newsgroupRes, "name", "Newsgroup");
+		vI_rdfDatasource.__setRDFValue(filterRes, "name", "Filter");
+
+		rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, storageRes);
+		rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, emailRes);
+		rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, maillistRes);
+		rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, newsgroupRes);
+		// use a sequence for the filters, order does matter
+		rdfContainerUtils.MakeSeq(vI_rdfDatasource.rdfDataSource, filterRes);
+		
+		container = Components.classes["@mozilla.org/rdf/container;1"].
+			createInstance(Components.interfaces.nsIRDFContainer);
+
+		container.Init(vI_rdfDatasource.rdfDataSource, storageRes);
+		if (container.IndexOf(emailRes) == -1) container.AppendElement(emailRes);
+		if (container.IndexOf(maillistRes) == -1) container.AppendElement(maillistRes);
+		if (container.IndexOf(newsgroupRes) == -1) container.AppendElement(newsgroupRes);
+		if (container.IndexOf(filterRes) == -1) container.AppendElement(filterRes);
+		
+		vI_rdfDatasource.__initContainers();
+		vI_rdfDatasource.readAllResourcesFromRDF(vI_upgrade.__createContainersUpgradeElems)
 	},
 	
 	extUpgrade : function() {

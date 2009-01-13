@@ -29,22 +29,35 @@ var vI_rdfDatasource = {
 	rdfDataSource : null,
 	rdfFileName : "virtualIdentity.rdf",
 	rdfNS : "http://virtual-id.absorb.it/",
-	rdfNSEmail : "vIStorage/email/",
-	rdfNSMaillist : "vIStorage/maillist/",
-	rdfNSNewsgroup : "vIStorage/newsgroup/",
-	rdfNSFilter : "vIStorage/filter/",
+	rdfNSStorage : "vIStorage",
+	rdfNSEmail : "vIStorage/email",
+	rdfNSMaillist : "vIStorage/maillist",
+	rdfNSNewsgroup : "vIStorage/newsgroup",
+	rdfNSFilter : "vIStorage/filter",
 	
 	// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
 	// extensionManager : Components.classes["@mozilla.org/extensions/manager;1"]
 	//		.getService(Components.interfaces.nsIExtensionManager),
 	
-	rdfVersion : "0.0.2",	// version of current implemented RDF-schema, internal only to trigger updates
+	rdfVersion : "0.0.3",	// version of current implemented RDF-schema, internal only to trigger updates
 	
 	virtualIdentityID : "{dddd428e-5ac8-4a81-9f78-276c734f75b8}",
 	
 	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
 		.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 	
+	emailContainer : Components.classes["@mozilla.org/rdf/container;1"]
+			.createInstance(Components.interfaces.nsIRDFContainer),
+
+	maillistContainer : Components.classes["@mozilla.org/rdf/container;1"]
+			.createInstance(Components.interfaces.nsIRDFContainer),
+
+	newsgroupContainer : Components.classes["@mozilla.org/rdf/container;1"]
+			.createInstance(Components.interfaces.nsIRDFContainer),
+
+	filterContainer : Components.classes["@mozilla.org/rdf/container;1"]
+			.createInstance(Components.interfaces.nsIRDFContainer),
+
 	init: function() {
 		if (vI_rdfDatasource.rdfDataSource) return;		
 		var protoHandler = Components.classes["@mozilla.org/network/protocol;1?name=file"]
@@ -64,8 +77,26 @@ var vI_rdfDatasource = {
 
 		vI_rdfDatasource.rdfDataSource =
 			vI_rdfDatasource.rdfService.GetDataSourceBlocking(fileURI.spec);
+		vI_rdfDatasource.__initContainers();
 	},
 	
+	__initContainers: function() {
+		try {	// will possibly fail before upgrade
+			var storageRes = vI_rdfDatasource.rdfService
+				.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSEmail);
+			vI_rdfDatasource.emailContainer.Init(vI_rdfDatasource.rdfDataSource, storageRes);
+			storageRes = vI_rdfDatasource.rdfService
+				.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSMaillist);
+			vI_rdfDatasource.maillistContainer.Init(vI_rdfDatasource.rdfDataSource, storageRes);
+			storageRes = vI_rdfDatasource.rdfService
+				.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSNewsgroup);
+			vI_rdfDatasource.newsgroupContainer.Init(vI_rdfDatasource.rdfDataSource, storageRes);
+			storageRes = vI_rdfDatasource.rdfService
+				.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSFilter);
+			vI_rdfDatasource.filterContainer.Init(vI_rdfDatasource.rdfDataSource, storageRes);
+		} catch (e) { };
+	},
+
 	rdfUpgradeRequired: function() {
 		oldRdfVersion = vI_rdfDatasource.getCurrentRDFFileVersion();
 		var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
@@ -126,7 +157,26 @@ var vI_rdfDatasource = {
 			case "newsgroup" : rdfNSRecType = vI_rdfDatasource.rdfNSNewsgroup; break;
 			case "maillist" : rdfNSRecType = vI_rdfDatasource.rdfNSMaillist; break;
 		}
-		return vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + rdfNSRecType + recDescription);
+		return vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + rdfNSRecType + "/" + recDescription);
+	},
+	
+	removeBagForResource: function (resource, recType) {
+		var rdfContainerUtils = Components.classes["@mozilla.org/rdf/container-utils;1"].
+			getService(Components.interfaces.nsIRDFContainerUtils);
+		var rdfNSRecType = null;
+		switch (recType) {
+			case "email": rdfNSRecType = vI_rdfDatasource.rdfNSEmail; break;
+			case "newsgroup" : rdfNSRecType = vI_rdfDatasource.rdfNSNewsgroup; break;
+			case "maillist" : rdfNSRecType = vI_rdfDatasource.rdfNSMaillist; break;
+			case "filter" : rdfNSRecType = vI_rdfDatasource.rdfNSFilter; break;
+		}
+		var storageRes = vI_rdfDatasource.rdfService
+			.GetResource(vI_rdfDatasource.rdfNS + rdfNSRecType);
+		var container = Components.classes["@mozilla.org/rdf/container;1"]
+			.createInstance(Components.interfaces.nsIRDFContainer);
+		container.Init(vI_rdfDatasource.rdfDataSource, storageRes);
+
+		if (container.IndexOf(emailRes) != -1) container.RemoveElement(resource);
 	},
 	
 	removeVIdentityFromRDF : function (resource) {
@@ -135,6 +185,7 @@ var vI_rdfDatasource = {
 		vI_rdfDatasource.__unsetRDFValue(resource, "fullName", vI_rdfDatasource.__getRDFValue(resource, "fullName"))
 		vI_rdfDatasource.__unsetRDFValue(resource, "id", vI_rdfDatasource.__getRDFValue(resource, "id"))
 		vI_rdfDatasource.__unsetRDFValue(resource, "smtp", vI_rdfDatasource.__getRDFValue(resource, "smtp"))
+		vI_rdfDatasource.__unsetRDFValue(resource, "name", vI_rdfDatasource.__getRDFValue(resource, "name"))
 		
 		var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
 		extras.loopForRDF(vI_rdfDatasource.__unsetRDFValue, resource);
@@ -149,8 +200,28 @@ var vI_rdfDatasource = {
 	},
 	
 	// this will be used from rdfDataTree to get all RDF values, callFunction is vI_rdfDataTree.__addNewDatum
-	readAllVIdentitiesFromRDF : function (callFunction) {
-		vI_notificationBar.dump("## vI_rdfDatasource: readAllVIdentitiesFromRDF.\n");
+	readAllEntriesFromRDF : function (container, rdfDataTree) {
+		vI_notificationBar.dump("## vI_rdfDatasource: readAllEntriesFromRDF.\n");
+		var enumerator = container.GetElements();
+		while (enumerator && enumerator.hasMoreElements()) {
+			var resource = enumerator.getNext();
+			resource.QueryInterface(Components.interfaces.nsIRDFResource);
+			var name = vI_rdfDatasource.__getRDFValue(resource, "name")
+			var email = vI_rdfDatasource.__getRDFValue(resource, "email")
+			var fullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
+			var id = vI_rdfDatasource.__getRDFValue(resource, "id")
+			var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
+			if (!smtp) smtp = ""; // to indicate default SMTP (different than null like with SmartReply)
+			
+			var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
+			
+			var localIdentityData = new identityData(email, fullName, id, smtp, extras)
+			rdfDataTree.addNewDatum (resource, name, localIdentityData, rdfDataTree.idData)
+		}
+	},
+	
+	readAllResourcesFromRDF : function (rdfDataTree) {
+		vI_notificationBar.dump("## vI_rdfDatasource: readAllResourcesFromRDF.\n");
 		var enumerator = vI_rdfDatasource.rdfDataSource.GetAllResources();
 		while (enumerator && enumerator.hasMoreElements()) {
 			var resource = enumerator.getNext();
@@ -165,24 +236,30 @@ var vI_rdfDatasource = {
 				{ type = "maillist"; name = RegExp.rightContext }
 			else continue;
 			
-			var email = vI_rdfDatasource.__getRDFValue(resource, "email")
-			var fullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
-			var id = vI_rdfDatasource.__getRDFValue(resource, "id")
-			var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
-			if (!smtp) smtp = ""; // to indicate default SMTP (different than null like with SmartReply)
-			
-			var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
-			
-			var localIdentityData = new identityData(email, fullName, id, smtp, extras)
-			callFunction (resource, type, name, localIdentityData)		
+			rdfDataTree.addNewDatum(resource, type, name, rdfDataTree.idData)
 		}
 	},
-	
+
+	__findMatchingFilter : function (recDescription) {
+		vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter.\n");
+		var enumerator = vI_rdfDatasource.filterContainer.GetElements();
+		while (enumerator && enumerator.hasMoreElements()) {
+			var resource = enumerator.getNext();
+			resource.QueryInterface(Components.interfaces.nsIRDFResource);
+			var filter = vI_rdfDatasource.__getRDFValue(resource, "filter");
+			vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter trying '" + filter + "'.\n");
+			if (filter && recDescription.match(new RegExp(filter,"i"))) return resource;
+		}
+		return null;
+	},
+
 	readVIdentityFromRDF : function (recDescription, recType) {
 		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
 		if (!resource) return null;
-		
+
 		var email = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "rdf#email");
+		if (!vI_rdfDatasource.rdfDataSource.hasArcOut(resource, email))
+			resource = vI_rdfDatasource.__findMatchingFilter(recDescription);
 		if (!vI_rdfDatasource.rdfDataSource.hasArcOut(resource, email)) {
 			vI_notificationBar.dump("## vI_rdfDatasource: readVIdentityFromRDF no data found.\n");
 			return null;
