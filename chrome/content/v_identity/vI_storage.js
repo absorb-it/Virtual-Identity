@@ -145,8 +145,9 @@ identityData.prototype = {
 	__equals : function(compareIdentityData, ignoreFullName) {
 		this.comp.compareID = compareIdentityData;
 
-		this.comp.equals.fullName = (ignoreFullName || this.fullName == compareIdentityData.fullName)
-		this.comp.equals.email = (this.email == compareIdentityData.email)
+		this.comp.equals.fullName = (ignoreFullName ||
+			this.fullName.toLowerCase() == compareIdentityData.fullName.toLowerCase())
+		this.comp.equals.email = (this.email.toLowerCase() == compareIdentityData.email.toLowerCase())
 		this.comp.equals.smtpName = this.__equalSMTP(compareIdentityData.smtp);
 		this.comp.equals.idName = this.__equalID(compareIdentityData.id);
 		this.comp.equals.extras = (!this.extras || !compareIdentityData.extras || this.extras.equal(compareIdentityData.extras))
