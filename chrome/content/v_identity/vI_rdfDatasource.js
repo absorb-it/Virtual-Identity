@@ -220,7 +220,7 @@ var vI_rdfDatasource = {
 		}
 	},
 	
-	readAllResourcesFromRDF : function (rdfDataTree) {
+	readAllResourcesFromRDF : function (addNewDatum) {
 		vI_notificationBar.dump("## vI_rdfDatasource: readAllResourcesFromRDF.\n");
 		var enumerator = vI_rdfDatasource.rdfDataSource.GetAllResources();
 		while (enumerator && enumerator.hasMoreElements()) {
@@ -228,15 +228,15 @@ var vI_rdfDatasource = {
 			resource.QueryInterface(Components.interfaces.nsIRDFResource);
 			
 			var type; var name;
-			if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSEmail, "i")))
+			if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSEmail + "/", "i")))
 				{ type = "email"; name = RegExp.rightContext }
-			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSNewsgroup, "i")))
+			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSNewsgroup + "/", "i")))
 				{ type = "newsgroup"; name = RegExp.rightContext }
-			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSMaillist, "i")))
+			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSMaillist + "/", "i")))
 				{ type = "maillist"; name = RegExp.rightContext }
 			else continue;
 			
-			rdfDataTree.addNewDatum(resource, type, name, rdfDataTree.idData)
+			addNewDatum (resource, type, name)
 		}
 	},
 
