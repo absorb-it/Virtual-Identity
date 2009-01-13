@@ -178,7 +178,7 @@ var vI_smartIdentity = {
 								skipRegExp = true; }
 						break;
 					case filterType.StrCmp:
-						add_addr = (filterList[i] == smartIdentities.emails[j])
+						add_addr = ( smartIdentities.emails[j].toLowerCase().indexOf(filterList[i].toLowerCase()) != -1)
 						break;
 				}
 				if (add_addr)	returnIdentities.addWithoutDuplicates(
