@@ -4,6 +4,14 @@ The css will be loaded with htmlTextBox.__setCSS() because the
 embedded browser is not able to access chrome
 */
 
+
+#recipientLabel {
+	margin-bottom: 10px;
+	font-size: x-large;
+	font-weight: bold;
+	font-style: italic;
+}
+
 img {
 	margin-right: 20px;
 	margin-top: 5px;
@@ -26,13 +34,21 @@ div.bool.checked {
 
 body {
 	margin: 0px;
+	background-color: -moz-field;
+	padding: 20px;
+}
+
+td {
+	padding-right: 10px;
+	padding-left: 10px;
 }
 
 table {
+	background-color: #eee;
+	-moz-border-radius: 10px;
 	font-size: small;
 	border-collapse: collapse;
 	margin: auto;
-	margin-bottom: 0.7em;
 }
 
 div.name {
