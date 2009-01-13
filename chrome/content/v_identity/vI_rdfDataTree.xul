@@ -72,7 +72,7 @@
 
 <popup id="configContext" onpopupshowing="if (event.target == this) vI_rdfDataTree.updateContextMenu();">
 	<menuitem id="context_modifySelected" label="&vI_rdfDataTree.modifySelected.label;"
-		oncommand="vI_rdfDataTree.modifySelected();"/>
+		oncommand="vI_rdfDataTree.modifySelected(this);"/>
 	<menuitem id="context_removeSelected" label="&vI_rdfDataTree.removeSelected.label;"
 		oncommand="vI_rdfDataTree.removeSelected();"/>
 	<menuitem id="context_newItem" label="&vI_rdfDataTree.newItem.label;"
@@ -118,9 +118,46 @@
 	<textbox id="filter" flex="1" oninput="vI_rdfDataTree.inputFilter(event);"/>
 	<button id="clearFilter" label="&vI_rdfDataTree.showAll.label;" accesskey="&vI_rdfDataTree.showAll.accesskey;" oncommand="vI_rdfDataTree.clearFilter();" disabled="true"/>
 </hbox>
+<tabbox id="TreeTabbox" flex="1">
+<tabs>
+<tab label="Emails"/>
+<tab label="Mailing Lists"/>
+<tab label="Newsgroups"/>
+<tab label="Filter"/>
+</tabs>
+<tabpanels flex="1">
+<tabpanel id="email" flex="1">
+<tree id="rdfDataTree_email" flex="1" class="plain" seltype="multiple"
+	persist="sortDirection sortResource" sortDirection="ascending" sortResource="recipientCol"
+	enableColumnDrag="true" context="configContext" onselect="vI_rdfDataTree.onselect(this);">
+	<treecols id="rdfDataTreeCols">
+		<treecol id="recipientCol" label="&vI_rdfDataTree.recipientColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			ignoreincolumnpicker="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="typeCol" label="&vI_rdfDataTree.typeColumn.label;" flex="5"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="senderCol" label="&vI_rdfDataTree.senderColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="smtpCol" label="&vI_rdfDataTree.smtpColumn.label;" flex="5"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="idCol" label="&vI_rdfDataTree.idColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>		
+	</treecols>
+	<treechildren id="configTreeBody" ondblclick="if (event.button == 0) vI_rdfDataTree.modifySelected();" />
+</tree>
+</tabpanel>
 
-<!-- just to use the same style like the threadTree -->
-<tree id="threadTree" flex="1" class="plain" seltype="multiple"
+<tabpanel id="maillist" flex="1">
+<tree id="rdfDataTree_maillist" flex="1" class="plain" seltype="multiple"
 	persist="sortDirection sortResource" sortDirection="ascending" sortResource="recipientCol"
 	enableColumnDrag="true" context="configContext" onselect="vI_rdfDataTree.onselect();">
 	<treecols id="rdfDataTreeCols">
@@ -147,7 +184,69 @@
 	</treecols>
 	<treechildren id="configTreeBody" ondblclick="if (event.button == 0) vI_rdfDataTree.modifySelected();" />
 </tree>
-<splitter />
+</tabpanel>
+<tabpanel id="newsgroup" flex="1">
+<tree id="rdfDataTree_newsgroup" flex="1" class="plain" seltype="multiple"
+	persist="sortDirection sortResource" sortDirection="ascending" sortResource="recipientCol"
+	enableColumnDrag="true" context="configContext" onselect="vI_rdfDataTree.onselect();">
+	<treecols id="rdfDataTreeCols">
+		<treecol id="recipientCol" label="&vI_rdfDataTree.recipientColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			ignoreincolumnpicker="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="typeCol" label="&vI_rdfDataTree.typeColumn.label;" flex="5"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="senderCol" label="&vI_rdfDataTree.senderColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="smtpCol" label="&vI_rdfDataTree.smtpColumn.label;" flex="5"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="idCol" label="&vI_rdfDataTree.idColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>		
+	</treecols>
+	<treechildren id="configTreeBody" ondblclick="if (event.button == 0) vI_rdfDataTree.modifySelected();" />
+</tree>
+</tabpanel>
+<tabpanel id="filter" flex="1">
+<tree id="rdfDataTree_filter" flex="1" class="plain" seltype="multiple"
+	persist="sortDirection sortResource" sortDirection="ascending" sortResource="recipientCol"
+	enableColumnDrag="true" context="configContext" onselect="vI_rdfDataTree.onselect();">
+	<treecols id="rdfDataTreeCols">
+		<treecol id="recipientCol" label="&vI_rdfDataTree.recipientColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			ignoreincolumnpicker="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="typeCol" label="&vI_rdfDataTree.typeColumn.label;" flex="5"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="senderCol" label="&vI_rdfDataTree.senderColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="smtpCol" label="&vI_rdfDataTree.smtpColumn.label;" flex="5"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="idCol" label="&vI_rdfDataTree.idColumn.label;" flex="10"
+			class="sortDirectionIndicator"
+			persist="hidden width ordinal sortDirection"/>		
+	</treecols>
+	<treechildren id="configTreeBody" ondblclick="if (event.button == 0) vI_rdfDataTree.modifySelected();" />
+</tree>
+</tabpanel>
+
+</tabpanels>
+</tabbox> -->
+<!-- <splitter /> -->
 <browser id="vI_rdfDataTreeInfoBox" class="vI_htmlTextBox" cssSource="vI_rdfTreeInfo.css" disablehistory="true" onoverflow="vI_rdfDataTree.overflow();"/>
 
 	<splitter id="vIDebugBoxSplitter" hidden="true"/>
