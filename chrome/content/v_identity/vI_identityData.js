@@ -93,8 +93,9 @@ identityData.prototype = {
 	
 			var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 			for (var j in identities) {
-				if (	(ignoreFullNameWhileComparing || this.fullName == identities[j].fullName) &&
-					(this.email == identities[j].email) &&
+				if (	(ignoreFullNameWhileComparing ||
+					this.fullName.toLowerCase() == identities[j].fullName.toLowerCase()) &&
+					(this.email.toLowerCase() == identities[j].email.toLowerCase()) &&
 					this.smtp.equal(new smtpObj(identities[j].smtpServerKey))	) {
 					vI_notificationBar.dump("## vI_identityData: isExistingIdentity: " + this.combinedName + " found, id='" + identities[j].key + "'\n");
 					return identities[j].key;
