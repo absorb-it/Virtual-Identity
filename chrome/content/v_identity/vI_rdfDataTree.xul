@@ -215,6 +215,7 @@
 </tree>
 </tabpanel>
 <tabpanel id="filter" flex="1">
+<hbox flex="1" >
 <tree id="rdfDataTree_filter" flex="1" class="plain" seltype="multiple"
 	persist="sortDirection sortResource" sortDirection="ascending" sortResource="recipientCol"
 	enableColumnDrag="true" context="configContext" onselect="vI_rdfDataTree.onselect();">
@@ -242,6 +243,12 @@
 	</treecols>
 	<treechildren id="configTreeBody" ondblclick="if (event.button == 0) vI_rdfDataTree.modifySelected();" />
 </tree>
+<vbox>
+	<button label="move up" />
+	<button label="move down" />
+	<spacer flex="1" />
+</vbox>
+</hbox>
 </tabpanel>
 
 </tabpanels>
