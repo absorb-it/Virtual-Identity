@@ -20,6 +20,7 @@
     <em:locale>locale/nl-NL/v_identity/</em:locale>
     <em:locale>locale/cs-CZ/v_identity/</em:locale>
     <em:locale>locale/es-ES/v_identity/</em:locale>
+    <em:locale>locale/fr-FR/v_identity/</em:locale>
   </RDF:Description>
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
@@ -38,6 +39,8 @@
     <em:translator>- Rmarkh</em:translator>
     <em:translator>- Michal Kec (MiK)</em:translator>
     <em:translator>- Wacław Jacek</em:translator>
+    <em:translator>- Goofy</em:translator>
+    <em:translator>- PatheticCockroach</em:translator>
     <em:file RDF:resource="urn:mozilla:extension:file:v_identity.jar"/>
   </RDF:Description>
 </RDF:RDF>
