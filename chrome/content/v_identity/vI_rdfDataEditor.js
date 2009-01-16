@@ -24,22 +24,25 @@
 
 var vI_rdfDataEditor = {
 	__rdfDatasource : null,
+	__type : null,
 	
 	storageExtras : null,
 
 	init : function() {
-		vI_rdfDataEditor.__rdfDatasource = window.arguments[1]
-	
+		vI_rdfDataEditor.__type = window.arguments[1];
+		vI_rdfDataEditor.__rdfDatasource = window.arguments[2];
+
 		document.getElementById("recipient").value = window.arguments[0]["recipientCol"];
 		
 		var typeMenuPopup = document.getElementById("type_menu_popup")
-		for each (typeField in Array("email", "maillist", "newsgroup")) {
+
+		for each (typeField in Array("email", "maillist", "newsgroup", "filter")) {
 			var menuitem = document.createElement("menuitem");
 			var label = document.getElementById("vI_rdfDataTreeBundle").getString("vI_rdfDataTree.dataType." + typeField)
 			menuitem.setAttribute("label", label)
 			menuitem.setAttribute("key", typeField)
 			typeMenuPopup.appendChild(menuitem);
-			if (label == window.arguments[0]["typeCol"]) document.getElementById("type_menu").selectedItem = menuitem
+			if (typeField == vI_rdfDataEditor.__type) document.getElementById("type_menu").selectedItem = menuitem
 		}
 
 		document.getElementById("sender").value = window.arguments[0]["senderCol"]
@@ -90,10 +93,15 @@ var vI_rdfDataEditor = {
 			document.getElementById("smtp_server_list").selectedItem.getAttribute("key"),
 			vI_rdfDataEditor.storageExtras)
 
-		vI_rdfDataEditor.__rdfDatasource.updateRDF(
-				document.getElementById("recipient").value,
+		// if current Type and previous Type are different, remove previous resource
+		vI_rdfDataEditor.__rdfDatasource.removeRDF(document.getElementById("recipient").value,
+				vI_rdfDataEditor.__type);
+
+		vI_rdfDataEditor.__rdfDatasource.updateRDF(document.getElementById("recipient").value,
 				document.getElementById("type_menu").selectedItem.getAttribute("key"),
-				localIdentityData, true)
+				localIdentityData, true);
+
+		return document.getElementById("type_menu").selectedItem.getAttribute("key");
 	}
 }
 window.addEventListener("load", vI_rdfDataEditor.init, false);

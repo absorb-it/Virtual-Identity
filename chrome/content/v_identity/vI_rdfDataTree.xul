@@ -119,7 +119,7 @@
 	<button id="clearFilter" label="&vI_rdfDataTree.showAll.label;" accesskey="&vI_rdfDataTree.showAll.accesskey;" oncommand="vI_rdfDataTree.clearFilter();" disabled="true"/>
 </hbox>
 <tabbox id="TreeTabbox" flex="1">
-<tabs>
+<tabs onselect="vI_rdfDataTree.hideInfoBox();" >
 <tab id="emailTab" />
 <tab id="maillistTab" />
 <tab id="newsgroupTab" />

@@ -91,7 +91,6 @@ rdfDataTree.prototype = {
 
 	addNewDatum : function(resource, name, localIdentityData, idData) {
 		var pref = { 	recipientCol : name,
-				typeCol : "type",
 				senderCol : localIdentityData.combinedName,
 				smtpCol : localIdentityData.smtp.value,
 				smtpKey : localIdentityData.smtp.key,
@@ -278,12 +277,16 @@ var vI_rdfDataTree = {
 			for (var v=start.value; v<=end.value; v++)
 				window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
-					tree.idTable[v],
+					tree.idTable[v], treeType,
 					vI_rdfDatasource).focus();
 		}
 		
-		tree.idData = null; tree.idTable = null;
-		tree.loadTable()
+		// reload all trees (types might have changed)
+		for each (var treeType in vI_rdfDataTree.treeTypes) {
+			vI_rdfDataTree.trees[treeType].idData = null;
+			vI_rdfDataTree.trees[treeType].idTable = null;
+			vI_rdfDataTree.trees[treeType].loadTable()
+		}
 		vI_rdfDataTree.hideInfoBox();
 	},
 	
@@ -303,8 +306,7 @@ var vI_rdfDataTree = {
 		for (var t=0; t<numRanges; t++){
 			tree.treeElem.view.selection.getRangeAt(t,start,end);
 			for (var v=start.value; v<=end.value; v++){
-				vI_rdfDatasource.removeBagForResource(tree.idTable[v]["resource"], tree.idTable[v]["type"])
-				vI_rdfDatasource.removeVIdentityFromRDF(tree.idTable[v]["resource"])
+				vI_rdfDatasource.removeVIdentityFromRDF(tree.idTable[v]["resource"], treeType)
 			}
 		}
 		
@@ -325,6 +327,9 @@ var vI_rdfDataTree = {
 	hideInfoBox : function() {
 		vI_rdfDataTree.infoBoxHidden = true;
 		document.getElementById("vI_rdfDataTreeInfoBox").setAttribute("style", "height:0px");
+		for each (var treeType in vI_rdfDataTree.treeTypes) {
+			vI_rdfDataTree.trees[treeType].treeElem.view.selection.selectNone();
+		}
 	},
 
 	selectAll : function() {
@@ -337,14 +342,13 @@ var vI_rdfDataTree = {
 		alert("XXX repair this");
 		var newItemPreset = { 
 				recipientCol : "",
-				typeCol : document.getElementById("vI_rdfDataTreeBundle").getString("vI_rdfDataTree.dataType.email"),
 				senderCol : "",
 				smtpKey : "",
 				idKey : gAccountManager.defaultAccount.defaultIdentity.key,
 				resource : null }
 		window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 			"chrome, dialog, modal, alwaysRaised, resizable=yes",
-			newItemPreset,
+			newItemPreset, "email",
 			vI_rdfDatasource).focus();
 		vI_rdfDataTree.__idData = null; vI_rdfDataTree.__idTable = null;
 		vI_rdfDataTree.loadTable();

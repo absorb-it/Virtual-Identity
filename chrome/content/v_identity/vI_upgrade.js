@@ -103,13 +103,7 @@ var vI_upgrade = {
 	},
 	
 	__createContainersUpgradeElems: function(resource, type, name) {
-		var container;
-		
-		switch (type) {
-			case "email": container = vI_rdfDatasource.emailContainer; break;
-			case "newsgroup" : container = vI_rdfDatasource.newsgroupContainer; break;
-			case "maillist" : container = vI_rdfDatasource.maillistContainer; break;
-		}
+		var container = vI_rdfDatasource.getContainer(type);
 		vI_rdfDatasource.__setRDFValue(resource, "name", name);
 		if (container.IndexOf(resource) == -1) container.AppendElement(resource);
 	},

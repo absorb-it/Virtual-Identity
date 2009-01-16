@@ -165,30 +165,12 @@ var vI_rdfDatasource = {
 			case "email": rdfNSRecType = vI_rdfDatasource.rdfNSEmail; break;
 			case "newsgroup" : rdfNSRecType = vI_rdfDatasource.rdfNSNewsgroup; break;
 			case "maillist" : rdfNSRecType = vI_rdfDatasource.rdfNSMaillist; break;
+			case "filter" : rdfNSRecType = vI_rdfDatasource.rdfNSFilter; break;
 		}
 		return vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + rdfNSRecType + "/" + recDescription);
 	},
 	
-	removeBagForResource: function (resource, recType) {
-		var rdfContainerUtils = Components.classes["@mozilla.org/rdf/container-utils;1"].
-			getService(Components.interfaces.nsIRDFContainerUtils);
-		var rdfNSRecType = null;
-		switch (recType) {
-			case "email": rdfNSRecType = vI_rdfDatasource.rdfNSEmail; break;
-			case "newsgroup" : rdfNSRecType = vI_rdfDatasource.rdfNSNewsgroup; break;
-			case "maillist" : rdfNSRecType = vI_rdfDatasource.rdfNSMaillist; break;
-			case "filter" : rdfNSRecType = vI_rdfDatasource.rdfNSFilter; break;
-		}
-		var storageRes = vI_rdfDatasource.rdfService
-			.GetResource(vI_rdfDatasource.rdfNS + rdfNSRecType);
-		var container = Components.classes["@mozilla.org/rdf/container;1"]
-			.createInstance(Components.interfaces.nsIRDFContainer);
-		container.Init(vI_rdfDatasource.rdfDataSource, storageRes);
-
-		if (container.IndexOf(emailRes) != -1) container.RemoveElement(resource);
-	},
-	
-	removeVIdentityFromRDF : function (resource) {
+	removeVIdentityFromRDF : function (resource, recType) {
 		vI_notificationBar.dump("## vI_rdfDatasource: removeVIdentityFromRDF " + resource.ValueUTF8 + ".\n");
 		vI_rdfDatasource.__unsetRDFValue(resource, "email", vI_rdfDatasource.__getRDFValue(resource, "email"))
 		vI_rdfDatasource.__unsetRDFValue(resource, "fullName", vI_rdfDatasource.__getRDFValue(resource, "fullName"))
@@ -198,6 +180,11 @@ var vI_rdfDatasource = {
 		
 		var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
 		extras.loopForRDF(vI_rdfDatasource.__unsetRDFValue, resource);
+vI_notificationBar.dump("## vI_rdfDatasource: removeVIdentityFromRDF recType" + recType + " 2.\n");
+		vI_rdfDatasource.getContainer(recType).RemoveElement(resource, true);
+vI_notificationBar.dump("## vI_rdfDatasource: removeVIdentityFromRDF " + resource.ValueUTF8 + " 3.\n");
+// 		var container = vI_rdfDatasource.getContainer(recType);
+// 		if (container.IndexOf(emailRes) != -1) container.RemoveElement(resource);
 	},
 	
 	__unsetRDFValue : function (resource, field, value) {
@@ -229,6 +216,7 @@ var vI_rdfDatasource = {
 		}
 	},
 	
+	// only used for upgrade to 0.0.3 - loop through all ressources.
 	readAllResourcesFromRDF : function (addNewDatum) {
 		vI_notificationBar.dump("## vI_rdfDatasource: readAllResourcesFromRDF.\n");
 		var enumerator = vI_rdfDatasource.rdfDataSource.GetAllResources();
@@ -267,8 +255,10 @@ var vI_rdfDatasource = {
 		if (!resource) return null;
 
 		var email = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "rdf#email");
+		// if no data available try available filters
 		if (!vI_rdfDatasource.rdfDataSource.hasArcOut(resource, email))
 			resource = vI_rdfDatasource.__findMatchingFilter(recDescription);
+		// if still no data available give up.
 		if (!vI_rdfDatasource.rdfDataSource.hasArcOut(resource, email)) {
 			vI_notificationBar.dump("## vI_rdfDatasource: readVIdentityFromRDF no data found.\n");
 			return null;
@@ -304,22 +294,31 @@ var vI_rdfDatasource = {
 			(vI_statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true"));
 	},
 	
-	updateRDF : function (recDescription, recType, localIdentityData, storeBaseID) {
+	removeRDF : function (recDescription, recType) {
+		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
+		if (!resource) return null;
+		vI_rdfDatasource.removeVIdentityFromRDF(resource, recType);
+		return resource;
+	},
+
+	updateRDF : function (recDescription, recType, localIdentityData, storeBaseID, previousRecType) {
 		if (!localIdentityData.email) {
 			vI_notificationBar.dump("## vI_rdfDatasource: updateRDF: no Sender-email for Recipient, aborting.\n");
 			return;
 		}
-		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
+		var resource = vI_rdfDatasource.removeRDF(recDescription, recType); // just to have a clean base
 		if (!resource) return;
-		else vI_rdfDatasource.removeVIdentityFromRDF(resource); // just to have a clean base
 
 		vI_notificationBar.dump("## vI_rdfDatasource: updateRDF " + resource.ValueUTF8 + ".\n");
-		vI_rdfDatasource.__setRDFValue(resource, "email", localIdentityData.email)
-		vI_rdfDatasource.__setRDFValue(resource, "fullName", localIdentityData.fullName)
-		if (storeBaseID) vI_rdfDatasource.__setRDFValue(resource, "id", localIdentityData.id.key)
-		vI_rdfDatasource.__setRDFValue(resource, "smtp", localIdentityData.smtp.key)
-		
+		vI_rdfDatasource.__setRDFValue(resource, "email", localIdentityData.email);
+		vI_rdfDatasource.__setRDFValue(resource, "fullName", localIdentityData.fullName);
+		if (storeBaseID) vI_rdfDatasource.__setRDFValue(resource, "id", localIdentityData.id.key);
+		vI_rdfDatasource.__setRDFValue(resource, "smtp", localIdentityData.smtp.key);
+		vI_rdfDatasource.__setRDFValue(resource, "name", recDescription);
+
 		localIdentityData.extras.loopForRDF(vI_rdfDatasource.__setRDFValue, resource);
+
+		vI_rdfDatasource.getContainer(recType).AppendElement(resource);
 	},
 
 	__setRDFValue : function (resource, field, value) {
