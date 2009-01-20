@@ -32,6 +32,7 @@
 //prepares an object for easy comparison against another. for strings, lowercases them
 function prepareForComparison (o) {
 	if (typeof o == "string") { return o.toLowerCase().replace(/\"/g,""); }
+// 	if (typeof o == "number") { return o; }
 	return "";
 };
 
@@ -91,6 +92,7 @@ rdfDataTree.prototype = {
 
 	addNewDatum : function(resource, name, localIdentityData, idData) {
 		var pref = { 	recipientCol : name,
+				indexCol : idData.length + 1 + ".",
 				senderCol : localIdentityData.combinedName,
 				smtpCol : localIdentityData.smtp.value,
 				smtpKey : localIdentityData.smtp.key,
@@ -102,17 +104,12 @@ rdfDataTree.prototype = {
 		localIdentityData.extras.addPrefs(pref);
 		idData.push(pref);
 	},
-	sort : function(column) {
-		var columnName;
+	sort : function(columnName) {
+		vI_notificationBar.dump("## sort: " + columnName + ".\n");
 		var order = this.treeElem.getAttribute("sortDirection") == "ascending" ? 1 : -1;
 		//if the column is passed and it's already sorted by that column, reverse sort
-		if (column) {
-			columnName = column.id;
-			if (this.treeElem.getAttribute("sortResource") == columnName) {
+		if (columnName && (this.treeElem.getAttribute("sortResource") == columnName)) {
 				order *= -1;
-			}
-		} else {
-			columnName = this.treeElem.getAttribute("sortResource");
 		}
 		
 		function columnSort(a, b) {
@@ -123,16 +120,20 @@ rdfDataTree.prototype = {
 			return 0;
 		}
 		this.idTable.sort(columnSort);
+		
 		//setting these will make the sort option persist
 		this.treeElem.setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
 		this.treeElem.setAttribute("sortResource", columnName);
+		
 		this.treeElem.view = new vI_rdfDataTree.treeView(this.idTable);
+		
 		//set the appropriate attributes to show to indicator
 		var cols = this.treeElem.getElementsByTagName("treecol");
 		for (var i = 0; i < cols.length; i++) {
 			cols[i].removeAttribute("sortDirection");
+			if (cols[i].id.match(columnName))
+				cols[i].setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
 		}
-		document.getElementById(columnName).setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
 	},
 
 }
@@ -189,10 +190,10 @@ var vI_rdfDataTree = {
 	treeView : function (table) {
 		this.rowCount = table.length;
 		this.getCellText = function(row, col) {
-			return table[row][col.id];
+			return table[row][col.id.substr(0,col.id.indexOf("_"))];
 		};
 		this.getCellValue = function(row, col) {
-			return table[row][col.id];
+			return table[row][col.id.substr(0,col.id.indexOf("_"))];
 		};
 		this.setTree = function(treebox) {
 			this.treebox = treebox;
@@ -209,8 +210,9 @@ var vI_rdfDataTree = {
 		this.getCellProperties = function(row,col,props){};
 		this.getColumnProperties = function(colid,col,props){};
 		this.cycleHeader = function(col, elem) {
-			var tree = vI_rdfDataTree.trees[vI_rdfDataTree.tabbox.selectedPanel.id];
-			tree.sort(col)
+			var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+			if (treeType != "filter")
+				vI_rdfDataTree.trees[treeType].sort(col.id.substr(0,col.id.indexOf("_")));
 		};
 	},
 
