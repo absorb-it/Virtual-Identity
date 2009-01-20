@@ -180,11 +180,7 @@ var vI_rdfDatasource = {
 		
 		var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
 		extras.loopForRDF(vI_rdfDatasource.__unsetRDFValue, resource);
-vI_notificationBar.dump("## vI_rdfDatasource: removeVIdentityFromRDF recType" + recType + " 2.\n");
 		vI_rdfDatasource.getContainer(recType).RemoveElement(resource, true);
-vI_notificationBar.dump("## vI_rdfDatasource: removeVIdentityFromRDF " + resource.ValueUTF8 + " 3.\n");
-// 		var container = vI_rdfDatasource.getContainer(recType);
-// 		if (container.IndexOf(emailRes) != -1) container.RemoveElement(resource);
 	},
 	
 	__unsetRDFValue : function (resource, field, value) {
@@ -197,7 +193,7 @@ vI_notificationBar.dump("## vI_rdfDatasource: removeVIdentityFromRDF " + resourc
 	
 	// this will be used from rdfDataTree to get all RDF values, callFunction is vI_rdfDataTree.__addNewDatum
 	readAllEntriesFromRDF : function (addNewDatum, treeType, idData) {
-		vI_notificationBar.dump("## vI_rdfDatasource: readAllEntriesFromRDF.\n");
+// 		vI_notificationBar.dump("## vI_rdfDatasource: readAllEntriesFromRDF.\n");
 		var enumerator = vI_rdfDatasource.getContainer(treeType).GetElements();
 		while (enumerator && enumerator.hasMoreElements()) {
 			var resource = enumerator.getNext();
@@ -243,7 +239,7 @@ vI_notificationBar.dump("## vI_rdfDatasource: removeVIdentityFromRDF " + resourc
 		while (enumerator && enumerator.hasMoreElements()) {
 			var resource = enumerator.getNext();
 			resource.QueryInterface(Components.interfaces.nsIRDFResource);
-			var filter = vI_rdfDatasource.__getRDFValue(resource, "filter");
+			var filter = vI_rdfDatasource.__getRDFValue(resource, "name");
 			vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter trying '" + filter + "'.\n");
 			if (filter && recDescription.match(new RegExp(filter,"i"))) return resource;
 		}
@@ -291,7 +287,8 @@ vI_notificationBar.dump("## vI_rdfDatasource: removeVIdentityFromRDF " + resourc
 	updateRDFFromVIdentity : function(recDescription, recType) {
 		vI_rdfDatasource.updateRDF(recDescription, recType,
 			document.getElementById("msgIdentity_clone").identityData,
-			(vI_statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true"));
+			(vI_statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true"),
+			null, null);
 	},
 	
 	removeRDF : function (recDescription, recType) {
@@ -301,15 +298,25 @@ vI_notificationBar.dump("## vI_rdfDatasource: removeVIdentityFromRDF " + resourc
 		return resource;
 	},
 
-	updateRDF : function (recDescription, recType, localIdentityData, storeBaseID, previousRecType) {
-		if (!localIdentityData.email) {
-			vI_notificationBar.dump("## vI_rdfDatasource: updateRDF: no Sender-email for Recipient, aborting.\n");
-			return;
-		}
-		var resource = vI_rdfDatasource.removeRDF(recDescription, recType); // just to have a clean base
-		if (!resource) return;
+	updateRDF : function (recDescription, recType, localIdentityData, storeBaseID, prevRecDescription, prevRecType) {
+// 		if (!localIdentityData.email) {
+// 			vI_notificationBar.dump("## vI_rdfDatasource: updateRDF: no Sender-email for Recipient, aborting.\n");
+// 			return;
+// 		}
+		if (recDescription.length == 0) return;
 
+		if (!prevRecDescription) prevRecDescription = recDescription;
+		if (!prevRecType) prevRecType = recType;
+
+		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(prevRecDescription, prevRecType);
+		if (!resource) return;
 		vI_notificationBar.dump("## vI_rdfDatasource: updateRDF " + resource.ValueUTF8 + ".\n");
+		
+		var position = vI_rdfDatasource.getContainer(recType).IndexOf(resource); // check for index in new recType
+		vI_rdfDatasource.removeVIdentityFromRDF(resource, prevRecType);
+		
+		resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
+
 		vI_rdfDatasource.__setRDFValue(resource, "email", localIdentityData.email);
 		vI_rdfDatasource.__setRDFValue(resource, "fullName", localIdentityData.fullName);
 		if (storeBaseID) vI_rdfDatasource.__setRDFValue(resource, "id", localIdentityData.id.key);
@@ -317,8 +324,10 @@ vI_notificationBar.dump("## vI_rdfDatasource: removeVIdentityFromRDF " + resourc
 		vI_rdfDatasource.__setRDFValue(resource, "name", recDescription);
 
 		localIdentityData.extras.loopForRDF(vI_rdfDatasource.__setRDFValue, resource);
-
-		vI_rdfDatasource.getContainer(recType).AppendElement(resource);
+		
+		vI_notificationBar.dump("## vI_rdfDatasource: updateRDF " + resource.ValueUTF8  + " added.\n");
+		if (position != -1) vI_rdfDatasource.getContainer(recType).InsertElementAt(resource, position, true);
+		else vI_rdfDatasource.getContainer(recType).AppendElement(resource);
 	},
 
 	__setRDFValue : function (resource, field, value) {

@@ -252,7 +252,7 @@ var vI_smartIdentity = {
 
 		vI_notificationBar.dump("## vI_smartIdentity: Reply()\n");
 		
-		if (hdr && !hdr.getStringProperty("vI_received")) { // mail was not received
+		if (hdr && !gMsgCompose.compFields.newsgroups && !hdr.getStringProperty("vI_received")) { // mail was not received
 				vI_notificationBar.dump("## vI_smartIdentity: reply on non-received (sent?) mail. Using SmartDraft. \n");
 				vI_smartIdentity.ReplyOnSent(hdr);
 				return;

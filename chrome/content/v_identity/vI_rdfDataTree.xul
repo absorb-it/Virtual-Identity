@@ -277,10 +277,10 @@
           <spacer flex="1"/>
           <button id="reorderUpButton_filter" label="&reorderUpButton.label;" accesskey="&reorderUpButton.accesskey;" 
                   class="up"
-                  oncommand="vI_rdfDataTree.moveUp();"/>
+                  oncommand="vI_rdfDataTree.moveUpSelected();"/>
           <button id="reorderDownButton_filter" label="&reorderDownButton.label;" accesskey="&reorderDownButton.accesskey;" 
                   class="down"
-                  oncommand="vI_rdfDataTree.moveDown();"/>
+                  oncommand="vI_rdfDataTree.moveDownSelected();"/>
           <spacer flex="1"/>
 </vbox>
 </hbox>

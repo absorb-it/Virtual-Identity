@@ -252,10 +252,10 @@ var vI_upgrade = {
 		var localIdentityData = new identityData(splitted.email, splitted.name, id, smtp, null)
 		
 		vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.primaryEmail),
-						"email", localIdentityData, true)
+						"email", localIdentityData, true, null, null)
 		if (Card.secondEmail.replace(/^\s+|\s+$/g,""))
 			vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.secondEmail),
-					"email", localIdentityData, true)
+					"email", localIdentityData, true, null, null)
 		
 		Card[returnVar.prop] = "";
 		Card.editCardToDatabase("");

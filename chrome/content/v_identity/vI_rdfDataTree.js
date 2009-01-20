@@ -105,7 +105,7 @@ rdfDataTree.prototype = {
 		idData.push(pref);
 	},
 	sort : function(columnName) {
-		vI_notificationBar.dump("## sort: " + columnName + ".\n");
+// 		vI_notificationBar.dump("## sort: " + columnName + ".\n");
 		var order = this.treeElem.getAttribute("sortDirection") == "ascending" ? 1 : -1;
 		//if the column is passed and it's already sorted by that column, reverse sort
 		if (columnName && (this.treeElem.getAttribute("sortResource") == columnName)) {
@@ -150,6 +150,8 @@ var vI_rdfDataTree = {
 	_strings : null,
 	
 	onselect : function () {
+		vI_rdfDataTree.moveConstraints();
+
 		var tree = vI_rdfDataTree.trees[vI_rdfDataTree.tabbox.selectedPanel.id];
 		var htmlBox = document.getElementById("vI_rdfDataTreeInfoBox")
 		if (tree.treeElem.view.selection.count != 1)
@@ -274,21 +276,23 @@ var vI_rdfDataTree = {
 		var start = new Object(); var end = new Object();
 		var numRanges = tree.treeElem.view.selection.getRangeCount();
 
+		var retVar = { treeType: null };
 		for (var t=0; t<numRanges; t++){
 			tree.treeElem.view.selection.getRangeAt(t,start,end);
 			for (var v=start.value; v<=end.value; v++)
 				window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
 					tree.idTable[v], treeType,
-					vI_rdfDatasource).focus();
+					vI_rdfDatasource, retVar).focus();
 		}
 		
-		// reload all trees (types might have changed)
+		// reload all trees (multiple types might have changed)
 		for each (var treeType in vI_rdfDataTree.treeTypes) {
 			vI_rdfDataTree.trees[treeType].idData = null;
 			vI_rdfDataTree.trees[treeType].idTable = null;
 			vI_rdfDataTree.trees[treeType].loadTable()
 		}
+		vI_rdfDataTree.tabbox.selectedTab = document.getElementById(retVar.treeType + "Tab");
 		vI_rdfDataTree.hideInfoBox();
 	},
 	
@@ -317,20 +321,83 @@ var vI_rdfDataTree = {
 		vI_rdfDataTree.hideInfoBox();
 	},
 	
+	moveConstraints : function() {
+		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		if (treeType != "filter") return;
+		var tree = vI_rdfDataTree.trees[treeType];
+		if (tree.treeElem.view.selection.count == 0) {
+			document.getElementById("reorderUpButton_filter").setAttribute("disabled","true");
+			document.getElementById("reorderDownButton_filter").setAttribute("disabled","true");
+			return;
+		};
+		var start = new Object(); var end = new Object();
+		var numRanges = tree.treeElem.view.selection.getRangeCount();
+		if (numRanges > 1) {
+			document.getElementById("reorderUpButton_filter").setAttribute("disabled","true");
+			document.getElementById("reorderDownButton_filter").setAttribute("disabled","true");
+			return;
+		}
+		tree.treeElem.view.selection.getRangeAt(0,start,end);
+		if (start.value > 0)
+			document.getElementById("reorderUpButton_filter").removeAttribute("disabled");
+		else	document.getElementById("reorderUpButton_filter").setAttribute("disabled","true");
+		if (end.value < tree.idTable.length - 1)
+			document.getElementById("reorderDownButton_filter").removeAttribute("disabled");
+		else	document.getElementById("reorderDownButton_filter").setAttribute("disabled","true");
+	},
+
+	moveUpSelected : function() {
+		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		if (treeType != "filter") return; // just to be safe, button should be disabled
+		var tree = vI_rdfDataTree.trees[treeType];
+		if (tree.treeElem.view.selection.count == 0) return; // just to be safe, button should be disabled
+
+		var start = new Object(); var end = new Object();
+		var numRanges = tree.treeElem.view.selection.getRangeCount();
+		if (numRanges > 1) return;  // just to be safe, button should be disabled
+		
+		tree.treeElem.view.selection.getRangeAt(0,start,end);
+		for (var v=start.value; v<=end.value; v++){
+			var resource = vI_rdfDatasource.filterContainer.RemoveElementAt(v+1, true);
+			vI_rdfDatasource.filterContainer.InsertElementAt(resource,v,true); 
+		}
+		tree.idData = null; tree.idTable = null;
+		tree.loadTable();
+		tree.treeElem.view.selection.rangedSelect(start.value-1,end.value-1,false);
+	},
+
+	moveDownSelected : function() {
+		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		if (treeType != "filter") return; // just to be safe, button should be disabled
+		var tree = vI_rdfDataTree.trees[treeType];
+		if (tree.treeElem.view.selection.count == 0) return; // just to be safe, button should be disabled
+
+		var start = new Object(); var end = new Object();
+		var numRanges = tree.treeElem.view.selection.getRangeCount();
+		if (numRanges > 1) return;  // just to be safe, button should be disabled
+		
+		tree.treeElem.view.selection.getRangeAt(0,start,end);
+		for (var v=end.value; v>=start.value; v--){
+			var resource = vI_rdfDatasource.filterContainer.RemoveElementAt(v+1, true);
+			vI_rdfDatasource.filterContainer.InsertElementAt(resource,v+2,true); 
+		}
+		tree.idData = null; tree.idTable = null;
+		tree.loadTable();
+		tree.treeElem.view.selection.rangedSelect(start.value+1,end.value+1,false);
+	},
 
 	infoBoxHidden : true,
 	overflow : function() {
 		if (vI_rdfDataTree.infoBoxHidden) return;
 		var htmlBox = document.getElementById("vI_rdfDataTreeInfoBox")
 		htmlBox.setAttribute("style", "height:" + htmlBox.contentDocument.lastChild.scrollHeight +"px");
-
 	},
 
 	hideInfoBox : function() {
 		vI_rdfDataTree.infoBoxHidden = true;
 		document.getElementById("vI_rdfDataTreeInfoBox").setAttribute("style", "height:0px");
 		for each (var treeType in vI_rdfDataTree.treeTypes) {
-			vI_rdfDataTree.trees[treeType].treeElem.view.selection.selectNone();
+			try { vI_rdfDataTree.trees[treeType].treeElem.view.selection.selectNone() } catch (e) { }
 		}
 	},
 
@@ -341,19 +408,25 @@ var vI_rdfDataTree = {
 	},
 	
 	newItem : function() {
-		alert("XXX repair this");
+		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
 		var newItemPreset = { 
 				recipientCol : "",
 				senderCol : "",
 				smtpKey : "",
 				idKey : gAccountManager.defaultAccount.defaultIdentity.key,
 				resource : null }
+		var retVar = { treeType: null };
 		window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 			"chrome, dialog, modal, alwaysRaised, resizable=yes",
-			newItemPreset, "email",
-			vI_rdfDatasource).focus();
-		vI_rdfDataTree.__idData = null; vI_rdfDataTree.__idTable = null;
-		vI_rdfDataTree.loadTable();
+			newItemPreset, treeType,
+			vI_rdfDatasource, retVar).focus();
+		// reload all trees (multiple types might have changed)
+		for each (var treeType in vI_rdfDataTree.treeTypes) {
+			vI_rdfDataTree.trees[treeType].idData = null;
+			vI_rdfDataTree.trees[treeType].idTable = null;
+			vI_rdfDataTree.trees[treeType].loadTable()
+		}
+		vI_rdfDataTree.tabbox.selectedTab = document.getElementById(retVar.treeType + "Tab");
 		vI_rdfDataTree.hideInfoBox();
 	}
 };
