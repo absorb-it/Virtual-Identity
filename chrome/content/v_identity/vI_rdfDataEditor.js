@@ -24,6 +24,7 @@
 
 var vI_rdfDataEditor = {
 	__rdfDatasource : null,
+	__rdfDataTree : null,
 	__type : null,
 	__recipient : null,
 	
@@ -33,7 +34,8 @@ var vI_rdfDataEditor = {
 		vI_rdfDataEditor.__recipient = window.arguments[0]["recipientCol"];
 		vI_rdfDataEditor.__type = window.arguments[1];
 		vI_rdfDataEditor.__rdfDatasource = window.arguments[2];
-
+		vI_rdfDataEditor.__rdfDataTree = window.arguments[3];
+		
 		document.getElementById("recipient").value = vI_rdfDataEditor.__recipient;
 		
 		var typeMenuPopup = document.getElementById("type_menu_popup")
@@ -95,14 +97,12 @@ var vI_rdfDataEditor = {
 			document.getElementById("smtp_server_list").selectedItem.getAttribute("key"),
 			vI_rdfDataEditor.storageExtras)
 
-		// if current Type and previous Type are different, remove previous resource
-		vI_rdfDataEditor.__rdfDatasource.removeRDF(vI_rdfDataEditor.__recipient,
-				vI_rdfDataEditor.__type);
-
-		vI_rdfDataEditor.__rdfDatasource.updateRDF(document.getElementById("recipient").value,
+		vI_rdfDataEditor.__rdfDatasource.updateRDF(
+				document.getElementById("recipient").value,
 				document.getElementById("type_menu").selectedItem.getAttribute("key"),
-				localIdentityData, true);
-
+				localIdentityData,
+				true, vI_rdfDataEditor.__recipient, vI_rdfDataEditor.__type);
+		
 		return document.getElementById("type_menu").selectedItem.getAttribute("key");
 	}
 }
