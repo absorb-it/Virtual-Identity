@@ -93,7 +93,7 @@
 
 <hbox align="center">
 	<spacer width="3px" />
-<!--	<vbox><spacer flex="1"/>
+	<vbox><spacer flex="1"/>
 	<menubar>
 		<menu id="editMenu" label="&vI_rdfDataTree.editMenu.label;" 
 			accesskey="&vI_rdfDataTree.editMenu.accesskey;">
@@ -114,7 +114,7 @@
 		</menu>
 	</menubar>
 	<spacer flex="1"/></vbox>
-	<spacer width="20px" />-->
+	<spacer width="20px" />
 	<label value="&vI_rdfDataTree.filterPrefs.label;" accesskey="&vI_rdfDataTree.filterPrefs.accesskey;" control="filter"/>
 	<textbox id="filter" flex="1" oninput="vI_rdfDataTree.inputFilter(event);"/>
 	<button id="clearFilter" label="&vI_rdfDataTree.showAll.label;" accesskey="&vI_rdfDataTree.showAll.accesskey;" oncommand="vI_rdfDataTree.clearFilter();" disabled="true"/>
