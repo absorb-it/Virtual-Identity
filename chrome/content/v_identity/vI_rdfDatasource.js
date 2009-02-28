@@ -234,14 +234,33 @@ var vI_rdfDatasource = {
 	},
 
 	__findMatchingFilter : function (recDescription) {
-		vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter.\n");
+		vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter for " + recDescription + ".\n");
 		var enumerator = vI_rdfDatasource.filterContainer.GetElements();
 		while (enumerator && enumerator.hasMoreElements()) {
 			var resource = enumerator.getNext();
 			resource.QueryInterface(Components.interfaces.nsIRDFResource);
 			var filter = vI_rdfDatasource.__getRDFValue(resource, "name");
-			vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter trying '" + filter + "'.\n");
-			if (filter && recDescription.match(new RegExp(filter,"i"))) return resource;
+			
+			const filterType = { None : 0, RegExp : 1, StrCmp : 2 }
+			var recentfilterType;
+
+			if (filter == "") continue;
+			if (/^\/(.*)\/$/.exec(filter))
+				{ vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter with RegExp '"
+					+ filter.replace(/\\/g,"\\\\") + "'\n"); recentfilterType = filterType.RegExp; }
+			else	{ vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter, compare with '"
+					+ filter + "'\n"); recentfilterType = filterType.StrCmp; }
+			
+			switch (recentfilterType) {
+				case filterType.RegExp:
+					try { 	/^\/(.*)\/$/.exec(filter);
+						if (recDescription.match(new RegExp(RegExp.$1,"i"))) return resource;
+					}
+					catch(vErr) { }; break;
+				case filterType.StrCmp:
+					if (recDescription.toLowerCase().indexOf(filter.toLowerCase()) != -1) return resource;
+					break;
+			}
 		}
 		return null;
 	},
@@ -331,7 +350,7 @@ var vI_rdfDatasource = {
 	},
 
 	__setRDFValue : function (resource, field, value) {
-// 		vI_notificationBar.dump("## vI_rdfDatasource: __setRDFValue " + resource.ValueUTF8 + " " + field + " " + value + ".\n");
+//		vI_notificationBar.dump("## vI_rdfDatasource: __setRDFValue " + resource.ValueUTF8 + " " + field + " " + value + ".\n");
 		if (!value) return; // return if some value was not set.
 		var predicate = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "rdf#" + field);
 		var name = vI_rdfDatasource.rdfService.GetLiteral(value);
