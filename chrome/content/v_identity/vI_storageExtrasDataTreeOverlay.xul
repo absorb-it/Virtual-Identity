@@ -35,38 +35,144 @@
 
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
 
-	<treecols id="rdfDataTreeCols">
+	<treecols id="rdfDataTreeCols_email">
 		<splitter class="tree-splitter" />
-		<treecol id="recieptCol" label="&vI_storageExtrasDataTreeOverlay.recieptCol.label;" flex="2"
-			class="sortDirectionIndicator"
+		<treecol id="recieptCol_email" label="&vI_storageExtrasDataTreeOverlay.recieptCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
-		<treecol id="charEncCol" label="&vI_storageExtrasDataTreeOverlay.charEncCol.label;" flex="2"
-			class="sortDirectionIndicator"
+		<treecol id="charEncCol_email" label="&vI_storageExtrasDataTreeOverlay.charEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
-		<treecol id="msgFormatCol" label="&vI_storageExtrasDataTreeOverlay.msgFormatCol.label;" flex="2"
-			class="sortDirectionIndicator"
+		<treecol id="msgFormatCol_email" label="&vI_storageExtrasDataTreeOverlay.msgFormatCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
-		<treecol id="sMimeEncCol" label="&vI_storageExtrasDataTreeOverlay.sMimeEncCol.label;" flex="2"
-			class="sortDirectionIndicator"
+		<treecol id="sMimeEncCol_email" label="&vI_storageExtrasDataTreeOverlay.sMimeEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
-		<treecol id="sMimeSigCol" label="&vI_storageExtrasDataTreeOverlay.sMimeSigCol.label;" flex="2"
-			class="sortDirectionIndicator"
+		<treecol id="sMimeSigCol_email" label="&vI_storageExtrasDataTreeOverlay.sMimeSigCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
-		<treecol id="PGPEncCol" label="&vI_storageExtrasDataTreeOverlay.PGPEncCol.label;" flex="2"
-			class="sortDirectionIndicator"
+		<treecol id="PGPEncCol_email" label="&vI_storageExtrasDataTreeOverlay.PGPEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
-		<treecol id="PGPSigCol" label="&vI_storageExtrasDataTreeOverlay.PGPSigCol.label;" flex="2"
-			class="sortDirectionIndicator"
+		<treecol id="PGPSigCol_email" label="&vI_storageExtrasDataTreeOverlay.PGPSigCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
-		<treecol id="PGPMIMECol" label="&vI_storageExtrasDataTreeOverlay.PGPMIMECol.label;" flex="2"
-			class="sortDirectionIndicator"
+		<treecol id="PGPMIMECol_email" label="&vI_storageExtrasDataTreeOverlay.PGPMIMECol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+	</treecols>
+
+	<treecols id="rdfDataTreeCols_maillist">
+		<splitter class="tree-splitter" />
+		<treecol id="recieptCol_maillist" label="&vI_storageExtrasDataTreeOverlay.recieptCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="charEncCol_maillist" label="&vI_storageExtrasDataTreeOverlay.charEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="msgFormatCol_maillist" label="&vI_storageExtrasDataTreeOverlay.msgFormatCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="sMimeEncCol_maillist" label="&vI_storageExtrasDataTreeOverlay.sMimeEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="sMimeSigCol_maillist" label="&vI_storageExtrasDataTreeOverlay.sMimeSigCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPEncCol_maillist" label="&vI_storageExtrasDataTreeOverlay.PGPEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPSigCol_maillist" label="&vI_storageExtrasDataTreeOverlay.PGPSigCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPMIMECol_maillist" label="&vI_storageExtrasDataTreeOverlay.PGPMIMECol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+	</treecols>
+
+	<treecols id="rdfDataTreeCols_newsgroup">
+		<splitter class="tree-splitter" />
+		<treecol id="recieptCol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.recieptCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="charEncCol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.charEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="msgFormatCol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.msgFormatCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="sMimeEncCol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.sMimeEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="sMimeSigCol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.sMimeSigCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPEncCol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.PGPEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPSigCol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.PGPSigCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPMIMECol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.PGPMIMECol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+	</treecols>
+
+
+	<treecols id="rdfDataTreeCols_filter">
+		<splitter class="tree-splitter" />
+		<treecol id="recieptCol_filter" label="&vI_storageExtrasDataTreeOverlay.recieptCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="charEncCol_filter" label="&vI_storageExtrasDataTreeOverlay.charEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="msgFormatCol_filter" label="&vI_storageExtrasDataTreeOverlay.msgFormatCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="sMimeEncCol_filter" label="&vI_storageExtrasDataTreeOverlay.sMimeEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="sMimeSigCol_filter" label="&vI_storageExtrasDataTreeOverlay.sMimeSigCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPEncCol_filter" label="&vI_storageExtrasDataTreeOverlay.PGPEncCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPSigCol_filter" label="&vI_storageExtrasDataTreeOverlay.PGPSigCol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
+			persist="hidden width ordinal sortDirection"/>
+		<splitter class="tree-splitter" />
+		<treecol id="PGPMIMECol_filter" label="&vI_storageExtrasDataTreeOverlay.PGPMIMECol.label;" flex="2"
+			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 	</treecols>
 </overlay>
