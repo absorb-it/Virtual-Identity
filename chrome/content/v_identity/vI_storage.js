@@ -153,7 +153,7 @@ var vI_storage = {
 				var msgIdentityCloneElem = document.getElementById("msgIdentity_clone")
 				if (	!msgIdentityCloneElem.vid ||
 					!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
-					vI_storage.__askWarning(warning)) {
+					(vI_storage.__askWarning(warning) == "accept")) {
 						msgIdentityCloneElem.selectedMenuItem = menuItem;
 						if (msgIdentityCloneElem.vid)
 							vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
@@ -202,9 +202,13 @@ var vI_storage = {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
 				vI_storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
-			vI_storage.__updateStorageFromVIdentity(awGetInputElement(row).value, recipientType);
+			if (!vI_storage.__updateStorageFromVIdentity(awGetInputElement(row).value, recipientType)) {
+				vI_notificationBar.dump("## vI_storage: --------------  aborted  ---------------------------------\n")
+				return false; // abort sending
+			}
 		}
-		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n")
+		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n");
+		return true;
 	},
 	
 	__getWarning : function(warningCase, recipient, compareMatrix) {
@@ -245,12 +249,18 @@ var vI_storage = {
 			if (!compResult.equal && !dontUpdateMultipleNoEqual) {
 				var warning = vI_storage.__getWarning("updateStorage", recipient, compResult.compareMatrix);
 				vI_notificationBar.dump("## vI_storage: " + warning + ".\n")
-				if (!vI.preferences.getBoolPref("storage_warn_update") ||
-						vI_storage.__askWarning(warning))
-				vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
+				var doUpdate = "accept";
+				if (vI.preferences.getBoolPref("storage_warn_update")) doUpdate = vI_storage.__askWarning(warning);
+				switch(doUpdate) {
+					case "abort":
+						return false;
+					case "accept":
+						vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
+				}
 			}
 		}
 		else vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
+		return true;
 	},
 		
 	

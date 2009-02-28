@@ -37,6 +37,9 @@ var vI_Dialog = {
 		vI_Dialog.setDescription(document.getElementById("vI_Dialog_recipient"), warning.recipient);
 		document.getElementById("vI_Dialog_browser").outputString = warning.warning;
 		vI_Dialog.setDescription(document.getElementById("vI_Dialog_query"), warning.query);
+		// show abort button
+		if (warning.class == "replaceVIdentity") {
+			document.documentElement.getButton("extra1").hidden = true;
+		}
 	}
 }
-

@@ -167,7 +167,10 @@ var vI = {
 					vI.replacement_functions.GenericSendMessageInProgress = false;
 					return;
 				}
-				vI_storage.storeVIdentityToAllRecipients(msgType);	
+				if (!vI_storage.storeVIdentityToAllRecipients(msgType)) {
+					vI.replacement_functions.GenericSendMessageInProgress = false;
+					return;
+				}
 			}
 			if (vid) vI.prepareAccount();
 			vI.replacement_functions.GenericSendMessageInProgress = false;
