@@ -36,14 +36,6 @@ var vI_storageExtrasHelper = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.virtualIdentity."),
 	
-	hideUnusedTreeCols : function() {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
-		var storageExtras = new vI_storageExtras();
-		for( var i = 0; i < storageExtras.extras.length; i++ )
-			if (!vI_storageExtrasHelper.preferences.getBoolPref(storageExtras.extras[i].option))
-				document.getElementById(storageExtras.extras[i].field + "Col").setAttribute("hidden", "true");
-	},
-	
 	hideUnusedEditorFields : function() {
 		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		var storageExtras = new vI_storageExtras();
@@ -101,10 +93,11 @@ function vI_storageExtras(callFunction, resource) {
 
 vI_storageExtras.prototype = {
 	loopForRDF : function(callFunction, resource) {
-		for( var i = 0; i < this.extras.length; i++ )
+		for( var i = 0; i < this.extras.length; i++ ) {
 			// only if pref set and feature(element available) or for dataEditor
 			if (typeof(gMsgCompose) == "undefined" || !gMsgCompose || this.extras[i].active)
 				this.extras[i].value = callFunction(resource, this.extras[i].field, this.extras[i].value)
+		}
 	},
 	
 	// just give a duplicate of the current storageExtras, else we will work with pointers

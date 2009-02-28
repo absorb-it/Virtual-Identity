@@ -181,11 +181,9 @@ var vI_rdfDataTree = {
 		vI_rdfDataTree._strings = document.getElementById("vI_rdfDataTreeBundle");
 
 		vI_rdfDatasource.init();
-		vI_storageExtrasHelper.hideUnusedTreeCols(); // XXX what happens heree ?? :)
 		
-		for each (var treeType in vI_rdfDataTree.treeTypes) {
+		for each (var treeType in vI_rdfDataTree.treeTypes)
 			vI_rdfDataTree.trees[treeType] = new rdfDataTree(treeType);
-		}
 	},
 	
 	//generic custom tree view stuff
