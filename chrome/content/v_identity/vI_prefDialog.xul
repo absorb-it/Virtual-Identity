@@ -389,6 +389,7 @@
 					prefstring="storageExtras_openPGP_PGPMIME"/>
 				</vbox></hbox>
 			</vbox>
+			<label id="storageExtrasWarning" value="&vI_prefDialog.storageExtras.Warning.label;"/>
 			</groupbox>
 			</tabpanel>
 		</tabpanels>

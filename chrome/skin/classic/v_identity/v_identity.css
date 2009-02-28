@@ -308,3 +308,8 @@ notification {
 .vINotificationCloseButton:focus {
   outline: none !important;
 }
+
+#storageExtrasWarning {
+	font-style: italic;
+	margin-top: 20px;
+}
