@@ -133,7 +133,7 @@ notification {
 
 .identity_clone-menulist .smtpServerMenuList {
   -moz-appearance: textfield;
-  margin: 0px;
+  margin: -2px -1px;
   border: 1px solid;
   padding: 0px;
   background-color: -moz-Field;
@@ -141,15 +141,23 @@ notification {
   text-align:	center;
 }
 
+.identity_clone-menulist .smtpServerMenuList .menulist-label-box {
+	margin: -1px;
+}
+
+.identity_clone-menulist .smtpServerMenuList .menuitem-non-iconic {
+	padding: 0;
+}
+
 .identity_clone-menulist .smtpServerMenuList .menuitem-label {
-  text-align:	center;
+	text-align:	center;
 }
 
 .identity_clone-menulist .smtpServerMenuList .menulist-icon, .smtpServerMenuList .menulist-dropmarker {
 	display: none;
 }
 
-.identity_clone-menulist [showSmtp="false"] .smtpServerMenuList {
+.identity_clone-menulist[showSmtp="false"] .smtpServerMenuList, .identity_clone-menulist[showSmtp="false"] .menupopup_clone-smtp {
 	display: none;
 }
 
@@ -181,7 +189,7 @@ notification {
 }
 
 .menulist_clone-icon {
-	margin: 	0 3px;
+	margin: 	-2px 0pt -2px 3px;
 }
 
 .menupopup_clone-icon{
@@ -202,10 +210,31 @@ notification {
 	display:	none;
 }
 
+.menu_clone-vid, .menupopup_clone-vid {
+	margin: 	0 5px 0 0;
+	font-style:	italic;
+	color:		graytext;
+}
+
+.menupopup_clone-vid {
+	margin: 0;
+	padding-left: 0;
+}
 .menupopup_clone-description, .menu_clone-description {
 	margin: 	0 5px 0 0;
 	font-style:	italic;
 	color:		graytext;
+}
+
+.menupopup_clone-description {
+	margin: 	0 2px 0 0;
+	padding-right:	0;
+}
+
+.menupopup_clone-smtp {
+	margin: 1px 0pt 1px 4px;
+	text-align: center;
+	color: graytext;
 }
 
 .identity_clone-menulist[vid="true"], .identity_clone-popup-item[vid="true"] {
@@ -214,7 +243,6 @@ notification {
 }
 
 .identity_clone-menulist[vid="false"], .identity_clone-popup-item[vid="false"] {
-  margin: 0 3px;
   list-style-image: url("chrome://messenger/skin/addressbook/icons/abcard.png");
 }
 

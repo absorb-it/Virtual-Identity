@@ -113,8 +113,9 @@
   	<content excludes="template,observes,menupopup">
 		<xul:image class="menupopup_clone-icon" xbl:inherits="src"/>
 		<xul:label class="menupopup_clone-text" xbl:inherits="value=label,accesskey,crop" crop="right" flex="1"/>
-		<xul:label value="&vident.accPane.prettyName.prefix;" class="menupopup_clone-description virtIdLabel" vid="false" xbl:inherits="vid" crop="right"/>
+		<xul:label value="&vident.accPane.prettyName.prefix;" class="menupopup_clone-vid virtIdLabel" vid="false" xbl:inherits="vid" crop="right"/>
       		<xul:label class="menupopup_clone-description" xbl:inherits="value=description" crop="right"/>
+		<xul:label class="menupopup_clone-smtp" xbl:inherits="value=smtp,style=smtpStyle" crop="right"/>
   	</content>
   	<implementation>
 	<constructor>
@@ -126,6 +127,9 @@
 		vI_notificationBar.dump("** v_identity.xml fromPopupItem_clone constructor id='" + this.value + "'.\n")
 
 		this.description = this._identityDataStorage.sideDescription;
+		this.smtp = this._identityDataStorage.smtp.value;
+		this.smtpStyle = "width:" + document.getElementById("smtp_server_list").clientWidth + "px;";
+		this._identityDataStorage.smtp.value;
 		
 		document.getElementById("vI_tooltipPopupset").addTooltip(this, true);
 		]]>
@@ -147,6 +151,8 @@
 	<property name="label" onget="return this.getAttribute('label');" onset="this.setAttribute('label', val); return val;" />
 	<property name="value" onget="return this.getAttribute('value');" onset="this.setAttribute('value', val); return val;" />
 	<property name="description" onget="return this.getAttribute('description');" onset="this.setAttribute('description', val); return val;" />
+	<property name="smtp" onget="return this.getAttribute('smtp');" onset="this.setAttribute('smtp', val); return val;" />
+	<property name="smtpStyle" onget="return this.getAttribute('smtpStyle');" onset="this.setAttribute('smtpStyle', val); return val;" />
 	</implementation>
 	</binding>
 
@@ -164,6 +170,8 @@
 	<method name="_addDefaultServer">
         	<body><![CDATA[
 		var listitem = document.createElement("menuitem");
+		listitem.setAttribute("class", "menuitem-non-iconic");
+		listitem.setAttribute("type", "non-iconic-noaccel");
 		listitem.setAttribute("label", document.getElementById("bundle_messenger").getString("defaultServerTag"));
 		this._smtpPopup.appendChild(listitem);
 		this._smtpMenu.selectedItem = listitem;
@@ -174,6 +182,8 @@
         	<body><![CDATA[
 		if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) {
 			var listitem = document.createElement("menuitem");
+			listitem.setAttribute("class", "menuitem-non-iconic");
+			listitem.setAttribute("type", "non-iconic-noaccel");
 			listitem.setAttribute("label", (server.description?server.description:server.hostname));
 			listitem.setAttribute("key", server.key);
 			this._smtpPopup.appendChild(listitem);
@@ -195,15 +205,8 @@
 			for (var i=0 ; i<servers.Count(); i++)
 				this._addServer(servers.QueryElementAt(i, Components.interfaces.nsISmtpServer));
 		
-		this._prefroot.addObserver("extensions.virtualIdentity.show_smtp", this._observer, false);
-		this._observer.observe();
 		]]>
 	</constructor>
-	<destructor>
-		<![CDATA[
-		this._prefroot.removeObserver("extensions.virtualIdentity.show_smtp", this._observer);
-		]]>
-	</destructor>
 	<property name="smtp" onget="return this._smtpMenu.selectedItem.getAttribute('key');" >
 		<setter><![CDATA[
 		if (val == null) return; // dont overwrite if not set
@@ -218,18 +221,6 @@
 		}
 		]]></setter>
 	</property>
-	<field name="_observer"><![CDATA[({
-		_self: this,
-	        observe: function(aSubject, aTopic, aPrefName) {
-			if (this._self._prefroot)
-				this._self.showSmtp = 
-				this._self._prefroot.getBoolPref("extensions.virtualIdentity.show_smtp")
-		}
-      	})]]></field>
-	<property name="showSmtp" onget="return (this.getAttribute('showSmtp') == 'true');" onset="this.setAttribute('showSmtp',val?'true':'false'); return val;" />
-	<field name="_prefroot">Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2)</field>
 	<field name="_smtpPopup">document.getAnonymousElementByAttribute(this, "anonid", "smtp_server_list_popup")</field>
 	<field name="_smtpMenu">document.getAnonymousElementByAttribute(this, "anonid", "smtpServerMenuList")</field>
 	<field name="_smtpService"></field>
@@ -259,9 +250,9 @@
       			<xul:spacer flex="1" /></xul:vbox>
 			<xul:vbox><xul:spacer flex="1" />
 				<xul:hbox>
-					<xul:label value="&vident.accPane.prettyName.prefix;" class="menu_clone-description virtIdLabel" xbl:inherits="vid" crop="right"/>
-					<xul:label id="msgIdentity_clone_label" class="menu_clone-description" xbl:inherits="value=description" crop="right"/>
 					<xul:label id="msgIdentity_base_id_label" class="menu_clone-description" xbl:inherits="value,hidden=base_id_key_hidden" crop="right" hidden="true"/>
+					<xul:label value="&vident.accPane.prettyName.prefix;" class="menu_clone-vid virtIdLabel" xbl:inherits="vid" crop="right"/>
+					<xul:label id="msgIdentity_clone_label" class="menu_clone-description" xbl:inherits="value=description" crop="right"/>
 				</xul:hbox>
 			<xul:spacer flex="1" /></xul:vbox>
 		</xul:hbox>
@@ -280,12 +271,16 @@
 		// to ealy to access vI_tooltipPopupset, this might break the interface
 		// it will be done in v_identity.js init
 		// document.getElementById("vI_tooltipPopupset").addTooltip(this, false);
+		
+		this._prefroot.addObserver("extensions.virtualIdentity.show_smtp", this._observer, false);
+		this._observer.observe();
 		]]>
 	</constructor>
 	<destructor>
 		<![CDATA[
 		document.getElementById("vI_tooltipPopupset")
 			.removeTooltip(this.tooltipElem.getAttribute("tooltip"));
+		this._prefroot.removeObserver("extensions.virtualIdentity.show_smtp", this._observer);
 		]]>
 	</destructor>
 
@@ -513,12 +508,29 @@
 	<field name="_popupElem">document.getElementById("msgIdentityPopup_clone")</field>
 	<field name="tooltipElem">document.getAnonymousElementByAttribute(this, "anonid", "contentHBox")</field>
 	<field name="textBoxElem">document.getAnonymousElementByAttribute(this, "anonid", "textBox");</field>
+	<field name="_prefroot">Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefService)
+		.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2)</field>
+	<field name="_observer"><![CDATA[({
+		_self: this,
+	        observe: function(aSubject, aTopic, aPrefName) {
+			if (this._self._prefroot)
+				this._self.showSmtp = 
+				this._self._prefroot.getBoolPref("extensions.virtualIdentity.show_smtp");
+				var MenuItems = this._self._popupElem.childNodes;
+				for (var j = 0; j < MenuItems.length; j++) {
+					if (MenuItems[j].localName == "menuseparator") continue;
+					MenuItems[j].smtpStyle = "width:" + document.getElementById("smtp_server_list").clientWidth + "px;";
+				}
+		}
+      	})]]></field>
 	<property name="email" onset="this.identityData.email = val; this.label = this.identityData.combinedName; this.inputEvent()" />
 	<property name="vid" onget="return (this.getAttribute('vid') == 'true');" onset="this.setAttribute('vid',val?'true':'false'); return val;" />
 	<property name="label" onget="return this.textBoxElem.value;" onset="this.textBoxElem.value = val; return val;" />
 	<property name="value" onget="return this.getAttribute('value');" onset="this.setAttribute('value', val); return val;" />
 	<property name="extras" onget="return this.identityData.extras;" />
 	<property name="description" onget="return this.getAttribute('description');" onset="this.setAttribute('description', val); return val;" />
+	<property name="showSmtp" onget="return (this.getAttribute('showSmtp') == 'true');" onset="this.setAttribute('showSmtp',val?'true':'false'); return val;" />
 	</implementation>
 	</binding>
 </bindings>
