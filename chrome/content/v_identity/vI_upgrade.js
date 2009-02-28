@@ -97,15 +97,37 @@ var vI_upgrade = {
 	rdfUpgrade : function() {
 		vI_notificationBar.dump("checking for previous version of rdf, found " + 
 			vI_rdfDatasource.getCurrentRDFFileVersion() + "\nrdf-upgrade required.\n")
+		// upgrade from pre0.0.3 to 0.0.3
 		vI_upgrade.__createRDFContainers();
 		vI_rdfDatasource.storeRDFVersion();
 		vI_notificationBar.dump("rdf-upgrade to " + vI_rdfDatasource.getCurrentRDFFileVersion() + " done.\n\n");
 	},
 	
-	__createContainersUpgradeElems: function(resource, type, name) {
-		var container = vI_rdfDatasource.getContainer(type);
-		vI_rdfDatasource.__setRDFValue(resource, "name", name);
-		if (container.IndexOf(resource) == -1) container.AppendElement(resource);
+	// only used for upgrade to 0.0.3 - loop through all ressources.
+	__transferAllResources : function () {
+		vI_notificationBar.dump("upgrade: transferAllResources ");
+		var enumerator = vI_rdfDatasource.rdfDataSource.GetAllResources();
+		while (enumerator && enumerator.hasMoreElements()) {
+			var resource = enumerator.getNext();
+			resource.QueryInterface(Components.interfaces.nsIRDFResource);
+			
+			var type; var name;
+			if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSEmail + "/", "i")))
+				{ type = "email"; name = RegExp.rightContext }
+			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSNewsgroup + "/", "i")))
+				{ type = "newsgroup"; name = RegExp.rightContext }
+			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSMaillist + "/", "i")))
+				{ type = "maillist"; name = RegExp.rightContext }
+			else continue;
+			
+			var container = vI_rdfDatasource.getContainer(type);
+			vI_rdfDatasource.__setRDFValue(resource, "name", name);
+			
+			if (container.IndexOf(resource) == -1) container.AppendElement(resource);
+		
+			vI_notificationBar.dump(".");
+		}
+		vI_notificationBar.dump("\n");
 	},
 
 	__createRDFContainers: function() {
@@ -136,15 +158,18 @@ var vI_upgrade = {
 		
 		container = Components.classes["@mozilla.org/rdf/container;1"].
 			createInstance(Components.interfaces.nsIRDFContainer);
-
+		
+		// initialize container with storageRes
 		container.Init(vI_rdfDatasource.rdfDataSource, storageRes);
+		// append all new containers to storageRes
 		if (container.IndexOf(emailRes) == -1) container.AppendElement(emailRes);
 		if (container.IndexOf(maillistRes) == -1) container.AppendElement(maillistRes);
 		if (container.IndexOf(newsgroupRes) == -1) container.AppendElement(newsgroupRes);
 		if (container.IndexOf(filterRes) == -1) container.AppendElement(filterRes);
 		
 		vI_rdfDatasource.__initContainers();
-		vI_rdfDatasource.readAllResourcesFromRDF(vI_upgrade.__createContainersUpgradeElems)
+		
+		vI_upgrade.__transferAllResources();
 	},
 	
 	extUpgrade : function() {

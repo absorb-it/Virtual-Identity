@@ -212,27 +212,6 @@ var vI_rdfDatasource = {
 		}
 	},
 	
-	// only used for upgrade to 0.0.3 - loop through all ressources.
-	readAllResourcesFromRDF : function (addNewDatum) {
-		vI_notificationBar.dump("## vI_rdfDatasource: readAllResourcesFromRDF.\n");
-		var enumerator = vI_rdfDatasource.rdfDataSource.GetAllResources();
-		while (enumerator && enumerator.hasMoreElements()) {
-			var resource = enumerator.getNext();
-			resource.QueryInterface(Components.interfaces.nsIRDFResource);
-			
-			var type; var name;
-			if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSEmail + "/", "i")))
-				{ type = "email"; name = RegExp.rightContext }
-			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSNewsgroup + "/", "i")))
-				{ type = "newsgroup"; name = RegExp.rightContext }
-			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSMaillist + "/", "i")))
-				{ type = "maillist"; name = RegExp.rightContext }
-			else continue;
-			
-			addNewDatum (resource, type, name)
-		}
-	},
-
 	__findMatchingFilter : function (recDescription) {
 		vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter for " + recDescription + ".\n");
 		var enumerator = vI_rdfDatasource.filterContainer.GetElements();
