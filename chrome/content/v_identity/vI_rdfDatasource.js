@@ -213,8 +213,8 @@ var vI_rdfDatasource = {
 		}
 	},
 	
-	__findMatchingFilter : function (recDescription) {
-		vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter for " + recDescription + ".\n");
+	findMatchingFilter : function (recDescription) {
+		vI_notificationBar.dump("## vI_rdfDatasource: findMatchingFilter for " + recDescription + ".\n");
 		var enumerator = vI_rdfDatasource.filterContainer.GetElements();
 		while (enumerator && enumerator.hasMoreElements()) {
 			var resource = enumerator.getNext();
@@ -226,41 +226,48 @@ var vI_rdfDatasource = {
 
 			if (filter == "") continue;
 			if (/^\/(.*)\/$/.exec(filter))
-				{ vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter with RegExp '"
+				{ vI_notificationBar.dump("## vI_rdfDatasource: findMatchingFilter with RegExp '"
 					+ filter.replace(/\\/g,"\\\\") + "'\n"); recentfilterType = filterType.RegExp; }
-			else	{ vI_notificationBar.dump("## vI_rdfDatasource: __findMatchingFilter, compare with '"
+			else	{ vI_notificationBar.dump("## vI_rdfDatasource: findMatchingFilter, compare with '"
 					+ filter + "'\n"); recentfilterType = filterType.StrCmp; }
 			
 			switch (recentfilterType) {
 				case filterType.RegExp:
 					try { 	/^\/(.*)\/$/.exec(filter);
-						if (recDescription.match(new RegExp(RegExp.$1,"i"))) return resource;
+						if (recDescription.match(new RegExp(RegExp.$1,"i"))) {
+							vI_notificationBar.dump("## vI_rdfDatasource: findMatchingFilter found stored data.\n");
+							return vI_rdfDatasource.__readVIdentityFromRDF(resource);
+						}
 					}
 					catch(vErr) { }; break;
 				case filterType.StrCmp:
-					if (recDescription.toLowerCase().indexOf(filter.toLowerCase()) != -1) return resource;
+					if (recDescription.toLowerCase().indexOf(filter.toLowerCase()) != -1) {
+						vI_notificationBar.dump("## vI_rdfDatasource: findMatchingFilter found stored data.\n");
+						return vI_rdfDatasource.__readVIdentityFromRDF(resource);
+					}
 					break;
 			}
 		}
+		vI_notificationBar.dump("## vI_rdfDatasource: findMatchingFilter no match found.\n");
 		return null;
 	},
-
+	
 	readVIdentityFromRDF : function (recDescription, recType) {
+		var email = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "rdf#email");
 		var resource = vI_rdfDatasource.__getRDFResourceForVIdentity(recDescription, recType);
 		if (!resource) return null;
-
-		var email = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "rdf#email");
-		// if no data available try available filters
-		if (!vI_rdfDatasource.rdfDataSource.hasArcOut(resource, email))
-			resource = vI_rdfDatasource.__findMatchingFilter(recDescription);
-		// if still no data available give up.
 		if (!vI_rdfDatasource.rdfDataSource.hasArcOut(resource, email)) {
+			// no data available --> give up.
 			vI_notificationBar.dump("## vI_rdfDatasource: readVIdentityFromRDF no data found.\n");
 			return null;
 		}
 		vI_notificationBar.dump("## vI_rdfDatasource: readVIdentityFromRDF found stored data.\n");
 		
-		email = vI_rdfDatasource.__getRDFValue(resource, "email")
+		return vI_rdfDatasource.__readVIdentityFromRDF(resource);
+	},
+	
+	__readVIdentityFromRDF : function (resource) {
+		var email = vI_rdfDatasource.__getRDFValue(resource, "email")
 		var fullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
 		var id = vI_rdfDatasource.__getRDFValue(resource, "id")
 		var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
@@ -275,7 +282,7 @@ var vI_rdfDatasource = {
 		var localIdentityData = new identityData(email, fullName, id, smtp, extras)
 		return localIdentityData;
 	},
-	
+
 	__getRDFValue : function (resource, field) {
 		var predicate = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + "rdf#" + field);
 		var target = vI_rdfDatasource.rdfDataSource.GetTarget(resource, predicate, true);

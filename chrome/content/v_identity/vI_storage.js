@@ -127,34 +127,43 @@ var vI_storage = {
 			vI_notificationBar.dump("## vI_storage: same email than before, not checked again.\n"); return;
 		}
 		vI_storage.lastCheckedEmail[row] = inputElement.value;
-		var recipient = vI_storage.__getDescriptionAndType(inputElement.value, recipientType)
-		var storageData = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType)
-		if (!storageData) return;
+		var recipient = vI_storage.__getDescriptionAndType(inputElement.value, recipientType);
+
+		var matchResults = { storageData : {}, menuItem : {} };
+		matchResults.storageData[0] = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType),
+		matchResults.storageData[1] = vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
+
+		var matchIndex = null;
+		for (var i = 0; i <= 1; i++) {
+			if (matchResults.storageData[i]) {
+				if (matchIndex == null) matchIndex = i;
+				matchResults.menuItem[i] = document.getElementById("msgIdentity_clone")
+								.addIdentityToCloneMenu(matchResults.storageData[i]);
+			}
+		}
+		if (matchIndex == null) return;
 		
 		// found storageData, so store InputElement
 		if (!vI_storage.firstUsedInputElement) vI_storage.firstUsedInputElement = inputElement;
 		
-		// add Identity to dropdown-menu
-		var menuItem = document.getElementById("msgIdentity_clone").addIdentityToCloneMenu(storageData);
-
 		vI_notificationBar.dump("## vI_storage: compare with current Identity\n");
 		if (vI.preferences.getBoolPref("storage_getOneOnly") &&
 			vI_storage.firstUsedInputElement &&
 			vI_storage.firstUsedInputElement != inputElement &&
-			!storageData.equalsCurrentIdentity(false).equal)
+			!matchResults.storageData[matchIndex].equalsCurrentIdentity(false).equal)
 				vI_notificationBar.setNote(vI.elements.strings
 					.getString("vident.smartIdentity.vIStorageCollidingIdentity"),
 					"storage_notification");
 		// only update fields if new Identity is different than old one.
 		else {
-			var compResult = storageData.equalsCurrentIdentity(true);
+			var compResult = matchResults.storageData[matchIndex].equalsCurrentIdentity(true);
 			if (!compResult.equal) {
 				var warning = vI_storage.__getWarning("replaceVIdentity", recipient, compResult.compareMatrix);
 				var msgIdentityCloneElem = document.getElementById("msgIdentity_clone")
 				if (	!msgIdentityCloneElem.vid ||
 					!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
 					(vI_storage.__askWarning(warning) == "accept")) {
-						msgIdentityCloneElem.selectedMenuItem = menuItem;
+						msgIdentityCloneElem.selectedMenuItem = matchResults.menuItem[matchIndex];
 						if (msgIdentityCloneElem.vid)
 							vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
 							"storage_notification");
@@ -243,23 +252,31 @@ var vI_storage = {
 					vI_storage.multipleRecipients)
 		
 		recipient = vI_storage.__getDescriptionAndType(recipient, recipientType);
-		var storageData = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
-		if (storageData) {
-			var compResult = storageData.equalsCurrentIdentity(true);
-			if (!compResult.equal && !dontUpdateMultipleNoEqual) {
-				var warning = vI_storage.__getWarning("updateStorage", recipient, compResult.compareMatrix);
-				vI_notificationBar.dump("## vI_storage: " + warning + ".\n")
-				var doUpdate = "accept";
-				if (vI.preferences.getBoolPref("storage_warn_update")) doUpdate = vI_storage.__askWarning(warning);
-				switch(doUpdate) {
-					case "abort":
-						return false;
-					case "accept":
-						vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
+
+		var matchResults = { storageData : {} };
+		matchResults.storageData[0] = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType),
+		matchResults.storageData[1] = vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
+
+		for (var i = 0; i <= 1; i++) {
+			if (matchResults.storageData[i]) {
+				var compResult = matchResults.storageData[i].equalsCurrentIdentity(true);
+				if (compResult.equal) return true;
+				else if (!dontUpdateMultipleNoEqual) {
+					var warning = vI_storage.__getWarning("updateStorage", recipient, compResult.compareMatrix);
+					vI_notificationBar.dump("## vI_storage: " + warning + ".\n")
+					var doUpdate = "accept";
+					if (i == 0 && vI.preferences.getBoolPref("storage_warn_update")) doUpdate = vI_storage.__askWarning(warning);
+					switch(doUpdate) {
+						case "abort":
+							return false;
+						case "accept":
+							vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
+							return true;
+					}
 				}
 			}
 		}
-		else vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
+		vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
 		return true;
 	},
 		
@@ -352,7 +369,9 @@ var vI_storage = {
 			vI_storage.lastCheckedEmail[row] = awGetInputElement(row).value;
 			recipient = vI_storage.__getDescriptionAndType(awGetInputElement(row).value, recipientType);
 			var storageData = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
-			if (storageData) allIdentities.addWithoutDuplicates(storageData)
+			if (storageData) allIdentities.addWithoutDuplicates(storageData);
+			storageData = vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
+			if (storageData) allIdentities.addWithoutDuplicates(storageData);
 		}
 		vI_notificationBar.dump("## vI_storage: found " + allIdentities.number + " address(es)\n")
 	}
