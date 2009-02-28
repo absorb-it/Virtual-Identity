@@ -65,6 +65,7 @@ var vI_rdfDatasource = {
 			case "newsgroup": return vI_rdfDatasource.newsgroupContainer;
 			case "filter": return vI_rdfDatasource.filterContainer;
 		}
+		return null;
 	},
 
 	init: function() {

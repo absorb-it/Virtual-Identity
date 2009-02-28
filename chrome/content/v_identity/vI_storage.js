@@ -172,14 +172,14 @@ var vI_storage = {
 	},
 		
 	storeVIdentityToAllRecipients : function(msgType) {
-		if (msgType != nsIMsgCompDeliverMode.Now) return;
+		if (msgType != nsIMsgCompDeliverMode.Now) return true;
 		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n")
 		if (!vI.preferences.getBoolPref("storage"))
-			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
+			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return true; }
 		
 		if (vI_statusmenu.objStorageSaveMenuItem.getAttribute("checked") != "true") {
 			vI_notificationBar.dump("## vI_storage: SaveMenuItem not checked.\n")
-			return;
+			return true;
 		}
 		
 		vI_notificationBar.dump("## vI_storage: storeVIdentityToAllRecipients()\n");
