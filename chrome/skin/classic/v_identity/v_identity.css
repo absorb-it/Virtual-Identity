@@ -2,6 +2,16 @@
 @import url("chrome://v_identity/locale/logo.css"); 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
+treechildren::-moz-tree-cell(no) {
+	background-repeat:no-repeat;
+	background-position: center;
+	background-image: url("chrome://v_identity/skin/notchecked-unequal.png");
+}
+treechildren::-moz-tree-cell(yes) {
+	background-repeat:no-repeat;
+	background-position: center;
+	background-image: url("chrome://v_identity/skin/checked-unequal.png");
+}
 
 #vI_statusMenuTooltip {
 	text-align: center;

@@ -110,6 +110,14 @@ vI_storageExtras.prototype = {
 		return newExtras;
 	},
 	
+	// copys all values of an identity. This way we can create a new object with a different document-context
+	copy : function(extras) {
+		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
+		for( var i = 0; i < this.extras.length; i++ ) {
+			this.extras[i].value = extras.extras[i].value;
+		}
+	},
+
 	equal : function(storageExtras) {
 		var equal = true;
 		for( var i = 0; i < this.extras.length; i++ ) {
@@ -182,11 +190,7 @@ vI_storageExtras.prototype = {
 	},
 	setEditorValues : function() {
 		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
-		for( var i = 0; i < this.extras.length; i++ ) {
-			this.extras[i].value = window.arguments[0][this.extras[i].field + "Col"]
-			this.extras[i].setEditorValue();
-// 			vI_notificationBar.dump("## vI_storageExtras setEditorValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
-		}
+		for( var i = 0; i < this.extras.length; i++ ) this.extras[i].setEditorValue();
 	},
 	readEditorValues : function() {
 		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
@@ -200,7 +204,7 @@ vI_storageExtras.prototype = {
 	addPrefs : function(pref) {
 		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ )
-			pref[this.extras[i].field + "Col"] = this.extras[i].value;
+			pref[this.extras[i].field + "Col"] = this.extras[i].valueNice;
 	}
 }
 
@@ -225,7 +229,9 @@ vI_storageExtras_characterEncoding.prototype = {
 	option : "storageExtras_characterEncoding",
 	comp : null,
 
-	get valueHtml() {
+	// functions to get nicely formatted output
+	get valueHtml() { return this.valueNice; },
+	get valueNice() {
 		return this.value?gCharsetConvertManager
 					.getCharsetTitle(gCharsetConvertManager.getCharsetAlias(this.value)):"";
 	},
@@ -263,17 +269,22 @@ vI_storageExtras_characterEncoding.prototype = {
 		}
 	},
 	// function to set or read the value from the rdfDataEditor
+	// XXX still Problem if selected Encoding is not (yet) Element of the Menu, repair this
+
 	setEditorValue : function() {
 		CreateMenu('mailedit');
 		if (this.value != null) {
 			document.getElementById("maileditCharsetMenu").selectedItem = document.getElementById(this.value);
 			document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+			
 		}
 		document.getElementById("vI_" + this.option + "_store").doCommand();
 	},
 	readEditorValue : function() {
 		if (document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true")
-			this.value = document.getElementById("maileditCharsetMenu").selectedItem.id
+			// check if element is selected (list might not contain relevant entry)
+			if (document.getElementById("maileditCharsetMenu").selectedItem)
+				this.value = document.getElementById("maileditCharsetMenu").selectedItem.id
 		else 	this.value = null;
 	}
 }
@@ -290,7 +301,9 @@ vI_storageExtras_msgFormat.prototype = {
 	option : "storageExtras_messageFormat",
 	comp : null,
 
-	get valueHtml() {
+	// functions to get nicely formatted output
+	get valueHtml() { return this.valueNice; },
+	get valueNice() {
 		return this.value?document.getElementById(this.value).label:"";
 	},
 
@@ -345,12 +358,17 @@ vI_storageExtras_sMime_messageEncryption.prototype = {
 	option : "storageExtras_sMime_messageEncryption",
 	comp : null,
 
+	// functions to get nicely formatted output
 	get valueHtml() {
 		if (!this.value) return "";
 		return	"<div class='bool" + ((this.value=="true")?" checked":"") + "'>" +
 				"<label class='screen'>&nbsp;</label>" +
-				"<label class='braille'>" + ((this.value=="true")?"yes":"no") + "</label>" +
+				"<label class='braille'>" + this.valueNice + "</label>" +
 			"</div>"
+	},
+	get valueNice() {
+		if (!this.value) return "";
+		return (this.value=="true")?"yes":"no";
 	},
 
 	equal : function(compareStorageExtra) {
@@ -414,12 +432,17 @@ vI_storageExtras_checkbox.prototype = {
 	updateFunction : null, // some elements have to be updated before the can be read
 	valueFromIdentityFunction : null,
 	
+	// functions to get nicely formatted output
 	get valueHtml() {
 		if (!this.value) return "";
 		return	"<div class='bool" + ((this.value=="true")?" checked":"") + "'>" +
 				"<label class='screen'>&nbsp;</label>" +
-				"<label class='braille'>" + ((this.value=="true")?"yes":"no") + "</label>" +
+				"<label class='braille'>" + this.valueNice + "</label>" +
 			"</div>"
+	},
+	get valueNice() {
+		if (!this.value) return "";
+		return (this.value=="true")?"yes":"no";
 	},
 
 	equal : function(compareStorageExtra) {

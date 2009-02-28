@@ -31,6 +31,7 @@
 
 <dialog id="vI_rdfDataEditor"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	onload="vI_rdfDataEditor.init();"
 	ondialogaccept="window.arguments[3].treeType = vI_rdfDataEditor.accept();"
 	title="&vI_rdfDataEditor.dlgTitle.label;" >
 

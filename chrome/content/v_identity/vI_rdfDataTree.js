@@ -95,9 +95,9 @@ rdfDataTree.prototype = {
 				indexCol : idData.length + 1 + ".",
 				senderCol : localIdentityData.combinedName,
 				smtpCol : localIdentityData.smtp.value,
-				smtpKey : localIdentityData.smtp.key,
+//				smtpKey : localIdentityData.smtp.key,
 				idCol : localIdentityData.id.value,
-				idKey : localIdentityData.id.key,
+//				idKey : localIdentityData.id.key,
 				resource : resource,
 				identityData : localIdentityData}
 // 		vI_notificationBar.dump("## addNewDatum.\n");
@@ -105,7 +105,7 @@ rdfDataTree.prototype = {
 		idData.push(pref);
 	},
 	sort : function(columnName) {
-// 		vI_notificationBar.dump("## sort: " + columnName + ".\n");
+		vI_notificationBar.dump("## sort: " + columnName + ".\n");
 		var order = this.treeElem.getAttribute("sortDirection") == "ascending" ? 1 : -1;
 		//if the column is passed and it's already sorted by that column, reverse sort
 		if (columnName && (this.treeElem.getAttribute("sortResource") == columnName)) {
@@ -119,7 +119,7 @@ rdfDataTree.prototype = {
 				prepareForComparison(b[columnName])) return -1 * order;
 			return 0;
 		}
-		this.idTable.sort(columnSort);
+		if (columnName) this.idTable.sort(columnSort);
 		
 		//setting these will make the sort option persist
 		this.treeElem.setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
@@ -134,8 +134,7 @@ rdfDataTree.prototype = {
 			if (cols[i].id.match(columnName))
 				cols[i].setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
 		}
-	},
-
+	}
 }
 
 var vI_rdfDataTree = {
@@ -186,14 +185,27 @@ var vI_rdfDataTree = {
 			vI_rdfDataTree.trees[treeType] = new rdfDataTree(treeType);
 	},
 	
-	//generic custom tree view stuff
+	get _braille() {
+		var prefRoot = Components.classes["@mozilla.org/preferences-service;1"]
+			.getService(Components.interfaces.nsIPrefService).getBranch(null);
+		var braille = false;
+		try {	braille = (prefRoot.getCharPref("accessibility.usebrailledisplay") || 
+				prefRoot.getCharPref("accessibility.usetexttospeech")); }
+		catch (e) { };
+		return braille;
+	},
+
+	// generic custom tree view stuff
 	treeView : function (table) {
 		this.rowCount = table.length;
 		this.getCellText = function(row, col) {
-			return table[row][col.id.substr(0,col.id.indexOf("_"))];
+			var retValue = table[row][col.id.substr(0,col.id.indexOf("_"))];
+			if (!vI_rdfDataTree._braille && (retValue == "no" || retValue == "yes"))
+				return ""; // image will be used as indicator
+			else return retValue;
 		};
 		this.getCellValue = function(row, col) {
-			return table[row][col.id.substr(0,col.id.indexOf("_"))];
+			return this.getCellText(row, col);
 		};
 		this.setTree = function(treebox) {
 			this.treebox = treebox;
@@ -213,6 +225,15 @@ var vI_rdfDataTree = {
 			var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
 			if (treeType != "filter")
 				vI_rdfDataTree.trees[treeType].sort(col.id.substr(0,col.id.indexOf("_")));
+		};
+		this.getCellProperties = function(row,col,props){
+			if (vI_rdfDataTree._braille) return;
+			var aserv=Components.classes["@mozilla.org/atom-service;1"].
+				getService(Components.interfaces.nsIAtomService);
+			switch (table[row][col.id.substr(0,col.id.indexOf("_"))]) {
+				case "yes":	props.AppendElement(aserv.getAtom("yes")); break;
+				case "no":	props.AppendElement(aserv.getAtom("no")); break;
+			}
 		};
 	},
 
@@ -395,7 +416,8 @@ var vI_rdfDataTree = {
 		vI_rdfDataTree.infoBoxHidden = true;
 		document.getElementById("vI_rdfDataTreeInfoBox").setAttribute("style", "height:0px");
 		for each (var treeType in vI_rdfDataTree.treeTypes) {
-			try { vI_rdfDataTree.trees[treeType].treeElem.view.selection.selectNone() } catch (e) { }
+			try { if (vI_rdfDataTree.trees[treeType])
+				vI_rdfDataTree.trees[treeType].treeElem.view.selection.selectNone() } catch (e) { }
 		}
 	},
 
@@ -413,6 +435,7 @@ var vI_rdfDataTree = {
 				smtpKey : "",
 				idKey : gAccountManager.defaultAccount.defaultIdentity.key,
 				resource : null }
+		// XXXX create useful preset
 		var retVar = { treeType: null };
 		window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 			"chrome, dialog, modal, alwaysRaised, resizable=yes",

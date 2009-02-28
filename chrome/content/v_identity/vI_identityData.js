@@ -84,6 +84,16 @@ identityData.prototype = {
 		return new identityData(this.email, this.fullName, this.id.key, this.smtp.key, this.extras.getDuplicate(), this.sideDescription);
 	},
 
+	// copys all values of an identity. This way we can create a new object with a different document-context
+	copy : function(identityData) {
+		this.email = identityData.email;
+		this.fullName = identityData.fullName;
+		this.id.key = identityData.id.key;
+		this.smtp.key = identityData.smtp.key;
+		this.sideDescription = identityData.sideDescription;
+		this.extras.copy(identityData.extras);
+	},
+
 	// dependent on MsgComposeCommands, should/will only be called in ComposeDialog
 	isExistingIdentity : function(ignoreFullNameWhileComparing) {
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);

@@ -27,30 +27,9 @@ var vI_rdfDataEditor = {
 	__rdfDataTree : null,
 	__type : null,
 	__recipient : null,
+	__identityData : null,
 	
-	storageExtras : null,
-
-	init : function() {
-		vI_rdfDataEditor.__recipient = window.arguments[0]["recipientCol"];
-		vI_rdfDataEditor.__type = window.arguments[1];
-		vI_rdfDataEditor.__rdfDatasource = window.arguments[2];
-		vI_rdfDataEditor.__rdfDataTree = window.arguments[3];
-		
-		document.getElementById("recipient").value = vI_rdfDataEditor.__recipient;
-		
-		var typeMenuPopup = document.getElementById("type_menu_popup")
-
-		for each (typeField in Array("email", "maillist", "newsgroup", "filter")) {
-			var menuitem = document.createElement("menuitem");
-			var label = document.getElementById("vI_rdfDataTreeBundle").getString("vI_rdfDataTree.dataType." + typeField)
-			menuitem.setAttribute("label", label)
-			menuitem.setAttribute("key", typeField)
-			typeMenuPopup.appendChild(menuitem);
-			if (typeField == vI_rdfDataEditor.__type) document.getElementById("type_menu").selectedItem = menuitem
-		}
-
-		document.getElementById("sender").value = window.arguments[0]["senderCol"]
-		
+	__populateIdentityMenu : function() {
 		var listitem = document.createElement("menuitem");
 // 		listitem.setAttribute("label", document.getElementById("bundle_messenger").getString("defaultServerTag"));
 		listitem.setAttribute("label", "");
@@ -63,21 +42,51 @@ var vI_rdfDataEditor = {
 			FillIdentityList(document.getElementById("identity_list"))
 		else							// TB 2.x
 			FillIdentityListPopup(document.getElementById("identity_list_popup"))
+	},
 
-		var MenuItems = document.getElementById("identity_list_popup").childNodes
+	init : function() {
+		vI_rdfDataEditor.__recipient = window.arguments[0]["recipientCol"];
+		vI_rdfDataEditor.__type = window.arguments[1];
+		vI_rdfDataEditor.__rdfDatasource = window.arguments[2];
+		vI_rdfDataEditor.__rdfDataTree = window.arguments[3];
+		;
+		vI_rdfDataEditor.__identityData = new identityData();
+		vI_rdfDataEditor.__identityData.copy(window.arguments[0].identityData);
+
 		
+		// set recipient
+		document.getElementById("recipient").value = vI_rdfDataEditor.__recipient;
+		
+		// set type of entry (and populate Menu)
+		var typeMenuPopup = document.getElementById("type_menu_popup")
+		for each (typeField in Array("email", "maillist", "newsgroup", "filter")) {
+			var menuitem = document.createElement("menuitem");
+			var label = document.getElementById("vI_rdfDataTreeBundle").getString("vI_rdfDataTree.dataType." + typeField)
+			menuitem.setAttribute("label", label);
+			menuitem.setAttribute("key", typeField);
+			typeMenuPopup.appendChild(menuitem);
+			if (typeField == vI_rdfDataEditor.__type) document.getElementById("type_menu").selectedItem = menuitem
+		}
+		
+		// set sender
+		document.getElementById("sender").value = vI_rdfDataEditor.__identityData.combinedName;
+
+		// set Identity
+		vI_rdfDataEditor.__populateIdentityMenu();
+		var MenuItems = document.getElementById("identity_list_popup").childNodes;
 		for (var index = 0; index < MenuItems.length; index++) {
-			if (MenuItems[index].getAttribute("value") == window.arguments[0]["idKey"]) {
+			if (MenuItems[index].getAttribute("value") == vI_rdfDataEditor.__identityData.id.key) {
 				document.getElementById("identity_list").selectedItem =
 						MenuItems[index];
 				break;
 			}
 		}
 
-		document.getElementById("smtpServerListHbox").smtp = window.arguments[0]["smtpKey"]
+		// set SMTP
+		document.getElementById("smtpServerListHbox").smtp = vI_rdfDataEditor.__identityData.smtp.key;
 		
-		vI_rdfDataEditor.storageExtras = new vI_storageExtras()
-		vI_rdfDataEditor.storageExtras.setEditorValues();
+		// set extra values
+		vI_rdfDataEditor.__identityData.extras.setEditorValues();
 		vI_storageExtrasHelper.hideUnusedEditorFields();
 	},
 	
@@ -89,13 +98,11 @@ var vI_rdfDataEditor = {
 	
 	accept : function() {
 		var address = vI_helper.parseAddress(document.getElementById("sender").value)
-					
-		vI_rdfDataEditor.storageExtras.readEditorValues();
 		
 		var localIdentityData = new identityData(address.email, address.name,
 			document.getElementById("identity_list").selectedItem.getAttribute("value"),
-			document.getElementById("smtp_server_list").selectedItem.getAttribute("key"),
-			vI_rdfDataEditor.storageExtras)
+			document.getElementById("smtp_server_list").selectedItem.getAttribute("key"));
+		localIdentityData.extras.readEditorValues();
 
 		vI_rdfDataEditor.__rdfDatasource.updateRDF(
 				document.getElementById("recipient").value,
@@ -106,4 +113,3 @@ var vI_rdfDataEditor = {
 		return document.getElementById("type_menu").selectedItem.getAttribute("key");
 	}
 }
-window.addEventListener("load", vI_rdfDataEditor.init, false);
