@@ -168,13 +168,16 @@ var vI = {
 					return;
 				}
 				if (!vI_storage.storeVIdentityToAllRecipients(msgType)) {
+// 					vI_notificationBar.dump("## v_identity: sending aborted\n");
 					vI.replacement_functions.GenericSendMessageInProgress = false;
 					return;
 				}
 			}
 			if (vid) vI.prepareAccount();
 			vI.replacement_functions.GenericSendMessageInProgress = false;
+// 			vI_notificationBar.dump("## v_identity: original_functions.GenericSendMessage\n");
 			vI.original_functions.GenericSendMessage(msgType);
+// 			vI_notificationBar.dump("## v_identity: original_functions.GenericSendMessage done\n");
 		},
 		
 		replace_FillIdentityList : function() {
