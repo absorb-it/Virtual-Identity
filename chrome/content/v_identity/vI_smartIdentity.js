@@ -183,7 +183,7 @@ var vI_smartIdentity = {
 								skipRegExp = true; }
 						break;
 					case filterType.StrCmp:
-						add_addr = ( smartIdentities.emails[j].toLowerCase().indexOf(filterList[i].toLowerCase()) != -1)
+						add_addr = ( smartIdentities.identityDataCollection[j].email.toLowerCase().indexOf(filterList[i].toLowerCase()) != -1)
 						break;
 				}
 				if (add_addr)	returnIdentities.addWithoutDuplicates(smartIdentities.identityDataCollection[j])
