@@ -4,6 +4,7 @@
 <!ENTITY vI_rdfDataTree.filterPrefs.accesskey "i">
 <!ENTITY vI_rdfDataTree.showAll.label "Zobrazit vše">
 <!ENTITY vI_rdfDataTree.showAll.accesskey "o">
+<!ENTITY vI_rdfDataTree.indexColumn.label "No."> <!-- to translate -->
 <!ENTITY vI_rdfDataTree.recipientColumn.label "Příjemce">
 <!ENTITY vI_rdfDataTree.typeColumn.label "Typ">
 <!ENTITY vI_rdfDataTree.senderColumn.label "Odesilatel">

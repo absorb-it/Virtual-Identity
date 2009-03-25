@@ -11,6 +11,7 @@
 <!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "estado del cifrado">
 <!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "uso de la firma">
 <!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "uso de PGP/MIME">
+<!ENTITY vI_prefDialog.storageExtras.Warning.label "please reopen current windows to apply these settings"> <!-- to translate -->
 
 <!ENTITY vI_storageExtras.caption.label "opciones adicionales del almacén">
 

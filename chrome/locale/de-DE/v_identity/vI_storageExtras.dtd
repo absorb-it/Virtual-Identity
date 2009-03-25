@@ -11,6 +11,7 @@
 <!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "Verschlüsselungs-Status">
 <!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "Unterschriften-Nutzung">
 <!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "PGP/MIME Nutzung">
+<!ENTITY vI_prefDialog.storageExtras.Warning.label "geöffnete Fenster schliessen und neu öffnen zum übernehmen">
 
 <!ENTITY vI_storageExtras.caption.label "zusätzlich gespeicherte Einstellungen">
 

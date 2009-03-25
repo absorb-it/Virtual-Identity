@@ -12,6 +12,8 @@
 <!ENTITY vident.vI_Menu.TooltipTitle.label "Status Virtual Identity">
 <!ENTITY vident.vI_Menu.TooltipChange.label "změníte kliknutím">
 
+<!ENTITY vident.vI_Dialog.extra1Button.label "Abort Sending"> <!-- to translate -->
+
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">
 <!ENTITY sentInOtherFolder.label "Další:">

@@ -11,6 +11,7 @@
 <!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "Versleutelingsstatus">
 <!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "Handtekeninggebruik">
 <!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "PGP/MIME-gebruik">
+<!ENTITY vI_prefDialog.storageExtras.Warning.label "please reopen current windows to apply these settings"> <!-- to translate -->
 
 <!ENTITY vI_storageExtras.caption.label "Aanvullende opgeslagen instellingen">
 

@@ -4,6 +4,7 @@
 <!ENTITY vI_rdfDataTree.filterPrefs.accesskey "i">
 <!ENTITY vI_rdfDataTree.showAll.label "Mostrar todo">
 <!ENTITY vI_rdfDataTree.showAll.accesskey "w">
+<!ENTITY vI_rdfDataTree.indexColumn.label "No."> <!-- to translate -->
 <!ENTITY vI_rdfDataTree.recipientColumn.label "Destinatario">
 <!ENTITY vI_rdfDataTree.typeColumn.label "Tipo">
 <!ENTITY vI_rdfDataTree.senderColumn.label "Remitente">
