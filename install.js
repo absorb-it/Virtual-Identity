@@ -21,7 +21,7 @@ var skinDir           = "/" + name + "/"
 //var localeDir           = "/"
 var localeDir           = "/" + name + "/"
 
-var locales             = new Array( "en-US", "de-DE", "nl-NL", "cs-CZ", "es-ES", "fr-FR" );
+var locales             = new Array( "en-US", "de-DE", "nl-NL", "cs-CZ", "es-ES", "fr-FR", "tr-TR" );
 var skins               = new Array( "classic" ); // "modern"
 var prefs               = new Array( "preferences.js" );
 var components          = new Array(  );
