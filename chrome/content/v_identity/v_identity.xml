@@ -333,6 +333,8 @@
 		}
 		this.selectedItem = null;
 		this.identityData = null;
+		
+		this._menu_separator = null;
 		]]></body>
 	</method>	
 	<method name="addIdentityToCloneMenu">
