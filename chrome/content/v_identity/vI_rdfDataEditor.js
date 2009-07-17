@@ -45,7 +45,8 @@ var vI_rdfDataEditor = {
 	},
 
 	init : function() {
-		vI_rdfDataEditor.__recipient = window.arguments[0]["recipientCol"];
+		if (window.arguments[0]["recipientCol"])
+			vI_rdfDataEditor.__recipient = window.arguments[0]["recipientCol"];
 		vI_rdfDataEditor.__type = window.arguments[1];
 		vI_rdfDataEditor.__rdfDatasource = window.arguments[2];
 		vI_rdfDataEditor.__rdfDataTree = window.arguments[3];

@@ -429,18 +429,15 @@ var vI_rdfDataTree = {
 	
 	newItem : function() {
 		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		var newItemPreset = { 
-				recipientCol : "",
-				senderCol : "",
-				smtpKey : "",
-				idKey : gAccountManager.defaultAccount.defaultIdentity.key,
-				resource : null }
+		var newItemPreset = { identityData : new identityData ("", null, null, null, null, null) };
 		// XXXX create useful preset
 		var retVar = { treeType: null };
+
 		window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 			"chrome, dialog, modal, alwaysRaised, resizable=yes",
 			newItemPreset, treeType,
 			vI_rdfDatasource, retVar).focus();
+
 		// reload all trees (multiple types might have changed)
 		for each (var treeType in vI_rdfDataTree.treeTypes) {
 			vI_rdfDataTree.trees[treeType].idData = null;
