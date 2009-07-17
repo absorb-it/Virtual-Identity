@@ -107,7 +107,7 @@ var vI_prefDialog = {
 				} catch (ex) {}
 			}
 		},
-		
+
 		savePrefs : function() {
 			for( var i = 0; i < vI_prefDialog.base._elementIDs.length; i++ ) {
 				var elementID = vI_prefDialog.base._elementIDs[i];
@@ -131,53 +131,39 @@ var vI_prefDialog = {
 			}
 		},
 		
-		idSelectionConstraint : function() {
+		modifyAttribute : function(elemID, attribute, value) {
+			if (value) document.getElementById(elemID).removeAttribute(attribute);
+			else document.getElementById(elemID).setAttribute(attribute, "true");
+		},
+
+		constraints : function() {
 			var storage = document.getElementById("VIdent_identity.storage").checked;
 			var smartDraft = document.getElementById("VIdent_identity.smart_draft").checked;
 			var smartReply = document.getElementById("VIdent_identity.smart_reply").checked;
-			vI_prefDialog.base.idSelectionConstraint1(storage && smartReply);
-			vI_prefDialog.base.idSelectionConstraint2(storage || smartReply || smartDraft);
-			if (storage || smartReply || smartDraft) vI_prefDialog.base.idSelectionResultConstraint()
+			var mAttr = vI_prefDialog.base.modifyAttribute;
+
+			// idSelectionConstraint
+			var idSelectionConstraint = (storage || smartReply || smartDraft);
+			mAttr("VIdent_identity.idSelection_ask","disabled",idSelectionConstraint);
+			mAttr("VIdent_identity.idSelection_ask_always","disabled",idSelectionConstraint);
+			mAttr("VIdent_identity.idSelection_autocreate","disabled",idSelectionConstraint);
+			mAttr("VIdent_identity.idSelection_autocreate.desc","disabled",idSelectionConstraint);
+			mAttr("selection","featureDisabled",idSelectionConstraint);
+			mAttr("toCompose","featureDisabled",idSelectionConstraint);
+
+			// idSelectionInputConstraint
+			var idSelectionInputConstraint = (storage && smartReply);
+			mAttr("VIdent_identity.idSelection_storage_prefer_smart_reply","disabled",idSelectionInputConstraint);
+			mAttr("VIdent_identity.idSelection_storage_ignore_smart_reply","disabled",idSelectionInputConstraint);
+			if (idSelectionInputConstraint) vI_prefDialog.base.idSelectionResultConstraint();
+
+			// sourceEmailConstraint
+			var sourceEmailConstraint = (smartReply || smartDraft);
+			mAttr("sourceEmail","featureDisabled",sourceEmailConstraint);
+			mAttr("toSelection","featureDisabled",sourceEmailConstraint);
+
 		},
 
-		idSelectionConstraint1 : function(checked) {
-			var elementIDs = [
-				"VIdent_identity.idSelection_storage_prefer_smart_reply",
-				"VIdent_identity.idSelection_storage_ignore_smart_reply"];
-			for( var i = 0; i < elementIDs.length; i++ ) {
-				if (checked) document.getElementById(elementIDs[i]).removeAttribute("disabled");
-				else document.getElementById(elementIDs[i]).setAttribute("disabled", "true");
-			}
-		},
-
-		idSelectionConstraint2 : function(checked) {
-			var elementIDs = [
-				"VIdent_identity.idSelection_ask",
-				"VIdent_identity.idSelection_ask_always",
-				"VIdent_identity.idSelection_autocreate",
-				"VIdent_identity.idSelection_autocreate.desc",];
-			for( var i = 0; i < elementIDs.length; i++ ) {
-				if (checked) document.getElementById(elementIDs[i]).removeAttribute("disabled");
-				else document.getElementById(elementIDs[i]).setAttribute("disabled", "true");
-			}
-		},
-
-		smartReplyConstraint : function(element) {
-			var elementIDs = [
-				"VIdent_identity.smart_reply_for_newsgroups",
-				"VIdent_identity.smart_reply_headers",
-				"VIdent_identity.smart_reply_filter",
-				"VIdent_identity.smart_reply_defaultFullName",
-				"VIdent_identity.smart_reply_ignoreFullName",
-				"VIdent_identity.smart_reply_headers_reset",
-				"VIdent_identity.smart_detectByReceivedHeader"];
-			for( var i = 0; i < elementIDs.length; i++ ) {
-				if (element.checked) document.getElementById(elementIDs[i]).removeAttribute("disabled");
-				else document.getElementById(elementIDs[i]).setAttribute("disabled", "true");
-			}
-			vI_prefDialog.base.idSelectionConstraint();
-		},
-		
 		idSelectionResultConstraint : function() {
 			var ask = document.getElementById("VIdent_identity.idSelection_ask")
 			var ask_always = document.getElementById("VIdent_identity.idSelection_ask_always")
@@ -187,6 +173,18 @@ var vI_prefDialog = {
 			autocreate.setAttribute("disabled", (ask.checked && ask_always.checked))
 			autocreate_desc.setAttribute("disabled", (ask.checked && ask_always.checked))
 			autocreate_desc.setAttribute("hidden", !ask.checked)
+		},
+
+		smartReplyConstraint : function(element) {
+			var mAttr = vI_prefDialog.base.modifyAttribute;
+			mAttr("VIdent_identity.smart_reply_for_newsgroups","disabled",element.checked);
+			mAttr("VIdent_identity.smart_reply_headers","disabled",element.checked);
+			mAttr("VIdent_identity.smart_reply_filter","disabled",element.checked);
+			mAttr("VIdent_identity.smart_reply_defaultFullName","disabled",element.checked);
+			mAttr("VIdent_identity.smart_reply_ignoreFullName","disabled",element.checked);
+			mAttr("VIdent_identity.smart_reply_headers_reset","disabled",element.checked);
+			mAttr("VIdent_identity.smart_detectByReceivedHeader","disabled",element.checked);
+			vI_prefDialog.base.constraints();
 		},
 		
 		smartReplyHeaderReset : function() {
@@ -221,33 +219,27 @@ var vI_prefDialog = {
 		},
 		
 		storageConstraint : function(element) {
-			var elementIDs = [
-				"VIdent_identity.storage_storedefault",
-				"VIdent_identity.storage_store_base_id",
-				"VIdent_identity.storage_dont_update_multiple",
-				"VIdent_identity.storage_show_switch",
-				"VIdent_identity.storage_warn_update",
-				"VIdent_identity.storage_warn_vI_replace",
-				"VIdent_identity.storage_notification",
-				"VIdent_identity.storage_getOneOnly",
-				"VIdent_identity.storageExtras_returnReciept",
-				"VIdent_identity.storageExtras_characterEncoding",
-				"VIdent_identity.storageExtras_messageFormat",
-				"VIdent_identity.storageExtras_sMime_messageEncryption",
-				"VIdent_identity.storageExtras_sMime_messageSignature",
-				"VIdent_identity.storageExtras_openPGP_messageEncryption",
-				"VIdent_identity.storageExtras_openPGP_messageSignature",
-				"VIdent_identity.storageExtras_openPGP_PGPMIME"];
-			for( var i = 0; i < elementIDs.length; i++ ) {
-				if (element.checked) document.getElementById(elementIDs[i]).removeAttribute("disabled");
-				else document.getElementById(elementIDs[i]).setAttribute("disabled", "true");
-			}
-			var imageIDs = ["storageOut", "storageUp", "storageUpDown"];
-			for( var i = 0; i < imageIDs.length; i++ ) {
-				if (element.checked) document.getElementById(imageIDs[i]).removeAttribute("feature");
-				else document.getElementById(imageIDs[i]).setAttribute("feature", "off");
-			}
-			vI_prefDialog.base.idSelectionConstraint();
+			var mAttr = vI_prefDialog.base.modifyAttribute;
+			mAttr("VIdent_identity.storage_storedefault","disabled",element.checked);
+			mAttr("VIdent_identity.storage_store_base_id","disabled",element.checked);
+			mAttr("VIdent_identity.storage_dont_update_multiple","disabled",element.checked);
+			mAttr("VIdent_identity.storage_show_switch","disabled",element.checked);
+			mAttr("VIdent_identity.storage_warn_update","disabled",element.checked);
+			mAttr("VIdent_identity.storage_warn_vI_replace","disabled",element.checked);
+			mAttr("VIdent_identity.storage_notification","disabled",element.checked);
+			mAttr("VIdent_identity.storage_getOneOnly","disabled",element.checked);
+			mAttr("VIdent_identity.storageExtras_returnReciept","disabled",element.checked);
+			mAttr("VIdent_identity.storageExtras_characterEncoding","disabled",element.checked);
+			mAttr("VIdent_identity.storageExtras_messageFormat","disabled",element.checked);
+			mAttr("VIdent_identity.storageExtras_sMime_messageEncryption","disabled",element.checked);
+			mAttr("VIdent_identity.storageExtras_sMime_messageSignature","disabled",element.checked);
+			mAttr("VIdent_identity.storageExtras_openPGP_messageEncryption","disabled",element.checked);
+			mAttr("VIdent_identity.storageExtras_openPGP_messageSignature","disabled",element.checked);
+			mAttr("VIdent_identity.storageExtras_openPGP_PGPMIME","disabled",element.checked);
+			mAttr("storageOut","featureDisabled",element.checked);
+			mAttr("storageUp","featureDisabled",element.checked);
+			mAttr("storageUpDown","featureDisabled",element.checked);
+			vI_prefDialog.base.constraints();
 		}
 	},
 
@@ -275,7 +267,7 @@ var vI_prefDialog = {
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
 		vI_prefDialog.base.smartReplyHideSignature();
 		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
-		vI_prefDialog.base.idSelectionConstraint();
+		vI_prefDialog.base.constraints();
 		if (vI_storageExtrasHelper.seamonkey_to_old())
 			document.getElementById("storageTab2").setAttribute("hidden", "true")
 	},

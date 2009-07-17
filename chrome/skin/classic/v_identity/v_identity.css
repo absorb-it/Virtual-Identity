@@ -48,34 +48,34 @@ tree.vIprefTree {
 }
 
 radio#sourceEmail 			{ -moz-image-region: rect(0px, 338px, 52px, 280px) }
-radio#sourceEmail[feature="off"] 	{ -moz-image-region: rect(104px, 338px, 156px, 280px) }
+radio#sourceEmail[featureDisabled="true"] 	{ -moz-image-region: rect(104px, 338px, 156px, 280px) }
 radio#sourceEmail:hover 		{ -moz-image-region: rect(52px, 338px, 104px, 280px) }
 radio#selection 		{ -moz-image-region: rect(0px, 168px, 52px, 112px) }
-radio#selection[feature="off"] 	{ -moz-image-region: rect(104px, 168px, 156px, 112px) }
+radio#selection[featureDisabled="true"] 	{ -moz-image-region: rect(104px, 168px, 156px, 112px) }
 radio#selection:hover 		{ -moz-image-region: rect(52px, 168px, 104px, 112px) }
 radio#composeDialog 			{ -moz-image-region: rect(0px, 112px, 52px, 56px) }
-radio#composeDialog[feature="off"] 	{ -moz-image-region: rect(104px, 112px, 156px, 56px) }
+radio#composeDialog[featureDisabled="true"] 	{ -moz-image-region: rect(104px, 112px, 156px, 56px) }
 radio#composeDialog:hover 		{ -moz-image-region: rect(52px, 112px, 104px, 56px) }
 radio#emailOut 			{ -moz-image-region: rect(0px, 56px, 52px, 0px) }
-radio#emailOut[feature="off"] 	{ -moz-image-region: rect(104px, 56px, 156px, 0px) }
+radio#emailOut[featureDisabled="true"] 	{ -moz-image-region: rect(104px, 56px, 156px, 0px) }
 radio#emailOut:hover 		{ -moz-image-region: rect(52px, 56px, 104px, 0px) }
 radio#storageOut 			{ -moz-image-region: rect(0px, 280px, 52px, 224px) }
-radio#storageOut[feature="off"] 	{ -moz-image-region: rect(104px, 280px, 156px, 224px) }
+radio#storageOut[featureDisabled="true"] 	{ -moz-image-region: rect(104px, 280px, 156px, 224px) }
 radio#storageOut:hover 			{ -moz-image-region: rect(52px, 280px, 104px, 224px) }
 radio#options 			{ -moz-image-region: rect(0px, 393px, 52px, 335px) }
-radio#options[feature="off"] 	{ -moz-image-region: rect(104px, 393px, 156px, 335px) }
+radio#options[featureDisabled="true"] 	{ -moz-image-region: rect(104px, 393px, 156px, 335px) }
 radio#options:hover 		{ -moz-image-region: rect(52px, 393px, 104px, 335px) }
 
 #viewGroup image.arrow {
   list-style-image: url("chrome://v_identity/skin/Arrows.png");
 }
 
-image#toSelection 			{ -moz-image-region: rect(0px, 64px, 30px, 47px) }
-image#toSelection[feature="off"] 	{ -moz-image-region: rect(30px, 64px, 60px, 47px) }
+image#toSelection, image#toCompose, image#toSend { -moz-image-region: rect(0px, 64px, 30px, 47px) }
+image#toSelection[featureDisabled="true"], image#toCompose[featureDisabled="true"], image#toSend[featureDisabled="true"] 	{ -moz-image-region: rect(30px, 64px, 60px, 47px) }
 image#storageUpDown 			{ -moz-image-region: rect(0px, 30px, 30px, -1px) }
-image#storageUpDown[feature="off"] 	{ -moz-image-region: rect(30px, 30px, 60px, -1px) }
+image#storageUpDown[featureDisabled="true"] 	{ -moz-image-region: rect(30px, 30px, 60px, -1px) }
 image#storageUp 			{ -moz-image-region: rect(0px, 48px, 30px, 30px) }
-image#storageUp[feature="off"]		{ -moz-image-region: rect(30px, 48px, 60px, 30px) }
+image#storageUp[featureDisabled="true"]		{ -moz-image-region: rect(30px, 48px, 60px, 30px) }
 
 
 prefTabbox {

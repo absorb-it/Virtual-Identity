@@ -88,11 +88,11 @@
 			<radio pane="source" id="selection"
 				oncommand="document.getElementById('prefTabbox').selectedIndex = 1;"
 				tooltiptext="&vI_prefDialog.tabbox.tab1.label;" />
-			<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
+			<vbox><spacer flex="1"/><image class="arrow" id="toCompose" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="composeDialog"
 				oncommand="document.getElementById('prefTabbox').selectedIndex = 2;"
 				tooltiptext="&vI_prefDialog.tabbox.tab2.label;" />
-			<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
+			<vbox><spacer flex="1"/><image class="arrow" id="toSend" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="emailOut"
 				oncommand="document.getElementById('prefTabbox').selectedIndex = 3;"
 				tooltiptext="&vI_prefDialog.tabbox.tab3.label;" />
@@ -161,7 +161,7 @@
 					value="&vI_prefDialog.versionWarning.label;" hidden="true"/>
 				<checkbox id="VIdent_identity.smart_draft" label="&vI_prefDialog.smartDraft.label;"
 					tooltiptext="&vI_prefDialog.smartDraft.tooltiptext;" prefstring="smart_draft"
-					oncommand="vI_prefDialog.base.idSelectionConstraint();" />
+					oncommand="vI_prefDialog.base.constraints();" />
 				</groupbox>
 				<groupbox>
 				<caption label="&vI_prefDialog.smartTab0.Reply.caption;" />
@@ -220,7 +220,7 @@
 						prefstring="smart_reply_ignoreFullName" wrap="true" class="widthXX" />
 					<hbox>
 					<description class="widthX">&vI_prefDialog.smartReply.defaultFullname.label;</description>
-					<vbox><spacer flex="1"/><textbox id="VIdent_identity.smart_reply_defaultFullName" flex="1"
+					<vbox><spacer flex="1"/><textbox id="VIdent_identity.smart_reply_defaultFullName"
 						prefstring="smart_reply_defaultFullName" size="20" /><spacer flex="1"/></vbox>
 					</hbox>
 				</vbox>
