@@ -72,7 +72,7 @@ var vI_getHeader = {
 		vI_notificationBar.clear_dump()
 		var index;
 
-		var srcMsgURI = GetLoadedMessage();
+		try { var srcMsgURI = gDBView.URIForFirstSelectedMessage; } catch (ex) { return; }
 		if (srcMsgURI == null) return;
 		
 		if (/type=application\/x-message-display/.test(srcMsgURI)) {
@@ -221,7 +221,7 @@ var vI_prepareHeader = {
 		// add Received to recognizable headers to detect if mail was sent or received
 		header_list.push("Received")
 
-		try {
+// 		try {
 			var extraHdrs = " " + 
 				vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase()
 				+ " ";
@@ -231,14 +231,21 @@ var vI_prepareHeader = {
 				var headerToSearch = headerToSearch_splitted[0].toLowerCase()
 				
 				var j; var found = false;
-				// check if Header is included in collapsed HeaderView
-				for (var j = 0; j < gCollapsedHeaderList.length; j++) {
-					if (gCollapsedHeaderList[j].name == headerToSearch) {
-// 						vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' in gCollapsedHeaderList\n");
-						found = true; break;
+				
+				// collapsedHeaderView is removed in 
+				// https://bugzilla.mozilla.org/show_bug.cgi?id=480623
+				// http://build.mozillamessaging.com/mercurial/comm-central/rev/1fbbd90413d9
+				if (typeof(gCollapsedHeaderList) != "undefined") {
+					// check if Header is included in collapsed HeaderView
+					for (var j = 0; j < gCollapsedHeaderList.length; j++) {
+						if (gCollapsedHeaderList[j].name == headerToSearch) {
+	// 						vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' in gCollapsedHeaderList\n");
+							found = true; break;
+						}
 					}
+					if (found) continue;
 				}
-				if (found) continue;
+
 				// check if Header is included in expanded HeaderView
 				for (var j = 0; j < gExpandedHeaderList.length; j++) {
 					if (gExpandedHeaderList[j].name == headerToSearch) {
@@ -263,11 +270,11 @@ var vI_prepareHeader = {
 			}		
 
 			return true;
-		}
-		catch (e) {
-			vI_notificationBar.dump("## vI_prepareHeader: your application is too old, please update. Otherwise try to install mnenhy or enigmail to use additional headers.")
-			return false;
-		}
+// 		}
+// 		catch (e) {
+// 			vI_notificationBar.dump("## vI_prepareHeader: your application is too old, please update. Otherwise try to install mnenhy or enigmail to use additional headers.")
+// 			return false;
+// 		}
 	},
 
 	removeExtraHeader: function() {
