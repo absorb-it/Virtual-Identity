@@ -2,6 +2,75 @@
 @import url("chrome://v_identity/locale/logo.css"); 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
+
+#viewGroup {
+  padding: 5px;
+}
+
+#viewGroup radio {
+  -moz-appearance: none;
+  min-width: 4.5em;
+  margin: 0;
+  padding: 3px;
+  list-style-image: url("chrome://v_identity/skin/PrefIcons.png");
+  -moz-box-orient: vertical;
+  -moz-box-align: center !important;
+}
+
+#viewGroup radio:hover {
+  border: 1px solid #ff9c9c;
+  margin: -1px;
+  background-color: white;
+  background-color: transparent;
+}
+
+#viewGroup radio[selected="true"] {
+  border: 1px solid #870000;
+  margin: -1px;
+  background-color: white;
+  background-color: transparent;
+}
+
+radio#sourceEmail 			{ -moz-image-region: rect(0px, 338px, 52px, 280px) }
+radio#sourceEmail[feature="off"] 	{ -moz-image-region: rect(104px, 338px, 156px, 280px) }
+radio#sourceEmail:hover 		{ -moz-image-region: rect(52px, 338px, 104px, 280px) }
+radio#selection 		{ -moz-image-region: rect(0px, 168px, 52px, 112px) }
+radio#selection[feature="off"] 	{ -moz-image-region: rect(104px, 168px, 156px, 112px) }
+radio#selection:hover 		{ -moz-image-region: rect(52px, 168px, 104px, 112px) }
+radio#composeDialog 			{ -moz-image-region: rect(0px, 112px, 52px, 56px) }
+radio#composeDialog[feature="off"] 	{ -moz-image-region: rect(104px, 112px, 156px, 56px) }
+radio#composeDialog:hover 		{ -moz-image-region: rect(52px, 112px, 104px, 56px) }
+radio#emailOut 			{ -moz-image-region: rect(0px, 56px, 52px, 0px) }
+radio#emailOut[feature="off"] 	{ -moz-image-region: rect(104px, 56px, 156px, 0px) }
+radio#emailOut:hover 		{ -moz-image-region: rect(52px, 56px, 104px, 0px) }
+radio#storageOut 			{ -moz-image-region: rect(0px, 280px, 52px, 224px) }
+radio#storageOut[feature="off"] 	{ -moz-image-region: rect(104px, 280px, 156px, 224px) }
+radio#storageOut:hover 			{ -moz-image-region: rect(52px, 280px, 104px, 224px) }
+radio#options 			{ -moz-image-region: rect(0px, 396px, 52px, 338px) }
+radio#options[feature="off"] 	{ -moz-image-region: rect(104px, 396px, 156px, 338px) }
+radio#options:hover 		{ -moz-image-region: rect(52px, 396px, 104px, 338px) }
+
+#viewGroup image.arrow {
+  list-style-image: url("chrome://v_identity/skin/Arrows.png");
+}
+
+image#toSelection 			{ -moz-image-region: rect(0px, 64px, 30px, 47px) }
+image#toSelection[feature="off"] 	{ -moz-image-region: rect(30px, 64px, 60px, 47px) }
+image#storageUpDown 			{ -moz-image-region: rect(0px, 30px, 30px, -1px) }
+image#storageUpDown[feature="off"] 	{ -moz-image-region: rect(30px, 30px, 60px, -1px) }
+image#storageUp 			{ -moz-image-region: rect(0px, 48px, 30px, 30px) }
+image#storageUp[feature="off"]		{ -moz-image-region: rect(30px, 48px, 60px, 30px) }
+
+
+prefTabbox {
+	border: 1px inset threedface; padding: 5px; background-color: white;
+}
+
+.paneButtonIcon {
+	width: 56px;
+	height: 52px;
+}
+
 treechildren::-moz-tree-cell(no) {
 	background-repeat:no-repeat;
 	background-position: center;

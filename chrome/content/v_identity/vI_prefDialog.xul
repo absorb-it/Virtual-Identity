@@ -39,9 +39,14 @@
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/prefPanels.css" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/accountManage.css" type="text/css"?>
+
+<?xml-stylesheet href="chrome://mozapps/skin/extensions/extensions.css"?>
+
+
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
 
-<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml" >
 
 <dialog id="vI_prefDialog">
 
@@ -77,12 +82,43 @@
 
 <hbox>
 <spacer flex="1" />
-<button class="v_identity_logo v_identity_logo_button"
-	label="&vident.vidLogo.label; &vident.version;"
-	oncommand="vI_prefDialog.openURL('http://www.absorb.it/virtual-id')" tooltiptext="&vI_prefDialog.vidLogo.tooltiptext;" />
 </hbox>
 
-<tabbox>
+<tabbox class="viewSelector ">
+<radiogroup xhtml:role="listbox" id="viewGroup" persist="last-selected"
+                  class="chromeclass-toolbar" orient="horizontal"
+                  >
+	<vbox>
+	
+	<hbox>
+	<radio pane="source" id="sourceEmail" oncommand="showView('search');" persist="last-selected"/>
+	<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
+	<radio pane="source" id="selection" oncommand="showView('themes');" persist="last-selected"/>
+	<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
+	<radio pane="source" id="composeDialog" oncommand="showView('locales');" persist="last-selected"/>
+        <vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
+	<radio pane="source" id="emailOut" oncommand="showView('plugins');" persist="last-selected"/>
+	</hbox>
+	<spacer height="3px" />
+	<hbox>
+	<spacer if="beforeStorage" width="100px"/>
+	<vbox><spacer flex="1"/><image class="arrow" id="storageUp" /><spacer flex="1"/></vbox>
+	<radio pane="source" id="storageOut" oncommand="showView('updates');"/>
+	<vbox><spacer flex="1"/><image class="arrow" id="storageUpDown" /><spacer flex="1"/></vbox>
+	<spacer if="afterStorage" flex="1"/>
+        </hbox>
+	
+	</vbox>
+	
+	<spacer flex="1"/>
+	<vbox><spacer flex="1"/>
+	<hbox><spacer flex="1"/><radio pane="source" id="options" oncommand="showView('installs');"/></hbox>
+	<spacer flex="1"/>
+	<button class="v_identity_logo v_identity_logo_button"
+		label="&vident.vidLogo.label; &vident.version;"
+		oncommand="vI_prefDialog.openURL('http://www.absorb.it/virtual-id')" tooltiptext="&vI_prefDialog.vidLogo.tooltiptext;" />
+	</vbox>
+</radiogroup>
 	<tabs>
 		<tab label="&vI_prefDialog.commonTab.label;" />
 		<tab label="&vI_prefDialog.vIdentityTab.label;" />
