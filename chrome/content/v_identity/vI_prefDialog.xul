@@ -277,16 +277,12 @@
 						prefstring="idSelection_ask_always"
 						oncommand="vI_prefDialog.base.idSelectionResultConstraint();"/>
 					</hbox>
-					<hbox>
-					<vbox><spacer flex="1"/>
 					<checkbox id="VIdent_identity.idSelection_autocreate" label="&vI_prefDialog.idSelection.autocreate.label;"
 						prefstring="idSelection_autocreate"
 						oncommand="vI_prefDialog.base.idSelectionResultConstraint();"/>
-					<spacer flex="1"/></vbox>
-					<vbox><spacer flex="1"/>
-					<label value="&vI_prefDialog.idSelection.autocreate.desc;" hidden="true"
+
+					<hbox><spacer class="widthS"/><label value="&vI_prefDialog.idSelection.autocreate.desc;" hidden="true"
 						id="VIdent_identity.idSelection_autocreate.desc" />
-					<spacer flex="1"/></vbox>
 					</hbox>
 				</vbox>
 				</groupbox>
@@ -317,11 +313,9 @@
 				<caption label="&vI_prefDialog.composeDialog.caption;"/>
 					<checkbox id="VIdent_identity.autoTimestamp" label="&vI_prefDialog.composeDialog.autoTimestamp.label;"
 						tooltiptext="&vI_prefDialog.composeDialog.autoTimestamp.tooltiptext;" prefstring="autoTimestamp" />
-					<spacer class="paragraph"/>
 					<description id="VIdent_identity.HideSignature.warning" class="widthXX">&vI_prefDialog.composeDialog.HideSignature.warning.desc;</description>
 					<checkbox id="VIdent_identity.hide_signature" label="&vI_prefDialog.composeDialog.HideSignature.label;" disabled="true"
 						prefstring="hide_signature"/>
-					<spacer id="autoReplyToSelfSpacer" class="paragraph"/>
 					<checkbox id="VIdent_identity.autoReplyToSelf" label="&vI_prefDialog.composeDialog.autoReplyToSelf.label;"
 						prefstring="autoReplyToSelf"/>
 				</groupbox>

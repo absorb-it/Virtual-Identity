@@ -143,15 +143,10 @@ var vI_prefDialog = {
 		idSelectionConstraint1 : function(checked) {
 			var elementIDs = [
 				"VIdent_identity.idSelection_storage_prefer_smart_reply",
-				"VIdent_identity.idSelection_storage_ignore_smart_reply",
-				"idSelection1"];
+				"VIdent_identity.idSelection_storage_ignore_smart_reply"];
 			for( var i = 0; i < elementIDs.length; i++ ) {
-				if (checked)
-					document.getElementById(elementIDs[i])
-						.removeAttribute("disabled");
-				else
-					document.getElementById(elementIDs[i])
-						.setAttribute("disabled", "true");
+				if (checked) document.getElementById(elementIDs[i]).removeAttribute("disabled");
+				else document.getElementById(elementIDs[i]).setAttribute("disabled", "true");
 			}
 		},
 
@@ -160,15 +155,10 @@ var vI_prefDialog = {
 				"VIdent_identity.idSelection_ask",
 				"VIdent_identity.idSelection_ask_always",
 				"VIdent_identity.idSelection_autocreate",
-				"VIdent_identity.idSelection_autocreate.desc",
-				"idSelection", "idSelection2"];
+				"VIdent_identity.idSelection_autocreate.desc",];
 			for( var i = 0; i < elementIDs.length; i++ ) {
-				if (checked)
-					document.getElementById(elementIDs[i])
-						.removeAttribute("disabled");
-				else
-					document.getElementById(elementIDs[i])
-						.setAttribute("disabled", "true");
+				if (checked) document.getElementById(elementIDs[i]).removeAttribute("disabled");
+				else document.getElementById(elementIDs[i]).setAttribute("disabled", "true");
 			}
 		},
 
@@ -180,14 +170,10 @@ var vI_prefDialog = {
 				"VIdent_identity.smart_reply_defaultFullName",
 				"VIdent_identity.smart_reply_ignoreFullName",
 				"VIdent_identity.smart_reply_headers_reset",
-				"smartReplyTab", "smartReplyTab1", "smartReplyTab2"];
+				"VIdent_identity.smart_detectByReceivedHeader"];
 			for( var i = 0; i < elementIDs.length; i++ ) {
-				if (element.checked)
-					document.getElementById(elementIDs[i])
-						.removeAttribute("disabled");
-				else
-					document.getElementById(elementIDs[i])
-						.setAttribute("disabled", "true");
+				if (element.checked) document.getElementById(elementIDs[i]).removeAttribute("disabled");
+				else document.getElementById(elementIDs[i]).setAttribute("disabled", "true");
 			}
 			vI_prefDialog.base.idSelectionConstraint();
 		},
@@ -251,15 +237,15 @@ var vI_prefDialog = {
 				"VIdent_identity.storageExtras_sMime_messageSignature",
 				"VIdent_identity.storageExtras_openPGP_messageEncryption",
 				"VIdent_identity.storageExtras_openPGP_messageSignature",
-				"VIdent_identity.storageExtras_openPGP_PGPMIME",
-				"storageTab", "storageTab1", "storageTab2"];
+				"VIdent_identity.storageExtras_openPGP_PGPMIME"];
 			for( var i = 0; i < elementIDs.length; i++ ) {
-				if (element.checked)
-					document.getElementById(elementIDs[i])
-						.removeAttribute("disabled");
-				else
-					document.getElementById(elementIDs[i])
-						.setAttribute("disabled", "true");
+				if (element.checked) document.getElementById(elementIDs[i]).removeAttribute("disabled");
+				else document.getElementById(elementIDs[i]).setAttribute("disabled", "true");
+			}
+			var imageIDs = ["storageOut", "storageUp", "storageUpDown"];
+			for( var i = 0; i < imageIDs.length; i++ ) {
+				if (element.checked) document.getElementById(imageIDs[i]).removeAttribute("feature");
+				else document.getElementById(imageIDs[i]).setAttribute("feature", "off");
 			}
 			vI_prefDialog.base.idSelectionConstraint();
 		}
