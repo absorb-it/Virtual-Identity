@@ -361,6 +361,19 @@ var vI_smartIdentity = {
 	},
 	
 	__smartIdentitySelection : function(allIdentities, autocreate) {
+		/* compare with existing Identities and prefer it						*/
+		for (var index = 0; index < allIdentities.number; index++) {
+			if (allIdentities.identityDataCollection[index].isExistingIdentity(true)) {
+				vI_notificationBar.dump("## vI_smartIdentity: found existing Identity, prefer this one.\n");
+				var firstIdentity = allIdentities.identityDataCollection[index];
+				for (var i = index; index > 0; index--) {
+					allIdentities.identityDataCollection[index] = allIdentities.identityDataCollection[index-1];
+				}
+				allIdentities.identityDataCollection[0] = firstIdentity;
+				break;
+			}
+		}
+
 		document.getElementById("msgIdentity_clone").addIdentitiesToCloneMenu(allIdentities);
 		
 		if (!autocreate && vI.preferences.getBoolPref("idSelection_ask") && 
