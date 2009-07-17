@@ -42,6 +42,7 @@ var vI_prefDialog = {
 				"VIdent_identity.copySMIMESettings",
 				"VIdent_identity.copyAttachVCardSettings",
 				"VIdent_identity.smart_reply",
+				"VIdent_identity.smart_detectByReceivedHeader",
 				"VIdent_identity.smart_reply_for_newsgroups",
 				"VIdent_identity.show_smtp",
 				"VIdent_identity.menu_entry",

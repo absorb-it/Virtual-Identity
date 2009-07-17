@@ -1,108 +1,160 @@
 <!ENTITY vI_prefDialog.dlgTitle.label "Virtual Identity Settings">
 <!ENTITY vI_prefDialog.vidLogo.tooltiptext "Open Virtual Identity Homepage">
 
-<!ENTITY vI_prefDialog.commonTab.label "Main">
-<!ENTITY vI_prefDialog.vIdentityTab.label "Virtual Identity">
-<!ENTITY vI_prefDialog.smartReplyTab.label "Smart Reply">
-<!ENTITY vI_prefDialog.storageTab.label "Storage">
-<!ENTITY vI_prefDialog.idSelection.label "Identity-Selection">
-<!ENTITY vI_prefDialog.notificationTab.label "Status Messages">
+<!ENTITY vI_prefDialog.tabbox.tab0.label "Source Mail">
+<!ENTITY vI_prefDialog.tabbox.tab1.label "Selection">
+<!ENTITY vI_prefDialog.tabbox.tab2.label "Compose Dialog">
+<!ENTITY vI_prefDialog.tabbox.tab3.label "Sending">
+<!ENTITY vI_prefDialog.tabbox.tab4.label "Storage">
+<!ENTITY vI_prefDialog.tabbox.tab5.label "Options">
 
-<!ENTITY vI_prefDialog.commonTab.header "General Configuration">
-<!ENTITY vI_prefDialog.commonTab.caption "features">
-<!ENTITY vI_prefDialog.storage.label "store (and recall) used Identities">
-<!ENTITY vI_prefDialog.storage.tooltiptext "Used Identities might be stored related to the recipients of your email. If you write again to the same recipient, the same virtual or non-virtual Identity will be used">
-<!ENTITY vI_prefDialog.autoTimestamp.label "autogenerate Timestamp-Identity for new mails">
-<!ENTITY vI_prefDialog.autoTimestamp.tooltiptext "On composing a new email, modify your usual sender-address with a timestamp. On easy way to create unique Identities, off by default.">
-<!ENTITY vI_prefDialog.smartInfo.label "detect Identity by analyzing the mail-header:">
+
+<!ENTITY vI_prefDialog.smartCell.label "Smart Features">
+<!ENTITY vI_prefDialog.smartCell.row0.label "Read">
+<!ENTITY vI_prefDialog.smartCell.row1.label "Filter / Sort">
+<!ENTITY vI_prefDialog.smartCell.row2.label "Compare">
+
+<!ENTITY vI_prefDialog.smartTab0.header "Header Analysis">
+<!ENTITY vI_prefDialog.smartTab0.Draft.caption "Smart Draft">
+<!ENTITY vI_prefDialog.smartTab0.Reply.caption "Smart Reply">
 <!ENTITY vI_prefDialog.versionWarning.label "your Email-program is too old to use the Smart Draft feature">
 <!ENTITY vI_prefDialog.smartDraft.label "use Smart Draft">
 <!ENTITY vI_prefDialog.smartDraft.tooltiptext "'Smart Draft' tries to detect the to-be used sender of the Draft or Template by analyzing the header of the stored email. Recommended, on by default.">
 <!ENTITY vI_prefDialog.smartReply.label "use Smart Reply">
 <!ENTITY vI_prefDialog.smartReply.tooltiptext "'Smart Reply' tries to detect the to-be used sender of the Reply by analyzing the header of the received email. It's relevant if this Identity is not yet in your storage. Best results if configured in the appropriate Tab. Recommended, on by default.">
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.label "all received mails contain a 'received' header">
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.tooltiptext "'Smart Reply' has to detect if the mail was received or sent. This is usually done by checking for a 'received' header. If received mails don't contain a 'received' header uncheck this box. On by default.">
 <!ENTITY vI_prefDialog.smartReplyNewsgroups.label "use Smart Reply also if answering to a newsgroup">
 <!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "You can use 'Smart Reply' for detecting your senders Identity while answering to newsposts. If not configured appropriate, this won't work nicely. Therefore off by default.">
 
-<!ENTITY vI_prefDialog.commonTab.caption2 "interface">
-<!ENTITY vI_prefDialog.SMTP.label "show SMTP Menu">
-<!ENTITY vI_prefDialog.menuEntry.label "add entry for Settings-Dialog and Storage-Editor to Tools menu">
-<!ENTITY vI_prefDialog.warnNonvirtual.label "warn on any usage of non-virtual Identities">
-<!ENTITY vI_prefDialog.warnVirtual.label "warn on any usage of Virtual Identities">
-
-<!ENTITY vI_prefDialog.vIdentityTab.header "Properties of Virtual Identities">
-<!ENTITY vI_prefDialog.vIdentityTab.valueTab.label "attributes to copy">
-<!ENTITY vI_prefDialog.vIdentityTab.fccTab.label "place to save sent emails">
-<!ENTITY vI_prefDialog.vIdentityTab.draftsTab.label "place to save drafts">
-<!ENTITY vI_prefDialog.vIdentityTab.tmplTab.label "place to save templates">
-<!ENTITY vI_prefDialog.vIdentityTab.valueTab.caption "while sending a message with a Virtual Identity">
-<!ENTITY vI_prefDialog.vIdentityTab.valueTab.desc "copy following Attributes from underlying base Identity:">
-<!ENTITY vI_prefDialog.SMIME.label "S/MIME security settings">
-<!ENTITY vI_prefDialog.PGP.label "OpenPGP security settings">
-<!ENTITY vI_prefDialog.VCard.label "vCard attachments">
-<!ENTITY vI_prefDialog.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the &apos;Signature Switch&apos; extension. By now this option is not available.">
-<!ENTITY vI_prefDialog.HideSignature.label "remove any &apos;Signatur&apos; while using a Virtual Identity">
-<!ENTITY vI_prefDialog.autoReplyToSelf.label "set Virtual Identity as Reply-To address">
-<!ENTITY vI_prefDialog.vIdentityTab.fccTab.caption "while sending a message with a Virtual Identity">
-<!ENTITY vI_prefDialog.vidFccAccount.label "Folder used by Account changed with Virtual Identity">
-<!ENTITY vI_prefDialog.vidFccDefault.label "Folder used by Default Account">
-
-<!ENTITY vI_prefDialog.smartReplyTab.header "Smart Reply Settings">
-<!ENTITY vI_prefDialog.smartReplyTab.Tab1.label "1. get addresses">
-<!ENTITY vI_prefDialog.smartReplyTab.Tab2.label "2. filter addresses">
-<!ENTITY vI_prefDialog.smartReplyTab.caption "Virtual Identity Smart Reply">
+<!ENTITY vI_prefDialog.smartTab1.header "Smart Reply - Header Search">
+<!ENTITY vI_prefDialog.smartTab1.caption "1. read possible identities">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab1.desc "To find a Reply-Identity, Smart Reply has to get a list of possible sender identities. Therefore usually the header-fields &apos;To&apos; and &apos;Cc&apos; are analyzed. Here you can enter those and/or other header-fields. (additional options: to select header number n out of any headers with the same name add &apos;:n&apos;. If you add &apos;:@&apos; to any entry, only email-addresses are used, names are ignored.)">
 <!ENTITY vI_prefDialog.smartReply.headers.desc "additional headers  -  one per line, for instance &apos;x-original-to&apos; or &apos;x-original-to:@&apos; or &apos;x-original-to:2:@&apos;">
 <!ENTITY vI_prefDialog.smartReply.headers.reset "set default values">
+
+<!ENTITY vI_prefDialog.smartTab2.header "Smart Reply - Filter / Sort">
+<!ENTITY vI_prefDialog.smartTab2.caption "2. filter and sort identities">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "After getting the addresses they have to be filtered. All filters are used after each other, so you can use them to sort the result too. At the end the first-found address might get used instantly as a senders identity. If you don&apos;t use a filter, all addresses are transferred.">
-<!ENTITY vI_prefDialog.smartReply.filter.desc "Smart Reply filter  -  one filter per line, usage of regular Expressions possible (for instance &apos;/@mozilla.org$/&apos; is matching every email from domain mozilla.org">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Smart Reply filter  -  one filter per line, usage of regular Expressions possible (for instance &apos;/@mozilla.org$/&apos; is matching every email from domain mozilla.org)">
+
+<!ENTITY vI_prefDialog.smartTab3.header "Smart Reply - Compare">
+<!ENTITY vI_prefDialog.smartTab3.caption "3. compare with existing Identities">
 <!ENTITY vI_prefDialog.smartReply.ignoreFullname.label "ignore full name while comparing email addresses with existing identities">
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "if there is no name to any found email-address, use the following one:">
 
-<!ENTITY vI_prefDialog.storageTab.header "Identity Storage">
-<!ENTITY vI_prefDialog.storageTab.Tab1.label "storage options">
-<!ENTITY vI_prefDialog.storageTab.Tab2.label "additional options">
-<!ENTITY vI_prefDialog.storageCap1.caption "storing of Identities">
-<!ENTITY vI_prefDialog.storageCap2.caption "reading of Identities">
-<!ENTITY vI_prefDialog.storage.storedefault.label "save used Identities while sending emails">
-<!ENTITY vI_prefDialog.storage.store_base_id.label "store underlying base Identity">
-<!ENTITY vI_prefDialog.storage.warn_update.label "ask before overwriting Identities in your Storage">
-<!ENTITY vI_prefDialog.storage.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
-<!ENTITY vI_prefDialog.storage.show_switch.label "show switch to activate/deactivate saving of Identities">
-<!ENTITY vI_prefDialog.storage.openEditor "edit stored data">
-<!ENTITY vI_prefDialog.storage.warn_vI_replace.label "ask before Virtual Identity in sender-field will be replaced">
-<!ENTITY vI_prefDialog.storage.get_One_Only.label "ignore Storage after first Virtual Identity was retrieved">
-<!ENTITY vI_prefDialog.storageCap3.caption "store (and recall) the following settings">
 
-<!ENTITY vI_prefDialog.idSelection.header "Identity Selection">
-<!ENTITY vI_prefDialog.idSelection.Tab1.label "identity selection">
-<!ENTITY vI_prefDialog.idSelection.Tab2.label "results handling">
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Input">
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Result Selection">
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Smart Reply and Storage">
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Smart Draft and Storage">
-<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Handling of the Results">
-
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Identity Input">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Smart Reply and Storage">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "Smart Draft and Storage">
 <!ENTITY vI_prefDialog.idSelection.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with &apos;Smart Reply&apos; can configured here.">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "prefer &apos;Smart Reply&apos;-Identities">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "ignore &apos;Smart Reply&apos;-Identities if Identities for recipients found stored">
 
 <!ENTITY vI_prefDialog.idSelection.draft.desc "If you edit a Draft (or a Template) there is nothing to configure. If the extension is able to read the header of the stored email, a related Virtual Identity is created. There is no information about SMTP or any other specific settings in the Draft/Template. This information is, if possible, retrieved from the Virtual Identity Storage.">
 
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Result Handling">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Handling of the Results">
 <!ENTITY vI_prefDialog.idSelection.multiselect.desc "The results of the search in the Virtual Identity Storage and the Smart Reply or Smart Draft header analysis are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "open a dialog to choose Identity">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "ask also if there is only one possible address">
 <!ENTITY vI_prefDialog.idSelection.autocreate.label "use first found identity without interaction">
 <!ENTITY vI_prefDialog.idSelection.autocreate.desc "(if there is only one possible address)">
 
-<!ENTITY vI_prefDialog.notificationTab.header "Status Messages">
-<!ENTITY vI_prefDialog.notificationTab.caption "Notifications">
+<!ENTITY vI_prefDialog.composeDialog.header "Message Composing">
+<!ENTITY vI_prefDialog.composeDialog.caption "Message Compose Features">
+<!ENTITY vI_prefDialog.composeDialog.caption2 "Message Compose Dialog">
+<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.label "autogenerate Timestamp-Identity for new mails">
+<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "On composing a new email, modify your usual sender-address with a timestamp. On easy way to create unique Identities, off by default.">
+<!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the &apos;Signature Switch&apos; extension. By now this option is not available.">
+<!ENTITY vI_prefDialog.composeDialog.HideSignature.label "remove any &apos;Signatur&apos; while using a Virtual Identity">
+<!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "set Virtual Identity as Reply-To address">
+<!ENTITY vI_prefDialog.composeDialog.SMTP.label "show SMTP Menu">
+
+<!ENTITY vI_prefDialog.sending.Folder.label "Attributes / Copies">
+<!ENTITY vI_prefDialog.sending.Folder.row0.label "Sent Mail Folder">
+<!ENTITY vI_prefDialog.sending.Folder.row1.label "Drafts Folder">
+<!ENTITY vI_prefDialog.sending.Folder.row2.label "Templates Folder">
+<!ENTITY vI_prefDialog.sending.warnings.label "Warnings">
+
+<!ENTITY vI_prefDialog.sending.Folder.header "Message Attributes">
+<!ENTITY vI_prefDialog.sending.Folder.caption "attributes to copy">
+<!ENTITY vI_prefDialog.sending.Folder.desc "copy following Attributes from underlying base Identity:">
+<!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME security settings">
+<!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard attachments">
+
+<!ENTITY vI_prefDialog.sending.fccTab.header "Sent Mails Folder">
+<!ENTITY vI_prefDialog.sending.fccTab.caption "while sending a message with a Virtual Identity">
+<!ENTITY vI_prefDialog.sending.vidAccount.label "Folder used by Account changed with Virtual Identity">
+<!ENTITY vI_prefDialog.sending.vidDefault.label "Folder used by Default Account">
+
+<!ENTITY vI_prefDialog.sending.draftTab.header "Draft Folder">
+<!ENTITY vI_prefDialog.sending.draftTab.caption "Place Drafts in">
+
+<!ENTITY vI_prefDialog.sending.tmplTab.header "Template Folder">
+<!ENTITY vI_prefDialog.sending.tmplTab.caption "Place Templates in">
+
+<!ENTITY vI_prefDialog.sending.warnings.header "Warnings">
+<!ENTITY vI_prefDialog.sending.warnings.caption "Warnings before Message Sending">
+<!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "warn on any usage of non-virtual Identities">
+<!ENTITY vI_prefDialog.sending.warnings.warnVirtual.label "warn on any usage of Virtual Identities">
+
+
+<!ENTITY vI_prefDialog.storageTab.Tab0.label "Storage">
+<!ENTITY vI_prefDialog.storageTab.reading.label "reading">
+<!ENTITY vI_prefDialog.storageTab.storing.label "storing">
+<!ENTITY vI_prefDialog.storageTab.Tab1.label "Storage Extra 1">
+<!ENTITY vI_prefDialog.storageTab.Tab2.label "Storage Extra 2">
+
+<!ENTITY vI_prefDialog.storageTab.Tab0.header "Identity Storage">
+<!ENTITY vI_prefDialog.storageTab.Tab0.caption "Storage Usage">
+<!ENTITY vI_prefDialog.storage.label "store (and recall) used Identities">
+<!ENTITY vI_prefDialog.storage.tooltiptext "Used Identities might be stored related to the recipients of your email. If you write again to the same recipient, the same virtual or non-virtual Identity will be used">
+<!ENTITY vI_prefDialog.storage.openEditor "edit stored data">
+
+<!ENTITY vI_prefDialog.storageTab.reading.header "Identity Reading">
+<!ENTITY vI_prefDialog.storageTab.reading.caption "reading of stored Identities">
+<!ENTITY vI_prefDialog.storage.warn_vI_replace.label "ask before Virtual Identity in sender-field will be replaced">
+<!ENTITY vI_prefDialog.storage.get_One_Only.label "ignore Storage after first Virtual Identity was retrieved">
+
+<!ENTITY vI_prefDialog.storageTab.storing.header "Identity Storing">
+<!ENTITY vI_prefDialog.storageTab.storing.caption "storing of used Identities">
+<!ENTITY vI_prefDialog.storage.storedefault.label "save used Identities while sending emails">
+<!ENTITY vI_prefDialog.storage.store_base_id.label "store underlying base Identity">
+<!ENTITY vI_prefDialog.storage.warn_update.label "ask before overwriting Identities in your Storage">
+<!ENTITY vI_prefDialog.storage.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
+<!ENTITY vI_prefDialog.storage.show_switch.label "show switch to activate/deactivate saving of Identities">
+
+<!ENTITY vI_prefDialog.storageTab.Tab1.header "Storage Extras 1">
+<!ENTITY vI_prefDialog.storageTab.Tab1.caption "attributes to store with Identity">
+
+<!ENTITY vI_prefDialog.storageTab.Tab2.header "Storage Extras 2">
+<!ENTITY vI_prefDialog.storageTab.Tab2.caption "attributes to store with Identity">
+
+
+<!ENTITY vI_prefDialog.options.Tab0.label "Menu Options">
+<!ENTITY vI_prefDialog.options.Tab0.header "Menu Options">
+<!ENTITY vI_prefDialog.options.Tab0.caption "Menu Options">
+<!ENTITY vI_prefDialog.menuEntry.label "add entry for Settings-Dialog and Storage-Editor to Tools menu">
+
+<!ENTITY vI_prefDialog.options.Tab1.label "Notifications">
+<!ENTITY vI_prefDialog.options.Tab1.header "Notifications">
+<!ENTITY vI_prefDialog.options.Tab1.caption "Notifications">
 <!ENTITY vI_prefDialog.notifyHeaders.label "show information about recognized headers">
 <!ENTITY vI_prefDialog.notifySmartIdentity.label "activate Smart Reply / Smart Draft status messages">
 <!ENTITY vI_prefDialog.notifyStorage.label "activate Storage status messages">
 <!ENTITY vI_prefDialog.notifyTime.prefix.label "time to show status messages (0 = infinite)">
 <!ENTITY vI_prefDialog.notifyTime.postfix.label "seconds">
-<!ENTITY vI_prefDialog.notificationTab.Debug.caption "Debugging">
+
+<!ENTITY vI_prefDialog.options.Tab2.label "Debugging">
+<!ENTITY vI_prefDialog.options.Tab2.header "Debugging">
+<!ENTITY vI_prefDialog.options.Tab2.caption "Debugging">
 <!ENTITY vI_prefDialog.notifyDebug.desc "To find bugs, solve configuration problems and understand what Virtual Identity is doing, especially with the Smart Reply-filters, you can enable some additional informations. Using this option slows down your mail-client, therefore it shouldn&apos;t be activated permanently.">
 <!ENTITY vI_prefDialog.notifyDebug.label "show area with debug-informations">
+
 
 <!-- just for TB 1.5. ReplyFollowsParent not available -->
 <!-- fields will be hidden, dont have to be translated -->

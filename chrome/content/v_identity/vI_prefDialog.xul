@@ -39,10 +39,7 @@
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/prefPanels.css" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/accountManage.css" type="text/css"?>
-
 <?xml-stylesheet href="chrome://mozapps/skin/extensions/extensions.css"?>
-
-
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -59,11 +56,10 @@
 <script type="application/x-javascript"
             src="chrome://v_identity/content/vI_helper.js" />
 
-  <stringbundleset id="stringbundleset">
-    <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
-  </stringbundleset>
-
- <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
+<stringbundleset id="stringbundleset">
+	<stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
+	<stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
+</stringbundleset>
 
 <broadcaster id="VIdent_broadcaster_doFcc"/>
 
@@ -80,443 +76,574 @@
 <textbox hidden="true" id="VIdent_identity.stationeryFolderPickerMode"
                 prefstring="stationeryFolderPickerMode"/>
 
-<hbox>
-<spacer flex="1" />
-</hbox>
-
-<tabbox class="viewSelector ">
-<radiogroup xhtml:role="listbox" id="viewGroup" persist="last-selected"
-                  class="chromeclass-toolbar" orient="horizontal"
-                  >
-	<vbox>
-	
-	<hbox>
-	<radio pane="source" id="sourceEmail" oncommand="showView('search');" persist="last-selected"/>
-	<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
-	<radio pane="source" id="selection" oncommand="showView('themes');" persist="last-selected"/>
-	<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
-	<radio pane="source" id="composeDialog" oncommand="showView('locales');" persist="last-selected"/>
-        <vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
-	<radio pane="source" id="emailOut" oncommand="showView('plugins');" persist="last-selected"/>
-	</hbox>
-	<spacer height="3px" />
-	<hbox>
-	<spacer if="beforeStorage" width="100px"/>
-	<vbox><spacer flex="1"/><image class="arrow" id="storageUp" /><spacer flex="1"/></vbox>
-	<radio pane="source" id="storageOut" oncommand="showView('updates');"/>
-	<vbox><spacer flex="1"/><image class="arrow" id="storageUpDown" /><spacer flex="1"/></vbox>
-	<spacer if="afterStorage" flex="1"/>
-        </hbox>
-	
-	</vbox>
-	
-	<spacer flex="1"/>
-	<vbox><spacer flex="1"/>
-	<hbox><spacer flex="1"/><radio pane="source" id="options" oncommand="showView('installs');"/></hbox>
-	<spacer flex="1"/>
-	<button class="v_identity_logo v_identity_logo_button"
-		label="&vident.vidLogo.label; &vident.version;"
-		oncommand="vI_prefDialog.openURL('http://www.absorb.it/virtual-id')" tooltiptext="&vI_prefDialog.vidLogo.tooltiptext;" />
-	</vbox>
-</radiogroup>
+<tabbox id="prefTabbox" class="viewSelector ">
+	<radiogroup xhtml:role="listbox" id="viewGroup" persist="last-selected"
+		class="chromeclass-toolbar" orient="horizontal" >
+		<vbox>
+		<hbox>
+			<radio pane="source" id="sourceEmail"
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 0;" />
+			<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
+			<radio pane="source" id="selection"
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 1;" />
+			<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
+			<radio pane="source" id="composeDialog"
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 2;" />
+			<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
+			<radio pane="source" id="emailOut"
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 3;" />
+		</hbox>
+		<spacer class="heightS" />
+		<hbox>
+			<spacer id="beforeStorage" />
+			<vbox><spacer flex="1"/><image class="arrow" id="storageUp" /><spacer flex="1"/></vbox>
+			<radio pane="source" id="storageOut" 
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 4;" />
+			<vbox><spacer flex="1"/><image class="arrow" id="storageUpDown" /><spacer flex="1"/></vbox>
+			<spacer id="afterStorage" flex="1"/>
+		</hbox>
+		</vbox>
+		<spacer flex="1"/>
+		<vbox>
+			<spacer flex="1"/>
+			<hbox><spacer flex="1"/><radio pane="source" id="options"
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 5;" /></hbox>
+			<spacer flex="1"/>
+			<button class="v_identity_logo v_identity_logo_button"
+				label="&vident.vidLogo.label; &vident.version;"
+				oncommand="vI_prefDialog.openURL('http://www.absorb.it/virtual-id')"
+				tooltiptext="&vI_prefDialog.vidLogo.tooltiptext;" />
+		</vbox>
+	</radiogroup>
 	<tabs>
-		<tab label="&vI_prefDialog.commonTab.label;" />
-		<tab label="&vI_prefDialog.vIdentityTab.label;" />
-		<tab id="smartReplyTab" label="&vI_prefDialog.smartReplyTab.label;" />
-		<tab id="storageTab" label="&vI_prefDialog.storageTab.label;" />
-		<tab id="idSelection" label="&vI_prefDialog.idSelection.label;" />
-		<tab label="&vI_prefDialog.notificationTab.label;" />
+		<tab label="&vI_prefDialog.tabbox.tab0.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 0;"/>
+		<tab label="&vI_prefDialog.tabbox.tab1.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 1;"/>
+		<tab label="&vI_prefDialog.tabbox.tab2.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 2;"/>
+		<tab label="&vI_prefDialog.tabbox.tab3.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 3;"/>
+		<tab label="&vI_prefDialog.tabbox.tab4.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 4;"/>
+		<tab label="&vI_prefDialog.tabbox.tab5.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 5;"/>
 	</tabs>
 	<tabpanels>
-	<tabpanel orient="vertical" label="&vI_prefDialog.commonTab.header;">
-		<dialogheader title="&vI_prefDialog.commonTab.header;"/>
+	<tabpanel orient="vertical" >
+		<hbox>
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+			hidecolumnpicker="true" hidehscroll="true" >
+		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true"/></treecols>
+		<treechildren>
+			<treeitem container="true" open="true" >
+				<treerow><treecell label="&vI_prefDialog.smartCell.label;" /></treerow>
+				<treechildren>
+					<treeitem><treerow><treecell label="&vI_prefDialog.smartCell.row0.label;" /></treerow></treeitem>
+					<treeitem><treerow><treecell label="&vI_prefDialog.smartCell.row1.label;" /></treerow></treeitem>
+					<treeitem><treerow><treecell label="&vI_prefDialog.smartCell.row2.label;" /></treerow></treeitem>
+				</treechildren>
+			</treeitem>
+		</treechildren>
+		</tree>
+		
+		<tabbox flex="1" >
+		<tabs hidden="true">
+			<tab /><tab /><tab /><tab /><tab />
+		</tabs>
+		<tabpanels class="plain">
+			<tabpanel orient="vertical">
+			<dialogheader title="&vI_prefDialog.smartTab0.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.smartTab0.Draft.caption;" />
+				<label id="version-warning"
+					value="&vI_prefDialog.versionWarning.label;" hidden="true"/>
+				<checkbox id="VIdent_identity.smart_draft" label="&vI_prefDialog.smartDraft.label;"
+					tooltiptext="&vI_prefDialog.smartDraft.tooltiptext;" prefstring="smart_draft"
+					oncommand="vI_prefDialog.base.idSelectionConstraint();" />
+				</groupbox>
+				<groupbox>
+				<caption label="&vI_prefDialog.smartTab0.Reply.caption;" />
+				<checkbox id="VIdent_identity.smart_reply" label="&vI_prefDialog.smartReply.label;"
+					tooltiptext="&vI_prefDialog.smartReply.tooltiptext;" prefstring="smart_reply"
+					oncommand="vI_prefDialog.base.smartReplyConstraint(this);" />
+				<hbox><spacer class="widthS"/>
+					<vbox>
+					<checkbox id="VIdent_identity.smart_detectByReceivedHeader" label="&vI_prefDialog.smartDetectByReceivedHeader.label;"
+						tooltiptext="&vI_prefDialog.smartDetectByReceivedHeader.tooltiptext;" prefstring="smart_detectByReceivedHeader" />
+					<checkbox id="VIdent_identity.smart_reply_for_newsgroups" label="&vI_prefDialog.smartReplyNewsgroups.label;"
+						tooltiptext="&vI_prefDialog.smartReplyNewsgroups.tooltiptext;" prefstring="smart_reply_for_newsgroups" />
+					</vbox>
+				</hbox>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.smartTab1.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.smartTab1.caption;" />
+				<vbox align="left">
+					<description class="widthXX">&vI_prefDialog.smartReplyTab.Tab1.desc;</description>
+					<hbox>
+					<vbox><description class="widthX">&vI_prefDialog.smartReply.headers.desc;</description>
+					<spacer flex="1"/>
+					<button id="VIdent_identity.smart_reply_headers_reset" label="&vI_prefDialog.smartReply.headers.reset;" oncommand="vI_prefDialog.base.smartReplyHeaderReset();"/>
+					</vbox>
+					<textbox id="VIdent_identity.smart_reply_headers" multiline="true"
+						rows="4" size="20" wrap="false" flex="1"
+						prefstring="smart_reply_headers" />
+					</hbox>
+				</vbox>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.smartTab2.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.smartTab2.caption;" />
+				<vbox align="left">
+					<description class="widthXX">&vI_prefDialog.smartReplyTab.Tab2.desc;</description>
+					<hbox>
+					<vbox><description class="widthX">&vI_prefDialog.smartReply.filter.desc;</description><spacer flex="1"/></vbox>
+					<textbox id="VIdent_identity.smart_reply_filter" multiline="true"
+						rows="4" size="20" wrap="false" flex="1"
+						prefstring="smart_reply_filter" />
+					</hbox>
+				</vbox>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.smartTab3.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.smartTab3.caption;" />
+				<vbox align="left">
+					<checkbox id="VIdent_identity.smart_reply_ignoreFullName" label="&vI_prefDialog.smartReply.ignoreFullname.label;"
+						prefstring="smart_reply_ignoreFullName" wrap="true" class="widthXX" />
+					<hbox>
+					<description class="widthX">&vI_prefDialog.smartReply.defaultFullname.label;</description>
+					<vbox><spacer flex="1"/><textbox id="VIdent_identity.smart_reply_defaultFullName" flex="1"
+						prefstring="smart_reply_defaultFullName" size="20" /><spacer flex="1"/></vbox>
+					</hbox>
+				</vbox>
+				</groupbox>
+			</tabpanel>
+		</tabpanels>
+		</tabbox>
+	</hbox>
+	</tabpanel>
+	<tabpanel orient="vertical" >
+		<hbox>
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+			hidecolumnpicker="true" hidehscroll="true">
+		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true" /></treecols>
+		<treechildren>
+			<treeitem><treerow><treecell label="&vI_prefDialog.idSelection.Cell0.label;" /></treerow></treeitem>
+			<treeitem><treerow><treecell label="&vI_prefDialog.idSelection.Cell1.label;" /></treerow></treeitem>
+		</treechildren>
+		</tree>
+		
+		<tabbox flex="1" >
+		<tabs hidden="true"><tab /><tab /></tabs>
+		
+		<tabpanels class="plain">
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.idSelection.Tab0.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.idSelection.Tab0.caption;"/>
+				<vbox align="left">
+					<description class="widthXX">&vI_prefDialog.idSelection.reply.desc;</description>
+					<checkbox id="VIdent_identity.idSelection_storage_prefer_smart_reply" label="&vI_prefDialog.idSelection.prefer_smart_reply.label;"
+						prefstring="idSelection_storage_prefer_smart_reply"/>
+					<checkbox id="VIdent_identity.idSelection_storage_ignore_smart_reply" label="&vI_prefDialog.idSelection.ignore_smart_reply.label;"
+						prefstring="idSelection_storage_ignore_smart_reply"/>
+				</vbox>
+				</groupbox>
+				<groupbox>
+				<caption label="&vI_prefDialog.idSelection.Tab0.caption2;"/>
+				<vbox align="left">
+					<description class="widthXX">&vI_prefDialog.idSelection.draft.desc;</description>
+				</vbox>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.idSelection.Tab1.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.idSelection.Tab1.caption;"/>
+				<vbox align="left">
+					<description class="widthXX">&vI_prefDialog.idSelection.multiselect.desc;</description>
+					<checkbox id="VIdent_identity.idSelection_ask" label="&vI_prefDialog.idSelection.ask.label;"
+						prefstring="idSelection_ask"
+						oncommand="vI_prefDialog.base.idSelectionResultConstraint();"/>
+					<hbox><spacer class="widthS"/><checkbox id="VIdent_identity.idSelection_ask_always" label="&vI_prefDialog.idSelection.ask_always.label;"
+						prefstring="idSelection_ask_always"
+						oncommand="vI_prefDialog.base.idSelectionResultConstraint();"/>
+					</hbox>
+					<hbox>
+					<vbox><spacer flex="1"/>
+					<checkbox id="VIdent_identity.idSelection_autocreate" label="&vI_prefDialog.idSelection.autocreate.label;"
+						prefstring="idSelection_autocreate"
+						oncommand="vI_prefDialog.base.idSelectionResultConstraint();"/>
+					<spacer flex="1"/></vbox>
+					<vbox><spacer flex="1"/>
+					<label value="&vI_prefDialog.idSelection.autocreate.desc;" hidden="true"
+						id="VIdent_identity.idSelection_autocreate.desc" />
+					<spacer flex="1"/></vbox>
+					</hbox>
+				</vbox>
+				</groupbox>
+			</tabpanel>
+		</tabpanels>
+		</tabbox>
+		</hbox>
+	</tabpanel>
+	<tabpanel orient="vertical" >
+		<dialogheader title="&vI_prefDialog.composeDialog.header;"/>
 		<groupbox>
-		<caption label="&vI_prefDialog.commonTab.caption;"/>
-			<checkbox id="VIdent_identity.storage" label="&vI_prefDialog.storage.label;"
-				tooltiptext="&vI_prefDialog.storage.tooltiptext;" prefstring="storage"
-				oncommand="vI_prefDialog.base.storageConstraint(this);" />
-			<checkbox id="VIdent_identity.autoTimestamp" label="&vI_prefDialog.autoTimestamp.label;"
-				tooltiptext="&vI_prefDialog.autoTimestamp.tooltiptext;" prefstring="autoTimestamp" />
-			<spacer height="10px"/>
-			<label value="&vI_prefDialog.smartInfo.label;" />
-			<label id="version-warning"
-				value="&vI_prefDialog.versionWarning.label;" hidden="true"/>
-			<checkbox id="VIdent_identity.smart_draft" label="&vI_prefDialog.smartDraft.label;"
-				tooltiptext="&vI_prefDialog.smartDraft.tooltiptext;" prefstring="smart_draft"
-				oncommand="vI_prefDialog.base.idSelectionConstraint();" />
-			<checkbox id="VIdent_identity.smart_reply" label="&vI_prefDialog.smartReply.label;"
-				tooltiptext="&vI_prefDialog.smartReply.tooltiptext;" prefstring="smart_reply"
-				oncommand="vI_prefDialog.base.smartReplyConstraint(this);" />
-			<hbox><spacer width="20px"/><checkbox id="VIdent_identity.smart_reply_for_newsgroups" label="&vI_prefDialog.smartReplyNewsgroups.label;"
-				tooltiptext="&vI_prefDialog.smartReplyNewsgroups.tooltiptext;" prefstring="smart_reply_for_newsgroups" />
-			</hbox>
+		<caption label="&vI_prefDialog.composeDialog.caption;"/>
+			<checkbox id="VIdent_identity.autoTimestamp" label="&vI_prefDialog.composeDialog.autoTimestamp.label;"
+				tooltiptext="&vI_prefDialog.composeDialog.autoTimestamp.tooltiptext;" prefstring="autoTimestamp" />
+			<description id="VIdent_identity.HideSignature.warning" class="widthXX">&vI_prefDialog.composeDialog.HideSignature.warning.desc;</description>
+			<checkbox id="VIdent_identity.hide_signature" label="&vI_prefDialog.composeDialog.HideSignature.label;" disabled="true"
+				prefstring="hide_signature"/>
+			<spacer id="autoReplyToSelfSpacer" class="paragraph"/>
+			<checkbox id="VIdent_identity.autoReplyToSelf" label="&vI_prefDialog.composeDialog.autoReplyToSelf.label;"
+				prefstring="autoReplyToSelf"/>
 		</groupbox>
 		<groupbox>
-		<caption label="&vI_prefDialog.commonTab.caption2;"/>
-			<checkbox id="VIdent_identity.show_smtp" label="&vI_prefDialog.SMTP.label;"
+		<caption label="&vI_prefDialog.composeDialog.caption2;"/>
+			<checkbox id="VIdent_identity.show_smtp" label="&vI_prefDialog.composeDialog.SMTP.label;"
 				prefstring="show_smtp" />
-			<checkbox id="VIdent_identity.menu_entry" label="&vI_prefDialog.menuEntry.label;"
-				prefstring="menu_entry" />
-			<spacer height="10px"/>
-			<checkbox id="VIdent_identity.warn_nonvirtual" label="&vI_prefDialog.warnNonvirtual.label;"
-				prefstring="warn_nonvirtual" />
-			<checkbox id="VIdent_identity.warn_virtual" label="&vI_prefDialog.warnVirtual.label;"
-				prefstring="warn_virtual" />
 		</groupbox>
 	</tabpanel>
-	<tabpanel orient="vertical" label="&vI_prefDialog.vIdentityTab.header;">
-		<dialogheader title="&vI_prefDialog.vIdentityTab.header;"/>
-		<tabbox>
-		<tabs>
-			<tab label="&vI_prefDialog.vIdentityTab.valueTab.label;" />
-			<tab label="&vI_prefDialog.vIdentityTab.fccTab.label;" />
-			<tab id="VIdent_messageDraftsTab" label="&vI_prefDialog.vIdentityTab.draftsTab.label;" />
-			<tab id="VIdent_messageTemplatesTab" label="&vI_prefDialog.vIdentityTab.tmplTab.label;" />
+	<tabpanel orient="vertical" >
+		<hbox>
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+			hidecolumnpicker="true" hidehscroll="true" >
+		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true"/></treecols>
+		<treechildren>
+			<treeitem container="true" open="true" >
+				<treerow><treecell label="&vI_prefDialog.sending.Folder.label;" /></treerow>
+				<treechildren>
+					<treeitem><treerow><treecell label="&vI_prefDialog.sending.Folder.row0.label;" /></treerow></treeitem>
+					<treeitem><treerow><treecell label="&vI_prefDialog.sending.Folder.row1.label;" /></treerow></treeitem>
+					<treeitem><treerow><treecell label="&vI_prefDialog.sending.Folder.row2.label;" /></treerow></treeitem>
+				</treechildren>
+			</treeitem>
+			<treeitem><treerow><treecell label="&vI_prefDialog.sending.warnings.label;" /></treerow></treeitem>
+		</treechildren>
+		</tree>
+		
+		<tabbox flex="1" >
+		<tabs hidden="true">
+			<tab /><tab /><tab id="VIdent_messageDraftsTab"/><tab id="VIdent_messageTemplatesTab"/><tab />
 		</tabs>
-		<tabpanels>
-		<tabpanel orient="vertical">
-			<groupbox>
-			<caption label="&vI_prefDialog.vIdentityTab.valueTab.caption;"/>
-			<description width="500px">&vI_prefDialog.vIdentityTab.valueTab.desc;</description>
-			<checkbox id="VIdent_identity.copySMIMESettings" label="&vI_prefDialog.SMIME.label;"
-				prefstring="copySMIMESettings"/>
-			<checkbox id="VIdent_identity.copyAttachVCardSettings" label="&vI_prefDialog.VCard.label;"
-				prefstring="copyAttachVCardSettings"/>
-			<spacer height="10px"/>
-			<description id="VIdent_identity.HideSignature.warning" width="500px">&vI_prefDialog.HideSignature.warning.desc;</description>
-			<checkbox id="VIdent_identity.hide_signature" label="&vI_prefDialog.HideSignature.label;" disabled="true"
-				prefstring="hide_signature"/>
-			<spacer id="autoReplyToSelfSpacer" height="10px"/>
-			<checkbox id="VIdent_identity.autoReplyToSelf" label="&vI_prefDialog.autoReplyToSelf.label;"
-				prefstring="autoReplyToSelf"/>
-			</groupbox>
-		</tabpanel>
-		<tabpanel orient="vertical">
-			<groupbox>
-			<caption label="&vI_prefDialog.vIdentityTab.fccTab.caption;"/>
-			<hbox align="center">
-				<checkbox id="VIdent_identity.doFcc" label="&fccMailFolder.label;" 
-					accesskey="&fccMailFolder.accesskey;"
-					oncommand="setupFccItems();" prefstring="doFcc"/>
-			</hbox>
-			<radiogroup id="VIdent_doFcc">
-			<grid class="specialFolderPickerGrid">
-				<columns>
-					<column flex="1"/>
-					<column flex="2"/>
-				</columns>
-				<rows>
-					<radio id="VIdent_fcc_Settings_Of_Account" 
-						value="3" label="&vI_prefDialog.vidFccAccount.label;"
-						oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
-						observes="VIdent_broadcaster_doFcc"/>
-					<radio id="VIdent_fcc_Settings_Of_Default" 
-						value="2" label="&vI_prefDialog.vidFccDefault.label;"
-						oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
-						observes="VIdent_broadcaster_doFcc"/>
-					<row align="center" id="msgFccAccountPickerRow">
-						<radio id="VIdent_fcc_selectAccount" 
-							value="0" label="&sentFolderOn.label;"
-							accesskey="&sentFolderOn.accesskey;"
-							oncommand="setPickersState('msgFccAccountPicker', 'msgFccFolderPicker', event)" 
-							observes="VIdent_broadcaster_doFcc"/>
-					</row> 
-					<row align="center" id="msgFccFolderPickerRow">
-						<radio id="VIdent_fcc_selectFolder" 
-							value="1" label="&sentInOtherFolder.label;"
-							accesskey="&sentInOtherFolder.accesskey;"
+		<tabpanels class="plain">
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.sending.Folder.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.sending.Folder.caption;"/>
+				<description class="widthXX">&vI_prefDialog.sending.Folder.desc;</description>
+				<checkbox id="VIdent_identity.copySMIMESettings" label="&vI_prefDialog.sending.Folder.SMIME.label;"
+					prefstring="copySMIMESettings"/>
+				<checkbox id="VIdent_identity.copyAttachVCardSettings" label="&vI_prefDialog.sending.Folder.VCard.label;"
+					prefstring="copyAttachVCardSettings"/>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.sending.fccTab.header;" />
+				<groupbox>
+				<caption label="&vI_prefDialog.sending.fccTab.caption;"/>
+				<hbox align="center">
+					<checkbox id="VIdent_identity.doFcc" label="&fccMailFolder.label;" 
+						accesskey="&fccMailFolder.accesskey;"
+						oncommand="setupFccItems();" prefstring="doFcc"/>
+				</hbox>
+				<radiogroup id="VIdent_doFcc">
+				<grid class="specialFolderPickerGrid">
+					<columns>
+						<column flex="1"/>
+						<column flex="2"/>
+					</columns>
+					<rows>
+						<radio id="VIdent_fcc_Settings_Of_Account" 
+							value="3" label="&vI_prefDialog.sending.vidAccount.label;"
 							oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
 							observes="VIdent_broadcaster_doFcc"/>
-					</row>
-				</rows>
-			</grid>
-			</radiogroup>
-			<hbox id="fccReplyFollowsParentBox" align="center" class="fccReplyFollowsParent">
-				<checkbox wsm_persist="true" id="VIdent_identity.fccReplyFollowsParent"
-					  label="&fccReplyFollowsParent.label;"
-					  accesskey="&fccReplyFollowsParent.accesskey;"
-					  prefattribute="value"
-					  prefstring="fccReplyFollowsParent"
-					  observes="VIdent_broadcaster_doFcc"/>
-			</hbox>
-
-			</groupbox>
-		</tabpanel>
-		<tabpanel orient="vertical">
-			<groupbox>
-			<caption />
-			<radiogroup id="VIdent_messageDrafts">
-			<grid class="specialFolderPickerGrid">
-				<columns>
-					<column flex="1"/>
-					<column flex="2"/>
-				</columns>
-				<rows>
-					<radio id="VIdent_draft_Settings_Of_Account" 
-						value="3" label="&vI_prefDialog.vidFccAccount.label;"
-						oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
-					<radio id="VIdent_draft_Settings_Of_Default" 
-						value="2" label="&vI_prefDialog.vidFccDefault.label;"
-						oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
-					<row align="center" id="msgDraftsAccountPickerRow">
-						<radio id="VIdent_draft_selectAccount" 
-							value="0" label="&draftsFolderOn.label;"
-							accesskey="&draftsFolderOn.accesskey;"
-							oncommand="setPickersState('msgDraftsAccountPicker', 'msgDraftsFolderPicker', event)" />
-					</row> 
-					<row align="center" id="msgDraftsFolderPickerRow">
-						<radio id="VIdent_draft_selectFolder" 
-							value="1" label="&draftInOtherFolder.label;"
-							accesskey="&draftInOtherFolder.accesskey;"
+						<radio id="VIdent_fcc_Settings_Of_Default" 
+							value="2" label="&vI_prefDialog.sending.vidDefault.label;"
+							oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
+							observes="VIdent_broadcaster_doFcc"/>
+						<row align="center" id="msgFccAccountPickerRow">
+							<radio id="VIdent_fcc_selectAccount" 
+								value="0" label="&sentFolderOn.label;"
+								accesskey="&sentFolderOn.accesskey;"
+								oncommand="setPickersState('msgFccAccountPicker', 'msgFccFolderPicker', event)" 
+								observes="VIdent_broadcaster_doFcc"/>
+						</row> 
+						<row align="center" id="msgFccFolderPickerRow">
+							<radio id="VIdent_fcc_selectFolder" 
+								value="1" label="&sentInOtherFolder.label;"
+								accesskey="&sentInOtherFolder.accesskey;"
+								oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
+								observes="VIdent_broadcaster_doFcc"/>
+						</row>
+					</rows>
+				</grid>
+				</radiogroup>
+				<hbox id="fccReplyFollowsParentBox" align="center" class="fccReplyFollowsParent">
+					<checkbox wsm_persist="true" id="VIdent_identity.fccReplyFollowsParent"
+						label="&fccReplyFollowsParent.label;"
+						accesskey="&fccReplyFollowsParent.accesskey;"
+						prefattribute="value"
+						prefstring="fccReplyFollowsParent"
+						observes="VIdent_broadcaster_doFcc"/>
+				</hbox>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.sending.draftTab.header;" />
+				<groupbox>
+				<caption label="&vI_prefDialog.sending.draftTab.caption;" />
+				<radiogroup id="VIdent_messageDrafts">
+				<grid class="specialFolderPickerGrid">
+					<columns>
+						<column flex="1"/>
+						<column flex="2"/>
+					</columns>
+					<rows>
+						<radio id="VIdent_draft_Settings_Of_Account" 
+							value="3" label="&vI_prefDialog.sending.vidAccount.label;"
 							oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
-					</row>
-				</rows>
-			</grid>
-			</radiogroup>
-
-			</groupbox>
-		</tabpanel>
-		<tabpanel orient="vertical">
-			<groupbox>
-			<caption />
-			<radiogroup id="VIdent_messageTemplates">
-			<grid class="specialFolderPickerGrid">
-				<columns>
-					<column flex="1"/>
-					<column flex="2"/>
-				</columns>
-				<rows>
-					<radio id="VIdent_tmpl_Settings_Of_Account" 
-						value="3" label="&vI_prefDialog.vidFccAccount.label;"
-						oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
-					<radio id="VIdent_fcc_Settings_Of_Default" 
-						value="2" label="&vI_prefDialog.vidFccDefault.label;"
-						oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
-					<row align="center" id="msgStationeryAccountPickerRow">
-						<radio id="VIdent_tmpl_selectAccount" 
-							value="0" label="&templatesFolderOn.label;"
-							accesskey="&templatesFolderOn.accesskey;"
-							oncommand="setPickersState('msgStationeryAccountPicker', 'msgStationeryFolderPicker', event)" />
-					</row> 
-					<row align="center" id="msgStationeryFolderPickerRow">
-						<radio id="VIdent_tmpl_selectFolder" 
-							value="1" label="&templateInOtherFolder.label;"
-							accesskey="&templateInOtherFolder.accesskey;"
+						<radio id="VIdent_draft_Settings_Of_Default" 
+							value="2" label="&vI_prefDialog.sending.vidDefault.label;"
+							oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
+						<row align="center" id="msgDraftsAccountPickerRow">
+							<radio id="VIdent_draft_selectAccount" 
+								value="0" label="&draftsFolderOn.label;"
+								accesskey="&draftsFolderOn.accesskey;"
+								oncommand="setPickersState('msgDraftsAccountPicker', 'msgDraftsFolderPicker', event)" />
+						</row> 
+						<row align="center" id="msgDraftsFolderPickerRow">
+							<radio id="VIdent_draft_selectFolder" 
+								value="1" label="&draftInOtherFolder.label;"
+								accesskey="&draftInOtherFolder.accesskey;"
+								oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
+						</row>
+					</rows>
+				</grid>
+				</radiogroup>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.sending.tmplTab.header;" />
+				<groupbox>
+				<caption label="&vI_prefDialog.sending.tmplTab.header;"/>
+				<radiogroup id="VIdent_messageTemplates">
+				<grid class="specialFolderPickerGrid">
+					<columns>
+						<column flex="1"/>
+						<column flex="2"/>
+					</columns>
+					<rows>
+						<radio id="VIdent_tmpl_Settings_Of_Account" 
+							value="3" label="&vI_prefDialog.sending.vidAccount.label;"
 							oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
-					</row>
-				</rows>
-			</grid>
-			</radiogroup>
-
-			</groupbox>
-		</tabpanel>
-		</tabpanels>
-		</tabbox>
-	</tabpanel>
-	<tabpanel orient="vertical" label="&vI_prefDialog.smartReplyTab.header;">
-		<dialogheader title="&vI_prefDialog.smartReplyTab.header;"/>
-		<tabbox>
-		<tabs>
-			<tab id="smartReplyTab1" label="&vI_prefDialog.smartReplyTab.Tab1.label;" />
-			<tab id="smartReplyTab2" label="&vI_prefDialog.smartReplyTab.Tab2.label;" />
-		</tabs>
-		<tabpanels>
-			<tabpanel orient="vertical">
-			<groupbox>
-			<caption label="&vI_prefDialog.smartReplyTab.caption;"/>
-			<vbox align="left">
-				<description width="500px">&vI_prefDialog.smartReplyTab.Tab1.desc;</description>
-				<hbox>
-				<vbox><description width="300px">&vI_prefDialog.smartReply.headers.desc;</description>
-				<spacer flex="1"/>
-				<button id="VIdent_identity.smart_reply_headers_reset" label="&vI_prefDialog.smartReply.headers.reset;" oncommand="vI_prefDialog.base.smartReplyHeaderReset();"/>
-				</vbox>
-				<textbox id="VIdent_identity.smart_reply_headers" multiline="true"
-					rows="4" size="20" wrap="false" flex="1"
-					prefstring="smart_reply_headers" />
-				</hbox>
-			</vbox>
-			</groupbox>
+						<radio id="VIdent_tmpl_Settings_Of_Default" 
+							value="2" label="&vI_prefDialog.sending.vidDefault.label;"
+							oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
+						<row align="center" id="msgStationeryAccountPickerRow">
+							<radio id="VIdent_tmpl_selectAccount" 
+								value="0" label="&templatesFolderOn.label;"
+								accesskey="&templatesFolderOn.accesskey;"
+								oncommand="setPickersState('msgStationeryAccountPicker', 'msgStationeryFolderPicker', event)" />
+						</row> 
+						<row align="center" id="msgStationeryFolderPickerRow">
+							<radio id="VIdent_tmpl_selectFolder" 
+								value="1" label="&templateInOtherFolder.label;"
+								accesskey="&templateInOtherFolder.accesskey;"
+								oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
+						</row>
+					</rows>
+				</grid>
+				</radiogroup>
+				</groupbox>
 			</tabpanel>
 			<tabpanel orient="vertical">
-			<groupbox>
-			<caption label="&vI_prefDialog.smartReplyTab.caption;"/>
-			<vbox align="left">
-				<description width="500px">&vI_prefDialog.smartReplyTab.Tab2.desc;</description>
-				<hbox>
-				<vbox><description width="300px">&vI_prefDialog.smartReply.filter.desc;</description><spacer flex="1"/></vbox>
-				<textbox id="VIdent_identity.smart_reply_filter" multiline="true"
-					rows="4" size="20" wrap="false" flex="1"
-					prefstring="smart_reply_filter" />
-				</hbox>
-				<checkbox id="VIdent_identity.smart_reply_ignoreFullName" label="&vI_prefDialog.smartReply.ignoreFullname.label;"
-					prefstring="smart_reply_ignoreFullName" wrap="true" width="500px"/>
-				<hbox>
-				<description width="300px">&vI_prefDialog.smartReply.defaultFullname.label;</description>
-				<vbox><spacer flex="1"/><textbox id="VIdent_identity.smart_reply_defaultFullName" flex="1"
-					prefstring="smart_reply_defaultFullName" size="20" /><spacer flex="1"/></vbox>
-				</hbox>
-			</vbox>
-			</groupbox>
+				<dialogheader title="&vI_prefDialog.sending.warnings.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.sending.warnings.caption;"/>
+				<checkbox id="VIdent_identity.warn_nonvirtual" label="&vI_prefDialog.sending.warnings.warnNonvirtual.label;"
+					prefstring="warn_nonvirtual" />
+				<checkbox id="VIdent_identity.warn_virtual" label="&vI_prefDialog.sending.warnings.warnVirtual.label;"
+					prefstring="warn_virtual" />
+				</groupbox>
 			</tabpanel>
 		</tabpanels>
 		</tabbox>
+		</hbox>
 	</tabpanel>
-	<tabpanel orient="vertical" label="&vI_prefDialog.storageTab.header;">
-		<dialogheader title="&vI_prefDialog.storageTab.header;"/>
-		<tabbox>
-		<tabs>
-			<tab id="storageTab1" label="&vI_prefDialog.storageTab.Tab1.label;" />
-			<tab id="storageTab2" label="&vI_prefDialog.storageTab.Tab2.label;" />
+	<tabpanel orient="vertical" >
+		<hbox>
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+			hidecolumnpicker="true" hidehscroll="true">
+		<treecols orient="vertical">
+			<treecol flex="1" hideheader="true" primary="true"/>
+		</treecols>
+		<treechildren>
+			<treeitem container="true" open="true">
+				<treerow><treecell label="&vI_prefDialog.storageTab.Tab0.label;" /></treerow>
+				<treechildren>
+					<treeitem><treerow><treecell label="&vI_prefDialog.storageTab.reading.label;" /></treerow></treeitem>
+					<treeitem><treerow><treecell label="&vI_prefDialog.storageTab.storing.label;" /></treerow></treeitem>
+				</treechildren>
+			</treeitem>
+			<treeitem><treerow><treecell label="&vI_prefDialog.storageTab.Tab1.label;" /></treerow></treeitem>
+			<treeitem><treerow><treecell label="&vI_prefDialog.storageTab.Tab2.label;" /></treerow></treeitem>
+		</treechildren>
+		</tree>
+		
+		<tabbox flex="1" >
+		<tabs hidden="true">
+			<tab /><tab /><tab /><tab /><tab />
 		</tabs>
-		<tabpanels>
+		<tabpanels class="plain">
 			<tabpanel orient="vertical">
-			<groupbox>
-			<caption label="&vI_prefDialog.storageCap1.caption;"/>
-			<vbox align="left">
-				<checkbox id="VIdent_identity.storage_storedefault" label="&vI_prefDialog.storage.storedefault.label;"
-					prefstring="storage_storedefault"/>
-				<checkbox id="VIdent_identity.storage_store_base_id" label="&vI_prefDialog.storage.store_base_id.label;"
-					  prefstring="storage_store_base_id"/>
-				<checkbox id="VIdent_identity.storage_show_switch" label="&vI_prefDialog.storage.show_switch.label;"
-					prefstring="storage_show_switch"/>
-				<checkbox id="VIdent_identity.storage_warn_update" label="&vI_prefDialog.storage.warn_update.label;"
-					prefstring="storage_warn_update"/>
-				<checkbox id="VIdent_identity.storage_dont_update_multiple" label="&vI_prefDialog.storage.dont_update_multiple.label;"
-					prefstring="storage_dont_update_multiple"/>
-				<spacer height="10px"/>
+				<dialogheader title="&vI_prefDialog.storageTab.Tab0.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.storageTab.Tab0.caption;" />
+				<checkbox id="VIdent_identity.storage" label="&vI_prefDialog.storage.label;"
+					tooltiptext="&vI_prefDialog.storage.tooltiptext;" prefstring="storage"
+					oncommand="vI_prefDialog.base.storageConstraint(this);" />
+				<spacer class="paragraph"/>
 				<button id="VIdent_identity.storage.openEditor" label="&vI_prefDialog.storage.openEditor;" oncommand="openDialog('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome,modal');" />
-			</vbox>
-			</groupbox>
-			<groupbox>
-			<caption label="&vI_prefDialog.storageCap2.caption;"/>
-			<vbox align="left">
-				<checkbox id="VIdent_identity.storage_warn_vI_replace" label="&vI_prefDialog.storage.warn_vI_replace.label;"
-					prefstring="storage_warn_vI_replace"/>
-				<checkbox id="VIdent_identity.storage_getOneOnly" label="&vI_prefDialog.storage.get_One_Only.label;"
-					prefstring="storage_getOneOnly"/>
-			</vbox>
-			</groupbox>
+				</groupbox>
 			</tabpanel>
 			<tabpanel orient="vertical">
-			<groupbox>
-			<caption label="&vI_prefDialog.storageCap3.caption;"/>
-			<vbox align="left">
-				<checkbox id="VIdent_identity.storageExtras_returnReciept" label="&vI_prefDialog.storageExtras.returnReciept.label;"
-					prefstring="storageExtras_returnReciept"/>
-				<checkbox id="VIdent_identity.storageExtras_characterEncoding" label="&vI_prefDialog.storageExtras.characterEncoding.label;"
-					prefstring="storageExtras_characterEncoding"/>
-				<checkbox id="VIdent_identity.storageExtras_messageFormat" label="&vI_prefDialog.storageExtras.messageFormat.label;"
-					prefstring="storageExtras_messageFormat"/>
-				<spacer height="10px"/>
-				<hbox><vbox>
-				<label value="&vI_prefDialog.storageExtras.sMime.label;"/>
-				<checkbox id="VIdent_identity.storageExtras_sMime_messageEncryption" label="&vI_prefDialog.storageExtras.sMime.messageEncryption.label;"
-					prefstring="storageExtras_sMime_messageEncryption"/>
-				<checkbox id="VIdent_identity.storageExtras_sMime_messageSignature" label="&vI_prefDialog.storageExtras.sMime.messageSignature.label;"
-					prefstring="storageExtras_sMime_messageSignature"/>
-				</vbox><spacer flex="1"/><vbox id="openPGPencryption">
-				<label value="&vI_prefDialog.storageExtras.openPGP.label;"/>
-				<checkbox id="VIdent_identity.storageExtras_openPGP_messageEncryption" label="&vI_prefDialog.storageExtras.openPGP.messageEncryption.label;"
-					prefstring="storageExtras_openPGP_messageEncryption"/>
-				<checkbox id="VIdent_identity.storageExtras_openPGP_messageSignature" label="&vI_prefDialog.storageExtras.openPGP.messageSignature.label;"
-					prefstring="storageExtras_openPGP_messageSignature"/>
-				<checkbox id="VIdent_identity.storageExtras_openPGP_PGPMIME" label="&vI_prefDialog.storageExtras.openPGP.PGPMIME.label;"
-					prefstring="storageExtras_openPGP_PGPMIME"/>
-				</vbox></hbox>
-			</vbox>
-			<label id="storageExtrasWarning" value="&vI_prefDialog.storageExtras.Warning.label;"/>
-			</groupbox>
+				<dialogheader title="&vI_prefDialog.storageTab.reading.header;" />
+				<groupbox>
+				<caption label="&vI_prefDialog.storageTab.reading.caption;"/>
+				<vbox align="left">
+					<checkbox id="VIdent_identity.storage_warn_vI_replace" label="&vI_prefDialog.storage.warn_vI_replace.label;"
+						prefstring="storage_warn_vI_replace"/>
+					<checkbox id="VIdent_identity.storage_getOneOnly" label="&vI_prefDialog.storage.get_One_Only.label;"
+						prefstring="storage_getOneOnly"/>
+				</vbox>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.storageTab.storing.header;" />
+				<groupbox>
+				<caption label="&vI_prefDialog.storageTab.storing.caption;"/>
+				<vbox align="left">
+					<checkbox id="VIdent_identity.storage_storedefault" label="&vI_prefDialog.storage.storedefault.label;"
+						prefstring="storage_storedefault"/>
+					<checkbox id="VIdent_identity.storage_store_base_id" label="&vI_prefDialog.storage.store_base_id.label;"
+						prefstring="storage_store_base_id"/>
+					<checkbox id="VIdent_identity.storage_show_switch" label="&vI_prefDialog.storage.show_switch.label;"
+						prefstring="storage_show_switch"/>
+					<checkbox id="VIdent_identity.storage_warn_update" label="&vI_prefDialog.storage.warn_update.label;"
+						prefstring="storage_warn_update"/>
+					<checkbox id="VIdent_identity.storage_dont_update_multiple" label="&vI_prefDialog.storage.dont_update_multiple.label;"
+						prefstring="storage_dont_update_multiple"/>
+				</vbox>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.storageTab.Tab1.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.storageTab.Tab1.caption;" />
+				<vbox align="left">
+					<checkbox id="VIdent_identity.storageExtras_returnReciept" label="&vI_prefDialog.storageExtras.returnReciept.label;"
+						prefstring="storageExtras_returnReciept"/>
+					<checkbox id="VIdent_identity.storageExtras_characterEncoding" label="&vI_prefDialog.storageExtras.characterEncoding.label;"
+						prefstring="storageExtras_characterEncoding"/>
+					<checkbox id="VIdent_identity.storageExtras_messageFormat" label="&vI_prefDialog.storageExtras.messageFormat.label;"
+						prefstring="storageExtras_messageFormat"/>
+					<spacer class="paragraph"/>
+				</vbox>
+				<label id="storageExtrasWarning" value="&vI_prefDialog.storageExtras.Warning.label;"/>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.storageTab.Tab2.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.storageTab.Tab2.caption;" />
+				<vbox align="left">
+					<hbox><vbox>
+					<label value="&vI_prefDialog.storageExtras.sMime.label;"/>
+					<checkbox id="VIdent_identity.storageExtras_sMime_messageEncryption" label="&vI_prefDialog.storageExtras.sMime.messageEncryption.label;"
+						prefstring="storageExtras_sMime_messageEncryption"/>
+					<checkbox id="VIdent_identity.storageExtras_sMime_messageSignature" label="&vI_prefDialog.storageExtras.sMime.messageSignature.label;"
+						prefstring="storageExtras_sMime_messageSignature"/>
+					</vbox><spacer flex="1"/><vbox id="openPGPencryption">
+					<label value="&vI_prefDialog.storageExtras.openPGP.label;"/>
+					<checkbox id="VIdent_identity.storageExtras_openPGP_messageEncryption" label="&vI_prefDialog.storageExtras.openPGP.messageEncryption.label;"
+						prefstring="storageExtras_openPGP_messageEncryption"/>
+					<checkbox id="VIdent_identity.storageExtras_openPGP_messageSignature" label="&vI_prefDialog.storageExtras.openPGP.messageSignature.label;"
+						prefstring="storageExtras_openPGP_messageSignature"/>
+					<checkbox id="VIdent_identity.storageExtras_openPGP_PGPMIME" label="&vI_prefDialog.storageExtras.openPGP.PGPMIME.label;"
+						prefstring="storageExtras_openPGP_PGPMIME"/>
+					</vbox></hbox>
+				</vbox>
+				<label id="storageExtrasWarning" value="&vI_prefDialog.storageExtras.Warning.label;"/>
+				</groupbox>
 			</tabpanel>
 		</tabpanels>
 		</tabbox>
+		</hbox>
 	</tabpanel>
-	
-	<tabpanel orient="vertical"  label="&vI_prefDialog.idSelection.header;">
-		<dialogheader title="&vI_prefDialog.idSelection.header;"/>
-		<tabbox>
-		<tabs>
-			<tab id="idSelection1" label="&vI_prefDialog.idSelection.Tab1.label;" />
-			<tab id="idSelection2" label="&vI_prefDialog.idSelection.Tab2.label;" />
+	<tabpanel orient="vertical" >
+		<hbox>
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+			hidecolumnpicker="true" hidehscroll="true">
+		<treecols orient="vertical">
+			<treecol flex="1" hideheader="true" primary="true"/>
+		</treecols>
+		<treechildren>
+			<treeitem><treerow><treecell label="&vI_prefDialog.options.Tab0.label;" /></treerow></treeitem>
+			<treeitem><treerow><treecell label="&vI_prefDialog.options.Tab1.label;" /></treerow></treeitem>
+			<treeitem><treerow><treecell label="&vI_prefDialog.options.Tab2.label;" /></treerow></treeitem>
+		</treechildren>
+		</tree>
+		<tabbox flex="1" >
+		<tabs hidden="true">
+			<tab /><tab /><tab />
 		</tabs>
-		<tabpanels>
+		<tabpanels class="plain">
 			<tabpanel orient="vertical">
-			<groupbox>
-			<caption label="&vI_prefDialog.idSelection.Tab1.caption;"/>
-			<vbox align="left">
-				<description width="500px">&vI_prefDialog.idSelection.reply.desc;</description>
-				<checkbox id="VIdent_identity.idSelection_storage_prefer_smart_reply" label="&vI_prefDialog.idSelection.prefer_smart_reply.label;"
-					prefstring="idSelection_storage_prefer_smart_reply"/>
-				<checkbox id="VIdent_identity.idSelection_storage_ignore_smart_reply" label="&vI_prefDialog.idSelection.ignore_smart_reply.label;"
-					prefstring="idSelection_storage_ignore_smart_reply"/>
-			</vbox>
-			</groupbox>
-			<groupbox>
-			<caption label="&vI_prefDialog.idSelection.Tab1.caption2;"/>
-			<vbox align="left">
-				<description width="500px">&vI_prefDialog.idSelection.draft.desc;</description>
-			</vbox>
-			</groupbox>
+				<dialogheader title="&vI_prefDialog.options.Tab0.header;" />
+				<groupbox>
+				<caption label="&vI_prefDialog.options.Tab0.caption;"/>
+				<checkbox id="VIdent_identity.menu_entry" label="&vI_prefDialog.menuEntry.label;"
+					prefstring="menu_entry" />
+				</groupbox>
 			</tabpanel>
 			<tabpanel orient="vertical">
-			<groupbox>
-			<caption label="&vI_prefDialog.idSelection.Tab2.caption;"/>
-			<vbox align="left">
-				<description width="500px">&vI_prefDialog.idSelection.multiselect.desc;</description>
-				<checkbox id="VIdent_identity.idSelection_ask" label="&vI_prefDialog.idSelection.ask.label;"
-					prefstring="idSelection_ask"
-					oncommand="vI_prefDialog.base.idSelectionResultConstraint();"/>
-				<hbox><spacer width="20px"/><checkbox id="VIdent_identity.idSelection_ask_always" label="&vI_prefDialog.idSelection.ask_always.label;"
-					prefstring="idSelection_ask_always"
-					oncommand="vI_prefDialog.base.idSelectionResultConstraint();"/>
-				</hbox>
-				<hbox>
-				<vbox><spacer flex="1"/>
-				<checkbox id="VIdent_identity.idSelection_autocreate" label="&vI_prefDialog.idSelection.autocreate.label;"
-					prefstring="idSelection_autocreate"
-					oncommand="vI_prefDialog.base.idSelectionResultConstraint();"/>
-				<spacer flex="1"/></vbox>
-				<vbox><spacer flex="1"/>
-				<label value="&vI_prefDialog.idSelection.autocreate.desc;" hidden="true"
-					id="VIdent_identity.idSelection_autocreate.desc" />
-				<spacer flex="1"/></vbox>
-				</hbox>
-			</vbox>
-			</groupbox>
+				<dialogheader title="&vI_prefDialog.options.Tab1.header;" />
+				<groupbox id="notificationGroupBox">
+				<caption label="&vI_prefDialog.options.Tab1.caption;"/>
+				<vbox align="left">
+					<checkbox id="VIdent_identity.get_header_notification" label="&vI_prefDialog.notifyHeaders.label;"
+						prefstring="get_header_notification"/>
+					<checkbox id="VIdent_identity.smart_reply_notification" label="&vI_prefDialog.notifySmartIdentity.label;"
+						prefstring="smart_reply_notification"/>
+					<checkbox id="VIdent_identity.storage_notification" label="&vI_prefDialog.notifyStorage.label;"
+						prefstring="storage_notification"/>
+					<hbox>
+					<vbox><spacer flex="1"/><label value="&vI_prefDialog.notifyTime.prefix.label;" /><spacer flex="1"/></vbox>
+					<textbox preftype="int" id="VIdent_identity.notification_timeout" flex="1"
+						prefstring="notification_timeout" size="1" />
+					<vbox><spacer flex="1"/><label value="&vI_prefDialog.notifyTime.postfix.label;" /><spacer flex="1"/></vbox>
+					</hbox>
+				</vbox>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.options.Tab2.header;" />
+				<groupbox>
+				<caption label="&vI_prefDialog.options.Tab2.caption;"/>
+				<vbox align="left">
+					<description class="widthXX">&vI_prefDialog.notifyDebug.desc;</description>
+					<checkbox id="VIdent_identity.debug_notification" label="&vI_prefDialog.notifyDebug.label;"
+						prefstring="debug_notification"/>
+				</vbox>
+				</groupbox>
 			</tabpanel>
 		</tabpanels>
 		</tabbox>
-	</tabpanel>
-	
-	
-	
-	<tabpanel orient="vertical" label="&vI_prefDialog.notificationTab.header;">
-		<dialogheader title="&vI_prefDialog.notificationTab.header;"/>
-		<groupbox id="notificationGroupBox">
-		<caption label="&vI_prefDialog.notificationTab.caption;"/>
-		<vbox align="left">
-			<checkbox id="VIdent_identity.get_header_notification" label="&vI_prefDialog.notifyHeaders.label;"
-				prefstring="get_header_notification"/>
-			<checkbox id="VIdent_identity.smart_reply_notification" label="&vI_prefDialog.notifySmartIdentity.label;"
-				prefstring="smart_reply_notification"/>
-			<checkbox id="VIdent_identity.storage_notification" label="&vI_prefDialog.notifyStorage.label;"
-				prefstring="storage_notification"/>
-			<hbox>
-			<vbox><spacer flex="1"/><label value="&vI_prefDialog.notifyTime.prefix.label;" /><spacer flex="1"/></vbox>
-			<textbox preftype="int" id="VIdent_identity.notification_timeout" flex="1"
-				prefstring="notification_timeout" size="1" />
-			<vbox><spacer flex="1"/><label value="&vI_prefDialog.notifyTime.postfix.label;" /><spacer flex="1"/></vbox>
-			</hbox>
-		</vbox>
-		</groupbox>
-		<groupbox>
-		<caption label="&vI_prefDialog.notificationTab.Debug.caption;"/>
-		<vbox align="left">
-			<description width="500px">&vI_prefDialog.notifyDebug.desc;</description>
-			<checkbox id="VIdent_identity.debug_notification" label="&vI_prefDialog.notifyDebug.label;"
-				prefstring="debug_notification"/>
-		</vbox>
-		</groupbox>
+		</hbox>
 	</tabpanel>
 	</tabpanels>
 </tabbox>

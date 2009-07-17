@@ -3,6 +3,22 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 
+.widthXX { width: 36em; }
+.widthX { width: 18em; }
+.heightS { height: 3px; }
+spacer#beforeStorage { width: 100px; }
+spacer.widthS { width : 20px; }
+spacer.paragraph { height: 10px; }
+
+tabpanels.plain {
+	border: medium none  ! important;
+	-moz-appearance: none ! important;
+}
+
+tree.vIprefTree {
+	width: 15em;
+}
+
 #viewGroup {
   padding: 5px;
 }
