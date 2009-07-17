@@ -126,8 +126,8 @@ var vI_getHeader = {
 						", " + value;
 					hdr.setStringProperty(vI_getHeader.headerToSearch[index].headerNameToStore,vI_getHeader.unicodeConverter.ConvertFromUnicode(value) + vI_getHeader.unicodeConverter.Finish());
 
-					storedValue = hdr.getProperty(vI_getHeader.headerToSearch[index].headerNameToStore)
-					storedConvValue = vI_getHeader.unicodeConverter.ConvertToUnicode(storedValue)
+					var storedValue = hdr.getProperty(vI_getHeader.headerToSearch[index].headerNameToStore)
+					var storedConvValue = vI_getHeader.unicodeConverter.ConvertToUnicode(storedValue)
 					vI_notificationBar.dump("## vI_getHeader: found header: " + headerName +
 						"[:" + currentHeadersCounter[headerName] + "] - stored as '" + 
 						storedConvValue + "'\n");

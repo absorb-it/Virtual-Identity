@@ -108,14 +108,14 @@ var vI_rdfDatasource = {
 	},
 
 	rdfUpgradeRequired: function() {
-		oldRdfVersion = vI_rdfDatasource.getCurrentRDFFileVersion();
+		var oldRdfVersion = vI_rdfDatasource.getCurrentRDFFileVersion();
 		var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 			.getService(Components.interfaces.nsIVersionComparator);
 		return (!oldRdfVersion || versionChecker.compare(oldRdfVersion, vI_rdfDatasource.rdfVersion) < 0)
 	},
 	
 	extUpgradeRequired: function() {
-		oldExtVersion = vI_rdfDatasource.getCurrentExtFileVersion()
+		var oldExtVersion = vI_rdfDatasource.getCurrentExtFileVersion()
 		var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 			.getService(Components.interfaces.nsIVersionComparator);
 		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label

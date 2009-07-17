@@ -297,9 +297,9 @@ var vI_smartIdentity = {
 
 		// merge SmartReply-Identities and Storage-Identites
 		if (vI.preferences.getBoolPref("idSelection_storage_prefer_smart_reply"))
-			{ smartIdentities.mergeWithoutDuplicates(storageIdentities); allIdentities = smartIdentities; }
+			{ smartIdentities.mergeWithoutDuplicates(storageIdentities); var allIdentities = smartIdentities; }
 		else
-			{ storageIdentities.mergeWithoutDuplicates(smartIdentities); allIdentities = storageIdentities; }
+			{ storageIdentities.mergeWithoutDuplicates(smartIdentities); var allIdentities = storageIdentities; }
 		
 		vI_notificationBar.dump("## vI_smartIdentity: merged SmartReply & Storage, " + allIdentities.number + " address(es) left\n")
 		

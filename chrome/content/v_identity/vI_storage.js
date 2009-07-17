@@ -367,7 +367,7 @@ var vI_storage = {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || vI_storage.__isDoBcc(row)) continue;
 			vI_storage.lastCheckedEmail[row] = awGetInputElement(row).value;
-			recipient = vI_storage.__getDescriptionAndType(awGetInputElement(row).value, recipientType);
+			var recipient = vI_storage.__getDescriptionAndType(awGetInputElement(row).value, recipientType);
 			var storageData = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
 			if (storageData) allIdentities.addWithoutDuplicates(storageData);
 			storageData = vI_rdfDatasource.findMatchingFilter(recipient.recDesc);

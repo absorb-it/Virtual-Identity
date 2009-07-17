@@ -103,7 +103,7 @@ var vI_notificationBar = {
 	
 	clear_dump : function() {
 		if (!vI_notificationBar.Obj_DebugBox) return;
-		new_DebugBox = vI_notificationBar.Obj_DebugBox.cloneNode(false);
+		var new_DebugBox = vI_notificationBar.Obj_DebugBox.cloneNode(false);
 		vI_notificationBar.Obj_DebugBox.parentNode.replaceChild(
 			new_DebugBox, vI_notificationBar.Obj_DebugBox);
 		vI_notificationBar.Obj_DebugBox = new_DebugBox;

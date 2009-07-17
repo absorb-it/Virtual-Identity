@@ -156,7 +156,7 @@ var vI_upgrade = {
 		// use a sequence for the filters, order does matter
 		rdfContainerUtils.MakeSeq(vI_rdfDatasource.rdfDataSource, filterRes);
 		
-		container = Components.classes["@mozilla.org/rdf/container;1"].
+		var container = Components.classes["@mozilla.org/rdf/container;1"].
 			createInstance(Components.interfaces.nsIRDFContainer);
 		
 		// initialize container with storageRes
