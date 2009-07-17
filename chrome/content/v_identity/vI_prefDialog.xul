@@ -82,23 +82,28 @@
 		<vbox>
 		<hbox>
 			<radio pane="source" id="sourceEmail"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 0;" />
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 0;" 
+				tooltiptext="&vI_prefDialog.tabbox.tab0.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="selection"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 1;" />
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 1;"
+				tooltiptext="&vI_prefDialog.tabbox.tab1.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="composeDialog"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 2;" />
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 2;"
+				tooltiptext="&vI_prefDialog.tabbox.tab2.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="emailOut"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 3;" />
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 3;"
+				tooltiptext="&vI_prefDialog.tabbox.tab3.label;" />
 		</hbox>
 		<spacer class="heightS" />
 		<hbox>
 			<spacer id="beforeStorage" />
 			<vbox><spacer flex="1"/><image class="arrow" id="storageUp" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="storageOut" 
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 4;" />
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 4;"
+				tooltiptext="&vI_prefDialog.tabbox.tab4.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="storageUpDown" /><spacer flex="1"/></vbox>
 			<spacer id="afterStorage" flex="1"/>
 		</hbox>
@@ -107,7 +112,9 @@
 		<vbox>
 			<spacer flex="1"/>
 			<hbox><spacer flex="1"/><radio pane="source" id="options"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 5;" /></hbox>
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 5;"
+				tooltiptext="&vI_prefDialog.tabbox.tab5.label;" />
+			</hbox>
 			<spacer flex="1"/>
 			<button class="v_identity_logo v_identity_logo_button"
 				label="&vident.vidLogo.label; &vident.version;"
@@ -125,7 +132,7 @@
 	</tabs>
 	<tabpanels>
 	<tabpanel orient="vertical" >
-		<hbox>
+		<hbox flex="1">
 		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
 			hidecolumnpicker="true" hidehscroll="true" >
 		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true"/></treecols>
@@ -224,7 +231,7 @@
 	</hbox>
 	</tabpanel>
 	<tabpanel orient="vertical" >
-		<hbox>
+		<hbox flex="1">
 		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
 			hidecolumnpicker="true" hidehscroll="true">
 		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true" /></treecols>
@@ -250,12 +257,12 @@
 						prefstring="idSelection_storage_ignore_smart_reply"/>
 				</vbox>
 				</groupbox>
-				<groupbox>
+<!--				<groupbox>
 				<caption label="&vI_prefDialog.idSelection.Tab0.caption2;"/>
 				<vbox align="left">
 					<description class="widthXX">&vI_prefDialog.idSelection.draft.desc;</description>
 				</vbox>
-				</groupbox>
+				</groupbox>		-->
 			</tabpanel>
 			<tabpanel orient="vertical">
 				<dialogheader title="&vI_prefDialog.idSelection.Tab1.header;"/>
@@ -289,26 +296,54 @@
 		</hbox>
 	</tabpanel>
 	<tabpanel orient="vertical" >
-		<dialogheader title="&vI_prefDialog.composeDialog.header;"/>
-		<groupbox>
-		<caption label="&vI_prefDialog.composeDialog.caption;"/>
-			<checkbox id="VIdent_identity.autoTimestamp" label="&vI_prefDialog.composeDialog.autoTimestamp.label;"
-				tooltiptext="&vI_prefDialog.composeDialog.autoTimestamp.tooltiptext;" prefstring="autoTimestamp" />
-			<description id="VIdent_identity.HideSignature.warning" class="widthXX">&vI_prefDialog.composeDialog.HideSignature.warning.desc;</description>
-			<checkbox id="VIdent_identity.hide_signature" label="&vI_prefDialog.composeDialog.HideSignature.label;" disabled="true"
-				prefstring="hide_signature"/>
-			<spacer id="autoReplyToSelfSpacer" class="paragraph"/>
-			<checkbox id="VIdent_identity.autoReplyToSelf" label="&vI_prefDialog.composeDialog.autoReplyToSelf.label;"
-				prefstring="autoReplyToSelf"/>
-		</groupbox>
-		<groupbox>
-		<caption label="&vI_prefDialog.composeDialog.caption2;"/>
-			<checkbox id="VIdent_identity.show_smtp" label="&vI_prefDialog.composeDialog.SMTP.label;"
-				prefstring="show_smtp" />
-		</groupbox>
+		<hbox flex="1">
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+			hidecolumnpicker="true" hidehscroll="true">
+		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true" /></treecols>
+		<treechildren>
+			<treeitem><treerow><treecell label="&vI_prefDialog.composeDialog.Cell0.label;" /></treerow></treeitem>
+			<treeitem><treerow><treecell label="&vI_prefDialog.composeDialog.Cell1.label;" /></treerow></treeitem>
+		</treechildren>
+		</tree>
+		
+		
+		<tabbox flex="1" >
+		<tabs hidden="true"><tab /><tab /></tabs>
+		
+		<tabpanels class="plain">
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.composeDialog.header;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.composeDialog.caption;"/>
+					<checkbox id="VIdent_identity.autoTimestamp" label="&vI_prefDialog.composeDialog.autoTimestamp.label;"
+						tooltiptext="&vI_prefDialog.composeDialog.autoTimestamp.tooltiptext;" prefstring="autoTimestamp" />
+					<spacer class="paragraph"/>
+					<description id="VIdent_identity.HideSignature.warning" class="widthXX">&vI_prefDialog.composeDialog.HideSignature.warning.desc;</description>
+					<checkbox id="VIdent_identity.hide_signature" label="&vI_prefDialog.composeDialog.HideSignature.label;" disabled="true"
+						prefstring="hide_signature"/>
+					<spacer id="autoReplyToSelfSpacer" class="paragraph"/>
+					<checkbox id="VIdent_identity.autoReplyToSelf" label="&vI_prefDialog.composeDialog.autoReplyToSelf.label;"
+						prefstring="autoReplyToSelf"/>
+				</groupbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<dialogheader title="&vI_prefDialog.composeDialog.header2;"/>
+				<groupbox>
+				<caption label="&vI_prefDialog.composeDialog.caption2;"/>
+					<checkbox id="VIdent_identity.show_smtp" label="&vI_prefDialog.composeDialog.SMTP.label;"
+						tooltiptext="&vI_prefDialog.composeDialog.SMTP.tooltiptext;" prefstring="show_smtp" />
+					<checkbox id="VIdent_identity.show_noFcc" label="&vI_prefDialog.composeDialog.noFcc.label;"
+						tooltiptext="&vI_prefDialog.composeDialog.noFcc.tooltiptext;" prefstring="show_noFcc" />
+					<checkbox id="VIdent_identity.storage_show_switch" label="&vI_prefDialog.storage.show_switch.label;"
+						prefstring="storage_show_switch"/>
+				</groupbox>
+			</tabpanel>
+		</tabpanels>
+		</tabbox>
+		</hbox>
 	</tabpanel>
 	<tabpanel orient="vertical" >
-		<hbox>
+		<hbox flex="1">
 		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
 			hidecolumnpicker="true" hidehscroll="true" >
 		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true"/></treecols>
@@ -429,7 +464,7 @@
 			<tabpanel orient="vertical">
 				<dialogheader title="&vI_prefDialog.sending.tmplTab.header;" />
 				<groupbox>
-				<caption label="&vI_prefDialog.sending.tmplTab.header;"/>
+				<caption label="&vI_prefDialog.sending.tmplTab.caption;"/>
 				<radiogroup id="VIdent_messageTemplates">
 				<grid class="specialFolderPickerGrid">
 					<columns>
@@ -475,7 +510,7 @@
 		</hbox>
 	</tabpanel>
 	<tabpanel orient="vertical" >
-		<hbox>
+		<hbox flex="1">
 		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
 			hidecolumnpicker="true" hidehscroll="true">
 		<treecols orient="vertical">
@@ -531,8 +566,6 @@
 						prefstring="storage_storedefault"/>
 					<checkbox id="VIdent_identity.storage_store_base_id" label="&vI_prefDialog.storage.store_base_id.label;"
 						prefstring="storage_store_base_id"/>
-					<checkbox id="VIdent_identity.storage_show_switch" label="&vI_prefDialog.storage.show_switch.label;"
-						prefstring="storage_show_switch"/>
 					<checkbox id="VIdent_identity.storage_warn_update" label="&vI_prefDialog.storage.warn_update.label;"
 						prefstring="storage_warn_update"/>
 					<checkbox id="VIdent_identity.storage_dont_update_multiple" label="&vI_prefDialog.storage.dont_update_multiple.label;"
@@ -585,7 +618,7 @@
 		</hbox>
 	</tabpanel>
 	<tabpanel orient="vertical" >
-		<hbox>
+		<hbox flex="1">
 		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
 			hidecolumnpicker="true" hidehscroll="true">
 		<treecols orient="vertical">

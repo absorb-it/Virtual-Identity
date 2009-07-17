@@ -9,6 +9,7 @@ pref("extensions.virtualIdentity.stationeryFolderPickerMode", "3");
 pref("extensions.virtualIdentity.copySMIMESettings", false);
 pref("extensions.virtualIdentity.copyAttachVCardSettings", false);
 pref("extensions.virtualIdentity.show_smtp", false);
+pref("extensions.virtualIdentity.show_noFcc", false);
 pref("extensions.virtualIdentity.smart_draft", true);
 pref("extensions.virtualIdentity.smart_reply", true);
 pref("extensions.virtualIdentity.menu_entry", true);
