@@ -46,9 +46,9 @@ radio#emailOut:hover 		{ -moz-image-region: rect(52px, 56px, 104px, 0px) }
 radio#storageOut 			{ -moz-image-region: rect(0px, 280px, 52px, 224px) }
 radio#storageOut[feature="off"] 	{ -moz-image-region: rect(104px, 280px, 156px, 224px) }
 radio#storageOut:hover 			{ -moz-image-region: rect(52px, 280px, 104px, 224px) }
-radio#options 			{ -moz-image-region: rect(0px, 396px, 52px, 338px) }
-radio#options[feature="off"] 	{ -moz-image-region: rect(104px, 396px, 156px, 338px) }
-radio#options:hover 		{ -moz-image-region: rect(52px, 396px, 104px, 338px) }
+radio#options 			{ -moz-image-region: rect(0px, 393px, 52px, 335px) }
+radio#options[feature="off"] 	{ -moz-image-region: rect(104px, 393px, 156px, 335px) }
+radio#options:hover 		{ -moz-image-region: rect(52px, 393px, 104px, 335px) }
 
 #viewGroup image.arrow {
   list-style-image: url("chrome://v_identity/skin/Arrows.png");
