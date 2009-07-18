@@ -193,26 +193,8 @@ var vI_prefDialog = {
 		},
 		
 		smartReplyHideSignature : function() {
-			// seamonkey has no extension-manager
-			if (("nsIExtensionManager" in Components.interfaces) && ("@mozilla.org/extensions/manager;1" in Components.classes)) {
-				var switch_signature_ID="{2ab1b709-ba03-4361-abf9-c50b964ff75d}"
-				var em = Components.classes["@mozilla.org/extensions/manager;1"]
-					.getService(Components.interfaces.nsIExtensionManager);
-				var rdfS = Components.classes["@mozilla.org/rdf/rdf-service;1"].getService(Components.interfaces.nsIRDFService);
-				var source=rdfS.GetResource("urn:mozilla:item:"+switch_signature_ID)
-				
-				var item = em.getItemForID(switch_signature_ID)
-				if (!item || !item.installLocationKey) return;
-
-				var disabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#disabled");
-				var isDisabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#isDisabled");
-				var disabled = em.datasource.GetTarget(source, disabledResource, true);
-				if (!disabled) disabled = em.datasource.GetTarget(source, isDisabledResource, true);
-				try {
-					disabled=disabled.QueryInterface(Components.interfaces.nsIRDFLiteral);
-					if (disabled.Value=="true") return;
-				} catch (e) { }
-				
+			const switch_signature_ID="{2ab1b709-ba03-4361-abf9-c50b964ff75d}"
+			if (vI_helper.extensionActive(switch_signature_ID)) {
 				document.getElementById("VIdent_identity.HideSignature.warning").setAttribute("hidden", "true");
 				document.getElementById("VIdent_identity.hide_signature").setAttribute("disabled", "false");
 			}
@@ -260,16 +242,18 @@ var vI_prefDialog = {
 		if (vI_helper.olderVersion("TB", "2.0")) {
 			document.getElementById("fccReplyFollowsParentBox").setAttribute("hidden", "true");
 		}
-// 		if (!(typeof(enigSetMenuSettings)=="function")) {
-// 			document.getElementById("openPGPencryption").setAttribute("hidden", "true");
-// 		}
+		const enigmail_ID="{847b3a00-7ab1-11d4-8f02-006008948af5}"
+		if (!vI_helper.extensionActive(enigmail_ID))
+			document.getElementById("openPGPencryption").setAttribute("hidden", "true");
 
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
 		vI_prefDialog.base.smartReplyHideSignature();
 		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
 		vI_prefDialog.base.constraints();
-		if (vI_storageExtrasHelper.seamonkey_to_old())
-			document.getElementById("storageTab2").setAttribute("hidden", "true")
+		if (vI_storageExtrasHelper.seamonkey_to_old()) {
+			document.getElementById("storageExtrasTreeitem1").setAttribute("hidden", "true")
+			document.getElementById("storageExtrasTreeitem2").setAttribute("hidden", "true")
+		}
 	},
 	
 	savePrefs : function() {

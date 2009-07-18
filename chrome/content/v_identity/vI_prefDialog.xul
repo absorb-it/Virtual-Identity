@@ -518,8 +518,8 @@
 					<treeitem><treerow><treecell label="&vI_prefDialog.storageTab.storing.label;" /></treerow></treeitem>
 				</treechildren>
 			</treeitem>
-			<treeitem><treerow><treecell label="&vI_prefDialog.storageTab.Tab1.label;" /></treerow></treeitem>
-			<treeitem><treerow><treecell label="&vI_prefDialog.storageTab.Tab2.label;" /></treerow></treeitem>
+			<treeitem id="storageExtrasTreeitem1"><treerow><treecell label="&vI_prefDialog.storageTab.Tab1.label;" /></treerow></treeitem>
+			<treeitem id="storageExtrasTreeitem2"><treerow><treecell label="&vI_prefDialog.storageTab.Tab2.label;" /></treerow></treeitem>
 		</treechildren>
 		</tree>
 		

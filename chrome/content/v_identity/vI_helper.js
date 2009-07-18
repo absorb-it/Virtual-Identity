@@ -51,6 +51,31 @@ var vI_helper = {
 		return (versionChecker.compare(appVersion, version) < 0)
 	},
 
+	extensionActive : function (extensionID) {
+		// seamonkey has no extension-manager, return false in this case
+		if (("nsIExtensionManager" in Components.interfaces) && ("@mozilla.org/extensions/manager;1" in Components.classes)) {
+			var em = Components.classes["@mozilla.org/extensions/manager;1"]
+				.getService(Components.interfaces.nsIExtensionManager);
+			var rdfS = Components.classes["@mozilla.org/rdf/rdf-service;1"].getService(Components.interfaces.nsIRDFService);
+			var source = rdfS.GetResource("urn:mozilla:item:"+extensionID);
+			
+			var item = em.getItemForID(extensionID);
+			if (!item || !item.installLocationKey) return false;
+
+			var disabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#disabled");
+			var isDisabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#isDisabled");
+			var disabled = em.datasource.GetTarget(source, disabledResource, true);
+			if (!disabled) disabled = em.datasource.GetTarget(source, isDisabledResource, true);
+
+			try {
+				disabled=disabled.QueryInterface(Components.interfaces.nsIRDFLiteral);
+				if (disabled.Value=="true") return false;
+			} catch (e) { }
+			return true;
+		}
+		else return false;
+	},
+
 // vI_upgrade.js:229:
 // vI_upgrade.js:232:
 	combineNames : function (fullName, email) {
