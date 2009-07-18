@@ -16,15 +16,11 @@
                    em:package="content/v_identity/"
                    em:skin="skin/classic/v_identity/">
     <em:locale>locale/en-US/v_identity/</em:locale>
-    <em:locale>locale/de-DE/v_identity/</em:locale>
-    <em:locale>locale/nl-NL/v_identity/</em:locale>
-    <em:locale>locale/cs-CZ/v_identity/</em:locale>
-    <em:locale>locale/es-ES/v_identity/</em:locale>
   </RDF:Description>
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
                    em:name="Virtual Identity"
-                   em:version="0.6.0pre1"
+                   em:version="0.6.0pre2"
                    em:description="Allows you to modify your Identity settings for a single Mail on the fly."
                    em:creator="Rene Ejury"
                    em:homepageURL="http://www.absorb.it/virtual-id"
