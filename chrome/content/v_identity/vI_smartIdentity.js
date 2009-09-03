@@ -127,7 +127,7 @@ var vI_smartIdentity = {
 		var emails = {}; var fullNames = {}; var combinedNames = {};
 		var number = vI.headerParser.parseHeadersWithArray(hdr, emails, fullNames, combinedNames);
 		for (var index = 0; index < number; index++) {
-			var newIdentity = new identityData(emails.value[0], fullNames.value[0],
+			var newIdentity = new identityData(emails.value[index], fullNames.value[index],
 				null, null, null, null);
 			allIdentities.addWithoutDuplicates(newIdentity);
 		}
