@@ -182,13 +182,13 @@ treechildren::-moz-tree-cell-text(locked)
 	-moz-appearance: toolbarbutton;
 }
 
-notificationbox {
+#vINotification {
   -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#notificationbox");
   -moz-box-orient: vertical;
   overflow-y: hidden;
 }
 
-notification {
+#vINotification notification {
   -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#notification");
 }
 
