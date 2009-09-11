@@ -98,7 +98,7 @@ var vI_notificationBar = {
 		if (!vI_notificationBar.Obj_vINotification) return;
 		if (vI_notificationBar.timer) window.clearTimeout(vI_notificationBar.timer);
 		vI_notificationBar.timer = null;
-		vI_notificationBar.Obj_vINotification.removeAllNotifications(false);
+		vI_notificationBar.Obj_vINotification.removeAllNotifications(true);
 	},
 	
 	clear_dump : function() {

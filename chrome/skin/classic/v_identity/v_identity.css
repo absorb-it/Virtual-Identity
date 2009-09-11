@@ -183,13 +183,13 @@ treechildren::-moz-tree-cell-text(locked)
 }
 
 #vINotification {
-  -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#notificationbox");
+  -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#vI_notificationbox");
   -moz-box-orient: vertical;
   overflow-y: hidden;
 }
 
 #vINotification notification {
-  -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#notification");
+  -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#vI_notification");
 }
 
 .vINotificationLogo {
