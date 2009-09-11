@@ -63,6 +63,7 @@
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "ask also if there is only one possible address">
 <!ENTITY vI_prefDialog.idSelection.autocreate.label "use first found identity without interaction">
 <!ENTITY vI_prefDialog.idSelection.autocreate.desc "(if there is only one possible address)">
+<!ENTITY vI_prefDialog.idSelection.preferExisting.label "use match with existing Identity without interaction">
 
 <!ENTITY vI_prefDialog.composeDialog.Cell0.label "Features">
 <!ENTITY vI_prefDialog.composeDialog.Cell1.label "Dialog">

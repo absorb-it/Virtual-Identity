@@ -284,6 +284,10 @@
 					<hbox><spacer class="widthS"/><label value="&vI_prefDialog.idSelection.autocreate.desc;" hidden="true"
 						id="VIdent_identity.idSelection_autocreate.desc" />
 					</hbox>
+					
+					<checkbox id="VIdent_identity.idSelection_preferExisting" label="&vI_prefDialog.idSelection.preferExisting.label;"
+						prefstring="idSelection_preferExisting" />
+
 				</vbox>
 				</groupbox>
 			</tabpanel>

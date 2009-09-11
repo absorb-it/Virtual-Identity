@@ -82,6 +82,7 @@ var vI_prefDialog = {
 				"VIdent_identity.idSelection_ask",
 				"VIdent_identity.idSelection_ask_always",
 				"VIdent_identity.idSelection_autocreate",
+				"VIdent_identity.idSelection_preferExisting",
 				"VIdent_identity.autoReplyToSelf"],
 	
 		init : function() {
@@ -148,6 +149,7 @@ var vI_prefDialog = {
 			mAttr("VIdent_identity.idSelection_ask_always","disabled",idSelectionConstraint);
 			mAttr("VIdent_identity.idSelection_autocreate","disabled",idSelectionConstraint);
 			mAttr("VIdent_identity.idSelection_autocreate.desc","disabled",idSelectionConstraint);
+			mAttr("VIdent_identity.idSelection_preferExisting","disabled",idSelectionConstraint);
 			mAttr("selection","featureDisabled",idSelectionConstraint);
 			mAttr("toCompose","featureDisabled",idSelectionConstraint);
 

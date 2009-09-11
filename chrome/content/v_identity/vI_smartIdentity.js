@@ -361,9 +361,18 @@ var vI_smartIdentity = {
 	},
 	
 	__smartIdentitySelection : function(allIdentities, autocreate) {
-		/* compare with existing Identities and prefer it						*/
+		document.getElementById("msgIdentity_clone").addIdentitiesToCloneMenu(allIdentities);
+
+		/* compare with existing Identities										*/
 		for (var index = 0; index < allIdentities.number; index++) {
 			if (allIdentities.identityDataCollection[index].isExistingIdentity(true)) {
+				// if 'preferExisting' than select it and return
+				if (vI.preferences.getBoolPref("idSelection_preferExisting")) {
+					vI_notificationBar.dump("## vI_smartIdentity: found existing Identity, use without interaction.\n");
+					vI_smartIdentity.changeIdentityToSmartIdentity(allIdentities, index);
+					return;
+				}
+				// else reorder list of Identities to prefer it on autoselect
 				vI_notificationBar.dump("## vI_smartIdentity: found existing Identity, prefer this one.\n");
 				var firstIdentity = allIdentities.identityDataCollection[index];
 				for (var i = index; index > 0; index--) {
@@ -373,8 +382,6 @@ var vI_smartIdentity = {
 				break;
 			}
 		}
-
-		document.getElementById("msgIdentity_clone").addIdentitiesToCloneMenu(allIdentities);
 		
 		if (!autocreate && vI.preferences.getBoolPref("idSelection_ask") && 
 			((allIdentities.number == 1 && vI.preferences.getBoolPref("idSelection_ask_always"))
