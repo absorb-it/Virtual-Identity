@@ -76,6 +76,8 @@
 		  oncommand="vI_statusmenu.menuConstraint(this);" >
 		<observes element="vI_statusMenu_storage_save" attribute="checked" />
 	</checkbox>
+	<checkbox id="fcc_switch" label="&vident.composeDialog.fcc_switch.label;" 
+		  tooltiptext="&vident.composeDialog.fcc_switch.tooltiptext;" hidden="true" />
 	<popupset id="vI_tooltipPopupset" />
 </hbox>
   </vbox>

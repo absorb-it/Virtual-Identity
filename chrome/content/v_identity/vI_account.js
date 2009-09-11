@@ -239,7 +239,7 @@ var vI_account = {
 	
 	setupFcc : function()
 	{
-		if (vI.preferences.getBoolPref("doFcc")) {
+		if (document.getElementById("fcc_switch").getAttribute("checked")) {
 			switch (vI.preferences.getCharPref("fccFolderPickerMode"))
 			{
 			    case "2"  :

@@ -330,10 +330,10 @@
 				<caption label="&vI_prefDialog.composeDialog.caption2;"/>
 					<checkbox id="VIdent_identity.show_smtp" label="&vI_prefDialog.composeDialog.SMTP.label;"
 						tooltiptext="&vI_prefDialog.composeDialog.SMTP.tooltiptext;" prefstring="show_smtp" />
-					<checkbox id="VIdent_identity.show_noFcc" label="&vI_prefDialog.composeDialog.noFcc.label;"
-						tooltiptext="&vI_prefDialog.composeDialog.noFcc.tooltiptext;" prefstring="show_noFcc" />
 					<checkbox id="VIdent_identity.storage_show_switch" label="&vI_prefDialog.storage.show_switch.label;"
 						prefstring="storage_show_switch"/>
+					<checkbox id="VIdent_identity.fcc_show_switch" label="&vI_prefDialog.composeDialog.fcc_show_switch.label;"
+						tooltiptext="&vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext;" prefstring="fcc_show_switch" />
 				</groupbox>
 			</tabpanel>
 		</tabpanels>

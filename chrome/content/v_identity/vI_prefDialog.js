@@ -45,7 +45,7 @@ var vI_prefDialog = {
 				"VIdent_identity.smart_detectByReceivedHeader",
 				"VIdent_identity.smart_reply_for_newsgroups",
 				"VIdent_identity.show_smtp",
-				"VIdent_identity.show_noFcc",
+				"VIdent_identity.fcc_show_switch",
 				"VIdent_identity.menu_entry",
 				"VIdent_identity.smart_reply_headers",
 				"VIdent_identity.smart_reply_filter",
@@ -260,7 +260,7 @@ var vI_prefDialog = {
 	
 	savePrefs : function() {
 		// Copy all changes to Elements
-		onSaveCopiesAndFolders()
+		onSaveCopiesAndFolders();
 		vI_prefDialog.base.savePrefs();
 	},
 

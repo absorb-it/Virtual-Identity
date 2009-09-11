@@ -79,8 +79,8 @@
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "set Virtual Identity as Reply-To address">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "show SMTP Menu">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "show Menu to select between available SMTP-servers">
-<!ENTITY vI_prefDialog.composeDialog.noFcc.label "show no-FCC Button">
-<!ENTITY vI_prefDialog.composeDialog.noFcc.tooltiptext "show Button to activate/deactivate Storing of Sent mails on the fly">
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "show switch to activate/deactivate saving of sent mails">
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "show Button to activate/deactivate Storing of Sent mails (fcc) on the fly">
 
 <!ENTITY vI_prefDialog.sending.Folder.label "Attributes / Copies">
 <!ENTITY vI_prefDialog.sending.Folder.row0.label "Sent Mail">

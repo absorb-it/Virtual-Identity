@@ -32,10 +32,17 @@ var vI_statusmenu = {
 	objStorageSaveMenuItem : null,
 	objStatusMenuSeparator : null,
 	objSaveSwitch : null,
+	objFccSwitch : null,
 	objStatusText : null,
 	
 	observe: function(subject, topic, data) {
 		switch (data) {
+			case "extensions.virtualIdentity.fcc_show_switch":
+				vI_statusmenu.objFccSwitch.setAttribute("hidden", !vI_statusmenu.prefroot.getBoolPref(data));
+				// no break, continue like with doFcc			
+			case "extensions.virtualIdentity.doFcc":
+				vI_statusmenu.objFccSwitch.setAttribute("checked", vI_statusmenu.prefroot.getBoolPref("extensions.virtualIdentity.doFcc"));
+				break;
 			case "extensions.virtualIdentity.storage_show_switch":
 				vI_statusmenu.objSaveSwitch.setAttribute("hidden", !vI_statusmenu.prefroot.getBoolPref(data));
 				// no break, continue like with storedefault
@@ -62,6 +69,8 @@ var vI_statusmenu = {
 	},
 	
 	addObserver: function() {
+		vI_statusmenu.prefroot.addObserver("extensions.virtualIdentity.fcc_show_switch", vI_statusmenu, false);
+		vI_statusmenu.prefroot.addObserver("extensions.virtualIdentity.doFcc", vI_statusmenu, false);
 		vI_statusmenu.prefroot.addObserver("extensions.virtualIdentity.storage", vI_statusmenu, false);
 		vI_statusmenu.prefroot.addObserver("extensions.virtualIdentity.storage_show_switch", vI_statusmenu, false);
 		vI_statusmenu.prefroot.addObserver("extensions.virtualIdentity.storage_storedefault", vI_statusmenu, false);	
@@ -69,6 +78,8 @@ var vI_statusmenu = {
 	},
 	
 	removeObserver: function() {
+		vI_statusmenu.prefroot.removeObserver("extensions.virtualIdentity.fcc_show_switch", vI_statusmenu);
+		vI_statusmenu.prefroot.removeObserver("extensions.virtualIdentity.doFcc", vI_statusmenu);
 		vI_statusmenu.prefroot.removeObserver("extensions.virtualIdentity.storage", vI_statusmenu);
 		vI_statusmenu.prefroot.removeObserver("extensions.virtualIdentity.storage_show_switch", vI_statusmenu);
 		vI_statusmenu.prefroot.removeObserver("extensions.virtualIdentity.storage_storedefault", vI_statusmenu);
@@ -83,11 +94,13 @@ var vI_statusmenu = {
 		vI_statusmenu.objStorageSaveMenuItem = document.getElementById("vI_statusMenu_storage_save");
 		vI_statusmenu.objStatusMenuSeparator = document.getElementById("vI_statusMenu_separator");
 		vI_statusmenu.objSaveSwitch = document.getElementById("storage_save");
+		vI_statusmenu.objFccSwitch = document.getElementById("fcc_switch");
 		vI_statusmenu.objStatusText = document.getElementById("statusText");
 		vI_statusmenu.objStatusTooltipLine1 = document.getElementById("vI_statusMenuTooltip_StatusValueLine1");
 		vI_statusmenu.objStatusTooltipLine2 = document.getElementById("vI_statusMenuTooltip_StatusValueLine2");
 
 		vI_statusmenu.addObserver();
+		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.fcc_show_switch");
 		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.storage_show_switch");
 		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.storage_store_base_id");
 		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.storage");
