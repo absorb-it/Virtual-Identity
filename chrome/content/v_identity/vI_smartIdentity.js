@@ -264,10 +264,40 @@ var vI_smartIdentity = {
 
 		vI_notificationBar.dump("## vI_smartIdentity: Reply()\n");
 		
-		if (hdr && !gMsgCompose.compFields.newsgroups && !hdr.getStringProperty("vI_received")) { // mail was not received
-				vI_notificationBar.dump("## vI_smartIdentity: reply on non-received (sent?) mail. Using SmartDraft. \n");
-				vI_smartIdentity.ReplyOnSent(hdr);
-				return;
+		if (hdr && !gMsgCompose.compFields.newsgroups) {
+		//	RFC 2821 (http://www.ietf.org/rfc/rfc2821.txt) says:
+		//	"4.4 Trace Information
+		//	When an SMTP server receives a message for delivery or further
+		//	processing, it MUST insert trace ("time stamp" or "Received")
+		//	information at the beginning of the message content, as discussed in
+		//	section 4.1.1.4."
+		//	so it should be always possible to decide if Reply or Draft based on received headers
+		//	hidden option smart_detectByReceivedHeader will act as a switch for not RFC-compliant servers
+			// RFC-compliant
+			if (vI.preferences.getBoolPref("smart_detectByReceivedHeader")) {
+				if (!hdr.getStringProperty("vI_received")) { // mail was not received
+					vI_notificationBar.dump("## vI_smartIdentity: reply on non-received (sent?) mail. Using SmartDraft. \n");
+					vI_notificationBar.dump("## vI_smartIdentity: if it is an received mail see ticket https://www.absorb.it/virtual-id/ticket/131 \n");
+					vI_smartIdentity.ReplyOnSent(hdr);
+					return;
+				}
+			}
+			// not RFC-compliant
+			else {
+				const MSG_FOLDER_FLAG_INBOX = 0x1000
+				const MSG_FOLDER_FLAG_SENTMAIL = 0x0200;
+
+				if (hdr && (hdr.folder.flags & MSG_FOLDER_FLAG_SENTMAIL)) {
+					vI_notificationBar.dump("## vI_smartIdentity: reply from Sent folder.");
+					if (hdr.folder.flags & MSG_FOLDER_FLAG_INBOX)
+						vI_notificationBar.dump(" Folder is INBOX, assuming Reply-Case. \n");
+					else {
+						vI_notificationBar.dump(" Using SmartDraft. \n");
+						vI_smartIdentity.ReplyOnSent(hdr);
+						return;
+					}
+				}
+			}
 		}
 
 		var storageIdentities = new identityCollection();

@@ -63,15 +63,18 @@ function setDefaultCopiesAndFoldersPrefs(identity, server, accountData)
 
     var fccElement = document.getElementById("VIdent_identity.fccFolder")
     var fccElementValue = fccElement.getAttribute("value");
-    if (!fccElementValue) fccElement.setAttribute("value", rootFolder.server.serverURI + gFccFolderWithDelim)
+    if (!fccElementValue || !GetMsgFolderFromUri(fccElementValue, false))
+    	fccElement.setAttribute("value", rootFolder.server.serverURI + gFccFolderWithDelim)
 
     var draftElement = document.getElementById("VIdent_identity.draftFolder")
     var draftElementValue = draftElement.getAttribute("value");
-    if (!draftElementValue) draftElement.setAttribute("value", rootFolder.server.serverURI + gDraftsFolderWithDelim)
+    if (!draftElementValue || !GetMsgFolderFromUri(draftElementValue, false))
+    	draftElement.setAttribute("value", rootFolder.server.serverURI + gDraftsFolderWithDelim)
 
     var stationeryElement = document.getElementById("VIdent_identity.stationeryFolder")
     var stationeryElementValue = stationeryElement.getAttribute("value");
-    if (!stationeryElementValue) stationeryElement.setAttribute("value", rootFolder.server.serverURI + gTemplatesFolderWithDelim)
+    if (!stationeryElementValue || !GetMsgFolderFromUri(stationeryElementValue, false))
+    	stationeryElement.setAttribute("value", rootFolder.server.serverURI + gTemplatesFolderWithDelim)
 }
 
 
