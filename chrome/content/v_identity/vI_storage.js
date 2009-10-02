@@ -253,33 +253,30 @@ var vI_storage = {
 		vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity.\n")
 		var dontUpdateMultipleNoEqual = (vI.preferences.getBoolPref("storage_dont_update_multiple") &&
 					vI_storage.multipleRecipients)
-		
+		vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'\n")
 		recipient = vI_storage.__getDescriptionAndType(recipient, recipientType);
 
-		var matchResults = { storageData : {} };
-		matchResults.storageData[0] = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType),
-		matchResults.storageData[1] = vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
-
-		for (var i = 0; i <= 1; i++) {
-			if (matchResults.storageData[i]) {
-				var compResult = matchResults.storageData[i].equalsCurrentIdentity(true);
-				if (compResult.equal) return true;
-				else if (!dontUpdateMultipleNoEqual) {
-					var warning = vI_storage.__getWarning("updateStorage", recipient, compResult.compareMatrix);
-					vI_notificationBar.dump("## vI_storage: " + warning + ".\n")
-					var doUpdate = "accept";
-					if (i == 0 && vI.preferences.getBoolPref("storage_warn_update")) doUpdate = vI_storage.__askWarning(warning);
-					switch(doUpdate) {
-						case "abort":
-							return false;
-						case "accept":
-							vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
-							return true;
-					}
-				}
+		var storageDataByType = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
+		var storageDataByFilter = vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
+		
+		// update (storing) of data by type is required if there is
+		// no data stored by type (or different data stored) and no equal filter found
+		var storageDataByTypeCompResult = storageDataByType?storageDataByType.equalsCurrentIdentity(true):null;
+		var storageDataByTypeEqual = (storageDataByType && storageDataByTypeCompResult.equal);
+		var storageDataByFilterEqual = (storageDataByFilter && storageDataByFilter.equalsCurrentIdentity(false).equal);
+		
+		var doUpdate = "";
+		if (	(!storageDataByType && !storageDataByFilterEqual) ||
+			(!storageDataByTypeEqual && !storageDataByFilterEqual && !dontUpdateMultipleNoEqual) ) {
+			vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity updating\n")
+			var doUpdate = "accept";
+			if (storageDataByType && !storageDataByTypeEqual && vI.preferences.getBoolPref("storage_warn_update")) {
+				vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity overwrite warning\n");
+				doUpdate = vI_storage.__askWarning(vI_storage.__getWarning("updateStorage", recipient, storageDataByTypeCompResult.compareMatrix));
+				if (doUpdate == "abort") return false;
 			}
 		}
-		vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
+		if (doUpdate == "accept") vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
 		return true;
 	},
 		
