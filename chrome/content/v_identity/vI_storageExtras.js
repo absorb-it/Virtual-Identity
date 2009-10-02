@@ -383,10 +383,16 @@ vI_storageExtras_sMime_messageEncryption.prototype = {
 	},
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
-		if (this.value == "true") var element = document.getElementById("menu_securityEncryptRequire1")
-		else var element = document.getElementById("menu_securityNoEncryption1")
-		element.setAttribute("checked", "true");
-		element.doCommand();
+		var doEncryptElem = document.getElementById("menu_securityEncryptRequire1");
+		var noEncryptElem = document.getElementById("menu_securityNoEncryption1");
+		if (noEncryptElem && this.value != "true") {			// TB 2.x
+			noEncryptElem.setAttribute("checked", "true");
+			noEncryptElem.doCommand();
+		}
+		else {								// TB 3.x
+			doEncryptElem.setAttribute("checked", this.value);
+			doEncryptElem.doCommand();
+		}
 	},
 	readValue : function() {
 		setSecuritySettings(1)
