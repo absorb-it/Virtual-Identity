@@ -56,6 +56,11 @@
 		<checkbox id="vI_storageExtras_returnReciept_store" oncommand="vI_storageExtras_adapt(this.id, null);" />
 		<checkbox id="vI_storageExtras_returnReciept" label="&vI_storageExtrasDataEditorOverlay.reciept.label;"/>
 		</hbox>
+	<!-- storageExtras_fcc -->
+		<hbox>
+		<checkbox id="vI_storageExtras_fcc_store" oncommand="vI_storageExtras_adapt(this.id, null);" />
+		<checkbox id="vI_storageExtras_fcc" label="&vI_storageExtrasDataEditorOverlay.fcc.label;"/>
+		</hbox>
 	<!-- storageExtras_characterEncoding -->
 		<hbox>
 		<checkbox id="vI_storageExtras_characterEncoding_store"

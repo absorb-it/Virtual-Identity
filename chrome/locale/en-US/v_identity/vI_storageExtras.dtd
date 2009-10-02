@@ -1,6 +1,7 @@
 <!ENTITY vI_storageExtras.storeValue.label "store">
 
 <!ENTITY vI_prefDialog.storageExtras.returnReciept.label "return receipt status">
+<!ENTITY vI_prefDialog.storageExtras.fcc.label "FCC status">
 <!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "selected character encoding">
 <!ENTITY vI_prefDialog.storageExtras.messageFormat.label "selected message format">
 
@@ -16,6 +17,7 @@
 <!ENTITY vI_storageExtras.caption.label "additionally stored settings">
 
 <!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Return Receipt">
+<!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Character Encoding">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Message Format">
 <!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME encrypt">
@@ -26,6 +28,7 @@
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "hide inactive fields">
 <!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Return Receipt">
+<!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC">
 <!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Character Encoding">
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Message Format">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: encrypt messages">

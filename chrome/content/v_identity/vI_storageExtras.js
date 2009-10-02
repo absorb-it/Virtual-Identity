@@ -62,12 +62,10 @@ var vI_storageExtrasHelper = {
 function vI_storageExtras(callFunction, resource) {
 // function vI_storageExtras_checkbox(field, option, composeDialogElementID, updateFunction, identityValue) {
 	this.extras = [
-
-//	gReceiptOptionChanged
-
-
 		new vI_storageExtras_checkbox(
 			"reciept", "storageExtras_returnReciept", "returnReceiptMenu", null, "identity.requestReturnReceipt;"),
+		new vI_storageExtras_checkbox(
+			"fcc", "storageExtras_fcc", "fcc_switch", null, "identity.doFcc;"),
 		new vI_storageExtras_characterEncoding(),
 		new vI_storageExtras_msgFormat(),
 		new vI_storageExtras_sMime_messageEncryption(),
