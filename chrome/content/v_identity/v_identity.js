@@ -172,11 +172,13 @@ var vI = {
 					vI.replacement_functions.GenericSendMessageInProgress = false;
 					return;
 				}
+				vI_msgIdentityCloneTools.addReplyToSelf();
 			}
 			if (vid) vI.prepareAccount();
 			vI.replacement_functions.GenericSendMessageInProgress = false;
 // 			vI_notificationBar.dump("## v_identity: original_functions.GenericSendMessage\n");
 			vI.original_functions.GenericSendMessage(msgType);
+
 // 			vI_notificationBar.dump("## v_identity: original_functions.GenericSendMessage done\n");
 		},
 		
@@ -229,6 +231,7 @@ var vI = {
 	
 	initSystemStage2 : function() {
 		vI_notificationBar.dump("## v_identity: initSystemStage2.\n")
+		vI_msgIdentityCloneTools.initReplyTo();
 		vI_storage.init();
 		vI_smartIdentity.init();
 	},
@@ -247,12 +250,15 @@ var vI = {
 		// rearrange the positions of some elements
 		var parent_hbox = vI.elements.Obj_MsgIdentity.parentNode;
 		var storage_box = document.getElementById("addresses-box");
+		var autoReplyToSelfLabel = document.getElementById("autoReplyToSelfLabel");
 		
-		vI.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
-		vI.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
-
+		storage_box.removeChild(autoReplyToSelfLabel);
+		parent_hbox.appendChild(autoReplyToSelfLabel);
 		storage_box.removeChild(vI.elements.Area_MsgIdentityHbox);
 		parent_hbox.appendChild(vI.elements.Area_MsgIdentityHbox);
+
+		vI.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
+		vI.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
 		
 		// initialize the pointers to extension elements (initialize those earlier might brake the interface)
 		vI.elements.init_rest();	
@@ -272,7 +278,6 @@ var vI = {
 		
 		// clean all elements
 		document.getElementById("msgIdentity_clone").clean();
-		vI_msgIdentityCloneTools.cleanReplyToFields();
 		vI_smartIdentity.clean();
 		vI_notificationBar.dump("## v_identity: everything cleaned.\n")
 		

@@ -293,12 +293,6 @@
 		<body><![CDATA[
 		vI_notificationBar.dump("\n** v_identity.xml msgIdentityCloneElem.doCommand() \n")
 		this.identityData = this.selectedMenuItem.identityData.getDuplicate();
-		// clean reply-to fields before reinit
-		vI_msgIdentityCloneTools.cleanupReplyTo();
-		// set orignal Identity-Menu to the selected Identity
-		vI_msgIdentityCloneTools.copySelectedIdentity(this.value);
-		// recognize reply-to fields for auto-reply
-		vI_msgIdentityCloneTools.initReplyToFields(this.value);
 		]]></body>
 	</method>	
 	<method name="init">
@@ -320,8 +314,6 @@
 			}
 		}
 		this._popupMenu_separator = true;
-		
-		vI_msgIdentityCloneTools.initReplyToFields(this.value);
 		]]></body>
 	</method>
 	<method name="clean">
@@ -444,15 +436,13 @@
 		
 		var existingIdentity = this.checkForVirtualIdentity();
 		if (existingIdentity) this.selectedMenuItem = existingIdentity;
-		
-		vI_msgIdentityCloneTools.updateReplyTo();
 		]]></body>
 	</method>
 	<method name="checkForVirtualIdentity">
 		<body><![CDATA[
 		var existingIdentity = this.identityData.isExistingIdentity(false);
-		if (!existingIdentity) { this.vid = true; vI_msgIdentityCloneTools.updateReplyTo(); }
-		else this.vid = false;
+		
+		this.vid = (!existingIdentity);
 		
 		vI_msgIdentityCloneTools.signatureSwitch(existingIdentity);
 		

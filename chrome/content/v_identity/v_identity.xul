@@ -65,6 +65,8 @@
 </toolbox>
 
 <vbox flex="1" id="addresses-box"> <!-- this is used as a strorage, elements will be rearranged by v_identity_init -->
+
+<label id="autoReplyToSelfLabel" context="vI_autoReplyToSelfMenu" value="&vident.composeDialog.autoReplyToSelf.label;" hidden="true" />
 	
 <hbox id="msgIdentityHbox" flex="1">
 	<menulist id="msgIdentity_clone" class="identity_clone-menulist" vid="false"
@@ -84,16 +86,23 @@
   
   <popupset>
 	  <popup id="vI_statusMenu">
-		  <menuitem type="checkbox" id="vI_statusMenu_storage_save" label="&vident.vI_Menu.storageSave.label;" 				oncommand="vI_statusmenu.menuConstraint(this);"/>
-		  <menuitem type="checkbox" id="vI_statusMenu_storage_saveBaseID" label="&vident.vI_Menu.saveBaseID.label;" 			oncommand="vI_statusmenu.menuConstraint(vI_statusmenu.objStorageSaveMenuItem);"/>
-		  <menuseparator id="vI_statusMenu_separator" /> 		
+		  <menuitem type="checkbox" id="vI_statusMenu_storage_save" label="&vident.vI_Menu.storageSave.label;"
+			oncommand="vI_statusmenu.menuConstraint(this);"/>
+		  <menuitem type="checkbox" id="vI_statusMenu_storage_saveBaseID" label="&vident.vI_Menu.saveBaseID.label;"
+			oncommand="vI_statusmenu.menuConstraint(vI_statusmenu.objStorageSaveMenuItem);"/>
+		  <menuseparator id="vI_statusMenu_separator" />
 		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.Settings.label;"
 			oncommand="window.openDialog('chrome://v_identity/content/vI_prefDialogOpener.xul', '', 'chrome');" />
 		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.DataEditor.label;"
 			oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome');" />
 	  </popup>
   </popupset>
-  
+  <popupset>
+	  <popup id="vI_autoReplyToSelfMenu">
+		  <menuitem type="menuitem-iconic" label="&vident.composeDialog.autoReplyToSelf.menuLabel;"
+			oncommand="document.getElementById('autoReplyToSelfLabel').setAttribute('hidden', 'true');"/>
+	  </popup>
+  </popupset>
   <popupset>
 	  <tooltip id="vI_statusMenuTooltip" orient="vertical" >
 		<label id="vI_statusMenuTooltip_Title" value="&vident.vI_Menu.TooltipTitle.label;" />

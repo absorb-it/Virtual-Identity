@@ -69,7 +69,10 @@ var vI_storage = {
 
 	awPopupOnCommand : function (element) {
 		vI_notificationBar.dump("\n## vI_storage: awPopupOnCommand'" + element.id +"'\n");
-		vI_storage.updateVIdentityFromStorage(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")))
+		vI_storage.updateVIdentityFromStorage(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")));
+		if (element.selectedItem.getAttribute("value") == "addr_reply") // if reply-to is manually entered disable AutoReplyToSelf
+			document.getElementById("autoReplyToSelfLabel").setAttribute("hidden", "true");
+
 	},
 	
 	initialized : null,
