@@ -63,13 +63,18 @@ var vI_prefDialog = {
 				"VIdent_identity.storage",
 				"VIdent_identity.storage_storedefault",
 				"VIdent_identity.storage_store_base_id",
+				"VIdent_identity.storage_store_SMTP",
 				"VIdent_identity.storage_dont_update_multiple",
 				"VIdent_identity.storage_show_switch",
+				"VIdent_identity.storage_show_baseID_switch",
+				"VIdent_identity.storage_show_SMTP_switch",
+				"VIdent_identity.storage_colorIndication",
 				"VIdent_identity.storage_warn_update",
 				"VIdent_identity.storage_warn_vI_replace",
 				"VIdent_identity.storage_notification",
 				"VIdent_identity.storage_getOneOnly",
 				"VIdent_identity.storageExtras_returnReciept",
+				"VIdent_identity.storageExtras_fcc",
 				"VIdent_identity.storageExtras_characterEncoding",
 				"VIdent_identity.storageExtras_messageFormat",
 				"VIdent_identity.storageExtras_sMime_messageEncryption",
@@ -206,13 +211,18 @@ var vI_prefDialog = {
 			var mAttr = vI_prefDialog.base.modifyAttribute;
 			mAttr("VIdent_identity.storage_storedefault","disabled",element.checked);
 			mAttr("VIdent_identity.storage_store_base_id","disabled",element.checked);
+			mAttr("VIdent_identity.storage_store_SMTP","disabled",element.checked);
 			mAttr("VIdent_identity.storage_dont_update_multiple","disabled",element.checked);
 			mAttr("VIdent_identity.storage_show_switch","disabled",element.checked);
+			mAttr("VIdent_identity.storage_show_baseID_switch","disabled",element.checked);
+			mAttr("VIdent_identity.storage_show_SMTP_switch","disabled",element.checked);
+			mAttr("VIdent_identity.storage_colorIndication","disabled",element.checked);
 			mAttr("VIdent_identity.storage_warn_update","disabled",element.checked);
 			mAttr("VIdent_identity.storage_warn_vI_replace","disabled",element.checked);
 			mAttr("VIdent_identity.storage_notification","disabled",element.checked);
 			mAttr("VIdent_identity.storage_getOneOnly","disabled",element.checked);
 			mAttr("VIdent_identity.storageExtras_returnReciept","disabled",element.checked);
+			mAttr("VIdent_identity.storageExtras_fcc","disabled",element.checked);
 			mAttr("VIdent_identity.storageExtras_characterEncoding","disabled",element.checked);
 			mAttr("VIdent_identity.storageExtras_messageFormat","disabled",element.checked);
 			mAttr("VIdent_identity.storageExtras_sMime_messageEncryption","disabled",element.checked);

@@ -73,11 +73,6 @@
 		label="..." flex="1" oncommand="this.command();">
 		<menupopup id="msgIdentityPopup_clone"/>
 	</menulist>
-	<checkbox id="storage_save" label="&vident.composeDialog.storageSave.label;" 
-		  tooltiptext="&vident.composeDialog.storageSave.tooltiptext;" hidden="true"
-		  oncommand="vI_statusmenu.menuConstraint(this);" >
-		<observes element="vI_statusMenu_storage_save" attribute="checked" />
-	</checkbox>
 	<checkbox id="fcc_switch" label="&vident.composeDialog.fcc_switch.label;" 
 		  tooltiptext="&vident.composeDialog.fcc_switch.tooltiptext;" hidden="true" />
 	<popupset id="vI_tooltipPopupset" />
@@ -89,6 +84,8 @@
 		  <menuitem type="checkbox" id="vI_statusMenu_storage_save" label="&vident.vI_Menu.storageSave.label;"
 			oncommand="vI_statusmenu.menuConstraint(this);"/>
 		  <menuitem type="checkbox" id="vI_statusMenu_storage_saveBaseID" label="&vident.vI_Menu.saveBaseID.label;"
+			oncommand="vI_statusmenu.menuConstraint(vI_statusmenu.objStorageSaveMenuItem);"/>
+		  <menuitem type="checkbox" id="vI_statusMenu_storage_saveSMTP" label="&vident.vI_Menu.saveSMTP.label;"
 			oncommand="vI_statusmenu.menuConstraint(vI_statusmenu.objStorageSaveMenuItem);"/>
 		  <menuseparator id="vI_statusMenu_separator" />
 		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.Settings.label;"

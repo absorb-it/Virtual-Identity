@@ -2,6 +2,54 @@
 @import url("chrome://v_identity/locale/logo.css"); 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
+#msgIdentity_clone .smtpServerListHbox {
+	margin: -2px;
+	-moz-appearance: textfield;
+}
+
+.smtpServerListHbox {
+  -moz-binding: url("chrome://v_identity/content/v_identity.xml#smtpServerList");
+}
+
+#vI_rdfDataEditorContent checkbox.vI_plain {
+	display: none;
+}
+
+.smtpServerHbox {
+	margin: -1px 0px -1px -1px;
+}
+.identity_clone-menulist .smtpServerMenuList {
+  border-style: none;
+  -moz-appearance: none;
+  margin: 0px;
+  padding: 0px;
+  color:		graytext;
+  text-align:	center;
+}
+
+.identityHbox, .baseIDHbox, .smtpServerHbox {
+	background-color: transparent;
+}
+.identityHbox[checked="true"][colorize="true"], .baseIDHbox[checked="true"][colorize="true"], .smtpServerHbox[checked="true"][colorize="true"] {
+	background-color: rgb(235, 245, 235);
+}
+
+.baseIDHbox[checked="true"][colorize="true"][disabled="true"], .smtpServerHbox[checked="true"][colorize="true"][disabled="true"] {
+	background-color: transparent;
+}
+
+checkbox.vI_plain > .checkbox-spacer-box > .checkbox-check {
+	width: 0px;
+}
+checkbox.vI_plain > .checkbox-label-center-box {
+	display: none;
+}
+
+checkbox.vI_plain {
+	margin: 0px;
+	height: 0px;
+	padding: 0px;
+}
 
 .widthXX { width: 36em; }
 .widthX { width: 18em; }
@@ -151,6 +199,16 @@ treechildren::-moz-tree-cell(yes) {
 	visibility: visible;
 }
 
+#vI-status-menu[save="ok"][smtp="save"] {
+	list-style-image: url("chrome://v_identity/skin/vI_bl.png");
+	visibility: visible;
+}
+
+#vI-status-menu[save="base"][smtp="save"] {
+	list-style-image: url("chrome://v_identity/skin/vI_gebl.png");
+	visibility: visible;
+}
+
 treechildren::-moz-tree-cell-text(user)
 {
   font-weight: bold;
@@ -222,19 +280,6 @@ treechildren::-moz-tree-cell-text(locked)
 	color: red;
 }
 
-.smtpServerListHbox {
-  -moz-binding: url("chrome://v_identity/content/v_identity.xml#smtpServerList");
-}
-
-.identity_clone-menulist .smtpServerMenuList {
-  -moz-appearance: textfield;
-  margin: -2px -1px;
-  border: 1px solid;
-  padding: 0px;
-  background-color: -moz-Field;
-  color:		graytext;
-  text-align:	center;
-}
 
 .identity_clone-menulist .smtpServerMenuList .menulist-label-box {
 	margin: -1px;

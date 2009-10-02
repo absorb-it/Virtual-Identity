@@ -95,10 +95,16 @@ var vI_upgrade = {
 	},
 	
 	rdfUpgrade : function() {
+		var currentVersion = vI_rdfDatasource.getCurrentRDFFileVersion();
 		vI_notificationBar.dump("checking for previous version of rdf, found " + 
-			vI_rdfDatasource.getCurrentRDFFileVersion() + "\nrdf-upgrade required.\n")
-		// upgrade from pre0.0.3 to 0.0.3
-		vI_upgrade.__createRDFContainers();
+			currentVersion + "\nrdf-upgrade required.\n")
+		switch (currentVersion) {
+			case "0.0.1":
+			case "0.0.2":
+				vI_upgrade.__createRDFContainers(); // no break
+			default:
+				vI_upgrade.__tagDefaultSMTP();
+		}
 		vI_rdfDatasource.storeRDFVersion();
 		vI_notificationBar.dump("rdf-upgrade to " + vI_rdfDatasource.getCurrentRDFFileVersion() + " done.\n\n");
 	},
@@ -126,6 +132,21 @@ var vI_upgrade = {
 			if (container.IndexOf(resource) == -1) container.AppendElement(resource);
 		
 			vI_notificationBar.dump(".");
+		}
+		vI_notificationBar.dump("\n");
+	},
+
+	__tagDefaultSMTP: function() {
+		vI_notificationBar.dump("upgrade: tagDefaultSMTP ");
+		for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
+			var enumerator = vI_rdfDatasource.getContainer(treeType).GetElements();
+			while (enumerator && enumerator.hasMoreElements()) {
+				var resource = enumerator.getNext();
+				resource.QueryInterface(Components.interfaces.nsIRDFResource);
+				var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
+				if (!smtp || smtp == "") vI_rdfDatasource.__setRDFValue(resource, "smtp", DEFAULT_SMTP_TAG);
+				vI_notificationBar.dump(".");
+			}
 		}
 		vI_notificationBar.dump("\n");
 	},
@@ -277,10 +298,10 @@ var vI_upgrade = {
 		var localIdentityData = new identityData(splitted.email, splitted.name, id, smtp, null)
 		
 		vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.primaryEmail),
-						"email", localIdentityData, true, null, null)
+						"email", localIdentityData, true, true, null, null)
 		if (Card.secondEmail.replace(/^\s+|\s+$/g,""))
 			vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.secondEmail),
-					"email", localIdentityData, true, null, null)
+					"email", localIdentityData, true, true, null, null)
 		
 		Card[returnVar.prop] = "";
 		Card.editCardToDatabase("");

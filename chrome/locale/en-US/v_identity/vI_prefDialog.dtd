@@ -72,6 +72,7 @@
 <!ENTITY vI_prefDialog.composeDialog.header2 "Message Composing">
 <!ENTITY vI_prefDialog.composeDialog.caption "Message Compose Features">
 <!ENTITY vI_prefDialog.composeDialog.caption2 "Message Compose Dialog">
+<!ENTITY vI_prefDialog.composeDialog.caption3 "Storage Switches">
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.label "autogenerate Timestamp-Identity for new mails">
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "On composing a new email, modify your usual sender-address with a timestamp. On easy way to create unique Identities, off by default.">
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the &apos;Signature Switch&apos; extension. By now this option is not available.">
@@ -79,8 +80,12 @@
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "set Virtual Identity as Reply-To address">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "show SMTP Menu">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "show Menu to select between available SMTP-servers">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "show switch to activate/deactivate saving of sent mails">
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "show switch to activate/deactivate saving of sent mails (fcc)">
 <!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "show Button to activate/deactivate Storing of Sent mails (fcc) on the fly">
+<!ENTITY vI_prefDialog.composeDialog.show_switch.label "checkbox for saving of Identities">
+<!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "checkbox for saving of base Identities">
+<!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "checkbox for saving of SMTP">
+<!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "colorize to be stored Identity-parts">
 
 <!ENTITY vI_prefDialog.sending.Folder.label "Attributes / Copies">
 <!ENTITY vI_prefDialog.sending.Folder.row0.label "Sent Mail">
@@ -132,9 +137,9 @@
 <!ENTITY vI_prefDialog.storageTab.storing.caption "storing of used Identities">
 <!ENTITY vI_prefDialog.storage.storedefault.label "save used Identities while sending emails">
 <!ENTITY vI_prefDialog.storage.store_base_id.label "store underlying base Identity">
+<!ENTITY vI_prefDialog.storage.store_SMTP.label "store used SMTP">
 <!ENTITY vI_prefDialog.storage.warn_update.label "ask before overwriting Identities in your Storage">
 <!ENTITY vI_prefDialog.storage.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
-<!ENTITY vI_prefDialog.storage.show_switch.label "show switch to activate/deactivate saving of Identities">
 
 <!ENTITY vI_prefDialog.storageTab.Tab1.header "Storage Extras 1">
 <!ENTITY vI_prefDialog.storageTab.Tab1.caption "attributes to store with Identity">

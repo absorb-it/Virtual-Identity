@@ -21,7 +21,8 @@
 
     Contributor(s):
  * ***** END LICENSE BLOCK ***** */
- 
+
+
 var vI_rdfDatasource = {			
 	rdfService : Components.classes["@mozilla.org/rdf/rdf-service;1"]
 			.getService(Components.interfaces.nsIRDFService),
@@ -39,7 +40,7 @@ var vI_rdfDatasource = {
 	// extensionManager : Components.classes["@mozilla.org/extensions/manager;1"]
 	//		.getService(Components.interfaces.nsIExtensionManager),
 	
-	rdfVersion : "0.0.3",	// version of current implemented RDF-schema, internal only to trigger updates
+	rdfVersion : "0.0.4",	// version of current implemented RDF-schema, internal only to trigger updates
 	
 	virtualIdentityID : "{dddd428e-5ac8-4a81-9f78-276c734f75b8}",
 	
@@ -204,8 +205,7 @@ var vI_rdfDatasource = {
 			var fullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
 			var id = vI_rdfDatasource.__getRDFValue(resource, "id")
 			var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
-			if (!smtp) smtp = ""; // to indicate default SMTP (different than null like with SmartReply)
-			
+			if (!smtp) smtp = NO_SMTP_TAG;
 			var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
 			
 			var localIdentityData = new identityData(email, fullName, id, smtp, extras)
@@ -271,7 +271,9 @@ var vI_rdfDatasource = {
 		var fullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
 		var id = vI_rdfDatasource.__getRDFValue(resource, "id")
 		var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
-		if (!smtp) smtp = ""; // to indicate default SMTP (different than null like with SmartReply)
+		vI_notificationBar.dump("## vI_rdfDatasource: email='" + email + 
+			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'\n");
+		if (!smtp) smtp = NO_SMTP_TAG; // to indicate default SMTP (different than null like with SmartReply)
 		
 		vI_notificationBar.dump("## vI_rdfDatasource: email='" + email + 
 			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'\n");
@@ -294,6 +296,7 @@ var vI_rdfDatasource = {
 		vI_rdfDatasource.updateRDF(recDescription, recType,
 			document.getElementById("msgIdentity_clone").identityData,
 			(vI_statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true"),
+			(vI_statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true"),
 			null, null);
 	},
 	
@@ -304,7 +307,7 @@ var vI_rdfDatasource = {
 		return resource;
 	},
 
-	updateRDF : function (recDescription, recType, localIdentityData, storeBaseID, prevRecDescription, prevRecType) {
+	updateRDF : function (recDescription, recType, localIdentityData, storeBaseID, storeSMTP, prevRecDescription, prevRecType) {
 // 		if (!localIdentityData.email) {
 // 			vI_notificationBar.dump("## vI_rdfDatasource: updateRDF: no Sender-email for Recipient, aborting.\n");
 // 			return;
@@ -325,8 +328,12 @@ var vI_rdfDatasource = {
 
 		vI_rdfDatasource.__setRDFValue(resource, "email", localIdentityData.email);
 		vI_rdfDatasource.__setRDFValue(resource, "fullName", localIdentityData.fullName);
-		if (storeBaseID) vI_rdfDatasource.__setRDFValue(resource, "id", localIdentityData.id.key);
-		vI_rdfDatasource.__setRDFValue(resource, "smtp", localIdentityData.smtp.key);
+		if (storeBaseID)
+			vI_rdfDatasource.__setRDFValue(resource, "id", localIdentityData.id.key);
+		else	vI_rdfDatasource.__unsetRDFValue(resource, "id", vI_rdfDatasource.__getRDFValue(resource, "id"))
+		if (storeSMTP && localIdentityData.smtp.key != NO_SMTP_TAG)
+			vI_rdfDatasource.__setRDFValue(resource, "smtp", localIdentityData.smtp.key);
+		else	vI_rdfDatasource.__unsetRDFValue(resource, "smtp", vI_rdfDatasource.__getRDFValue(resource, "smtp"))
 		vI_rdfDatasource.__setRDFValue(resource, "name", recDescription);
 
 		localIdentityData.extras.loopForRDF(vI_rdfDatasource.__setRDFValue, resource);

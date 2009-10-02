@@ -13,6 +13,7 @@
 <!ENTITY vident.vI_Menu.DataEditor.label "Data-Storage Editor">
 <!ENTITY vident.vI_Menu.storageSave.label "save Identity while sending">
 <!ENTITY vident.vI_Menu.saveBaseID.label "store underlying base Identity">
+<!ENTITY vident.vI_Menu.saveSMTP.label "store SMTP information">
 <!ENTITY vident.vI_Menu.TooltipTitle.label "Virtual Identity Status">
 <!ENTITY vident.vI_Menu.TooltipChange.label "click to change">
 

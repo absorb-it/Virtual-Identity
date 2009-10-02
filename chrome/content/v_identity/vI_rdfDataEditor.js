@@ -84,7 +84,8 @@ var vI_rdfDataEditor = {
 		}
 
 		// set SMTP
-		document.getElementById("smtpServerListHbox").smtp = vI_rdfDataEditor.__identityData.smtp.key;
+		document.getElementById("smtpServerListHbox").addNoneServer(); // add non (not stored) Server
+		document.getElementById("smtpServerListHbox").smtp = vI_rdfDataEditor.__identityData.smtp.keyNice;
 		
 		// set extra values
 		vI_rdfDataEditor.__identityData.extras.setEditorValues();
@@ -109,7 +110,7 @@ var vI_rdfDataEditor = {
 				document.getElementById("recipient").value,
 				document.getElementById("type_menu").selectedItem.getAttribute("key"),
 				localIdentityData,
-				true, vI_rdfDataEditor.__recipient, vI_rdfDataEditor.__type);
+				true, true, vI_rdfDataEditor.__recipient, vI_rdfDataEditor.__type);
 		
 		return document.getElementById("type_menu").selectedItem.getAttribute("key");
 	}
