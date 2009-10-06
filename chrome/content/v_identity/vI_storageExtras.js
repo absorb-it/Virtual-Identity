@@ -388,8 +388,8 @@ vI_storageExtras_sMime_messageEncryption.prototype = {
 			noEncryptElem.doCommand();
 		}
 		else {								// TB 3.x
-			doEncryptElem.setAttribute("checked", this.value);
-			doEncryptElem.doCommand();
+			if (doEncryptElem.getAttribute("checked") != this.value)
+				doEncryptElem.doCommand(); // means toggleEncryptCommand()
 		}
 	},
 	readValue : function() {
