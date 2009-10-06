@@ -6,11 +6,9 @@
 	margin: -2px;
 	-moz-appearance: textfield;
 }
-
 .smtpServerListHbox {
-  -moz-binding: url("chrome://v_identity/content/v_identity.xml#smtpServerList");
+	-moz-binding: url("chrome://v_identity/content/v_identity.xml#smtpServerList");
 }
-
 #vI_rdfDataEditorContent checkbox.vI_plain {
 	display: none;
 }
@@ -18,13 +16,14 @@
 .smtpServerHbox {
 	margin: -1px 0px -1px -1px;
 }
+
 .identity_clone-menulist .smtpServerMenuList {
-  border-style: none;
-  -moz-appearance: none;
-  margin: 0px;
-  padding: 0px;
-  color:		graytext;
-  text-align:	center;
+	border-style: none;
+	-moz-appearance: none;
+	margin: 0px;
+	padding: 0px;
+	color: graytext;
+	text-align: center;
 }
 
 .identityHbox, .baseIDHbox, .smtpServerHbox {
@@ -68,31 +67,31 @@ tree.vIprefTree {
 }
 
 #viewGroup {
-  padding: 5px;
+	padding: 5px;
 }
 
 #viewGroup radio {
-  -moz-appearance: none;
-  min-width: 4.5em;
-  margin: 0;
-  padding: 3px;
-  list-style-image: url("chrome://v_identity/skin/PrefIcons.png");
-  -moz-box-orient: vertical;
-  -moz-box-align: center !important;
+	-moz-appearance: none;
+	min-width: 4.5em;
+	margin: 0;
+	padding: 3px;
+	list-style-image: url("chrome://v_identity/skin/PrefIcons.png");
+	-moz-box-orient: vertical;
+	-moz-box-align: center !important;
 }
 
 #viewGroup radio:hover {
-  border: 1px solid #ff9c9c;
-  margin: -1px;
-  background-color: white;
-  background-color: transparent;
+	border: 1px solid #ff9c9c;
+	margin: -1px;
+	background-color: white;
+	background-color: transparent;
 }
 
 #viewGroup radio[selected="true"] {
-  border: 1px solid #870000;
-  margin: -1px;
-  background-color: white;
-  background-color: transparent;
+	border: 1px solid #870000;
+	margin: -1px;
+	background-color: white;
+	background-color: transparent;
 }
 
 radio#sourceEmail 			{ -moz-image-region: rect(0px, 338px, 52px, 280px) }
@@ -115,7 +114,7 @@ radio#options[featureDisabled="true"] 	{ -moz-image-region: rect(104px, 393px, 1
 radio#options:hover 		{ -moz-image-region: rect(52px, 393px, 104px, 335px) }
 
 #viewGroup image.arrow {
-  list-style-image: url("chrome://v_identity/skin/Arrows.png");
+	list-style-image: url("chrome://v_identity/skin/Arrows.png");
 }
 
 image#toSelection, image#toCompose, image#toSend { -moz-image-region: rect(0px, 64px, 30px, 47px) }
@@ -166,23 +165,21 @@ treechildren::-moz-tree-cell(yes) {
 	font-weight: bold;
 }
 
-#vINotificationTextbox
-    {
+#vINotificationTextbox {
 	background-color: transparent;
-        margin: 5px !important;
+	margin: 5px !important;
 	margin-left: 20px !important;
-        -moz-border-top-colors: grey;
-        -moz-border-right-colors: grey;
-        -moz-border-bottom-colors: grey;
-        -moz-border-left-colors: grey;
-    }
+	-moz-border-top-colors: grey;
+	-moz-border-right-colors: grey;
+	-moz-border-bottom-colors: grey;
+	-moz-border-left-colors: grey;
+}
 
-#vINotificationTextbox.border
-    {
+#vINotificationTextbox.border {
       border-style: solid !important;
       border-right-style: none !important;
       border-width: 1px !important;
-    }
+}
 
 #vI-status-menu[save="off"] {
 	list-style-image: url("chrome://v_identity/skin/vI_gr.png");
@@ -209,14 +206,12 @@ treechildren::-moz-tree-cell(yes) {
 	visibility: visible;
 }
 
-treechildren::-moz-tree-cell-text(user)
-{
-  font-weight: bold;
+treechildren::-moz-tree-cell-text(user) {
+	font-weight: bold;
 }
 
-treechildren::-moz-tree-cell-text(locked)
-{
-  font-style: italic;
+treechildren::-moz-tree-cell-text(locked) {
+	font-style: italic;
 }
 
 #upgradeWizard, #vi_Dialog {
@@ -262,21 +257,21 @@ treechildren::-moz-tree-cell-text(locked)
 }
 
 .identity_clone-menulist {
-  -moz-binding: url(chrome://v_identity/content/v_identity.xml#fromMenuList_clone);
-  -moz-appearance: textfield;
-  margin: 2px 4px;
-  border: 2px solid;
-  -moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
-  -moz-border-right-colors: ThreeDHighlight ThreeDLightShadow;
-  -moz-border-bottom-colors: ThreeDHighlight ThreeDLightShadow;
-  -moz-border-left-colors: ThreeDShadow ThreeDDarkShadow;
-  padding: 1px 0px 1px 2px;
-  background-color: -moz-Field;
-  color: -moz-FieldText;
+	-moz-binding: url(chrome://v_identity/content/v_identity.xml#fromMenuList_clone);
+	-moz-appearance: textfield;
+	margin: 2px 4px;
+	border: 2px solid;
+	-moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
+	-moz-border-right-colors: ThreeDHighlight ThreeDLightShadow;
+	-moz-border-bottom-colors: ThreeDHighlight ThreeDLightShadow;
+	-moz-border-left-colors: ThreeDShadow ThreeDDarkShadow;
+	padding: 1px 0px 1px 2px;
+	background-color: -moz-Field;
+	color: -moz-FieldText;
 }
 
 .description-treecell {
-  -moz-binding: url("chrome://v_identity/content/v_identity.xml#descriptionTreeCell");
+	-moz-binding: url("chrome://v_identity/content/v_identity.xml#descriptionTreeCell");
 	color: red;
 }
 
@@ -302,30 +297,30 @@ treechildren::-moz-tree-cell-text(locked)
 }
 
 .autoReplyTo {
-  -moz-binding: url("chrome://v_identity/content/v_identity.xml#autoReplyTo");
+	-moz-binding: url("chrome://v_identity/content/v_identity.xml#autoReplyTo");
 }
 
 
 .identityDataTooltip {
-  -moz-binding: url("chrome://v_identity/content/v_identity.xml#vI_identityDataTooltip");
+	-moz-binding: url("chrome://v_identity/content/v_identity.xml#vI_identityDataTooltip");
 }
 
 #vI_tooltipPopupset {
-  -moz-binding: url("chrome://v_identity/content/v_identity.xml#tooltipPopupset");
+	-moz-binding: url("chrome://v_identity/content/v_identity.xml#tooltipPopupset");
 }
 
 .vI_htmlTextBox {
-  -moz-binding: url("chrome://v_identity/content/vI_htmlTextBox.xml#vI_htmlTextBox");
+	-moz-binding: url("chrome://v_identity/content/vI_htmlTextBox.xml#vI_htmlTextBox");
 }
 
 .identity_clone-popup-item {
-  -moz-binding: url("chrome://v_identity/content/v_identity.xml#fromPopupItem_clone");
-  padding: 0;
-  margin: 0;
+	-moz-binding: url("chrome://v_identity/content/v_identity.xml#fromPopupItem_clone");
+	padding: 0;
+	margin: 0;
 }
 
 .auto-reply-to {
-  -moz-binding: url("chrome://v_identity/content/v_identity.xml#autoReplyTo");
+	-moz-binding: url("chrome://v_identity/content/v_identity.xml#autoReplyTo");
 }
 
 .menulist_clone-icon {
@@ -378,12 +373,12 @@ treechildren::-moz-tree-cell-text(locked)
 }
 
 .identity_clone-menulist[vid="true"], .identity_clone-popup-item[vid="true"] {
-  list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook-toolbar-small.png");
-  -moz-image-region: rect(0px 16px 16px 0px);	
+	list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook-toolbar-small.png");
+	-moz-image-region: rect(0px 16px 16px 0px);	
 }
 
 .identity_clone-menulist[vid="false"], .identity_clone-popup-item[vid="false"] {
-  list-style-image: url("chrome://messenger/skin/addressbook/icons/abcard.png");
+	list-style-image: url("chrome://messenger/skin/addressbook/icons/abcard.png");
 }
 
 /*  this is only for TB < 3 to indicate virtual Identity, now done with autocomplete css */
@@ -402,8 +397,8 @@ treechildren::-moz-tree-cell-text(locked)
 /* indicates a new indentity in menu */
 /* the alternate is the person-icon, which is defined elsewhere */
 .new-icon {
-  list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook-toolbar-small.png");
-  -moz-image-region: rect(0px 16px 16px 0px);
+	list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook-toolbar-small.png");
+	-moz-image-region: rect(0px 16px 16px 0px);
 }
 
 #fromPopupItem_clone .menulist-menupopup {
@@ -411,42 +406,42 @@ treechildren::-moz-tree-cell-text(locked)
 }
 
 .messageImage {
-  width: 16px;
-  height: 16px;
-  margin: 0px 6px 0px 6px;
+	width: 16px;
+	height: 16px;
+	margin: 0px 6px 0px 6px;
 }
 
 .messageText {
-  -moz-margin-start: 5px;
+	-moz-margin-start: 5px;
 }
 
 .messageButton {
-  margin: 0px 5px 0px 5px;
+	margin: 0px 5px 0px 5px;
 }
 
 .vINotificationCloseButton {
-  display: inline;
-  padding: 4px 2px !important;
-  -moz-appearance: none;
-  -moz-image-region: rect(0px, 56px, 14px, 42px);
-  height: 24px;
-  border: none !important;
-  cursor: default;
-  list-style-image: url("chrome://v_identity/skin/close.png");
+	display: inline;
+	padding: 4px 2px !important;
+	-moz-appearance: none;
+	-moz-image-region: rect(0px, 56px, 14px, 42px);
+	height: 24px;
+	border: none !important;
+	cursor: default;
+	list-style-image: url("chrome://v_identity/skin/close.png");
 }
 
 .vINotificationCloseButton:hover {
-  -moz-image-region: rect(0px, 28px, 14px, 14px);
-  opacity: 1.0;
+	-moz-image-region: rect(0px, 28px, 14px, 14px);
+	opacity: 1.0;
 }
 
 .vINotificationCloseButton:hover:active {
-  -moz-image-region: rect(0px, 42px, 14px, 28px);
-  opacity: 1.0;
+	-moz-image-region: rect(0px, 42px, 14px, 28px);
+	opacity: 1.0;
 }
 
 .vINotificationCloseButton:focus {
-  outline: none !important;
+	outline: none !important;
 }
 
 #storageExtrasWarning {
