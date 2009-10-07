@@ -66,11 +66,11 @@ var vI_smartIdentity = {
 			return;
 		}
 
-		current_email = getCurrentIdentity().email;
+		var current_email = getCurrentIdentity().email;
 		vI_notificationBar.dump("## vI_smartIdentity: current email: " + current_email + "\n");
 		
 		var dateobj = new Date();
-		new_email = current_email.replace(/@/g, parseInt(dateobj.getTime()/1000)+"@");
+		var new_email = current_email.replace(/@/g, parseInt(dateobj.getTime()/1000)+"@");
 		vI_notificationBar.dump("## vI_smartIdentity: new email: " + new_email + "\n");
 
 		vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIUsage") + ".",
