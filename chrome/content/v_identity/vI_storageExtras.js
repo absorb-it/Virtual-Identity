@@ -68,7 +68,10 @@ function vI_storageExtras(callFunction, resource) {
 			"fcc", "storageExtras_fcc", "fcc_switch", null, "identity.doFcc;"),
 		new vI_storageExtras_characterEncoding(),
 		new vI_storageExtras_msgFormat(),
-		new vI_storageExtras_sMime_messageEncryption(),
+		new vI_storageExtras_checkbox(
+			"sMimeEnc", "storageExtras_sMime_messageEncryption", "menu_securityEncryptRequire1",
+				"(typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null;",
+				"identity.getIntAttribute('encryptionpolicy') == 2"),
 		new vI_storageExtras_checkbox(
 			"sMimeSig", "storageExtras_sMime_messageSignature", "menu_securitySign1",
 				"(typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null;",
@@ -86,6 +89,9 @@ function vI_storageExtras(callFunction, resource) {
 				"(typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null;",
 				"identity.getBoolAttribute('pgpMimeMode')")
 		]
+	if (document.getElementById("menu_securityNoEncryption1"))	// TB 2.x
+		this.extras[4] = new vI_storageExtras_sMime_messageEncryption()
+
 	if (callFunction) this.loopForRDF(callFunction, resource)
 }
 
@@ -381,16 +387,13 @@ vI_storageExtras_sMime_messageEncryption.prototype = {
 	},
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
+		vI_notificationBar.dump("## storageExtras_sMime_messageEncryption \n");
 		var doEncryptElem = document.getElementById("menu_securityEncryptRequire1");
-		var noEncryptElem = document.getElementById("menu_securityNoEncryption1");
-		if (noEncryptElem && this.value != "true") {			// TB 2.x
-			noEncryptElem.setAttribute("checked", "true");
-			noEncryptElem.doCommand();
-		}
-		else {								// TB 3.x
-			if (doEncryptElem.getAttribute("checked") != this.value)
-				doEncryptElem.doCommand(); // means toggleEncryptCommand()
-		}
+		if (this.value == null) return;
+		if (this.value == "true") var element = document.getElementById("menu_securityEncryptRequire1")
+		else var element = document.getElementById("menu_securityNoEncryption1")
+		element.setAttribute("checked", "true");
+		element.doCommand();
 	},
 	readValue : function() {
 		setSecuritySettings(1)
@@ -463,6 +466,7 @@ vI_storageExtras_checkbox.prototype = {
 	setValue : function() {
 		var element = document.getElementById(this.composeDialogElementID);
 		if (!this.value || !element) return;
+		if (this.updateFunction) eval(this.updateFunction);
 		if ((element.getAttribute("checked") == "true") != (this.value == "true")) {
 			if (this.value == "true") element.setAttribute("checked","true");
 			else element.removeAttribute("checked");
