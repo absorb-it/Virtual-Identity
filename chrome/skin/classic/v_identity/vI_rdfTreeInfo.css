@@ -20,6 +20,7 @@ img {
 div.bool {
 	background-repeat:no-repeat;
 	background-position: center;
+	min-width: 14px;
 }
 
 div.bool {
