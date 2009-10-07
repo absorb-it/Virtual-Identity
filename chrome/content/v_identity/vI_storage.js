@@ -101,6 +101,14 @@ var vI_storage = {
 		vI_storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
 		awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
 			vI_storage.replacement_functions.awSetInputAndPopupValue (inputElem, inputValue, popupElem, popupValue, rowNumber) }
+
+		// reset unavailable storageExtras preferences
+		const enigmail_ID="{847b3a00-7ab1-11d4-8f02-006008948af5}"
+		if (!vI_helper.extensionActive(enigmail_ID)) {
+			vI.preferences.setBoolPref("storageExtras_openPGP_messageEncryption", false)
+			vI.preferences.setBoolPref("storageExtras_openPGP_messageSignature", false)
+			vI.preferences.setBoolPref("storageExtras_openPGP_PGPMIME", false)
+		}
 	},
 	
 	
