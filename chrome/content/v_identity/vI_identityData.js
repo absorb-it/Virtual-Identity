@@ -282,7 +282,7 @@ smtpObj.prototype = {
 	},
 	equal : function(compareSmtpObj) {
 		if (this.key == null || compareSmtpObj.key == null) return true;
-		return (this.key == compareSmtpObj.key);
+		return (this.keyNice == compareSmtpObj.keyNice);
 	},
 	hasNoDefinedSMTP : function() {
 		return (this.key == NO_SMTP_TAG);

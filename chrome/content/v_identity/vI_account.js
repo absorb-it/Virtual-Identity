@@ -229,7 +229,7 @@ var vI_account = {
 		vI_account.account.defaultIdentity.setCharAttribute("useremail", identityData.email);
 		vI_account.account.defaultIdentity.setUnicharAttribute("fullName", identityData.fullName);
 		
-		vI_account.account.defaultIdentity.smtpServerKey = identityData.smtp.key;
+		vI_account.account.defaultIdentity.smtpServerKey = identityData.smtp.keyNice; // key with "" for DEFAULT_SMTP_TAG
 
 		vI_notificationBar.dump("## vI_account: Stored virtualIdentity (name "
 			+ vI_account.account.defaultIdentity.fullName + " email "
