@@ -332,6 +332,17 @@
 		<body><![CDATA[
 		vI_notificationBar.dump("\n** v_identity.xml msgIdentityCloneElem.doCommand() \n")
 		this.identityData = this.selectedMenuItem.identityData.getDuplicate();
+		
+		// copy selected Menu-Value from clone to orig.
+		var MenuItems = this._msgIdentityPopupElem.childNodes
+		for (var index = 0; index < MenuItems.length; index++) {
+			if ( MenuItems[index].getAttribute("value") == this.value ) {
+				this._msgIdentityElem.selectedItem = MenuItems[index];
+				this._msgIdentityElem.value = MenuItems[index].getAttribute("value");
+				break;
+			}
+		}
+		this._msgIdentityPopupElem.doCommand();
 		]]></body>
 	</method>	
 	<method name="init">
