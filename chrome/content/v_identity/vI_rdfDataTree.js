@@ -429,7 +429,7 @@ var vI_rdfDataTree = {
 	
 	newItem : function() {
 		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		var newItemPreset = { identityData : new identityData ("", null, null, null, null, null) };
+		var newItemPreset = { identityData : new identityData ("", null, null, NO_SMTP_TAG, null, null) };
 		// XXXX create useful preset
 		var retVar = { treeType: null };
 
