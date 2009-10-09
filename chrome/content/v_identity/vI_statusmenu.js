@@ -131,7 +131,6 @@ var vI_statusmenu = {
 		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.storage_show_switch");
 		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.storage_show_baseID_switch");
 		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.storage_show_SMTP_switch");
-		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.storage_show_switch");
 		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.storage_colorIndication");
 		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.storage_store_base_id");
 		vI_statusmenu.observe(null, null, "extensions.virtualIdentity.storage_store_SMTP");
