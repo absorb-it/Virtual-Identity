@@ -228,7 +228,7 @@
 	</constructor>
 	<property name="smtp" onget="return this._smtpMenu.selectedItem.getAttribute('key');" >
 		<setter><![CDATA[
-		// if (val == null) return; // dont overwrite if not set
+		if (val == NO_SMTP_TAG) return; // dont overwrite if not set
 		vI_notificationBar.dump("** v_identity.xml smtp set to '" + val + "'\n")
 		var MenuItems = this._smtpPopup.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
@@ -343,7 +343,14 @@
 			}
 		}
 		this._msgIdentityPopupElem.doCommand();
-		]]></body>
+		
+		// if current SMTP is empty, take the one from current Identity
+		if (this.identityData.smtp.hasNoDefinedSMTP()) {
+			this.identityData.smtp.key = gAccountManager.getIdentity(this.value).smtpServerKey;
+			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this.identityData.smtp.keyNice;
+			this.checkForVirtualIdentity();
+		}
+	]]></body>
 	</method>	
 	<method name="init">
 		<body><![CDATA[
@@ -499,7 +506,7 @@
 		return existingIdentity;
 		]]></body>
 	</method>
-	<property name="smtp" onget="return this.identityData.smtp.key;" >
+	<property name="smtp" onget="return this.identityData.smtp.key;" > // used to detect changes from SMTP-Menu
 		<setter><![CDATA[
 		this.identityData.smtp.key = val;
 		
@@ -526,10 +533,7 @@
 					this._identityDataStorage.id.key = oldIdentityData.id.key;
 					var idName = this._identityDataStorage.id.value;
 					this._identityDataStorage.sideDescription = (idName)?" - "+idName:"";
-				}
-				else if (this._identityDataStorage.smtp.hasNoDefinedSMTP()) {
-					this._identityDataStorage.smtp.key = oldIdentityData.smtp.key;
-					vI_notificationBar.dump("** v_identity.xml use previous SMTP: '" + this._identityDataStorage.smtp.key + "'\n")
+					vI_notificationBar.dump("** v_identity.xml set new Id: '" + this._identityDataStorage.id.value + "'\n")
 				}
 				this._identityDataStorage.extras.setValues();
 			
