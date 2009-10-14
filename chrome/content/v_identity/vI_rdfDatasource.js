@@ -273,7 +273,7 @@ var vI_rdfDatasource = {
 		var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
 		vI_notificationBar.dump("## vI_rdfDatasource: email='" + email + 
 			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'\n");
-		if (!smtp) smtp = NO_SMTP_TAG; // to indicate default SMTP (different than null like with SmartReply)
+		if (!smtp) smtp = NO_SMTP_TAG;
 		
 		vI_notificationBar.dump("## vI_rdfDatasource: email='" + email + 
 			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'\n");

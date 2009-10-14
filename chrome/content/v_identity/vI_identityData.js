@@ -116,16 +116,6 @@ identityData.prototype = {
 		return null;
 	},
 	
-	__equalsIdentity : function(identity) {
-		var testIdentity = new identityData(
-			identity.email,
-			identity.fullName,
-			identity.key,
-			identity.smtpServerKey)
-		testIdentity.extras.readIdentityValues(identity);
-		return (this.equals(testIdentity));
-	},
-
 	equals : function(compareIdentityData) {
 		this.comp.compareID = compareIdentityData;
 
