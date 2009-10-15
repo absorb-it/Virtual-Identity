@@ -72,7 +72,7 @@ th {
 	font-weight: bold;
 }
 
-.updateStorage .ignoreBaseId.col2 {
+.updateStorage .ignoreBaseId.col2, .updateStorage .ignoreValues.col2 {
 	text-decoration: line-through;
 }
 

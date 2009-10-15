@@ -143,13 +143,14 @@ identityData.prototype = {
 		const Items = Array("fullName", "email", "smtp", "id");
 		var string = "";		
 		var saveBaseId = (vI_statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true")
+		var saveSMTP = (vI_statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true")
 		for each (item in Items) {
 			var classEqual = (this.comp.equals[item])?"equal":"unequal";
-			var classBaseID = ((!saveBaseId) && (item == "id"))?" ignoreBaseId":""
+			var classIgnore = (((!saveBaseId) && (item == "id")) || ((!saveSMTP) && (item == "smtp")))?" ignoreValues":""
 			string += "<tr>" +
 				"<td class='col1 " + classEqual + "'>" + this[item+"Label"] + "</td>" +
-				"<td class='col2 " + classEqual + classBaseID + "'>" + this.comp.compareID[item+"Html"] + "</td>" +
-				"<td class='col3 " + classEqual + classBaseID + "'>" + this[item+"Html"] + "</td>" +
+				"<td class='col2 " + classEqual + classIgnore + "'>" + this.comp.compareID[item+"Html"] + "</td>" +
+				"<td class='col3 " + classEqual + classIgnore + "'>" + this[item+"Html"] + "</td>" +
 				"</tr>"
 		}
 		string += this.extras.getCompareMatrix();
