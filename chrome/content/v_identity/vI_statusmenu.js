@@ -72,11 +72,13 @@ var vI_statusmenu = {
 				if (vI_statusmenu.prefroot.getBoolPref(data)) {
 					vI_statusmenu.objStorageSaveMenuItem.removeAttribute("hidden");
 					vI_statusmenu.objSaveBaseIDMenuItem.removeAttribute("hidden");
+					vI_statusmenu.objSaveSMTPMenuItem.removeAttribute("hidden");
 					vI_statusmenu.objStatusMenuSeparator.removeAttribute("hidden");
 				}
 				else {
 					vI_statusmenu.objStorageSaveMenuItem.setAttribute("hidden", "true");
 					vI_statusmenu.objSaveBaseIDMenuItem.setAttribute("hidden", "true");
+					vI_statusmenu.objSaveSMTPMenuItem.setAttribute("hidden", "true");
 					vI_statusmenu.objStatusMenuSeparator.setAttribute("hidden", "true");
 				}
 				break;
