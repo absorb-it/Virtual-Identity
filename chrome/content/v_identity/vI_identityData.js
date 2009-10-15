@@ -121,7 +121,10 @@ identityData.prototype = {
 
 		this.comp.equals.fullName = (this.fullName == compareIdentityData.fullName)
 		this.comp.equals.email = (this.email == compareIdentityData.email)
+
 		this.comp.equals.smtp = this.smtp.equal(compareIdentityData.smtp);
+
+
 		this.comp.equals.id = this.id.equal(compareIdentityData.id);
 		this.comp.equals.extras = this.extras.equal(compareIdentityData.extras);
 // 		vI_notificationBar.dump("## vI_identityData: smtp:'" + this.comp.equals.smtp + "' id:'" + this.comp.equals.id + "'\n");
@@ -265,9 +268,9 @@ smtpObj.prototype = {
 							break;
 						}
 					}
-				if (!this._value) this._key = NO_SMTP_TAG; // if non-existant SMTP handle like non available
 			}
 		}
+		if (!this._value) this._key = NO_SMTP_TAG; // if non-existant SMTP handle like non available
 		return this._value;
 	},
 	equal : function(compareSmtpObj) {
