@@ -414,8 +414,10 @@ var vI_smartIdentity = {
 	},
 	
 	__removeSmartIdentityFromRecipients : function(allIdentities, index) {
-		var skip_bcc = false;
+		if (!vI.preferences.getBoolPref("idSelection_removeSmartIdentityFromRecipients")) return;
 		
+		// check if selected email is defined as doBcc address. If so, it should not be removed.
+		var skip_bcc = false;
 		if (getCurrentIdentity().doBcc) {
 			var bcc_addresses = new identityCollection();
 			vI_smartIdentity.__parseHeadersWithArray(getCurrentIdentity().doBccList, bcc_addresses);
@@ -426,6 +428,15 @@ var vI_smartIdentity = {
 				}
 			}
 		}
+		
+		// check if there is more than one recipient for this mail. If not, preserve the only one existing.
+		var recipientCount = 0;
+		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
+			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
+			if (recipientType == "addr_to" || recipientType == "addr_cc") recipientCount++;
+		}
+		if (recipientCount < 2) return;
+		
 		
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var popup = awGetPopupElement(row);
