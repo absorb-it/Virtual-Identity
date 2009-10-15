@@ -385,19 +385,25 @@ var vI_smartIdentity = {
 		
 		if (!autocreate && vI.preferences.getBoolPref("idSelection_ask") && 
 			((allIdentities.number == 1 && vI.preferences.getBoolPref("idSelection_ask_always"))
-				|| allIdentities.number > 1))
+				|| allIdentities.number > 1)) {
+			for (var index = 0; index < allIdentities.number; index++) {
+				vI_notificationBar.dump("## vI_smartIdentityReplyDialog index=" + index + ": '" + allIdentities.identityDataCollection[index].combinedName + "' "
+					+ "(" + allIdentities.identityDataCollection[index].id.value + "," + allIdentities.identityDataCollection[index].smtp.value + ")\n");
+			}
 			window.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul",0, // give the Dialog a unique id
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
 					 allIdentities,
 					/* callback: */ vI_smartIdentity.changeIdentityToSmartIdentity).focus();
+		}
 		else if (autocreate || vI.preferences.getBoolPref("idSelection_autocreate")) {
 			vI_smartIdentity.changeIdentityToSmartIdentity(allIdentities, 0);
 		}	
 	},
 	
 	changeIdentityToSmartIdentity : function(allIdentities, selectedValue) {
+		vI_notificationBar.dump("## changeIdentityToSmartIdentity selectedValue=" + selectedValue + ": '" + allIdentities.identityDataCollection[selectedValue].combinedName + "' "
+			+ "(" + allIdentities.identityDataCollection[selectedValue].id.value + "," + allIdentities.identityDataCollection[selectedValue].smtp.value + ")\n");
 		document.getElementById("msgIdentity_clone").selectedMenuItem = allIdentities.menuItems[selectedValue];
-		
 		if (document.getElementById("msgIdentity_clone").vid) {
 			var label=vI.elements.strings.getString("vident.smartIdentity.vIUsage");
 			if (allIdentities.number > 1) label += " "
