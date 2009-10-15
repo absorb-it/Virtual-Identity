@@ -99,6 +99,7 @@ var vI_upgrade = {
 		vI_notificationBar.dump("checking for previous version of rdf, found " + 
 			currentVersion + "\nrdf-upgrade required.\n")
 		switch (currentVersion) {
+			case null:
 			case "0.0.1":
 			case "0.0.2":
 				vI_upgrade.__createRDFContainers(); // no break
@@ -152,6 +153,7 @@ var vI_upgrade = {
 	},
 
 	__createRDFContainers: function() {
+		vI_notificationBar.dump("upgrade: createRDFContainers ");
 		var rdfContainerUtils = Components.classes["@mozilla.org/rdf/container-utils;1"].
 			getService(Components.interfaces.nsIRDFContainerUtils);
 
