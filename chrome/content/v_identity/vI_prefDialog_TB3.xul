@@ -31,7 +31,8 @@
 <dialog id="vI_prefDialog"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         onload="vI_prefDialog.init();"
-        buttons="accept,cancel"
+        buttons="accept,cancel,help"
         ondialogaccept="vI_prefDialog.savePrefs();"
+	ondialoghelp="vI_prefDialog.help()"
         persist="screenX screenY"
         title="&vI_prefDialog.dlgTitle.label;" />

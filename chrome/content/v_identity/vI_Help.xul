@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+   
+<?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>   
+<?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+
+<!DOCTYPE overlay [
+<!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
+%versionDTD;
+<!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
+%vIdentDTD;
+<!ENTITY % helpDTD SYSTEM "chrome://v_identity/locale/vI_help.dtd">
+%helpDTD;
+]>
+
+<dialog id="vI_Help" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	buttons="extra1"
+        buttonlabelextra1="&vI_Help.extra1Button.label;"
+	buttoniconextra1="close"
+        title="Virtual Identity Help"
+	zlevel="6"
+	onload="vI_Help.init(window.arguments[0]);"
+	persist="height width">
+
+<script type="application/x-javascript"
+		src="chrome://v_identity/content/vI_Help.js" />
+	<hbox>
+	<spacer flex="1"/>
+			<button class="v_identity_logo v_identity_logo_button"
+				label="&vident.vidLogo.label; &vident.version;"
+				oncommand="vI_prefDialog.openURL('http://www.absorb.it/virtual-id')"
+				tooltiptext="&vI_Help.vidLogo.tooltiptext;" />
+	</hbox>
+	
+	<browser id="vI_Help_browser" class="vI_htmlTextBox" flex="1" />
+</dialog>

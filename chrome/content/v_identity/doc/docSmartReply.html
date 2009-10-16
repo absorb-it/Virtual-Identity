@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+  
+
+
+  
+
+  
+<!-- Mirrored from add-on-it.de/virtual-id/wiki/docSmartReply by HTTrack Website Copier/3.x [XR&CO'2008], Wed, 07 Oct 2009 12:19:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+<head>
+    <title>
+      docSmartReply – Virtual Identity
+    </title>
+        <link rel="search" href="https://add-on-it.de/virtual-id/search" />
+        <link rel="help" href="TracGuide.html" />
+        <link rel="alternate" href="docSmartReply56e6html.html?format=txt" type="text/x-trac-wiki" title="Plain Text" />
+        <link rel="start" href="https://add-on-it.de/virtual-id/wiki" />
+        <link rel="stylesheet" href="https://add-on-it.de/virtual-id/chrome/common/css/trac.css" type="text/css" /><link rel="stylesheet" href="https://add-on-it.de/virtual-id/chrome/common/css/wiki.css" type="text/css" />
+        <link rel="shortcut icon" href="https://add-on-it.de/virtual-id/chrome/common/trac.ico" type="image/x-icon" />
+        <link rel="icon" href="https://add-on-it.de/virtual-id/chrome/common/trac.ico" type="image/x-icon" />
+      <link type="application/opensearchdescription+xml" rel="search" href="https://add-on-it.de/virtual-id/search/opensearch" title="Search Virtual Identity" />
+    <script type="text/javascript" src="https://add-on-it.de/virtual-id/chrome/common/js/jquery.js"></script><script type="text/javascript" src="https://add-on-it.de/virtual-id/chrome/common/js/trac.js"></script><script type="text/javascript" src="https://add-on-it.de/virtual-id/chrome/common/js/search.js"></script>
+    <!--[if lt IE 7]>
+    <script type="text/javascript" src="/virtual-id/chrome/common/js/ie_pre7_hacks.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+      jQuery(document).ready(function($) {
+        $("#content").find("h1,h2,h3,h4,h5,h6").addAnchor("Link to this section");
+      });
+    </script>
+  </head>
+  <body>
+    <div id="banner">
+      <div id="header">
+        <a id="logo" href="http://absorb.it/"><img src="https://add-on-it.de/var/www/absorb.it/tikiwiki/styles/absorb_it/logo.jpg" alt="" /></a>
+      </div>
+      <form id="search" action="https://add-on-it.de/virtual-id/search" method="get">
+        <div>
+          <label for="proj-search">Search:</label>
+          <input type="text" id="proj-search" name="q" size="18" value="" />
+          <input type="submit" value="Search" />
+        </div>
+      </form>
+      <div id="metanav" class="nav">
+    <ul>
+      <li class="first"><a href="https://add-on-it.de/virtual-id/login">Login</a></li><li><a href="https://add-on-it.de/virtual-id/about">About Trac</a></li><li class="last"><a href="https://add-on-it.de/virtual-id/prefs">Preferences</a></li>
+    </ul>
+  </div>
+    </div>
+    <div id="mainnav" class="nav">
+    <ul>
+      <li class="first active"><a href="https://add-on-it.de/virtual-id/wiki">Home</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="DocumentationIndex.html">Documentation</a></li><li><a href="https://add-on-it.de/virtual-id/timeline">Timeline</a></li><li><a href="https://add-on-it.de/virtual-id/browser">Browse Source</a></li><li><a href="https://add-on-it.de/virtual-id/report">View Tickets</a></li><li class="last"><a href="https://add-on-it.de/virtual-id/newticket">New Ticket</a></li>
+    </ul>
+  </div>
+    <div id="main">
+      <div id="ctxtnav" class="nav">
+        <h2>Context Navigation</h2>
+          <ul>
+              <li class="first"><a href="WikiStart.html">Start Page</a></li><li><a href="TitleIndex.html">Index</a></li><li><a href="docSmartReplyd9df.html?action=history">History</a></li><li class="last"><a href="docSmartReply8e80.html?action=diff&amp;version=1">Last Change</a></li>
+          </ul>
+        <hr />
+      </div>
+    <div id="content" class="wiki">
+      <div class="wikipage searchable">
+        
+          <p>
+<sup><a class="wiki" href="docSmartIdentities.html">3.a Smart Identities</a>&lt; ^<a class="wiki" href="DocumentationIndex.html">Index</a>^ &gt;<a class="wiki" href="docStorage.html">3.a.ii Storage</a></sup>
+</p>
+<hr />
+<h1 id="a3.a.iSmartReply">3.a.i Smart Reply</h1>
+<p>
+Looking into the headers of the former email seems simple, but selecting the right ones to extract the chosen Identity is not as easy as it might look like. So, for effectively using this feature, you might have to look into your email-headers. Did you ever have a look into the source of any message? Now its time to do so, just select view--&gt;message source from Thunderbird's Menu and be impressed.
+</p>
+<p>
+All the first lines there are headers of your email, the address (Identity) for which you received your email might be hidden somewhere in the 'To:', 'Cc:', 'X-Original-To:' or the Envelope-To:' headers. Or in some other headers, only you can figure this out, cause this depends on several server configurations. Usual email will contain your address in the 'To:' or 'Cc:' header, but if you are subscribed to mailing lists, look in the email-header of the mails you get by those lists too.
+</p>
+<p>
+Once you have an idea about where to find the interesting headers, activate the Smart Reply Feature in the 'Main' Options Tab then configure the Smart Reply Feature.
+</p>
+<h2 id="a1.getaddresses">1. get addresses</h2>
+<table><tr><td>
+</td></tr></table><p>
+Under the 'Smart Reply'--&gt;'1. get addresses' tab you can configure the headers in which Smart Reply looks for some Senders Identities. The order of the mentioned headers is important, addresses which were found earlier might be preferred for Selection at the End. Just give in as many names of headers as you like to look at. Sometimes headers are occurring multiple times in one email, by adding a ':' and a number you are able to select a special occurrence of a header. This means, 'received:2' will add all Identities found in the second received-header (beginning from top of the mail) to the list of possible Identities, 'received' will instead add all Identities from all received-headers to this list.
+Another option is to add an ':@' to the selected header (for instance received:@'), this will only use the email address and ignore the rest, which is otherwise used as the Senders full name. These options can be combined. For example, 'received:2:@' will only use the email addresses found in the second received header.
+</p>
+<td>
+<a href="http://absorb.it/gallery2/v/technix/virtual_identity/smartReplySettings1.png.html"> <img src="http://absorb.it/gallery2/d/246-2/smartReplySettings1.png" /> </a>
+</td>
+<h2 id="a2.filteraddresses">2. filter addresses</h2>
+<table><tr><td>
+</td></tr></table><p>
+Now, after having a list of possible Sender Identities retrieved from the email headers, you might choose to reduce the number of them by filtering them to addresses that only match specific criteria. Filtering applies each filter to each possible Sender Identity. Any possible Sender Identities that do not match are discarded. For example, if you own the domain example.com, you might wish to filter the list down to Identities that have '@…' in it.
+</p>
+<p>
+The simplest way to do this is to add a string to the filter list as '@…'. This will ensure that only Identities that have 'example.com' are used. But, it will also include identities from domains such as '@…'. This can be prevented by using regular expressions for filters. 
+</p>
+<p>
+Virtual Identity can handle complex regular expressions when filtering. <a class="ext-link" href="http://en.wikipedia.org/wiki/Regular_expression"><span class="icon"> </span>Regular expressions</a> is a good reference. To use regular expressions enclose a properly formatted regular expression in slashes ('/') and make it a filter. The filter '/@example.com$/' will match all and, only those email addresses, which are from the domain example.com. 
+</p>
+<p>
+You can use multiple filters, one per line, to reorder the resulting list of Identities. Potential Sender Identities matching the first filter will be higher in the list than those matching the second, and so on. This change in ordering might affect the final choice of your Senders Identity.
+</p>
+<td>
+<a href="http://absorb.it/gallery2/v/technix/virtual_identity/smartReplySettings2.png.html"> <img src="http://absorb.it/gallery2/d/248-2/smartReplySettings2.png" /> </a>
+</td>
+<p>
+After having this list of addresses the results will be checked against the from within Thunderbird preselected Identity and against any other permanently stored Identities. You might decide by your own, if you like to ignore mismatches of Names, if the email addresses are the same. If some stored Identity matches any Identity in your list of possible Identities, this one is used and Smart Identity is aborted.
+</p>
+<p>
+Otherwise, if you wish, any missing possible Identity without a Name might get one, just enter it in the appropriate field.
+</p>
+<h2 id="a3.selectaddresses">3. select addresses</h2>
+<table><tr><td>
+</td></tr></table><p>
+Using the last Smart Identity Tab you are able to configure what should be done with the found Identities. (found Identities include also those Identities, which had been retrieved through the Storage). All of them will be added to the Identity drop down menu, so simply selecting nothing will just do that without changing the Identity which is currently shown in the 'From' field of your message compose dialogue.
+</p>
+<p>
+You can choose to get a dialog if there is more than one possible address, to select which one should be used as the virtual Senders address. If there are multiple possible addresses, they are ordered by the filters you added in the filter TAB. You might choose to select the first one without interaction, or to get a dialog also if there is only one possible address.
+</p>
+<td>
+<a href="http://absorb.it/gallery2/v/technix/virtual_identity/smartReplySettings3.png.html"> <img src="http://absorb.it/gallery2/d/250-2/smartReplySettings3.png" /> </a>
+</td>
+<hr />
+<p>
+<sub><a class="wiki" href="docSmartIdentities.html">3.a Smart Identities</a>&lt; ^<a class="wiki" href="DocumentationIndex.html">Index</a>^ &gt;<a class="wiki" href="docStorage.html">3.a.ii Storage</a></sub>
+</p>
+
+        
+        
+      </div>
+          <div class="buttons">
+              <form method="get" action="https://add-on-it.de/virtual-id/wiki/docSmartReply" id="modifypage">
+                <div>
+                  <input type="hidden" name="action" value="edit" />
+                      <input type="submit" value="Edit this page" />
+                </div>
+              </form>
+    <form method="get" action="https://add-on-it.de/virtual-id/attachment/wiki/docSmartReply/" id="attachfile">
+      <div>
+        <input type="hidden" name="action" value="new" />
+        <input type="submit" name="attachfilebutton" value="Attach file" />
+      </div>
+    </form>
+          </div>
+    </div>
+    <div id="altlinks">
+      <h3>Download in other formats:</h3>
+      <ul>
+        <li class="last first">
+          <a rel="nofollow" href="docSmartReply56e6html.html?format=txt">Plain Text</a>
+        </li>
+      </ul>
+    </div>
+    </div>
+    <div id="footer" lang="en" xml:lang="en"><hr />
+      <a id="tracpowered" href="http://trac.edgewall.org/"><img src="https://add-on-it.de/virtual-id/chrome/common/trac_logo_mini.png" height="30" width="107" alt="Trac Powered" /></a>
+      <p class="left">
+        Powered by <a href="https://add-on-it.de/virtual-id/about"><strong>Trac 0.11.4</strong></a><br />
+        By <a href="http://www.edgewall.org/">Edgewall Software</a>.
+      </p>
+      <p class="right">Visit the Trac open source project at<br /><a href="http://trac.edgewall.org/">http://trac.edgewall.org/</a></p>
+    </div>
+  </body>
+
+<!-- Mirrored from add-on-it.de/virtual-id/wiki/docSmartReply by HTTrack Website Copier/3.x [XR&CO'2008], Wed, 07 Oct 2009 12:19:41 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+</html>

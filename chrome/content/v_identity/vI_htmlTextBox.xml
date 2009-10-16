@@ -31,7 +31,7 @@
 	<implementation>
 	<constructor>
 		<![CDATA[		
-<!-- 		vI_notificationBar.dump('******* vI_htmlTextBox.xml constructor\n'); -->
+		dump('******* vI_htmlTextBox.xml constructor\n');
 		]]>
 	</constructor>
 	<property name="outputString" >
@@ -59,13 +59,33 @@
 	<property name="cssSource" >
 		<setter><![CDATA[
 		if (!val) return;
+		dump("cssSource set to " + val + "\n");
 		var head = this.contentDocument.getElementsByTagName("HEAD").item(0);
 		var range = document.createRange();
 		range.selectNode(head);
 		var css_text = this._getContents("chrome://v_identity/skin/" + val);
+		dump("cssSource set to " + val + " cont.\n");
 		var documentFragment = range.createContextualFragment("<style type='text/css'>" + css_text + "</style>");
 		head.appendChild(documentFragment);
+		dump("cssSource set to " + val + " done\n");
 		this._cssRead = true;
+		]]></setter>
+	</property>
+	<property name="htmlSource" >
+		<setter><![CDATA[
+		if (!val) return;
+		dump("htmlSource set to " + val + "\n");
+		var body = this.contentDocument.getElementsByTagName("BODY").item(0);
+		
+		var range = document.createRange();
+		range.selectNode(body);
+		var html_text = this._getContents("chrome://v_identity/content/doc/" + val);
+		dump("htmlSource set to " + val + " cont.\n");
+		var documentFragment = range.createContextualFragment(html_text);
+		body.appendChild(documentFragment);
+		for (var i = 0; i < body.children.length; i++)
+			if (!body.children[i].id || body.children[i].id != "main") body.removeChild(body.children[i--]);
+		dump("htmlSource set to " + val + " done\n");
 		]]></setter>
 	</property>
 	<field name="_currentList">null</field>
