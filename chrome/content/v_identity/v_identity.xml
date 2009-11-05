@@ -497,6 +497,7 @@
 	</method>
 	<method name="checkForVirtualIdentity">
 		<body><![CDATA[
+		vI_notificationBar.dump("** v_identity.xml checkForVirtualIdentity: " + this.identityData.id.key + " '" + this.identityData.id.value + "'\n")
 		var existingIdentity = this.identityData.isExistingIdentity(false);
 		
 		this.vid = (!existingIdentity);
@@ -533,7 +534,7 @@
 					this._identityDataStorage.id.key = oldIdentityData.id.key;
 					var idName = this._identityDataStorage.id.value;
 					this._identityDataStorage.sideDescription = (idName)?" - "+idName:"";
-					vI_notificationBar.dump("** v_identity.xml set new Id: '" + this._identityDataStorage.id.value + "'\n")
+					vI_notificationBar.dump("** v_identity.xml set new Id: " + this._identityDataStorage.id.key + " '" + this._identityDataStorage.id.value + "'\n")
 				}
 				this._identityDataStorage.extras.setValues();
 			
