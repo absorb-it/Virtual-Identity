@@ -549,7 +549,7 @@
 					tooltiptext="&vI_prefDialog.storage.tooltiptext;" prefstring="storage"
 					oncommand="vI_prefDialog.base.storageConstraint(this);" />
 				<spacer class="paragraph"/>
-				<button id="VIdent_identity.storage.openEditor" label="&vI_prefDialog.storage.openEditor;" oncommand="openDialog('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome,modal');" />
+				<button id="VIdent_identity.storage.openEditor" label="&vI_prefDialog.storage.openEditor;" oncommand="openDialog('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome, dialog, resizable=yes');" />
 				</groupbox>
 			</tabpanel>
 			<tabpanel orient="vertical">

@@ -27,8 +27,8 @@ var vI_upgradeOverlay = {
 		vI_rdfDatasource.init() // just to be sure that Datasource is available
 		if (vI_rdfDatasource.rdfUpgradeRequired() || vI_rdfDatasource.extUpgradeRequired()) {
 			if (!vI_upgrade.quick_upgrade())
-				window.open("chrome://v_identity/content/vI_upgrade.xul",0, // give the Dialog a unique id
-				"chrome, dialog, alwaysRaised, resizable=yes").focus();
+				window.open("chrome://v_identity/content/vI_upgrade.xul",0,
+					"chrome, dialog, modal, alwaysRaised, resizable=yes").focus();
 		}
 		else {
 			vI_account.cleanupSystem(); // always clean leftover accounts and directories

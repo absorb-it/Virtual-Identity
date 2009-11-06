@@ -251,7 +251,7 @@ var vI_storage = {
 
 	__askWarning : function(warning) {
 		var retVar = { returnValue: null };
-		var answer = window.openDialog("chrome://v_identity/content/vI_Dialog.xul",0,
+		var answer = window.openDialog("chrome://v_identity/content/vI_Dialog.xul","",
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
 					 warning, retVar)
 		return retVar.returnValue;

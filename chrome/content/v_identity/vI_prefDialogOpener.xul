@@ -43,7 +43,7 @@
   	<![CDATA[
 	function openPrefDialog () {
 		var chromeURL=(vI_helper.olderVersion('SM', '2.0a1pre') || vI_helper.olderVersion('TB', '3.0a1pre'))?'preTB3.xul':'TB3.xul';
-		window.openDialog('chrome://v_identity/content/vI_prefDialog_' + chromeURL, '', 'chrome');
+		window.open('chrome://v_identity/content/vI_prefDialog_' + chromeURL, '', 'chrome, dialog, alwaysRaised, resizable=yes');
 	};
   	]]>
   </script>

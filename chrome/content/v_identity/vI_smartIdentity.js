@@ -390,7 +390,7 @@ var vI_smartIdentity = {
 				vI_notificationBar.dump("## vI_smartIdentityReplyDialog index=" + index + ": '" + allIdentities.identityDataCollection[index].combinedName + "' "
 					+ "(" + allIdentities.identityDataCollection[index].id.value + "," + allIdentities.identityDataCollection[index].smtp.value + ")\n");
 			}
-			window.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul",0, // give the Dialog a unique id
+			window.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul",0,
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
 					 allIdentities,
 					/* callback: */ vI_smartIdentity.changeIdentityToSmartIdentity).focus();

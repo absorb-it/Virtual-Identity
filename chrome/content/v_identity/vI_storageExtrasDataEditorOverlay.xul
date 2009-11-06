@@ -80,7 +80,7 @@
 				</rule>	
 			</template>
 			<menupopup>
-				<menuitem name="charsetCustomize" accesskey="&charsetCustomize.accesskey;" label="&charsetCustomize.label;" oncommand="window.openDialog('chrome://global/content/customizeCharset.xul','PrefWindow', 'chrome,modal=yes,resizable=yes', 'mailedit')"/>
+				<menuitem name="charsetCustomize" accesskey="&charsetCustomize.accesskey;" label="&charsetCustomize.label;" oncommand="window.openDialog('chrome://global/content/customizeCharset.xul','PrefWindow', 'chrome, dialog, modal, alwaysRaised, resizable=yes', 'mailedit')"/>
 				<menuseparator />
 			</menupopup>
 			</menulist>
