@@ -218,6 +218,10 @@ var vI = {
 			.addTooltip(document.getElementById("msgIdentity_clone"), false);
 		window.addEventListener('compose-window-reopen', vI.reopen, true);
 		window.addEventListener('compose-window-close', vI.close, true);
+		
+		// append observer to fcc_switch, because it does'n work with real identities (hidden by css)
+		document.getElementById("fcc_switch").appendChild(document.getElementById("msgIdentity_clone_observer").cloneNode(false));
+
 		vI.initSystemStage1();
 		vI_notificationBar.dump("## v_identity: init done.\n\n")
 	},

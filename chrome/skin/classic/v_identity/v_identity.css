@@ -2,6 +2,10 @@
 @import url("chrome://v_identity/locale/logo.css"); 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
+#fcc_switch[vid="false"] {
+	display: none;
+}
+
 #msgIdentity_clone .smtpServerListHbox {
 	margin: -2px;
 	-moz-appearance: textfield;

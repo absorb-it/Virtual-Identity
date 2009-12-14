@@ -74,7 +74,8 @@
 		<menupopup id="msgIdentityPopup_clone"/>
 	</menulist>
 	<checkbox id="fcc_switch" label="&vident.composeDialog.fcc_switch.label;" 
-		  tooltiptext="&vident.composeDialog.fcc_switch.tooltiptext;" hidden="true" />
+		tooltiptext="&vident.composeDialog.fcc_switch.tooltiptext;" hidden="true" doFcc="false"
+		oncommand="if (this.doFcc == this.checked) this.checked = !(this.checked); this.doFcc = this.checked;" />
 	<popupset id="vI_tooltipPopupset" />
 </hbox>
   </vbox>
@@ -115,7 +116,7 @@
 			  insertafter="statusText"
 			  align="right">
 		<label value="&vident.vidLogo.label; &vident.version;" />
-		<observes element="msgIdentity_clone" attribute="vid" />
+		<observes id="msgIdentity_clone_observer" element="msgIdentity_clone" attribute="vid" />
 	</statusbarpanel>
 	  <statusbarpanel id="vI-status-menu" save="off"
 			  class="statusbarpanel-menu-iconic"
