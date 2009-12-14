@@ -467,9 +467,9 @@ vI_storageExtras_checkbox.prototype = {
 		var element = document.getElementById(this.composeDialogElementID);
 		if (!this.value || !element) return;
 		if (this.updateFunction) eval(this.updateFunction);
+
 		if ((element.getAttribute("checked") == "true") != (this.value == "true")) {
-			if (this.value == "true") element.setAttribute("checked","true");
-			else element.removeAttribute("checked");
+			vI_notificationBar.dump("## vI_storageExtras change "+ this.field + " to " + this.value + " with doCommand\n");
 			element.doCommand();
 		}
 	},
