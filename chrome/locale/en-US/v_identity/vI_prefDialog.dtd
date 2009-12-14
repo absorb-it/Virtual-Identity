@@ -77,6 +77,8 @@
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "On composing a new email, modify your usual sender-address with a timestamp. On easy way to create unique Identities, off by default.">
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the &apos;Signature Switch&apos; extension. By now this option is not available.">
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.label "remove any &apos;Signatur&apos; while using a Virtual Identity">
+<!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "deactivate S/MIME signature when using a Virtual Identity">
+<!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "deactivate openPGP signature when using a Virtual Identity">
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "set Virtual Identity as Reply-To address">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "show SMTP Menu">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "show Menu to select between available SMTP-servers">

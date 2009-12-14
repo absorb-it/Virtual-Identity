@@ -320,6 +320,10 @@
 					<description id="VIdent_identity.HideSignature.warning" class="widthXX">&vI_prefDialog.composeDialog.HideSignature.warning.desc;</description>
 					<checkbox id="VIdent_identity.hide_signature" label="&vI_prefDialog.composeDialog.HideSignature.label;" disabled="true"
 						prefstring="hide_signature"/>
+					<checkbox id="VIdent_identity.hide_sMime_messageSignature" label="&vI_prefDialog.composeDialog.HideSMimeSignature.label;"
+						prefstring="hide_sMime_messageSignature"/>
+					<checkbox id="VIdent_identity.hide_openPGP_messageSignature" label="&vI_prefDialog.composeDialog.HideOpenPGPSignature.label;"
+						prefstring="hide_openPGP_messageSignature"/>
 					<checkbox id="VIdent_identity.autoReplyToSelf" label="&vI_prefDialog.composeDialog.autoReplyToSelf.label;"
 						prefstring="autoReplyToSelf"/>
 				</groupbox>

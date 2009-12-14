@@ -60,6 +60,8 @@ var vI_prefDialog = {
 				"VIdent_identity.warn_nonvirtual",
 				"VIdent_identity.warn_virtual",
 				"VIdent_identity.hide_signature",
+				"VIdent_identity.hide_sMime_messageSignature",
+				"VIdent_identity.hide_openPGP_messageSignature",
 				"VIdent_identity.storage",
 				"VIdent_identity.storage_storedefault",
 				"VIdent_identity.storage_store_base_id",
@@ -255,9 +257,11 @@ var vI_prefDialog = {
 			document.getElementById("fccReplyFollowsParentBox").setAttribute("hidden", "true");
 		}
 		const enigmail_ID="{847b3a00-7ab1-11d4-8f02-006008948af5}"
-		if (!vI_helper.extensionActive(enigmail_ID))
+		if (!vI_helper.extensionActive(enigmail_ID)) {
 			document.getElementById("openPGPencryption").setAttribute("hidden", "true");
-
+			document.getElementById("VIdent_identity.hide_openPGP_messageSignature").setAttribute("hidden", "true");
+		}
+		
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
 		vI_prefDialog.base.smartReplyHideSignature();
 		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));

@@ -41,15 +41,38 @@ var vI_msgIdentityCloneTools = {
 		
 	signatureSwitch: function(existingIdentity) {
 		if (!existingIdentity) {
-			// code to hide the signature
+			vI_notificationBar.dump("## vI_msgIdentityCloneTools: signatureSwitch hide/remove signatures\n");
+			// code to hide the text signature
 			try { if (vI.preferences.getBoolPref("hide_signature") && ss_signature.length == 0)
 				ss_main.signatureSwitch()
 			} catch(vErr) { };
+			// code to hide the sMime signature
+			try { if (vI.preferences.getBoolPref("hide_sMime_messageSignature")) {
+				var element = document.getElementById("menu_securitySign1");
+				if (element.getAttribute("checked") == "true") {
+					vI_notificationBar.dump("## signatureSwitch hide_sMime_messageSignature with doCommand\n");
+					element.doCommand();
+				}
+			}
+			//	document.getElementById("menu_securitySign1").removeAttribute("checked");
+			} catch(vErr) { };
+			// code to hide the openGPG signature
+			try { if (vI.preferences.getBoolPref("hide_openPGP_messageSignature")) {
+				var element = document.getElementById("enigmail_signed_send");
+				if (element.getAttribute("checked") == "true") {
+					vI_notificationBar.dump("## signatureSwitch hide_openPGP_messageSignature with doCommand\n");
+					element.doCommand();
+				}
+			}
+			//	document.getElementById("enigmail_signed_send").removeAttribute("checked");
+			} catch(vErr) { };
 		}
 		else {
-			// code to show the signature
+			vI_notificationBar.dump("## vI_msgIdentityCloneTools: signatureSwitch restore signature\n");
+			// code to show the text signature
 			try { if (ss_signature.length > 0) ss_main.signatureSwitch(); }
 			catch(vErr) { };
+			// sMime and openGPG signature will not be re-added automatically
 		}
 	},
 	
