@@ -334,7 +334,7 @@
 		// copy selected Menu-Value from clone to orig.
 		var MenuItems = this._msgIdentityPopupElem.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
-			if ( MenuItems[index].getAttribute("value") == this.value ) {
+			if ( MenuItems[index].getAttribute("value") == this.selectedMenuItem.identityData.id.key ) {
 				this._msgIdentityElem.selectedItem = MenuItems[index];
 				this._msgIdentityElem.value = MenuItems[index].getAttribute("value");
 				break;
