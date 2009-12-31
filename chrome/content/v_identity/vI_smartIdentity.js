@@ -365,7 +365,9 @@ var vI_smartIdentity = {
 
 		/* compare with existing Identities										*/
 		for (var index = 0; index < allIdentities.number; index++) {
-			if (allIdentities.identityDataCollection[index].isExistingIdentity(true)) {
+			var existingID = allIdentities.identityDataCollection[index].isExistingIdentity(true);
+			if (existingID) {
+				allIdentities.identityDataCollection[index].id.key = existingID;	// set found identity
 				// if 'preferExisting' than select it and return
 				if (vI.preferences.getBoolPref("idSelection_preferExisting")) {
 					vI_notificationBar.dump("## vI_smartIdentity: found existing Identity, use without interaction.\n");
