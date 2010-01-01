@@ -185,6 +185,12 @@ identityCollection.prototype =
 			this.addWithoutDuplicates(addIdentityCollection.identityDataCollection[index])
 	},
 
+	dropIdentity : function(index) {
+		vI_notificationBar.dump("## identityCollection:   dropping address from inputList: " + this.identityDataCollection[index].combinedName + "\n");
+		while (index < (this.number - 1)) { this.identityDataCollection[index] = this.identityDataCollection[++index]; };
+		this.identityDataCollection[--this.number] = null;
+	},
+
 	addWithoutDuplicates : function(identityData) {
 		for (var index = 0; index < this.number; index++) {
 			if (this.identityDataCollection[index].email == identityData.email &&

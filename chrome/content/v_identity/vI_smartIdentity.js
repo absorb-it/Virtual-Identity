@@ -159,7 +159,7 @@ var vI_smartIdentity = {
 			var recentfilterType; var skipRegExp = false;
 			if (filterList.length <= 1 && filterList[0] == "")
 				{ vI_notificationBar.dump("## vI_smartIdentity: no filters configured\n"); recentfilterType = filterType.None; }
-			else if (/^\/(.*)\/$/.exec(filterList[i]))
+			else if (/^[+-]?\/(.*)\/$/.exec(filterList[i]))
 				{ vI_notificationBar.dump("## vI_smartIdentity: filter emails with RegExp '"
 					+ filterList[i].replace(/\\/g,"\\\\") + "'\n"); recentfilterType = filterType.RegExp; }
 			else	{ vI_notificationBar.dump("## vI_smartIdentity: filter emails, compare with '"
@@ -172,8 +172,12 @@ var vI_smartIdentity = {
 						add_addr = true; break;
 					case filterType.RegExp:
 						if (skipRegExp) break;
-						try { 	/^\/(.*)\/$/.exec(filterList[i]);
-							add_addr =  (smartIdentities.identityDataCollection[j].email.match(new RegExp(RegExp.$1,"i")))
+						try { 	/^[+-]?\/(.*)\/$/.exec(filterList[i]);
+							if ( filterList[i][0] == "-" ) {
+								if (smartIdentities.identityDataCollection[j].email.match(new RegExp(RegExp.$1,"i")))
+									smartIdentities.dropIdentity(j--);
+							} else
+								add_addr = (smartIdentities.identityDataCollection[j].email.match(new RegExp(RegExp.$1,"i")));
 						}
 						catch(vErr) {
 							vI_notificationBar.addNote(

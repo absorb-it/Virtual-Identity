@@ -36,7 +36,7 @@
 <!ENTITY vI_prefDialog.smartTab2.header "Smart Reply - Filter / Sort">
 <!ENTITY vI_prefDialog.smartTab2.caption "2. filter and sort identities">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "After getting the addresses they have to be filtered. All filters are used after each other, so you can use them to sort the result too. At the end the first-found address might get used instantly as a senders identity. If you don&apos;t use a filter, all addresses are transferred.">
-<!ENTITY vI_prefDialog.smartReply.filter.desc "Smart Reply filter  -  one filter per line, usage of regular Expressions possible (for instance &apos;/@mozilla.org$/&apos; is matching every email from domain mozilla.org)">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Smart Reply filter  -  one filter per line, usage of regular Expressions possible (for instance &apos;/@mozilla.org$/&apos; is matching every email from domain mozilla.org). Add '-' before regular Expressions to negate match.">
 
 <!ENTITY vI_prefDialog.smartTab3.header "Smart Reply - Compare">
 <!ENTITY vI_prefDialog.smartTab3.caption "3. compare with existing Identities">
