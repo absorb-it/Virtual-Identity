@@ -18,6 +18,7 @@
 <!ENTITY vident.vI_Menu.TooltipChange.label "click to change">
 
 <!ENTITY vident.vI_Dialog.extra1Button.label "Abort Sending">
+<!ENTITY vident.vI_Dialog.extra2Button.label "Use Stored Identity">
 
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">

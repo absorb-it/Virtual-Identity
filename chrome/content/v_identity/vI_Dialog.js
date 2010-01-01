@@ -40,6 +40,7 @@ var vI_Dialog = {
 		// show abort button
 		if (warning.class == "replaceVIdentity") {
 			document.documentElement.getButton("extra1").hidden = true;
+			document.documentElement.getButton("extra2").hidden = true;
 		}
 	}
 }

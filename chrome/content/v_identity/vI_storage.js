@@ -281,6 +281,11 @@ var vI_storage = {
 			if (storageDataByType && !storageDataByTypeEqual && vI.preferences.getBoolPref("storage_warn_update")) {
 				vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity overwrite warning\n");
 				doUpdate = vI_storage.__askWarning(vI_storage.__getWarning("updateStorage", recipient, storageDataByTypeCompResult.compareMatrix));
+				if (doUpdate == "takeover") {
+					var msgIdentityCloneElem = document.getElementById("msgIdentity_clone");
+					msgIdentityCloneElem.selectedMenuItem = msgIdentityCloneElem.addIdentityToCloneMenu(storageDataByType);
+					return false;
+				}
 				if (doUpdate == "abort") return false;
 			}
 		}
