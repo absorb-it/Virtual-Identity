@@ -124,11 +124,11 @@
 		
 		this.label = this._identityDataStorage.combinedName;
 		this.value = this._identityDataStorage.id.key;
-		vI_notificationBar.dump("** v_identity.xml fromPopupItem_clone constructor id='" + this.value + "'.\n")
+		// vI_notificationBar.dump("** v_identity.xml fromPopupItem_clone constructor id='" + this.value + "'.\n")
 
 		this.description = this._identityDataStorage.sideDescription;
 		this.smtp = this._identityDataStorage.smtp.value;
-		vI_notificationBar.dump("** v_identity.xml fromPopupItem_clone constructor smtp='" + this.smtp + "'.\n")
+		// vI_notificationBar.dump("** v_identity.xml fromPopupItem_clone constructor smtp='" + this.smtp + "'.\n")
 		this.smtpStyle = "width:" + document.getElementById("smtp_server_list").clientWidth + "px;";
 		this._identityDataStorage.smtp.value;
 		

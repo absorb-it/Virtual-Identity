@@ -43,9 +43,11 @@ var vI_msgIdentityCloneTools = {
 		if (!existingIdentity) {
 			vI_notificationBar.dump("## vI_msgIdentityCloneTools: signatureSwitch hide/remove signatures\n");
 			// code to hide the text signature
-			try { if (vI.preferences.getBoolPref("hide_signature") && ss_signature.length == 0)
+			try { if (vI.preferences.getBoolPref("hide_signature") && ss_signature.length == 0) {
+				vI_notificationBar.dump("## vI_msgIdentityCloneTools: hide text/html signature");
 				ss_main.signatureSwitch()
-			} catch(vErr) { };
+				vI_notificationBar.dump("\n");
+			} } catch(vErr) { vI_notificationBar.dump(" -- missing signatureSwitch extension?\n"); };
 			// code to hide the sMime signature
 			try { if (vI.preferences.getBoolPref("hide_sMime_messageSignature")) {
 				var element = document.getElementById("menu_securitySign1");
@@ -70,8 +72,11 @@ var vI_msgIdentityCloneTools = {
 		else {
 			vI_notificationBar.dump("## vI_msgIdentityCloneTools: signatureSwitch restore signature\n");
 			// code to show the text signature
-			try { if (ss_signature.length > 0) ss_main.signatureSwitch(); }
-			catch(vErr) { };
+			try { if (ss_signature.length > 0) {
+				vI_notificationBar.dump("## vI_msgIdentityCloneTools: show text/html signature");
+				ss_main.signatureSwitch()
+				vI_notificationBar.dump("\n");
+			} } catch(vErr) { vI_notificationBar.dump(" -- missing signatureSwitch extension?\n"); };
 			// sMime and openGPG signature will not be re-added automatically
 		}
 	},
