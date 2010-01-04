@@ -360,7 +360,12 @@ var vI_storage = {
 	__isDoBcc : function(row) {
 		var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 		if (recipientType != "addr_bcc" || !getCurrentIdentity().doBcc) return false
-		var doBccArray = gMsgCompose.compFields.SplitRecipients(getCurrentIdentity().doBccList, false);
+
+		var doBccArray;
+		if (typeof(gMsgCompose.compFields.SplitRecipients)=="function")
+			doBccArray = gMsgCompose.compFields.SplitRecipients(getCurrentIdentity().doBccList, false);	// TB 2.x
+		else	doBccArray = gMsgCompose.compFields.splitRecipients(getCurrentIdentity().doBccList, false, {});	// TB 3.x
+
 		for (var index = 0; index < doBccArray.count; index++ ) {
 			if (doBccArray.StringAt(index) == awGetInputElement(row).value) {
 				vI_notificationBar.dump("## vI_storage: ignoring doBcc field '" +
