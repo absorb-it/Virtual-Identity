@@ -40,6 +40,8 @@ var vI_msgIdentityCloneTools = {
 	},
 		
 	signatureSwitch: function(existingIdentity) {
+		// always initialize Security/Enigmail-Options
+		try { setSecuritySettings(1); enigSetMenuSettings(''); } catch(vErr) { };
 		if (!existingIdentity) {
 			vI_notificationBar.dump("## vI_msgIdentityCloneTools: signatureSwitch hide/remove signatures\n");
 			// code to hide the text signature
@@ -62,8 +64,20 @@ var vI_msgIdentityCloneTools = {
 			try { if (vI.preferences.getBoolPref("hide_openPGP_messageSignature")) {
 				var element = document.getElementById("enigmail_signed_send");
 				if (element.getAttribute("checked") == "true") {
-					vI_notificationBar.dump("## signatureSwitch hide_openPGP_messageSignature with doCommand\n");
-					element.doCommand();
+					var skipChangeGPGsign = false;
+					// sometimes GPG delays changing with dialog, so don't act if EnigmailAlertWindow is open to prevent double changes
+					var windows = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
+						.getService(Components.interfaces.nsIWindowWatcher).getWindowEnumerator();
+					while (windows.hasMoreElements()) {
+						var window = windows.getNext();
+						skipChangeGPGsign = skipChangeGPGsign || (window.document.title == EnigGetString("enigAlert"));
+					}
+					if (skipChangeGPGsign)
+						vI_notificationBar.dump("## signatureSwitch skip hide_openPGP_messageSignature - EnigMail AlertWindow open\n");
+					else {
+						vI_notificationBar.dump("## signatureSwitch hide_openPGP_messageSignature with doCommand\n");
+						element.doCommand();
+					}
 				}
 			}
 			//	document.getElementById("enigmail_signed_send").removeAttribute("checked");
