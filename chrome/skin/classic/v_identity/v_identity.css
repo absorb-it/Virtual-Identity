@@ -7,7 +7,7 @@
 }
 
 #msgIdentity_clone .smtpServerListHbox {
-	margin: -2px;
+	margin: 0px;
 	-moz-appearance: textfield;
 }
 .smtpServerListHbox {
@@ -21,6 +21,10 @@
 	margin: -1px 0px -1px -1px;
 }
 
+.identity_clone-menulist .contentHbox {
+	padding-right: 0.25em;
+}
+
 .identity_clone-menulist .smtpServerMenuList {
 	border-style: none;
 	-moz-appearance: none;
@@ -28,6 +32,7 @@
 	padding: 0px;
 	color: graytext;
 	text-align: center;
+	background-color: transparent;
 }
 
 .identityHbox, .baseIDHbox, .smtpServerHbox {
@@ -36,7 +41,12 @@
 .identityHbox[checked="true"][colorize="true"], .baseIDHbox[checked="true"][colorize="true"], .smtpServerHbox[checked="true"][colorize="true"] {
 	background-color: rgb(235, 245, 235);
 }
-
+.identityHbox {
+	padding-right: 0.25em;
+}
+.baseIDHbox {
+	padding-left: 0.25em;
+}
 .baseIDHbox[checked="true"][colorize="true"][disabled="true"], .smtpServerHbox[checked="true"][colorize="true"][disabled="true"] {
 	background-color: transparent;
 }
@@ -44,7 +54,7 @@
 checkbox.vI_plain > .checkbox-spacer-box > .checkbox-check {
 	width: 0px;
 }
-checkbox.vI_plain > .checkbox-label-center-box {
+checkbox.vI_plain > .checkbox-label-center-box, checkbox.vI_plain > .checkbox-label-box {
 	display: none;
 }
 
@@ -129,8 +139,20 @@ image#storageUp 			{ -moz-image-region: rect(0px, 48px, 30px, 30px) }
 image#storageUp[featureDisabled="true"]		{ -moz-image-region: rect(30px, 48px, 60px, 30px) }
 
 
-prefTabbox {
+#prefTabbox {
 	border: 1px inset threedface; padding: 5px; background-color: white;
+}
+
+#prefTabbox tabpanels {
+	padding: 0px;
+}
+
+#prefTabbox tabpanel {
+	padding: 8px; background-color: -moz-dialog;
+}
+
+#prefTabbox tabs {
+	padding-left: 8px;
 }
 
 .paneButtonIcon {
@@ -237,6 +259,7 @@ treechildren::-moz-tree-cell-text(locked) {
 	
 .v_identity_logo_button {
 	-moz-appearance: toolbarbutton;
+	border: medium none ; background-color: transparent;
 }
 
 #vINotification {
@@ -269,7 +292,7 @@ treechildren::-moz-tree-cell-text(locked) {
 	-moz-border-right-colors: ThreeDHighlight ThreeDLightShadow;
 	-moz-border-bottom-colors: ThreeDHighlight ThreeDLightShadow;
 	-moz-border-left-colors: ThreeDShadow ThreeDDarkShadow;
-	padding: 1px 0px 1px 2px;
+	padding: 0px;
 	background-color: -moz-Field;
 	color: -moz-FieldText;
 }
@@ -279,10 +302,10 @@ treechildren::-moz-tree-cell-text(locked) {
 	color: red;
 }
 
-
-.identity_clone-menulist .smtpServerMenuList .menulist-label-box {
-	margin: -1px;
+.identity_clone-menulist .smtpServerHbox, .identity_clone-menulist .smtpServerMenuList, .identity_clone-menulist .smtpServerMenuList .menulist-label-box {
+	border: medium none ; margin: 0px; height: 1em; max-height: 1em;
 }
+
 
 .identity_clone-menulist .smtpServerMenuList .menuitem-non-iconic {
 	padding: 0;

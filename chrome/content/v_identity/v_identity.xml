@@ -274,16 +274,16 @@
 					</xul:checkbox>
 				<xul:spacer flex="1" /></xul:vbox>
 				<xul:vbox><xul:spacer flex="1" />
-					<xul:hbox>
-						<xul:label id="msgIdentity_base_id_label" class="menu_clone-description" xbl:inherits="value,hidden=base_id_key_hidden" crop="right" hidden="true"/>
-						<xul:label value="&vident.accPane.prettyName.prefix;" class="menu_clone-vid virtIdLabel" xbl:inherits="vid" crop="right"/>
-					</xul:hbox>
+					<xul:label value="&vident.accPane.prettyName.prefix;" class="menu_clone-vid virtIdLabel" xbl:inherits="vid" crop="right"/>
 				<xul:spacer flex="1" /></xul:vbox>
 				<xul:observes element="vI_statusMenu_storage_save" attribute="checked" />
 			</xul:hbox>
 			<xul:hbox id="baseIDHbox" class="baseIDHbox" >
 				<xul:vbox><xul:spacer flex="1" />
-					<xul:label id="msgIdentity_clone_label" class="menu_clone-description" xbl:inherits="value=description" crop="right"/>
+					<xul:hbox>
+						<xul:label id="msgIdentity_base_id_label" class="menu_clone-description" xbl:inherits="value,hidden=base_id_key_hidden" crop="right" hidden="true"/>
+						<xul:label id="msgIdentity_clone_label" class="menu_clone-description" xbl:inherits="value=description" crop="right"/>
+					</xul:hbox>
 				<xul:spacer flex="1" /></xul:vbox>
 				<xul:vbox id="saveBaseIDSwitch"><xul:spacer flex="1" />
 					<xul:checkbox class="vI_plain" allowevents="true" oncommand="event.stopPropagation();vI_statusmenu.changeBaseIDStatus(this);" >
