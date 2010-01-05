@@ -189,6 +189,15 @@ var vI_prepareHeader = {
 	observer_added : false,
 	
 	init : function() {
+		vI_prepareHeader.orig_initializeHeaderViewTables = initializeHeaderViewTables;
+		initializeHeaderViewTables = vI_prepareHeader.replacement_initializeHeaderViewTables;
+		if (vI_prepareHeader.addExtraHeader()) vI_prepareHeader.addObserver();
+	},
+	
+	replacement_initializeHeaderViewTables : function() {
+		vI_prepareHeader.cleanup();
+		vI_notificationBar.dump("## vI_getHeader: initializeHeaderViewTables\n");
+		vI_prepareHeader.orig_initializeHeaderViewTables();
 		if (vI_prepareHeader.addExtraHeader()) vI_prepareHeader.addObserver();
 	},
 	
