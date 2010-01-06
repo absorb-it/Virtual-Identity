@@ -184,10 +184,19 @@ var vI_account = {
 	},
 	
 	removeUsedVIAccount : function() {
+		var mailWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService()
+			.QueryInterface(Components.interfaces.nsIWindowMediator)
+			.getMostRecentWindow("mail:3pane");
+		var selectedFolder = (mailWindow.gFolderTreeView)?mailWindow.gFolderTreeView.getSelectedFolders()[0]:null;
+		var selectedMessages = (mailWindow.gFolderDisplay)?mailWindow.gFolderDisplay.selectedMessages:null;
 		if (vI_account.account) {
 			vI_account.__removeAccount(vI_account.account);
 			vI_account.account = null;
 		}
+		try {
+		if (selectedFolder) mailWindow.gFolderTreeView.selectFolder(selectedFolder);
+		if (selectedMessages) mailWindow.gFolderDisplay.selectMessages(selectedMessages, false, false);
+		} catch (e) { };
 	},
 	
 	createAccount : function()
