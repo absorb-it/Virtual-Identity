@@ -357,7 +357,6 @@
 		var MenuItems = this._msgIdentityPopupElem.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
 			var identity = gAccountManager.getIdentity(MenuItems[index].getAttribute("value"));
-			vI_notificationBar.dump("\n** newIdentity: " + " \n");
 			
 			var description;
 			var server = gAccountManager.GetServersForIdentity(identity).QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
@@ -539,7 +538,7 @@
 				if (!this._identityDataStorage.id.key) {
 					this._identityDataStorage.id.key = oldIdentityData.id.key;
 					var idName = this._identityDataStorage.id.value;
-					this._identityDataStorage.sideDescription = (idName)?" - "+idName:"";
+					// this._identityDataStorage.sideDescription = (idName)?" - "+idName:"";
 					vI_notificationBar.dump("** v_identity.xml set new Id: " + this._identityDataStorage.id.key + " '" + this._identityDataStorage.id.value + "'\n")
 				}
 				this._identityDataStorage.extras.setValues();
@@ -550,9 +549,9 @@
 			
 			this.label = this._identityDataStorage.combinedName;
 			this.value = this._identityDataStorage.id.key;
-			vI_notificationBar.dump("** v_identity.xml identityData setter value='" + this.value + "'\n")
+			// vI_notificationBar.dump("** v_identity.xml identityData setter value='" + this.value + "'\n")
 			this.description = this._identityDataStorage.sideDescription;
-			vI_notificationBar.dump("** v_identity.xml identityData setter smtp='" + this._identityDataStorage.smtp.keyNice + "'\n")
+			// vI_notificationBar.dump("** v_identity.xml identityData setter smtp='" + this._identityDataStorage.smtp.keyNice + "'\n")
 			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this._identityDataStorage.smtp.keyNice;
 			
 		}
