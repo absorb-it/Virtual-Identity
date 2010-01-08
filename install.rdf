@@ -26,13 +26,14 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
                    em:name="Virtual Identity"
-                   em:version="0.5.12"
+                   em:version="0.5.13"
                    em:description="Allows you to modify your Identity settings for a single Mail on the fly."
                    em:creator="Rene Ejury"
                    em:homepageURL="http://www.absorb.it/virtual-id"
                    em:updateURL="http://absorb.it/software/virtual_identity/virtual_identity_update.rdf"
+		   em:updateKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDY5lTLkMzbwKDrWvC5rAjR9Uiv6THmeOK03lBCsQ89KXYlz8i2CNTgvp44+/kK+73u+ZdduNSID+HGuzfoWy+cJLznFSlKx5DcYWDKKGKhCrXvRZ/nFX1JowmfdR5LskQMLNHMjadUCuS6ka3tX+yWErxOMPTdYmSWazU8tp1fGwIDAQAB"
                    em:optionsURL="chrome://v_identity/content/vI_prefDialogOpener.xul"
-                   em:updateKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDY5lTLkMzbwKDrWvC5rAjR9Uiv6THmeOK03lBCsQ89KXYlz8i2CNTgvp44+/kK+73u+ZdduNSID+HGuzfoWy+cJLznFSlKx5DcYWDKKGKhCrXvRZ/nFX1JowmfdR5LskQMLNHMjadUCuS6ka3tX+yWErxOMPTdYmSWazU8tp1fGwIDAQAB">
+                   >
     <em:targetApplication RDF:resource="rdf:#$njP94"/>
     <em:targetApplication RDF:resource="rdf:#$rjP94"/>
     <em:translator>www.babelzilla.org</em:translator>
@@ -43,6 +44,7 @@
     <em:translator>- Goofy</em:translator>
     <em:translator>- PatheticCockroach</em:translator>
     <em:translator>- Ersen Yoldac</em:translator>
+    <em:translator>- wtspout(용오름)</em:translator>
     <em:file RDF:resource="urn:mozilla:extension:file:v_identity.jar"/>
   </RDF:Description>
 </RDF:RDF>
