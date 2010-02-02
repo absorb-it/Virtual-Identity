@@ -177,8 +177,18 @@ var vI = {
 			if (vid) vI.prepareAccount();
 			vI.replacement_functions.GenericSendMessageInProgress = false;
 // 			vI_notificationBar.dump("## v_identity: original_functions.GenericSendMessage\n");
-			vI.original_functions.GenericSendMessage(msgType);
 
+			// final check if eyerything is nice before we handover to the real sending...
+			var virtualIdentityData = document.getElementById("msgIdentity_clone").identityData;
+			var currentIdentity = getCurrentIdentity();
+			if (	currentIdentity.fullName == virtualIdentityData.fullName	&&
+				currentIdentity.email == virtualIdentityData.email		&&
+				currentIdentity.smtpServerKey == virtualIdentityData.smtp.keyNice	) {
+					vI.original_functions.GenericSendMessage(msgType);
+			}
+			else {
+				alert(vI.elements.strings.getString("vident.genericSendMessage.error"));
+			}
 // 			vI_notificationBar.dump("## v_identity: original_functions.GenericSendMessage done\n");
 		},
 		
@@ -211,8 +221,8 @@ var vI = {
 		if (vI.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
 		vI_notificationBar.dump("\n## v_identity: init.\n")
 		vI.unicodeConverter.charset="UTF-8";
+		if (!vI.adapt_genericSendMessage()) { vI_notificationBar.dump("\n## v_identity: init failed.\n"); return; }
 		vI.adapt_interface();
-		vI.adapt_genericSendMessage();
 		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
 		document.getElementById("vI_tooltipPopupset")
 			.addTooltip(document.getElementById("msgIdentity_clone"), false);
@@ -269,10 +279,11 @@ var vI = {
 	},
 	
 	adapt_genericSendMessage : function() {
-		if (vI.original_functions.GenericSendMessage) return; // only initialize this once
+		if (vI.original_functions.GenericSendMessage) return true; // only initialize this once
 		vI_notificationBar.dump("## v_identity: adapt GenericSendMessage\n");
 		vI.original_functions.GenericSendMessage = GenericSendMessage;
 		GenericSendMessage = vI.replacement_functions.GenericSendMessage;
+		return true;
 	},
 	
 	reopen: function() {
