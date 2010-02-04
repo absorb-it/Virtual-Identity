@@ -1,108 +1,174 @@
 <!ENTITY vI_prefDialog.dlgTitle.label "Virtual Identity 설정">
 <!ENTITY vI_prefDialog.vidLogo.tooltiptext "Virtual Identity 홈페이지 열기">
 
-<!ENTITY vI_prefDialog.commonTab.label "주요">
-<!ENTITY vI_prefDialog.vIdentityTab.label "가상 신원">
-<!ENTITY vI_prefDialog.smartReplyTab.label "똑똑한 답신">
-<!ENTITY vI_prefDialog.storageTab.label "보관소">
-<!ENTITY vI_prefDialog.idSelection.label "신원 선택">
-<!ENTITY vI_prefDialog.notificationTab.label "상태 메세지">
+<!ENTITY vI_prefDialog.tabbox.tab0.label "Source Mail"><!-- translate -->
+<!ENTITY vI_prefDialog.tabbox.tab1.label "Selection"><!-- translate -->
+<!ENTITY vI_prefDialog.tabbox.tab2.label "Compose Dialog"><!-- translate -->
+<!ENTITY vI_prefDialog.tabbox.tab3.label "Sending"><!-- translate -->
+<!ENTITY vI_prefDialog.tabbox.tab4.label "Storage"><!-- translate -->
+<!ENTITY vI_prefDialog.tabbox.tab5.label "Options"><!-- translate -->
 
-<!ENTITY vI_prefDialog.commonTab.header "일반 환경설정">
-<!ENTITY vI_prefDialog.commonTab.caption "기능">
-<!ENTITY vI_prefDialog.storage.label "사용한 신원 저장(또는 회수)">
-<!ENTITY vI_prefDialog.storage.tooltiptext "사용된 신원은 당신의 이메일의 수신인과 관련지어 저장할 수 있습니다. 만약 같은 수신인에게 다시 쓴다면, 같은 가상 신원 또는 비 가상 신원을 사용할 수 있습니다">
-<!ENTITY vI_prefDialog.autoTimestamp.label "새 메일을 위한 시간대별 신원 자동생성">
-<!ENTITY vI_prefDialog.autoTimestamp.tooltiptext "새 이메일을 작성하는 중, 당신의 보낸 시간과 함께 평상시 송신인 주소를 변경합니다. 기본값인 끔은, 유일한 신원을 생성하는 쉬운 방법입니다.">
-<!ENTITY vI_prefDialog.smartInfo.label "메일 헤더 분석을 통해 신원 검출">
+
+<!ENTITY vI_prefDialog.smartCell.label "Smart Features"><!-- translate -->
+<!ENTITY vI_prefDialog.smartCell.row0.label "Read"><!-- translate -->
+<!ENTITY vI_prefDialog.smartCell.row1.label "Filter / Sort"><!-- translate -->
+<!ENTITY vI_prefDialog.smartCell.row2.label "Compare"><!-- translate -->
+
+<!ENTITY vI_prefDialog.smartTab0.header "Header Analysis"><!-- translate -->
+<!ENTITY vI_prefDialog.smartTab0.Draft.caption "Smart Draft"><!-- translate -->
+<!ENTITY vI_prefDialog.smartTab0.Reply.caption "Smart Reply"><!-- translate -->
 <!ENTITY vI_prefDialog.versionWarning.label "똑똑한 초안 기능을 사용하기에 이메일 프로그램이 너무 낡았습니다">
 <!ENTITY vI_prefDialog.smartDraft.label "똑똑한 초안 사용">
 <!ENTITY vI_prefDialog.smartDraft.tooltiptext "'똑똑한 초안'은 저장된 이메일의 헤더 분석을 통해 초안 또는 템플릿의 기사용된 송신인 찾기를 시도합니다.기본값 &quot;켬&quot;을 추천합니다.">
 <!ENTITY vI_prefDialog.smartReply.label "똑똑한 답신 사용">
 <!ENTITY vI_prefDialog.smartReply.tooltiptext "'똑똑한 답신'은 받은 이메일의 헤더 분석을 통해 답신의 사용된 송신인 탐지를 시도합니다. 만약 이 신원이 아직 저장소에 없다면 상응합니다. 최상의 결과를 적절한 탭의 경우에 구성할 수 있습니다. 기본값인 '켬'을 추천.">
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.label "all received mails contain a 'received' header"><!-- translate -->
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.tooltiptext "'Smart Reply' has to detect if the mail was received or sent. This is usually done by checking for a 'received' header. If received mails don't contain a 'received' header uncheck this box. On by default."><!-- translate -->
 <!ENTITY vI_prefDialog.smartReplyNewsgroups.label "뉴스그룹에 답변을 할 경우 가상신원 사용">
 <!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "당신은 새 게시물에 답을 하는 동안 당신의 송신인 신원을 찾기 위해 '똑똑한 답신'을 사용할 수 있습니다. 만약 적당한 설정을 안하면 제대로 동작하지 않습니다. 따라서 기본값은 '끔'입니다.">
 
-<!ENTITY vI_prefDialog.commonTab.caption2 "인터페이스">
-<!ENTITY vI_prefDialog.SMTP.label "SMTP 메뉴 표시">
-<!ENTITY vI_prefDialog.menuEntry.label "설정 대화상자 및 저장 편집기를 위한 항목 도구 메뉴에 추가">
-<!ENTITY vI_prefDialog.warnNonvirtual.label "비 가상 신원의 어떠한 사용에도 경고">
-<!ENTITY vI_prefDialog.warnVirtual.label "Virtual Identities 사용량 경고">
-
-<!ENTITY vI_prefDialog.vIdentityTab.header "Virtual Identities 속성">
-<!ENTITY vI_prefDialog.vIdentityTab.valueTab.label "속성 복사">
-<!ENTITY vI_prefDialog.vIdentityTab.fccTab.label "보낸 메일을 저장하는 장소">
-<!ENTITY vI_prefDialog.vIdentityTab.draftsTab.label "초안을 저장하는 장소">
-<!ENTITY vI_prefDialog.vIdentityTab.tmplTab.label "템플릿을 저장하는 장소">
-<!ENTITY vI_prefDialog.vIdentityTab.valueTab.caption "가상 신원으로 메세지를 보내고 있는 도중">
-<!ENTITY vI_prefDialog.vIdentityTab.valueTab.desc "이전 신원에서 다음과 같은 속성을 복사 :">
-<!ENTITY vI_prefDialog.SMIME.label "S/MIME 보안 설정">
-<!ENTITY vI_prefDialog.PGP.label "OpenPGP 보안 설정">
-<!ENTITY vI_prefDialog.VCard.label "vCard 첨부">
-<!ENTITY vI_prefDialog.HideSignature.warning.desc "참고: &apos;Signature Switch&apos; 확장기능을 설치해 서명의 동적 비활성화을 사용하세요. 현재 이 선택사항은 사용할 수 없습니다.">
-<!ENTITY vI_prefDialog.HideSignature.label "가상 신원을 사용하는 동안 '서명' 제거">
-<!ENTITY vI_prefDialog.autoReplyToSelf.label "가상 신원으로 회신 주소를 설정">
-<!ENTITY vI_prefDialog.vIdentityTab.fccTab.caption "가상 신원으로 메세지를 보내고 있는 동안">
-<!ENTITY vI_prefDialog.vidFccAccount.label "가상 신원으로 계정을 변경해 폴더 사용">
-<!ENTITY vI_prefDialog.vidFccDefault.label "기본 계정 폴더">
-
-<!ENTITY vI_prefDialog.smartReplyTab.header "똑똑한 답신 설정">
-<!ENTITY vI_prefDialog.smartReplyTab.Tab1.label "1. 주소 받기">
-<!ENTITY vI_prefDialog.smartReplyTab.Tab2.label "2. 필터 주소">
-<!ENTITY vI_prefDialog.smartReplyTab.caption "가상 신원 똑똑한 답신">
+<!ENTITY vI_prefDialog.smartTab1.header "Smart Reply - Header Search"><!-- translate -->
+<!ENTITY vI_prefDialog.smartTab1.caption "1. 주소 받기">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab1.desc "답신 신원을 찾기 원한다면, 똑똑한 답신이 가능한 발신자 신원 목록을 가져올 수 있습니다. 그러므로 일반적으로 &apos;수신&apos; 과 &apos;참조&apos;를 분석합니다. 여기에 당신은 그것들 과/또는 다른 헤더를 입력할 수 있습니다.(추가적 선택사항: 동일한 이름을 가진 어떤 헤더라도 헤더 수 n을 선택하기 위해 &apos;:n&apos;을 추가하십시오. 만약 당신이 어떤 항목에 &apos;:@&apos;을 추가한다면 이메일 주소 만을 사용하고 이름은 무시합니다.)">
 <!ENTITY vI_prefDialog.smartReply.headers.desc "추가 헤더 - 한 줄에 하나씩, 예를 들어 'x-original-to' 또는 'x-original-to:@' 또는 'x-original-to:2:@'">
 <!ENTITY vI_prefDialog.smartReply.headers.reset "기본값 설정">
+
+<!ENTITY vI_prefDialog.smartTab2.header "Smart Reply - Filter / Sort"><!-- translate -->
+<!ENTITY vI_prefDialog.smartTab2.caption "2. 필터 주소">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "주소를 취득 후 걸러집니다. 모든 필터는 서로 사용된 후에 그런 식으로 결과값 정렬에 역시 그것들을 사용할 수 있습니다. 최초 발견된 주소 끝을 송신자의 신분으로 즉각 사용할수 있게 얻습니다. 만약 당신이 필터를 사용하지 않는다면, 모든 주소가 전송됩니다.">
 <!ENTITY vI_prefDialog.smartReply.filter.desc "지능형 답신 필터 - 한 줄에 하나씩, 정규 표현식을 이용 가능함(예를 들어 '/@mozilla.org$/' 는 mozilla.org 도메인과 일치하는 모든 이메일">
+
+<!ENTITY vI_prefDialog.smartTab3.header "Smart Reply - Compare"><!-- translate -->
+<!ENTITY vI_prefDialog.smartTab3.caption "3. compare with existing Identities"><!-- translate -->
 <!ENTITY vI_prefDialog.smartReply.ignoreFullname.label "이미 존재하는 신원과 이메일 주소를 비교하는 동안 전체 이름 무시">
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "어떤 이메일 주소에서도 이름을 찾지 못한 경우, 다음을 사용:">
 
-<!ENTITY vI_prefDialog.storageTab.header "신원 보관">
-<!ENTITY vI_prefDialog.storageTab.Tab1.label "보관 선택사항">
-<!ENTITY vI_prefDialog.storageTab.Tab2.label "추가 선택사항">
-<!ENTITY vI_prefDialog.storageCap1.caption "신원 저장">
-<!ENTITY vI_prefDialog.storageCap2.caption "신원 읽기">
-<!ENTITY vI_prefDialog.storage.storedefault.label "이메일 전송하는 동안 사용한 신원 저장">
-<!ENTITY vI_prefDialog.storage.store_base_id.label "기초 기반 신원 저장">
-<!ENTITY vI_prefDialog.storage.warn_update.label "보관소 내 신원을 덮어쓰기 전에 묻기">
-<!ENTITY vI_prefDialog.storage.dont_update_multiple.label "수신인이 여러 명인 경우 절대 덮어쓰(기 및 묻)지 않음">
-<!ENTITY vI_prefDialog.storage.show_switch.label "신원 저장 사용/사용안함 스위치 표시">
-<!ENTITY vI_prefDialog.storage.openEditor "저장된 자료 편집">
-<!ENTITY vI_prefDialog.storage.warn_vI_replace.label "보내는 이를 가상 신원으로 대체하기 전에 묻기">
-<!ENTITY vI_prefDialog.storage.get_One_Only.label "첫번째 가상 신원이 회복된 후 저장 무시">
-<!ENTITY vI_prefDialog.storageCap3.caption "다음과 같은 설정 저장(및 회수)">
 
-<!ENTITY vI_prefDialog.idSelection.header "신원 선택">
-<!ENTITY vI_prefDialog.idSelection.Tab1.label "신원 선택">
-<!ENTITY vI_prefDialog.idSelection.Tab2.label "결과 처리">
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Input"><!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Result Selection"><!-- translate -->
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption "지능형 답신 및 저장">
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "지능형 초안 및 저장">
-<!ENTITY vI_prefDialog.idSelection.Tab2.caption "결과 처리">
-
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Identity Input"><!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "지능형 답신 및 저장">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "지능형 초안 및 저장">
 <!ENTITY vI_prefDialog.idSelection.reply.desc "만약 당신이 어떤 이메일에 답을 한다면, 저장된 가상 신원의 우선순위와 비교할 '지능형 답신'은 여기서 설정할 수 있습니다.">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "'지능형 답신' 신원 선호">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "만약 수령인을 위한 가상신원을 저장된 것에서 발견시 '지능형 답신' 신원 무시">
 
 <!ENTITY vI_prefDialog.idSelection.draft.desc "만약 초안(또는 템플릿)을 편집한다면, 설정할 것이 없습니다. 만약 확장기능이 저장된 이메일의 헤더를 읽을수 있다면, 관련된 가상 신원을 생성합니다. 초안/템플릿 안에는 SMTP 또는 어떠한 다른 지정된 설정에 대한 정보도 없습니다.이 정보는 가능한한 가상 신원 저장소로 부터 받습니다.">
 
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Result Handling"><!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "결과 처리">
 <!ENTITY vI_prefDialog.idSelection.multiselect.desc "가상 신원 저장소 내 검색 결과 및 지능형 답신 또는 지능형 초안 헤더 분석은 메세지 신원 드롭다운 메뉴에 추가됩니다. 당신이 새 송신인의 신원을 사용하고자 하면 선택할 수 있습니다.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "신원 선택을 위한 대화상자 열기">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "만약 사용가능한 주소가 하나밖에 없는 경우에도 묻기">
 <!ENTITY vI_prefDialog.idSelection.autocreate.label "묻지 않고 첫번째 찾은 신원 사용">
 <!ENTITY vI_prefDialog.idSelection.autocreate.desc "(만약 사용가능한 주소가 하나밖에 없으면)">
+<!ENTITY vI_prefDialog.idSelection.preferExisting.label "use match with existing Identity without interaction"><!-- translate -->
 
-<!ENTITY vI_prefDialog.notificationTab.header "상태 메세지">
-<!ENTITY vI_prefDialog.notificationTab.caption "공지">
+<!ENTITY vI_prefDialog.composeDialog.Cell0.label "Features"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.Cell1.label "Dialog"><!-- translate -->
+
+<!ENTITY vI_prefDialog.composeDialog.header "Message Composing"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.header2 "Message Composing"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.caption "Message Compose Features"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.caption2 "Message Compose Dialog"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.caption3 "Storage Switches"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.label "새 메일을 위한 시간대별 신원 자동생성">
+<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "새 이메일을 작성하는 중, 당신의 보낸 시간과 함께 평상시 송신인 주소를 변경합니다. 기본값인 끔은, 유일한 신원을 생성하는 쉬운 방법입니다.">
+<!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "참고: &apos;Signature Switch&apos; 확장기능을 설치해 서명의 동적 비활성화을 사용하세요. 현재 이 선택사항은 사용할 수 없습니다.">
+<!ENTITY vI_prefDialog.composeDialog.HideSignature.label "가상 신원을 사용하는 동안 '서명' 제거">
+<!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "deactivate S/MIME signature when using a Virtual Identity"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "deactivate openPGP signature when using a Virtual Identity"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "가상 신원으로 회신 주소를 설정">
+<!ENTITY vI_prefDialog.composeDialog.SMTP.label "SMTP 메뉴 표시">
+<!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "show Menu to select between available SMTP-servers"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "show switch to activate/deactivate saving of sent mails (fcc)"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "show Button to activate/deactivate Storing of Sent mails (fcc) on the fly"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.show_switch.label "checkbox for saving of Identities"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "checkbox for saving of base Identities"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "checkbox for saving of SMTP"><!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "colorize to be stored Identity-parts"><!-- translate -->
+
+<!ENTITY vI_prefDialog.sending.Folder.label "Attributes / Copies"><!-- translate -->
+<!ENTITY vI_prefDialog.sending.Folder.row0.label "Sent Mail"><!-- translate -->
+<!ENTITY vI_prefDialog.sending.Folder.row1.label "Drafts"><!-- translate -->
+<!ENTITY vI_prefDialog.sending.Folder.row2.label "Templates"><!-- translate -->
+<!ENTITY vI_prefDialog.sending.warnings.label "Warnings"><!-- translate -->
+
+<!ENTITY vI_prefDialog.sending.Folder.header "Message Attributes"><!-- translate -->
+<!ENTITY vI_prefDialog.sending.Folder.caption "attributes to copy"><!-- translate -->
+<!ENTITY vI_prefDialog.sending.Folder.desc "이전 신원에서 다음과 같은 속성을 복사 :">
+<!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME 보안 설정">
+<!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard 첨부">
+
+<!ENTITY vI_prefDialog.sending.fccTab.header "Sent Mails Folder"><!-- translate -->
+<!ENTITY vI_prefDialog.sending.fccTab.caption "가상 신원으로 메세지를 보내고 있는 동안">
+<!ENTITY vI_prefDialog.sending.vidAccount.label "가상 신원으로 계정을 변경해 폴더 사용">
+<!ENTITY vI_prefDialog.sending.vidDefault.label "기본 계정 폴더">
+
+<!ENTITY vI_prefDialog.sending.draftTab.header "Draft Folder"><!-- translate -->
+<!ENTITY vI_prefDialog.sending.draftTab.caption "초안을 저장하는 장소">
+
+<!ENTITY vI_prefDialog.sending.tmplTab.header "Template Folder"><!-- translate -->
+<!ENTITY vI_prefDialog.sending.tmplTab.caption "템플릿을 저장하는 장소">
+
+<!ENTITY vI_prefDialog.sending.warnings.header "Warnings"><!-- translate -->
+<!ENTITY vI_prefDialog.sending.warnings.caption "before sending of the message"><!-- translate -->
+<!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "비 가상 신원의 어떠한 사용에도 경고">
+<!ENTITY vI_prefDialog.sending.warnings.warnVirtual.label "Virtual Identities 사용량 경고">
+
+
+<!ENTITY vI_prefDialog.storageTab.Tab0.label "Identity"><!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.reading.label "reading"><!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.storing.label "storing"><!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.Tab1.label "Storage Extra 1"><!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.Tab2.label "Storage Extra 2"><!-- translate -->
+
+<!ENTITY vI_prefDialog.storageTab.Tab0.header "Identity Storage"><!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.Tab0.caption "Storage Usage"><!-- translate -->
+<!ENTITY vI_prefDialog.storage.label "store (and recall) used Identities"><!-- translate -->
+<!ENTITY vI_prefDialog.storage.tooltiptext "사용된 신원은 당신의 이메일의 수신인과 관련지어 저장할 수 있습니다. 만약 같은 수신인에게 다시 쓴다면, 같은 가상 신원 또는 비 가상 신원을 사용할 수 있습니다">
+<!ENTITY vI_prefDialog.storage.openEditor "저장된 자료 편집">
+
+<!ENTITY vI_prefDialog.storageTab.reading.header "Identity Reading"><!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.reading.caption "신원 읽기">
+<!ENTITY vI_prefDialog.storage.warn_vI_replace.label "보내는 이를 가상 신원으로 대체하기 전에 묻기">
+<!ENTITY vI_prefDialog.storage.get_One_Only.label "첫번째 가상 신원이 회복된 후 저장 무시">
+
+<!ENTITY vI_prefDialog.storageTab.storing.header "Identity Storing"><!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.storing.caption "storing of used Identities"><!-- translate -->
+<!ENTITY vI_prefDialog.storage.storedefault.label "save used Identities while sending emails"><!-- translate -->
+<!ENTITY vI_prefDialog.storage.store_base_id.label "store underlying base Identity"><!-- translate -->
+<!ENTITY vI_prefDialog.storage.store_SMTP.label "store used SMTP"><!-- translate -->
+<!ENTITY vI_prefDialog.storage.warn_update.label "ask before overwriting Identities in your Storage"><!-- translate -->
+<!ENTITY vI_prefDialog.storage.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients"><!-- translate -->
+
+<!ENTITY vI_prefDialog.storageTab.Tab1.header "Storage Extras 1"><!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.Tab1.caption "attributes to store with Identity"><!-- translate -->
+
+<!ENTITY vI_prefDialog.storageTab.Tab2.header "Storage Extras 2"><!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.Tab2.caption "attributes to store with Identity"><!-- translate -->
+
+<!ENTITY vI_prefDialog.options.Tab0.label "Menu Options"><!-- translate -->
+<!ENTITY vI_prefDialog.options.Tab0.header "Menu Options"><!-- translate -->
+<!ENTITY vI_prefDialog.options.Tab0.caption "Menu Options"><!-- translate -->
+<!ENTITY vI_prefDialog.menuEntry.label "설정 대화상자 및 저장 편집기를 위한 항목 도구 메뉴에 추가">
+
+<!ENTITY vI_prefDialog.options.Tab1.label "Notifications"><!-- translate -->
+<!ENTITY vI_prefDialog.options.Tab1.header "상태 메세지">
+<!ENTITY vI_prefDialog.options.Tab1.caption "공지">
 <!ENTITY vI_prefDialog.notifyHeaders.label "인식된 헤더에 대한 정보를 표시">
 <!ENTITY vI_prefDialog.notifySmartIdentity.label "지능형 답신/지능형 초안 상태 메시지 사용">
 <!ENTITY vI_prefDialog.notifyStorage.label "저장 상태 메세지 사용">
 <!ENTITY vI_prefDialog.notifyTime.prefix.label "상태 메시지 표시 시간(0 = 무한)">
 <!ENTITY vI_prefDialog.notifyTime.postfix.label "초">
-<!ENTITY vI_prefDialog.notificationTab.Debug.caption "디버깅">
+
+<!ENTITY vI_prefDialog.options.Tab2.label "Debugging"><!-- translate -->
+<!ENTITY vI_prefDialog.options.Tab2.header "Debugging"><!-- translate -->
+<!ENTITY vI_prefDialog.options.Tab2.caption "디버깅">
 <!ENTITY vI_prefDialog.notifyDebug.desc "버그를 찾아으려면, 설정 문제를 해결하고 가상 신원이 동작하는 것을 이해야 합니다.특히, 똑똑한 답신 필터를. 당신은 일부 추가 정보를 사용할 수 있습니다. 이 선택사항을 사용하면 당신의 메일 클라이언트가 느려지므로, 영구적으로 활성화할수는 없습니다.">
 <!ENTITY vI_prefDialog.notifyDebug.label "디버그 정보와 함께 영역 표시">
+
 
 <!-- just for TB 1.5. ReplyFollowsParent not available -->
 <!-- fields will be hidden, dont have to be translated -->

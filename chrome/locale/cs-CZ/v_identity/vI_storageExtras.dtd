@@ -1,6 +1,7 @@
 <!ENTITY vI_storageExtras.storeValue.label "uložit">
 
 <!ENTITY vI_prefDialog.storageExtras.returnReciept.label "stav doručenky">
+<!ENTITY vI_prefDialog.storageExtras.fcc.label "FCC status"><!-- translate -->
 <!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "zvolená znaková sada">
 <!ENTITY vI_prefDialog.storageExtras.messageFormat.label "zvolený formát zpráv">
 
@@ -16,6 +17,7 @@
 <!ENTITY vI_storageExtras.caption.label "další uložená nastavení">
 
 <!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Potvrzení o přečtení">
+<!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC"><!-- translate -->
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Znaková sada">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Formát zpráv">
 <!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME šifrování">
@@ -26,6 +28,7 @@
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "skrýt neaktivní pole">
 <!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Potvrzení o přečtení">
+<!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC"><!-- translate -->
 <!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Znaková sada">
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Formát zpráv">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: šifrovat zprávy">

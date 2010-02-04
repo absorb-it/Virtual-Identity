@@ -1,6 +1,7 @@
 <!ENTITY vI_storageExtras.storeValue.label "Opslaan">
 
 <!ENTITY vI_prefDialog.storageExtras.returnReciept.label "Ontvangstbevestigingsstatus">
+<!ENTITY vI_prefDialog.storageExtras.fcc.label "FCC status"><!-- translate -->
 <!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "Geselecteerde codering">
 <!ENTITY vI_prefDialog.storageExtras.messageFormat.label "Geselecteerde berichtopmaak">
 
@@ -16,6 +17,7 @@
 <!ENTITY vI_storageExtras.caption.label "Aanvullende opgeslagen instellingen">
 
 <!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Ontvangstbevestiging">
+<!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC"><!-- translate -->
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Codering">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Berichtopmaak">
 <!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME versleutelen">
@@ -26,6 +28,7 @@
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "Inactieve velden verbergen">
 <!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Ontvangstbevestiging">
+<!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC"><!-- translate -->
 <!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Codering">
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Berichtopmaak">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: berichten versleutelen">

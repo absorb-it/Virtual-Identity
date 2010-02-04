@@ -1,6 +1,7 @@
 <!ENTITY vI_storageExtras.storeValue.label "almacén">
 
 <!ENTITY vI_prefDialog.storageExtras.returnReciept.label "estado del acuse de recibo">
+<!ENTITY vI_prefDialog.storageExtras.fcc.label "FCC status"><!-- translate -->
 <!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "codificación de caracteres seleccionada">
 <!ENTITY vI_prefDialog.storageExtras.messageFormat.label "formato de mensaje seleccionado">
 
@@ -16,6 +17,7 @@
 <!ENTITY vI_storageExtras.caption.label "opciones adicionales del almacén">
 
 <!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Acuse de recibo">
+<!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC"><!-- translate -->
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Codificación de caracteres">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Formato del mensaje">
 <!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME cifrado">
@@ -26,6 +28,7 @@
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "ocultar los campos inactivos">
 <!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Acuse de recibo">
+<!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC"><!-- translate -->
 <!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Codificación de caracteres">
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Formato del mensaje">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: mensajes cifrados">

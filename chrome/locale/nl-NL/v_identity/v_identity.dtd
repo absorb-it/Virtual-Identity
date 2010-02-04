@@ -2,6 +2,10 @@
 <!ENTITY vident.accPane.prettyName.prefix "virtuele ID">
 <!ENTITY vident.composeDialog.storageSave.label "Opslaan">
 <!ENTITY vident.composeDialog.storageSave.tooltiptext "Identiteit opslaan bij verzenden">
+<!ENTITY vident.composeDialog.fcc_switch.label "Fcc"><!-- translate -->
+<!ENTITY vident.composeDialog.fcc_switch.tooltiptext "save copy of sent mail"><!-- translate -->
+<!ENTITY vident.composeDialog.autoReplyToSelf.label "(=Reply-To)"><!-- translate -->
+<!ENTITY vident.composeDialog.autoReplyToSelf.menuLabel "disable Reply-To synchronization"><!-- translate -->
 <!ENTITY vident.replySelector.dialogheader.title "Virtual Identity">
 <!ENTITY vident.replySelector.caption.label "Kies een virtuele identiteit">
 <!ENTITY vident.vI_Menu.label "Virtual Identity">
@@ -9,10 +13,12 @@
 <!ENTITY vident.vI_Menu.DataEditor.label "Gegevensopslagbewerking">
 <!ENTITY vident.vI_Menu.storageSave.label "Identiteit opslaan bij verzenden">
 <!ENTITY vident.vI_Menu.saveBaseID.label "Onderliggende basisidentiteit opslaan">
+<!ENTITY vident.vI_Menu.saveSMTP.label "store SMTP information"><!-- translate -->
 <!ENTITY vident.vI_Menu.TooltipTitle.label "Virtual Identity status">
 <!ENTITY vident.vI_Menu.TooltipChange.label "Klik om te wijzigen">
 
 <!ENTITY vident.vI_Dialog.extra1Button.label "Abort Sending"> <!-- to translate -->
+<!ENTITY vident.vI_Dialog.extra2Button.label "Use Stored Identity"><!-- translate -->
 
 <!ENTITY fccMailFolder.accesskey "l">
 <!ENTITY sentFolderOn.accesskey "z">

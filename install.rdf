@@ -15,7 +15,14 @@
   <RDF:Description RDF:about="urn:mozilla:extension:file:v_identity.jar"
                    em:package="content/v_identity/"
                    em:skin="skin/classic/v_identity/">
+    <em:locale>locale/cs-CZ/v_identity/</em:locale>
+    <em:locale>locale/de-DE/v_identity/</em:locale>
     <em:locale>locale/en-US/v_identity/</em:locale>
+    <em:locale>locale/es-ES/v_identity/</em:locale>
+    <em:locale>locale/fr-FR/v_identity/</em:locale>
+    <em:locale>locale/ko-KR/v_identity/</em:locale>
+    <em:locale>locale/nl-NL/v_identity/</em:locale>
+    <em:locale>locale/tr-TR/v_identity/</em:locale>
   </RDF:Description>
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
@@ -34,6 +41,9 @@
     <em:translator>- Rmarkh</em:translator>
     <em:translator>- Michal Kec (MiK)</em:translator>
     <em:translator>- Wacław Jacek</em:translator>
+    <em:translator>- Ersen Yoldac</em:translator>
+    <em:translator>- wtspout(용오름)</em:translator>
+    <em:translator>- Goofy, PatheticCockroach</em:translator>
     <em:file RDF:resource="urn:mozilla:extension:file:v_identity.jar"/>
   </RDF:Description>
 </RDF:RDF>

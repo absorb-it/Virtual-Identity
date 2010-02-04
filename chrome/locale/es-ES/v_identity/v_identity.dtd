@@ -2,6 +2,10 @@
 <!ENTITY vident.accPane.prettyName.prefix "Identidad virtual">
 <!ENTITY vident.composeDialog.storageSave.label "guardar">
 <!ENTITY vident.composeDialog.storageSave.tooltiptext "guardar la identidad al enviar">
+<!ENTITY vident.composeDialog.fcc_switch.label "Fcc"><!-- translate -->
+<!ENTITY vident.composeDialog.fcc_switch.tooltiptext "save copy of sent mail"><!-- translate -->
+<!ENTITY vident.composeDialog.autoReplyToSelf.label "(=Reply-To)"><!-- translate -->
+<!ENTITY vident.composeDialog.autoReplyToSelf.menuLabel "disable Reply-To synchronization"><!-- translate -->
 <!ENTITY vident.replySelector.dialogheader.title "Virtual Identity">
 <!ENTITY vident.replySelector.caption.label "Elegir una identidad virtual">
 <!ENTITY vident.vI_Menu.label "Virtual Identity">
@@ -9,10 +13,12 @@
 <!ENTITY vident.vI_Menu.DataEditor.label "Editor de datos almacenados">
 <!ENTITY vident.vI_Menu.storageSave.label "guardar la identidad al enviar">
 <!ENTITY vident.vI_Menu.saveBaseID.label "guardar la identidad base">
+<!ENTITY vident.vI_Menu.saveSMTP.label "store SMTP information"><!-- translate -->
 <!ENTITY vident.vI_Menu.TooltipTitle.label "Estado de la identidad virtual">
 <!ENTITY vident.vI_Menu.TooltipChange.label "pulse para cambiar">
 
 <!ENTITY vident.vI_Dialog.extra1Button.label "Abort Sending"> <!-- to translate -->
+<!ENTITY vident.vI_Dialog.extra2Button.label "Use Stored Identity"><!-- translate -->
 
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">
