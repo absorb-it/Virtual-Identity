@@ -1,0 +1,18 @@
+<!ENTITY vident.vidLogo.label "virtual identity">
+<!ENTITY vident.accPane.prettyName.prefix "virtual Id">
+<!ENTITY vident.composeDialog.storageSave.label "저장">
+<!ENTITY vident.composeDialog.storageSave.tooltiptext "전송 하는 동안 신원 저장">
+<!ENTITY vident.replySelector.dialogheader.title "가상 신원">
+<!ENTITY vident.replySelector.caption.label "가상 신원 선택">
+<!ENTITY vident.vI_Menu.label "Virtual Identity">
+<!ENTITY vident.vI_Menu.Settings.label "설정">
+<!ENTITY vident.vI_Menu.DataEditor.label "자료 저장소 편집기">
+<!ENTITY vident.vI_Menu.storageSave.label "전송 중에 신원 저장">
+<!ENTITY vident.vI_Menu.saveBaseID.label "기초 기반 신원 저장">
+<!ENTITY vident.vI_Menu.TooltipTitle.label "가상 신원 상태">
+<!ENTITY vident.vI_Menu.TooltipChange.label "변경하려면 클릭">
+
+<!ENTITY fccMailFolder.accesskey "P">
+<!ENTITY sentFolderOn.accesskey "e">
+<!ENTITY sentInOtherFolder.label "기타:">
+<!ENTITY sentInOtherFolder.accesskey "O">

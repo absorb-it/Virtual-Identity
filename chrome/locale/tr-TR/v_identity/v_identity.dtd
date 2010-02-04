@@ -1,0 +1,18 @@
+<!ENTITY vident.vidLogo.label "sanal kimlik">
+<!ENTITY vident.accPane.prettyName.prefix "sanal Id">
+<!ENTITY vident.composeDialog.storageSave.label "kaydet">
+<!ENTITY vident.composeDialog.storageSave.tooltiptext "Kimliği gönderirken kaydet">
+<!ENTITY vident.replySelector.dialogheader.title "Sanal Kimlik">
+<!ENTITY vident.replySelector.caption.label "Sanal Kimliği Seç">
+<!ENTITY vident.vI_Menu.label "Sanal Kimlik">
+<!ENTITY vident.vI_Menu.Settings.label "Ayarlar">
+<!ENTITY vident.vI_Menu.DataEditor.label "Veri-Depolama Düzenleyici">
+<!ENTITY vident.vI_Menu.storageSave.label "Kimliği gönderirken kaydet">
+<!ENTITY vident.vI_Menu.saveBaseID.label "Alt taban Kimliği sakla">
+<!ENTITY vident.vI_Menu.TooltipTitle.label "Sanal Kimlik Durumu">
+<!ENTITY vident.vI_Menu.TooltipChange.label "değiştirmek için tıklayın">
+
+<!ENTITY fccMailFolder.accesskey "P">
+<!ENTITY sentFolderOn.accesskey "e">
+<!ENTITY sentInOtherFolder.label "Diğer:">
+<!ENTITY sentInOtherFolder.accesskey "O">

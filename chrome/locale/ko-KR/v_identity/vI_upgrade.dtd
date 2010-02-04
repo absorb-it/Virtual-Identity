@@ -1,0 +1,20 @@
+<!ENTITY vident.upgrade.dlgTitle.label "Virtual Identity 확장기능 업그레이드/설치">
+<!ENTITY vident.upgrade.intro.label "Virtual Identity 설치/업그레이드">
+<!ENTITY vident.upgrade.intro.description "소개">
+<!ENTITY vident.upgrade.intro.caption "Virtual Identity">
+<!ENTITY vident.upgrade.features.label "Virtual Identity 설치/업그레이드">
+<!ENTITY vident.upgrade.features.description "기능">
+<!ENTITY vident.upgrade.features.caption "Virtual Identity">
+<!ENTITY vident.upgrade.license.label "Virtual Identity 설치/업그레이드">
+<!ENTITY vident.upgrade.license.description "허가서">
+<!ENTITY vident.upgrade.license.caption "GNU 일반 공중 사용 허가서">
+<!ENTITY vident.upgrade.0.5.0.label "Virtual Identity 설치/업그레이드">
+<!ENTITY vident.upgrade.0.5.0.description "업그레이드 단계 1/2">
+<!ENTITY vident.upgrade.0.5.0.caption "가상 신원 자료 저장소">
+<!ENTITY vident.upgrade.upgrade.label "Virtual Identity 설치/업그레이드">
+<!ENTITY vident.upgrade.upgrade.description "업그레이드 단계 2/2">
+<!ENTITY vident.upgrade.upgrade.caption "Virtual Identity 업그레이드">
+<!ENTITY vident.upgrade.finish.label "Virtual Identity 설치/업그레이드">
+<!ENTITY vident.upgrade.finish.description "종료">
+<!ENTITY vident.upgrade.finish.caption "Virtual Identity">
+<!ENTITY vident.upgrade.vidLogo.tooltiptext "Virtual Identity 홈페이지 열기">
