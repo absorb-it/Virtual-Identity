@@ -1,7 +1,7 @@
 <!ENTITY vI_storageExtras.storeValue.label "speicher">
 
 <!ENTITY vI_prefDialog.storageExtras.returnReciept.label "Status Empfangsbestätigung">
-<!ENTITY vI_prefDialog.storageExtras.fcc.label "FCC status"><!-- translate -->
+<!ENTITY vI_prefDialog.storageExtras.fcc.label "FCC Sende-Kopie">
 <!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "ausgewählter Zeichensatz">
 <!ENTITY vI_prefDialog.storageExtras.messageFormat.label "ausgewähltes Email-Format">
 
@@ -17,7 +17,7 @@
 <!ENTITY vI_storageExtras.caption.label "zusätzlich gespeicherte Einstellungen">
 
 <!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Empfangsbestätigung">
-<!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC"><!-- translate -->
+<!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC Sende-Kopie">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Zeichensatz">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Email-Format">
 <!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME Verschlüsselung">
@@ -28,7 +28,7 @@
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "verstecke unbenutzte Felder">
 <!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Empfangsbestätigung">
-<!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC"><!-- translate -->
+<!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC Sende-Kopie">
 <!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Zeichensatz">
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Email-Format">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: verschlüssel Emails">

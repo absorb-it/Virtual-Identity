@@ -1,20 +1,20 @@
 <!ENTITY vI_prefDialog.dlgTitle.label "Virtual Identity Einstellungen">
 <!ENTITY vI_prefDialog.vidLogo.tooltiptext "Öffne die Webseite von Virtual Identity">
 
-<!ENTITY vI_prefDialog.tabbox.tab0.label "Source Mail">
-<!ENTITY vI_prefDialog.tabbox.tab1.label "Selection">
-<!ENTITY vI_prefDialog.tabbox.tab2.label "Compose Dialog">
-<!ENTITY vI_prefDialog.tabbox.tab3.label "Sending">
-<!ENTITY vI_prefDialog.tabbox.tab4.label "Storage">
-<!ENTITY vI_prefDialog.tabbox.tab5.label "Options">
+<!ENTITY vI_prefDialog.tabbox.tab0.label "Basis-Email">
+<!ENTITY vI_prefDialog.tabbox.tab1.label "Auswahl">
+<!ENTITY vI_prefDialog.tabbox.tab2.label "Email-Editor">
+<!ENTITY vI_prefDialog.tabbox.tab3.label "Senden">
+<!ENTITY vI_prefDialog.tabbox.tab4.label "Speicher">
+<!ENTITY vI_prefDialog.tabbox.tab5.label "Optionen">
 
 
-<!ENTITY vI_prefDialog.smartCell.label "Smart Features">
-<!ENTITY vI_prefDialog.smartCell.row0.label "Read">
-<!ENTITY vI_prefDialog.smartCell.row1.label "Filter / Sort">
-<!ENTITY vI_prefDialog.smartCell.row2.label "Compare">
+<!ENTITY vI_prefDialog.smartCell.label "Smart Funktionen">
+<!ENTITY vI_prefDialog.smartCell.row0.label "Lesen">
+<!ENTITY vI_prefDialog.smartCell.row1.label "Filtern / Sortieren">
+<!ENTITY vI_prefDialog.smartCell.row2.label "Vergleichen">
 
-<!ENTITY vI_prefDialog.smartTab0.header "Header Analysis">
+<!ENTITY vI_prefDialog.smartTab0.header "Kopzeilen-Analyse">
 <!ENTITY vI_prefDialog.smartTab0.Draft.caption "Smart Draft">
 <!ENTITY vI_prefDialog.smartTab0.Reply.caption "Smart Reply">
 <!ENTITY vI_prefDialog.versionWarning.label "Deine Version von Thunderbird ist zu alt, Smart Draft steht nicht zur Verfügung">
@@ -22,32 +22,32 @@
 <!ENTITY vI_prefDialog.smartDraft.tooltiptext "'Smart Draft' versucht den gewünschten Sender eines Entwurfs oder ener Vorlage anhand der Kopfzeilen der gespeicherten Email zu erkennen.">
 <!ENTITY vI_prefDialog.smartReply.label "verwende Smart Reply">
 <!ENTITY vI_prefDialog.smartReply.tooltiptext "'Smart Reply' versucht den gewünschten Sender einer Email-Antwort durch Analyse der Kopfzeilen der zu beantwortenden Email zu ermitteln. Das ist wichtig, wenn die entsprechende Identität noch nicht in Deinem Speicher abgelegt wurde. Beste Ergebnisse wenn im entsprechenden Tab genau konfiguriert.">
-<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.label "all received mails contain a 'received' header">
-<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.tooltiptext "'Smart Reply' has to detect if the mail was received or sent. This is usually done by checking for a 'received' header. If received mails don't contain a 'received' header uncheck this box. On by default.">
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.label "alle empfangenen Emails enthalten eine 'received' Kopfzeile">
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.tooltiptext "'Smart Reply' muss erkennen können ob eine Email gesandt oder empfangen wurde. Wenn empfangene Emails keine 'received'-Kopfzeile enthalten, wähle die Erkennung in dieser Auswahlbox ab.">
 <!ENTITY vI_prefDialog.smartReplyNewsgroups.label "verwende Smart Reply auch bei Antworten an Newsgruppen">
 <!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "Du kannst 'Smart Reply' auch nutzen um die Sender-Identität bei Antworten an news-Gruppen zu erkennen. Dies funktioniert allerdings nur wenn 'Smart Reply' richtig konfiguriert wurde.">
 
-<!ENTITY vI_prefDialog.smartTab1.header "Smart Reply - Header Search">
+<!ENTITY vI_prefDialog.smartTab1.header "Smart Reply - Kopfzeilen-Suche">
 <!ENTITY vI_prefDialog.smartTab1.caption "1. Adressen besorgen">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab1.desc "In einem ersten Schritt muss &apos;Smart Reply&apos; eine Liste der möglichen Sendeadressen ihrer Antwort erstellen. Dafür werden üblicherweise die Empfängerfelder &apos;To&apos; und &apos;Cc&apos; der Email ausgewertet. Hier können diese und weitere Kopfzeilen angegeben werden. (ergänzende Optionen: Auswahl der Kopfzeile Nummer n aus mehreren Kopfzeilen mit gleicher Bezeichnung durch &apos;:n&apos;. Email-Adressen übernehmen, Namen ignorieren durch &apos;:@&apos;.)">
 <!ENTITY vI_prefDialog.smartReply.headers.desc "zusätzliche Kopfzeilen  -  je eine pro Zeile bspw. &apos;x-original-to&apos; oder &apos;x-original-to:@&apos; oder &apos;x-original-to:2:@&apos;">
 <!ENTITY vI_prefDialog.smartReply.headers.reset "setze Vorgabe-Werte">
 
-<!ENTITY vI_prefDialog.smartTab2.header "Smart Reply - Filter / Sort">
+<!ENTITY vI_prefDialog.smartTab2.header "Smart Reply - Filtern / Sortieren">
 <!ENTITY vI_prefDialog.smartTab2.caption "2. Adressen filtern">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "Im zweiten Schritt werden die möglichen Sendeadressen gefiltert. Alle Filter werden der Reihe nach angewandt, so werden die Adressen gleichzeitig sortiert. Die zuerst gefundene Adresse kann dann direkt als Sender übernommen werden. Wird kein Filter angegeben, werden alle Adressen übernommen.">
-<!ENTITY vI_prefDialog.smartReply.filter.desc "Smart Reply Filter  -  eine Zeile je Filter, reguläre Ausdrücke sind möglich, bspw. filtert &apos;/@mozilla.org$/&apos; nach allen Emailadressen der domain mozilla.org.  Add '-' before regular Expressions to negate match.">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Smart Reply Filter  -  eine Zeile je Filter, reguläre Ausdrücke sind möglich, bspw. filtert &apos;/@mozilla.org$/&apos; nach allen Emailadressen der domain mozilla.org. Setze '-' vor reguläre Ausdrücke um den Filter zu negieren.">
 
-<!ENTITY vI_prefDialog.smartTab3.header "Smart Reply - Compare">
-<!ENTITY vI_prefDialog.smartTab3.caption "3. compare with existing Identities">
+<!ENTITY vI_prefDialog.smartTab3.header "Smart Reply - Vergleiche">
+<!ENTITY vI_prefDialog.smartTab3.caption "3. vergleiche mit bestehenden Identitäten">
 <!ENTITY vI_prefDialog.smartReply.ignoreFullname.label "ignoriere Namensangaben beim Vergleich der Email-Adressen mit vorhandenen Identitäten">
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "falls kein Name zu einer Email-Adresse gefunden wurde, benutze folgenden Namen:">
 
 
-<!ENTITY vI_prefDialog.idSelection.Cell0.label "Input">
-<!ENTITY vI_prefDialog.idSelection.Cell1.label "Result Selection">
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Eingang">
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Ergebnis-Auswahl">
 
-<!ENTITY vI_prefDialog.idSelection.Tab0.header "Identity Input">
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Identitäten-Eingang">
 <!ENTITY vI_prefDialog.idSelection.Tab0.caption "Smart Reply und Speicher">
 <!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "Smart Draft und Speicher">
 <!ENTITY vI_prefDialog.idSelection.reply.desc "Die Priorität von im Speicher gefundenen Identitäten gegenüber solchen, die mit 'Smart Reply' gefunden wurden, kann hier konfiguriert werden.">
@@ -56,115 +56,115 @@
 
 <!ENTITY vI_prefDialog.idSelection.draft.desc "Wenn Du eine Vorlage oder einen Entwurf bearbeitest, gibt es nichts weiter zu konfigurieren. Wenn die Erweiterung in den Kopfzeilen der gespeicherten Email Informationen findet, wird eine entsprechende Identität erzeugt. Allerdings finden sich im Entwurf keine Informationen über SMTP oder weitere spezifische Einstellungen. Diese Informationen werde, wenn möglich, aus dem Identitäten-Speicher erfragt.">
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.header "Result Handling">
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Ergebnis-Auswahl">
 <!ENTITY vI_prefDialog.idSelection.Tab1.caption "Verwendung der Ergebnisse">
 <!ENTITY vI_prefDialog.idSelection.multiselect.desc "Die Ergebnisse der Suche im Identitäten-Speicher und der 'Smart reply' bzw. 'Smart Draft' Kopfzeilen-Analyse werden zum Identitäten-Menu hinzugefügt. Hier kannst Du auswählen, wie und ob diese als neue Sender-Identität genutzt werden.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "öffne ein Dialogfenster zur Auswahl der Identität">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "auch nachfragen, wenn nur eine Adresse zur Auswahl steht">
 <!ENTITY vI_prefDialog.idSelection.autocreate.label "übernehme die erste Identität automatisch">
 <!ENTITY vI_prefDialog.idSelection.autocreate.desc "(wenn nur eine Adresse zur Auswahl steht)">
-<!ENTITY vI_prefDialog.idSelection.preferExisting.label "use match with existing Identity without interaction">
+<!ENTITY vI_prefDialog.idSelection.preferExisting.label "wähle automatisch eine existierende Identität bei Übereinstimmung">
 
-<!ENTITY vI_prefDialog.composeDialog.Cell0.label "Features">
+<!ENTITY vI_prefDialog.composeDialog.Cell0.label "Funktionen">
 <!ENTITY vI_prefDialog.composeDialog.Cell1.label "Dialog">
 
-<!ENTITY vI_prefDialog.composeDialog.header "Message Composing">
-<!ENTITY vI_prefDialog.composeDialog.header2 "Message Composing">
-<!ENTITY vI_prefDialog.composeDialog.caption "Message Compose Features">
-<!ENTITY vI_prefDialog.composeDialog.caption2 "Message Compose Dialog">
-<!ENTITY vI_prefDialog.composeDialog.caption3 "Storage Switches">
+<!ENTITY vI_prefDialog.composeDialog.header "Email-Editor">
+<!ENTITY vI_prefDialog.composeDialog.header2 "Email-Editor">
+<!ENTITY vI_prefDialog.composeDialog.caption "Email-Editor Funktionen">
+<!ENTITY vI_prefDialog.composeDialog.caption2 "Email-Editor Dialog">
+<!ENTITY vI_prefDialog.composeDialog.caption3 "Speicher-Auswahl">
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.label "erzeuge automatischen Zeitstempel für neue mails">
-<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "Verändere die Absender-Adresse für neue emails mit einem Zeitstempel. Dies ist ein einfacher Weg um automatisch neue Identitäen zu erzeugen.">
+<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "Verändere die Absender-Adresse für neue emails mit einem Zeitstempel. Dies ist ein einfacher Weg um automatisch neue Identitäten zu erzeugen.">
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "Hinweis: Zur dynamischen Abschaltung der &apos;Signatur&apos; muss die Erweiterung &apos;Signature Switch&apos; installiert (und aktiviert) sein. Zur Zeit steht diese Option nicht zur Verfügung.">
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.label "entferne eine &apos;Signatur&apos; bei Nutzung einer Virtuellen Identität">
-<!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "deactivate S/MIME signature when using a Virtual Identity">
-<!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "deactivate openPGP signature when using a Virtual Identity">
+<!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "entferne S/MIME Signatur Nutzung einer Virtuellen Identität">
+<!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "entferne openPGP Signatur bei Nutzung einer Virtuellen Identität">
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "setze Virtuelle Identität als Reply-To Adresse">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "zeige SMTP Auswahlmenu">
-<!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "show Menu to select between available SMTP-servers">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "show switch to activate/deactivate saving of sent mails (fcc)">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "show Button to activate/deactivate Storing of Sent mails (fcc) on the fly">
-<!ENTITY vI_prefDialog.composeDialog.show_switch.label "checkbox for saving of Identities">
-<!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "checkbox for saving of base Identities">
-<!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "checkbox for saving of SMTP">
-<!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "colorize to be stored Identity-parts">
+<!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "zeige Menu um zwischen existierenden SMTP-Servern auszuwählen">
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "zeige Schalter um Sende-Kopien an-/abzuschalten (Fcc)">
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "zeige Schalter um das Speichern von Kopien gesendeter Mails an-/abzuschalten (Fcc)">
+<!ENTITY vI_prefDialog.composeDialog.show_switch.label "zeige Schalter zum Speichern von Identitäten">
+<!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "zeige Schalter zum Speichern von Basis-Identitäten">
+<!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "zeige Schalter zum Speichern des SMTP">
+<!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "kennzeichne gespeicherte Identitäts-Bereiche farbig">
 
-<!ENTITY vI_prefDialog.sending.Folder.label "Attributes / Copies">
-<!ENTITY vI_prefDialog.sending.Folder.row0.label "Sent Mail">
-<!ENTITY vI_prefDialog.sending.Folder.row1.label "Drafts">
-<!ENTITY vI_prefDialog.sending.Folder.row2.label "Templates">
-<!ENTITY vI_prefDialog.sending.warnings.label "Warnings">
+<!ENTITY vI_prefDialog.sending.Folder.label "Eigenschaften / Kopien">
+<!ENTITY vI_prefDialog.sending.Folder.row0.label "Gesendete Emails">
+<!ENTITY vI_prefDialog.sending.Folder.row1.label "Entwürfe">
+<!ENTITY vI_prefDialog.sending.Folder.row2.label "Vorlagen">
+<!ENTITY vI_prefDialog.sending.warnings.label "Warnungen">
 
-<!ENTITY vI_prefDialog.sending.Folder.header "Message Attributes">
-<!ENTITY vI_prefDialog.sending.Folder.caption "attributes to copy">
+<!ENTITY vI_prefDialog.sending.Folder.header "Email Eigenschaften">
+<!ENTITY vI_prefDialog.sending.Folder.caption "zu Kopierende Eigenschaften">
 <!ENTITY vI_prefDialog.sending.Folder.desc "folgende Einstellungen der zugrunde liegenden Identität kopieren:">
 <!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME Sicherheitseinstellungen">
 <!ENTITY vI_prefDialog.sending.Folder.VCard.label "anzuhängende Visitenkarten">
 
-<!ENTITY vI_prefDialog.sending.fccTab.header "Sent Mails Folder">
+<!ENTITY vI_prefDialog.sending.fccTab.header "Ordner für gesendete Emails">
 <!ENTITY vI_prefDialog.sending.fccTab.caption "Beim Senden von Nachrichten automatisch">
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Ordner des Accounts, der durch Virtual Identity geändert wurde">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Ordner des Standard-Accounts">
 
-<!ENTITY vI_prefDialog.sending.draftTab.header "Draft Folder">
+<!ENTITY vI_prefDialog.sending.draftTab.header "Ordner für Entwürfe">
 <!ENTITY vI_prefDialog.sending.draftTab.caption "Speicherort für Drafts">
 
-<!ENTITY vI_prefDialog.sending.tmplTab.header "Template Folder">
+<!ENTITY vI_prefDialog.sending.tmplTab.header "Ordner für Vorlagen">
 <!ENTITY vI_prefDialog.sending.tmplTab.caption "Speicherort für Templates">
 
-<!ENTITY vI_prefDialog.sending.warnings.header "Warnings">
-<!ENTITY vI_prefDialog.sending.warnings.caption "before sending of the message">
+<!ENTITY vI_prefDialog.sending.warnings.header "Warnungen">
+<!ENTITY vI_prefDialog.sending.warnings.caption "vor dem Senden einer Nachricht">
 <!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "warne bei jeder Verwendung einer dauerhaft gespeicherten Identität">
 <!ENTITY vI_prefDialog.sending.warnings.warnVirtual.label "warne bei jeder Verwendung einer Virtuellen Identität">
 
 
-<!ENTITY vI_prefDialog.storageTab.Tab0.label "Identity">
-<!ENTITY vI_prefDialog.storageTab.reading.label "reading">
-<!ENTITY vI_prefDialog.storageTab.storing.label "storing">
-<!ENTITY vI_prefDialog.storageTab.Tab1.label "Storage Extra 1">
-<!ENTITY vI_prefDialog.storageTab.Tab2.label "Storage Extra 2">
+<!ENTITY vI_prefDialog.storageTab.Tab0.label "Identitäten">
+<!ENTITY vI_prefDialog.storageTab.reading.label "lesen">
+<!ENTITY vI_prefDialog.storageTab.storing.label "speichern">
+<!ENTITY vI_prefDialog.storageTab.Tab1.label "Speicher Extras 1">
+<!ENTITY vI_prefDialog.storageTab.Tab2.label "Speicher Extras 2">
 
-<!ENTITY vI_prefDialog.storageTab.Tab0.header "Identity Storage">
-<!ENTITY vI_prefDialog.storageTab.Tab0.caption "Storage Usage">
-<!ENTITY vI_prefDialog.storage.label "store (and recall) used Identities">
+<!ENTITY vI_prefDialog.storageTab.Tab0.header "Identitäts-Speicher">
+<!ENTITY vI_prefDialog.storageTab.Tab0.caption "Speicher-Benutzung">
+<!ENTITY vI_prefDialog.storage.label "speichere (und lese) genutzte Identitäten">
 <!ENTITY vI_prefDialog.storage.tooltiptext "Verwendete Identitäten können gespeichert werden. Schreibst Du dem selben Empfänger erneut eine Email, wird die gleiche virtuelle oder nicht-virtuelle Identität benutzt.">
 <!ENTITY vI_prefDialog.storage.openEditor "bearbeite gespeicherte Daten">
 
-<!ENTITY vI_prefDialog.storageTab.reading.header "Identity Reading">
-<!ENTITY vI_prefDialog.storageTab.reading.caption "Lesen Virtueller Identitäten">
+<!ENTITY vI_prefDialog.storageTab.reading.header "Lesen von Identitäten">
+<!ENTITY vI_prefDialog.storageTab.reading.caption "Lesen von Identitäten">
 <!ENTITY vI_prefDialog.storage.warn_vI_replace.label "frage nach, wenn im Sender-Feld eingetragene Virtuelle Identität ersetzt werden soll">
-<!ENTITY vI_prefDialog.storage.get_One_Only.label "ignoriere Identity-Speicher nachdem die erste Virtuelle Identität gefunden wurde">
+<!ENTITY vI_prefDialog.storage.get_One_Only.label "ignoriere Identitäts-Speicher nachdem die erste Virtuelle Identität gefunden wurde">
 
-<!ENTITY vI_prefDialog.storageTab.storing.header "Identity Storing">
-<!ENTITY vI_prefDialog.storageTab.storing.caption "storing of used Identities">
-<!ENTITY vI_prefDialog.storage.storedefault.label "save used Identities while sending emails">
-<!ENTITY vI_prefDialog.storage.store_base_id.label "store underlying base Identity">
-<!ENTITY vI_prefDialog.storage.store_SMTP.label "store used SMTP">
-<!ENTITY vI_prefDialog.storage.warn_update.label "ask before overwriting Identities in your Storage">
-<!ENTITY vI_prefDialog.storage.dont_update_multiple.label "never overwrite (and ask) if email has multiple recipients">
+<!ENTITY vI_prefDialog.storageTab.storing.header "Speichern von Identitäten">
+<!ENTITY vI_prefDialog.storageTab.storing.caption "Speichern genutzter Identitäten">
+<!ENTITY vI_prefDialog.storage.storedefault.label "speichere genutzte Identitäten beim Senden einer Email">
+<!ENTITY vI_prefDialog.storage.store_base_id.label "speichere grundlegende Basis-Identität">
+<!ENTITY vI_prefDialog.storage.store_SMTP.label "speichere benutzten SMTP-Server">
+<!ENTITY vI_prefDialog.storage.warn_update.label "frage nach, bevor Identitäten im Speicher überschrieben werden">
+<!ENTITY vI_prefDialog.storage.dont_update_multiple.label "überschreibe keine Speicher-Einträge wenn Email an mehrere Empfänger geht">
 
-<!ENTITY vI_prefDialog.storageTab.Tab1.header "Storage Extras 1">
-<!ENTITY vI_prefDialog.storageTab.Tab1.caption "attributes to store with Identity">
+<!ENTITY vI_prefDialog.storageTab.Tab1.header "Speicher Extras 1">
+<!ENTITY vI_prefDialog.storageTab.Tab1.caption "Eigenschaften, die mit der Identität gespeichert werden">
 
-<!ENTITY vI_prefDialog.storageTab.Tab2.header "Storage Extras 2">
-<!ENTITY vI_prefDialog.storageTab.Tab2.caption "attributes to store with Identity">
+<!ENTITY vI_prefDialog.storageTab.Tab2.header "Speicher Extras 1">
+<!ENTITY vI_prefDialog.storageTab.Tab2.caption "Eigenschaften, die mit der Identität gespeichert werden">
 
-<!ENTITY vI_prefDialog.options.Tab0.label "Menu Options">
-<!ENTITY vI_prefDialog.options.Tab0.header "Menu Options">
-<!ENTITY vI_prefDialog.options.Tab0.caption "Menu Options">
+<!ENTITY vI_prefDialog.options.Tab0.label "Menu Optionen">
+<!ENTITY vI_prefDialog.options.Tab0.header "Menu Optionen">
+<!ENTITY vI_prefDialog.options.Tab0.caption "Menu Optionen">
 <!ENTITY vI_prefDialog.menuEntry.label "zeige Menu-Eintrag für Virtual Identity Optionen und Virtual Identity Daten-Speicher">
 
-<!ENTITY vI_prefDialog.options.Tab1.label "Notifications">
-<!ENTITY vI_prefDialog.options.Tab1.header "Statusinformationen">
-<!ENTITY vI_prefDialog.options.Tab1.caption "Benachrichtigungen">
+<!ENTITY vI_prefDialog.options.Tab1.label "Benachrichtigungen">
+<!ENTITY vI_prefDialog.options.Tab1.header "Benachrichtigungen">
+<!ENTITY vI_prefDialog.options.Tab1.caption "Statusinformationen">
 <!ENTITY vI_prefDialog.notifyHeaders.label "zeige Informationen über erfasste Header">
 <!ENTITY vI_prefDialog.notifySmartIdentity.label "aktiviere Smart Reply / Smart Draft Statusmeldungen">
 <!ENTITY vI_prefDialog.notifyStorage.label "aktiviere Identity-Speicher Statusmeldungen">
 <!ENTITY vI_prefDialog.notifyTime.prefix.label "Zeit, bis Nachrichten ausgeblendet werden (0 für immer an)">
 <!ENTITY vI_prefDialog.notifyTime.postfix.label "Sekunden">
 
-<!ENTITY vI_prefDialog.options.Tab2.label "Debugging">
-<!ENTITY vI_prefDialog.options.Tab2.header "Debugging">
+<!ENTITY vI_prefDialog.options.Tab2.label "Fehlersuche">
+<!ENTITY vI_prefDialog.options.Tab2.header "Fehlersuche">
 <!ENTITY vI_prefDialog.options.Tab2.caption "Fehlersuche">
 <!ENTITY vI_prefDialog.notifyDebug.desc "Zur Fehlersuche und zum besseren Verständnis der Funktionsweise von Virtual Identity, besonders auch der Filter von &apos;Smart Reply&apos;, können weitere Informationen in einem eigenen Bereich angezeigt werden. Diese Debug-Informationen stehen nur in englischer Sprache zur Verfügung. Die Ausgabe verlangsamt die Arbeit des Email-Programms und sollte darum nicht dauerhaft aktiviert bleiben.">
 <!ENTITY vI_prefDialog.notifyDebug.label "zeige Bereich mit Informationen zur Fehlersuche">
