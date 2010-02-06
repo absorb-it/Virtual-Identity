@@ -188,6 +188,7 @@ var vI = {
 			}
 			else {
 				alert(vI.elements.strings.getString("vident.genericSendMessage.error"));
+				vI.Cleanup();
 			}
 // 			vI_notificationBar.dump("## v_identity: original_functions.GenericSendMessage done\n");
 		},
