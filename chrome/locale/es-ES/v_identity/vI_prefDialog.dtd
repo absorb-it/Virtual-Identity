@@ -36,7 +36,7 @@
 <!ENTITY vI_prefDialog.smartTab2.header "Smart Reply - Filter / Sort"><!-- translate -->
 <!ENTITY vI_prefDialog.smartTab2.caption "2. filtrar direcciones">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "Una vez obtenidas las direcciones, éstas son filtradas. Todos los filtros se usan después de los anteriores, por lo que puede usarlos también para ordenar los resultados. Al terminar, la primera dirección encontrada se usará como la identidad del remitente. Si no usa filtros, todas las direcciones serán transferidas.">
-<!ENTITY vI_prefDialog.smartReply.filter.desc "Filtros de respuesta rápida - un filtro por línea, con posibilidad de usar expresiones regulares (por ejemplo, &apos;/@mozilla.org$/&apos; coincide con cualquier correo del dominio mozilla.org">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Filtros de respuesta rápida - un filtro por línea, con posibilidad de usar expresiones regulares (por ejemplo, &apos;/@mozilla.org$/&apos; coincide con cualquier correo del dominio mozilla.org. Add '-' before regular Expressions to negate match."><!-- translate -->
 
 <!ENTITY vI_prefDialog.smartTab3.header "Smart Reply - Compare"><!-- translate -->
 <!ENTITY vI_prefDialog.smartTab3.caption "3. compare with existing Identities"><!-- translate -->

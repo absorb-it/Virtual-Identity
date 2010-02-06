@@ -36,7 +36,7 @@
 <!ENTITY vI_prefDialog.smartTab2.header "Smart Reply - Filter / Sort"><!-- translate -->
 <!ENTITY vI_prefDialog.smartTab2.caption "2. 필터 주소">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "주소를 취득 후 걸러집니다. 모든 필터는 서로 사용된 후에 그런 식으로 결과값 정렬에 역시 그것들을 사용할 수 있습니다. 최초 발견된 주소 끝을 송신자의 신분으로 즉각 사용할수 있게 얻습니다. 만약 당신이 필터를 사용하지 않는다면, 모든 주소가 전송됩니다.">
-<!ENTITY vI_prefDialog.smartReply.filter.desc "지능형 답신 필터 - 한 줄에 하나씩, 정규 표현식을 이용 가능함(예를 들어 '/@mozilla.org$/' 는 mozilla.org 도메인과 일치하는 모든 이메일">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "지능형 답신 필터 - 한 줄에 하나씩, 정규 표현식을 이용 가능함(예를 들어 '/@mozilla.org$/' 는 mozilla.org 도메인과 일치하는 모든 이메일. Add '-' before regular Expressions to negate match."><!-- translate -->
 
 <!ENTITY vI_prefDialog.smartTab3.header "Smart Reply - Compare"><!-- translate -->
 <!ENTITY vI_prefDialog.smartTab3.caption "3. compare with existing Identities"><!-- translate -->

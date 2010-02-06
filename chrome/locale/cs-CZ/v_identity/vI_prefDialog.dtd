@@ -36,7 +36,7 @@
 <!ENTITY vI_prefDialog.smartTab2.header "Smart Reply - Filter / Sort"><!-- translate -->
 <!ENTITY vI_prefDialog.smartTab2.caption "2. filtrovat adresy">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "Adresy se musí po získání filtrovat. Filtry jsou aplikovány postupně, můžete je tedy použít pro seřazení výsledku. První nalezená adresa může být ihned použita jako odesilatelova identita. Pokud nepoužijete filtr, budou přeneseny všechny adresy.">
-<!ENTITY vI_prefDialog.smartReply.filter.desc "Filtr Smart Reply - jeden filtr na řádku, je možné použít regulární výrazy (například &apos;/@mozilla.org$/&apos; platí pro všechny e-maily z domény mozilla.org">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Filtr Smart Reply - jeden filtr na řádku, je možné použít regulární výrazy (například &apos;/@mozilla.org$/&apos; platí pro všechny e-maily z domény mozilla.org. Add '-' before regular Expressions to negate match."><!-- translate -->
 
 <!ENTITY vI_prefDialog.smartTab3.header "Smart Reply - Compare"><!-- translate -->
 <!ENTITY vI_prefDialog.smartTab3.caption "3. compare with existing Identities"><!-- translate -->

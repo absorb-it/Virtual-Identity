@@ -36,7 +36,7 @@
 <!ENTITY vI_prefDialog.smartTab2.header "Smart Reply - Filter / Sort"><!-- translate -->
 <!ENTITY vI_prefDialog.smartTab2.caption "2. adresleri filtrele">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "Adresler alındıktan sonra filtrelenmelidir. Her filtre birbirinden sonra kullanılır, bu yüzden bunları sonuçları sıralamak için de kullanabilirsiniz. Sonunda ilk bulunan adres anında bir gönderici olarak kullanılabilir. Eğer bir filtre kullanmazsanız, tüm adresler aktarılacaktır.">
-<!ENTITY vI_prefDialog.smartReply.filter.desc "Akıllı Yanıt Filtresi - Her satıra bir filtre, düzenli İfadelerin kullanılması mümkün (örneğin, &apos;mozilla.org&apos;, mozilla.org alanından gelen her epostayla eşleşir)">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Akıllı Yanıt Filtresi - Her satıra bir filtre, düzenli İfadelerin kullanılması mümkün (örneğin, &apos;mozilla.org&apos;, mozilla.org alanından gelen her epostayla eşleşir). Add '-' before regular Expressions to negate match."><!-- translate -->
 
 <!ENTITY vI_prefDialog.smartTab3.header "Smart Reply - Compare"><!-- translate -->
 <!ENTITY vI_prefDialog.smartTab3.caption "3. compare with existing Identities"><!-- translate -->

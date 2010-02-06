@@ -36,7 +36,7 @@
 <!ENTITY vI_prefDialog.smartTab2.header "Smart Reply - Filter / Sort"><!-- translate -->
 <!ENTITY vI_prefDialog.smartTab2.caption "2. adressen filteren">
 <!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "Na het ophalen van de adressen dienen ze te worden gefilterd. Alle filters worden na elkaar toegepast, dus u kunt ze ook gebruiken om het resultaat te sorteren. Op het einde kan het eerst aangetroffen adres worden gebruikt als de identiteit van de afzender. Als u geen filter gebruikt worden alle adressen overgebracht.">
-<!ENTITY vI_prefDialog.smartReply.filter.desc "Slim Antwoorden filter - één filter per regel, gebruik van reguliere expressies is mogelijk (bijvoorbeeld: ‘/@mozilla.org$/’ komt overeen met elk bericht van domein mozilla.org)">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Slim Antwoorden filter - één filter per regel, gebruik van reguliere expressies is mogelijk (bijvoorbeeld: ‘/@mozilla.org$/’ komt overeen met elk bericht van domein mozilla.org). Add '-' before regular Expressions to negate match."><!-- translate -->
 
 <!ENTITY vI_prefDialog.smartTab3.header "Smart Reply - Compare"><!-- translate -->
 <!ENTITY vI_prefDialog.smartTab3.caption "3. compare with existing Identities"><!-- translate -->
