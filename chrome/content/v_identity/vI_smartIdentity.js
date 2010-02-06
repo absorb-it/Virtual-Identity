@@ -365,8 +365,6 @@ var vI_smartIdentity = {
 	},
 	
 	__smartIdentitySelection : function(allIdentities, autocreate) {
-		document.getElementById("msgIdentity_clone").addIdentitiesToCloneMenu(allIdentities);
-
 		/* compare with existing Identities										*/
 		for (var index = 0; index < allIdentities.number; index++) {
 			var existingID = allIdentities.identityDataCollection[index].isExistingIdentity(true);
@@ -375,10 +373,13 @@ var vI_smartIdentity = {
 				// if 'preferExisting' than select it and return
 				if (vI.preferences.getBoolPref("idSelection_preferExisting")) {
 					vI_notificationBar.dump("## vI_smartIdentity: found existing Identity, use without interaction.\n");
+					// add all Indentities to Clone Menu before selecting and leaving the function
+					document.getElementById("msgIdentity_clone").addIdentitiesToCloneMenu(allIdentities);
 					vI_smartIdentity.changeIdentityToSmartIdentity(allIdentities, index);
 					return;
 				}
 				// else reorder list of Identities to prefer it on autoselect
+				// has to be done before Identities are added to the Menu
 				vI_notificationBar.dump("## vI_smartIdentity: found existing Identity, prefer this one.\n");
 				var firstIdentity = allIdentities.identityDataCollection[index];
 				for (var i = index; index > 0; index--) {
@@ -389,6 +390,8 @@ var vI_smartIdentity = {
 			}
 		}
 		
+		document.getElementById("msgIdentity_clone").addIdentitiesToCloneMenu(allIdentities);
+
 		if (!autocreate && vI.preferences.getBoolPref("idSelection_ask") && 
 			((allIdentities.number == 1 && vI.preferences.getBoolPref("idSelection_ask_always"))
 				|| allIdentities.number > 1)) {
