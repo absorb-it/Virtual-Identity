@@ -181,9 +181,11 @@ var vI = {
 			// final check if eyerything is nice before we handover to the real sending...
 			var virtualIdentityData = document.getElementById("msgIdentity_clone").identityData;
 			var currentIdentity = getCurrentIdentity();
-			if (	currentIdentity.fullName == virtualIdentityData.fullName	&&
+			var currentSMTPobj = new smtpObj(currentIdentity.smtpServerKey);
+			if (	!vid ||
+				(currentIdentity.fullName == virtualIdentityData.fullName	&&
 				currentIdentity.email == virtualIdentityData.email		&&
-				currentIdentity.smtpServerKey == virtualIdentityData.smtp.keyNice	) {
+				virtualIdentityData.smtp.equal(currentSMTPobj)	)) {
 					vI.original_functions.GenericSendMessage(msgType);
 			}
 			else {
