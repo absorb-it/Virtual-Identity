@@ -6,7 +6,7 @@
   <RDF:Description RDF:about="rdf:#$njP94"
                    em:id="{3550f703-e582-4d05-9a08-453d09bdfdc6}"
                    em:minVersion="1.5"
-                   em:maxVersion="3.0.1" />
+                   em:maxVersion="3.0.2" />
   <!-- Seamonkey -->
   <RDF:Description RDF:about="rdf:#$rjP94"
                    em:id="{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}"
@@ -27,7 +27,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
                    em:name="Virtual Identity"
-                   em:version="0.6.0rc10"
+                   em:version="0.6.0rc11"
                    em:description="Allows you to modify your Identity settings for a single Mail on the fly."
                    em:creator="Rene Ejury"
                    em:homepageURL="http://www.absorb.it/virtual-id"
