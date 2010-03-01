@@ -13,6 +13,7 @@
 <!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "uso de la firma">
 <!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "uso de PGP/MIME">
 <!ENTITY vI_prefDialog.storageExtras.Warning.label "por favor, vuelva a abrir la ventana actual para aplicar estas opciones">
+
 <!ENTITY vI_storageExtras.caption.label "opciones adicionales del almacén">
 
 <!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Acuse de recibo">

@@ -1,0 +1,176 @@
+<!ENTITY vI_prefDialog.dlgTitle.label "Paramètres de Virtual Identity">
+<!ENTITY vI_prefDialog.vidLogo.tooltiptext "Ouvrir la page Web de Virtual Identity">
+
+<!ENTITY vI_prefDialog.tabbox.tab0.label "Mail d'origine">
+<!ENTITY vI_prefDialog.tabbox.tab1.label "Sélection">
+<!ENTITY vI_prefDialog.tabbox.tab2.label "Fenêtre de rédaction de message">
+<!ENTITY vI_prefDialog.tabbox.tab3.label "Envoi">
+<!ENTITY vI_prefDialog.tabbox.tab4.label "Stockage">
+<!ENTITY vI_prefDialog.tabbox.tab5.label "Options">
+
+
+<!ENTITY vI_prefDialog.smartCell.label "Fonctions avancées">
+<!ENTITY vI_prefDialog.smartCell.row0.label "Lire">
+<!ENTITY vI_prefDialog.smartCell.row1.label "Filtrer / trier">
+<!ENTITY vI_prefDialog.smartCell.row2.label "Comparer">
+
+<!ENTITY vI_prefDialog.smartTab0.header "Analyse de l'en-tête">
+<!ENTITY vI_prefDialog.smartTab0.Draft.caption "Brouillon intelligent">
+<!ENTITY vI_prefDialog.smartTab0.Reply.caption "Réponse intelligente">
+<!ENTITY vI_prefDialog.versionWarning.label "Votre programme de messagerie est trop ancien pour utiliser la fonction brouillon intelligent">
+<!ENTITY vI_prefDialog.smartDraft.label "utiliser le brouillon intelligent">
+<!ENTITY vI_prefDialog.smartDraft.tooltiptext "'Brouillon intelligent' essaie de détecter l'expéditeur à utiliser pour le brouillon ou le modèle en analysant l'en-tête du message stocké. Recommandé, activé par défaut.">
+<!ENTITY vI_prefDialog.smartReply.label "utiliser une réponse intelligente">
+<!ENTITY vI_prefDialog.smartReply.tooltiptext "'Réponse intelligente&quot; essaie de détecter l'expéditeur à utiliser pour 'Répondre à' en analysant l'en-tête du message reçu. C'est pertinent si cette identité n'est pas encore dans votre stockage. Les meilleurs résultats sont obtenus si la configuration se fait dans l'onglet adéquat. recommandé, activé par défaut.">
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.label "tous">
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.tooltiptext "'Réponse intelligente' doit détecter si le mail a été reçu ou envoyé. Ce qui s'effectue en général en vérifiant l'en-tête du courrier 'reçu'. si le scourriers reçus ne contiennent pas d'en-tête 'reçu' décochez cette case. Elle est cochée par défaut.">
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.label "utiliser également une réponse intelligente lors d'une réponse à un forum">
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "Vous pouvez utiliser 'Réponse intelligente' pour détecter l'identité de vos expéditeurs en répondant à de nouveaux messages. Si ce n'est pas configuré de façon appropriée, cela ne fonctionnera pas bien. Donc à configurer par défaut.">
+
+<!ENTITY vI_prefDialog.smartTab1.header "Réponse intelligente - Recherche dans l'en-tête">
+<!ENTITY vI_prefDialog.smartTab1.caption "1. Obtenir les adresses">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab1.desc "Pour trouver une identité en 'Répondre à', Smart Reply doit parcourir une liste des expéditeurs possibles d'identités. Donc ce sont généralement les en-têtes des champs 'À' et 'Cc' qui sont analysés. Ici vous pouvez les entrer ainsi que d'autres champs d'en-têtes. (options supplémentaires : pour choisir l'en-tête numéro n parmi tous les en-têtes du même nom, ajoutez ':n'. Si vous ajoutez ':@' à une entrée, seules les adresses mail sont utilisées, les noms sont ignorés.)">
+<!ENTITY vI_prefDialog.smartReply.headers.desc "en-têtes supplémentaires - un par ligne, par exemple 'x-original-to' ou 'x-original-to:@' ou 'x-original-to:2:@'">
+<!ENTITY vI_prefDialog.smartReply.headers.reset "Restaurer les valeurs par défaut">
+
+<!ENTITY vI_prefDialog.smartTab2.header "Réponse intelligente - Filtre / Tri">
+<!ENTITY vI_prefDialog.smartTab2.caption "2. Filtrer les adresses">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "Après avoir obtenu les adresses il faut les filtrer. Les filtres sont utilisés l'un après l'autre, donc vous pouvez aussi les utiliser pour classer les résultats. À la fin, la première adresse trouvée peut être utilisée instantanément comme identité d'expéditeur. Si vous n'utilisez aucun filtre, toutes les adresses sont transférées.">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Filtre de réponse intelligente - un filtre par ligne, utilisation possible d'expressions régulières (par exemple &apos;/@mozilla.org$/&apos; coïncidera avec tous les mails en provenance du domaine mozilla.org). Ajoutez &quot;-&quot; devant les expression régulières pour annuler la coïncidence.">
+
+<!ENTITY vI_prefDialog.smartTab3.header "Réponse intelligente - Comparer">
+<!ENTITY vI_prefDialog.smartTab3.caption "3. Comparer avec les identités existantes">
+<!ENTITY vI_prefDialog.smartReply.ignoreFullname.label "ignorer le nom complet lors de la comparaison des adresses courriel avec les identités existantes">
+<!ENTITY vI_prefDialog.smartReply.defaultFullname.label "Si aucune adresse courriel trouvée ne contient un nom, utiliser le nom suivant :">
+
+
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Saisie">
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Sélection de résultats">
+
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Saisie de l'identité">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Réponse intelligente et stockage">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "Brouillon intelligent et stockage">
+<!ENTITY vI_prefDialog.idSelection.reply.desc "Si vous répondez à tous vos mails, vous pouvez configurer ici la priorité donnée aux identités virtuelles par rapport à celles qui sont récupérées dans 'Réponse intelligente'.">
+<!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "préférer les identités 'Réponse intelligente'">
+<!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "ignorer les identités 'Réponse intelligente' si des identités ont été trouvées stockées">
+
+<!ENTITY vI_prefDialog.idSelection.draft.desc "Si vous éditez un brouillon (ou un modèle) il n'y a rien à configurer. Si l'extension peut lire l'en-tête du mail stocké, une identité virtuelle sera créée. Il n'y a aucune information de SMTP ou d'autres paramètres spécifiques de brouillon/modèle. Cette information est, si possible, récupérée depuis le stockage d'identité virtuelle.">
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Gestion des résultats">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Traitement des résultats">
+<!ENTITY vI_prefDialog.idSelection.multiselect.desc "Les résultats de la recherche dans le stockage d'identité virtuelle et l'analyse des en-têtes par la 'réponse intelligente' et le &quot;brouillon intelligent' seront ajoutés  au menu déroulant des identités de messages. Vous pouvez aussi choisir comment ils pourraient être utilisés pour de nouvelles identités d'expéditeur.">
+<!ENTITY vI_prefDialog.idSelection.ask.label "ouvrir une boîte de dialogue pour choisir l'identité">
+<!ENTITY vI_prefDialog.idSelection.ask_always.label "également demander si une seule adresse est possible">
+<!ENTITY vI_prefDialog.idSelection.autocreate.label "utiliser la première identité trouvée sans poser de question">
+<!ENTITY vI_prefDialog.idSelection.autocreate.desc "(s'il n'existe qu'une seule adresse possible)">
+<!ENTITY vI_prefDialog.idSelection.preferExisting.label "utiliser la concordance avec l'identité existante sans interaction">
+
+<!ENTITY vI_prefDialog.composeDialog.Cell0.label "Fonctionnalités">
+<!ENTITY vI_prefDialog.composeDialog.Cell1.label "Dialogue">
+
+<!ENTITY vI_prefDialog.composeDialog.header "Rédaction de message">
+<!ENTITY vI_prefDialog.composeDialog.header2 "Rédaction de message">
+<!ENTITY vI_prefDialog.composeDialog.caption "Fonctions de la rédaction de message">
+<!ENTITY vI_prefDialog.composeDialog.caption2 "Dialogue de rédaction de message">
+<!ENTITY vI_prefDialog.composeDialog.caption3 "Bascule des stockages">
+<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.label "Génération automatique d'identités avec horodatage pour les nouveaux courriers.">
+<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "Lors de la composition d'un nouveau message, modifiez votre adresse d'expéditeur habituelle avec un horodatage">
+<!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "Remarque : pour lancer la désactivation dynamique des signatures vous devez installer et activer l'extension &apos;Signature Switch&apos;. Pour le moment cette option n'est pas disponible.">
+<!ENTITY vI_prefDialog.composeDialog.HideSignature.label "supprimer toute &apos;Signature&apos; en utilisant Virtual Identity">
+<!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "désactiver la signature S/MIME en cas d'utilisation de Virtual Identity">
+<!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "désactiver la signature openPGP en cas d'utilisation de Virtual Identity">
+<!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "utiliser Virtual Identity pour une adresse de &apos;réponse à&apos;">
+<!ENTITY vI_prefDialog.composeDialog.SMTP.label "montrer le menu SMTP">
+<!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "affiche le menu de sélection entre les serveurs SMTP disponibles">
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "afficher le bouton pour activer/désactiver l'enregistrement de courriers envoyés">
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "affiche un bouton qui permet d'activer désactiver l'enregistrement de courriers envoyés">
+<!ENTITY vI_prefDialog.composeDialog.show_switch.label "cocher pour l'enregistrement des identités">
+<!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "cocher pour l'enregistrement des bases d'identités">
+<!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "cocher pour enregistrer le SMTP">
+<!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "mettre de la couleur des éléments d'identité enregistrés">
+
+<!ENTITY vI_prefDialog.sending.Folder.label "Attributs / copies">
+<!ENTITY vI_prefDialog.sending.Folder.row0.label "Courriers envoyés">
+<!ENTITY vI_prefDialog.sending.Folder.row1.label "Brouillons">
+<!ENTITY vI_prefDialog.sending.Folder.row2.label "Modèles">
+<!ENTITY vI_prefDialog.sending.warnings.label "Alertes">
+
+<!ENTITY vI_prefDialog.sending.Folder.header "Attributs du message">
+<!ENTITY vI_prefDialog.sending.Folder.caption "attributs à copier">
+<!ENTITY vI_prefDialog.sending.Folder.desc "copier les attributs suivants à partir de l'ancienne identité :">
+<!ENTITY vI_prefDialog.sending.Folder.SMIME.label "paramètres de sécurité S/MIME">
+<!ENTITY vI_prefDialog.sending.Folder.VCard.label "pièces jointes vCard">
+
+<!ENTITY vI_prefDialog.sending.fccTab.header "Dossier &apos;Envoyé&apos;">
+<!ENTITY vI_prefDialog.sending.fccTab.caption "Quand j'envoie un message avec une identité virtuelle">
+<!ENTITY vI_prefDialog.sending.vidAccount.label "Dossier du compte modifié par Virtual Identity">
+<!ENTITY vI_prefDialog.sending.vidDefault.label "Dossier du compte par défaut">
+
+<!ENTITY vI_prefDialog.sending.draftTab.header "Dossier &apos;Brouillons&apos;">
+<!ENTITY vI_prefDialog.sending.draftTab.caption "emplacement de sauvegarde des brouillons">
+
+<!ENTITY vI_prefDialog.sending.tmplTab.header "Dossier &apos;Modèles&apos;">
+<!ENTITY vI_prefDialog.sending.tmplTab.caption "emplacement de sauvegarde des modèles">
+
+<!ENTITY vI_prefDialog.sending.warnings.header "Alertes">
+<!ENTITY vI_prefDialog.sending.warnings.caption "avant d'envoyer le message">
+<!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "avertir dès qu'est utilisée une identité non-virtuelle">
+<!ENTITY vI_prefDialog.sending.warnings.warnVirtual.label "avertir dès qu'est utilisée une identité virtuelle">
+
+
+<!ENTITY vI_prefDialog.storageTab.Tab0.label "Identité">
+<!ENTITY vI_prefDialog.storageTab.reading.label "lecture">
+<!ENTITY vI_prefDialog.storageTab.storing.label "stockage">
+<!ENTITY vI_prefDialog.storageTab.Tab1.label "Stockages Extra 1">
+<!ENTITY vI_prefDialog.storageTab.Tab2.label "Stockage Extra 2">
+
+<!ENTITY vI_prefDialog.storageTab.Tab0.header "Stockage Des Identités">
+<!ENTITY vI_prefDialog.storageTab.Tab0.caption "Mode de Stockage">
+<!ENTITY vI_prefDialog.storage.label "Stocker (et ré-utiliser) les Identités utilisées">
+<!ENTITY vI_prefDialog.storage.tooltiptext "Les identités utilisées peuvent avoir été stockées en fonction des destinataires. Si vous écrivez à nouveau au même destinataire, la même identité, virtuelle ou non, sera utilisée.">
+<!ENTITY vI_prefDialog.storage.openEditor "Editeur d'identités stockées...">
+
+<!ENTITY vI_prefDialog.storageTab.reading.header "Ré-utilisation">
+<!ENTITY vI_prefDialog.storageTab.reading.caption "Mode de ré-utilisation des Identités stockées">
+<!ENTITY vI_prefDialog.storage.warn_vI_replace.label "demander avant de remplacer l'identité virtuelle dans le champ d'expéditeur">
+<!ENTITY vI_prefDialog.storage.get_One_Only.label "ignorer le stockage dès que la première identité virtuelle a été retrouvée">
+
+<!ENTITY vI_prefDialog.storageTab.storing.header "Stockage">
+<!ENTITY vI_prefDialog.storageTab.storing.caption "Stockage des Identités">
+<!ENTITY vI_prefDialog.storage.storedefault.label "Mode de stockage des Identités utilisées">
+<!ENTITY vI_prefDialog.storage.store_base_id.label "enregistrer l'identité principale sous-jacente">
+<!ENTITY vI_prefDialog.storage.store_SMTP.label "enregistrer le serveur d'envoi SMTP utilisé">
+<!ENTITY vI_prefDialog.storage.warn_update.label "demander confirmation avant de mettre à jour une identité stockée">
+<!ENTITY vI_prefDialog.storage.dont_update_multiple.label "ne pas mettre à jour (ni demander de) une identité stockée si le courriel a plusieurs destinataires">
+
+<!ENTITY vI_prefDialog.storageTab.Tab1.header "Stockage Extras 1">
+<!ENTITY vI_prefDialog.storageTab.Tab1.caption "Attributs supplémentaires n°1 à enregister avec l'identité stockée">
+
+<!ENTITY vI_prefDialog.storageTab.Tab2.header "Stockage Extras 2">
+<!ENTITY vI_prefDialog.storageTab.Tab2.caption "Attributs supplémentaires n°2 à enregister avec l'identité stockée">
+
+<!ENTITY vI_prefDialog.options.Tab0.label "Options du menu">
+<!ENTITY vI_prefDialog.options.Tab0.header "Options du menu">
+<!ENTITY vI_prefDialog.options.Tab0.caption "Options du menu">
+<!ENTITY vI_prefDialog.menuEntry.label "ajouter une entrée au menu &apos;outil&apos; contenant les Préférences et l'Editeur des identités stockées">
+
+<!ENTITY vI_prefDialog.options.Tab1.label "Notifications">
+<!ENTITY vI_prefDialog.options.Tab1.header "Notifications">
+<!ENTITY vI_prefDialog.options.Tab1.caption "Messages d'état">
+<!ENTITY vI_prefDialog.notifyHeaders.label "afficher des informations sur les en-têtes reconnus">
+<!ENTITY vI_prefDialog.notifySmartIdentity.label "activer les messages d'état de &apos;réponse intelligente&apos; / &apos;brouillon intelligent&apos;">
+<!ENTITY vI_prefDialog.notifyStorage.label "activer le stockage des messages de statut">
+<!ENTITY vI_prefDialog.notifyTime.prefix.label "durée d'affichage des messages d'état (0 = infini)">
+<!ENTITY vI_prefDialog.notifyTime.postfix.label "secondes">
+
+<!ENTITY vI_prefDialog.options.Tab2.label "Débogage">
+<!ENTITY vI_prefDialog.options.Tab2.header "Débogage">
+<!ENTITY vI_prefDialog.options.Tab2.caption "Informations de Débogage">
+<!ENTITY vI_prefDialog.notifyDebug.desc "Pour détecter les bogues, résoudre les problèmes de configuration et comprendre ce que Virtual Identity fait, en particulier avec les filtres de réponse intelligente, vous pouvez activer la production d'informations complémentaires. Cette option ralentit votre client courriel, par conséquent vous ne devriez pas l'activer en l'absence de nécessité.">
+<!ENTITY vI_prefDialog.notifyDebug.label "afficher les informations de débogage">
+
+
+<!-- just for TB 1.5. ReplyFollowsParent not available -->
+<!-- fields will be hidden, dont have to be translated -->
+<!ENTITY fccReplyFollowsParent.label "">
+<!ENTITY fccReplyFollowsParent.accesskey "">

@@ -1,0 +1,38 @@
+<!ENTITY vI_storageExtras.storeValue.label "Opslaan">
+
+<!ENTITY vI_prefDialog.storageExtras.returnReciept.label "Ontvangstbevestigingsstatus">
+<!ENTITY vI_prefDialog.storageExtras.fcc.label "Fcc-status">
+<!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "Geselecteerde codering">
+<!ENTITY vI_prefDialog.storageExtras.messageFormat.label "Geselecteerde berichtopmaak">
+
+<!ENTITY vI_prefDialog.storageExtras.sMime.label "S/MIME">
+<!ENTITY vI_prefDialog.storageExtras.sMime.messageEncryption.label "Versleutelingsstatus">
+<!ENTITY vI_prefDialog.storageExtras.sMime.messageSignature.label "Handtekeninggebruik">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.label "OpenPGP">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "Versleutelingsstatus">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "Handtekeninggebruik">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "PGP/MIME-gebruik">
+<!ENTITY vI_prefDialog.storageExtras.Warning.label "Heropen a.u.b. de huidige vensters om deze instellingen door te voeren">
+
+<!ENTITY vI_storageExtras.caption.label "Aanvullende opgeslagen instellingen">
+
+<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Ontvangstbevestiging">
+<!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC">
+<!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Codering">
+<!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Berichtopmaak">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME versleutelen">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME ondertekenen">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "openPGP versleutelen">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP ondertekenen">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP PGP/MIME">
+
+<!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "Inactieve velden verbergen">
+<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Ontvangstbevestiging">
+<!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC">
+<!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Codering">
+<!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Berichtopmaak">
+<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: berichten versleutelen">
+<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeSig.label "S/MIME: berichten ondertekenen">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP berichten versleutelen">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: berichten ondertekenen">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: PGP/MIME gebruiken">

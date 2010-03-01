@@ -1,0 +1,176 @@
+<!ENTITY vI_prefDialog.dlgTitle.label "Настройки Virtual Identity">
+<!ENTITY vI_prefDialog.vidLogo.tooltiptext "Открыть домашнюю страницу Virtual Identity">
+
+<!ENTITY vI_prefDialog.tabbox.tab0.label "Исходное сообщение">
+<!ENTITY vI_prefDialog.tabbox.tab1.label "Выбор личных данных">
+<!ENTITY vI_prefDialog.tabbox.tab2.label "Окно редактирования сообщения">
+<!ENTITY vI_prefDialog.tabbox.tab3.label "Отправка сообщения">
+<!ENTITY vI_prefDialog.tabbox.tab4.label "Хранилище">
+<!ENTITY vI_prefDialog.tabbox.tab5.label "Настройки">
+
+
+<!ENTITY vI_prefDialog.smartCell.label "Анализ заголовков">
+<!ENTITY vI_prefDialog.smartCell.row0.label "Чтение">
+<!ENTITY vI_prefDialog.smartCell.row1.label "Фильтрация / Сортировка">
+<!ENTITY vI_prefDialog.smartCell.row2.label "Сравнение">
+
+<!ENTITY vI_prefDialog.smartTab0.header "Анализ заголовков сообщений">
+<!ENTITY vI_prefDialog.smartTab0.Draft.caption "«Умный черновик»">
+<!ENTITY vI_prefDialog.smartTab0.Reply.caption "«Умный ответ»">
+<!ENTITY vI_prefDialog.versionWarning.label "Ваша почтовая программа слишком стара для использования функции «Умный черновик».">
+<!ENTITY vI_prefDialog.smartDraft.label "Использовать «Умный черновик»">
+<!ENTITY vI_prefDialog.smartDraft.tooltiptext "«Умный черновик», анализируя заголовки сохраняемого сообщения, пытается определить, какие какие личные данные будут использоваться отправителем в черновике или шаблоне. Рекомендуется по умолчанию.">
+<!ENTITY vI_prefDialog.smartReply.label "Использовать «Умный ответ»">
+<!ENTITY vI_prefDialog.smartReply.tooltiptext "«Умный ответ», анализируя заголовки исходного сообщения, пытается определить, какие личные данные будут использоваться отправителем при ответе на данное сообщение. Актуально в том случае, если эти личные данные еще не содержатся в хранилище виртуальных личных данных. Лучшие результаты достигаются, если произведена дополнительная конфигурация в соответствующей вкладке. Рекомендуется по умолчанию.">
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.label "Все полученные сообщения содержат заголовок 'Received'">
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.tooltiptext "Модуль «Умный ответ» должен определить было сообщение получено или отправлено. Обычно это делается путем проверки на наличие в сообщении заголовка 'Received'. Если полученные сообщения не содержат заголовок 'Received', отключите данную опцию. Если Вы не совсем понимаете о чем идет речь, оставьте данную опцию включенной. Включено по умолчанию.">
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.label "Использовать «Умный ответ» также при ответах в группу новостей">
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "Вы можете использовать «Умный ответ» для определения ваших личных данных отправителя, отвечая в новостные группы. Если не сконфигурировано соответствующим образом, не будет работать корректно. Поэтому по умолчанию отключено.">
+
+<!ENTITY vI_prefDialog.smartTab1.header "«Умный ответ» - Поиск заголовков">
+<!ENTITY vI_prefDialog.smartTab1.caption "1. Получение возможных адресов">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab1.desc "Чтобы получить личные данные, используемые для формирования ответа, модуль «Умный ответ» должен получить список доступных личных данных отправителя. Для формирования виртуальных личных данных при ответе, достаточно получить адрес и имя, поэтому обычно анализируются поля «Кому:» (заголовок &apos;To&apos;) и «Копия:» (заголовок &apos;Cc&apos;) заголовков сообщений. При необходимости, здесь Вы можете ввести и другие поля заголовков. <UL>Дополнительные опции: чтобы выбрать значение n из других заголовков с тем же самым названием,</UL>добавьте &apos;:n&apos;. Если Вы добавляете &apos;:@&apos; к какой-нибудь записи, то будут извлекаться только адреса E-mail, а имена будут игнорироваться.">
+<!ENTITY vI_prefDialog.smartReply.headers.desc "Вы также можете задать дополнительные заголовки  -  по одному в каждой строке, например: <UL>&apos;x-original-to&apos; или &apos;x-original-to:@&apos; или &apos;x-original-to:2:@&apos;</UL>">
+<!ENTITY vI_prefDialog.smartReply.headers.reset "Установить значения по умолчанию">
+
+<!ENTITY vI_prefDialog.smartTab2.header "«Умный ответ» - Фильтрация / Сортировка">
+<!ENTITY vI_prefDialog.smartTab2.caption "2. Фильтрация и сортировка личных данных">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "Адреса, получаемые на стадии 1., могут быть дополнительно обработаны фильтрами. Таким образом, Вы можете использовать фильтры для ограничения окончательных результатов. Все фильтры используются в порядке очередности. Если правила фильтра указаны, модуль «Умный ответ» использует для формирования списка доступных виртуальных личных данных только те данные, которые соответствуют указанным правилам, а все остальные отбрасываются. Если правила фильтра не указаны, то модуль «Умный ответ» использует все данные, получаемые на стадии 1.">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Фильтр модуля «Умный ответ» - одно правило фильтра на одну строку, допустимо использование регулярных выражений. Например: правило &apos;/@mozilla.org$/&apos; соответствует любым адресам домена mozilla.org.">
+
+<!ENTITY vI_prefDialog.smartTab3.header "«Умный ответ» - Сравнение">
+<!ENTITY vI_prefDialog.smartTab3.caption "3. Сравнение с имеющимися данными">
+<!ENTITY vI_prefDialog.smartReply.ignoreFullname.label "Игнорировать имена при сравнении полученных E-mail адресов с уже имеющимися в хранилище личными данными.">
+<!ENTITY vI_prefDialog.smartReply.defaultFullname.label "При отсутствии имен у полученных E-mail адресов, использовать имя:">
+
+
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Ввод личных данных">
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Выбор результатов">
+
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Ввод личных данных">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "«Умный ответ» и хранилище">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "«Умный черновик» и хранилище">
+<!ENTITY vI_prefDialog.idSelection.reply.desc "Когда Вы отвечаете на сообщения, Вы можете определить, каким данным отдавать приоритет: личным данным, находящимся в хранилище или личными данными, полученными модулем «Умный ответ».">
+<!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "Отдавать приоритет личным данным, полученным модулем «Умный ответ»">
+<!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "Игнорировать данные, полученные модулем «Умный ответ», если данные для этого получателя найдены в хранилище">
+
+<!ENTITY vI_prefDialog.idSelection.draft.desc "Если Вы редактируете черновик (или шаблон) нет необходимости что-то настраивать. Расширение в состоянии считывать заголовки сохраненного сообщения, а все соответствующие виртуальные личные данные создаются. В черновиках и шаблонах не сохраняется информация о SMTP-серверах и других специфичных настройках. Если эта информация доступна, она будет восстановлена из личных данных находящихся в хранилище.">
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Обработка результатов">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Обработка результатов">
+<!ENTITY vI_prefDialog.idSelection.multiselect.desc "Результаты поиска личных данных в хранилище и личных данных полученных в результате анализа заголовков сообщений модулем «Умный ответ» или «Умный черновик» могут быть отображены во всплывающем диалоговом окне. Вы также можете выбрать, какие из них могут быть использованы в качестве новых личных данных отправителя.">
+<!ENTITY vI_prefDialog.idSelection.ask.label "Открывать диалоговое окно для выбора доступных адресов">
+<!ENTITY vI_prefDialog.idSelection.ask_always.label "Спрашивать и в том случае, когда имеется только один доступный адрес">
+<!ENTITY vI_prefDialog.idSelection.autocreate.label "Использовать первый из доступных адресов, без дополнительных действий">
+<!ENTITY vI_prefDialog.idSelection.autocreate.desc "(если имеется только один доступный адрес)">
+<!ENTITY vI_prefDialog.idSelection.preferExisting.label "Использовать сравнение с имеющимися в хранилище данными, без дополнительных действий">
+
+<!ENTITY vI_prefDialog.composeDialog.Cell0.label "Свойства">
+<!ENTITY vI_prefDialog.composeDialog.Cell1.label "Окно редактирования">
+
+<!ENTITY vI_prefDialog.composeDialog.header "Редактирование сообщения">
+<!ENTITY vI_prefDialog.composeDialog.header2 "Редактирование сообщения">
+<!ENTITY vI_prefDialog.composeDialog.caption "Свойства редактирования сообщения">
+<!ENTITY vI_prefDialog.composeDialog.caption2 "Окно редактирования сообщения">
+<!ENTITY vI_prefDialog.composeDialog.caption3 "Переключатели (чекбоксы) хранилища">
+<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.label "Автогенерация E-mail, используя отметку времени (для новых сообщений)">
+<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "При создании нового сообщения, изменяется E-mail отправителя - к нему добавляется отметка времени. Пример: если Ваш E-mail, к примеру, name@domen.com, то после включения данной функции и при составлении нового письма, будет сгенерирован новый E-mail, к примеру, name1266499936@domen.com. По умолчанию данная функция отключена.">
+<!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "Обратите внимание: чтобы позволять динамическую дезактивацию подписей, Вы должны установить (и активизировать) расширение «Signature Switch». В настоящий момент данная опция не доступна.">
+<!ENTITY vI_prefDialog.composeDialog.HideSignature.label "Удалять любые подписи при использовании виртуальных личных данных">
+<!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "Деактивировать цифровые подписи S/MIME при использовании виртуальных личных данных">
+<!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "Деактивировать цифровые подписи openPGP при использовании виртуальных личных данных">
+<!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "Устанавливать виртуальные личные данные в качестве обратного адреса (Reply-To)">
+<!ENTITY vI_prefDialog.composeDialog.SMTP.label "Отображать меню SMTP-серверов">
+<!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "Отображать меню доступных SMTP-серверов с возможностью выбора SMTP-сервера, используемого для отправки сообщения.">
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "Чекбокс для выборочной активации/деактивации сохранения отправленных сообщений (FCC)">
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "Отображение переключателя (чекбокса) для возможности активации/деактивации сохранения отправленных сообщений (FCC) «на лету»">
+<!ENTITY vI_prefDialog.composeDialog.show_switch.label "Чекбокс для выборочной активации/деактивации сохранения данных при отправке сообщений">
+<!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "Чекбокс для выборочной активации/деактивации сохранения учетных записей при отправке сообщений">
+<!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "Чекбокс для выборочной активации/деактивации сохранения SMTP-серверов при отправке сообщений">
+<!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "Выделять цветом элементы личных данных, которые будут сохранены при отправке сообщения">
+
+<!ENTITY vI_prefDialog.sending.Folder.label "Атрибуты / Копии / Папки">
+<!ENTITY vI_prefDialog.sending.Folder.row0.label "Отправленные сообщения">
+<!ENTITY vI_prefDialog.sending.Folder.row1.label "Черновики">
+<!ENTITY vI_prefDialog.sending.Folder.row2.label "Шаблоны">
+<!ENTITY vI_prefDialog.sending.warnings.label "Предупреждения">
+
+<!ENTITY vI_prefDialog.sending.Folder.header "Атрибуты сообщений">
+<!ENTITY vI_prefDialog.sending.Folder.caption "Атрибуты сообщений для копирования">
+<!ENTITY vI_prefDialog.sending.Folder.desc "Копировать следующие атрибуты сообщений из учетной записи:">
+<!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME настройки безопасности">
+<!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard вложения">
+
+<!ENTITY vI_prefDialog.sending.fccTab.header "Папка отправленных сообщений">
+<!ENTITY vI_prefDialog.sending.fccTab.caption "Действие при отправке сообщения с виртуальными личными данными">
+<!ENTITY vI_prefDialog.sending.vidAccount.label "Папка, используемая учетной записью, изменяемой с помощью Virtual Identity">
+<!ENTITY vI_prefDialog.sending.vidDefault.label "Папка, используемая учетной записью по умолчанию">
+
+<!ENTITY vI_prefDialog.sending.draftTab.header "Папка черновиков">
+<!ENTITY vI_prefDialog.sending.draftTab.caption "Помещать черновики в:">
+
+<!ENTITY vI_prefDialog.sending.tmplTab.header "Папка шаблонов">
+<!ENTITY vI_prefDialog.sending.tmplTab.caption "Помещать шаблоны в:">
+
+<!ENTITY vI_prefDialog.sending.warnings.header "Предупреждения">
+<!ENTITY vI_prefDialog.sending.warnings.caption "Предупреждение перед отправкой сообщения">
+<!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "Предупреждать о любом использовании не виртуальных (из учетной записи) личных данных">
+<!ENTITY vI_prefDialog.sending.warnings.warnVirtual.label "Предупреждать о любом использовании виртуальных личных данных">
+
+
+<!ENTITY vI_prefDialog.storageTab.Tab0.label "Виртуальные личные данные">
+<!ENTITY vI_prefDialog.storageTab.reading.label "Считывание данных">
+<!ENTITY vI_prefDialog.storageTab.storing.label "Сохранение данных">
+<!ENTITY vI_prefDialog.storageTab.Tab1.label "Дополнительные опции 1">
+<!ENTITY vI_prefDialog.storageTab.Tab2.label "Дополнительные опции 2">
+
+<!ENTITY vI_prefDialog.storageTab.Tab0.header "Хранилище виртуальных личных данных">
+<!ENTITY vI_prefDialog.storageTab.Tab0.caption "Использование хранилища">
+<!ENTITY vI_prefDialog.storage.label "Сохранять (и восстанавливать) используемые личные данные">
+<!ENTITY vI_prefDialog.storage.tooltiptext "Личные данные, используемые для отправки и связанные с получателями сообщений, будут сохраняться. Если вы снова пишите сообщение получателю, которому ранее уже отсылали сообщение, то будут использоваться соответствующие личные данные (виртуальные или реальные).">
+<!ENTITY vI_prefDialog.storage.openEditor "Редактировать сохраненные данные">
+
+<!ENTITY vI_prefDialog.storageTab.reading.header "Считывание виртуальных личных данных">
+<!ENTITY vI_prefDialog.storageTab.reading.caption "Считывание сохраненных виртуальных личных данных">
+<!ENTITY vI_prefDialog.storage.warn_vI_replace.label "Спрашивать перед тем, как виртуальные личные данные в поле отправителя будут заменены">
+<!ENTITY vI_prefDialog.storage.get_One_Only.label "Игнорировать хранилище, как только первые данные будут извлечены (полезно при отправке нескольким получателям)">
+
+<!ENTITY vI_prefDialog.storageTab.storing.header "Сохранение виртуальных личных данных">
+<!ENTITY vI_prefDialog.storageTab.storing.caption "Сохранение используемых личных данных">
+<!ENTITY vI_prefDialog.storage.storedefault.label "Сохранять используемые личные данные при отправке сообщений">
+<!ENTITY vI_prefDialog.storage.store_base_id.label "Сохранять учетные записи">
+<!ENTITY vI_prefDialog.storage.store_SMTP.label "Сохранять SMTP-сервер, используемый для отправки сообщения">
+<!ENTITY vI_prefDialog.storage.warn_update.label "Спрашивать перед перезаписью данных в хранилище">
+<!ENTITY vI_prefDialog.storage.dont_update_multiple.label "Никогда не перезаписывать (и спрашивать) если сообщение имеет нескольких получателей">
+
+<!ENTITY vI_prefDialog.storageTab.Tab1.header "Дополнительные опции сохранения 1">
+<!ENTITY vI_prefDialog.storageTab.Tab1.caption "Дополнительные атрибуты для сохранения с виртуальными личными данными">
+
+<!ENTITY vI_prefDialog.storageTab.Tab2.header "Дополнительные опции сохранения 2">
+<!ENTITY vI_prefDialog.storageTab.Tab2.caption "Дополнительные атрибуты для сохранения с виртуальными личными данными">
+
+<!ENTITY vI_prefDialog.options.Tab0.label "Настройки меню">
+<!ENTITY vI_prefDialog.options.Tab0.header "Настройки меню">
+<!ENTITY vI_prefDialog.options.Tab0.caption "Настройки меню">
+<!ENTITY vI_prefDialog.menuEntry.label "Добавить пункт меню «Virtual Identity» в меню «Инструменты»">
+
+<!ENTITY vI_prefDialog.options.Tab1.label "Уведомления">
+<!ENTITY vI_prefDialog.options.Tab1.header "Уведомления и сообщения">
+<!ENTITY vI_prefDialog.options.Tab1.caption "Уведомления и сообщения">
+<!ENTITY vI_prefDialog.notifyHeaders.label "Показывать информацию о найденных заголовках при просмотре сообщений">
+<!ENTITY vI_prefDialog.notifySmartIdentity.label "Активировать статусные сообщения «Умного ответа» и «Умного черновика»">
+<!ENTITY vI_prefDialog.notifyStorage.label "Активировать статусные сообщения хранилища данных">
+<!ENTITY vI_prefDialog.notifyTime.prefix.label "Время показа статусных сообщений (0 = бесконечно)">
+<!ENTITY vI_prefDialog.notifyTime.postfix.label "секунд">
+
+<!ENTITY vI_prefDialog.options.Tab2.label "Отладка">
+<!ENTITY vI_prefDialog.options.Tab2.header "Отладка">
+<!ENTITY vI_prefDialog.options.Tab2.caption "Отладка">
+<!ENTITY vI_prefDialog.notifyDebug.desc "Чтобы найти ошибки, решить проблемы в конфигурации и понять, что и как выполняет Virtual Identity, особенно при использовании фильтров функции «Умный ответ», Вы можете включить отображение некоторой дополнительной информации. При использовании этой опции работа почтового клиента несколько замедляется, поэтому она не должна быть включена постоянно.">
+<!ENTITY vI_prefDialog.notifyDebug.label "Показывать область с отладочной информацией">
+
+
+<!-- just for TB 1.5. ReplyFollowsParent not available -->
+<!-- fields will be hidden, dont have to be translated -->
+<!ENTITY fccReplyFollowsParent.label "">
+<!ENTITY fccReplyFollowsParent.accesskey "">

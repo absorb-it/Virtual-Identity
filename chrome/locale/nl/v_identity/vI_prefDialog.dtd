@@ -1,0 +1,176 @@
+<!ENTITY vI_prefDialog.dlgTitle.label "Virtual Identity instellingen">
+<!ENTITY vI_prefDialog.vidLogo.tooltiptext "Virtual Identity startpagina openen">
+
+<!ENTITY vI_prefDialog.tabbox.tab0.label "Bron e-mailbericht">
+<!ENTITY vI_prefDialog.tabbox.tab1.label "Selectie">
+<!ENTITY vI_prefDialog.tabbox.tab2.label "Dialoogvenster opstellen">
+<!ENTITY vI_prefDialog.tabbox.tab3.label "Verzenden">
+<!ENTITY vI_prefDialog.tabbox.tab4.label "Opslag">
+<!ENTITY vI_prefDialog.tabbox.tab5.label "Opties">
+
+
+<!ENTITY vI_prefDialog.smartCell.label "Slimme functies">
+<!ENTITY vI_prefDialog.smartCell.row0.label "Lezen">
+<!ENTITY vI_prefDialog.smartCell.row1.label "Filteren / sorteren">
+<!ENTITY vI_prefDialog.smartCell.row2.label "Vergelijken">
+
+<!ENTITY vI_prefDialog.smartTab0.header "Headeranalyse">
+<!ENTITY vI_prefDialog.smartTab0.Draft.caption "Slim Concept">
+<!ENTITY vI_prefDialog.smartTab0.Reply.caption "Slim Antwoorden">
+<!ENTITY vI_prefDialog.versionWarning.label "Uw e-mailprogramma is te oud om de Slim Concept-functie te kunnen gebruiken">
+<!ENTITY vI_prefDialog.smartDraft.label "Slim Concept gebruiken">
+<!ENTITY vI_prefDialog.smartDraft.tooltiptext "‘Slim Concept’ probeert de te gebruiken afzender van het Concept of het Sjabloon te detecteren door de header van het opgeslagen bericht te analyseren. Aanbevolen, staat standaard aan.">
+<!ENTITY vI_prefDialog.smartReply.label "Slim Antwoorden gebruiken">
+<!ENTITY vI_prefDialog.smartReply.tooltiptext "‘Slim antwoorden’ probeert de te gebruiken afzender van het antwoord te detecteren door de koptekst van het ontvangen e-mailbericht te analyseren. Dit is relevant als de identiteit nog niet is opgeslagen. U krijgt de beste resultaten als dit is geconfigureerd in het bijbehorende tabblad. Aanbevolen, staat standaard aan.">
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.label "Alle ontvangen e-mailberichten bevatten een header ‘received’">
+<!ENTITY vI_prefDialog.smartDetectByReceivedHeader.tooltiptext "‘Slim Antwoorden’ moet detecteren of het e-mailbericht is ontvangen of verzonden. Dit gebeurt gewoonlijk door controle van de header ‘received’. Als ontvangen e-mailberichten geen header ‘received’ bevatten dient u dit veld uit te vinken. Staat standaard aan.">
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.label "Slim Antwoorden ook gebruiken als aan een nieuwsgroep wordt geantwoord">
+<!ENTITY vI_prefDialog.smartReplyNewsgroups.tooltiptext "U kunt ‘Slim antwoorden’ gebruiken om de identiteit van de afzender te detecteren terwijl u antwoord geeft op nieuwsposts. Dit werkt niet goed indien niet correct ingesteld. Daarom standaard uitgeschakeld.">
+
+<!ENTITY vI_prefDialog.smartTab1.header "Slim Antwoorden - Header zoeken">
+<!ENTITY vI_prefDialog.smartTab1.caption "1. adressen ophalen">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab1.desc "Om een Antwoord-identiteit te vinden moet Slim Antwoorden een lijst van mogelijke afzendersidentiteiten ophalen. Daarom worden de koptekstvelden ‘Aan’ en ‘Cc’ geanalyseerd. Als Slim Antwoorden nog meer koptekstvelden moet analyseren kunt u ze hier ingeven (wellicht dient u een andere extensie te installeren om ze te herkennen, zoals bijvoorbeeld enigmail or mnenhy). Als u ‘:@’ aan een ingave toevoegt worden alleen e-mailadressen gebruikt; namen worden genegeerd.">
+<!ENTITY vI_prefDialog.smartReply.headers.desc "Aanvullende kopteksten - één per regel, bijvoorbeeld ‘x-original-to’, ‘x-original-to:@’ of ‘x-original-to:2:@’">
+<!ENTITY vI_prefDialog.smartReply.headers.reset "Standaardwaarden instellen">
+
+<!ENTITY vI_prefDialog.smartTab2.header "Slim Antwoorden - Filteren / sorteren">
+<!ENTITY vI_prefDialog.smartTab2.caption "2. adressen filteren">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab2.desc "Na het ophalen van de adressen dienen ze te worden gefilterd. Alle filters worden na elkaar toegepast, dus u kunt ze ook gebruiken om het resultaat te sorteren. Op het einde kan het eerst aangetroffen adres worden gebruikt als de identiteit van de afzender. Als u geen filter gebruikt worden alle adressen overgebracht.">
+<!ENTITY vI_prefDialog.smartReply.filter.desc "Slim Antwoorden filter - één filter per regel, gebruik van reguliere expressies mogelijk (bijvoorbeeld ‘/@mozilla.org$/’ matcht elk e-mailbericht van het domein mozilla.org). Plaats ‘-’ voor een reguliere expressie om overeenkomsten uit te sluiten.">
+
+<!ENTITY vI_prefDialog.smartTab3.header "Slim Antwoorden - Vergelijken">
+<!ENTITY vI_prefDialog.smartTab3.caption "3. vergelijken met bestaande identiteiten">
+<!ENTITY vI_prefDialog.smartReply.ignoreFullname.label "Volledige naam bij vergelijken van e-mailadressen met bestaande identiteiten negeren">
+<!ENTITY vI_prefDialog.smartReply.defaultFullname.label "Als er geen naam bij een gevonden e-mailadres staat de volgende gebruiken:">
+
+
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Invoer">
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Resultaatselectie">
+
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Identiteitsinvoer">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Slim Antwoorden en Opslaan">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "Slim Concept en Opslaan">
+<!ENTITY vI_prefDialog.idSelection.reply.desc "Als u antwoordt op e-mailberichten kan de prioriteit van opgeslagen virtuele identiteiten in vergelijking met de identiteiten die met Slim Antwoorden worden verkregen hier worden ingesteld.">
+<!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "Voorkeur geven aan Slim Antwoorden-identiteiten">
+<!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "Slim Antwoorden-identiteiten negeren indien opgeslagen identiteiten worden aangetroffen">
+
+<!ENTITY vI_prefDialog.idSelection.draft.desc "Indien u een Concept (of Sjabloon) bewerkt is er niets in te stellen. Als de extensie in staat is om de koptekst van het opgeslagen bericht te lezen wordt een eraan gerelateerde virtuele identiteit gecreëerd. Er is geen informatie over SMTP of een andere specifieke instelling in het Concept/de Sjabloon. Deze informatie wordt, indien mogelijk, opgehaald uit de opgeslagen virtuele identiteiten.">
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Resultaatverwerking">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Resultaatverwerking">
+<!ENTITY vI_prefDialog.idSelection.multiselect.desc "De resultaten van de zoekopdracht in de opgeslagen virtuele identiteiten en de koptekstanalyse van Slim Antwoorden of Slim Concept worden toegevoegd aan het dropdownmenu van de berichtidentiteit. U kunt ook selecteren hoe ze kunnen worden gebruikt als de identiteit van de nieuwe afzender.">
+<!ENTITY vI_prefDialog.idSelection.ask.label "Dialoogvenster openen om identiteit te kiezen">
+<!ENTITY vI_prefDialog.idSelection.ask_always.label "Ook vragen als er slechts één adres mogelijk is">
+<!ENTITY vI_prefDialog.idSelection.autocreate.label "Eerst aangetroffen identiteit gebruiken zonder interactie">
+<!ENTITY vI_prefDialog.idSelection.autocreate.desc "(als er slechts één adres mogelijk is)">
+<!ENTITY vI_prefDialog.idSelection.preferExisting.label "Overeenkomst met bestaande identiteit gebruiken zonder interactie">
+
+<!ENTITY vI_prefDialog.composeDialog.Cell0.label "Functies">
+<!ENTITY vI_prefDialog.composeDialog.Cell1.label "Dialoogvenster">
+
+<!ENTITY vI_prefDialog.composeDialog.header "Bericht opstellen">
+<!ENTITY vI_prefDialog.composeDialog.header2 "Bericht opstellen">
+<!ENTITY vI_prefDialog.composeDialog.caption "Functies bericht opstellen">
+<!ENTITY vI_prefDialog.composeDialog.caption2 "Dialoogvenster bericht opstellen">
+<!ENTITY vI_prefDialog.composeDialog.caption3 "Opslagschakelaars">
+<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.label "Tijdsafdrukidentiteit voor nieuwe berichten automatisch aanmaken">
+<!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "Bij het schrijven van een nieuw bericht kunt u uw gebruikelijke afzendersadres aanpassen met een tijdsafdruk. Een eenvoudige manier om unieke identiteiten aan te maken, staat standaard uit.">
+<!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "Opmerking: Om dynamisch deactiveren van handtekeningen in te schakelen dient u de ‘Signature Switch’ extensie te installeren (en activeren). Op dit moment is deze optie niet beschikbaar.">
+<!ENTITY vI_prefDialog.composeDialog.HideSignature.label "Alle handtekeningen verwijderen bij gebruik van een virtuele identiteit">
+<!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "S/MIME-ondertekening deactiveren bij gebruik virtuele identiteit">
+<!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "openPGP-ondertekening deactiveren bij gebruik virtuele identiteit">
+<!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "Virtuele identiteit als Reply-To-adres instellen">
+<!ENTITY vI_prefDialog.composeDialog.SMTP.label "SMTP-menu weergeven">
+<!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "Menu weergeven om beschikbare SMTP-servers te selecteren">
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "Schakelaar weergeven om opslaan van verzonden e-mailberichten (fcc) te activeren/deactiveren">
+<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "Knop weergeven om opslaan van verzonden e-mailberichten (fcc) tijdens verwerking te activeren/deactiveren">
+<!ENTITY vI_prefDialog.composeDialog.show_switch.label "Aanvinkveld voor opslaan van identiteiten">
+<!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "Aanvinkveld voor opslaan van basisidentiteiten">
+<!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "Aanvinkveld voor opslaan van SMTP">
+<!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "Op te slaan identiteitsgedeelten kleuren">
+
+<!ENTITY vI_prefDialog.sending.Folder.label "Eigenschappen / Kopieën">
+<!ENTITY vI_prefDialog.sending.Folder.row0.label "Verzonden berichten">
+<!ENTITY vI_prefDialog.sending.Folder.row1.label "Concepten">
+<!ENTITY vI_prefDialog.sending.Folder.row2.label "Sjablonen">
+<!ENTITY vI_prefDialog.sending.warnings.label "Waarschuwingen">
+
+<!ENTITY vI_prefDialog.sending.Folder.header "Berichteigenschappen">
+<!ENTITY vI_prefDialog.sending.Folder.caption "Te kopiëren eigenschappen">
+<!ENTITY vI_prefDialog.sending.Folder.desc "De volgende eigenschappen van de vorige identiteit overnemen:">
+<!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME-beveiligingsinstellingen">
+<!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard-bijlagen">
+
+<!ENTITY vI_prefDialog.sending.fccTab.header "Map Verzonden">
+<!ENTITY vI_prefDialog.sending.fccTab.caption "Bij het verzenden van een bericht met een virtuele identiteit">
+<!ENTITY vI_prefDialog.sending.vidAccount.label "Door account gebruikte map wijzigen bij gebruik virtuele identiteit">
+<!ENTITY vI_prefDialog.sending.vidDefault.label "Door standaardaccount gebruikte map">
+
+<!ENTITY vI_prefDialog.sending.draftTab.header "Map Concepten">
+<!ENTITY vI_prefDialog.sending.draftTab.caption "Opslaglokatie voor concepten">
+
+<!ENTITY vI_prefDialog.sending.tmplTab.header "Map Sjablonen">
+<!ENTITY vI_prefDialog.sending.tmplTab.caption "Opslaglokatie voor sjablonen">
+
+<!ENTITY vI_prefDialog.sending.warnings.header "Waarschuwingen">
+<!ENTITY vI_prefDialog.sending.warnings.caption "Voor verzenden van bericht">
+<!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "Waarschuwen bij gebruik van niet-virtuele identiteiten">
+<!ENTITY vI_prefDialog.sending.warnings.warnVirtual.label "Waarschuwen bij elk gebruik van virtuele identiteiten">
+
+
+<!ENTITY vI_prefDialog.storageTab.Tab0.label "Identiteit">
+<!ENTITY vI_prefDialog.storageTab.reading.label "lezen">
+<!ENTITY vI_prefDialog.storageTab.storing.label "opslaan">
+<!ENTITY vI_prefDialog.storageTab.Tab1.label "Extra Opslag 1">
+<!ENTITY vI_prefDialog.storageTab.Tab2.label "Extra Opslag 2">
+
+<!ENTITY vI_prefDialog.storageTab.Tab0.header "Identiteitsopslag">
+<!ENTITY vI_prefDialog.storageTab.Tab0.caption "Opslaggebruik">
+<!ENTITY vI_prefDialog.storage.label "Gebruikte identiteiten opslaan (en herinneren)">
+<!ENTITY vI_prefDialog.storage.tooltiptext "Gebruikte identiteiten kunnen in relatie tot de ontvangers van uw bericht worden opgeslagen. Als u opnieuw een bericht aan dezelfde ontvanger stuurt wordt dezelfde virtuele of niet-virtuele identiteit gebruikt">
+<!ENTITY vI_prefDialog.storage.openEditor "Opgeslagen gegevens bewerken">
+
+<!ENTITY vI_prefDialog.storageTab.reading.header "Identiteit lezen">
+<!ENTITY vI_prefDialog.storageTab.reading.caption "Lezen van virtuele identiteiten">
+<!ENTITY vI_prefDialog.storage.warn_vI_replace.label "Vragen voordat de virtuele identiteit in het afzendersveld wordt vervangen">
+<!ENTITY vI_prefDialog.storage.get_One_Only.label "Opslaan negeren na ophalen van eerste virtuele identiteit">
+
+<!ENTITY vI_prefDialog.storageTab.storing.header "Identiteit opslaan">
+<!ENTITY vI_prefDialog.storageTab.storing.caption "Gebruikte identiteiten opslaan">
+<!ENTITY vI_prefDialog.storage.storedefault.label "Gebruikte identiteiten opslaan bij verzenden e-mailberichten">
+<!ENTITY vI_prefDialog.storage.store_base_id.label "Onderliggende basisidentiteit opslaan">
+<!ENTITY vI_prefDialog.storage.store_SMTP.label "Gebruikte SMTP-server opslaan">
+<!ENTITY vI_prefDialog.storage.warn_update.label "Vragen voor overschrijven van identiteiten in uw opslag">
+<!ENTITY vI_prefDialog.storage.dont_update_multiple.label "Nooit overschrijven (en vragen) als e-mailbericht meerdere ontvangers heeft">
+
+<!ENTITY vI_prefDialog.storageTab.Tab1.header "Opslag extra 1">
+<!ENTITY vI_prefDialog.storageTab.Tab1.caption "Eigenschappen met identiteit op te slaan">
+
+<!ENTITY vI_prefDialog.storageTab.Tab2.header "Opslag extra 2">
+<!ENTITY vI_prefDialog.storageTab.Tab2.caption "Eigenschappen met identiteit op te slaan">
+
+<!ENTITY vI_prefDialog.options.Tab0.label "Menu-opties">
+<!ENTITY vI_prefDialog.options.Tab0.header "Menu-opties">
+<!ENTITY vI_prefDialog.options.Tab0.caption "Menu-opties">
+<!ENTITY vI_prefDialog.menuEntry.label "Onderdeel voor Instellingendialoog en Opslagbewerking aan menu Extra toevoegen">
+
+<!ENTITY vI_prefDialog.options.Tab1.label "Notificaties">
+<!ENTITY vI_prefDialog.options.Tab1.header "Statusberichten">
+<!ENTITY vI_prefDialog.options.Tab1.caption "Notificaties">
+<!ENTITY vI_prefDialog.notifyHeaders.label "Informatie over herkende kopteksten weergeven">
+<!ENTITY vI_prefDialog.notifySmartIdentity.label "Slim Antwoorden / Slim Concept-statusberichten inschakelen">
+<!ENTITY vI_prefDialog.notifyStorage.label "Opslaan-statusberichten inschakelen">
+<!ENTITY vI_prefDialog.notifyTime.prefix.label "Weergaveduur statusberichten (0=oneindig)">
+<!ENTITY vI_prefDialog.notifyTime.postfix.label "seconden">
+
+<!ENTITY vI_prefDialog.options.Tab2.label "Foutopsporing">
+<!ENTITY vI_prefDialog.options.Tab2.header "Foutopsporing">
+<!ENTITY vI_prefDialog.options.Tab2.caption "Foutopsporing">
+<!ENTITY vI_prefDialog.notifyDebug.desc "Om fouten te vinden, configuratieproblemen op te lossen en te begrijpen wat Virtual Identity doet, in het bijzonder met de Slim Antwoorden-filters, kunt u wat aanvullende informatie activeren. Het gebruik van deze optie vertraagt uw mailprogramma en dient derhalve niet permanent ingeschakeld te zijn.">
+<!ENTITY vI_prefDialog.notifyDebug.label "Veld met foutopsporingsinformatie weergeven">
+
+
+<!-- just for TB 1.5. ReplyFollowsParent not available -->
+<!-- fields will be hidden, dont have to be translated -->
+<!ENTITY fccReplyFollowsParent.label "">
+<!ENTITY fccReplyFollowsParent.accesskey "">
