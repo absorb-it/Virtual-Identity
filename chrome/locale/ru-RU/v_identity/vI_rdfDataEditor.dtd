@@ -1,0 +1,18 @@
+<!ENTITY vI_rdfDataEditor.dlgTitle.label "Редактор виртуальных личных данных">
+
+<!ENTITY vI_rdfDataEditor.dataType.email "E-mail адрес">
+<!ENTITY vI_rdfDataEditor.dataType.maillist "Список рассылки">
+<!ENTITY vI_rdfDataEditor.dataType.newsgroup "Новостная группа">
+
+<!ENTITY vI_rdfDataEditor.header.label "Добавить/Изменить данные">
+<!ENTITY vI_rdfDataEditor.recipient.label "Получатель:">
+<!ENTITY vI_rdfDataEditor.recipient.accesskey "П">
+<!ENTITY vI_rdfDataEditor.type.label "Тип получателя">
+<!ENTITY vI_rdfDataEditor.type.accesskey "Т">
+<!ENTITY vI_rdfDataEditor.caption.label "Сохраняемые виртуальные личные данные:">
+<!ENTITY vI_rdfDataEditor.sender.label "Отправитель:">
+<!ENTITY vI_rdfDataEditor.sender.accesskey "О">
+<!ENTITY vI_rdfDataEditor.smtp.label "SMTP-сервер:">
+<!ENTITY vI_rdfDataEditor.smtp.accesskey "M">
+<!ENTITY vI_rdfDataEditor.identity.label "Учетная запись">
+<!ENTITY vI_rdfDataEditor.identity.accesskey "О">

@@ -1,0 +1,22 @@
+<!ENTITY vI_rdfDataTree.dlgTitle.label "Хранилище виртуальных личных данных">
+
+<!ENTITY vI_rdfDataTree.filterPrefs.label "Фильтр:">
+<!ENTITY vI_rdfDataTree.filterPrefs.accesskey "Ф">
+<!ENTITY vI_rdfDataTree.showAll.label "Показать все">
+<!ENTITY vI_rdfDataTree.showAll.accesskey "в">
+<!ENTITY vI_rdfDataTree.recipientColumn.label "Получатель">
+<!ENTITY vI_rdfDataTree.typeColumn.label "Тип">
+<!ENTITY vI_rdfDataTree.senderColumn.label "Отправитель">
+<!ENTITY vI_rdfDataTree.idColumn.label "Учетная запись">
+<!ENTITY vI_rdfDataTree.smtpColumn.label "SMTP-сервер">
+<!ENTITY vI_rdfDataTree.menuEntry.label "Хранилище виртуальных личных данных">
+
+<!ENTITY vI_rdfDataTree.editMenu.label "Редактировать">
+<!ENTITY vI_rdfDataTree.editMenu.accesskey "Р">
+<!ENTITY vI_rdfDataTree.modifySelected.label "Изменить выделенные записи">
+<!ENTITY vI_rdfDataTree.modifySelected.accesskey "И">
+<!ENTITY vI_rdfDataTree.removeSelected.label "Удалить выделенные записи">
+<!ENTITY vI_rdfDataTree.removeSelected.accesskey "У">
+<!ENTITY vI_rdfDataTree.newItem.label "Добавить новую запись">
+<!ENTITY vI_rdfDataTree.newItem.accesskey "Д">
+

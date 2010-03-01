@@ -6,7 +6,7 @@
 
 // Editable Items Begin
 var displayName         = "Virtual Identity"; // The name displayed to the user (don't include the version)
-var version             = "0.5.13";
+var version             = "0.5.14";
 var name                = "v_identity"; // The leafname of the JAR file (without the .jar part)
 
 // The following three sets of variables tell this installer script how your
@@ -21,7 +21,7 @@ var skinDir           = "/" + name + "/"
 //var localeDir           = "/"
 var localeDir           = "/" + name + "/"
 
-var locales             = new Array( "en-US", "de-DE", "nl-NL", "cs-CZ", "es-ES", "fr-FR", "tr-TR", "ko-KR" );
+var locales             = new Array( "en-US", "de-DE", "nl-NL", "cs-CZ", "es-ES", "fr-FR", "tr-TR", "ko-KR", "ru-RU" );
 var skins               = new Array( "classic" ); // "modern"
 var prefs               = new Array( "preferences.js" );
 var components          = new Array(  );
