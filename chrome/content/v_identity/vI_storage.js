@@ -141,7 +141,7 @@ var vI_storage = {
 		var recipient = vI_storage.__getDescriptionAndType(inputElement.value, recipientType);
 
 		var matchResults = { storageData : {}, menuItem : {} };
-		matchResults.storageData[0] = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType),
+		matchResults.storageData[0] = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
 		matchResults.storageData[1] = vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
 
 		vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage add found Identities to CloneMenu.\n");
