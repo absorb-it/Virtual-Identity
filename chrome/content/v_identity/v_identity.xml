@@ -332,16 +332,19 @@
 		<body><![CDATA[
 		vI_notificationBar.dump("\n** v_identity.xml msgIdentityCloneElem.doCommand() \n")
 		// copy selected Menu-Value from clone to orig.
-		var MenuItems = this._msgIdentityPopupElem.childNodes
-		for (var index = 0; index < MenuItems.length; index++) {
-			if ( MenuItems[index].getAttribute("value") == this.selectedMenuItem.identityData.id.key ) {
-				this._msgIdentityElem.selectedItem = MenuItems[index];
-				this._msgIdentityElem.value = MenuItems[index].getAttribute("value");
-				break;
-			}
-		}
-		this._msgIdentityPopupElem.doCommand();
+		vI_notificationBar.dump("** v_identity.xmlcopy selected Menu-Value from clone to orig. Searching for id=" + this.selectedMenuItem.identityData.id.key + " \n")
 		
+		if ( this.selectedMenuItem.identityData.id.key != null ) {
+			var MenuItems = this._msgIdentityPopupElem.childNodes
+			for (var index = 0; index < MenuItems.length; index++) {
+				if ( MenuItems[index].getAttribute("value") == this.selectedMenuItem.identityData.id.key ) {
+					this._msgIdentityElem.selectedItem = MenuItems[index];
+					this._msgIdentityElem.value = MenuItems[index].getAttribute("value");
+					break;
+				}
+			}
+			this._msgIdentityPopupElem.doCommand();
+		}
 		this.identityData = this.selectedMenuItem.identityData.getDuplicate();
 		
 		// if current SMTP is empty, take the one from current Identity
@@ -533,18 +536,14 @@
 		else {
 			var oldIdentityData = this._identityDataStorage;
 			this._identityDataStorage = val;
-			
 			if (oldIdentityData) { // indicates that it's not first time after clean
 				vI_notificationBar.dump("** v_identity.xml previousID: fullName='" + oldIdentityData.fullName + "' email='" + oldIdentityData.email + "' smtp='" + oldIdentityData.smtp.key + "' id='" + oldIdentityData.id.key + "'\n");
 				vI_notificationBar.dump("** v_identity.xml newID: fullName='" + this._identityDataStorage.fullName + "' email='" + this._identityDataStorage.email + "' smtp='" + this._identityDataStorage.smtp.key + "' id='" + this._identityDataStorage.id.key + "'\n");
-				if (!this._identityDataStorage.id.key) {
-					this._identityDataStorage.id.key = oldIdentityData.id.key;
-					var idName = this._identityDataStorage.id.value;
-					// this._identityDataStorage.sideDescription = (idName)?" - "+idName:"";
-					vI_notificationBar.dump("** v_identity.xml set new Id: " + this._identityDataStorage.id.key + " '" + this._identityDataStorage.id.value + "'\n")
-				}
+				if (!this._identityDataStorage.combinedName) this._identityDataStorage.fullName = oldIdentityData.fullName;
+				if (!this._identityDataStorage.email) this._identityDataStorage.email = oldIdentityData.email;
+				if (!this._identityDataStorage.smtp.key) this._identityDataStorage.smtp.key = oldIdentityData.smtp.key;
+				if (!this._identityDataStorage.id.key) this._identityDataStorage.id.key = oldIdentityData.id.key;
 				this._identityDataStorage.extras.setValues();
-			
 				this.checkForVirtualIdentity();
 			}
 			else	this.vid = false;		// first time after clean it's always a real identity
