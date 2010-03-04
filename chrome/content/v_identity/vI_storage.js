@@ -144,29 +144,36 @@ var vI_storage = {
 		matchResults.storageData[0] = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType),
 		matchResults.storageData[1] = vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
 
+		vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage add found Identities to CloneMenu.\n");
 		var matchIndex = null;
 		for (var i = 0; i <= 1; i++) {
-			if (matchResults.storageData[i]) {
-				if (matchIndex == null) matchIndex = i;
+			if (matchResults.storageData[i]) {			// check if there is a result in direct match or filter
+				if (matchIndex == null) matchIndex = i;		// prefer direct match instead of filter
 				matchResults.menuItem[i] = document.getElementById("msgIdentity_clone")
 								.addIdentityToCloneMenu(matchResults.storageData[i]);
 			}
 		}
-		if (matchIndex == null) return;
-		
+		if (matchIndex == null) {
+			vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage no usable Storage-Data found.\n");
+			return;
+		}
+		else {
+			vI_notificationBar.dump("## vI_storage: using data from " + ((matchIndex == 0)?"direct":"filter") + " match\n");
+		}
 		// found storageData, so store InputElement
 		if (!vI_storage.firstUsedInputElement) vI_storage.firstUsedInputElement = inputElement;
 		
 		vI_notificationBar.dump("## vI_storage: compare with current Identity\n");
-		if (vI.preferences.getBoolPref("storage_getOneOnly") &&
-			vI_storage.firstUsedInputElement &&
-			vI_storage.firstUsedInputElement != inputElement &&
-			!matchResults.storageData[matchIndex].equalsCurrentIdentity(false).equal)
+		if (vI.preferences.getBoolPref("storage_getOneOnly") &&					// if requested to retrieve only storageID for first recipient entered
+			vI_storage.firstUsedInputElement &&						// and the request for the first recipient was already done
+			vI_storage.firstUsedInputElement != inputElement &&				// and it's not the same element we changed now
+			!matchResults.storageData[matchIndex].equalsCurrentIdentity(false).equal)	// and this id is different than the current used one
 				vI_notificationBar.setNote(vI.elements.strings
-					.getString("vident.smartIdentity.vIStorageCollidingIdentity"),
+					.getString("vident.smartIdentity.vIStorageCollidingIdentity"),	// than drop the potential changes
 					"storage_notification");
 		// only update fields if new Identity is different than old one.
 		else {
+			vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage check if storage-data matches current Identity.\n");
 			var compResult = matchResults.storageData[matchIndex].equalsCurrentIdentity(true);
 			if (!compResult.equal) {
 				var warning = vI_storage.__getWarning("replaceVIdentity", recipient, compResult.compareMatrix);
@@ -179,6 +186,9 @@ var vI_storage = {
 							vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
 							"storage_notification");
 				}
+			}
+			else {
+				vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage doing nothing - equals current Identity.\n");
 			}
 		}
 	},

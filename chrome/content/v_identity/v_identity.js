@@ -182,6 +182,10 @@ var vI = {
 			var virtualIdentityData = document.getElementById("msgIdentity_clone").identityData;
 			var currentIdentity = getCurrentIdentity();
 			var currentSMTPobj = new smtpObj(currentIdentity.smtpServerKey);
+			vI_notificationBar.dump("\n## vI_identityData GenericSendMessage Final Check\n");
+			vI_notificationBar.dump("## vI_identityData currentIdentity: fullName='" + currentIdentity.fullName + "' email='" + currentIdentity.email + "' smtp='" + currentSMTPobj.key + "'\n");
+			vI_notificationBar.dump("## vI_identityData virtualIdentityData: fullName='" + virtualIdentityData.fullName + "' email='" + virtualIdentityData.email + "' smtp='" + virtualIdentityData.smtp.key + "'\n");
+
 			if (	!vid ||
 				(currentIdentity.fullName == virtualIdentityData.fullName	&&
 				currentIdentity.email == virtualIdentityData.email		&&

@@ -271,8 +271,6 @@ var vI_rdfDatasource = {
 		var fullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
 		var id = vI_rdfDatasource.__getRDFValue(resource, "id")
 		var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
-		vI_notificationBar.dump("## vI_rdfDatasource: email='" + email + 
-			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'\n");
 		if (!smtp) smtp = NO_SMTP_TAG;
 		
 		vI_notificationBar.dump("## vI_rdfDatasource: email='" + email + 

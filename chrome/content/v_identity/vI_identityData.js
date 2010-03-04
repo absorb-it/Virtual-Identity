@@ -97,6 +97,8 @@ identityData.prototype = {
 	// dependent on MsgComposeCommands, should/will only be called in ComposeDialog
 	isExistingIdentity : function(ignoreFullNameWhileComparing) {
 		vI_notificationBar.dump("## vI_identityData: isExistingIdentity: ignoreFullNameWhileComparing='" + ignoreFullNameWhileComparing + "'\n");
+		vI_notificationBar.dump("## vI_identityData base: fullName.toLowerCase()='" + this.fullName + " email.toLowerCase()='" + this.email + " smtp='" + this.smtp.key + "'\n");
+
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		for (var i in accounts) {
 			// skip possible active VirtualIdentity Accounts
@@ -104,6 +106,8 @@ identityData.prototype = {
 	
 			var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 			for (var j in identities) {
+				vI_notificationBar.dump("## vI_identityData comp: fullName.toLowerCase()='" + identities[j].fullName.toLowerCase() + " email.toLowerCase()='" + identities[j].email.toLowerCase() + " smtp='" + identities[j].smtpServerKey + "'\n");
+
 				if (	(ignoreFullNameWhileComparing ||
 					this.fullName.toLowerCase() == identities[j].fullName.toLowerCase()) &&
 					(this.email.toLowerCase() == identities[j].email.toLowerCase()) &&
