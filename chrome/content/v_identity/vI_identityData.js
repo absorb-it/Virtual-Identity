@@ -124,16 +124,16 @@ identityData.prototype = {
 	equals : function(compareIdentityData) {
 		this.comp.compareID = compareIdentityData;
 
-		this.comp.equals.fullName = (this.fullName == compareIdentityData.fullName)
-		this.comp.equals.email = (this.email == compareIdentityData.email)
+		this.comp.equals.fullName = (((this.fullName)?this.fullName.toLowerCase():null) == ((compareIdentityData.fullName)?compareIdentityData.fullName.toLowerCase():null));
+		this.comp.equals.email = (((this.email)?this.email.toLowerCase():null) == ((compareIdentityData.email)?compareIdentityData.email.toLowerCase():null));
 
 		this.comp.equals.smtp = this.smtp.equal(compareIdentityData.smtp);
 
 
 		this.comp.equals.id = this.id.equal(compareIdentityData.id);
 		this.comp.equals.extras = this.extras.equal(compareIdentityData.extras);
-// 		vI_notificationBar.dump("## vI_identityData: smtp:'" + this.comp.equals.smtp + "' id:'" + this.comp.equals.id + "'\n");
-		return (this.comp.equals.fullName && this.comp.equals.email && this.comp.equals.smtp && this.comp.equals.id && this.comp.equals.extras)
+		
+		return (this.comp.equals.fullName && this.comp.equals.email && this.comp.equals.smtp && this.comp.equals.id && this.comp.equals.extras);
 	},
 
 	equalsCurrentIdentity : function(getCompareMatrix) {
