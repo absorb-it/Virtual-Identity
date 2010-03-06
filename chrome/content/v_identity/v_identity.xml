@@ -368,9 +368,9 @@
 			// else description = identity.description?"- "+identity.description:identity.accountname
 			
 			var newIdentity = new identityData(identity.email, identity.fullName, identity.key,
-						identity.smtpServerKey, null, description)
+						identity.smtpServerKey, null, description, true)
 			newIdentity.extras.readIdentityValues(identity);
-
+				
 			var menuItem = this.addIdentityToCloneMenu(newIdentity)
 
 			if (this._msgIdentity_selectedItem == MenuItems[index]) {
@@ -537,14 +537,17 @@
 			var oldIdentityData = this._identityDataStorage;
 			this._identityDataStorage = val;
 			if (oldIdentityData) { // indicates that it's not first time after clean
-				vI_notificationBar.dump("** v_identity.xml previousID: fullName='" + oldIdentityData.fullName + "' email='" + oldIdentityData.email + "' smtp='" + oldIdentityData.smtp.key + "' id='" + oldIdentityData.id.key + "'\n");
-				vI_notificationBar.dump("** v_identity.xml newID: fullName='" + this._identityDataStorage.fullName + "' email='" + this._identityDataStorage.email + "' smtp='" + this._identityDataStorage.smtp.key + "' id='" + this._identityDataStorage.id.key + "'\n");
-				if (!this._identityDataStorage.combinedName) this._identityDataStorage.fullName = oldIdentityData.fullName;
-				if (!this._identityDataStorage.email) this._identityDataStorage.email = oldIdentityData.email;
+				vI_notificationBar.dump("** v_identity.xml previousID: fullName='" + oldIdentityData.fullName + "' email='" + oldIdentityData.email + "' smtp='" + oldIdentityData.smtp.key + "' id='" + oldIdentityData.id.key + "' existingID='" + oldIdentityData.existingID + "'\n");
+				vI_notificationBar.dump("** v_identity.xml newID: fullName='" + this._identityDataStorage.fullName + "' email='" + this._identityDataStorage.email + "' smtp='" + this._identityDataStorage.smtp.key + "' id='" + this._identityDataStorage.id.key + "' existingID='" + this._identityDataStorage.existingID + "'\n");
+				if (!this._identityDataStorage.existingID && !this._identityDataStorage.combinedName)
+					this._identityDataStorage.fullName = oldIdentityData.fullName;
+				if (!this._identityDataStorage.existingID && !this._identityDataStorage.email)
+					this._identityDataStorage.email = oldIdentityData.email;
 				if (!this._identityDataStorage.smtp.key) this._identityDataStorage.smtp.key = oldIdentityData.smtp.key;
 				if (!this._identityDataStorage.id.key) this._identityDataStorage.id.key = oldIdentityData.id.key;
 				this._identityDataStorage.extras.setValues();
-				this.checkForVirtualIdentity();
+				if (this._identityDataStorage.existingID) this.vid = false;
+				else this.checkForVirtualIdentity();
 			}
 			else	this.vid = false;		// first time after clean it's always a real identity
 			
@@ -552,7 +555,7 @@
 			this.value = this._identityDataStorage.id.key;
 			this.description = this._identityDataStorage.sideDescription;
 			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this._identityDataStorage.smtp.keyNice;
-			vI_notificationBar.dump("** v_identity.xml resultingID: fullName='" + this._identityDataStorage.fullName + "' email='" + this._identityDataStorage.email + "' smtp='" + this._identityDataStorage.smtp.key + "' id='" + this._identityDataStorage.id.key + "'\n");			
+			vI_notificationBar.dump("** v_identity.xml resultingID: fullName='" + this._identityDataStorage.fullName + "' email='" + this._identityDataStorage.email + "' smtp='" + this._identityDataStorage.smtp.key + "' id='" + this._identityDataStorage.id.key + "' existingID='" + this._identityDataStorage.existingID + "'\n");			
 		}
 		vI_notificationBar.dump("** v_identity.xml identityData setter done.'\n")
 		]]></setter>

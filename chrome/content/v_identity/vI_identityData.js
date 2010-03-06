@@ -22,7 +22,7 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-function identityData(email, fullName, id, smtp, extras, sideDescription) {
+function identityData(email, fullName, id, smtp, extras, sideDescription, existingID) {
 	this.email = email;
 	this.fullName = (fullName?fullName:'');
 	this.id = new idObj(id);
@@ -33,6 +33,7 @@ function identityData(email, fullName, id, smtp, extras, sideDescription) {
 		equals : { fullName : {}, email : {}, smtp : {}, id : {}, extras : {} }
 	}
 	if (sideDescription) this.sideDescription = sideDescription;
+	if (existingID) this.existingID = existingID;
 	else if (this.id.value) this.sideDescription = " - " + this.id.value;
 	this.stringBundle = document.getElementById("vIdentBundle");
 }
@@ -43,6 +44,7 @@ identityData.prototype = {
 	smtp : null,
 	extras : null,
 	sideDescription : null,
+	existingID : null,		// indicates that this is a pre-defined Identity, which might handled slightly differently
 	
 	stringBundle : null,
 	comp : null,	
@@ -81,7 +83,7 @@ identityData.prototype = {
 
 	// creates an Duplicate of the current IdentityData, cause usually we are working with a pointer
 	getDuplicate : function() {
-		return new identityData(this.email, this.fullName, this.id.key, this.smtp.key, this.extras.getDuplicate(), this.sideDescription);
+		return new identityData(this.email, this.fullName, this.id.key, this.smtp.key, this.extras.getDuplicate(), this.sideDescription, this.existingID);
 	},
 
 	// copys all values of an identity. This way we can create a new object with a different document-context
@@ -107,10 +109,11 @@ identityData.prototype = {
 			var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 			for (var j in identities) {
 // 				vI_notificationBar.dump("## vI_identityData comp: fullName.toLowerCase()='" + identities[j].fullName.toLowerCase() + "' email.toLowerCase()='" + identities[j].email.toLowerCase() + "' smtp='" + identities[j].smtpServerKey + "'\n");
-
+				var email = this.email?this.email:"";				// might be null if no identity is set
+				var idEmail = identities[j].email?identities[j].email:"";	// might be null if no identity is set
 				if (	(ignoreFullNameWhileComparing ||
 					this.fullName.toLowerCase() == identities[j].fullName.toLowerCase()) &&
-					(this.email.toLowerCase() == identities[j].email.toLowerCase()) &&
+					(email.toLowerCase() == idEmail.toLowerCase()) &&
 					this.smtp.equal(new smtpObj(identities[j].smtpServerKey))	) {
 					vI_notificationBar.dump("## vI_identityData: isExistingIdentity: " + this.combinedName + " found, id='" + identities[j].key + "'\n");
 					return identities[j].key;
