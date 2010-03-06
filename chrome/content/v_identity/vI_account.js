@@ -187,8 +187,10 @@ var vI_account = {
 		var mailWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService()
 			.QueryInterface(Components.interfaces.nsIWindowMediator)
 			.getMostRecentWindow("mail:3pane");
-		var selectedFolder = (mailWindow.gFolderTreeView)?mailWindow.gFolderTreeView.getSelectedFolders()[0]:null;
-		var selectedMessages = (mailWindow.gFolderDisplay)?mailWindow.gFolderDisplay.selectedMessages:null;
+		if (mailWindow) {				// it's not sure that we have an open 3-pane-window
+			var selectedFolder = (mailWindow.gFolderTreeView)?mailWindow.gFolderTreeView.getSelectedFolders()[0]:null;
+			var selectedMessages = (mailWindow.gFolderDisplay)?mailWindow.gFolderDisplay.selectedMessages:null;
+		}
 		if (vI_account.account) {
 			vI_account.__removeAccount(vI_account.account);
 			vI_account.account = null;
