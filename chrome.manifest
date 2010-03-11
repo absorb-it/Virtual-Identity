@@ -1,4 +1,5 @@
 content	v_identity jar:chrome/v_identity.jar!/content/v_identity/
+locale	v_identity	cs-CZ	jar:chrome/v_identity.jar!/locale/cs-CZ/v_identity/
 locale	v_identity	de-DE	jar:chrome/v_identity.jar!/locale/de-DE/v_identity/
 locale	v_identity	en-US	jar:chrome/v_identity.jar!/locale/en-US/v_identity/
 locale	v_identity	es-ES	jar:chrome/v_identity.jar!/locale/es-ES/v_identity/

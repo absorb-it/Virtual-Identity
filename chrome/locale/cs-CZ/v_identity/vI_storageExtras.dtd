@@ -1,0 +1,38 @@
+<!ENTITY vI_storageExtras.storeValue.label "uložit">
+
+<!ENTITY vI_prefDialog.storageExtras.returnReciept.label "stav doručenky">
+<!ENTITY vI_prefDialog.storageExtras.fcc.label "stav FCC">
+<!ENTITY vI_prefDialog.storageExtras.characterEncoding.label "zvolená znaková sada">
+<!ENTITY vI_prefDialog.storageExtras.messageFormat.label "zvolený formát zpráv">
+
+<!ENTITY vI_prefDialog.storageExtras.sMime.label "S/MIME">
+<!ENTITY vI_prefDialog.storageExtras.sMime.messageEncryption.label "stav šifrování">
+<!ENTITY vI_prefDialog.storageExtras.sMime.messageSignature.label "použití podpisu">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.label "OpenPGP">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "stav šifrování">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "použití podpisu">
+<!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "použití PGP/MIME">
+<!ENTITY vI_prefDialog.storageExtras.Warning.label "pro aplikování změn prosím znovu otevřete tato okna">
+
+<!ENTITY vI_storageExtras.caption.label "další uložená nastavení">
+
+<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Potvrzení o přečtení">
+<!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC">
+<!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Znaková sada">
+<!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Formát zpráv">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME šifrování">
+<!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME podpis">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "openPGP šifrování">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP podpis">
+<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP PGP/MIME">
+
+<!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "skrýt neaktivní pole">
+<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Potvrzení o přečtení">
+<!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC">
+<!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Znaková sada">
+<!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Formát zpráv">
+<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: šifrovat zprávy">
+<!ENTITY vI_storageExtrasDataEditorOverlay.sMimeSig.label "S/MIME: podepsat zprávy">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP: šifrovat zprávy">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: podepsat zprávy">
+<!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: použít PGP/MIME">

@@ -1,0 +1,18 @@
+<!ENTITY vI_rdfDataEditor.dlgTitle.label "Editor dat Virtual Identity">
+
+<!ENTITY vI_rdfDataEditor.dataType.email "e-mail">
+<!ENTITY vI_rdfDataEditor.dataType.maillist "seznam adres">
+<!ENTITY vI_rdfDataEditor.dataType.newsgroup "diskusní skupina">
+
+<!ENTITY vI_rdfDataEditor.header.label "Přidat/upravit uložená data">
+<!ENTITY vI_rdfDataEditor.recipient.label "Příjemce:">
+<!ENTITY vI_rdfDataEditor.recipient.accesskey "P">
+<!ENTITY vI_rdfDataEditor.type.label "typ příjemce">
+<!ENTITY vI_rdfDataEditor.type.accesskey "T">
+<!ENTITY vI_rdfDataEditor.caption.label "uložená virtuální identita:">
+<!ENTITY vI_rdfDataEditor.sender.label "Odesilatel:">
+<!ENTITY vI_rdfDataEditor.sender.accesskey "O">
+<!ENTITY vI_rdfDataEditor.smtp.label "SMTP:">
+<!ENTITY vI_rdfDataEditor.smtp.accesskey "M">
+<!ENTITY vI_rdfDataEditor.identity.label "Základní identita">
+<!ENTITY vI_rdfDataEditor.identity.accesskey "I">

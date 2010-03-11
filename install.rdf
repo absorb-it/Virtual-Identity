@@ -15,6 +15,7 @@
   <RDF:Description RDF:about="urn:mozilla:extension:file:v_identity.jar"
                    em:package="content/v_identity/"
                    em:skin="skin/classic/v_identity/">
+    <em:locale>locale/cs-CZ/v_identity/</em:locale>
     <em:locale>locale/de-DE/v_identity/</em:locale>
     <em:locale>locale/en-US/v_identity/</em:locale>
     <em:locale>locale/es-ES/v_identity/</em:locale>
@@ -25,7 +26,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
                    em:name="Virtual Identity"
-                   em:version="0.6.3"
+                   em:version="0.6.4"
                    em:description="Allows you to modify your Identity settings for a single Mail on the fly."
                    em:creator="Rene Ejury"
                    em:homepageURL="http://www.absorb.it/virtual-id"
@@ -41,6 +42,7 @@
     <em:translator>PatheticCockroach</em:translator>
     <em:translator>Antoine</em:translator>
     <em:translator>Vinser (www.ukrntb.com)</em:translator>
+    <em:translator>Michal Kec (MiK)</em:translator>
     <em:file RDF:resource="urn:mozilla:extension:file:v_identity.jar"/>
   </RDF:Description>
 </RDF:RDF>
