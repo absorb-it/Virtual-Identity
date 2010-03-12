@@ -367,7 +367,7 @@
 				description = server.prettyName
 			// else description = identity.description?"- "+identity.description:identity.accountname
 			
-			var newIdentity = new identityData(identity.email, identity.fullName, identity.key,
+			var newIdentity = new vI_identityData(identity.email, identity.fullName, identity.key,
 						identity.smtpServerKey, null, description, true)
 			newIdentity.extras.readIdentityValues(identity);
 				

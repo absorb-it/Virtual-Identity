@@ -80,7 +80,7 @@ var vI_smartIdentity = {
 	},
 	
 	NewMail : function() {
-		var storageIdentities = new identityCollection();
+		var storageIdentities = new vI_identityCollection();
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
 		if (storageIdentities.number > 0) vI_smartIdentity.__smartIdentitySelection(storageIdentities, false)
@@ -90,10 +90,10 @@ var vI_smartIdentity = {
 	ReplyOnSent : function(hdr) {
 		vI_notificationBar.dump("## vI_smartIdentity: ReplyOnSent() (rules like SmartDraft)\n");
 		
-		var allIdentities = new identityCollection();
+		var allIdentities = new vI_identityCollection();
 
 		vI_smartIdentity.__SmartDraftOrReplyOnSent(hdr, allIdentities);
-		var storageIdentities = new identityCollection();
+		var storageIdentities = new vI_identityCollection();
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
 		allIdentities.mergeWithoutDuplicates(storageIdentities);
@@ -105,7 +105,7 @@ var vI_smartIdentity = {
 	Draft : function() {
 		vI_notificationBar.dump("## vI_smartIdentity: Draft()\n");
 		
-		var allIdentities = new identityCollection();
+		var allIdentities = new vI_identityCollection();
 
 		var draftHdr = vI_smartIdentity.messenger.
 			messageServiceFromURI(gMsgCompose.originalMsgURI).messageURIToMsgHdr(gMsgCompose.originalMsgURI);
@@ -115,7 +115,7 @@ var vI_smartIdentity = {
 		} catch (ex) { };
 
 		vI_smartIdentity.__SmartDraftOrReplyOnSent(draftHdr, allIdentities);
-		var storageIdentities = new identityCollection();
+		var storageIdentities = new vI_identityCollection();
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
 		allIdentities.mergeWithoutDuplicates(storageIdentities);
@@ -127,7 +127,7 @@ var vI_smartIdentity = {
 		var emails = {}; var fullNames = {}; var combinedNames = {};
 		var number = vI_main.headerParser.parseHeadersWithArray(hdr, emails, fullNames, combinedNames);
 		for (var index = 0; index < number; index++) {
-			var newIdentity = new identityData(emails.value[index], fullNames.value[index],
+			var newIdentity = new vI_identityData(emails.value[index], fullNames.value[index],
 				null, NO_SMTP_TAG, null, null);
 			allIdentities.addWithoutDuplicates(newIdentity);
 		}
@@ -148,7 +148,7 @@ var vI_smartIdentity = {
 	},
 	
 	__filterAddresses : function(smartIdentities) {
-		var returnIdentities = new identityCollection();
+		var returnIdentities = new vI_identityCollection();
 		
 		var filterList	=
 			vI_main.unicodeConverter.ConvertToUnicode(vI_main.preferences.getCharPref("smart_reply_filter")).split(/\n/)
@@ -228,7 +228,7 @@ var vI_smartIdentity = {
 				replyHeaderNameToRead + "': '" + value + "'\n");
 			
 			// ------------- parse address-string to get a field of single email-addresses
-			var splitted = new identityCollection();
+			var splitted = new vI_identityCollection();
 			vI_smartIdentity.__parseHeadersWithArray(value, splitted);
 			
 			// move found addresses step by step to allIdentities, and change values if requested
@@ -291,10 +291,10 @@ var vI_smartIdentity = {
 			}
 		}
 			
-		var storageIdentities = new identityCollection();
+		var storageIdentities = new vI_identityCollection();
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
-		var smartIdentities = new identityCollection();
+		var smartIdentities = new vI_identityCollection();
 		if (storageIdentities.number == 0 || !vI_main.preferences.getBoolPref("idSelection_storage_ignore_smart_reply"))
 			vI_smartIdentity.__SmartReply(hdr, smartIdentities);
 		else vI_notificationBar.dump("## vI_smartIdentity: SmartReply skipped, Identities in Storage found.\n");
@@ -428,7 +428,7 @@ var vI_smartIdentity = {
 		// check if selected email is defined as doBcc address. If so, it should not be removed.
 		var skip_bcc = false;
 		if (getCurrentIdentity().doBcc) {
-			var bcc_addresses = new identityCollection();
+			var bcc_addresses = new vI_identityCollection();
 			vI_smartIdentity.__parseHeadersWithArray(getCurrentIdentity().doBccList, bcc_addresses);
 			
 			for (var i = 0; i < bcc_addresses.number; i++) {

@@ -22,11 +22,11 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-function identityData(email, fullName, id, smtp, extras, sideDescription, existingID) {
+function vI_identityData(email, fullName, id, smtp, extras, sideDescription, existingID) {
 	this.email = email;
 	this.fullName = (fullName?fullName:'');
-	this.id = new idObj(id);
-	this.smtp = new smtpObj(smtp);
+	this.id = new vI_idObj(id);
+	this.smtp = new vI_smtpObj(smtp);
 	this.extras = extras?extras:new vI_storageExtras();
 	this.comp = {	// holds the results of the last comparison for later creation of a compareMatrix
 		compareID : null,
@@ -37,7 +37,7 @@ function identityData(email, fullName, id, smtp, extras, sideDescription, existi
 	else if (this.id.value) this.sideDescription = " - " + this.id.value;
 	this.stringBundle = document.getElementById("vIdentBundle");
 }
-identityData.prototype = {
+vI_identityData.prototype = {
 	email : null,
 	fullName : null,
 	id : null,
@@ -83,7 +83,7 @@ identityData.prototype = {
 
 	// creates an Duplicate of the current IdentityData, cause usually we are working with a pointer
 	getDuplicate : function() {
-		return new identityData(this.email, this.fullName, this.id.key, this.smtp.key, this.extras.getDuplicate(), this.sideDescription, this.existingID);
+		return new vI_identityData(this.email, this.fullName, this.id.key, this.smtp.key, this.extras.getDuplicate(), this.sideDescription, this.existingID);
 	},
 
 	// copys all values of an identity. This way we can create a new object with a different document-context
@@ -114,7 +114,7 @@ identityData.prototype = {
 				if (	(ignoreFullNameWhileComparing ||
 					this.fullName.toLowerCase() == identities[j].fullName.toLowerCase()) &&
 					(email.toLowerCase() == idEmail.toLowerCase()) &&
-					this.smtp.equal(new smtpObj(identities[j].smtpServerKey))	) {
+					this.smtp.equal(new vI_smtpObj(identities[j].smtpServerKey))	) {
 					vI_notificationBar.dump("## vI_identityData: isExistingIdentity: " + this.combinedName + " found, id='" + identities[j].key + "'\n");
 					return identities[j].key;
 				}
@@ -176,12 +176,12 @@ identityData.prototype = {
 	}
 }
 
-function identityCollection() {
+function vI_identityCollection() {
 	this.number = 0;
 	this.identityDataCollection = {};
 	this.menuItems = {};
 }
-identityCollection.prototype =
+vI_identityCollection.prototype =
 {
 	number : null,
 	identityDataCollection : null,
@@ -238,11 +238,11 @@ identityCollection.prototype =
 const DEFAULT_SMTP_TAG = "vI_useDefaultSMTP"
 const NO_SMTP_TAG = "vI_noStoredSMTP"
 
-function smtpObj(key) {
+function vI_smtpObj(key) {
 	this._key = key;
 	this.DEFAULT_TAG = document.getElementById("bundle_messenger").getString("defaultServerTag");
 }
-smtpObj.prototype = {
+vI_smtpObj.prototype = {
 	DEFAULT_TAG : null,
 	_key : null,
 	_value : null,
@@ -297,8 +297,8 @@ smtpObj.prototype = {
 	}
 }
 
-function idObj(key) { this._key = key; }
-idObj.prototype = {
+function vI_idObj(key) { this._key = key; }
+vI_idObj.prototype = {
 	_key : null,
 	_value : null,
 

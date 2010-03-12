@@ -51,7 +51,7 @@ var vI_rdfDataEditor = {
 		vI_rdfDataEditor.__rdfDatasource = window.arguments[2];
 		vI_rdfDataEditor.__rdfDataTree = window.arguments[3];
 		;
-		vI_rdfDataEditor.__identityData = new identityData();
+		vI_rdfDataEditor.__identityData = new vI_identityData();
 		vI_rdfDataEditor.__identityData.copy(window.arguments[0].identityData);
 
 		
@@ -101,7 +101,7 @@ var vI_rdfDataEditor = {
 	accept : function() {
 		var address = vI_helper.parseAddress(document.getElementById("sender").value)
 		
-		var localIdentityData = new identityData(address.email, address.name,
+		var localIdentityData = new vI_identityData(address.email, address.name,
 			document.getElementById("identity_list").selectedItem.getAttribute("value"),
 			document.getElementById("smtp_server_list").selectedItem.getAttribute("key"));
 		localIdentityData.extras.readEditorValues();

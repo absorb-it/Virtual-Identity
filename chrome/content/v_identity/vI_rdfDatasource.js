@@ -208,7 +208,7 @@ var vI_rdfDatasource = {
 			if (!smtp) smtp = NO_SMTP_TAG;
 			var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
 			
-			var localIdentityData = new identityData(email, fullName, id, smtp, extras)
+			var localIdentityData = new vI_identityData(email, fullName, id, smtp, extras)
 			addNewDatum (resource, name, localIdentityData, idData)
 		}
 	},
@@ -279,7 +279,7 @@ var vI_rdfDatasource = {
 		var extras = new vI_storageExtras(vI_rdfDatasource.__getRDFValue, resource);
 		vI_notificationBar.dump("## vI_rdfDatasource: extras:" + extras.status() + "\n");
 		
-		var localIdentityData = new identityData(email, fullName, id, smtp, extras)
+		var localIdentityData = new vI_identityData(email, fullName, id, smtp, extras)
 		return localIdentityData;
 	},
 

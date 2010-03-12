@@ -181,7 +181,7 @@ var vI_main = {
 			// final check if eyerything is nice before we handover to the real sending...
 			var virtualIdentityData = document.getElementById("msgIdentity_clone").identityData;
 			var currentIdentity = getCurrentIdentity();
-			var currentSMTPobj = new smtpObj(currentIdentity.smtpServerKey);
+			var currentSMTPobj = new vI_smtpObj(currentIdentity.smtpServerKey);
 			
 			vI_notificationBar.dump("\n## vI_identityData GenericSendMessage Final Check\n");
 			vI_notificationBar.dump("## vI_identityData currentIdentity: fullName='" + currentIdentity.fullName + "' email='" + currentIdentity.email + "' smtp='" + currentSMTPobj.key + "'\n");
