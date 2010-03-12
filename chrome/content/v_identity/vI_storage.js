@@ -105,16 +105,16 @@ var vI_storage = {
 		// reset unavailable storageExtras preferences
 		const enigmail_ID="{847b3a00-7ab1-11d4-8f02-006008948af5}"
 		if (!vI_helper.extensionActive(enigmail_ID)) {
-			vI.preferences.setBoolPref("storageExtras_openPGP_messageEncryption", false)
-			vI.preferences.setBoolPref("storageExtras_openPGP_messageSignature", false)
-			vI.preferences.setBoolPref("storageExtras_openPGP_PGPMIME", false)
+			vI_main.preferences.setBoolPref("storageExtras_openPGP_messageEncryption", false)
+			vI_main.preferences.setBoolPref("storageExtras_openPGP_messageSignature", false)
+			vI_main.preferences.setBoolPref("storageExtras_openPGP_PGPMIME", false)
 		}
 	},
 	
 	
 	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
 	updateVIdentityFromStorage: function(inputElement) {		
-		if (!vI.preferences.getBoolPref("storage"))
+		if (!vI_main.preferences.getBoolPref("storage"))
 			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
 		vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage()\n");
 
@@ -164,11 +164,11 @@ var vI_storage = {
 		if (!vI_storage.firstUsedInputElement) vI_storage.firstUsedInputElement = inputElement;
 		
 		vI_notificationBar.dump("## vI_storage: compare with current Identity\n");
-		if (vI.preferences.getBoolPref("storage_getOneOnly") &&					// if requested to retrieve only storageID for first recipient entered
+		if (vI_main.preferences.getBoolPref("storage_getOneOnly") &&					// if requested to retrieve only storageID for first recipient entered
 			vI_storage.firstUsedInputElement &&						// and the request for the first recipient was already done
 			vI_storage.firstUsedInputElement != inputElement &&				// and it's not the same element we changed now
 			!matchResults.storageData[matchIndex].equalsCurrentIdentity(false).equal)	// and this id is different than the current used one
-				vI_notificationBar.setNote(vI.elements.strings
+				vI_notificationBar.setNote(vI_main.elements.strings
 					.getString("vident.smartIdentity.vIStorageCollidingIdentity"),	// than drop the potential changes
 					"storage_notification");
 		// only update fields if new Identity is different than old one.
@@ -179,11 +179,11 @@ var vI_storage = {
 				var warning = vI_storage.__getWarning("replaceVIdentity", recipient, compResult.compareMatrix);
 				var msgIdentityCloneElem = document.getElementById("msgIdentity_clone")
 				if (	!msgIdentityCloneElem.vid ||
-					!vI.preferences.getBoolPref("storage_warn_vI_replace") ||
+					!vI_main.preferences.getBoolPref("storage_warn_vI_replace") ||
 					(vI_storage.__askWarning(warning) == "accept")) {
 						msgIdentityCloneElem.selectedMenuItem = matchResults.menuItem[matchIndex];
 						if (msgIdentityCloneElem.vid)
-							vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
+							vI_notificationBar.setNote(vI_main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
 							"storage_notification");
 				}
 			}
@@ -204,7 +204,7 @@ var vI_storage = {
 	storeVIdentityToAllRecipients : function(msgType) {
 		if (msgType != nsIMsgCompDeliverMode.Now) return true;
 		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n")
-		if (!vI.preferences.getBoolPref("storage"))
+		if (!vI_main.preferences.getBoolPref("storage"))
 			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return true; }
 		
 		if (vI_statusmenu.objStorageSaveMenuItem.getAttribute("checked") != "true") {
@@ -243,18 +243,18 @@ var vI_storage = {
 	
 	__getWarning : function(warningCase, recipient, compareMatrix) {
 		var warning = { title: null, recLabel : null, recipient : null, warning : null, css: null, query : null, class : null };
-		warning.title = vI.elements.strings.getString("vident." + warningCase + ".title")
-		warning.recLabel = vI.elements.strings.getString("vident." + warningCase + ".recipient") + " (" + recipient.recType + "):"
+		warning.title = vI_main.elements.strings.getString("vident." + warningCase + ".title")
+		warning.recLabel = vI_main.elements.strings.getString("vident." + warningCase + ".recipient") + " (" + recipient.recType + "):"
 		warning.recipient = recipient.recDesc;
 		warning.warning = 
 			"<table class='" + warningCase + "'><thead><tr><th class='col1'/>" +
-				"<th class='col2'>" + vI.elements.strings.getString("vident." + warningCase + ".currentIdentity") + "</th>" +
-				"<th class='col3'>" + vI.elements.strings.getString("vident." + warningCase + ".storedIdentity") + "</th>" +
+				"<th class='col2'>" + vI_main.elements.strings.getString("vident." + warningCase + ".currentIdentity") + "</th>" +
+				"<th class='col3'>" + vI_main.elements.strings.getString("vident." + warningCase + ".storedIdentity") + "</th>" +
 			"</tr></thead>" +
 			"<tbody>" + compareMatrix + "</tbody>" +
 			"</table>"
 		warning.css = "vI_DialogBrowser.css";
-		warning.query = vI.elements.strings.getString("vident." + warningCase + ".query");
+		warning.query = vI_main.elements.strings.getString("vident." + warningCase + ".query");
 		warning.class = warningCase;
 		return warning;
 	},
@@ -269,7 +269,7 @@ var vI_storage = {
 	
 	__updateStorageFromVIdentity : function(recipient, recipientType) {
 		vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity.\n")
-		var dontUpdateMultipleNoEqual = (vI.preferences.getBoolPref("storage_dont_update_multiple") &&
+		var dontUpdateMultipleNoEqual = (vI_main.preferences.getBoolPref("storage_dont_update_multiple") &&
 					vI_storage.multipleRecipients)
 		vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'\n")
 		recipient = vI_storage.__getDescriptionAndType(recipient, recipientType);
@@ -288,7 +288,7 @@ var vI_storage = {
 			(!storageDataByTypeEqual && !storageDataByFilterEqual && !dontUpdateMultipleNoEqual) ) {
 			vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity updating\n")
 			var doUpdate = "accept";
-			if (storageDataByType && !storageDataByTypeEqual && vI.preferences.getBoolPref("storage_warn_update")) {
+			if (storageDataByType && !storageDataByTypeEqual && vI_main.preferences.getBoolPref("storage_warn_update")) {
 				vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity overwrite warning\n");
 				doUpdate = vI_storage.__askWarning(vI_storage.__getWarning("updateStorage", recipient, storageDataByTypeCompResult.compareMatrix));
 				if (doUpdate == "takeover") {
@@ -387,7 +387,7 @@ var vI_storage = {
 	},
 
 	getVIdentityFromAllRecipients : function(allIdentities) {
-		if (!vI.preferences.getBoolPref("storage"))
+		if (!vI_main.preferences.getBoolPref("storage"))
 			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
 		vI_notificationBar.dump("## vI_storage: getVIdentityFromAllRecipients()\n");
 

@@ -266,7 +266,7 @@ vI_storageExtras_characterEncoding.prototype = {
 	readValue : function() {
 		// read the value from the internal vI object, global object might not be available any more
 		// happens especially while storing after sending the message
-		this.value = vI.gMsgCompose.compFields.characterSet;
+		this.value = vI_main.gMsgCompose.compFields.characterSet;
 		if (gCharsetConvertManager) {
 			var charsetAlias = gCharsetConvertManager.getCharsetAlias(this.value);
 			if (charsetAlias == "us-ascii") this.value = "ISO-8859-1";   // no menu item for "us-ascii"

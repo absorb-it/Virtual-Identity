@@ -73,7 +73,7 @@ var vI_smartIdentity = {
 		var new_email = current_email.replace(/@/g, parseInt(dateobj.getTime()/1000)+"@");
 		vI_notificationBar.dump("## vI_smartIdentity: new email: " + new_email + "\n");
 
-		vI_notificationBar.setNote(vI.elements.strings.getString("vident.smartIdentity.vIUsage") + ".",
+		vI_notificationBar.setNote(vI_main.elements.strings.getString("vident.smartIdentity.vIUsage") + ".",
 					"smart_reply_notification");
 
 		document.getElementById("msgIdentity_clone").email = new_email;
@@ -84,7 +84,7 @@ var vI_smartIdentity = {
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
 		if (storageIdentities.number > 0) vI_smartIdentity.__smartIdentitySelection(storageIdentities, false)
-		else if (vI.preferences.getBoolPref("autoTimestamp")) vI_smartIdentity.__autoTimestamp();	
+		else if (vI_main.preferences.getBoolPref("autoTimestamp")) vI_smartIdentity.__autoTimestamp();	
 	},
 	
 	ReplyOnSent : function(hdr) {
@@ -125,7 +125,7 @@ var vI_smartIdentity = {
 	
 	__parseHeadersWithArray: function(hdr, allIdentities) {
 		var emails = {}; var fullNames = {}; var combinedNames = {};
-		var number = vI.headerParser.parseHeadersWithArray(hdr, emails, fullNames, combinedNames);
+		var number = vI_main.headerParser.parseHeadersWithArray(hdr, emails, fullNames, combinedNames);
 		for (var index = 0; index < number; index++) {
 			var newIdentity = new identityData(emails.value[index], fullNames.value[index],
 				null, NO_SMTP_TAG, null, null);
@@ -135,7 +135,7 @@ var vI_smartIdentity = {
 
 	// this function checks if we have a draft-case and Smart-Draft should replace the Identity
 	__SmartDraftOrReplyOnSent : function(hdr, allIdentities) {
-		if (!vI.preferences.getBoolPref("smart_draft"))
+		if (!vI_main.preferences.getBoolPref("smart_draft"))
 			{ vI_notificationBar.dump("## vI_smartIdentity: SmartDraft deactivated\n"); return; }
 
 		vI_notificationBar.dump("## vI_smartIdentity: __SmartDraftOrReplyOnSent()\n");
@@ -151,7 +151,7 @@ var vI_smartIdentity = {
 		var returnIdentities = new identityCollection();
 		
 		var filterList	=
-			vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_filter")).split(/\n/)
+			vI_main.unicodeConverter.ConvertToUnicode(vI_main.preferences.getCharPref("smart_reply_filter")).split(/\n/)
 		if (filterList.length == 0) filterList[0] == ""
 		
 		for (var i = 0; i < filterList.length; i++) {
@@ -181,7 +181,7 @@ var vI_smartIdentity = {
 						}
 						catch(vErr) {
 							vI_notificationBar.addNote(
-								vI.elements.strings.getString("vident.smartIdentity.ignoreRegExp") +
+								vI_main.elements.strings.getString("vident.smartIdentity.ignoreRegExp") +
 								+filterList[i].replace(/\\/g,"\\\\") + " .",
 								"smart_reply_notification");
 								skipRegExp = true; }
@@ -198,7 +198,7 @@ var vI_smartIdentity = {
 	
 	__smartReplyCollectAddresses : function(hdr, allIdentities) {
 		// add emails from selected headers (stored by vI_getHeader.xul/js)
-		var reply_headers = vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_headers")).split(/\n/)
+		var reply_headers = vI_main.unicodeConverter.ConvertToUnicode(vI_main.preferences.getCharPref("smart_reply_headers")).split(/\n/)
 					
 		for (var index = 0; index < reply_headers.length; index++) {
 			// ------------- prepare fields to read the stored header ----------------
@@ -223,7 +223,7 @@ var vI_smartIdentity = {
 			}
 			
 			// ------------- read the stored header -------------------------------
-			var value = vI.unicodeConverter.ConvertToUnicode(hdr.getStringProperty("vI_" + replyHeaderNameToRead))
+			var value = vI_main.unicodeConverter.ConvertToUnicode(hdr.getStringProperty("vI_" + replyHeaderNameToRead))
 			vI_notificationBar.dump("## vI_smartIdentity: reading header '" +
 				replyHeaderNameToRead + "': '" + value + "'\n");
 			
@@ -266,7 +266,7 @@ var vI_smartIdentity = {
 		//	so it should be always possible to decide if Reply or Draft based on received headers
 		//	hidden option smart_detectByReceivedHeader will act as a switch for not RFC-compliant servers
 			// RFC-compliant
-			if (vI.preferences.getBoolPref("smart_detectByReceivedHeader")) {
+			if (vI_main.preferences.getBoolPref("smart_detectByReceivedHeader")) {
 				if (!hdr.getStringProperty("vI_received")) { // mail was not received
 					vI_notificationBar.dump("## vI_smartIdentity: reply on non-received (sent?) mail. Using SmartDraft. \n");
 					vI_smartIdentity.ReplyOnSent(hdr);
@@ -295,12 +295,12 @@ var vI_smartIdentity = {
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
 		var smartIdentities = new identityCollection();
-		if (storageIdentities.number == 0 || !vI.preferences.getBoolPref("idSelection_storage_ignore_smart_reply"))
+		if (storageIdentities.number == 0 || !vI_main.preferences.getBoolPref("idSelection_storage_ignore_smart_reply"))
 			vI_smartIdentity.__SmartReply(hdr, smartIdentities);
 		else vI_notificationBar.dump("## vI_smartIdentity: SmartReply skipped, Identities in Storage found.\n");
 
 		// merge SmartReply-Identities and Storage-Identites
-		if (vI.preferences.getBoolPref("idSelection_storage_prefer_smart_reply"))
+		if (vI_main.preferences.getBoolPref("idSelection_storage_prefer_smart_reply"))
 			{ smartIdentities.mergeWithoutDuplicates(storageIdentities); var allIdentities = smartIdentities; }
 		else
 			{ storageIdentities.mergeWithoutDuplicates(smartIdentities); var allIdentities = storageIdentities; }
@@ -312,9 +312,9 @@ var vI_smartIdentity = {
 	
 	// this function checks if we have a reply-case and Smart-Reply should replace the Identity
 	__SmartReply : function(hdr, smartIdentities) {
-		if (!vI.preferences.getBoolPref("smart_reply"))
+		if (!vI_main.preferences.getBoolPref("smart_reply"))
 			{ vI_notificationBar.dump("## vI_smartIdentity: SmartReply deactivated\n"); return; }
-		if (gMsgCompose.compFields.newsgroups && !vI.preferences.getBoolPref("smart_reply_for_newsgroups")) {
+		if (gMsgCompose.compFields.newsgroups && !vI_main.preferences.getBoolPref("smart_reply_for_newsgroups")) {
 			vI_notificationBar.dump("## vI_smartIdentity: SmartReply, answering to a newsgroup, aborting\n");
 			return;
 		}
@@ -332,7 +332,7 @@ var vI_smartIdentity = {
 			vI_notificationBar.dump("## vI_smartIdentity: filtering done, " + smartIdentities.number + " address(es) left\n")
 			
 			/* set default FullName */
-			var smart_reply_defaultFullName = vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("smart_reply_defaultFullName"))
+			var smart_reply_defaultFullName = vI_main.unicodeConverter.ConvertToUnicode(vI_main.preferences.getCharPref("smart_reply_defaultFullName"))
 			if (smart_reply_defaultFullName != "") {
 				for (var index = 0; index < smartIdentities.number; index++) {
 					if (smartIdentities.identityDataCollection[index].fullName == "") {
@@ -346,7 +346,7 @@ var vI_smartIdentity = {
 			/* smart_reply_ignoreFullName: compare email with other Identities			*/
 			/* if match replace FullName with existing one, keep identity in list by now 		*/
 			/* will not be added to the menu but probably choosen with __smartIdentitySelection 	*/
-			if (vI.preferences.getBoolPref("smart_reply_ignoreFullName")) {
+			if (vI_main.preferences.getBoolPref("smart_reply_ignoreFullName")) {
 				vI_notificationBar.dump("## vI_smartIdentity: compare with existing Identities (ignoring FullNames).\n")
 			
 				for (var index = 0; index < smartIdentities.number; index++) {
@@ -371,7 +371,7 @@ var vI_smartIdentity = {
 			if (existingID) {
 				allIdentities.identityDataCollection[index].id.key = existingID;	// set found identity
 				// if 'preferExisting' than select it and return
-				if (vI.preferences.getBoolPref("idSelection_preferExisting")) {
+				if (vI_main.preferences.getBoolPref("idSelection_preferExisting")) {
 					vI_notificationBar.dump("## vI_smartIdentity: found existing Identity, use without interaction.\n");
 					// add all Indentities to Clone Menu before selecting and leaving the function
 					document.getElementById("msgIdentity_clone").addIdentitiesToCloneMenu(allIdentities);
@@ -392,8 +392,8 @@ var vI_smartIdentity = {
 		
 		document.getElementById("msgIdentity_clone").addIdentitiesToCloneMenu(allIdentities);
 
-		if (!autocreate && vI.preferences.getBoolPref("idSelection_ask") && 
-			((allIdentities.number == 1 && vI.preferences.getBoolPref("idSelection_ask_always"))
+		if (!autocreate && vI_main.preferences.getBoolPref("idSelection_ask") && 
+			((allIdentities.number == 1 && vI_main.preferences.getBoolPref("idSelection_ask_always"))
 				|| allIdentities.number > 1)) {
 			for (var index = 0; index < allIdentities.number; index++) {
 				vI_notificationBar.dump("## vI_smartIdentityReplyDialog index=" + index + ": '" + allIdentities.identityDataCollection[index].combinedName + "' "
@@ -404,7 +404,7 @@ var vI_smartIdentity = {
 					 allIdentities,
 					/* callback: */ vI_smartIdentity.changeIdentityToSmartIdentity).focus();
 		}
-		else if (autocreate || vI.preferences.getBoolPref("idSelection_autocreate")) {
+		else if (autocreate || vI_main.preferences.getBoolPref("idSelection_autocreate")) {
 			vI_smartIdentity.changeIdentityToSmartIdentity(allIdentities, 0);
 		}	
 	},
@@ -414,16 +414,16 @@ var vI_smartIdentity = {
 			+ "(" + allIdentities.identityDataCollection[selectedValue].id.value + "," + allIdentities.identityDataCollection[selectedValue].smtp.value + ")\n");
 		document.getElementById("msgIdentity_clone").selectedMenuItem = allIdentities.menuItems[selectedValue];
 		if (document.getElementById("msgIdentity_clone").vid) {
-			var label=vI.elements.strings.getString("vident.smartIdentity.vIUsage");
+			var label=vI_main.elements.strings.getString("vident.smartIdentity.vIUsage");
 			if (allIdentities.number > 1) label += " "
-				+ vI.elements.strings.getString("vident.smartIdentity.moreThanOne");
+				+ vI_main.elements.strings.getString("vident.smartIdentity.moreThanOne");
 			vI_notificationBar.addNote(label + ".", "smart_reply_notification");
 		}
 		vI_smartIdentity.__removeSmartIdentityFromRecipients(allIdentities, selectedValue);
 	},
 	
 	__removeSmartIdentityFromRecipients : function(allIdentities, index) {
-		if (!vI.preferences.getBoolPref("idSelection_removeSmartIdentityFromRecipients")) return;
+		if (!vI_main.preferences.getBoolPref("idSelection_removeSmartIdentityFromRecipients")) return;
 		
 		// check if selected email is defined as doBcc address. If so, it should not be removed.
 		var skip_bcc = false;
@@ -461,7 +461,7 @@ var vI_smartIdentity = {
 					awSetInputAndPopupValue(input, "", popup, "addr_to", -1);
 					awCleanupRows()
 					vI_notificationBar.addNote(" " +
-						vI.elements.strings.getString("vident.smartIdentity.remRecipient"),
+						vI_main.elements.strings.getString("vident.smartIdentity.remRecipient"),
 						"smart_reply_notification");
 					break;
 			}

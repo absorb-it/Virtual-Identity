@@ -22,7 +22,7 @@
     Contributor(s):
  * ***** END LICENSE BLOCK ***** */
 
-var vI = {
+var vI_main = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.virtualIdentity."),
@@ -45,13 +45,13 @@ var vI = {
 	// some pointers to the layout-elements of the extension
 	elements : {
 		init_base : function() {
-			vI.elements.Area_MsgIdentityHbox = document.getElementById("msgIdentityHbox");
-			vI.elements.Obj_MsgIdentity = document.getElementById("msgIdentity");
+			vI_main.elements.Area_MsgIdentityHbox = document.getElementById("msgIdentityHbox");
+			vI_main.elements.Obj_MsgIdentity = document.getElementById("msgIdentity");
 		},
 		init_rest : function() {
-			vI.elements.Obj_MsgIdentityPopup = document.getElementById("msgIdentityPopup");
-			vI.elements.Obj_vILogo = document.getElementById("v_identity_logo");
-			vI.elements.strings = document.getElementById("vIdentBundle");
+			vI_main.elements.Obj_MsgIdentityPopup = document.getElementById("msgIdentityPopup");
+			vI_main.elements.Obj_vILogo = document.getElementById("v_identity_logo");
+			vI_main.elements.strings = document.getElementById("vIdentBundle");
 		},
 		strings : null
 	},
@@ -59,20 +59,20 @@ var vI = {
 	ComposeStateListener : {
 		NotifyComposeBodyReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeBodyReady\n");
-			if (!vI_helper.olderVersion("TB", "2.0a")) vI.initSystemStage2();
+			if (!vI_helper.olderVersion("TB", "2.0a")) vI_main.initSystemStage2();
 		},
 		NotifyComposeFieldsReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeFieldsReady\n");
-			if (vI_helper.olderVersion("TB", "2.0a")) vI.initSystemStage2();
+			if (vI_helper.olderVersion("TB", "2.0a")) vI_main.initSystemStage2();
 		},
 		ComposeProcessDone: function(aResult) {
 			vI_notificationBar.dump("## v_identity: StateListener reports ComposeProcessDone\n");
-			vI.Cleanup(); // not really required, parallel handled by vI.close
+			vI_main.Cleanup(); // not really required, parallel handled by vI_main.close
 			vI_storage.clean();
 		},
 		SaveInFolderDone: function(folderURI) { 
 			vI_notificationBar.dump("## v_identity: SaveInFolderDone\n");
-			vI.Cleanup();
+			vI_main.Cleanup();
 			vI_storage.clean();
 		}
 	},
@@ -130,8 +130,8 @@ var vI = {
 		
 		GenericSendMessageInProgress : false,
 		GenericSendMessage: function (msgType) {
-			if (vI.replacement_functions.GenericSendMessageInProgress) return;
-			vI.replacement_functions.GenericSendMessageInProgress = true;
+			if (vI_main.replacement_functions.GenericSendMessageInProgress) return;
+			vI_main.replacement_functions.GenericSendMessageInProgress = true;
 			
 			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 				.getService(Components.interfaces.nsIPromptService);
@@ -145,37 +145,37 @@ var vI = {
 					var server = gAccountManager.defaultAccount.incomingServer.prettyName
 					var name = gAccountManager.defaultAccount.defaultIdentity.fullName
 					var email = gAccountManager.defaultAccount.defaultIdentity.email
-					var query = vI.elements.strings.getString("vident.sendLater.warning") +
-						vI.elements.strings.getString("vident.sendLater.prefix") +
+					var query = vI_main.elements.strings.getString("vident.sendLater.warning") +
+						vI_main.elements.strings.getString("vident.sendLater.prefix") +
 						name + " " + email + " [" + server + "]" + 
-						vI.elements.strings.getString("vident.sendLater.postfix")
+						vI_main.elements.strings.getString("vident.sendLater.postfix")
 					
 					if (!promptService.confirm(window,"Error",query)) {
-						vI.replacement_functions.GenericSendMessageInProgress = false;
+						vI_main.replacement_functions.GenericSendMessageInProgress = false;
 						return;
 					}
 					else { document.getElementById("msgIdentity_clone").selectedMenuItem = "default"; vid = false; }
 				}
 			}
 			else {
-				if ( (vid && vI.preferences.getBoolPref("warn_virtual") &&
+				if ( (vid && vI_main.preferences.getBoolPref("warn_virtual") &&
 					!(promptService.confirm(window,"Warning",
-						vI.elements.strings.getString("vident.sendVirtual.warning")))) ||
-				  (!vid && vI.preferences.getBoolPref("warn_nonvirtual") &&
+						vI_main.elements.strings.getString("vident.sendVirtual.warning")))) ||
+				  (!vid && vI_main.preferences.getBoolPref("warn_nonvirtual") &&
 					!(promptService.confirm(window,"Warning",
-						vI.elements.strings.getString("vident.sendNonvirtual.warning")))) ) {
-					vI.replacement_functions.GenericSendMessageInProgress = false;
+						vI_main.elements.strings.getString("vident.sendNonvirtual.warning")))) ) {
+					vI_main.replacement_functions.GenericSendMessageInProgress = false;
 					return;
 				}
 				if (!vI_storage.storeVIdentityToAllRecipients(msgType)) {
 // 					vI_notificationBar.dump("## v_identity: sending aborted\n");
-					vI.replacement_functions.GenericSendMessageInProgress = false;
+					vI_main.replacement_functions.GenericSendMessageInProgress = false;
 					return;
 				}
 				vI_msgIdentityCloneTools.addReplyToSelf();
 			}
-			if (vid) vI.prepareAccount();
-			vI.replacement_functions.GenericSendMessageInProgress = false;
+			if (vid) vI_main.prepareAccount();
+			vI_main.replacement_functions.GenericSendMessageInProgress = false;
 // 			vI_notificationBar.dump("## v_identity: original_functions.GenericSendMessage\n");
 
 			// final check if eyerything is nice before we handover to the real sending...
@@ -190,11 +190,11 @@ var vI = {
 			if	(currentIdentity.fullName == virtualIdentityData.fullName	&&
 				currentIdentity.email == virtualIdentityData.email		&&
 				virtualIdentityData.smtp.equal(currentSMTPobj)	) {
-					vI.original_functions.GenericSendMessage(msgType);
+					vI_main.original_functions.GenericSendMessage(msgType);
 			}
 			else {
-				alert(vI.elements.strings.getString("vident.genericSendMessage.error"));
-				vI.Cleanup();
+				alert(vI_main.elements.strings.getString("vident.genericSendMessage.error"));
+				vI_main.Cleanup();
 			}
 // 			vI_notificationBar.dump("## v_identity: original_functions.GenericSendMessage done\n");
 		},
@@ -202,50 +202,50 @@ var vI = {
 		replace_FillIdentityList : function() {
 			if (typeof(FillIdentityList)=="function") {
 				//~ vI_notificationBar.dump("## v_identity: replace FillIdentityList (TB 3.x)\n");
-				vI.original_functions.FillIdentityList = FillIdentityList;
-				FillIdentityList = vI.replacement_functions.FillIdentityList;
+				vI_main.original_functions.FillIdentityList = FillIdentityList;
+				FillIdentityList = vI_main.replacement_functions.FillIdentityList;
 			}
 			else {
 				//~ vI_notificationBar.dump("## v_identity: replace FillIdentityListPopup (TB 2.x)\n");
-				vI.original_functions.FillIdentityListPopup = FillIdentityListPopup;
-				FillIdentityListPopup = vI.replacement_functions.FillIdentityListPopup;
+				vI_main.original_functions.FillIdentityListPopup = FillIdentityListPopup;
+				FillIdentityListPopup = vI_main.replacement_functions.FillIdentityListPopup;
 			}
 		}
 	},
 
 	remove: function() {
-		window.removeEventListener('compose-window-reopen', vI.reopen, true);
-		window.removeEventListener('compose-window-close', vI.close, true);
+		window.removeEventListener('compose-window-reopen', vI_main.reopen, true);
+		window.removeEventListener('compose-window-close', vI_main.close, true);
 		vI_notificationBar.dump("## v_identity: end. remove Account if there.\n")
-		vI.Cleanup();
+		vI_main.Cleanup();
 		vI_storage.clean();
 	},
 
 	// initialization //
 	init: function() {
-		window.removeEventListener('load', vI.init, false);
-		window.removeEventListener('compose-window-init', vI.init, true);
-		if (vI.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
+		window.removeEventListener('load', vI_main.init, false);
+		window.removeEventListener('compose-window-init', vI_main.init, true);
+		if (vI_main.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
 		vI_notificationBar.dump("\n## v_identity: init.\n")
-		vI.unicodeConverter.charset="UTF-8";
-		if (!vI.adapt_genericSendMessage()) { vI_notificationBar.dump("\n## v_identity: init failed.\n"); return; }
-		vI.adapt_interface();
-		gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
+		vI_main.unicodeConverter.charset="UTF-8";
+		if (!vI_main.adapt_genericSendMessage()) { vI_notificationBar.dump("\n## v_identity: init failed.\n"); return; }
+		vI_main.adapt_interface();
+		gMsgCompose.RegisterStateListener(vI_main.ComposeStateListener);
 		document.getElementById("vI_tooltipPopupset")
 			.addTooltip(document.getElementById("msgIdentity_clone"), false);
-		window.addEventListener('compose-window-reopen', vI.reopen, true);
-		window.addEventListener('compose-window-close', vI.close, true);
+		window.addEventListener('compose-window-reopen', vI_main.reopen, true);
+		window.addEventListener('compose-window-close', vI_main.close, true);
 		
 		// append observer to fcc_switch, because it does'n work with real identities (hidden by css)
 		document.getElementById("fcc_switch").appendChild(document.getElementById("msgIdentity_clone_observer").cloneNode(false));
 
-		vI.initSystemStage1();
+		vI_main.initSystemStage1();
 		vI_notificationBar.dump("## v_identity: init done.\n\n")
 	},
 	
 	initSystemStage1 : function() {
 		vI_notificationBar.dump("## v_identity: initSystemStage1.\n")
-		vI.gMsgCompose = gMsgCompose;
+		vI_main.gMsgCompose = gMsgCompose;
 		document.getElementById("msgIdentity_clone").init();
 		vI_statusmenu.init();
 	},
@@ -258,38 +258,38 @@ var vI = {
 	},
 	
 	close : function() {
-		vI.Cleanup();
+		vI_main.Cleanup();
 		vI_storage.clean();
 	},
 	
 	adapt_interface : function() {
-		if (vI.elements.strings) return; // only rearrange the interface once
+		if (vI_main.elements.strings) return; // only rearrange the interface once
 		
 		// initialize the pointers to extension elements
-		vI.elements.init_base()
+		vI_main.elements.init_base()
 		
 		// rearrange the positions of some elements
-		var parent_hbox = vI.elements.Obj_MsgIdentity.parentNode;
+		var parent_hbox = vI_main.elements.Obj_MsgIdentity.parentNode;
 		var storage_box = document.getElementById("addresses-box");
 		var autoReplyToSelfLabel = document.getElementById("autoReplyToSelfLabel");
 		
 		storage_box.removeChild(autoReplyToSelfLabel);
 		parent_hbox.appendChild(autoReplyToSelfLabel);
-		storage_box.removeChild(vI.elements.Area_MsgIdentityHbox);
-		parent_hbox.appendChild(vI.elements.Area_MsgIdentityHbox);
+		storage_box.removeChild(vI_main.elements.Area_MsgIdentityHbox);
+		parent_hbox.appendChild(vI_main.elements.Area_MsgIdentityHbox);
 
-		vI.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
-		vI.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
+		vI_main.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
+		vI_main.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
 		
 		// initialize the pointers to extension elements (initialize those earlier might brake the interface)
-		vI.elements.init_rest();	
+		vI_main.elements.init_rest();	
 	},
 	
 	adapt_genericSendMessage : function() {
-		if (vI.original_functions.GenericSendMessage) return true; // only initialize this once
+		if (vI_main.original_functions.GenericSendMessage) return true; // only initialize this once
 		vI_notificationBar.dump("## v_identity: adapt GenericSendMessage\n");
-		vI.original_functions.GenericSendMessage = GenericSendMessage;
-		GenericSendMessage = vI.replacement_functions.GenericSendMessage;
+		vI_main.original_functions.GenericSendMessage = GenericSendMessage;
+		GenericSendMessage = vI_main.replacement_functions.GenericSendMessage;
 		return true;
 	},
 	
@@ -304,7 +304,7 @@ var vI = {
 		vI_notificationBar.dump("## v_identity: everything cleaned.\n")
 		
 		// now (re)init the elements
-		vI.initSystemStage1();
+		vI_main.initSystemStage1();
 		
 		// stateListener only works in reply-cases
 		// so activate stage2 in reply-cases trough StateListener
@@ -318,14 +318,14 @@ var vI = {
 			case msgComposeType.Template:
 			case msgComposeType.ForwardAsAttachment:
 			case msgComposeType.ForwardInline:
-				vI.initSystemStage2(); break;
+				vI_main.initSystemStage2(); break;
 			case msgComposeType.Reply:
 			case msgComposeType.ReplyAll:
 			case msgComposeType.ReplyToGroup:
 			case msgComposeType.ReplyToSender:
 			case msgComposeType.ReplyToSenderAndGroup:
 			case msgComposeType.ReplyWithTemplate:
-				gMsgCompose.RegisterStateListener(vI.ComposeStateListener);
+				gMsgCompose.RegisterStateListener(vI_main.ComposeStateListener);
 		}
 		vI_notificationBar.dump("## v_identity: reopen done.\n")
 	},
@@ -333,56 +333,56 @@ var vI = {
 	tempStorage: { BaseIdentity : null, NewIdentity : null },
 
 	__setSelectedIdentity : function(menuItem) {
-		vI.elements.Obj_MsgIdentity.selectedItem = menuItem;
-		vI.elements.Obj_MsgIdentity.setAttribute("label", menuItem.getAttribute("label"));
-		vI.elements.Obj_MsgIdentity.setAttribute("accountname", menuItem.getAttribute("accountname"));
-		vI.elements.Obj_MsgIdentity.setAttribute("value", menuItem.getAttribute("value"));
+		vI_main.elements.Obj_MsgIdentity.selectedItem = menuItem;
+		vI_main.elements.Obj_MsgIdentity.setAttribute("label", menuItem.getAttribute("label"));
+		vI_main.elements.Obj_MsgIdentity.setAttribute("accountname", menuItem.getAttribute("accountname"));
+		vI_main.elements.Obj_MsgIdentity.setAttribute("value", menuItem.getAttribute("value"));
 	},
 
 	// sets the values of the dropdown-menu to the ones of the newly created account
 	addVirtualIdentityToMsgIdentityMenu : function()
 	{
-		vI.tempStorage.BaseIdentity = vI.elements.Obj_MsgIdentity.selectedItem;
-		vI.tempStorage.NewIdentity = document.createElement("menuitem");
-		vI.tempStorage.NewIdentity.className = "identity-popup-item";
+		vI_main.tempStorage.BaseIdentity = vI_main.elements.Obj_MsgIdentity.selectedItem;
+		vI_main.tempStorage.NewIdentity = document.createElement("menuitem");
+		vI_main.tempStorage.NewIdentity.className = "identity-popup-item";
 		
 		// set the account name in the choosen menu item
-		vI.tempStorage.NewIdentity.setAttribute("label", vI_account.account.defaultIdentity.identityName);
-		vI.tempStorage.NewIdentity.setAttribute("accountname", " - " +  vI_account.account.incomingServer.prettyName);
-		vI.tempStorage.NewIdentity.setAttribute("accountkey", vI_account.account.key);
-		vI.tempStorage.NewIdentity.setAttribute("value", vI_account.account.defaultIdentity.key);
+		vI_main.tempStorage.NewIdentity.setAttribute("label", vI_account.account.defaultIdentity.identityName);
+		vI_main.tempStorage.NewIdentity.setAttribute("accountname", " - " +  vI_account.account.incomingServer.prettyName);
+		vI_main.tempStorage.NewIdentity.setAttribute("accountkey", vI_account.account.key);
+		vI_main.tempStorage.NewIdentity.setAttribute("value", vI_account.account.defaultIdentity.key);
 		
-		vI.elements.Obj_MsgIdentityPopup.appendChild(vI.tempStorage.NewIdentity);
-		vI.__setSelectedIdentity(vI.tempStorage.NewIdentity);
+		vI_main.elements.Obj_MsgIdentityPopup.appendChild(vI_main.tempStorage.NewIdentity);
+		vI_main.__setSelectedIdentity(vI_main.tempStorage.NewIdentity);
 	},
 	
 	removeVirtualIdentityFromMsgIdentityMenu : function()
 	{
-		if (!vI.tempStorage.BaseIdentity) return; // don't try to remove Item twice
+		if (!vI_main.tempStorage.BaseIdentity) return; // don't try to remove Item twice
 		try {	// might not exist anymore (window closed), so just try to remove it
-			document.getElementById("msgIdentity").firstChild.removeChild(vI.tempStorage.NewIdentity);
-			vI.__setSelectedIdentity(vI.tempStorage.BaseIdentity);
+			document.getElementById("msgIdentity").firstChild.removeChild(vI_main.tempStorage.NewIdentity);
+			vI_main.__setSelectedIdentity(vI_main.tempStorage.BaseIdentity);
 		} catch (e) { };
-		vI.tempStorage.NewIdentity = null;
-		vI.tempStorage.BaseIdentity = null;
+		vI_main.tempStorage.NewIdentity = null;
+		vI_main.tempStorage.BaseIdentity = null;
 	},
 
 	prepareAccount : function() {
-		vI.Cleanup(); // just to be sure that nothing is left (maybe last time sending was irregularily stopped)
+		vI_main.Cleanup(); // just to be sure that nothing is left (maybe last time sending was irregularily stopped)
 		vI_account.createAccount();
-		vI.addVirtualIdentityToMsgIdentityMenu();
+		vI_main.addVirtualIdentityToMsgIdentityMenu();
 	},
 
 	Cleanup : function() {
-		vI.removeVirtualIdentityFromMsgIdentityMenu();
+		vI_main.removeVirtualIdentityFromMsgIdentityMenu();
 		vI_account.removeUsedVIAccount();
 	}
 }
 
 
-vI.replacement_functions.replace_FillIdentityList();
-window.addEventListener('load', vI.init, false);		// TB 1.5x, SM
-window.addEventListener('compose-window-init', vI.init, true);	// TB 2.x 3.x
+vI_main.replacement_functions.replace_FillIdentityList();
+window.addEventListener('load', vI_main.init, false);		// TB 1.5x, SM
+window.addEventListener('compose-window-init', vI_main.init, true);	// TB 2.x 3.x
 
 window.addEventListener("unload", function(e) { try {vI_statusmenu.removeObserver();} catch (ex) { } }, false);
 

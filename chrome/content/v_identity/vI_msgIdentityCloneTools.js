@@ -45,13 +45,13 @@ var vI_msgIdentityCloneTools = {
 		if (!existingIdentity) {
 			vI_notificationBar.dump("## vI_msgIdentityCloneTools: signatureSwitch hide/remove signatures\n");
 			// code to hide the text signature
-			try { if (vI.preferences.getBoolPref("hide_signature") && ss_signature.length == 0) {
+			try { if (vI_main.preferences.getBoolPref("hide_signature") && ss_signature.length == 0) {
 				vI_notificationBar.dump("## vI_msgIdentityCloneTools: hide text/html signature");
 				ss_main.signatureSwitch()
 				vI_notificationBar.dump("\n");
 			} } catch(vErr) { vI_notificationBar.dump(" -- missing signatureSwitch extension?\n"); };
 			// code to hide the sMime signature
-			try { if (vI.preferences.getBoolPref("hide_sMime_messageSignature")) {
+			try { if (vI_main.preferences.getBoolPref("hide_sMime_messageSignature")) {
 				var element = document.getElementById("menu_securitySign1");
 				if (element.getAttribute("checked") == "true") {
 					vI_notificationBar.dump("## signatureSwitch hide_sMime_messageSignature with doCommand\n");
@@ -61,7 +61,7 @@ var vI_msgIdentityCloneTools = {
 			//	document.getElementById("menu_securitySign1").removeAttribute("checked");
 			} catch(vErr) { };
 			// code to hide the openGPG signature
-			try { if (vI.preferences.getBoolPref("hide_openPGP_messageSignature")) {
+			try { if (vI_main.preferences.getBoolPref("hide_openPGP_messageSignature")) {
 				var element = document.getElementById("enigmail_signed_send");
 				if (element.getAttribute("checked") == "true") {
 					var skipChangeGPGsign = false;

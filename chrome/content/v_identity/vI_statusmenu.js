@@ -144,8 +144,8 @@ var vI_statusmenu = {
 	__addStatusMessage : function(save, smtp) {
 		var sourceString = "vident.statusText.save." + save;
 		if (smtp != "off") sourceString = sourceString + ".smtp"
-		var messageLine1 = vI.elements.strings.getString(sourceString + ".line1");
-		var messageLine2 = vI.elements.strings.getString(sourceString + ".line2");
+		var messageLine1 = vI_main.elements.strings.getString(sourceString + ".line1");
+		var messageLine2 = vI_main.elements.strings.getString(sourceString + ".line2");
 		if (!messageLine2) {
 			vI_statusmenu.objStatusText.setAttribute("label", messageLine1);
 			vI_statusmenu.objStatusTooltipLine1.setAttribute("value", messageLine1);

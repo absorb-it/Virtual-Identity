@@ -34,7 +34,7 @@ var vI_account = {
 		.getBranch(null),
 
 	_getBaseIdentity : function () {
-		return gAccountManager.getIdentity(vI.elements.Obj_MsgIdentity.value);
+		return gAccountManager.getIdentity(vI_main.elements.Obj_MsgIdentity.value);
 	},
 
 	_copyBoolAttribute : function(name) {
@@ -58,7 +58,7 @@ var vI_account = {
 	},
 
 	copyPreferences : function() {
-		if (vI.preferences.getBoolPref("copySMIMESettings")) {
+		if (vI_main.preferences.getBoolPref("copySMIMESettings")) {
 			// SMIME settings
 			vI_notificationBar.dump("## vI_account: copy S/MIME settings\n")
 			vI_account._copyUnicharAttribute("signing_cert_name");
@@ -66,7 +66,7 @@ var vI_account = {
 			vI_account._copyIntAttribute("encryptionpolicy");
 		}
 /*		seems not required, encryption happens before Virtual Identity account is created
-		if (vI.preferences.getBoolPref("copyEnigmailSettings")) {
+		if (vI_main.preferences.getBoolPref("copyEnigmailSettings")) {
 			// pgp/enigmail settings
 			vI_notificationBar.dump("## vI_account: copy PGP settings\n")
 			vI_account._copyBoolAttribute("pgpSignEncrypted");
@@ -79,7 +79,7 @@ var vI_account = {
 		
 			vI_account._copyIntAttribute("defaultEncryptionPolicy");
 		}	*/
-		if (vI.preferences.getBoolPref("copyAttachVCardSettings")) {
+		if (vI_main.preferences.getBoolPref("copyAttachVCardSettings")) {
 			// attach vcard
 			vI_notificationBar.dump("## vI_account: copy VCard settings\n")
 			vI_account._copyBoolAttribute("attachVCard");
@@ -209,8 +209,8 @@ var vI_account = {
 		}
 		/*
 		// the easiest way would be to get all requiered Attributes might be to duplicate the default account like this
-		var recentAccount = vI_account.AccountManager.getAccount(vI.elements.Obj_MsgIdentity.selectedItem.getAttribute("accountkey"));
-		vI.VIdent_Account = vI_account.AccountManager.duplicateAccount(recentAccount);
+		var recentAccount = vI_account.AccountManager.getAccount(vI_main.elements.Obj_MsgIdentity.selectedItem.getAttribute("accountkey"));
+		vI_main.VIdent_Account = vI_account.AccountManager.duplicateAccount(recentAccount);
 		// but this ends up in the following exception:
 		// "Component returned failure code: 0x80004001 (NS_ERROR_NOT_IMPLEMENTED) [nsIMsgAccountManager.duplicateAccount]"
 		// so I have to do this by hand ;(
@@ -258,7 +258,7 @@ var vI_account = {
 	setupFcc : function()
 	{
 		if (document.getElementById("fcc_switch").getAttribute("checked")) {
-			switch (vI.preferences.getCharPref("fccFolderPickerMode"))
+			switch (vI_main.preferences.getCharPref("fccFolderPickerMode"))
 			{
 			    case "2"  :
 				vI_notificationBar.dump ("## vI_account: preparing Fcc --- use Settings of Default Account\n");
@@ -279,13 +279,13 @@ var vI_account = {
 			    default  :
 				vI_notificationBar.dump ("## vI_account: preparing Fcc --- use Virtual Identity Settings\n");
 				vI_account.account.defaultIdentity.doFcc
-					= vI.preferences.getBoolPref("doFcc");
+					= vI_main.preferences.getBoolPref("doFcc");
 				vI_account.account.defaultIdentity.fccFolder
-					= vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("fccFolder"));
+					= vI_main.unicodeConverter.ConvertToUnicode(vI_main.preferences.getCharPref("fccFolder"));
 				vI_account.account.defaultIdentity.fccFolderPickerMode
-					= vI.preferences.getCharPref("fccFolderPickerMode");
+					= vI_main.preferences.getCharPref("fccFolderPickerMode");
 				if (!vI_helper.olderVersion("TB", "2.0"))
-					vI_account.account.defaultIdentity.fccReplyFollowsParent = vI.preferences.getBoolPref("fccReplyFollowsParent");
+					vI_account.account.defaultIdentity.fccReplyFollowsParent = vI_main.preferences.getBoolPref("fccReplyFollowsParent");
 
 				break;
 			}
@@ -297,11 +297,11 @@ var vI_account = {
 		vI_notificationBar.dump("## vI_account: Stored (doFcc " + vI_account.account.defaultIdentity.doFcc + " fccFolder " +
 			vI_account.account.defaultIdentity.fccFolder + " fccFolderPickerMode " +
 			vI_account.account.defaultIdentity.fccFolderPickerMode + "(" +
-			vI.preferences.getCharPref("fccFolderPickerMode") + "))\n");
+			vI_main.preferences.getCharPref("fccFolderPickerMode") + "))\n");
 	},
 	
 	setupDraft : function()	{
-		switch (vI.preferences.getCharPref("draftFolderPickerMode"))
+		switch (vI_main.preferences.getCharPref("draftFolderPickerMode"))
 		{
 		    case "2"  :
 			vI_notificationBar.dump ("## vI_account: preparing Draft --- use Settings of Default Account\n");
@@ -316,19 +316,19 @@ var vI_account = {
 		    default  :
 			vI_notificationBar.dump ("## vI_account: preparing Draft --- use Virtual Identity Settings\n");
 			vI_account.account.defaultIdentity.draftFolder
-				= vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("draftFolder"));
+				= vI_main.unicodeConverter.ConvertToUnicode(vI_main.preferences.getCharPref("draftFolder"));
 			vI_account.account.defaultIdentity.draftsFolderPickerMode
-				= vI.preferences.getCharPref("draftFolderPickerMode");
+				= vI_main.preferences.getCharPref("draftFolderPickerMode");
 			break;
 		}
 		vI_notificationBar.dump("## vI_account: Stored (draftFolder " +
 			vI_account.account.defaultIdentity.draftFolder + " draftsFolderPickerMode " +
 			vI_account.account.defaultIdentity.draftsFolderPickerMode + "(" +
-			vI.preferences.getCharPref("draftFolderPickerMode") + "))\n");
+			vI_main.preferences.getCharPref("draftFolderPickerMode") + "))\n");
 	},
 	
 	setupTemplates : function()	{
-		switch (vI.preferences.getCharPref("stationeryFolderPickerMode"))
+		switch (vI_main.preferences.getCharPref("stationeryFolderPickerMode"))
 		{
 		    case "2"  :
 			vI_notificationBar.dump ("## vI_account: preparing Templates --- use Settings of Default Account\n");
@@ -343,14 +343,14 @@ var vI_account = {
 		    default  :
 			vI_notificationBar.dump ("## vI_account: preparing Templates --- use Virtual Identity Settings\n");
 			vI_account.account.defaultIdentity.stationeryFolder
-				= vI.unicodeConverter.ConvertToUnicode(vI.preferences.getCharPref("stationeryFolder"));
+				= vI_main.unicodeConverter.ConvertToUnicode(vI_main.preferences.getCharPref("stationeryFolder"));
 			vI_account.account.defaultIdentity.tmplFolderPickerMode
-				= vI.preferences.getCharPref("stationeryFolderPickerMode");
+				= vI_main.preferences.getCharPref("stationeryFolderPickerMode");
 			break;
 		}
 		vI_notificationBar.dump("## vI_account: Stored (stationeryFolder " +
 			vI_account.account.defaultIdentity.stationeryFolder + " tmplFolderPickerMode " +
 			vI_account.account.defaultIdentity.tmplFolderPickerMode + "(" +
-			vI.preferences.getCharPref("stationeryFolderPickerMode") + "))\n");
+			vI_main.preferences.getCharPref("stationeryFolderPickerMode") + "))\n");
 	}
 }
