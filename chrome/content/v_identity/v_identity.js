@@ -133,6 +133,9 @@ var vI_main = {
 			if (vI_main.replacement_functions.GenericSendMessageInProgress) return;
 			vI_main.replacement_functions.GenericSendMessageInProgress = true;
 			
+			// if addressCol2 is focused while sending check storage for the entered address before continuing
+			vI_storage.awOnBlur(vI_storage.focusedElement);
+
 			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 				.getService(Components.interfaces.nsIPromptService);
 			vI_notificationBar.dump("\n## v_identity: VIdentity_GenericSendMessage\n");

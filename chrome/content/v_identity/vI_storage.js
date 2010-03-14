@@ -29,6 +29,7 @@
 
 var vI_storage = {
 	multipleRecipients : null,
+	focusedElement : null,
 	
 	lastCheckedEmail : {}, 	// array of last checked emails per row,
 				// to prevent ugly double dialogs and time-consuming double-checks
@@ -65,6 +66,12 @@ var vI_storage = {
 		if (!element || ! element.id.match(/^addressCol2*/)) return;
 		vI_notificationBar.dump("\n## vI_storage: awOnBlur '" + element.id +"'\n");
 		vI_storage.updateVIdentityFromStorage(element);
+		vI_storage.focusedElement = null;
+	},
+
+	awOnFocus : function (element) {
+		if (!element || ! element.id.match(/^addressCol2*/)) return;
+		vI_storage.focusedElement = element;
 	},
 
 	awPopupOnCommand : function (element) {
@@ -88,6 +95,9 @@ var vI_storage = {
 					var oldBlur = input.getAttribute("onblur")
 					input.setAttribute("onblur", (oldBlur?oldBlur+"; ":"") +
 						"window.setTimeout(vI_storage.awOnBlur, 250, this.parentNode.parentNode.parentNode);")
+					var oldFocus = input.getAttribute("onfocus")
+					input.setAttribute("onfocus", (oldFocus?oldFocus+"; ":"") +
+						"window.setTimeout(vI_storage.awOnFocus, 250, this.parentNode.parentNode.parentNode);")
 				}
 				var popup = awGetPopupElement(row);
 				if (popup) {
