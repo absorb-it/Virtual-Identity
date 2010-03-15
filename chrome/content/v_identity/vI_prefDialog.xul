@@ -41,6 +41,8 @@
 <?xml-stylesheet href="chrome://messenger/skin/accountManage.css" type="text/css"?>
 <?xml-stylesheet href="chrome://mozapps/skin/extensions/extensions.css"?>
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+<?xml-stylesheet href="chrome://messenger/skin/messageHeader.css"?>
+
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	xmlns:xhtml="http://www.w3.org/1999/xhtml" >
@@ -77,8 +79,13 @@
                 prefstring="stationeryFolderPickerMode"/>
 
 <tabbox id="prefTabbox" class="viewSelector ">
-	<radiogroup xhtml:role="listbox" id="viewGroup" persist="last-selected"
-		class="chromeclass-toolbar" orient="horizontal" >
+	<hbox>
+	<vbox>
+		<image id="toggleIcon" class="addresstwisty" onclick="vI_prefDialog.base.flipMenuButtons(this);" open="true" persist="open" />
+		<spacer flex="1" />
+	</vbox>
+	<radiogroup xhtml:role="listbox" id="viewGroup" persist="hidden last-selected"
+		class="chromeclass-toolbar" orient="horizontal" flex="1" >
 		<vbox>
 		<hbox>
 			<radio pane="source" id="sourceEmail"
@@ -116,20 +123,28 @@
 				tooltiptext="&vI_prefDialog.tabbox.tab5.label;" />
 			</hbox>
 			<spacer flex="1"/>
-			<button class="v_identity_logo v_identity_logo_button"
+			<button id="logoButton1" class="v_identity_logo v_identity_logo_button"
 				label="&vident.vidLogo.label; &vident.version;"
 				oncommand="vI_prefDialog.openURL('http://www.absorb.it/virtual-id')"
 				tooltiptext="&vI_prefDialog.vidLogo.tooltiptext;" />
 		</vbox>
 	</radiogroup>
-	<tabs>
-		<tab label="&vI_prefDialog.tabbox.tab0.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 0;"/>
-		<tab label="&vI_prefDialog.tabbox.tab1.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 1;"/>
-		<tab label="&vI_prefDialog.tabbox.tab2.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 2;"/>
-		<tab label="&vI_prefDialog.tabbox.tab3.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 3;"/>
-		<tab label="&vI_prefDialog.tabbox.tab4.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 4;"/>
-		<tab label="&vI_prefDialog.tabbox.tab5.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 5;"/>
-	</tabs>
+	</hbox>
+	<hbox>
+		<tabs>
+			<tab label="&vI_prefDialog.tabbox.tab0.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 0;"/>
+			<tab label="&vI_prefDialog.tabbox.tab1.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 1;"/>
+			<tab label="&vI_prefDialog.tabbox.tab2.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 2;"/>
+			<tab label="&vI_prefDialog.tabbox.tab3.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 3;"/>
+			<tab label="&vI_prefDialog.tabbox.tab4.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 4;"/>
+			<tab label="&vI_prefDialog.tabbox.tab5.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 5;"/>
+		</tabs>
+		<spacer flex="1" />
+		<button id="logoButton2" class="v_identity_logo v_identity_logo_button"
+				label="&vident.vidLogo.label; &vident.version;"
+				oncommand="vI_prefDialog.openURL('http://www.absorb.it/virtual-id')"
+				tooltiptext="&vI_prefDialog.vidLogo.tooltiptext;" hidden="true" />
+	</hbox>
 	<tabpanels>
 	<tabpanel orient="vertical" >
 		<hbox flex="1">

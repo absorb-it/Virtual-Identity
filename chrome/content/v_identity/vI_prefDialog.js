@@ -236,6 +236,25 @@ var vI_prefDialog = {
 			mAttr("storageUp","featureDisabled",element.checked);
 			mAttr("storageUpDown","featureDisabled",element.checked);
 			vI_prefDialog.base.constraints();
+		},
+
+		menuButtonConstraints : function(elem) {
+			var mAttr = vI_prefDialog.base.modifyAttribute;
+			var valueParam = (document.getElementById("viewGroup").getAttribute("hidden") == "true");	// true -> removeAttribute
+			mAttr("logoButton2","hidden", valueParam);
+			mAttr("toggleIcon","open", valueParam);
+			document.getAnonymousElementByAttribute(dialogElem, "class", "box-inherit dialog-content-box").removeAttribute("flex");
+		},
+
+		flipMenuButtons : function(elem) {
+			var mAttr = vI_prefDialog.base.modifyAttribute;
+			var valueParam = (elem.getAttribute("open") == "true");
+			var dialogElem = document.getElementById("vI_prefDialog");
+			var oldContentElemHeight = document.getAnonymousElementByAttribute(dialogElem, "class", "box-inherit dialog-content-box").clientHeight;
+			mAttr("viewGroup","hidden", !valueParam);
+			mAttr("logoButton2","hidden", valueParam);
+			mAttr(elem.id,"open", valueParam);
+			window.resizeBy( 0, document.getAnonymousElementByAttribute(dialogElem, "class", "box-inherit dialog-content-box").clientHeight - oldContentElemHeight);
 		}
 	},
 
@@ -266,6 +285,7 @@ var vI_prefDialog = {
 		vI_prefDialog.base.smartReplyHideSignature();
 		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
 		vI_prefDialog.base.constraints();
+		vI_prefDialog.base.menuButtonConstraints();
 		if (vI_storageExtrasHelper.seamonkey_to_old()) {
 			document.getElementById("storageExtrasTreeitem1").setAttribute("hidden", "true")
 			document.getElementById("storageExtrasTreeitem2").setAttribute("hidden", "true")

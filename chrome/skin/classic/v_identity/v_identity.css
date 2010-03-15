@@ -80,6 +80,10 @@ tree.vIprefTree {
 	width: 15em;
 }
 
+#logoButton2 {
+	margin-left: 2em; margin-top: -1em;
+}
+
 #viewGroup {
 	padding: 5px;
 }
