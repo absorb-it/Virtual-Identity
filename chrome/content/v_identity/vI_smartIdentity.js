@@ -47,6 +47,7 @@ var vI_smartIdentity = {
 			case msgComposeType.ReplyToSender:
 			case msgComposeType.ReplyToSenderAndGroup: // reply to a newsgroup, would possibly be stopped later
 			case msgComposeType.ReplyWithTemplate:
+			case msgComposeType.ReplyToList:
 				vI_smartIdentity.Reply(); break;
 			case msgComposeType.Draft:
 			case msgComposeType.Template:
