@@ -241,6 +241,7 @@ var vI_prefDialog = {
 		menuButtonConstraints : function(elem) {
 			var mAttr = vI_prefDialog.base.modifyAttribute;
 			var valueParam = (document.getElementById("viewGroup").getAttribute("hidden") == "true");	// true -> removeAttribute
+			var dialogElem = document.getElementById("vI_prefDialog");
 			mAttr("logoButton2","hidden", valueParam);
 			mAttr("toggleIcon","open", valueParam);
 			document.getAnonymousElementByAttribute(dialogElem, "class", "box-inherit dialog-content-box").removeAttribute("flex");
