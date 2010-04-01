@@ -196,6 +196,9 @@ var vI_main = {
 					vI_main.original_functions.GenericSendMessage(msgType);
 			}
 			else {
+				if (!(currentIdentity.fullName == virtualIdentityData.fullName)) vI_notificationBar.dump("\n## vI_identityData failed check for fullName.\n");
+				if (!(currentIdentity.email == virtualIdentityData.email)) vI_notificationBar.dump("\n## vI_identityData failed check for email.\n");
+				if (!(virtualIdentityData.smtp.equal(currentSMTPobj))) vI_notificationBar.dump("\n## vI_identityData failed check for SMTP.\n");
 				alert(vI_main.elements.strings.getString("vident.genericSendMessage.error"));
 				vI_main.Cleanup();
 			}
