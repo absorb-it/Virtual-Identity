@@ -87,7 +87,12 @@ tree.vIprefTree {
 #viewGroup {
 	padding: 5px;
 }
+
 /* Mac version modifications */
+#viewGroup {
+	-moz-appearance: none !important;
+}
+
 #viewGroup > * {
 	-moz-border-image: none !important;
 	-moz-box-align: stretch !important;
