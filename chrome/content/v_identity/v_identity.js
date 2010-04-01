@@ -331,6 +331,7 @@ var vI_main = {
 			case msgComposeType.ReplyToSender:
 			case msgComposeType.ReplyToSenderAndGroup:
 			case msgComposeType.ReplyWithTemplate:
+			case msgComposeType.ReplyToList:
 				gMsgCompose.RegisterStateListener(vI_main.ComposeStateListener);
 		}
 		vI_notificationBar.dump("## v_identity: reopen done.\n")
