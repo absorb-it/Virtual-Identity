@@ -26,7 +26,7 @@ var vI_prefDialog = {
 	help : function() {
 		var selTabIndex = document.getElementById('prefTabbox').selectedIndex;
 		// var selTab = this.currentIndex
-		window.openDialog("chrome://v_identity/content/vI_Help.xul",0,"chrome, dialog, modal, alwaysRaised, resizable=yes", "docSmartReply.html")
+		window.openDialog("chrome://v_identity/content/vI_Help.xul",0,"chrome, dialog=no, alwaysRaised, resizable=yes", "docSmartReply.html")
 	},
 
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]

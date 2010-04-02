@@ -27,7 +27,7 @@ var vI_Help = {
 		// refresh window contents through resizing 
 		window.resizeTo(window.outerWidth, window.outerHeight);
 		// document.getElementById('vI_Help_browser').loadURI('chrome://v_identity/content/doc/' + htmlFile);
-		document.getElementById('vI_Help_browser').htmlSource = htmlFile;
-		document.getElementById('vI_Help_browser').cssSource = "vI_Dialog.css";
+// 		document.getElementById('vI_Help_browser').htmlSource = htmlFile;
+		document.getElementById('vI_Help_browser').cssSource = "localDoc.css";
 	}
 }

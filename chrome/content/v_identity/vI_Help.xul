@@ -54,5 +54,5 @@
 				tooltiptext="&vI_Help.vidLogo.tooltiptext;" />
 	</hbox>
 	
-	<browser id="vI_Help_browser" class="vI_htmlTextBox" flex="1" />
+	<browser id="vI_Help_browser" src="https://www.absorb.it/virtual-id/wiki/docSmartIdentities" class="vI_htmlTextBox" flex="1" />
 </dialog>
