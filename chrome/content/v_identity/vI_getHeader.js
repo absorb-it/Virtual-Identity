@@ -93,10 +93,10 @@ var vI_getHeader = {
 		// create array to count the header
 		var currentHeadersCounter = [];
 		
-		var vI_listId = false; var vI_received = false;
-		// loop through the headers
+		var vI_listId = false; var vI_received = false; var vI_content_base = false;
 		for (var header in currentHeaderData) {
 			var headerName = currentHeaderData[header].headerName.toLowerCase();
+// 			vI_notificationBar.dump("## vI_getHeader: found header: " + currentHeaderData[header].headerName + "\n");
 
 			// remember list-id header to prevent using Mailing-List addresses as sender
 			if (!vI_listId && headerName == "list-id") {
@@ -112,6 +112,13 @@ var vI_getHeader = {
 // 				continue;
 			}
 			
+			// remember content-base header to prevent using Blog/News-Feed addresses as sender
+			if (!vI_content_base && headerName == "content-base") {
+				hdr.setStringProperty("vI_content_base","found"); vI_content_base = true;
+				vI_notificationBar.dump("## vI_getHeader: found header: content-base  ...stored to recognize blog/news-feed\n");
+// 				continue;
+			}
+
 			if (currentHeadersCounter[headerName]) currentHeadersCounter[headerName]++
 			else currentHeadersCounter[headerName] = 1
 			
@@ -229,6 +236,9 @@ var vI_prepareHeader = {
 
 		// add Received to recognizable headers to detect if mail was sent or received
 		header_list.push("Received")
+
+		// add Website to recognizable headers to detect Blog/News-Posts
+		header_list.push("content-base")
 
 // 		try {
 			var extraHdrs = " " + 

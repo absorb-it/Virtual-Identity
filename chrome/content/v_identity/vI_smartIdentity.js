@@ -257,7 +257,7 @@ var vI_smartIdentity = {
 
 		vI_notificationBar.dump("## vI_smartIdentity: Reply()\n");
 
-		if (hdr && !gMsgCompose.compFields.newsgroups) {
+		if (hdr && !gMsgCompose.compFields.newsgroups && !hdr.getStringProperty("vI_content_base")) {
 		//	RFC 2821 (http://www.ietf.org/rfc/rfc2821.txt) says:
 		//	"4.4 Trace Information
 		//	When an SMTP server receives a message for delivery or further
