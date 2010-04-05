@@ -24,10 +24,9 @@
 
 var vI_Help = {
 	init : function(htmlFile) {
-		// refresh window contents through resizing 
-		window.resizeTo(window.outerWidth, window.outerHeight);
-		// document.getElementById('vI_Help_browser').loadURI('chrome://v_identity/content/doc/' + htmlFile);
-// 		document.getElementById('vI_Help_browser').htmlSource = htmlFile;
-		document.getElementById('vI_Help_browser').cssSource = "localDoc.css";
+		// copied and adapted from mozapps/plugins/pluginInstallerWizard.js
+		// add a nsIWebProgress listener to the license iframe.
+		document.getElementById('vI_remoteBrowserBox').localCss = "localDoc.css";
+		document.getElementById('vI_remoteBrowserBox').url = "https://www.absorb.it/virtual-id/wiki/docSmartIdentities";
 	}
 }

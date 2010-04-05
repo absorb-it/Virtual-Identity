@@ -25,6 +25,8 @@
    
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>   
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
+<?xml-stylesheet href="chrome://mozapps/content/update/updates.css"?>
+
 
 <!DOCTYPE overlay [
 <!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
@@ -53,6 +55,5 @@
 				oncommand="vI_prefDialog.openURL('http://www.absorb.it/virtual-id')"
 				tooltiptext="&vI_Help.vidLogo.tooltiptext;" />
 	</hbox>
-	
-	<browser id="vI_Help_browser" src="https://www.absorb.it/virtual-id/wiki/docSmartIdentities" class="vI_htmlTextBox" flex="1" />
+	<browserbox id="vI_remoteBrowserBox" class="vI_remoteBrowserBox" flex="1"/>
 </dialog>

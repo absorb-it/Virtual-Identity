@@ -27,34 +27,9 @@
           xmlns="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
           xmlns:xbl="http://www.mozilla.org/xbl">
-	<binding id="vI_htmlTextBox" extends="chrome://global/content/bindings/browser.xml#browser">
+	
+	<binding id="vI_browserBox" extends="chrome://global/content/bindings/browser.xml#browser">
 	<implementation>
-	<constructor>
-		<![CDATA[		
-		dump('******* vI_htmlTextBox.xml constructor\n');
-		]]>
-	</constructor>
-	<property name="outputString" >
-		<setter><![CDATA[
-		if (!this._cssRead) this.cssSource = this.getAttribute('cssSource');	// read initial Attributes
-		this.contentDocument.lastChild.setAttribute("style", this.getAttribute('documentStyle'));
-		
-		var oldChilds = this.contentDocument.body.childNodes;
-		while (oldChilds.length > 0) this.contentDocument.body.removeChild(oldChilds[0])
-
-		var text_list = val.split(/\n/)
-		for (var i = 0; i < text_list.length; i++) {
-			if (this._isHR(text_list[i])) continue;
-			var text_item = this._checkList(text_list[i]);
-			this._add(text_item);
-			if (!this._currentList && (i + 1) < text_list.length) {
-				var new_br = this.contentDocument
-					.createElementNS("http://www.w3.org/1999/xhtml", 'html:br');
-				this.contentDocument.body.appendChild(new_br);
-			}
-		}
-		]]></setter>
-	</property>
 	<field name="_cssRead">false</field>
 	<property name="cssSource" >
 		<setter><![CDATA[
@@ -88,8 +63,6 @@
 		dump("htmlSource set to " + val + " done\n");
 		]]></setter>
 	</property>
-	<field name="_currentList">null</field>
-	<field name="_currentBaseNode">null</field>
 	<method name="_getContents">
         <parameter name="aURL" />
 		<body><![CDATA[		
@@ -109,6 +82,82 @@
 		return str;
 		]]></body>
 	</method>
+	</implementation>
+	</binding>
+
+	<binding id="vI_remoteBrowserBox" extends="chrome://mozapps/content/update/updates.xml#remotecontent">
+	<content>
+		<xul:hbox flex="1" >
+			<xul:vbox class="vI_remoteBrowserBoxProgressmeter" flex="1" >
+				<xul:progressmeter mode="undetermined" />
+				<xul:spacer flex="1" />
+			</xul:vbox>
+			<xul:browser class="vI_browserBox" hidden="true" flex="1" />
+		</xul:hbox>
+	</content>
+ 	<resources>
+      		<stylesheet src="chrome://v_identity/skin/v_identity.css"/>
+  	</resources>
+	<implementation>
+	<field name="_content">
+		document.getAnonymousElementByAttribute(this, "class", "vI_browserBox");
+	</field>
+	<field name="_progress">
+		document.getAnonymousElementByAttribute(this, "class", "vI_remoteBrowserBoxProgressmeter");
+	</field>
+	<property name="localCss" onget="return this.getAttribute('localCss');" onset="this.setAttribute('localCss', val); return val;" />
+	<method name="onError">
+	<body><![CDATA[
+		alert("error");
+	]]></body>
+	</method>
+	<method name="onLoad">
+        <body><![CDATA[
+		this._content.cssSource = this.localCss;
+		this._progress.setAttribute("hidden", "true");
+		this._content.removeAttribute("hidden");
+	]]></body>
+	</method>
+	<method name="onStart">
+	<body><![CDATA[
+		this._content.setAttribute("hidden", "true");
+		this._progress.removeAttribute("hidden");
+	]]></body>
+	</method>
+	</implementation>
+	</binding>
+
+
+	<binding id="vI_htmlTextBox" extends="chrome://v_identity/content/vI_htmlTextBox.xml#BrowserBox">
+	<implementation>
+	<constructor>
+		<![CDATA[		
+		dump('******* vI_htmlTextBox.xml constructor\n');
+		]]>
+	</constructor>
+	<property name="outputString" >
+		<setter><![CDATA[
+		if (!this._cssRead) this.cssSource = this.getAttribute('cssSource');	// read initial Attributes
+		this.contentDocument.lastChild.setAttribute("style", this.getAttribute('documentStyle'));
+		
+		var oldChilds = this.contentDocument.body.childNodes;
+		while (oldChilds.length > 0) this.contentDocument.body.removeChild(oldChilds[0])
+
+		var text_list = val.split(/\n/)
+		for (var i = 0; i < text_list.length; i++) {
+			if (this._isHR(text_list[i])) continue;
+			var text_item = this._checkList(text_list[i]);
+			this._add(text_item);
+			if (!this._currentList && (i + 1) < text_list.length) {
+				var new_br = this.contentDocument
+					.createElementNS("http://www.w3.org/1999/xhtml", 'html:br');
+				this.contentDocument.body.appendChild(new_br);
+			}
+		}
+		]]></setter>
+	</property>
+	<field name="_currentList">null</field>
+	<field name="_currentBaseNode">null</field>
 	<method name="_isHR">
         <parameter name="text" />
 		<body><![CDATA[		

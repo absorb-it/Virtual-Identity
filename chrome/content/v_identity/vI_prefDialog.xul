@@ -75,26 +75,26 @@
                 prefstring="stationeryFolder"/>
 <textbox hidden="true" id="VIdent_identity.stationeryFolderPickerMode"
                 prefstring="stationeryFolderPickerMode"/>
-
+<hbox>
 <tabbox id="prefTabbox" class="viewSelector ">
 	<radiogroup xhtml:role="listbox" id="viewGroup" persist="last-selected"
 		class="chromeclass-toolbar" orient="horizontal" >
 		<vbox>
 		<hbox>
 			<radio pane="source" id="sourceEmail"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 0;" 
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 0; vI_prefDialog.updateHelpUrl();" 
 				tooltiptext="&vI_prefDialog.tabbox.tab0.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="selection"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 1;"
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 1; vI_prefDialog.updateHelpUrl();"
 				tooltiptext="&vI_prefDialog.tabbox.tab1.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="toCompose" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="composeDialog"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 2;"
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 2; vI_prefDialog.updateHelpUrl();"
 				tooltiptext="&vI_prefDialog.tabbox.tab2.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="toSend" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="emailOut"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 3;"
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 3; vI_prefDialog.updateHelpUrl();"
 				tooltiptext="&vI_prefDialog.tabbox.tab3.label;" />
 		</hbox>
 		<spacer class="heightS" />
@@ -102,7 +102,7 @@
 			<spacer id="beforeStorage" />
 			<vbox><spacer flex="1"/><image class="arrow" id="storageUp" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="storageOut" 
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 4;"
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 4; vI_prefDialog.updateHelpUrl();"
 				tooltiptext="&vI_prefDialog.tabbox.tab4.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="storageUpDown" /><spacer flex="1"/></vbox>
 			<spacer id="afterStorage" flex="1"/>
@@ -112,7 +112,7 @@
 		<vbox>
 			<spacer flex="1"/>
 			<hbox><spacer flex="1"/><radio pane="source" id="options"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 5;"
+				oncommand="document.getElementById('prefTabbox').selectedIndex = 5; vI_prefDialog.updateHelpUrl();"
 				tooltiptext="&vI_prefDialog.tabbox.tab5.label;" />
 			</hbox>
 			<spacer flex="1"/>
@@ -123,17 +123,17 @@
 		</vbox>
 	</radiogroup>
 	<tabs>
-		<tab label="&vI_prefDialog.tabbox.tab0.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 0;"/>
-		<tab label="&vI_prefDialog.tabbox.tab1.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 1;"/>
-		<tab label="&vI_prefDialog.tabbox.tab2.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 2;"/>
-		<tab label="&vI_prefDialog.tabbox.tab3.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 3;"/>
-		<tab label="&vI_prefDialog.tabbox.tab4.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 4;"/>
-		<tab label="&vI_prefDialog.tabbox.tab5.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 5;"/>
+		<tab label="&vI_prefDialog.tabbox.tab0.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 0; vI_prefDialog.updateHelpUrl(0);"/>
+		<tab label="&vI_prefDialog.tabbox.tab1.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 1; vI_prefDialog.updateHelpUrl(1);"/>
+		<tab label="&vI_prefDialog.tabbox.tab2.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 2; vI_prefDialog.updateHelpUrl(2);"/>
+		<tab label="&vI_prefDialog.tabbox.tab3.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 3; vI_prefDialog.updateHelpUrl(3);"/>
+		<tab label="&vI_prefDialog.tabbox.tab4.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 4; vI_prefDialog.updateHelpUrl(4);"/>
+		<tab label="&vI_prefDialog.tabbox.tab5.label;" oncommand="document.getElementById('viewGroup').selectedIndex = 5; vI_prefDialog.updateHelpUrl(5);"/>
 	</tabs>
 	<tabpanels>
 	<tabpanel orient="vertical" >
 		<hbox flex="1">
-		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex; vI_prefDialog.updateHelpUrl();"
 			hidecolumnpicker="true" hidehscroll="true" >
 		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true"/></treecols>
 		<treechildren>
@@ -232,7 +232,7 @@
 	</tabpanel>
 	<tabpanel orient="vertical" >
 		<hbox flex="1">
-		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex; vI_prefDialog.updateHelpUrl();"
 			hidecolumnpicker="true" hidehscroll="true">
 		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true" /></treecols>
 		<treechildren>
@@ -297,7 +297,7 @@
 	</tabpanel>
 	<tabpanel orient="vertical" >
 		<hbox flex="1">
-		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex; vI_prefDialog.updateHelpUrl();"
 			hidecolumnpicker="true" hidehscroll="true">
 		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true" /></treecols>
 		<treechildren>
@@ -351,7 +351,7 @@
 	</tabpanel>
 	<tabpanel orient="vertical" >
 		<hbox flex="1">
-		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex; vI_prefDialog.updateHelpUrl();"
 			hidecolumnpicker="true" hidehscroll="true" >
 		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true"/></treecols>
 		<treechildren>
@@ -518,7 +518,7 @@
 	</tabpanel>
 	<tabpanel orient="vertical" >
 		<hbox flex="1">
-		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex; vI_prefDialog.updateHelpUrl();"
 			hidecolumnpicker="true" hidehscroll="true">
 		<treecols orient="vertical">
 			<treecol flex="1" hideheader="true" primary="true"/>
@@ -630,7 +630,7 @@
 	</tabpanel>
 	<tabpanel orient="vertical" >
 		<hbox flex="1">
-		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex"
+		<tree class="vIprefTree" seltype="single" onselect="this.nextSibling.selectedIndex = this.currentIndex; vI_prefDialog.updateHelpUrl();"
 			hidecolumnpicker="true" hidehscroll="true">
 		<treecols orient="vertical">
 			<treecol flex="1" hideheader="true" primary="true"/>
@@ -691,5 +691,8 @@
 	</tabpanel>
 	</tabpanels>
 </tabbox>
+<browserbox id="vI_remoteBrowserBox" class="vI_remoteBrowserBox" localCss="localDoc.css" flex="1"/>
+<label id="extVersion" value="&vident.version;" hidden="true" />
+</hbox>
 </dialog>
 </overlay>

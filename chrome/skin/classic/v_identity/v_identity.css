@@ -313,6 +313,14 @@ treechildren::-moz-tree-cell-text(locked) {
 	-moz-binding: url("chrome://v_identity/content/vI_htmlTextBox.xml#vI_htmlTextBox");
 }
 
+.vI_browserBox {
+	-moz-binding: url("chrome://v_identity/content/vI_htmlTextBox.xml#vI_browserBox");
+}
+
+.vI_remoteBrowserBox {
+	-moz-binding: url("chrome://v_identity/content/vI_htmlTextBox.xml#vI_remoteBrowserBox");
+}
+
 .identity_clone-popup-item {
 	-moz-binding: url("chrome://v_identity/content/v_identity.xml#fromPopupItem_clone");
 	padding: 0;

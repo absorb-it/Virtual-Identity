@@ -29,6 +29,17 @@ var vI_prefDialog = {
 		window.openDialog("chrome://v_identity/content/vI_Help.xul",0,"chrome, dialog=no, alwaysRaised, resizable=yes", "docSmartReply.html")
 	},
 
+	updateHelpUrl : function(tabpanel) {
+		var panelIndex = (tabpanel)?tabpanel:document.getElementById('prefTabbox').selectedIndex
+		var prefTree = document.getElementById('prefTabbox').selectedPanel.getElementsByAttribute("class", "vIprefTree")[0];
+		var currentVersion = document.getElementById("extVersion").getAttribute("value").split(/\./);
+		var extVersion = currentVersion[0] + "." + currentVersion[1];
+		var url = "https://www.absorb.it/virtual-id/wiki/docs/" + extVersion + "/tab" + panelIndex + "tree" + prefTree.currentIndex;
+		dump("url: " + url + "\n");
+// 		document.getElementById("vI_remoteBrowserBox").localCss = "localDoc.css";
+		document.getElementById("vI_remoteBrowserBox").url = url;
+	},
+
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 				.getService(Components.interfaces.nsIPrefService)
 				.getBranch("extensions.virtualIdentity."),
@@ -240,6 +251,11 @@ var vI_prefDialog = {
 			mAttr("storageUp","featureDisabled",element.checked);
 			mAttr("storageUpDown","featureDisabled",element.checked);
 			vI_prefDialog.base.constraints();
+		},
+
+		initTreeValues : function() {
+			var prefTrees = document.getElementById("prefTabbox").getElementsByAttribute("class", "vIprefTree");
+			for (var i=0 ; i<prefTrees.length; i++) prefTrees[i].currentIndex = 0;
 		}
 	},
 
@@ -268,6 +284,7 @@ var vI_prefDialog = {
 		vI_prefDialog.base.smartReplyHideSignature();
 		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
 		vI_prefDialog.base.constraints();
+		vI_prefDialog.base.initTreeValues();
 		if (vI_storageExtrasHelper.seamonkey_to_old()) {
 			document.getElementById("storageExtrasTreeitem1").setAttribute("hidden", "true")
 			document.getElementById("storageExtrasTreeitem2").setAttribute("hidden", "true")
