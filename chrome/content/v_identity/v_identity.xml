@@ -294,7 +294,7 @@
 				<xul:observes element="vI_statusMenu_storage_saveBaseID" attribute="checked" />
 				<xul:observes element="vI_statusMenu_storage_saveBaseID" attribute="disabled" />
 			</xul:hbox>
-			<xul:hbox oncommand="event.stopPropagation();document.getBindingParent(this).smtp = this.smtp" anonid="smtpServerListHbox" class="smtpServerListHbox" />
+			<xul:hbox oncommand="event.stopPropagation();document.getBindingParent(this).smtp = this.smtp" xbl:inherits="showSmtp" anonid="smtpServerListHbox" class="smtpServerListHbox" />
 		</xul:hbox>
 		<children />
 	</content>

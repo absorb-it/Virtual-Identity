@@ -333,7 +333,7 @@ treechildren::-moz-tree-cell-text(locked) {
 	display: none;
 }
 
-.identity_clone-menulist[showSmtp="false"] .smtpServerMenuList, .identity_clone-menulist[showSmtp="false"] .menupopup_clone-smtp {
+.smtpServerListHbox[showSmtp="false"], .identity_clone-menulist[showSmtp="false"] .menupopup_clone-smtp {
 	display: none;
 }
 
