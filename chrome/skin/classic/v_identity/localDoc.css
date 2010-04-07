@@ -1,3 +1,17 @@
-#banner, #mainnav, #ctxtnav, div.buttons, #altlinks, #footer {
+#banner, #mainnav, #ctxtnav, div.buttons, #altlinks, #footer, p.path, .system-message {
 	display: none;
+}
+
+.wikipage {
+	padding-left:0 !important;
+}
+
+.wikipage h1, .wikipage h2, .wikipage h3, .wikipage p {
+	margin-left:0 !important;
+	margin-top:0.5em !important;
+	margin-top:0.5em !important;
+}
+
+body, th, td {
+	font-size:0.8em !important;
 }
