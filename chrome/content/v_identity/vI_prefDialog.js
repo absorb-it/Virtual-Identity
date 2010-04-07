@@ -24,9 +24,15 @@
 
 var vI_prefDialog = {
 	help : function() {
-		var selTabIndex = document.getElementById('prefTabbox').selectedIndex;
-		// var selTab = this.currentIndex
-		window.openDialog("chrome://v_identity/content/vI_Help.xul",0,"chrome, dialog=no, alwaysRaised, resizable=yes", "docSmartReply.html")
+		var browserElem = document.getElementById("vI_remoteBrowserBox");
+		if (browserElem.getAttribute("hidden")) {
+			window.resizeBy( 200, 0);
+			vI_prefDialog.updateHelpUrl();
+			browserElem.removeAttribute("hidden");
+		} else {
+			window.resizeBy( -(browserElem.clientWidth-1), 0);
+			browserElem.setAttribute("hidden", "true");
+		}
 	},
 
 	updateHelpUrl : function(tabpanel) {
@@ -34,9 +40,7 @@ var vI_prefDialog = {
 		var prefTree = document.getElementById('prefTabbox').selectedPanel.getElementsByAttribute("class", "vIprefTree")[0];
 		var currentVersion = document.getElementById("extVersion").getAttribute("value").split(/\./);
 		var extVersion = currentVersion[0] + "." + currentVersion[1];
-		var url = "https://www.absorb.it/virtual-id/wiki/docs/" + extVersion + "/tab" + panelIndex + "tree" + prefTree.currentIndex;
-		dump("url: " + url + "\n");
-// 		document.getElementById("vI_remoteBrowserBox").localCss = "localDoc.css";
+		var url = "https://www.absorb.it/virtual-id/wiki/docs/" + extVersion + "/tab" + panelIndex + "/tree" + prefTree.currentIndex;
 		document.getElementById("vI_remoteBrowserBox").url = url;
 	},
 
@@ -300,7 +304,7 @@ var vI_prefDialog = {
         openURL : function(aURL) {
             var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
             var protocolSvc = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"].getService(Components.interfaces.nsIExternalProtocolService);
-
+		dump("load url " + aURL + "\n");
             uri.spec = aURL;
             protocolSvc.loadUrl(uri);
         }

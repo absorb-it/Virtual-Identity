@@ -85,20 +85,104 @@
 	</implementation>
 	</binding>
 
-	<binding id="vI_remoteBrowserBox" extends="chrome://mozapps/content/update/updates.xml#remotecontent">
+	<binding id="vI_remoteBrowserBox">
 	<content>
-		<xul:hbox flex="1" >
+		<xul:vbox flex="1" >
 			<xul:vbox class="vI_remoteBrowserBoxProgressmeter" flex="1" >
 				<xul:progressmeter mode="undetermined" />
 				<xul:spacer flex="1" />
 			</xul:vbox>
-			<xul:browser class="vI_browserBox" hidden="true" flex="1" />
-		</xul:hbox>
+			<xul:browser xbl:inherits="src=url" class="vI_browserBox" hidden="true" flex="1" disablehistory="true" />
+			<xul:button xbl:inherits="tooltiptext=url" label="Open in Browser"
+					oncommand="vI_prefDialog.openURL(this.tooltipText)" />
+		</xul:vbox>
 	</content>
  	<resources>
       		<stylesheet src="chrome://v_identity/skin/v_identity.css"/>
   	</resources>
 	<implementation>
+	<destructor><![CDATA[
+		// clean up the listener but you may not have one if you never showed
+		// the page with a <remotecontent> element
+		if (this._remoteProgressListener) this._content.webProgress.removeProgressListener(this._remoteProgressListener);
+	]]></destructor>
+	<field name="_init">null</field>
+	<method name="init">
+	<body><![CDATA[
+		if (this._init) return;
+		
+		// just to be safe, turn off js, auth, plugins, and subframes
+		var docShell = this._content.docShell;
+		docShell.allowJavascript = false;
+		docShell.allowAuth = false;
+		docShell.allowPlugins = false;
+		//allow redirects
+		//docShell.allowMetaRedirects = false;
+		docShell.allowSubframes = false;
+		//allow images
+		//docShell.allowImages = false;
+		
+		this._init = true;
+	]]></body>
+	</method>
+	<field name="_remoteProgressListener">null</field>
+	<property name="url">
+		<getter><![CDATA[
+		return this.getAttribute("url");
+		]]></getter>
+		<setter><![CDATA[
+		this.init();
+		if (this._remoteProgressListener) 
+			this._content.webProgress.removeProgressListener(this._remoteProgressListener);
+		var self = this;
+
+		this._remoteProgressListener = {
+			QueryInterface: function(aIID) {
+				if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+					aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+					aIID.equals(Components.interfaces.nsISupports))
+					return this;
+				throw Components.results.NS_NOINTERFACE;
+			},
+			onLocationChange: function() {},
+			onProgressChange: function() {},
+			onStatusChange:   function() {},
+			onSecurityChange: function() {},
+			onStateChange:    function(aWebProgress, aRequest, aStateFlags, aStatus) {
+				if (!aRequest)
+					return;
+
+				const nsIWebProgressListener = 
+					Components.interfaces.nsIWebProgressListener;
+			
+				if (aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) 
+				{
+					if (aStateFlags & nsIWebProgressListener.STATE_START) self.onStart();
+					else if (aStateFlags & nsIWebProgressListener.STATE_STOP) {
+						const nsIHttpChannel = Components.interfaces.nsIHttpChannel;
+						try {
+							var channel = aRequest.QueryInterface(nsIHttpChannel);
+							if (channel.requestSucceeded) {
+								// if we get here, the load was OK, report success
+								self.onLoad();
+								return;
+							}
+						} catch (ex) {
+							// the channel.requestSucceeded can throw
+							// NS_ERROR_NOT_AVAILABLE if you can't reach the server
+							// so we treat that as an error
+						}
+						// everything else (like a 404) is an error
+						self.onError();
+					}
+				}
+			}
+		}
+		this._content.webProgress.addProgressListener(this._remoteProgressListener,Components.interfaces.nsIWebProgress.NOTIFY_ALL);
+		// load the url now that the listener is registered
+		this.setAttribute("url", val);
+		]]></setter>
+	</property>
 	<field name="_content">
 		document.getAnonymousElementByAttribute(this, "class", "vI_browserBox");
 	</field>
