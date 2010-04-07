@@ -1,6 +1,9 @@
 <!ENTITY vI_prefDialog.dlgTitle.label "Virtual Identity instellingen">
 <!ENTITY vI_prefDialog.vidLogo.tooltiptext "Virtual Identity startpagina openen">
 
+<!ENTITY vI_prefDialog.dlgHelpButton.label "Online Help"> <!-- translate -->
+<!ENTITY vI_prefDialog.openHelpInBrowserButton.label "Open in Browser"> <!-- translate -->
+
 <!ENTITY vI_prefDialog.tabbox.tab0.label "Bron e-mailbericht">
 <!ENTITY vI_prefDialog.tabbox.tab1.label "Selectie">
 <!ENTITY vI_prefDialog.tabbox.tab2.label "Dialoogvenster opstellen">

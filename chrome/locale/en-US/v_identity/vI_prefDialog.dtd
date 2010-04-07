@@ -1,6 +1,9 @@
 <!ENTITY vI_prefDialog.dlgTitle.label "Virtual Identity Settings">
 <!ENTITY vI_prefDialog.vidLogo.tooltiptext "Open Virtual Identity Homepage">
 
+<!ENTITY vI_prefDialog.dlgHelpButton.label "Online Help">
+<!ENTITY vI_prefDialog.openHelpInBrowserButton.label "Open in Browser">
+
 <!ENTITY vI_prefDialog.tabbox.tab0.label "Source Mail">
 <!ENTITY vI_prefDialog.tabbox.tab1.label "Selection">
 <!ENTITY vI_prefDialog.tabbox.tab2.label "Compose Dialog">

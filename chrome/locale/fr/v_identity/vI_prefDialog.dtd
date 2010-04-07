@@ -1,6 +1,9 @@
 <!ENTITY vI_prefDialog.dlgTitle.label "Paramètres de Virtual Identity">
 <!ENTITY vI_prefDialog.vidLogo.tooltiptext "Ouvrir la page Web de Virtual Identity">
 
+<!ENTITY vI_prefDialog.dlgHelpButton.label "Online Help"> <!-- translate -->
+<!ENTITY vI_prefDialog.openHelpInBrowserButton.label "Open in Browser"> <!-- translate -->
+
 <!ENTITY vI_prefDialog.tabbox.tab0.label "Mail d'origine">
 <!ENTITY vI_prefDialog.tabbox.tab1.label "Sélection">
 <!ENTITY vI_prefDialog.tabbox.tab2.label "Fenêtre de rédaction de message">

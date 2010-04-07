@@ -23,6 +23,27 @@
  * ***** END LICENSE BLOCK ***** */
 
 var vI_prefDialog = {
+	toggleHelp : function() {
+		var browserElem = document.getElementById("vI_remoteBrowserBox");
+		if (browserElem.getAttribute("hidden")) {
+			window.resizeBy( 200, 0);
+			vI_prefDialog.updateHelpUrl();
+			browserElem.removeAttribute("hidden");
+		} else {
+			window.resizeBy( -(browserElem.clientWidth+7), 0);
+			browserElem.setAttribute("hidden", "true");
+		}
+	},
+
+	updateHelpUrl : function(tabpanel) {
+		var panelIndex = (tabpanel)?tabpanel:document.getElementById('prefTabbox').selectedIndex
+		var prefTree = document.getElementById('prefTabbox').selectedPanel.getElementsByAttribute("class", "vIprefTree")[0];
+		var currentVersion = document.getElementById("extVersion").getAttribute("value").split(/\./);
+		var extVersion = currentVersion[0] + "." + currentVersion[1];
+		var url = "https://www.absorb.it/virtual-id/wiki/docs/" + extVersion + "/tab" + panelIndex + "/tree" + prefTree.currentIndex;
+		document.getElementById("vI_remoteBrowserBox").url = url;
+	},
+
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 				.getService(Components.interfaces.nsIPrefService)
 				.getBranch("extensions.virtualIdentity."),
@@ -256,6 +277,11 @@ var vI_prefDialog = {
 			mAttr("logoButton2","hidden", valueParam);
 			mAttr(elem.id,"open", valueParam);
 			window.resizeBy( 0, document.getAnonymousElementByAttribute(dialogElem, "class", "box-inherit dialog-content-box").clientHeight - oldContentElemHeight);
+		},
+		
+		initTreeValues : function() {
+			var prefTrees = document.getElementById("prefTabbox").getElementsByAttribute("class", "vIprefTree");
+			for (var i=0 ; i<prefTrees.length; i++) prefTrees[i].currentIndex = 0;
 		}
 	},
 
@@ -287,6 +313,8 @@ var vI_prefDialog = {
 		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
 		vI_prefDialog.base.constraints();
 		vI_prefDialog.base.menuButtonConstraints();
+		vI_prefDialog.base.initTreeValues();
+
 		if (vI_storageExtrasHelper.seamonkey_to_old()) {
 			document.getElementById("storageExtrasTreeitem1").setAttribute("hidden", "true")
 			document.getElementById("storageExtrasTreeitem2").setAttribute("hidden", "true")
@@ -302,7 +330,7 @@ var vI_prefDialog = {
         openURL : function(aURL) {
             var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
             var protocolSvc = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"].getService(Components.interfaces.nsIExternalProtocolService);
-
+		dump("load url " + aURL + "\n");
             uri.spec = aURL;
             protocolSvc.loadUrl(uri);
         }

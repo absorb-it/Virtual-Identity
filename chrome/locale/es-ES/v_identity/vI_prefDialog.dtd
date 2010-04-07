@@ -1,6 +1,9 @@
 <!ENTITY vI_prefDialog.dlgTitle.label "Virtual Identity - Opciones">
 <!ENTITY vI_prefDialog.vidLogo.tooltiptext "Visitar la página web de Virtual Identity">
 
+<!ENTITY vI_prefDialog.dlgHelpButton.label "Online Help"> <!-- translate -->
+<!ENTITY vI_prefDialog.openHelpInBrowserButton.label "Open in Browser"> <!-- translate -->
+
 <!ENTITY vI_prefDialog.tabbox.tab0.label "Correo fuente">
 <!ENTITY vI_prefDialog.tabbox.tab1.label "Selección">
 <!ENTITY vI_prefDialog.tabbox.tab2.label "Ventana de redacción">

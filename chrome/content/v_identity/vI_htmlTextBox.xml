@@ -17,23 +17,192 @@
    - The Original Code is the Virtual Identity Extension.
 
    - The Initial Developer of the Original Code is Rene Ejury.
+   - code of remoteBrowserBox was copied and adapted from mozapps/update/updates.xml
    - Portions created by the Initial Developer are Copyright (C) 2007
    - the Initial Developer. All Rights Reserved.
 
    - Contributor(s):
    - ***** END LICENSE BLOCK ***** -->
 
+<!DOCTYPE overlay [
+<!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/vI_prefDialog.dtd">
+%vIdentDTD;
+]>
+
 <bindings id="vI_htmlTextBoxBindings"
           xmlns="http://www.mozilla.org/xbl"
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
           xmlns:xbl="http://www.mozilla.org/xbl">
+	
+	<binding id="vI_remoteBrowserBox">
+	<content>
+		<xul:vbox flex="1" >
+			<xul:vbox class="vI_remoteBrowserBoxProgressmeter" flex="1" >
+				<xul:progressmeter mode="undetermined" />
+				<xul:spacer flex="1" />
+			</xul:vbox>
+			<xul:browser xbl:inherits="src=url" class="vI_htmlTextBox" hidden="true" flex="1" disablehistory="true" />
+			<xul:button xbl:inherits="tooltiptext=url" label="&vI_prefDialog.openHelpInBrowserButton.label;"
+					oncommand="vI_prefDialog.openURL(this.tooltipText); vI_prefDialog.toggleHelp();" />
+		</xul:vbox>
+	</content>
+ 	<resources>
+      		<stylesheet src="chrome://v_identity/skin/v_identity.css"/>
+  	</resources>
+	<implementation>
+	<destructor><![CDATA[
+		// clean up the listener but you may not have one if you never showed
+		// the page with a <remotecontent> element
+		if (this._remoteProgressListener) this._content.webProgress.removeProgressListener(this._remoteProgressListener);
+	]]></destructor>
+	<field name="_init">null</field>
+	<method name="init">
+	<body><![CDATA[
+		if (this._init) return;
+		
+		// just to be safe, turn off js, auth, plugins, and subframes
+		var docShell = this._content.docShell;
+		docShell.allowJavascript = false;
+		docShell.allowAuth = false;
+		docShell.allowPlugins = false;
+		//allow redirects
+		//docShell.allowMetaRedirects = false;
+		docShell.allowSubframes = false;
+		//allow images
+		//docShell.allowImages = false;
+		
+		this._init = true;
+	]]></body>
+	</method>
+	<field name="_remoteProgressListener">null</field>
+	<property name="url">
+		<getter><![CDATA[
+		return this.getAttribute("url");
+		]]></getter>
+		<setter><![CDATA[
+		this.init();
+		if (this._remoteProgressListener) 
+			this._content.webProgress.removeProgressListener(this._remoteProgressListener);
+		var self = this;
+
+		this._remoteProgressListener = {
+			QueryInterface: function(aIID) {
+				if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+					aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+					aIID.equals(Components.interfaces.nsISupports))
+					return this;
+				throw Components.results.NS_NOINTERFACE;
+			},
+			onLocationChange: function() {},
+			onProgressChange: function() {},
+			onStatusChange:   function() {},
+			onSecurityChange: function() {},
+			onStateChange:    function(aWebProgress, aRequest, aStateFlags, aStatus) {
+				if (!aRequest)
+					return;
+
+				const nsIWebProgressListener = 
+					Components.interfaces.nsIWebProgressListener;
+			
+				if (aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) 
+				{
+					if (aStateFlags & nsIWebProgressListener.STATE_START) self.onStart();
+					else if (aStateFlags & nsIWebProgressListener.STATE_STOP) {
+						const nsIHttpChannel = Components.interfaces.nsIHttpChannel;
+						try {
+							var channel = aRequest.QueryInterface(nsIHttpChannel);
+							if (channel.requestSucceeded) {
+								// if we get here, the load was OK, report success
+								self.onLoad();
+								return;
+							}
+						} catch (ex) {
+							// the channel.requestSucceeded can throw
+							// NS_ERROR_NOT_AVAILABLE if you can't reach the server
+							// so we treat that as an error
+						}
+						// everything else (like a 404) is an error
+						self.onError();
+					}
+				}
+			}
+		}
+		this._content.webProgress.addProgressListener(this._remoteProgressListener,Components.interfaces.nsIWebProgress.NOTIFY_ALL);
+		// load the url now that the listener is registered
+		this.setAttribute("url", val);
+		]]></setter>
+	</property>
+	<field name="_content">
+		document.getAnonymousElementByAttribute(this, "class", "vI_htmlTextBox");
+	</field>
+	<field name="_progress">
+		document.getAnonymousElementByAttribute(this, "class", "vI_remoteBrowserBoxProgressmeter");
+	</field>
+	<property name="localCss" onget="return this.getAttribute('localCss');" onset="this.setAttribute('localCss', val); return val;" />
+	<method name="onError">
+	<body><![CDATA[
+	//	alert("error");
+	]]></body>
+	</method>
+	<method name="onLoad">
+        <body><![CDATA[
+		this._content.cssSource = this.localCss;
+		this._progress.setAttribute("hidden", "true");
+		this._content.removeAttribute("hidden");
+	]]></body>
+	</method>
+	<method name="onStart">
+	<body><![CDATA[
+		this._content.setAttribute("hidden", "true");
+		this._progress.removeAttribute("hidden");
+	]]></body>
+	</method>
+	</implementation>
+	</binding>
+
+
 	<binding id="vI_htmlTextBox" extends="chrome://global/content/bindings/browser.xml#browser">
 	<implementation>
 	<constructor>
 		<![CDATA[		
-<!-- 		vI_notificationBar.dump('******* vI_htmlTextBox.xml constructor\n'); -->
+		dump('******* vI_htmlTextBox.xml constructor\n');
 		]]>
 	</constructor>
+	<field name="_cssRead">false</field>
+	<property name="cssSource" >
+		<setter><![CDATA[
+		if (!val) return;
+		dump("cssSource set to " + val + "\n");
+		var head = this.contentDocument.getElementsByTagName("HEAD").item(0);
+		var range = document.createRange();
+		range.selectNode(head);
+		var css_text = this._getContents("chrome://v_identity/skin/" + val);
+		dump("cssSource set to " + val + " cont.\n");
+		var documentFragment = range.createContextualFragment("<style type='text/css'>" + css_text + "</style>");
+		head.appendChild(documentFragment);
+		dump("cssSource set to " + val + " done\n");
+		this._cssRead = true;
+		]]></setter>
+	</property>
+	<method name="_getContents">
+        <parameter name="aURL" />
+		<body><![CDATA[		
+		// read the chrome file (copied from http://forums.mozillazine.org/viewtopic.php?p=921150)
+		var ioService=Components.classes["@mozilla.org/network/io-service;1"]
+			.getService(Components.interfaces.nsIIOService);
+		var scriptableStream=Components
+			.classes["@mozilla.org/scriptableinputstream;1"]
+			.getService(Components.interfaces.nsIScriptableInputStream);
+		
+		var channel=ioService.newChannel(aURL,null,null);
+		var input=channel.open();
+		scriptableStream.init(input);
+		var str=scriptableStream.read(input.available());
+		scriptableStream.close();
+		input.close();
+		return str;
+		]]></body>
+	</method>
 	<property name="outputString" >
 		<setter><![CDATA[
 		if (!this._cssRead) this.cssSource = this.getAttribute('cssSource');	// read initial Attributes
@@ -55,40 +224,8 @@
 		}
 		]]></setter>
 	</property>
-	<field name="_cssRead">false</field>
-	<property name="cssSource" >
-		<setter><![CDATA[
-		if (!val) return;
-		var head = this.contentDocument.getElementsByTagName("HEAD").item(0);
-		var range = document.createRange();
-		range.selectNode(head);
-		var css_text = this._getContents("chrome://v_identity/skin/" + val);
-		var documentFragment = range.createContextualFragment("<style type='text/css'>" + css_text + "</style>");
-		head.appendChild(documentFragment);
-		this._cssRead = true;
-		]]></setter>
-	</property>
 	<field name="_currentList">null</field>
 	<field name="_currentBaseNode">null</field>
-	<method name="_getContents">
-        <parameter name="aURL" />
-		<body><![CDATA[		
-		// read the chrome file (copied from http://forums.mozillazine.org/viewtopic.php?p=921150)
-		var ioService=Components.classes["@mozilla.org/network/io-service;1"]
-			.getService(Components.interfaces.nsIIOService);
-		var scriptableStream=Components
-			.classes["@mozilla.org/scriptableinputstream;1"]
-			.getService(Components.interfaces.nsIScriptableInputStream);
-		
-		var channel=ioService.newChannel(aURL,null,null);
-		var input=channel.open();
-		scriptableStream.init(input);
-		var str=scriptableStream.read(input.available());
-		scriptableStream.close();
-		input.close();
-		return str;
-		]]></body>
-	</method>
 	<method name="_isHR">
         <parameter name="text" />
 		<body><![CDATA[		

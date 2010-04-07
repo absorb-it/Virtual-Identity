@@ -1,6 +1,9 @@
 <!ENTITY vI_prefDialog.dlgTitle.label "Настройки Virtual Identity">
 <!ENTITY vI_prefDialog.vidLogo.tooltiptext "Открыть домашнюю страницу Virtual Identity">
 
+<!ENTITY vI_prefDialog.dlgHelpButton.label "Online Help"> <!-- translate -->
+<!ENTITY vI_prefDialog.openHelpInBrowserButton.label "Open in Browser"> <!-- translate -->
+
 <!ENTITY vI_prefDialog.tabbox.tab0.label "Исходное сообщение">
 <!ENTITY vI_prefDialog.tabbox.tab1.label "Выбор личных данных">
 <!ENTITY vI_prefDialog.tabbox.tab2.label "Окно редактирования сообщения">
