@@ -27,15 +27,17 @@ var vI_prefDialog = {
 		var browserElem = document.getElementById("vI_remoteBrowserBox");
 		if (browserElem.getAttribute("hidden")) {
 			window.resizeBy( 200, 0);
-			vI_prefDialog.updateHelpUrl();
 			browserElem.removeAttribute("hidden");
 		} else {
 			window.resizeBy( -(browserElem.clientWidth+7), 0);
 			browserElem.setAttribute("hidden", "true");
 		}
+		vI_prefDialog.updateHelpUrl();
 	},
 
 	updateHelpUrl : function(tabpanel) {
+		var browserElem = document.getElementById("vI_remoteBrowserBox");
+		if (browserElem.getAttribute("hidden")) return;				// don't load any url if browser is hidden
 		var panelIndex = (tabpanel)?tabpanel:document.getElementById('prefTabbox').selectedIndex
 		var prefTree = document.getElementById('prefTabbox').selectedPanel.getElementsByAttribute("class", "vIprefTree")[0];
 		var currentVersion = document.getElementById("extVersion").getAttribute("value").split(/\./);
