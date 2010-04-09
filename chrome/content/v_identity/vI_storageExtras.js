@@ -63,31 +63,31 @@ function vI_storageExtras(callFunction, resource) {
 // function vI_storageExtras_checkbox(field, option, composeDialogElementID, updateFunction, identityValue) {
 	this.extras = [
 		new vI_storageExtras_checkbox(
-			"reciept", "storageExtras_returnReciept", "returnReceiptMenu", null, "identity.requestReturnReceipt;"),
+			"reciept", "storageExtras_returnReciept", "returnReceiptMenu", null, function() { return identity.requestReturnReceipt; }),
 		new vI_storageExtras_checkbox(
-			"fcc", "storageExtras_fcc", "fcc_switch", null, "identity.doFcc;"),
+			"fcc", "storageExtras_fcc", "fcc_switch", null, function() { return identity.doFcc; }),
 		new vI_storageExtras_characterEncoding(),
 		new vI_storageExtras_msgFormat(),
 		new vI_storageExtras_checkbox(
 			"sMimeEnc", "storageExtras_sMime_messageEncryption", "menu_securityEncryptRequire1",
-				"(typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null;",
-				"identity.getIntAttribute('encryptionpolicy') == 2"),
+				function() { return ((typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null) },
+				function() { return (identity.getIntAttribute('encryptionpolicy') == 2) }),
 		new vI_storageExtras_checkbox(
 			"sMimeSig", "storageExtras_sMime_messageSignature", "menu_securitySign1",
-				"(typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null;",
-				"identity.getBoolAttribute('sign_mail')"),
+				function() { return ((typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null) },
+				function() { return (identity.getBoolAttribute('sign_mail')) }),
 		new vI_storageExtras_checkbox(
 			"PGPEnc", "storageExtras_openPGP_messageEncryption", "enigmail_encrypted_send",
-				"(typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null;",
-				"identity.getIntAttribute('defaultEncryptionPolicy') > 0"),
+				function() { return ((typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null) },
+				function() { return (identity.getIntAttribute('defaultEncryptionPolicy') > 0) }),
 		new vI_storageExtras_checkbox(
 			"PGPSig", "storageExtras_openPGP_messageSignature", "enigmail_signed_send",
-				"(typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null;",
-				"(identity.getIntAttribute('defaultEncryptionPolicy') > 0)?identity.getBoolAttribute('pgpSignEncrypted'):identity.getBoolAttribute('pgpSignPlain')"),
+				function() { return ((typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null) },
+				function() { return ((identity.getIntAttribute('defaultEncryptionPolicy') > 0)?identity.getBoolAttribute('pgpSignEncrypted'):identity.getBoolAttribute('pgpSignPlain')) }),
 		new vI_storageExtras_checkbox(
 			"PGPMIME", "storageExtras_openPGP_PGPMIME", "enigmail_sendPGPMime",
-				"(typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null;",
-				"identity.getBoolAttribute('pgpMimeMode')")
+				function() { return ((typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null) },
+				function() { return (identity.getBoolAttribute('pgpMimeMode')) })
 		]
 	if (document.getElementById("menu_securityNoEncryption1"))	// TB 2.x
 		this.extras[4] = new vI_storageExtras_sMime_messageEncryption()
@@ -460,13 +460,13 @@ vI_storageExtras_checkbox.prototype = {
 
 	// function to read the value from a given identity
 	readIdentityValue : function(identity) {
-		this.value = eval(this.valueFromIdentityFunction)?"true":"false";
+		this.value = (this.valueFromIdentityFunction)?"true":"false";
 	},
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
 		var element = document.getElementById(this.composeDialogElementID);
 		if (!this.value || !element) return;
-		if (this.updateFunction) eval(this.updateFunction);
+		if (typeof(this.updateFunction)=="function") this.updateFunction;
 
 		if ((element.getAttribute("checked") == "true") != (this.value == "true")) {
 			vI_notificationBar.dump("## vI_storageExtras change "+ this.field + " to " + this.value + " with doCommand\n");
@@ -476,7 +476,7 @@ vI_storageExtras_checkbox.prototype = {
 	readValue : function() {
 		var element = document.getElementById(this.composeDialogElementID)
 		if (!element) return;
-		if (this.updateFunction) eval(this.updateFunction);
+		if (typeof(this.updateFunction)=="function") this.updateFunction;
 		this.value = ((element.getAttribute("checked") == "true")?"true":"false")
 	},
 	// function to set or read the value from the rdfDataEditor
