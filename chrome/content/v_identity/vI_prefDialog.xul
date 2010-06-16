@@ -710,7 +710,7 @@
 	</tabpanel>
 	</tabpanels>
 </tabbox>
-<browserbox id="vI_remoteBrowserBox" class="vI_remoteBrowserBox" localCss="localDoc.css" flex="1" hidden="true" />
+<browserbox id="vI_remoteBrowserBox" class="vI_remoteBrowserBox" localCss="localDoc.css" flex="1" hidden="true" type="content" />
 <label id="extVersion" value="&vident.version;" hidden="true" />
 </hbox>
 </dialog>
