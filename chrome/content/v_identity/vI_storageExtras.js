@@ -115,10 +115,11 @@ vI_storageExtras.prototype = {
 	},
 	
 	// copys all values of an identity. This way we can create a new object with a different document-context
-	copy : function(extras) {
+	// the (optional) keepOldOnEmpty parameter tells if it should keep the old value if there is no new value in parameter
+	copy : function(extras, keepOldOnEmpty) {
 		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) {
-			this.extras[i].value = extras.extras[i].value;
+			if (!keepOldOnEmpty || extras.extras[i].value) this.extras[i].value = extras.extras[i].value;
 		}
 	},
 

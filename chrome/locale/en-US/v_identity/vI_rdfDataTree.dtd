@@ -21,3 +21,5 @@
 <!ENTITY vI_rdfDataTree.newItem.label "add new Item">
 <!ENTITY vI_rdfDataTree.newItem.accesskey "N">
 
+<!ENTITY vI_rdfDataTree.groupEditButton.label "Group Edit">
+<!ENTITY vI_rdfDataTree.groupEditButton.accesskey "G">

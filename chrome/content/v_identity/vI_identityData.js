@@ -87,13 +87,14 @@ vI_identityData.prototype = {
 	},
 
 	// copys all values of an identity. This way we can create a new object with a different document-context
-	copy : function(identityData) {
-		this.email = identityData.email;
-		this.fullName = identityData.fullName;
-		this.id.key = identityData.id.key;
-		this.smtp.key = identityData.smtp.key;
-		this.sideDescription = identityData.sideDescription;
-		this.extras.copy(identityData.extras);
+	// the (optional) keepOldOnEmpty parameter tells if it should keep the old value if there is no new value in parameter
+	copy : function(identityData, keepOldOnEmpty) {
+		if (!keepOldOnEmpty || identityData.email) this.email = identityData.email;
+		if (!keepOldOnEmpty || identityData.fullName) this.fullName = identityData.fullName;
+		if (!keepOldOnEmpty || identityData.id.key) this.id.key = identityData.id.key;
+		if (!keepOldOnEmpty || identityData.smtp.key) this.smtp.key = identityData.smtp.key;
+		if (!keepOldOnEmpty || identityData.sideDescription) this.sideDescription = identityData.sideDescription;
+		this.extras.copy(identityData.extras, keepOldOnEmpty);
 	},
 
 	// dependent on MsgComposeCommands, should/will only be called in ComposeDialog
@@ -235,8 +236,8 @@ vI_identityCollection.prototype =
 	}
 };
 
-const DEFAULT_SMTP_TAG = "vI_useDefaultSMTP"
-const NO_SMTP_TAG = "vI_noStoredSMTP"
+const DEFAULT_SMTP_TAG = "vI_useDefaultSMTP";
+const NO_SMTP_TAG = "vI_noStoredSMTP";
 
 function vI_smtpObj(key) {
 	this._key = key;

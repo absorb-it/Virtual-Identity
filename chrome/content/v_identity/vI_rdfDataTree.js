@@ -149,6 +149,7 @@ var vI_rdfDataTree = {
 	_strings : null,
 	
 	onselect : function () {
+		vI_rdfDataTree.groupUpdateConstraints();
 		vI_rdfDataTree.moveConstraints();
 
 		var tree = vI_rdfDataTree.trees[vI_rdfDataTree.tabbox.selectedPanel.id];
@@ -281,6 +282,56 @@ var vI_rdfDataTree = {
 			document.getElementById("menu_removeSelected"))
 	},
 
+	groupModifySelected : function() {
+		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var tree = vI_rdfDataTree.trees[treeType];
+		if (tree.treeElem.view.selection.count < 1) return; // shouldn't happen, button should not be shown if none or one selected
+		
+		// Open Dialog as for new Elem
+		var newItemPreset = { recipientCol : "vI_groupModifyTemplate", identityData : new vI_identityData ("", null, null, NO_SMTP_TAG, null, null) };
+		// XXXX create useful preset
+		var retVar = { treeType: null, identityData: new vI_identityData() };
+
+		window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
+			"chrome, dialog, modal, alwaysRaised, resizable=yes",
+			newItemPreset, treeType,
+			vI_rdfDatasource, retVar).focus();
+
+		var warning = vI_rdfDataTree._strings.getString("vI_rdfDataTree.modify.Warning1") + " " +
+			tree.treeElem.view.selection.count + " " +
+			vI_rdfDataTree._strings.getString("vI_rdfDataTree.modify.Warning2")
+		if (!vI_rdfDataTree.promptService.confirm(window,"Warning",warning)) return;
+
+		var start = new Object(); var end = new Object();
+		var numRanges = tree.treeElem.view.selection.getRangeCount();
+		for (var t=0; t<numRanges; t++){
+			tree.treeElem.view.selection.getRangeAt(t,start,end);
+			for (var v=start.value; v<=end.value; v++) {
+				var localIdentityData = new vI_identityData();
+				vI_notificationBar.dump("## groupModifySelected created new identityData\n");
+				localIdentityData.copy(tree.idTable[v].identityData, false);
+				vI_notificationBar.dump("## groupModifySelected added previous identityData\n");
+				vI_notificationBar.dump("## groupModifySelected const DEFAULT_SMTP_TAG = " + DEFAULT_SMTP_TAG + "\n");
+				// copy all defined settings from retVal.identityData to localIdentityData
+				localIdentityData.copy(retVar.identityData, true);
+				vI_notificationBar.dump("## groupModifySelected overtook new identityData\n");
+				vI_rdfDatasource.updateRDF(
+					tree.idTable[v]["recipientCol"], treeType,
+					localIdentityData,
+					true, true, tree.idTable[v]["recipientCol"], treeType);
+			}
+		}
+
+		// reload all trees (multiple types might have changed)
+		for each (var treeType in vI_rdfDataTree.treeTypes) {
+			vI_rdfDataTree.trees[treeType].idData = null;
+			vI_rdfDataTree.trees[treeType].idTable = null;
+			vI_rdfDataTree.trees[treeType].loadTable()
+		}
+		vI_rdfDataTree.tabbox.selectedTab = document.getElementById(retVar.treeType + "Tab");
+		vI_rdfDataTree.hideInfoBox();
+	},
+
 	modifySelected : function() {
 		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
 		var tree = vI_rdfDataTree.trees[treeType];
@@ -338,6 +389,14 @@ var vI_rdfDataTree = {
 		tree.idData = null; tree.idTable = null;
 		tree.loadTable();
 		vI_rdfDataTree.hideInfoBox();
+	},
+
+	groupUpdateConstraints : function() {
+		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var tree = vI_rdfDataTree.trees[treeType];
+		if (tree.treeElem.view.selection.count > 1)
+			document.getElementById("groupEditButton_" + treeType).setAttribute("disabled","false");
+		else	document.getElementById("groupEditButton_" + treeType).setAttribute("disabled","true");
 	},
 	
 	moveConstraints : function() {

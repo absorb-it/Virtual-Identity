@@ -49,12 +49,12 @@ var vI_rdfDataEditor = {
 			vI_rdfDataEditor.__recipient = window.arguments[0]["recipientCol"];
 		vI_rdfDataEditor.__type = window.arguments[1];
 		vI_rdfDataEditor.__rdfDatasource = window.arguments[2];
-		vI_rdfDataEditor.__rdfDataTree = window.arguments[3];
-		;
+		
 		vI_rdfDataEditor.__identityData = new vI_identityData();
 		vI_rdfDataEditor.__identityData.copy(window.arguments[0].identityData);
 
-		
+		if (vI_rdfDataEditor.__recipient == "vI_groupModifyTemplate")
+			document.getElementById("recipient_box").setAttribute("hidden", "true")
 		// set recipient
 		document.getElementById("recipient").value = vI_rdfDataEditor.__recipient;
 		
@@ -106,12 +106,18 @@ var vI_rdfDataEditor = {
 			document.getElementById("smtp_server_list").selectedItem.getAttribute("key"));
 		localIdentityData.extras.readEditorValues();
 
-		vI_rdfDataEditor.__rdfDatasource.updateRDF(
-				document.getElementById("recipient").value,
-				document.getElementById("type_menu").selectedItem.getAttribute("key"),
-				localIdentityData,
-				true, true, vI_rdfDataEditor.__recipient, vI_rdfDataEditor.__type);
+		if (vI_rdfDataEditor.__recipient != "vI_groupModifyTemplate")
+			vI_rdfDataEditor.__rdfDatasource.updateRDF(
+					document.getElementById("recipient").value,
+					document.getElementById("type_menu").selectedItem.getAttribute("key"),
+					localIdentityData,
+					true, true, vI_rdfDataEditor.__recipient, vI_rdfDataEditor.__type);
 		
-		return document.getElementById("type_menu").selectedItem.getAttribute("key");
+		var returnVar = {
+			treeType: document.getElementById("type_menu").selectedItem.getAttribute("key"),
+			identityData: localIdentityData
+		}
+
+		return returnVar;
 	}
 }

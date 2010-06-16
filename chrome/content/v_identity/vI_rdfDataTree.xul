@@ -47,8 +47,8 @@
         onload="vI_rdfDataTree.init();"
 	title="&vI_rdfDataTree.dlgTitle.label;">
 
-<script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataTree.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_identityData.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataTree.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
@@ -161,6 +161,8 @@
           <button id="deleteButton_email" label="&deleteButton.label;" accesskey="&deleteButton.accesskey;" 
                   oncommand="vI_rdfDataTree.removeSelected();"/>
           <spacer flex="1"/>
+          <button id="groupEditButton_email" label="&vI_rdfDataTree.groupEditButton.label;" accesskey="&vI_rdfDataTree.groupEditButton.accesskey;" 
+                  oncommand="vI_rdfDataTree.groupModifySelected();" disabled="true"/>
 </vbox>
 </hbox>
 </tabpanel>
@@ -198,6 +200,8 @@
           <button id="deleteButton_maillist" label="&deleteButton.label;" accesskey="&deleteButton.accesskey;" 
                   oncommand="vI_rdfDataTree.removeSelected();"/>
           <spacer flex="1"/>
+	  <button id="groupEditButton_maillist" label="&vI_rdfDataTree.groupEditButton.label;" accesskey="&vI_rdfDataTree.groupEditButton.accesskey;" 
+                  oncommand="vI_rdfDataTree.groupModifySelected();" disabled="true"/>
 </vbox>
 </hbox>
 </tabpanel>
@@ -234,6 +238,8 @@
           <button id="deleteButton_newsgroup" label="&deleteButton.label;" accesskey="&deleteButton.accesskey;" 
                   oncommand="vI_rdfDataTree.removeSelected();"/>
           <spacer flex="1"/>
+	  <button id="groupEditButton_newsgroup" label="&vI_rdfDataTree.groupEditButton.label;" accesskey="&vI_rdfDataTree.groupEditButton.accesskey;" 
+                  oncommand="vI_rdfDataTree.groupModifySelected();" disabled="true"/>
 </vbox>
 </hbox>
 </tabpanel>
@@ -282,6 +288,8 @@
                   class="down"
                   oncommand="vI_rdfDataTree.moveDownSelected();"/>
           <spacer flex="1"/>
+	  <button id="groupEditButton_filter" label="&vI_rdfDataTree.groupEditButton.label;" accesskey="&vI_rdfDataTree.groupEditButton.accesskey;" 
+                  oncommand="vI_rdfDataTree.groupModifySelected();" disabled="true"/>
 </vbox>
 </hbox>
 </tabpanel>
