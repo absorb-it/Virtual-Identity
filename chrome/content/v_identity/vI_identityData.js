@@ -101,6 +101,8 @@ vI_identityData.prototype = {
 		vI_notificationBar.dump("## vI_identityData: isExistingIdentity: ignoreFullNameWhileComparing='" + ignoreFullNameWhileComparing + "'\n");
 // 		vI_notificationBar.dump("## vI_identityData base: fullName.toLowerCase()='" + this.fullName + "' email.toLowerCase()='" + this.email + "' smtp='" + this.smtp.key + "'\n");
 
+		var ignoreFullNameMatchKey = null;
+
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		for (var i in accounts) {
 			// skip possible active VirtualIdentity Accounts
@@ -111,15 +113,24 @@ vI_identityData.prototype = {
 // 				vI_notificationBar.dump("## vI_identityData comp: fullName.toLowerCase()='" + identities[j].fullName.toLowerCase() + "' email.toLowerCase()='" + identities[j].email.toLowerCase() + "' smtp='" + identities[j].smtpServerKey + "'\n");
 				var email = this.email?this.email:"";				// might be null if no identity is set
 				var idEmail = identities[j].email?identities[j].email:"";	// might be null if no identity is set
-				if (	(ignoreFullNameWhileComparing ||
-					this.fullName.toLowerCase() == identities[j].fullName.toLowerCase()) &&
-					(email.toLowerCase() == idEmail.toLowerCase()) &&
+				if (	(email.toLowerCase() == idEmail.toLowerCase()) &&
 					this.smtp.equal(new vI_smtpObj(identities[j].smtpServerKey))	) {
-					vI_notificationBar.dump("## vI_identityData: isExistingIdentity: " + this.combinedName + " found, id='" + identities[j].key + "'\n");
-					return identities[j].key;
+						// if fullName matches, than this is a final match
+						if ( this.fullName.toLowerCase() == identities[j].fullName.toLowerCase() ) {
+							vI_notificationBar.dump("## vI_identityData: isExistingIdentity: " + this.combinedName + " found, id='" + identities[j].key + "'\n");
+							return identities[j].key; // return key and stop searching
+						}
+						// if fullNames don't match, remember the key but continue to search for full match
+						else if (!ignoreFullNameMatchKey) ignoreFullNameMatchKey = identities[j].key;
 				}
 			}
 		}
+
+		if ( ignoreFullNameWhileComparing && ignoreFullNameMatchKey ) {
+			vI_notificationBar.dump("## vI_identityData: isExistingIdentity: " + this.combinedName + " found, id='" + ignoreFullNameMatchKey + "'\n");
+			return 	ignoreFullNameMatchKey;
+		}
+
 		vI_notificationBar.dump("## vI_identityData: isExistingIdentity: " + this.combinedName + " not found\n");
 		return null;
 	},
