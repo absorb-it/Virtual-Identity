@@ -30,8 +30,6 @@ var vI_Dialog = {
 
 	init : function(warning) {
 		document.getElementById("vI_Dialog").setAttribute("class", warning.class); 
-		// refresh window contents through resizing 
-		window.resizeTo( window.outerWidth, window.outerHeight);
 		vI_Dialog.setDescription(document.getElementById("vI_Dialog_title"), warning.title);
 		vI_Dialog.setDescription(document.getElementById("vI_Dialog_recLabel"), warning.recLabel);
 		vI_Dialog.setDescription(document.getElementById("vI_Dialog_recipient"), warning.recipient);
