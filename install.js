@@ -6,7 +6,7 @@
 
 // Editable Items Begin
 var displayName         = "Virtual Identity"; // The name displayed to the user (don't include the version)
-var version             = "0.6.7";
+var version             = "0.6.8";
 var name                = "v_identity"; // The leafname of the JAR file (without the .jar part)
 
 // The following three sets of variables tell this installer script how your
