@@ -500,7 +500,7 @@
 		this.identityData.combinedName = this.label;
 		
 		var existingIdentity = this.checkForVirtualIdentity();
-		if (existingIdentity) this.selectedMenuItem = existingIdentity;
+		if (existingIdentity && this.selectedMenuItem.value != existingIdentity) this.selectedMenuItem = existingIdentity;
 		]]></body>
 	</method>
 	<method name="checkForVirtualIdentity">
