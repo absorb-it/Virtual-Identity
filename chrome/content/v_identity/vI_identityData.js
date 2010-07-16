@@ -23,7 +23,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 function vI_identityData(email, fullName, id, smtp, extras, sideDescription, existingID) {
-	this._email = email;
+	this._email = email?email:"";
 	this._emailParsed = false;
 	this._fullName = fullName?fullName:"";
 	this.id = new vI_idObj(id);
