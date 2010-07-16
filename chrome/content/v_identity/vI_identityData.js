@@ -23,8 +23,9 @@
  * ***** END LICENSE BLOCK ***** */
 
 function vI_identityData(email, fullName, id, smtp, extras, sideDescription, existingID) {
-	this.email = email;
-	this.fullName = (fullName?fullName:'');
+	this._email = email;
+	this._emailParsed = false;
+	this._fullName = fullName?fullName:"";
 	this.id = new vI_idObj(id);
 	this.smtp = new vI_smtpObj(smtp);
 	this.extras = extras?extras:new vI_storageExtras();
@@ -38,8 +39,9 @@ function vI_identityData(email, fullName, id, smtp, extras, sideDescription, exi
 	this.stringBundle = document.getElementById("vIdentBundle");
 }
 vI_identityData.prototype = {
-	email : null,
-	fullName : null,
+	_email : null,			// internal email-field might contain combinedName (until first queried via email)
+	_fullName : null,
+	_emailParsed : null,
 	id : null,
 	smtp : null,
 	extras : null,
@@ -49,25 +51,44 @@ vI_identityData.prototype = {
 	stringBundle : null,
 	comp : null,	
 
+	parseEmail : function() {
+		if (this._emailParsed) return;
+		// parse email and move any additional parts to fullName
+		if (this._email.match(/<\s*[^>\s]*@[^>\s]*\s*>/) || this._email.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/) || this._email.match(/$/)) {
+			this._fullName += RegExp.leftContext + RegExp.rightContext;
+			this._email = RegExp.lastMatch;
+// 			vI_notificationBar.dump("## vI_identityData: parseEmail _fullName = '" + this._fullName + "'\n");
+// 			vI_notificationBar.dump("## vI_identityData: parseEmail _email =    '" + this._email + "'\n");
+		}
+		this._emailParsed = true;
+	},
+	get email() {
+		this.parseEmail();
+		return (this._email?this._email.replace(/\s+|<|>/g,""):"");
+	},
+	set email(email) { this._email = email; this._emailParsed = false; },
+
+	cleanName : function(fullName) {
+// 		vI_notificationBar.dump("## vI_identityData: cleanName init '" + fullName + "'\n");
+		var _fullName = fullName.replace(/^\s+|\s+$/g,"");
+		if (_fullName.search(/^\".+\"$|^'.+'$/g) != -1) {
+			_fullName = this.cleanName(_fullName.replace(/^\"(.+)\"$|^'(.+)'$/g,"$1$2"));
+		}
+// 		vI_notificationBar.dump("## vI_identityData: cleanName done '" + _fullName + "'\n");
+		return _fullName;
+	},
+
+	get fullName() {
+		this.parseEmail();
+		return (this._fullName?this.cleanName(this._fullName):"")
+	},
+	set fullName(fullName) { this._fullName = fullName; },
+
 	get combinedName() {
-		var email = this.email?this.email.replace(/^\s+|\s+$/g,""):"";
-		var fullName = this.fullName?this.fullName.replace(/^\s+|\s+$/g,""):"";
+		var fullName = this.fullName; var email = this.email;
 		return fullName?fullName+(email?" <"+email+">":""):email
 	},
-	set combinedName(combinedName) {
-		var name = ""; var email = "";
-		// prefer an email address separated with < >, only if not found use any other
-		if (combinedName.match(/<\s*[^>\s]*@[^>\s]*\s*>/) || combinedName.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/) || combinedName.match(/$/)) {
-			name = RegExp.leftContext + RegExp.rightContext
-			email = RegExp.lastMatch
-			email = email.replace(/\s+|<|>/g,"")
-			name = name.replace(/^\s+|\s+$/g,"")
-			name = name.replace(/^\"|\"$/g,"")
-			name = name.replace(/^\'|\'$/g,"")
-		}
-		this.fullName = name;
-		this.email = email;
-	},
+	set combinedName(combinedName) { this._email = combinedName; this._fullName = ""; this._emailParsed = false; },
 
 	__makeHtml : function (string) { return string?string.replace(/>/g,"&gt;").replace(/</g,"&lt;"):"" },
 	get idHtml() { return this.__makeHtml(this.id.value); },

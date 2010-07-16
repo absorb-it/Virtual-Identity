@@ -207,8 +207,10 @@ var vI_storage = {
 		if (recipientType == "addr_newsgroups")	return { recDesc : recipient, recType : "newsgroup" }
 		else if (vI_storage.isMailingList(recipient))
 			return { recDesc : vI_storage.getMailListName(recipient), recType : "maillist" }
-		else 
-			return { recDesc : vI_helper.parseAddress(recipient).combinedName, recType : "email" }
+		else {
+			var localIdentityData = new vI_identityData(recipient, null, null, null, null, null, null);
+			return { recDesc : localIdentityData.combinedName, recType : "email" }
+		}
 	},
 		
 	storeVIdentityToAllRecipients : function(msgType) {

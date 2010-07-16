@@ -294,15 +294,12 @@ var vI_upgrade = {
 		if ( info && info[0] ) id = info[0];
 		if ( info && info[1] ) smtp = info[1];
 		
-		var splitted = vI_upgrade.__parseAddress(newFullEmail);
-		//~ alert(splitted.email + "++" + splitted.name + "++" + splitted.combinedName)
+		var localIdentityData = new vI_identityData(newFullEmail, null, id, smtp, null)
 		
-		var localIdentityData = new vI_identityData(splitted.email, splitted.name, id, smtp, null)
-		
-		vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.primaryEmail),
+		vI_rdfDatasource.updateRDF(localIdentityData.combinedName,
 						"email", localIdentityData, true, true, null, null)
 		if (Card.secondEmail.replace(/^\s+|\s+$/g,""))
-			vI_rdfDatasource.updateRDF(vI_helper.combineNames(Card.displayName, Card.secondEmail),
+			vI_rdfDatasource.updateRDF(localIdentityData.combinedName,
 					"email", localIdentityData, true, true, null, null)
 		
 		Card[returnVar.prop] = "";
@@ -311,24 +308,6 @@ var vI_upgrade = {
 		return { prop: returnVar.prop, counter : ++returnVar.counter, warning : returnVar.warning };
 	},
 	
-	// by now in vI, not accessible from here. Best change all references to vI_helper.
-	__parseAddress : function(address) {
-		//~ vI_notificationBar.dump("## v_identity: getAddress: parsing '" + address + "'\n")
-		var name = ""; email = "";
-		// prefer an email address separated with < >, only if not found use any other
-		if (address.match(/<\s*[^>\s]*@[^>\s]*\s*>/) || address.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/) || address.match(/$/)) {
-			name = RegExp.leftContext + RegExp.rightContext
-			email = RegExp.lastMatch
-			email = email.replace(/\s+|<|>/g,"")
-			name = name.replace(/^\s+|\s+$/g,"")
-		}
-		//~ vI_notificationBar.dump("## v_identity: getAddress: address '" + address + "' name '" + 
-			//~ name + "' email '" + email + "'\n");
-		return { name: name,
-			 email: email,
-			 combinedName: name + " <" + email + ">"}
-	},
-
 	openURL : function(aURL) {
             var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
             var protocolSvc = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"].getService(Components.interfaces.nsIExternalProtocolService);

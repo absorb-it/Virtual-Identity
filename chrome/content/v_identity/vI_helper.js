@@ -74,34 +74,5 @@ var vI_helper = {
 			return true;
 		}
 		else return false;
-	},
-
-// vI_upgrade.js:229:
-// vI_upgrade.js:232:
-	combineNames : function (fullName, email) {
-		if (fullName && fullName.replace(/^\s+|\s+$/g,"")) return fullName.replace(/^\s+|\s+$/g,"") + " <" + email.replace(/^\s+|\s+$/g,"") + ">"
-		else return email?email.replace(/^\s+|\s+$/g,""):""
-	},
-	
-// vI_rdfDataEditor.js:80:
-// vI_rdfDatasource.js:119:
-// vI_rdfDatasource.js:123:
-// vI_rdfDatasource.js:130:
-// vI_upgrade.js:225:
-// vI_upgrade.js:256:
-	parseAddress : function(address) {
-		var name = ""; var email = "";
-		// prefer an email address separated with < >, only if not found use any other
-		if (address.match(/<\s*[^>\s]*@[^>\s]*\s*>/) || address.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/) || address.match(/$/)) {
-			name = RegExp.leftContext + RegExp.rightContext
-			email = RegExp.lastMatch
-			email = email.replace(/\s+|<|>/g,"")
-			name = name.replace(/^\s+|\s+$/g,"")
-			name = name.replace(/^\"|\"$/g,"")
-			name = name.replace(/^\'|\'$/g,"")
-		}
-		return { name: name,
-			 email: email,
-			 combinedName: vI_helper.combineNames(name, email)}
 	}
 }

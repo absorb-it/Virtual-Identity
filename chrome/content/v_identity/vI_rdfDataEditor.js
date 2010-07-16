@@ -93,15 +93,13 @@ var vI_rdfDataEditor = {
 	},
 	
 	blurEvent : function(elementId) {
-		var elem = document.getElementById(elementId)
-		var address = vI_helper.parseAddress(elem.value)
-		elem.value = address.combinedName;					
+		var elem = document.getElementById(elementId);
+		var localIdentityData = new vI_identityData(elem.value, null, null, null, null, null, null);
+		elem.value = localIdentityData.combinedName;					
 	},
 	
 	accept : function() {
-		var address = vI_helper.parseAddress(document.getElementById("sender").value)
-		
-		var localIdentityData = new vI_identityData(address.email, address.name,
+		var localIdentityData = new vI_identityData(document.getElementById("sender").value, null,
 			document.getElementById("identity_list").selectedItem.getAttribute("value"),
 			document.getElementById("smtp_server_list").selectedItem.getAttribute("key"));
 		localIdentityData.extras.readEditorValues();
