@@ -183,22 +183,24 @@ var vI_main = {
 
 			// final check if eyerything is nice before we handover to the real sending...
 			var virtualIdentityData = document.getElementById("msgIdentity_clone").identityData;
+
 			var currentIdentity = getCurrentIdentity();
-			var currentSMTPobj = new vI_smtpObj(currentIdentity.smtpServerKey);
+            //                          vI_identityData(email, fullName, id, smtp, extras, sideDescription, existingID)
+            var currentIdentityData = new vI_identityData(currentIdentity.email, currentIdentity.fullName, null, currentIdentity.smtpServerKey, null, null, null);
 			
 			vI_notificationBar.dump("\n## vI_identityData GenericSendMessage Final Check\n");
-			vI_notificationBar.dump("## vI_identityData currentIdentity: fullName='" + currentIdentity.fullName + "' email='" + currentIdentity.email + "' smtp='" + currentSMTPobj.key + "'\n");
+			vI_notificationBar.dump("## vI_identityData currentIdentity: fullName='" + currentIdentityData.fullName + "' email='" + currentIdentityData.email + "' smtp='" + currentIdentityData.smtp.key + "'\n");
 			vI_notificationBar.dump("## vI_identityData virtualIdentityData: fullName='" + virtualIdentityData.fullName + "' email='" + virtualIdentityData.email + "' smtp='" + virtualIdentityData.smtp.key + "'\n");
 
-			if	(currentIdentity.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase()	&&
-				currentIdentity.email.toLowerCase() == virtualIdentityData.email.toLowerCase()		&&
-				virtualIdentityData.smtp.equal(currentSMTPobj)	) {
+			if	(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase()	&&
+				currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase()		&&
+				virtualIdentityData.smtp.equal(currentIdentityData.smtp)	) {
 					vI_main.original_functions.GenericSendMessage(msgType);
 			}
 			else {
-				if (!(currentIdentity.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase())) vI_notificationBar.dump("\n## vI_identityData failed check for fullName.\n");
-				if (!(currentIdentity.email.toLowerCase() == virtualIdentityData.email.toLowerCase())) vI_notificationBar.dump("\n## vI_identityData failed check for email.\n");
-				if (!(virtualIdentityData.smtp.equal(currentSMTPobj))) vI_notificationBar.dump("\n## vI_identityData failed check for SMTP.\n");
+				if (!(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase())) vI_notificationBar.dump("\n## vI_identityData failed check for fullName.\n");
+				if (!(currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase())) vI_notificationBar.dump("\n## vI_identityData failed check for email.\n");
+				if (!(virtualIdentityData.smtp.equal(currentIdentityData.smtp))) vI_notificationBar.dump("\n## vI_identityData failed check for SMTP.\n");
 				alert(vI_main.elements.strings.getString("vident.genericSendMessage.error"));
 				vI_main.Cleanup();
 			}
