@@ -19,6 +19,7 @@ pref("extensions.virtualIdentity.smart_reply_notification", true);
 pref("extensions.virtualIdentity.smart_reply_defaultFullName", "");
 pref("extensions.virtualIdentity.smart_reply_ignoreFullName", false);
 pref("extensions.virtualIdentity.smart_reply_for_newsgroups", false);
+pref("extensions.virtualIdentity.smart_reply_added_extraHeaders", "");
 pref("extensions.virtualIdentity.smart_detectByReceivedHeader", true);
 pref("extensions.virtualIdentity.autoTimestamp", false);
 pref("extensions.virtualIdentity.get_header_notification", true);

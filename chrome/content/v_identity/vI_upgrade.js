@@ -205,11 +205,21 @@ var vI_upgrade = {
 			default:
 				vI_upgrade.__transferMovedUserPrefs(currentVersion);
 				vI_upgrade.__removeObsoleteUserPrefs(currentVersion);
+                vI_upgrade.__removeExtraAddedHeaders(currentVersion);
 		}
 		vI_rdfDatasource.storeExtVersion();
 		vI_notificationBar.dump("extension-upgrade to " + vI_rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
 	},
-		
+    
+    __removeExtraAddedHeaders : function(currentVersion) {
+        if (vI_upgrade.versionChecker.compare(currentVersion, "0.6.9") < 0 && 
+                vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders") != "") {
+            // clean extraExpandedHeaders once, because the whole header-saving and restoring was broken too long
+            vI_prepareHeader.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", "")
+            vI_notificationBar.dump("cleaned extraExpandedHeaders\n");
+        }
+    },
+    
 	__transferMovedUserPrefs : function(currentVersion) {
 		// transfer renamed preferences
 		var transferPrefs = [ 	{ version : "0.5.3",

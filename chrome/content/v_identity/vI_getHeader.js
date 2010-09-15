@@ -159,17 +159,17 @@ var vI_getHeader = {
 	},
 	
 	hideExtraHeader: function() {
-		var header_list = vI_prepareHeader.addedHeaders
-		for (var index = 0; index < header_list.length; index++) {
-			var header_to_search_splitted=header_list[index].split(/:/)
+		var addedHdrs = vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders").split(/ /);
+		for (var index = 0; index < addedHdrs.length; index++) {
+			var header_to_search_splitted=addedHdrs[index].split(/:/)
 			var header_to_search=header_to_search_splitted[0].toLowerCase()
 			if (typeof(gExpandedHeaderView[header_to_search]) == "object") {
-			if (! gViewAllHeaders) {
-				gExpandedHeaderView[header_to_search].enclosingBox.setAttribute("hidden", true);
-			}
-			else {
-				gExpandedHeaderView[header_to_search].enclosingBox.removeAttribute("hidden");
-			}
+                if (! gViewAllHeaders) {
+                    gExpandedHeaderView[header_to_search].enclosingBox.setAttribute("hidden", true);
+                }
+                else {
+                    gExpandedHeaderView[header_to_search].enclosingBox.removeAttribute("hidden");
+                }
 			}
 		}
 	},
@@ -197,8 +197,6 @@ var vI_prepareHeader = {
 	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
 			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 			
-	addedHeaders : [],
-	
 	observer_added : false,
 	
 	init : function() {
@@ -250,8 +248,9 @@ var vI_prepareHeader = {
 
 // 		try {
 			var extraHdrs = " " + 
-				vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase()
-				+ " ";
+				vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase();
+
+            var addedHeaders = vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders");
 
 			for (var index = 0; index < header_list.length; index++) {
 				var headerToSearch_splitted = header_list[index].split(/:/)
@@ -282,18 +281,19 @@ var vI_prepareHeader = {
 				}
 				if (found) continue;
 
-				var addedHeadersString = " " + vI_prepareHeader.addedHeaders.join(" ") + " "
 				if ((extraHdrs.indexOf(" " + headerToSearch + " ") < 0) &&
-					(addedHeadersString.indexOf(" " + headerToSearch + " ") < 0))
-					vI_prepareHeader.addedHeaders.push(headerToSearch);
+					(addedHeaders.indexOf(" " + headerToSearch + " ") < 0))
+                        addedHeaders += " " + headerToSearch;
 // 				else vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' already in extraExpandedHeaders\n");
 			}
 			
-			if (vI_prepareHeader.addedHeaders.length > 0) {
-				extraHdrs += vI_prepareHeader.addedHeaders.join(" ");
+			addedHeaders = addedHeaders.replace(/^\s+|\s+$/g,"")
+			if (addedHeaders.length > 0) {
+                extraHdrs += " " + addedHeaders;
 				extraHdrs = extraHdrs.replace(/^\s+|\s+$/g,"")
 				vI_prepareHeader.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", extraHdrs)
-				vI_notificationBar.dump("## vI_prepareHeader: extraExpandedHeaders '" + vI_prepareHeader.addedHeaders.join(" ") + "' added\n");
+				vI_prepareHeader.prefroot.setCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders", addedHeaders)
+				vI_notificationBar.dump("## vI_prepareHeader: extraExpandedHeaders '" + addedHeaders + "' added\n");
 			}		
 
 			return true;
@@ -307,20 +307,22 @@ var vI_prepareHeader = {
 	removeExtraHeader: function() {
 		vI_notificationBar.dump("## vI_prepareHeader: cleanupExtraHeader\n");
 
-		if (vI_prepareHeader.addedHeaders.length > 0) {
+        var addedHdrs = vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders").split(/ /);
+
+		if (addedHdrs.length > 0) {
 			var extraHdrs = vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase().split(/ /);
 		
-			for (var i = 0; i < vI_prepareHeader.addedHeaders.length; i++) {
+			for (var i = 0; i < addedHdrs.length; i++) {
 				for (var j = 0; j < extraHdrs.length; j++) {
-					if (extraHdrs[j] == vI_prepareHeader.addedHeaders[i]) {
+					if (extraHdrs[j] == addedHdrs[i]) {
 						extraHdrs.splice(j,1);
 						break;
 					}
 				}
 			}
-			vI_prepareHeader.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", extraHdrs.join(" "))
-			vI_notificationBar.dump("## vI_prepareHeader: extraExpandedHeaders '" + vI_prepareHeader.addedHeaders.join(" ") + "' removed\n");
-			vI_prepareHeader.addedHeaders = [];
+			vI_notificationBar.dump("## vI_prepareHeader: extraExpandedHeaders '" + addedHdrs.join(" ") + "' removed\n");
+            vI_prepareHeader.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", extraHdrs.join(" "))
+			vI_prepareHeader.prefroot.setCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders", "")
 		}
 	},
 	
@@ -340,44 +342,25 @@ var vI_prepareHeader = {
 
 //  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
     uninstallObserver : {
-        MY_EXTENSION_UUID : "{dddd428e-5ac8-4a81-9f78-276c734f75b8}",
         _uninstall : false,
         observe : function(subject, topic, data) {
-            if (topic == "em-action-requested") {
-                var extension = subject.QueryInterface(Components.interfaces.nsIUpdateItem);
-
-                if (extension.id == this.MY_EXTENSION_UUID) {
-                    if ((data == "item-uninstalled") || (data == "item-disabled")) {
-                        this._uninstall = true;
-                    } else if (data == "item-cancel-action") {
-                        this._uninstall = false;
-                    }
-                }
-            } else if (topic == "quit-application-granted") {
-                if (this._uninstall) {
-                    /* uninstall stuff. */
-                    vI_notificationBar.dump("## vI_uninstall: uninstall/disabledment \n");
-                    vI_prepareHeader.removeExtraHeader();
-                    vI_notificationBar.dump("## vI_uninstall: uninstall/disablement done\n");
-                }
+            if (topic == "quit-application-granted") {
+                /* uninstall stuff. */
+                vI_notificationBar.dump("## vI_uninstall: uninstall/disabledment \n");
+                vI_prepareHeader.removeExtraHeader();
+                vI_notificationBar.dump("## vI_uninstall: uninstall/disablement done\n");
                 this.unregister();
             }
         },
         register : function() {
-            var observerService =
             Components.classes["@mozilla.org/observer-service;1"].
-                getService(Components.interfaces.nsIObserverService);
-
-            observerService.addObserver(this, "em-action-requested", false);
-            observerService.addObserver(this, "quit-application-granted", false);
+                getService(Components.interfaces.nsIObserverService).
+                    addObserver(this, "quit-application-granted", false);
         },
         unregister : function() {
-            var observerService =
-                Components.classes["@mozilla.org/observer-service;1"].
-                getService(Components.interfaces.nsIObserverService);
-
-            observerService.removeObserver(this,"em-action-requested");
-            observerService.removeObserver(this,"quit-application-granted");
+            Components.classes["@mozilla.org/observer-service;1"].
+                getService(Components.interfaces.nsIObserverService).
+                    removeObserver(this,"quit-application-granted");
         }
     }
 }
