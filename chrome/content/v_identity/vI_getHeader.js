@@ -21,6 +21,8 @@
 
     Contributor(s): Christian Weiske
     Contributor(s): Patrick Brunschwig
+    Contributor(s): http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
+
  * ***** END LICENSE BLOCK ***** */
 
 /**
@@ -30,6 +32,10 @@
 /**
 * some code copied and adapted from 'enigmail'
 * thanks to Patrick Brunschwig <patrick.brunschwig@gmx.net>
+*/
+/**
+* some code copied and adapted from 'http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html'
+* thanks to the unknown programmer
 */
 
 var vI_getHeader = {
@@ -217,12 +223,14 @@ var vI_prepareHeader = {
 		if (vI_prepareHeader.observer_added) return;
 		vI_prepareHeader.prefroot.QueryInterface(Components.interfaces.nsIPrefBranch2);
 		vI_prepareHeader.prefroot.addObserver("extensions.virtualIdentity.smart_reply_headers", this, false);
+        vI_prepareHeader.uninstallObserver.register();
 		vI_prepareHeader.observer_added = true;
 	},
 	
 	removeObserver : function() {
 		if (!vI_prepareHeader.observer_added) return;
 		vI_prepareHeader.prefroot.removeObserver("extensions.virtualIdentity.smart_reply_headers", this);
+        vI_prepareHeader.uninstallObserver.unregister();
 		vI_prepareHeader.observer_added = false;
 	},
 	
@@ -328,9 +336,53 @@ var vI_prepareHeader = {
 			vI_notificationBar.dump("## vI_prepareHeader: reload Message\n");
 			MsgReload();
 		}
-	}
+	},
+
+//  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
+    uninstallObserver : {
+        MY_EXTENSION_UUID : "{dddd428e-5ac8-4a81-9f78-276c734f75b8}",
+        _uninstall : false,
+        observe : function(subject, topic, data) {
+            if (topic == "em-action-requested") {
+                var extension = subject.QueryInterface(Components.interfaces.nsIUpdateItem);
+
+                if (extension.id == this.MY_EXTENSION_UUID) {
+                    if (data == "item-uninstalled") {
+                        this._uninstall = true;
+                    } else if (data == "item-cancel-action") {
+                        this._uninstall = false;
+                    }
+                }
+            } else if (topic == "quit-application-granted") {
+                if (this._uninstall) {
+                    /* uninstall stuff. */
+                    vI_notificationBar.dump("## vI_uninstall: _uninstall \n");
+                    vI_prepareHeader.removeExtraHeader();
+                    vI_notificationBar.dump("## vI_uninstall: _uninstall done\n");
+                }
+                this.unregister();
+            }
+        },
+        register : function() {
+            var observerService =
+            Components.classes["@mozilla.org/observer-service;1"].
+                getService(Components.interfaces.nsIObserverService);
+
+            observerService.addObserver(this, "em-action-requested", false);
+            observerService.addObserver(this, "quit-application-granted", false);
+        },
+        unregister : function() {
+            var observerService =
+                Components.classes["@mozilla.org/observer-service;1"].
+                getService(Components.interfaces.nsIObserverService);
+
+            observerService.removeObserver(this,"em-action-requested");
+            observerService.removeObserver(this,"quit-application-granted");
+        }
+    }
 }
 
 addEventListener('messagepane-loaded', vI_getHeader.setupEventListener, true);
 window.addEventListener("load", function(e) { vI_prepareHeader.init(); }, false);
 window.addEventListener("unload", function(e) { vI_prepareHeader.cleanup(); }, false);
+// window.addEventListener("load", initializeOverlay, false);
