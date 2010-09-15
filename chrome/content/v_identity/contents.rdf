@@ -34,4 +34,12 @@
       <RDF:li>chrome://v_identity/content/vI_upgradeOverlay.xul</RDF:li>
     </RDF:Seq>
 
+  <RDF:Seq about="chrome://messenger/content/AccountManager.xul">
+    <RDF:li>chrome://v_identity/content/vI_am-Overlay.xul</RDF:li>
+  </RDF:Seq>
+
+  <RDF:Seq about="chrome://messenger/content/am-smtp.xul">
+    <RDF:li>chrome://v_identity/content/vI_am-smtpOverlay.xul</RDF:li>
+  </RDF:Seq>
+
 </RDF:RDF>

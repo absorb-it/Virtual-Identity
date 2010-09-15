@@ -208,22 +208,39 @@
 			this._smtpPopup.appendChild(listitem);
 		}
 		]]></body>
-	</method>	
-	<constructor>
-		<![CDATA[		
-		this._addDefaultServer();
-		this._smtpPopup.appendChild(document.createElement("menuseparator"));
+	</method>
+	<method name="refresh">
+        <body><![CDATA[
+            this.unload();
+            this.load();
+        ]]></body>
+	</method>
+    <method name="load">
+        <body><![CDATA[
+            this._addDefaultServer();
+            this._smtpPopup.appendChild(document.createElement("menuseparator"));
 
-		var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
-			.getService(Components.interfaces.nsISmtpService).smtpServers;
-		
-		if (typeof(servers.Count) == "undefined")		// TB 3.x
-			while (servers && servers.hasMoreElements())
-				this._addServer(servers.getNext());
-		else							// TB 2.x
-			for (var i=0 ; i<servers.Count(); i++)
-				this._addServer(servers.QueryElementAt(i, Components.interfaces.nsISmtpServer));
-		
+            var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+                .getService(Components.interfaces.nsISmtpService).smtpServers;
+            
+            if (typeof(servers.Count) == "undefined")       // TB 3.x
+                while (servers && servers.hasMoreElements())
+                    this._addServer(servers.getNext());
+            else                            // TB 2.x
+                for (var i=0 ; i<servers.Count(); i++)
+                    this._addServer(servers.QueryElementAt(i, Components.interfaces.nsISmtpServer));
+        ]]></body>
+    </method>
+    <method name="unload">
+        <body><![CDATA[
+            var MenuItems = this._smtpPopup.childNodes
+            while (MenuItems.length > 0) { this._smtpPopup.removeChild(MenuItems[0]) }
+            this._smtpMenu.selectedItem = null;
+        ]]></body>
+    </method>
+	<constructor>
+		<![CDATA[
+            this.load();
 		]]>
 	</constructor>
 	<property name="smtp" onget="return this._smtpMenu.selectedItem.getAttribute('key');" >

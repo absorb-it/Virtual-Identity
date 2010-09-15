@@ -237,6 +237,7 @@ var vI_main = {
 		vI_notificationBar.dump("\n## v_identity: init.\n")
 		vI_main.unicodeConverter.charset="UTF-8";
 		if (!vI_main.adapt_genericSendMessage()) { vI_notificationBar.dump("\n## v_identity: init failed.\n"); return; }
+		
 		vI_main.adapt_interface();
 		gMsgCompose.RegisterStateListener(vI_main.ComposeStateListener);
 		document.getElementById("vI_tooltipPopupset")
@@ -247,6 +248,8 @@ var vI_main = {
 		// append observer to fcc_switch, because it does'n work with real identities (hidden by css)
 		document.getElementById("fcc_switch").appendChild(document.getElementById("msgIdentity_clone_observer").cloneNode(false));
 
+        vI_main.AccountManagerObserver.register();
+        
 		vI_main.initSystemStage1();
 		vI_notificationBar.dump("## v_identity: init done.\n\n")
 	},
@@ -385,7 +388,36 @@ var vI_main = {
 	Cleanup : function() {
 		vI_main.removeVirtualIdentityFromMsgIdentityMenu();
 		vI_account.removeUsedVIAccount();
-	}
+	},
+	
+	//  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
+    AccountManagerObserver : {
+        _uninstall : false,
+        observe : function(subject, topic, data) {
+            if (topic == "am-smtpChanges") {
+                vI_notificationBar.dump("## v_identity: smtp changes observed\n");
+                var msgIdentity_clone = document.getElementById("msgIdentity_clone");
+                document.getAnonymousElementByAttribute(msgIdentity_clone, "class", "smtpServerListHbox").refresh();
+            }
+            if (topic == "am-acceptChanges") {
+                vI_notificationBar.dump("## v_identity: account changes observed\n");
+                document.getElementById("msgIdentity_clone").clean();
+                document.getElementById("msgIdentity_clone").init();
+            }
+        },
+        register : function() {
+            var obsService = Components.classes["@mozilla.org/observer-service;1"].
+                getService(Components.interfaces.nsIObserverService)
+            obsService.addObserver(this, "am-smtpChanges", false);
+            obsService.addObserver(this, "am-acceptChanges", false);
+        },
+        unregister : function() {
+            var obsService = Components.classes["@mozilla.org/observer-service;1"].
+                getService(Components.interfaces.nsIObserverService)
+            obsService.removeObserver(this, "am-smtpChanges");
+            obsService.removeObserver(this, "am-acceptChanges");
+        }
+    }
 }
 
 
@@ -393,5 +425,5 @@ vI_main.replacement_functions.replace_FillIdentityList();
 window.addEventListener('load', vI_main.init, false);		// TB 1.5x, SM
 window.addEventListener('compose-window-init', vI_main.init, true);	// TB 2.x 3.x
 
-window.addEventListener("unload", function(e) { try {vI_statusmenu.removeObserver();} catch (ex) { } }, false);
+window.addEventListener("unload", function(e) { vI_main.AccountManagerObserver.unregister(); try {vI_statusmenu.removeObserver();} catch (ex) { } }, false);
 
