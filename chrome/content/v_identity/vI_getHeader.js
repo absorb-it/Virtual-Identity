@@ -347,7 +347,7 @@ var vI_prepareHeader = {
                 var extension = subject.QueryInterface(Components.interfaces.nsIUpdateItem);
 
                 if (extension.id == this.MY_EXTENSION_UUID) {
-                    if (data == "item-uninstalled") {
+                    if ((data == "item-uninstalled") || (data == "item-disabled")) {
                         this._uninstall = true;
                     } else if (data == "item-cancel-action") {
                         this._uninstall = false;
@@ -356,9 +356,9 @@ var vI_prepareHeader = {
             } else if (topic == "quit-application-granted") {
                 if (this._uninstall) {
                     /* uninstall stuff. */
-                    vI_notificationBar.dump("## vI_uninstall: _uninstall \n");
+                    vI_notificationBar.dump("## vI_uninstall: uninstall/disabledment \n");
                     vI_prepareHeader.removeExtraHeader();
-                    vI_notificationBar.dump("## vI_uninstall: _uninstall done\n");
+                    vI_notificationBar.dump("## vI_uninstall: uninstall/disablement done\n");
                 }
                 this.unregister();
             }
