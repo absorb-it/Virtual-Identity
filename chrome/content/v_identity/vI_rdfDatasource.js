@@ -35,12 +35,16 @@ var vI_rdfDatasource = {
 	rdfNSMaillist : "vIStorage/maillist",
 	rdfNSNewsgroup : "vIStorage/newsgroup",
 	rdfNSFilter : "vIStorage/filter",
+    rdfNSAccounts : "vIAccounts",
+    rdfNSIdentities : "vIAccounts/id",
+    rdfNSSMTPservers : "vIAccounts/smtp",
+
 	
 	// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
 	// extensionManager : Components.classes["@mozilla.org/extensions/manager;1"]
 	//		.getService(Components.interfaces.nsIExtensionManager),
 	
-	rdfVersion : "0.0.4",	// version of current implemented RDF-schema, internal only to trigger updates
+	rdfVersion : "0.0.5",	// version of current implemented RDF-schema, internal only to trigger updates
 	
 	virtualIdentityID : "{dddd428e-5ac8-4a81-9f78-276c734f75b8}",
 	
@@ -59,12 +63,20 @@ var vI_rdfDatasource = {
 	filterContainer : Components.classes["@mozilla.org/rdf/container;1"]
 			.createInstance(Components.interfaces.nsIRDFContainer),
 
-	getContainer : function (type) {
+    identityContainer : Components.classes["@mozilla.org/rdf/container;1"]
+            .createInstance(Components.interfaces.nsIRDFContainer),
+
+    smtpContainer : Components.classes["@mozilla.org/rdf/container;1"]
+            .createInstance(Components.interfaces.nsIRDFContainer),
+    
+    getContainer : function (type) {
 		switch (type) {
 			case "email": return vI_rdfDatasource.emailContainer;
 			case "maillist": return vI_rdfDatasource.maillistContainer;
 			case "newsgroup": return vI_rdfDatasource.newsgroupContainer;
 			case "filter": return vI_rdfDatasource.filterContainer;
+            case "identity": return vI_rdfDatasource.identityContainer;
+            case "smtp": return vI_rdfDatasource.smtpContainer;
 		}
 		return null;
 	},
@@ -89,7 +101,10 @@ var vI_rdfDatasource = {
 		vI_rdfDatasource.rdfDataSource =
 			vI_rdfDatasource.rdfService.GetDataSourceBlocking(fileURI.spec);
 		vI_rdfDatasource.__initContainers();
-	},
+        vI_rdfDatasource.refreshAccountInfo();
+        
+        vI_rdfDatasource.AccountManagerObserver.register();
+    },
 	
 	__initContainers: function() {
 		try {	// will possibly fail before upgrade
@@ -105,6 +120,12 @@ var vI_rdfDatasource = {
 			storageRes = vI_rdfDatasource.rdfService
 				.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSFilter);
 			vI_rdfDatasource.filterContainer.Init(vI_rdfDatasource.rdfDataSource, storageRes);
+            storageRes = vI_rdfDatasource.rdfService
+                .GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSIdentities);
+            vI_rdfDatasource.identityContainer.Init(vI_rdfDatasource.rdfDataSource, storageRes);
+            storageRes = vI_rdfDatasource.rdfService
+                .GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSSMTPservers);
+            vI_rdfDatasource.smtpContainer.Init(vI_rdfDatasource.rdfDataSource, storageRes);
 		} catch (e) { };
 	},
 
@@ -151,11 +172,93 @@ var vI_rdfDatasource = {
 		vI_rdfDatasource.flush();
 	},
 
+    clean : function() {
+        vI_rdfDatasource.AccountManagerObserver.unregister();
+        vI_rdfDatasource.flush();
+    },
+
 	flush : function() {
 		vI_rdfDatasource.rdfDataSource.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
 		vI_rdfDatasource.rdfDataSource.Flush();
 	},
 	
+	refreshAccountInfo : function() {
+        try {   // will possibly fail before upgrade
+            vI_rdfDatasource.cleanAccountInfo();
+            vI_rdfDatasource.storeAccountInfo();
+        } catch (e) {};
+    },
+	
+	cleanAccountInfo : function() {
+        vI_notificationBar.dump("## vI_rdfDatasource: cleanAccountInfo\n");
+        
+        var enumerator = vI_rdfDatasource.identityContainer.GetElements();
+        while (enumerator && enumerator.hasMoreElements()) {
+            var resource = enumerator.getNext();
+            resource.QueryInterface(Components.interfaces.nsIRDFResource);
+            vI_rdfDatasource.__unsetRDFValue(resource, "identityName", vI_rdfDatasource.__getRDFValue(resource, "identityName"))
+            vI_rdfDatasource.__unsetRDFValue(resource, "fullName", vI_rdfDatasource.__getRDFValue(resource, "fullName"))
+            vI_rdfDatasource.__unsetRDFValue(resource, "email", vI_rdfDatasource.__getRDFValue(resource, "email"))
+            vI_rdfDatasource.identityContainer.RemoveElement(resource, true);
+        }
+
+        enumerator = vI_rdfDatasource.smtpContainer.GetElements();
+        while (enumerator && enumerator.hasMoreElements()) {
+            var resource = enumerator.getNext();
+            resource.QueryInterface(Components.interfaces.nsIRDFResource);
+            vI_rdfDatasource.__unsetRDFValue(resource, "label", vI_rdfDatasource.__getRDFValue(resource, "label"))
+            vI_rdfDatasource.__unsetRDFValue(resource, "hostname", vI_rdfDatasource.__getRDFValue(resource, "hostname"))
+            vI_rdfDatasource.__unsetRDFValue(resource, "username", vI_rdfDatasource.__getRDFValue(resource, "username"))
+            vI_rdfDatasource.smtpContainer.RemoveElement(resource, true);
+        }    
+    },
+	
+    storeAccountInfo : function() {
+        vI_notificationBar.dump("## vI_rdfDatasource: storeAccounts\n");
+
+        var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+            .getService(Components.interfaces.nsIMsgAccountManager);
+        for (let i = 0; i < AccountManager.accounts.Count(); i++) {
+            var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
+            for (let j = 0; j < account.identities.Count(); j++) {
+                var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
+//                 vI_notificationBar.dump("## vI_rdfDatasource: storeAccounts identity store id " + identity.key + "\n");
+
+                var resource = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSIdentities + "/" + identity.key);
+                vI_rdfDatasource.__setRDFValue(resource, "identityName", identity.identityName);
+                vI_rdfDatasource.__setRDFValue(resource, "fullName", identity.fullName);
+                vI_rdfDatasource.__setRDFValue(resource, "email", identity.email);
+                
+                var position = vI_rdfDatasource.identityContainer.IndexOf(resource); // check for index in new recType
+                if (position != -1) vI_rdfDatasource.identityContainer.InsertElementAt(resource, position, false);
+                else vI_rdfDatasource.identityContainer.AppendElement(resource);
+            }
+        }
+        
+        function storeSmtp(server) {
+//             vI_notificationBar.dump("## vI_rdfDatasource: storeAccounts smtp store id " + server.key + "\n");
+            var resource = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSSMTPservers + "/" + server.key);
+            vI_rdfDatasource.__setRDFValue(resource, "label", (server.description?server.description:server.hostname));
+            vI_rdfDatasource.__setRDFValue(resource, "hostname", server.hostname);
+            vI_rdfDatasource.__setRDFValue(resource, "username", server.username);
+            var position = vI_rdfDatasource.smtpContainer.IndexOf(resource); // check for index in new recType
+            if (position != -1) vI_rdfDatasource.smtpContainer.InsertElementAt(resource, position, false);
+            else vI_rdfDatasource.smtpContainer.AppendElement(resource);
+        }
+        
+        var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+            .getService(Components.interfaces.nsISmtpService).smtpServers;
+        if (typeof(servers.Count) == "undefined")       // TB 3.x
+            while (servers && servers.hasMoreElements()) {
+                var server = servers.getNext(); 
+                if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) storeSmtp(server);
+            }
+        else                            // TB 2.x
+            for (var i=0 ; i<servers.Count(); i++) storeSmtp(servers.QueryElementAt(i, Components.interfaces.nsISmtpServer));
+
+//         vI_notificationBar.dump("## vI_rdfDatasource: storeAccounts done\n");
+    },
+
 	__getRDFResourceForVIdentity : function (recDescription, recType) {
 		if (!vI_rdfDatasource.rdfDataSource) return null;
 		if (!recDescription) {
@@ -337,7 +440,7 @@ var vI_rdfDatasource = {
 		localIdentityData.extras.loopForRDF(vI_rdfDatasource.__setRDFValue, resource);
 		
 		vI_notificationBar.dump("## vI_rdfDatasource: updateRDF " + resource.ValueUTF8  + " added.\n");
-		if (position != -1) vI_rdfDatasource.getContainer(recType).InsertElementAt(resource, position, true);
+		if (position != -1) vI_rdfDatasource.getContainer(recType).InsertElementAt(resource, position, false);
 		else vI_rdfDatasource.getContainer(recType).AppendElement(resource);
 	},
 
@@ -351,7 +454,30 @@ var vI_rdfDatasource = {
 		if (target instanceof Components.interfaces.nsIRDFLiteral)
 			vI_rdfDatasource.rdfDataSource.Change(resource, predicate, target, name);
 		else	vI_rdfDatasource.rdfDataSource.Assert(resource, predicate, name, true);
-	}
+	},
+    
+    //  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
+    AccountManagerObserver : {
+        _uninstall : false,
+        observe : function(subject, topic, data) {
+            if (topic == "am-smtpChanges" || topic == "am-acceptChanges") {
+                vI_notificationBar.dump("## vI_rdfDatasource: account/smtp changes observed\n");
+                vI_rdfDatasource.refreshAccountInfo();
+            }
+        },
+        register : function() {
+            var obsService = Components.classes["@mozilla.org/observer-service;1"].
+                getService(Components.interfaces.nsIObserverService)
+            obsService.addObserver(this, "am-smtpChanges", false);
+            obsService.addObserver(this, "am-acceptChanges", false);
+        },
+        unregister : function() {
+            var obsService = Components.classes["@mozilla.org/observer-service;1"].
+                getService(Components.interfaces.nsIObserverService)
+            obsService.removeObserver(this, "am-smtpChanges");
+            obsService.removeObserver(this, "am-acceptChanges");
+        }
+    }
 }
 window.addEventListener("load", vI_rdfDatasource.init, false);
-window.addEventListener("unload", vI_rdfDatasource.flush, false);
+window.addEventListener("unload", vI_rdfDatasource.clean, false);

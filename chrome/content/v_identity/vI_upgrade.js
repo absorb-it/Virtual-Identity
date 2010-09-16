@@ -103,8 +103,11 @@ var vI_upgrade = {
 			case "0.0.1":
 			case "0.0.2":
 				vI_upgrade.__createRDFContainers(); // no break
+            case "0.0.3":
+                vI_upgrade.__tagDefaultSMTP();
+            case "0.0.4":
 			default:
-				vI_upgrade.__tagDefaultSMTP();
+                vI_upgrade.__createAccountInfoContainers();
 		}
 		vI_rdfDatasource.storeRDFVersion();
 		vI_notificationBar.dump("rdf-upgrade to " + vI_rdfDatasource.getCurrentRDFFileVersion() + " done.\n\n");
@@ -151,6 +154,38 @@ var vI_upgrade = {
 		}
 		vI_notificationBar.dump("\n");
 	},
+
+    __createAccountInfoContainers: function() {
+        vI_notificationBar.dump("upgrade: createAccountInfoContainers \n");
+        var rdfContainerUtils = Components.classes["@mozilla.org/rdf/container-utils;1"].
+            getService(Components.interfaces.nsIRDFContainerUtils);
+        
+        var accountRes = vI_rdfDatasource.rdfService
+            .GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSAccounts);
+        var identityRes = vI_rdfDatasource.rdfService
+            .GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSIdentities);
+        var smtpRes = vI_rdfDatasource.rdfService
+            .GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSSMTPservers);
+        vI_rdfDatasource.__setRDFValue(accountRes, "name", "Accounts");
+        vI_rdfDatasource.__setRDFValue(identityRes, "name", "Identities");
+        vI_rdfDatasource.__setRDFValue(smtpRes, "name", "SMTP-Server");
+        
+        rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, accountRes);
+        rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, identityRes);
+        rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, smtpRes);
+
+        var accountContainer = Components.classes["@mozilla.org/rdf/container;1"].
+            createInstance(Components.interfaces.nsIRDFContainer);
+        
+        // initialize container with accountRes
+        accountContainer.Init(vI_rdfDatasource.rdfDataSource, accountRes);
+        // append all new containers to accountRes
+        if (accountContainer.IndexOf(identityRes) == -1) accountContainer.AppendElement(identityRes);
+        if (accountContainer.IndexOf(smtpRes) == -1) accountContainer.AppendElement(smtpRes);
+        
+        vI_rdfDatasource.__initContainers();
+        vI_rdfDatasource.refreshAccountInfo();
+    },
 
 	__createRDFContainers: function() {
 		vI_notificationBar.dump("upgrade: createRDFContainers ");
