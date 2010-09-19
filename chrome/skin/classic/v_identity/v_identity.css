@@ -10,6 +10,28 @@
 	margin: 0px;
 	-moz-appearance: textfield;
 }
+
+.mismatchLine {
+    -moz-binding: url("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xml#mismatch-line");
+}
+
+.mismatchMenulist {
+    -moz-binding: url("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xml#mismatch-menulist");
+}
+
+.mismatchMenupopup {
+    -moz-binding: url("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xml#mismatch-menupopup");
+}
+
+.mismatchMenuitem {
+    -moz-binding: url("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xml#mismatch-menuitem");
+}
+
+.identityDesc-ext1, .identityDesc-ext2, .identityDesc-count {
+    font-style: italic;
+    color:      graytext;
+}
+
 .smtpServerListHbox {
 	-moz-binding: url("chrome://v_identity/content/v_identity.xml#smtpServerList");
 }

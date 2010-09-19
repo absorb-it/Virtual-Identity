@@ -213,6 +213,115 @@ var vI_rdfDatasource = {
         }    
     },
 	
+	searchIdentityMismatch : function() {
+        vI_notificationBar.dump("## vI_rdfDatasource: searchIdentityMismatch\n");
+
+        var relevantIDs = new Object();
+        var mismatchIDs = [];
+        
+        // search relevant Identities
+        for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
+            var enumerator = vI_rdfDatasource.getContainer(treeType).GetElements();
+            while (enumerator && enumerator.hasMoreElements()) {
+                var resource = enumerator.getNext();
+                resource.QueryInterface(Components.interfaces.nsIRDFResource);
+                var id = vI_rdfDatasource.__getRDFValue(resource, "id")
+                if (id) {
+                    if (!relevantIDs[id]) relevantIDs[id] = 1; else relevantIDs[id] += 1;
+                }
+            }
+        }
+        
+        var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+            .getService(Components.interfaces.nsIMsgAccountManager);
+        for (var id in relevantIDs) {
+            var identity = AccountManager.getIdentity(id)
+            var resource = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSIdentities + "/" + id);
+            var rdfIdentityName = vI_rdfDatasource.__getRDFValue(resource, "identityName");
+            var rdfEmail = vI_rdfDatasource.__getRDFValue(resource, "email");
+            var rdfFullName = vI_rdfDatasource.__getRDFValue(resource, "fullName")
+            if ( !identity || rdfIdentityName != identity.identityName && rdfEmail != identity.email)
+                    mismatchIDs.push( { oldkey: id, label : rdfIdentityName, ext1: rdfEmail, ext2: rdfFullName, count: relevantIDs[id], key: "" } )
+        }
+        if (mismatchIDs.length > 0) {
+            vI_notificationBar.dump("## vI_rdfDatasource: searchIdentityMismatch found mismatches on id(s).\n");
+            
+            window.openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul",0,
+                    "chrome, dialog, modal, alwaysRaised, resizable=yes", "identity", mismatchIDs,
+                    /* callback: */ vI_rdfDatasource.repairAccountMismatch).focus();
+            return true;
+        }
+        else {
+            vI_notificationBar.dump("## vI_rdfDatasource: searchIdentityMismatch found no mismatch\n");
+            return false;
+        }
+    },
+	
+	repairAccountMismatch : function(type, mismatchItems) {
+        vI_notificationBar.dump("## vI_rdfDatasource: repairAccountMismatch\n");
+        var keyField = (type == "identity")?"id":"smtp" // field to change is 'id' or 'smtp' dependent on type
+        for (var i = 0; i < mismatchItems.length; i++) {
+            vI_notificationBar.dump("## vI_rdfDatasource: repairAccountMismatch change " + mismatchItems[i].oldkey + " into " + mismatchItems[i].key + ": ");
+            // search relevant Identities
+            for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
+                var enumerator = vI_rdfDatasource.getContainer(treeType).GetElements();
+                while (enumerator && enumerator.hasMoreElements()) {
+                    var resource = enumerator.getNext();
+                    resource.QueryInterface(Components.interfaces.nsIRDFResource);
+                    if (vI_rdfDatasource.__getRDFValue(resource, keyField) == mismatchItems[i].oldkey) {
+                        if (mismatchItems[i].key == "") vI_rdfDatasource.__unsetRDFValue(resource, keyField, mismatchItems[i].oldkey)
+                        else vI_rdfDatasource.__setRDFValue(resource, keyField, mismatchItems[i].key)
+                        vI_notificationBar.dump(".");
+                    }
+                }
+            }
+            vI_notificationBar.dump("\n");
+        }
+    },
+	
+    searchSmtpMismatch : function() {
+        vI_notificationBar.dump("## vI_rdfDatasource: searchSmtpMismatch\n");
+
+        var relevantSMTPs = new Object();
+        var mismatchSMTPs = [];
+        
+        // search relevant SMTPs
+        for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
+            var enumerator = vI_rdfDatasource.getContainer(treeType).GetElements();
+            while (enumerator && enumerator.hasMoreElements()) {
+                var resource = enumerator.getNext();
+                resource.QueryInterface(Components.interfaces.nsIRDFResource);
+                var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
+                if (smtp && smtp != DEFAULT_SMTP_TAG) {
+                    if (!relevantSMTPs[smtp]) relevantSMTPs[smtp] = 1; else relevantSMTPs[smtp] += 1;
+                }
+            }
+        }
+        
+        var SmtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+            .getService(Components.interfaces.nsISmtpService);
+        for (var smtp in relevantSMTPs) {
+            var server = SmtpService.getServerByKey(smtp)
+            var resource = vI_rdfDatasource.rdfService.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSSMTPservers + "/" + smtp);
+            var rdfSMTPlabel = vI_rdfDatasource.__getRDFValue(resource, "label");
+            var rdfHostname = vI_rdfDatasource.__getRDFValue(resource, "hostname");
+            var rdfUsername = vI_rdfDatasource.__getRDFValue(resource, "username")
+            if (!server || rdfSMTPlabel != (server.description?server.description:server.hostname) && rdfHostname != server.hostname)
+                    mismatchSMTPs.push( { oldkey: smtp, label : rdfSMTPlabel, ext1: rdfHostname, ext2: rdfUsername, count: relevantSMTPs[smtp], key: "" } )
+        }
+        if (mismatchSMTPs.length > 0) {
+            vI_notificationBar.dump("## vI_rdfDatasource: searchSmtpMismatch found mismatches on smtp(s).\n");
+            window.openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul",0,
+                    "chrome, dialog, modal, alwaysRaised, resizable=yes", "smtp", mismatchSMTPs,
+                    /* callback: */ vI_rdfDatasource.repairAccountMismatch).focus();
+            return true;
+        }
+        else {
+            vI_notificationBar.dump("## vI_rdfDatasource: searchSmtpMismatch found no mismatch\n");
+            return false;
+        }
+    },
+
     storeAccountInfo : function() {
         vI_notificationBar.dump("## vI_rdfDatasource: storeAccounts\n");
 
@@ -462,6 +571,12 @@ var vI_rdfDatasource = {
         observe : function(subject, topic, data) {
             if (topic == "am-smtpChanges" || topic == "am-acceptChanges") {
                 vI_notificationBar.dump("## vI_rdfDatasource: account/smtp changes observed\n");
+                if (vI_rdfDatasource.searchIdentityMismatch()) {
+                    vI_notificationBar.dump("## vI_rdfDatasource: identity mismatch detected\n");
+                }
+                if (vI_rdfDatasource.searchSmtpMismatch()) {
+                    vI_notificationBar.dump("## vI_rdfDatasource: smtp mismatch detected\n");
+                }
                 vI_rdfDatasource.refreshAccountInfo();
             }
         },

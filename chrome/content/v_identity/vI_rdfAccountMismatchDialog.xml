@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+
+<bindings id="rdfMismatchBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:xbl="http://www.mozilla.org/xbl">
+	
+    <binding id="mismatch-line">
+    <content>      
+        <xul:label class="identityDesc-name" xbl:inherits="value=label,accesskey,crop" crop="end" flex="1"/>
+        <xul:label class="identityDesc-ext1" xbl:inherits="value=ext1" crop="end" />
+        <xul:label class="identityDesc-ext2" xbl:inherits="value=ext2" crop="end" />
+        <xul:label class="identityDesc-count" xbl:inherits="value=count" crop="end" />
+        <xul:menulist class="mismatchMenulist" >
+            <xul:menupopup class="mismatchMenupopup" xbl:inherits="type" />
+        </xul:menulist>
+    </content>
+    <implementation>
+    <property name="key" >
+        <getter><![CDATA[
+            return document.getAnonymousElementByAttribute(this, "class", "mismatchMenulist").selectedItem.getAttribute("key");
+        ]]></getter>
+    </property>
+    </implementation>
+    </binding>
+          
+	<binding id="mismatch-menuitem" extends="chrome://global/content/bindings/menu.xml#menuitem">
+  	<content>
+		<xul:label class="identityDesc-name" xbl:inherits="value=label,accesskey,crop" crop="end" flex="1"/>
+        <xul:label class="identityDesc-ext1" xbl:inherits="value=ext1" crop="end" />
+		<xul:label class="identityDesc-ext2" xbl:inherits="value=ext2" crop="end" />
+  	</content>
+	</binding>
+    
+    <binding id="mismatch-menulist" extends="chrome://global/content/bindings/menulist.xml#menulist">
+    <content>
+        <xul:hbox class="menulist-label-box" flex="1">
+            <xul:label class="identityDesc-name" xbl:inherits="value=label,accesskey,crop" crop="end" flex="1"/>
+            <xul:label class="identityDesc-ext1" xbl:inherits="value=ext1" crop="end" />
+            <xul:label class="identityDesc-ext2" xbl:inherits="value=ext2" crop="end" />
+        </xul:hbox>     
+        <xul:dropmarker class="menulist-dropmarker" type="menu" xbl:inherits="disabled,open"/>
+        <children includes="menupopup"/>
+    </content>
+    <implementation>
+    <constructor>
+        <![CDATA[       
+        var menuitem = document.createElement("menuitem");
+        menuitem.setAttribute("class", "mismatchMenuitem");
+        menuitem.setAttribute("label",  document.getElementById("removeRelationLabel").getAttribute("value"));
+        menuitem.setAttribute("key",  "");
+        document.getAnonymousElementByAttribute(this, "class", "mismatchMenupopup").appendChild(menuitem);
+        this.selectedItem = menuitem;
+        ]]>
+    </constructor>
+    <property name="selectedItem" onget="return this.mSelectedInternal;" >
+        <setter><![CDATA[
+        var oldval = this.mSelectedInternal;
+        if (oldval == val)
+        return val;
+
+        if (val && !this.contains(val))
+        return val;
+
+        if (oldval) {
+        oldval.removeAttribute('selected');
+        if (document instanceof Components.interfaces.nsIDOMXULDocument) {
+            document.removeBroadcastListenerFor(oldval, this, "value");
+            document.removeBroadcastListenerFor(oldval, this, "label");
+            document.removeBroadcastListenerFor(oldval, this, "image");
+            document.removeBroadcastListenerFor(oldval, this, "ext1");
+            document.removeBroadcastListenerFor(oldval, this, "ext2");
+        }
+        else
+            oldval.removeEventListener("DOMAttrModified", this, false);
+        }
+
+        this.mSelectedInternal = val;
+        if (val) {
+        val.setAttribute('selected', 'true');
+        this.setAttribute('value', val.getAttribute('value'));
+        this.setAttribute('image', val.getAttribute('image'));
+        this.setAttribute('label', val.getAttribute('label'));
+        this.setAttribute('ext1', val.getAttribute('ext1'));
+        this.setAttribute('ext2', val.getAttribute('ext2'));
+        // DOMAttrModified listeners slow down setAttribute calls within
+        // the document, see bug 395496
+        if (document instanceof Components.interfaces.nsIDOMXULDocument) {
+            document.addBroadcastListenerFor(val, this, "value");
+            document.addBroadcastListenerFor(val, this, "label");
+            document.addBroadcastListenerFor(val, this, "image");
+            document.addBroadcastListenerFor(val, this, "ext1");
+            document.addBroadcastListenerFor(val, this, "ext2");
+        }
+        else
+            val.addEventListener("DOMAttrModified", this, false);
+        }
+        else {
+        this.removeAttribute('value');
+        this.removeAttribute('image');
+        this.removeAttribute('label');
+        this.removeAttribute('ext1');
+        this.removeAttribute('ext2');
+        }
+
+        var event = document.createEvent("Events");
+        event.initEvent("select", true, true);
+        this.dispatchEvent(event);
+
+        var event = document.createEvent("Events");
+        event.initEvent("ValueChange", true, true);
+        this.dispatchEvent(event);
+
+        return val;
+        ]]></setter>
+    </property>
+    </implementation>
+    </binding>
+
+    <binding id="mismatch-menupopup" extends="chrome://global/content/bindings/popup.xml#popup">
+    <content>
+        <children />
+    </content>
+    <implementation>
+    <method name="_addIdentities">
+        <body><![CDATA[
+        vI_notificationBar.dump("## mismatchID-menupopup: _addIdentities.\n");
+        var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+            .getService(Components.interfaces.nsIMsgAccountManager);
+        for (let i = 0; i < AccountManager.accounts.Count(); i++) {
+            var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
+            for (let j = 0; j < account.identities.Count(); j++) {
+                var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
+                const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+                var menuitem = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
+                menuitem.setAttribute("class", "mismatchMenuitem");
+                menuitem.setAttribute("label",  identity.identityName);
+                menuitem.setAttribute("ext1",  identity.fullName);
+                menuitem.setAttribute("ext2",  identity.email);
+                menuitem.setAttribute("key",  identity.key);
+                this.appendChild(menuitem);
+            }
+        }        
+        ]]></body>
+    </method>
+    <method name="_addSmtp">
+        <parameter name="server" />
+        <body><![CDATA[
+            vI_notificationBar.dump("## mismatchID-menupopup: _addSmtp.\n");
+            const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+            var menuitem = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
+            menuitem.setAttribute("class", "mismatchMenuitem");
+            menuitem.setAttribute("label",  (server.description?server.description:server.hostname));
+            menuitem.setAttribute("ext1",  server.hostname);
+            menuitem.setAttribute("ext2",  server.username);
+            menuitem.setAttribute("key",  server.key);
+            this.appendChild(menuitem);        
+        ]]></body>
+    </method>
+    <method name="_addSmtpServers">
+        <body><![CDATA[
+            vI_notificationBar.dump("## mismatchID-menupopup: _addSmtpServers.\n");
+            
+            const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+            var menuitem = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
+            menuitem.setAttribute("class", "mismatchMenuitem");
+            const DEFAULT_SMTP_TAG = "vI_useDefaultSMTP"
+            menuitem.setAttribute("key", DEFAULT_SMTP_TAG);
+            menuitem.setAttribute("label", document.getElementById("bundle_messenger").getString("defaultServerTag"));
+            this.appendChild(menuitem);
+            
+            var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+                .getService(Components.interfaces.nsISmtpService).smtpServers;
+            if (typeof(servers.Count) == "undefined")                   // TB 3.x
+                while (servers && servers.hasMoreElements()) {
+                    var server = servers.getNext(); 
+                    if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) this._addSmtp(server);
+                }
+            else                                                        // TB 2.x
+                for (var i=0 ; i<servers.Count(); i++) this._addSmtp(servers.QueryElementAt(i, Components.interfaces.nsISmtpServer));
+        ]]></body>
+    </method>
+    <constructor>
+        <![CDATA[       
+        vI_notificationBar.dump("## mismatchID-menupopup: constructor.\n");
+        const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+        this.appendChild(document.createElementNS(XUL_NS, "menuseparator")); // create a new XUL menuseparator
+        if (this.getAttribute("type") == "identity") this._addIdentities();
+        else    this._addSmtpServers();
+        ]]>
+	</constructor>
+	</implementation>
+	</binding>
+</bindings>
