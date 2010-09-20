@@ -37,25 +37,25 @@
   <!ENTITY % messengercomposeDTD SYSTEM "chrome://messenger/locale/messengercompose/messengercompose.dtd" >
 %messengercomposeDTD;
 <!ENTITY % filtersDTD SYSTEM "chrome://messenger/locale/FilterListDialog.dtd">%filtersDTD;
+<!ENTITY % abMainWindowDTD SYSTEM "chrome://messenger/locale/addressbook/abMainWindow.dtd" >
+%abMainWindowDTD;
 ]>
 
 <window id="vI_rdfDataTreeWindow"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
         width="750"
         height="500"
-	persist="width,height,screenX,screenY"
+        persist="width,height,screenX,screenY"
         onload="vI_rdfDataTree.init();"
-	title="&vI_rdfDataTree.dlgTitle.label;">
+        onunload="vI_rdfDataTree.clean();"
+        title="&vI_rdfDataTree.dlgTitle.label;">
 
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataTree.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_identityData.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDatasource.js" />
-<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
-<script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
 <script type="application/x-javascript" src="chrome://messenger/content/messengercompose/MsgComposeCommands.js"/>
-
 
 <stringbundleset id="stringbundleset">
 	<stringbundle id="vI_rdfDataTreeBundle" src="chrome://v_identity/locale/vI_rdfDataEditor.properties" />
@@ -95,21 +95,27 @@
 	<spacer width="3px" />
 	<vbox><spacer flex="1"/>
 	<menubar>
-		<menu id="editMenu" label="&vI_rdfDataTree.editMenu.label;" 
-			accesskey="&vI_rdfDataTree.editMenu.accesskey;">
-		<menupopup onpopupshowing="if (event.target == this) vI_rdfDataTree.updateMenu();">
-			<menuitem id="menu_modifySelected" label="&vI_rdfDataTree.modifySelected.label;"
-				accesskey="&vI_rdfDataTree.modifySelected.accesskey;"
-				oncommand="vI_rdfDataTree.modifySelected();"/>
-			<menuitem id="menu_removeSelected" label="&vI_rdfDataTree.removeSelected.label;"
-				accesskey="&vI_rdfDataTree.removeSelected.accesskey;"
-				oncommand="vI_rdfDataTree.removeSelected();"/>
-			<menuitem id="menu_newItem" label="&vI_rdfDataTree.newItem.label;"
-				accesskey="&vI_rdfDataTree.newItem.accesskey;"
-				oncommand="vI_rdfDataTree.newItem();"/>
-			<menuseparator />
-			<menuitem id="menu_menu_selectAll" label="&selectAllCmd.label;" accesskey="&selectAllCmd.accesskey;"
-				oncommand="vI_rdfDataTree.selectAll();"/>
+        <menu id="editMenu" label="&vI_rdfDataTree.editMenu.label;" 
+            accesskey="&vI_rdfDataTree.editMenu.accesskey;">
+        <menupopup onpopupshowing="if (event.target == this) vI_rdfDataTree.updateMenu();">
+            <menuitem id="menu_modifySelected" label="&vI_rdfDataTree.modifySelected.label;"
+                accesskey="&vI_rdfDataTree.modifySelected.accesskey;"
+                oncommand="vI_rdfDataTree.modifySelected();"/>
+            <menuitem id="menu_removeSelected" label="&vI_rdfDataTree.removeSelected.label;"
+                accesskey="&vI_rdfDataTree.removeSelected.accesskey;"
+                oncommand="vI_rdfDataTree.removeSelected();"/>
+            <menuitem id="menu_newItem" label="&vI_rdfDataTree.newItem.label;"
+                accesskey="&vI_rdfDataTree.newItem.accesskey;"
+                oncommand="vI_rdfDataTree.newItem();"/>
+            <menuseparator />
+            <menuitem id="menu_menu_selectAll" label="&selectAllCmd.label;" accesskey="&selectAllCmd.accesskey;"
+                oncommand="vI_rdfDataTree.selectAll();"/>
+        </menupopup>
+        </menu>
+		<menu id="tasksMenu" label="&tasksMenu.label;" accesskey="&tasksMenu.accesskey;">
+		<menupopup>
+            <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="vI_rdfDatasource = new vI_rdfDatasource(); vI_rdfDatasource.import('virtualIdentity.rdf')"/>
+            <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="vI_rdfDatasource = new vI_rdfDatasource(); vI_rdfDatasource.export('virtualIdentity.rdf')"/>
 		</menupopup>
 		</menu>
 	</menubar>

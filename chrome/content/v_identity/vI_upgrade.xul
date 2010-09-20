@@ -37,7 +37,7 @@
 
 <wizard id="upgradeWizard" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         title="&vident.upgrade.dlgTitle.label;"
-	zlevel="6" onload="vI_upgrade.init(); vI_upgrade.prepare(document.getElementById('introPage'));" >
+	zlevel="6" onload="vI_upgrade.init(); vI_upgrade.prepare(document.getElementById('introPage'));" onunload="vI_upgrade.clean();" >
 
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_upgrade.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_account.js" />

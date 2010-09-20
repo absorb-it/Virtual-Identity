@@ -132,6 +132,8 @@
 <!ENTITY vI_prefDialog.storage.label "store (and recall) used Identities">
 <!ENTITY vI_prefDialog.storage.tooltiptext "Used Identities might be stored related to the recipients of your email. If you write again to the same recipient, the same virtual or non-virtual Identity will be used">
 <!ENTITY vI_prefDialog.storage.openEditor "edit stored data">
+<!ENTITY vI_prefDialog.storage.export "export stored data">
+<!ENTITY vI_prefDialog.storage.import "import data">
 
 <!ENTITY vI_prefDialog.storageTab.reading.header "Identity Reading">
 <!ENTITY vI_prefDialog.storageTab.reading.caption "reading of stored Identities">

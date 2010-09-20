@@ -41,12 +41,15 @@ var vI_storage = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2),
 	
+    vI_rdfDatasource : null,    // local storage
+
 	clean: function() {
 		vI_notificationBar.dump("## vI_storage: clean.\n");
 		vI_storage.multipleRecipients = null;
 		vI_storage.lastCheckedEmail = {};
 		vI_storage.firstUsedInputElement = null;
 		awSetInputAndPopupValue = vI_storage.original_functions.awSetInputAndPopupValue;
+        if (vI_storage.vI_rdfDatasource) vI_storage.vI_rdfDatasource.clean();
 	},
 	
 	original_functions : {
@@ -82,9 +85,11 @@ var vI_storage = {
 
 	},
 	
-	initialized : null,
+    initialized : null,
 	init: function() {
 		if (!vI_storage.initialized) {
+            vI_storage.vI_rdfDatasource = new vI_rdfDatasource("virtualIdentity.rdf");
+
 			// better approach would be to use te onchange event, but this one is not fired in any change case
 			// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
 			// same seems to happen with the ondragdrop event
@@ -151,8 +156,8 @@ var vI_storage = {
 		var recipient = vI_storage.__getDescriptionAndType(inputElement.value, recipientType);
 
 		var matchResults = { storageData : {}, menuItem : {} };
-		matchResults.storageData[0] = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
-		matchResults.storageData[1] = vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
+		matchResults.storageData[0] = vI_storage.vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
+		matchResults.storageData[1] = vI_storage.vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
 
 		vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage add found Identities to CloneMenu.\n");
 		var matchIndex = null;
@@ -286,8 +291,8 @@ var vI_storage = {
 		vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'\n")
 		recipient = vI_storage.__getDescriptionAndType(recipient, recipientType);
 
-		var storageDataByType = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
-		var storageDataByFilter = vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
+		var storageDataByType = vI_storage.vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
+		var storageDataByFilter = vI_storage.vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
 		
 		// update (storing) of data by type is required if there is
 		// no data stored by type (or different data stored) and no equal filter found
@@ -311,7 +316,7 @@ var vI_storage = {
 				if (doUpdate == "abort") return false;
 			}
 		}
-		if (doUpdate == "accept") vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
+		if (doUpdate == "accept") vI_storage.vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
 		return true;
 	},
 		
@@ -408,9 +413,9 @@ var vI_storage = {
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || vI_storage.__isDoBcc(row)) continue;
 			vI_storage.lastCheckedEmail[row] = awGetInputElement(row).value;
 			var recipient = vI_storage.__getDescriptionAndType(awGetInputElement(row).value, recipientType);
-			var storageData = vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
+			var storageData = vI_storage.vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
 			if (storageData) allIdentities.addWithoutDuplicates(storageData);
-			storageData = vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
+			storageData = vI_storage.vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
 			if (storageData) allIdentities.addWithoutDuplicates(storageData);
 		}
 		vI_notificationBar.dump("## vI_storage: found " + allIdentities.number + " address(es)\n")

@@ -59,7 +59,7 @@ var vI_storageExtrasHelper = {
 	}
 }
 
-function vI_storageExtras(callFunction, resource) {
+function vI_storageExtras(rdfDatasource, resource) {
 // function vI_storageExtras_checkbox(field, option, composeDialogElementID, updateFunction, identityValue) {
 	this.extras = [
 		new vI_storageExtras_checkbox(
@@ -92,15 +92,16 @@ function vI_storageExtras(callFunction, resource) {
 	if (document.getElementById("menu_securityNoEncryption1"))	// TB 2.x
 		this.extras[4] = new vI_storageExtras_sMime_messageEncryption()
 
-	if (callFunction) this.loopForRDF(callFunction, resource)
+	if (rdfDatasource) this.loopForRDF(rdfDatasource, resource)
 }
 
 vI_storageExtras.prototype = {
-	loopForRDF : function(callFunction, resource) {
+	loopForRDF : function(rdfDatasource, resource) {
 		for( var i = 0; i < this.extras.length; i++ ) {
-			// only if pref set and feature(element available) or for dataEditor
+// 			if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: loopForRDF " + rdfDatasource + "\n");
+            // only if pref set and feature(element available) or for dataEditor
 			if (typeof(gMsgCompose) == "undefined" || !gMsgCompose || this.extras[i].active)
-				this.extras[i].value = callFunction(resource, this.extras[i].field, this.extras[i].value)
+				this.extras[i].value = rdfDatasource._getRDFValue(resource, this.extras[i].field, this.extras[i].value)
 		}
 	},
 	

@@ -37,8 +37,9 @@ function prepareForComparison (o) {
 };
 
 
-function rdfDataTree(treeType) {
+function rdfDataTree(treeType, vI_rdfDatasource) {
 	this.treeType = treeType;
+    this._vI_rdfDatasource = vI_rdfDatasource;
 	this.filterText = "";
 	this.loadTable();
 }
@@ -47,19 +48,21 @@ rdfDataTree.prototype = {
 	idData : null,
 	filterText : null,
 	treeType : null,
+    _vI_rdfDatasource : null,
 
-	get treeElem() { return document.getElementById("rdfDataTree_" + this.treeType); },
+    get treeElem() { return document.getElementById("rdfDataTree_" + this.treeType); },
 	get tabElem() { return document.getElementById(this.treeType + "Tab"); },
 	
 	//this function is called every time the tree is sorted, filtered, or reloaded
 	loadTable : function() {
+//         if (vI_notificationBar) vI_notificationBar.dump("## rdfDataTree: loadTable.\n");
 		//remember scroll position. this is useful if this is an editable table
 		//to prevent the user from losing the row they edited
 		var topVisibleRow = null;
 		if (this.idTable) { topVisibleRow = this.treeElem.treeBoxObject.getFirstVisibleRow(); }
 		if (this.idData == null) {
 			this.idData = [];
-			vI_rdfDatasource.readAllEntriesFromRDF(this.addNewDatum, this.treeType, this.idData);
+			this._vI_rdfDatasource.readAllEntriesFromRDF(this.addNewDatum, this.treeType, this.idData);
 		}
 		if (this.filterText == "") {
 			//show all of them
@@ -88,6 +91,7 @@ rdfDataTree.prototype = {
 
 		// set Tab label
 		this.tabElem.setAttribute("label", this.treeType + " (" + this.idTable.length + ")");
+//         if (vI_notificationBar) vI_notificationBar.dump("## rdfDataTree: loadTable done.\n");
 	},
 
 	addNewDatum : function(resource, name, localIdentityData, idData) {
@@ -105,7 +109,7 @@ rdfDataTree.prototype = {
 		idData.push(pref);
 	},
 	sort : function(columnName) {
-		vI_notificationBar.dump("## sort: " + columnName + ".\n");
+// 		vI_notificationBar.dump("## sort: " + columnName + ".\n");
 		var order = this.treeElem.getAttribute("sortDirection") == "ascending" ? 1 : -1;
 		//if the column is passed and it's already sorted by that column, reverse sort
 		if (columnName && (this.treeElem.getAttribute("sortResource") == columnName)) {
@@ -147,6 +151,7 @@ var vI_rdfDataTree = {
 	tabbox : null,
 	
 	_strings : null,
+    _vI_rdfDatasource : null,
 	
 	onselect : function () {
 		vI_rdfDataTree.moveConstraints();
@@ -179,13 +184,17 @@ var vI_rdfDataTree = {
 		vI_rdfDataTree.tabbox = document.getElementById("TreeTabbox");
 		vI_rdfDataTree._strings = document.getElementById("vI_rdfDataTreeBundle");
 
-		vI_rdfDatasource.init();
+		vI_rdfDataTree._vI_rdfDatasource = new vI_rdfDatasource("virtualIdentity.rdf");
 		
 		for each (var treeType in vI_rdfDataTree.treeTypes)
-			vI_rdfDataTree.trees[treeType] = new rdfDataTree(treeType);
+			vI_rdfDataTree.trees[treeType] = new rdfDataTree(treeType, vI_rdfDataTree._vI_rdfDatasource);
 	},
 	
-	get _braille() {
+    clean : function() {
+        if (vI_rdfDataTree._vI_rdfDatasource) vI_rdfDataTree._vI_rdfDatasource.clean();
+    },
+
+    get _braille() {
 		var prefRoot = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService).getBranch(null);
 		var braille = false;
@@ -302,7 +311,7 @@ var vI_rdfDataTree = {
 				window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
 					tree.idTable[v], treeType,
-					vI_rdfDatasource, retVar).focus();
+					vI_rdfDataTree._vI_rdfDatasource, retVar).focus();
 		}
 		
 		// reload all trees (multiple types might have changed)
@@ -331,7 +340,7 @@ var vI_rdfDataTree = {
 		for (var t=0; t<numRanges; t++){
 			tree.treeElem.view.selection.getRangeAt(t,start,end);
 			for (var v=start.value; v<=end.value; v++){
-				vI_rdfDatasource.removeVIdentityFromRDF(tree.idTable[v]["resource"], treeType)
+				vI_rdfDataTree._vI_rdfDatasource.removeVIdentityFromRDF(tree.idTable[v]["resource"], treeType)
 			}
 		}
 		
@@ -377,8 +386,8 @@ var vI_rdfDataTree = {
 		
 		tree.treeElem.view.selection.getRangeAt(0,start,end);
 		for (var v=start.value; v<=end.value; v++){
-			var resource = vI_rdfDatasource.filterContainer.RemoveElementAt(v+1, true);
-			vI_rdfDatasource.filterContainer.InsertElementAt(resource,v,true); 
+			var resource = vI_rdfDataTree._vI_rdfDatasource.filterContainer.RemoveElementAt(v+1, true);
+			vI_rdfDataTree._vI_rdfDatasource.filterContainer.InsertElementAt(resource,v,true); 
 		}
 		tree.idData = null; tree.idTable = null;
 		tree.loadTable();
@@ -397,8 +406,8 @@ var vI_rdfDataTree = {
 		
 		tree.treeElem.view.selection.getRangeAt(0,start,end);
 		for (var v=end.value; v>=start.value; v--){
-			var resource = vI_rdfDatasource.filterContainer.RemoveElementAt(v+1, true);
-			vI_rdfDatasource.filterContainer.InsertElementAt(resource,v+2,true); 
+			var resource = vI_rdfDataTree._vI_rdfDatasource.filterContainer.RemoveElementAt(v+1, true);
+			vI_rdfDataTree._vI_rdfDatasource.filterContainer.InsertElementAt(resource,v+2,true); 
 		}
 		tree.idData = null; tree.idTable = null;
 		tree.loadTable();
@@ -436,7 +445,7 @@ var vI_rdfDataTree = {
 		window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 			"chrome, dialog, modal, alwaysRaised, resizable=yes",
 			newItemPreset, treeType,
-			vI_rdfDatasource, retVar).focus();
+			vI_rdfDataTree._vI_rdfDatasource, retVar).focus();
 
 		// reload all trees (multiple types might have changed)
 		for each (var treeType in vI_rdfDataTree.treeTypes) {

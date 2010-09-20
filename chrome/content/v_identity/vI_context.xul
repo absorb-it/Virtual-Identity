@@ -28,6 +28,8 @@
 %dataTreeDTD;
 <!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
 %vIdentDTD;
+<!ENTITY % abMainWindowDTD SYSTEM "chrome://messenger/locale/addressbook/abMainWindow.dtd" >
+%abMainWindowDTD;
 ]>
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -58,8 +60,14 @@
 			<menupopup>
 				<menuitem label="&vident.vI_Menu.Settings.label;"
 					  oncommand="window.open('chrome://v_identity/content/vI_prefDialogOpener.xul', '', 'chrome, dialog, resizable=yes');" />
-				<menuitem label="&vident.vI_Menu.DataEditor.label;"
-					  oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome, dialog, resizable=yes');" />
+                <menu label="&vident.vI_Menu.DataStorage.label;">
+                    <menupopup>                        
+                        <menuitem label="&vident.vI_Menu.DataEditor.label;"
+                            oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome, dialog, resizable=yes');" />
+                        <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="vI_rdfDatasource = new vI_rdfDatasource(); vI_rdfDatasource.import('virtualIdentity.rdf')"/>
+                        <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="vI_rdfDatasource = new vI_rdfDatasource(); vI_rdfDatasource.export('virtualIdentity.rdf')"/>
+                    </menupopup>
+                </menu>
 			</menupopup>
 		</menu>
 	</menupopup> 

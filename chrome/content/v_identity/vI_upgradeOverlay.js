@@ -24,19 +24,18 @@
 
 var vI_upgradeOverlay = {
 	init: function() {
-		vI_rdfDatasource.init() // just to be sure that Datasource is available
-		if (vI_rdfDatasource.rdfUpgradeRequired() || vI_rdfDatasource.extUpgradeRequired()) {
-			if (!vI_upgrade.quick_upgrade())
+        var rdfDatasource = new vI_rdfDatasource("virtualIdentity.rdf", true);
+		if (rdfDatasource.extUpgradeRequired()) {
+			if (!vI_upgrade.quick_upgrade(rdfDatasource.getCurrentExtFileVersion()))
 				window.open("chrome://v_identity/content/vI_upgrade.xul",0,
 					"chrome, dialog, modal, alwaysRaised, resizable=yes").focus();
 		}
 		else {
 			vI_account.cleanupSystem(); // always clean leftover accounts and directories
-			
-			// just to recognize downgrades later
-			vI_rdfDatasource.storeRDFVersion();
-			vI_rdfDatasource.storeExtVersion();
+			rdfDatasource.storeExtVersion();
 		}
+		rdfDatasource.clean();
+        
 		// show error-Console if required
 		var prefroot = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)

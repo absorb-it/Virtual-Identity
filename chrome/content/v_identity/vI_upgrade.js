@@ -29,23 +29,28 @@ var vI_upgrade = {
 			
 	versionChecker : Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 			.getService(Components.interfaces.nsIVersionComparator),
+    
+    vI_rdfDatasource : null,
 
 	init : function() {
 		vI_upgrade.__initRequirements();
 		document.documentElement.getButton("cancel").setAttribute("hidden", "true")
 	},
 
-	__initRequirements : function() {
+    clean : function() {
+        if (vI_upgrade.vI_rdfDatasource) vI_upgrade.vI_rdfDatasource.clean();
+    },
+
+    __initRequirements : function() {
 		vI_notificationBar.dump("") // this initialises the debug-area
-		vI_rdfDatasource.init(); // just to be sure that Datasource is initialised
+		vI_upgrade.vI_rdfDatasource = new vI_rdfDatasource("virtualIdentity.rdf", true);
 	},
 	
 	// this function checks for the chance to ugrade without shoing the complete wizard
 	// if so, perform the upgrade and return true
 	// by default the wizard is not shown if it is a one-version-forward upgrade
-	quick_upgrade : function() {
+	quick_upgrade : function(currentVersion) {
 		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
-		var currentVersion = vI_rdfDatasource.getCurrentExtFileVersion()
 		if (!currentVersion) return false;
 		currentVersion = currentVersion.split(/\./);
 		var nextVersion = currentVersion[0] + "." + currentVersion[1] + "."
@@ -75,8 +80,7 @@ var vI_upgrade = {
 	},
 	
 	__upgrade : function() {
-		if (vI_rdfDatasource.extUpgradeRequired()) vI_upgrade.extUpgrade();
-		if (vI_rdfDatasource.rdfUpgradeRequired()) vI_upgrade.rdfUpgrade();
+		if (vI_upgrade.vI_rdfDatasource.extUpgradeRequired()) vI_upgrade.extUpgrade();
 		
 		vI_account.cleanupSystem();
 	},			
@@ -94,144 +98,8 @@ var vI_upgrade = {
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "true")
 	},
 	
-	rdfUpgrade : function() {
-		var currentVersion = vI_rdfDatasource.getCurrentRDFFileVersion();
-		vI_notificationBar.dump("checking for previous version of rdf, found " + 
-			currentVersion + "\nrdf-upgrade required.\n")
-		switch (currentVersion) {
-			case null:
-			case "0.0.1":
-			case "0.0.2":
-				vI_upgrade.__createRDFContainers(); // no break
-            case "0.0.3":
-                vI_upgrade.__tagDefaultSMTP();
-            case "0.0.4":
-			default:
-                vI_upgrade.__createAccountInfoContainers();
-		}
-		vI_rdfDatasource.storeRDFVersion();
-		vI_notificationBar.dump("rdf-upgrade to " + vI_rdfDatasource.getCurrentRDFFileVersion() + " done.\n\n");
-	},
-	
-	// only used for upgrade to 0.0.3 - loop through all ressources.
-	__transferAllResources : function () {
-		vI_notificationBar.dump("upgrade: transferAllResources ");
-		var enumerator = vI_rdfDatasource.rdfDataSource.GetAllResources();
-		while (enumerator && enumerator.hasMoreElements()) {
-			var resource = enumerator.getNext();
-			resource.QueryInterface(Components.interfaces.nsIRDFResource);
-			
-			var type; var name;
-			if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSEmail + "/", "i")))
-				{ type = "email"; name = RegExp.rightContext }
-			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSNewsgroup + "/", "i")))
-				{ type = "newsgroup"; name = RegExp.rightContext }
-			else if (resource.ValueUTF8.match(new RegExp(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSMaillist + "/", "i")))
-				{ type = "maillist"; name = RegExp.rightContext }
-			else continue;
-			
-			var container = vI_rdfDatasource.getContainer(type);
-			vI_rdfDatasource.__setRDFValue(resource, "name", name);
-			
-			if (container.IndexOf(resource) == -1) container.AppendElement(resource);
-		
-			vI_notificationBar.dump(".");
-		}
-		vI_notificationBar.dump("\n");
-	},
-
-	__tagDefaultSMTP: function() {
-		vI_notificationBar.dump("upgrade: tagDefaultSMTP ");
-		for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
-			var enumerator = vI_rdfDatasource.getContainer(treeType).GetElements();
-			while (enumerator && enumerator.hasMoreElements()) {
-				var resource = enumerator.getNext();
-				resource.QueryInterface(Components.interfaces.nsIRDFResource);
-				var smtp = vI_rdfDatasource.__getRDFValue(resource, "smtp")
-				if (!smtp || smtp == "") vI_rdfDatasource.__setRDFValue(resource, "smtp", DEFAULT_SMTP_TAG);
-				vI_notificationBar.dump(".");
-			}
-		}
-		vI_notificationBar.dump("\n");
-	},
-
-    __createAccountInfoContainers: function() {
-        vI_notificationBar.dump("upgrade: createAccountInfoContainers \n");
-        var rdfContainerUtils = Components.classes["@mozilla.org/rdf/container-utils;1"].
-            getService(Components.interfaces.nsIRDFContainerUtils);
-        
-        var accountRes = vI_rdfDatasource.rdfService
-            .GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSAccounts);
-        var identityRes = vI_rdfDatasource.rdfService
-            .GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSIdentities);
-        var smtpRes = vI_rdfDatasource.rdfService
-            .GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSSMTPservers);
-        vI_rdfDatasource.__setRDFValue(accountRes, "name", "Accounts");
-        vI_rdfDatasource.__setRDFValue(identityRes, "name", "Identities");
-        vI_rdfDatasource.__setRDFValue(smtpRes, "name", "SMTP-Server");
-        
-        rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, accountRes);
-        rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, identityRes);
-        rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, smtpRes);
-
-        var accountContainer = Components.classes["@mozilla.org/rdf/container;1"].
-            createInstance(Components.interfaces.nsIRDFContainer);
-        
-        // initialize container with accountRes
-        accountContainer.Init(vI_rdfDatasource.rdfDataSource, accountRes);
-        // append all new containers to accountRes
-        if (accountContainer.IndexOf(identityRes) == -1) accountContainer.AppendElement(identityRes);
-        if (accountContainer.IndexOf(smtpRes) == -1) accountContainer.AppendElement(smtpRes);
-        
-        vI_rdfDatasource.__initContainers();
-        vI_rdfDatasource.refreshAccountInfo();
-    },
-
-	__createRDFContainers: function() {
-		vI_notificationBar.dump("upgrade: createRDFContainers ");
-		var rdfContainerUtils = Components.classes["@mozilla.org/rdf/container-utils;1"].
-			getService(Components.interfaces.nsIRDFContainerUtils);
-
-		var storageRes = vI_rdfDatasource.rdfService
-			.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSStorage);
-		var emailRes = vI_rdfDatasource.rdfService
-			.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSEmail);
-		var maillistRes = vI_rdfDatasource.rdfService
-			.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSMaillist);
-		var newsgroupRes = vI_rdfDatasource.rdfService
-			.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSNewsgroup);
-		var filterRes = vI_rdfDatasource.rdfService
-			.GetResource(vI_rdfDatasource.rdfNS + vI_rdfDatasource.rdfNSFilter);
-		vI_rdfDatasource.__setRDFValue(emailRes, "name", "E-Mail");
-		vI_rdfDatasource.__setRDFValue(maillistRes, "name", "Mailing-List");
-		vI_rdfDatasource.__setRDFValue(newsgroupRes, "name", "Newsgroup");
-		vI_rdfDatasource.__setRDFValue(filterRes, "name", "Filter");
-
-		rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, storageRes);
-		rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, emailRes);
-		rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, maillistRes);
-		rdfContainerUtils.MakeBag(vI_rdfDatasource.rdfDataSource, newsgroupRes);
-		// use a sequence for the filters, order does matter
-		rdfContainerUtils.MakeSeq(vI_rdfDatasource.rdfDataSource, filterRes);
-		
-		var container = Components.classes["@mozilla.org/rdf/container;1"].
-			createInstance(Components.interfaces.nsIRDFContainer);
-		
-		// initialize container with storageRes
-		container.Init(vI_rdfDatasource.rdfDataSource, storageRes);
-		// append all new containers to storageRes
-		if (container.IndexOf(emailRes) == -1) container.AppendElement(emailRes);
-		if (container.IndexOf(maillistRes) == -1) container.AppendElement(maillistRes);
-		if (container.IndexOf(newsgroupRes) == -1) container.AppendElement(newsgroupRes);
-		if (container.IndexOf(filterRes) == -1) container.AppendElement(filterRes);
-		
-		vI_rdfDatasource.__initContainers();
-		
-		vI_upgrade.__transferAllResources();
-	},
-	
 	extUpgrade : function() {
-		var currentVersion = vI_rdfDatasource.getCurrentExtFileVersion();
+		var currentVersion = vI_upgrade.vI_rdfDatasource.getCurrentExtFileVersion();
 		vI_notificationBar.dump("checking for previous version, found " + 
 			currentVersion + "\nextension-upgrade required.\n")
 		switch (currentVersion) {
@@ -242,8 +110,8 @@ var vI_upgrade = {
 				vI_upgrade.__removeObsoleteUserPrefs(currentVersion);
                 vI_upgrade.__removeExtraAddedHeaders(currentVersion);
 		}
-		vI_rdfDatasource.storeExtVersion();
-		vI_notificationBar.dump("extension-upgrade to " + vI_rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
+		vI_upgrade.vI_rdfDatasource.storeExtVersion();
+		vI_notificationBar.dump("extension-upgrade to " + vI_upgrade.vI_rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
 	},
     
     __removeExtraAddedHeaders : function(currentVersion) {
@@ -341,10 +209,10 @@ var vI_upgrade = {
 		
 		var localIdentityData = new vI_identityData(newFullEmail, null, id, smtp, null)
 		
-		vI_rdfDatasource.updateRDF(localIdentityData.combinedName,
+		vI_upgrade.vI_rdfDatasource.updateRDF(localIdentityData.combinedName,
 						"email", localIdentityData, true, true, null, null)
 		if (Card.secondEmail.replace(/^\s+|\s+$/g,""))
-			vI_rdfDatasource.updateRDF(localIdentityData.combinedName,
+			vI_upgrade.vI_rdfDatasource.updateRDF(localIdentityData.combinedName,
 					"email", localIdentityData, true, true, null, null)
 		
 		Card[returnVar.prop] = "";
