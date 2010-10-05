@@ -348,7 +348,7 @@ vI_rdfDatasource.prototype = {
             this._unsetRDFValue(resource, "identityName", this._getRDFValue(resource, "identityName"))
             this._unsetRDFValue(resource, "fullName", this._getRDFValue(resource, "fullName"))
             this._unsetRDFValue(resource, "email", this._getRDFValue(resource, "email"))
-            this._identityContainer.RemoveElement(resource, true);
+            this._identityContainer.RemoveElement(resource, false);
         }
 
         enumerator = this._smtpContainer.GetElements();
@@ -358,7 +358,7 @@ vI_rdfDatasource.prototype = {
             this._unsetRDFValue(resource, "label", this._getRDFValue(resource, "label"))
             this._unsetRDFValue(resource, "hostname", this._getRDFValue(resource, "hostname"))
             this._unsetRDFValue(resource, "username", this._getRDFValue(resource, "username"))
-            this._smtpContainer.RemoveElement(resource, true);
+            this._smtpContainer.RemoveElement(resource, false);
         }    
     },
 	
@@ -986,6 +986,7 @@ vI_rdfDatasourceImporter.prototype = {
             this._storeMappedSMTPs(relevantSMTPs);
             this._rdfDataSource.searchSmtpMismatch();
             
+            this._rdfDataSource.refreshAccountInfo();
             this._rdfDataSource.clean();
             this._rdfDataSource = null;
             if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: cleaning ID/SMTP storages done.\n");
