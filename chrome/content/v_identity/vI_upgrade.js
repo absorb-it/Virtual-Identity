@@ -115,12 +115,19 @@ var vI_upgrade = {
 	},
     
     __removeExtraAddedHeaders : function(currentVersion) {
-        if (vI_upgrade.versionChecker.compare(currentVersion, "0.6.9") < 0 && 
-                vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders") != "") {
+        var prefroot = Components.classes["@mozilla.org/preferences-service;1"]
+            .getService(Components.interfaces.nsIPrefService)
+            .getBranch(null);
+        
+        vI_notificationBar.dump("extension-upgrade __removeExtraAddedHeaders " + currentVersion + "\n");
+        if ((!currentVersion || vI_upgrade.versionChecker.compare(currentVersion, "0.6.9") < 0) && 
+                prefroot.getCharPref("mailnews.headers.extraExpandedHeaders") != "") {
             // clean extraExpandedHeaders once, because the whole header-saving and restoring was broken too long
-            vI_prepareHeader.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", "")
+            vI_notificationBar.dump("cleaning extraExpandedHeaders\n");
+            prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", "")
             vI_notificationBar.dump("cleaned extraExpandedHeaders\n");
         }
+        vI_notificationBar.dump("extension-upgrade __removeExtraAddedHeaders done.\n\n");
     },
     
 	__transferMovedUserPrefs : function(currentVersion) {
