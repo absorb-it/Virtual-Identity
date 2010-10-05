@@ -27,8 +27,6 @@
 
 <!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/vI_rdfAccountMismatchDialog.dtd">
 
-<?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
-
 <dialog id="vI_rdfAccountMismatchDialog"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	buttons="accept,cancel"
@@ -54,5 +52,18 @@
             <caption label="&vident.vI_rdfAccountMismatchDialog_smtp.caption;"/>
             <description class="widthXX">&vident.vI_rdfAccountMismatchDialog_smtp.desc;</description>
         </vbox>
+        <listbox id="rdfAccountMismatchDialog_listbox" suppressonselect="true" rows="5" >
+        <listhead id="rdfAccountMismatchDialog_listhead_identity" hidden="true">
+            <listheader label="&vident.vI_rdfAccountMismatchDialog_identity.old;" />
+            <listheader label="&vident.vI_rdfAccountMismatchDialog_identity.count;" />
+            <listheader label="&vident.vI_rdfAccountMismatchDialog_identity.new;" />
+        </listhead>
+        <listhead id="rdfAccountMismatchDialog_listhead_smtp" hidden="true">
+            <listheader label="&vident.vI_rdfAccountMismatchDialog_smtp.old;" />
+            <listheader label="&vident.vI_rdfAccountMismatchDialog_smtp.count;" />
+            <listheader label="&vident.vI_rdfAccountMismatchDialog_smtp.new;" />
+        </listhead>
+        <listcols><listcol/><listcol/><listcol/></listcols>
+        </listbox>
     </groupbox>
 </dialog>

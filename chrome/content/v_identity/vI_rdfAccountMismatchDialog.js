@@ -32,18 +32,20 @@ var vI_rdfAccountMismatchDialog = {
         
         // display the relevant help-tags
         document.getElementById("rdfAccountMismatchDialog_vbox_" + vI_rdfAccountMismatchDialog.type).removeAttribute("hidden");
+        document.getElementById("rdfAccountMismatchDialog_listhead_" + vI_rdfAccountMismatchDialog.type).removeAttribute("hidden");
         
 		for (var i = 0; i < vI_rdfAccountMismatchDialog.mismatchItems.length; i++) {
-            var label = document.createElement("label");
-            label.setAttribute("id", "mismatchLine_" + i);
-            label.setAttribute("class", "mismatchLine");
-            label.setAttribute("type",vI_rdfAccountMismatchDialog.type);
-            label.setAttribute("oldkey",vI_rdfAccountMismatchDialog.mismatchItems[i].oldkey);
-            label.setAttribute("label",vI_rdfAccountMismatchDialog.mismatchItems[i].label);
-            label.setAttribute("ext1",vI_rdfAccountMismatchDialog.mismatchItems[i].ext1);
-            label.setAttribute("ext2",vI_rdfAccountMismatchDialog.mismatchItems[i].ext2);
-            label.setAttribute("count",vI_rdfAccountMismatchDialog.mismatchItems[i].count);
-            document.getElementById("rdfAccountMismatchDialog_groupbox").appendChild(label)
+//             var label = document.createElement("label");
+            var listitem = document.createElement("listitem");
+            listitem.setAttribute("id", "mismatchLine_" + i);
+            listitem.setAttribute("class", "mismatchLine");
+            listitem.setAttribute("type",vI_rdfAccountMismatchDialog.type);
+            listitem.setAttribute("oldkey",vI_rdfAccountMismatchDialog.mismatchItems[i].oldkey);
+            listitem.setAttribute("label",vI_rdfAccountMismatchDialog.mismatchItems[i].label);
+            listitem.setAttribute("ext1",vI_rdfAccountMismatchDialog.mismatchItems[i].ext1);
+            listitem.setAttribute("ext2",vI_rdfAccountMismatchDialog.mismatchItems[i].ext2);
+            listitem.setAttribute("count",vI_rdfAccountMismatchDialog.mismatchItems[i].count);
+            document.getElementById("rdfAccountMismatchDialog_listbox").appendChild(listitem)
 		}
 	},
 

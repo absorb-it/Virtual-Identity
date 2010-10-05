@@ -29,14 +29,20 @@
           xmlns:xbl="http://www.mozilla.org/xbl">
 	
     <binding id="mismatch-line">
-    <content>      
-        <xul:label class="identityDesc-name" xbl:inherits="value=label,accesskey,crop" crop="end" flex="1"/>
-        <xul:label class="identityDesc-ext1" xbl:inherits="value=ext1" crop="end" />
-        <xul:label class="identityDesc-ext2" xbl:inherits="value=ext2" crop="end" />
-        <xul:label class="identityDesc-count" xbl:inherits="value=count" crop="end" />
-        <xul:menulist class="mismatchMenulist" >
-            <xul:menupopup class="mismatchMenupopup" xbl:inherits="type" />
-        </xul:menulist>
+    <content allowevents="true">
+        <xul:listcell>
+            <xul:label class="identityDesc-name" xbl:inherits="value=label,accesskey,crop" crop="end" flex="1"/>
+            <xul:label class="identityDesc-ext1" xbl:inherits="value=ext1" crop="end" />
+            <xul:label class="identityDesc-ext2" xbl:inherits="value=ext2" crop="end" />
+        </xul:listcell>
+        <xul:listcell>
+            <xul:label class="identityDesc-count" xbl:inherits="value=count" crop="end" />
+        </xul:listcell>
+        <xul:listcell>
+            <xul:menulist class="mismatchMenulist" sizetopopup="always" hidden="true">
+                <xul:menupopup class="mismatchMenupopup" xbl:inherits="type" />
+            </xul:menulist>
+        </xul:listcell>
     </content>
     <implementation>
     <property name="key" >
@@ -74,6 +80,7 @@
         menuitem.setAttribute("key",  "");
         document.getAnonymousElementByAttribute(this, "class", "mismatchMenupopup").appendChild(menuitem);
         this.selectedItem = menuitem;
+        this.removeAttribute("hidden");
         ]]>
     </constructor>
     <property name="selectedItem" onget="return this.mSelectedInternal;" >
