@@ -29,9 +29,10 @@
 
 <dialog id="vI_rdfAccountMismatchDialog"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	buttons="accept,cancel"
+	buttons="accept"
     title="&vident.vI_rdfAccountMismatchDialog.title;"
     ondialogaccept="vI_rdfAccountMismatchDialog.accept();"
+    ondialogcancel="vI_rdfAccountMismatchDialog.accept();"
 	zlevel="6">
     <script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
     <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfAccountMismatchDialog.js" />
