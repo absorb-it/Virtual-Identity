@@ -573,8 +573,8 @@
 					oncommand="vI_prefDialog.base.storageConstraint(this);" />
 				<spacer class="paragraph"/>
 				<button id="VIdent_identity.storage.openEditor" label="&vI_prefDialog.storage.openEditor;" oncommand="openDialog('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome, dialog, resizable=yes');" />
-                <button id="VIdent_identity.storage.import" label="&vI_prefDialog.storage.import;" oncommand="vI_rdfDatasource = new vI_rdfDatasource(); vI_rdfDatasource.import('virtualIdentity.rdf')" />
-                <button id="VIdent_identity.storage.export" label="&vI_prefDialog.storage.export;" oncommand="vI_rdfDatasource = new vI_rdfDatasource(); vI_rdfDatasource.export('virtualIdentity.rdf')" />
+                <button id="VIdent_identity.storage.import" label="&vI_prefDialog.storage.import;" oncommand="var vI_localRdfDatasource = new vI_rdfDatasourceImporter('virtualIdentity.rdf');" />
+                <button id="VIdent_identity.storage.export" label="&vI_prefDialog.storage.export;" oncommand="var vI_localRdfDatasource = new vI_rdfDatasource(); vI_localRdfDatasource.export('virtualIdentity.rdf')" />
 				</groupbox>
 			</tabpanel>
 			<tabpanel orient="vertical">

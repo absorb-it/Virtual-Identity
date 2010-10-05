@@ -24,9 +24,8 @@
 
 
 
-function vI_rdfDatasource(rdfFileName, dontRegisterObserver, rdfNS) {
+function vI_rdfDatasource(rdfFileName, dontRegisterObserver) {
     this._rdfFileName = rdfFileName;
-    this._rdfNS = rdfNS?rdfNS:"http://virtual-id.absorb.it/";
     if (this._rdfFileName) this.init();
     if (!dontRegisterObserver) this.AccountManagerObserver.register();
 }
@@ -37,7 +36,7 @@ vI_rdfDatasource.prototype = {
                             .getService(Components.interfaces.nsIRDFService),
 	_rdfDataSource :    null,
 	_rdfFileName :      null,
-	_rdfNS :            null,           //   defaults to "http://virtual-id.absorb.it/"
+	_rdfNS :            "http://virtual-id.absorb.it/",
     _rdfNSStorage :     "vIStorage",
 	_rdfNSEmail :       "vIStorage/email",
 	_rdfNSMaillist :    "vIStorage/maillist",
@@ -80,7 +79,7 @@ vI_rdfDatasource.prototype = {
 	},
 
 	init: function() {
-        if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource init with namespace " + this._rdfNS + ".\n");
+//         if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource init.\n");
 
         this._openRdfDataSource();
         if (!this._rdfDataSource) return;
@@ -90,8 +89,8 @@ vI_rdfDatasource.prototype = {
         // store version everytime to recognize downgrades later
         this.storeRDFVersion();
             
-        this.refreshAccountInfo();
-        if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource init done.\n");
+//         this.refreshAccountInfo();
+//         if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource init done.\n");
     },
 	
     _openRdfDataSource: function() {
@@ -109,7 +108,7 @@ vI_rdfDatasource.prototype = {
         newFile.initWithPath(file.path + delimiter + this._rdfFileName);
         var fileURI = protoHandler.newFileURI(newFile);
 
-        if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource read rdf from '" + fileURI.spec + "'\n");
+        if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource init: read rdf from '" + fileURI.spec + "'\n");
 
         this._rdfDataSource =
             this._rdfService.GetDataSourceBlocking(fileURI.spec);
@@ -118,7 +117,6 @@ vI_rdfDatasource.prototype = {
     },
     
 	_initContainers: function() {
-        if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource _initContainers with namespace " + this._rdfNS + ".\n");
 		try {	// will possibly fail before upgrade
 			var storageRes = this._rdfService
 				.GetResource(this._rdfNS + this._rdfNSEmail);
@@ -382,7 +380,7 @@ vI_rdfDatasource.prototype = {
     },
     
 	searchIdentityMismatch : function() {
-        if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: searchIdentityMismatch\n");
+        if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: searchIdentityMismatch");
 
         var relevantIDs = this.getRelevantIDs();
         var mismatchIDs = [];
@@ -390,30 +388,39 @@ vI_rdfDatasource.prototype = {
         var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
             .getService(Components.interfaces.nsIMsgAccountManager);
         for (var id in relevantIDs) {
-            var identity = AccountManager.getIdentity(id)
+            var found = false;
+            for (var i = 0; i < AccountManager.accounts.Count(); i++) {
+                var account = AccountManager.accounts.GetElementAt(i)
+                    .QueryInterface(Components.interfaces.nsIMsgAccount);
+                for (var j = 0; j < account.identities.Count(); j++) {
+                    var identity = account.identities.GetElementAt(j).QueryInterface(Components.interfaces.nsIMsgIdentity);
+                    if (id == identity.key) { found = true; break; }
+                }
+                if (found) break;
+            }
             var resource = this._rdfService.GetResource(this._rdfNS + this._rdfNSIdentities + "/" + id);
             var rdfIdentityName = this._getRDFValue(resource, "identityName");
             var rdfEmail = this._getRDFValue(resource, "email");
             var rdfFullName = this._getRDFValue(resource, "fullName")
-            if ( !identity || rdfIdentityName != identity.identityName && rdfEmail != identity.email)
-                    mismatchIDs.push( { oldkey: id, label : rdfIdentityName, ext1: rdfEmail, ext2: rdfFullName, count: relevantIDs[id], key: "" } )
+            
+            if ( !found || rdfIdentityName != identity.identityName && rdfEmail != identity.email)
+            mismatchIDs.push( { oldkey: id, label : rdfIdentityName, ext1: rdfEmail, ext2: rdfFullName, count: relevantIDs[id], key: "" } )
         }
         if (mismatchIDs.length > 0) {
-            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: searchIdentityMismatch found mismatches on id(s).\n");
+            if (vI_notificationBar) vI_notificationBar.dump(" found mismatches on id(s).\n");
             
             window.openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul",0,
                     "chrome, dialog, modal, alwaysRaised, resizable=yes", "identity", mismatchIDs,
-                    /* callback: */ this.repairAccountMismatch).focus();
+                    /* callback chance: */ this).focus();
             return true;
         }
         else {
-            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: searchIdentityMismatch found no mismatch\n");
+            if (vI_notificationBar) vI_notificationBar.dump(" found no mismatch\n");
             return false;
         }
     },
 	
 	repairAccountMismatch : function(type, mismatchItems) {
-        if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: repairAccountMismatch\n");
         var keyField = (type == "identity")?"id":"smtp" // field to change is 'id' or 'smtp' dependent on type
         for (var i = 0; i < mismatchItems.length; i++) {
             if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: repairAccountMismatch change " + mismatchItems[i].oldkey + " into " + mismatchItems[i].key + ": ");
@@ -452,31 +459,46 @@ vI_rdfDatasource.prototype = {
     },
     
     searchSmtpMismatch : function() {
-        if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: searchSmtpMismatch\n");
+        if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: searchSmtpMismatch");
 
         var relevantSMTPs = this.getRelevantSMTPs();
         var mismatchSMTPs = [];
         
-        var SmtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
-            .getService(Components.interfaces.nsISmtpService);
         for (var smtp in relevantSMTPs) {
-            var server = SmtpService.getServerByKey(smtp)
+            var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+                .getService(Components.interfaces.nsISmtpService).smtpServers;
+            var found = false;
+            if (typeof(servers.Count) == "undefined")       // TB 3.x
+                while (servers && servers.hasMoreElements()) {
+                    var server = servers.getNext();
+                    if (server instanceof Components.interfaces.nsISmtpServer && 
+                        !server.redirectorType && smtp == server.key) {
+                        found = true; break;
+                    }
+                }
+            else                            // TB 2.x
+                for (var i=0 ; i < servers.Count(); i++) {
+                    var server = servers.QueryElementAt(i,Components.interfaces.nsISmtpServer);
+                    if (!server.redirectorType && smtp == server.key) {
+                        found = true; break;
+                    }
+                }
             var resource = this._rdfService.GetResource(this._rdfNS + this._rdfNSSMTPservers + "/" + smtp);
             var rdfSMTPlabel = this._getRDFValue(resource, "label");
             var rdfHostname = this._getRDFValue(resource, "hostname");
             var rdfUsername = this._getRDFValue(resource, "username")
-            if (!server || rdfSMTPlabel != (server.description?server.description:server.hostname) && rdfHostname != server.hostname)
+            if (!found || rdfSMTPlabel != (server.description?server.description:server.hostname) && rdfHostname != server.hostname)
                     mismatchSMTPs.push( { oldkey: smtp, label : rdfSMTPlabel, ext1: rdfHostname, ext2: rdfUsername, count: relevantSMTPs[smtp], key: "" } )
         }
         if (mismatchSMTPs.length > 0) {
-            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: searchSmtpMismatch found mismatches on smtp(s).\n");
+            if (vI_notificationBar) vI_notificationBar.dump(" found mismatches on smtp(s).\n");
             window.openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul",0,
                     "chrome, dialog, modal, alwaysRaised, resizable=yes", "smtp", mismatchSMTPs,
-                    /* callback: */ this.repairAccountMismatch).focus();
+                    /* callback: */ this).focus();
             return true;
         }
         else {
-            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: searchSmtpMismatch found no mismatch\n");
+            if (vI_notificationBar) vI_notificationBar.dump(" found no mismatch\n");
             return false;
         }
     },
@@ -534,7 +556,7 @@ vI_rdfDatasource.prototype = {
         filePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll | Components.interfaces.nsIFilePicker.filterText );
         filePicker.appendFilter("RDF Files","*.rdf");
         
-        if (filePicker.show() == Components.interfaces.nsIFilePicker.returnOK) {
+        if (filePicker.show() != Components.interfaces.nsIFilePicker.returnCancel) {
             var rdfDataFile = Components.classes["@mozilla.org/file/local;1"]
                 .createInstance(Components.interfaces.nsILocalFile);
             var file = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -703,7 +725,7 @@ vI_rdfDatasource.prototype = {
 	},
 
 	updateRDF : function (recDescription, recType, localIdentityData, storeBaseID, storeSMTP, prevRecDescription, prevRecType) {
-        if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource (" + this._rdfNS + "): updateRDF recDescription=" + recDescription + " localIdentityData.email=" + localIdentityData.email + ".\n");
+//         if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource (" + this._rdfNS + "): updateRDF recDescription=" + recDescription + " localIdentityData.email=" + localIdentityData.email + ".\n");
         
 // 		if (!localIdentityData.email) {
 // 			if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: updateRDF: no Sender-email for Recipient, aborting.\n");
@@ -716,7 +738,7 @@ vI_rdfDatasource.prototype = {
 
 		var resource = this._getRDFResourceForVIdentity(prevRecDescription, prevRecType);
 		if (!resource) return;
-		if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: updateRDF " + resource.ValueUTF8 + ".\n");
+// 		if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: updateRDF " + resource.ValueUTF8 + ".\n");
 		
 		var position = this.getContainer(recType).IndexOf(resource); // check for index in new recType
 		this.removeVIdentityFromRDF(resource, prevRecType);
@@ -735,13 +757,13 @@ vI_rdfDatasource.prototype = {
  
         localIdentityData.extras.loopForRDF(this, resource, "set");
 		
-		if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource (" + this._rdfFileName + "): updateRDF add " + resource.ValueUTF8 + " at position " + position + ".\n");
+		if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: updateRDF add " + resource.ValueUTF8 + " at position " + position + ".\n");
         if (position != -1) this.getContainer(recType).InsertElementAt(resource, position, true);
 		else this.getContainer(recType).AppendElement(resource);
 	},
 
 	_setRDFValue : function (resource, field, value) {
-//		if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: _setRDFValue " + resource.ValueUTF8 + " " + field + " " + value + ".\n");
+// 		if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: _setRDFValue " + resource.ValueUTF8 + " " + field + " " + value + ".\n");
 		if (!value) return value; // return if some value was not set.
 // 		if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource _setRDFValue " + this._rdfService + " " + this._rdfDataSource + "\n");
         var predicate = this._rdfService.GetResource(this._rdfNS + "rdf#" + field);
@@ -783,13 +805,15 @@ vI_rdfDatasource.prototype = {
     }
 }
 
-
+// create with name of the file to import into
 function vI_rdfDatasourceImporter(rdfFileName) {
     this._rdfFileName = rdfFileName;
     if (this._rdfFileName) this.import();
 }
 
 vI_rdfDatasourceImporter.prototype = {
+    _rdfService :       Components.classes["@mozilla.org/rdf/rdf-service;1"]
+                            .getService(Components.interfaces.nsIRDFService),
     _rdfDataSource :    null,
     _rdfFileName :      null,
     _rdfImportDataSource :    null,
@@ -824,6 +848,70 @@ vI_rdfDatasourceImporter.prototype = {
         return null;
     },
     
+    _translateRelevantIDs : function() {
+        var relevantIDs = this._rdfImportDataSource.getRelevantIDs();
+        for (var id in relevantIDs) {
+            var resource = this._rdfService.GetResource(this._rdfImportDataSource._rdfNS + this._rdfImportDataSource._rdfNSIdentities + "/" + id);
+            var values = { id : null, identityName : null, email : null, fullName : null }
+            values.identityName = this._rdfImportDataSource._getRDFValue(resource, "identityName");
+            values.email = this._rdfImportDataSource._getRDFValue(resource, "email");
+            values.fullName = this._rdfImportDataSource._getRDFValue(resource, "fullName");
+            values.id = this._getMatchingIdentity(values.identityName, values.email, values.fullName);
+            values.id = values.id?values.id:"import_" + id
+            relevantIDs[id] = values;
+            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: translate relevant ID from previous '" + id + "' to current '" + relevantIDs[id].id + "'\n");
+        }
+        return relevantIDs;
+    },
+    
+    _storeMappedIDs : function(relevantIDs) {
+        for (var id in relevantIDs) {
+            if (relevantIDs[id].id == "import_" + id) {
+                var resource = this._rdfService
+                    .GetResource(this._rdfDataSource._rdfNS + this._rdfDataSource._rdfNSIdentities + "/" + relevantIDs[id].id);
+                this._rdfDataSource._setRDFValue(resource, "identityName", relevantIDs[id].identityName);
+                this._rdfDataSource._setRDFValue(resource, "fullName", relevantIDs[id].fullName);
+                this._rdfDataSource._setRDFValue(resource, "email", relevantIDs[id].email);
+                
+                var position = this._rdfDataSource._identityContainer.IndexOf(resource); // check for index in new recType
+                if (position != -1) this._rdfDataSource._identityContainer.InsertElementAt(resource, position, false);
+                else this._rdfDataSource._identityContainer.AppendElement(resource);
+            }
+        }
+    },
+    
+    _translateRelevantSMTPs : function() {
+        var relevantSMTPs = this._rdfImportDataSource.getRelevantSMTPs();
+        for (var smtp in relevantSMTPs) {
+            var resource = this._rdfService.GetResource(this._rdfImportDataSource._rdfNS + this._rdfImportDataSource._rdfNSSMTPservers + "/" + smtp);
+            var values = { smtp : null, label : null, hostname : null, username : null }
+            values.label = this._rdfImportDataSource._getRDFValue(resource, "label");
+            values.hostname = this._rdfImportDataSource._getRDFValue(resource, "hostname");
+            values.username = this._rdfImportDataSource._getRDFValue(resource, "username");
+            values.smtp =  this._getMatchingSMTP(values.label, values.hostname, values.username);
+            values.smtp = values.smtp?values.smtp:"import_" + smtp;
+            relevantSMTPs[smtp] = values;
+            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: translate relevant SMTP from previous '" + smtp + "' to current '" + relevantSMTPs[smtp].smtp + "'\n");
+        }
+        return relevantSMTPs;
+    },
+    
+    _storeMappedSMTPs : function(relevantSMTPs) {
+        for (var smtp in relevantSMTPs) {
+            if (relevantSMTPs[smtp].smtp == "import_" + smtp) {
+                var resource = this._rdfService
+                    .GetResource(this._rdfDataSource._rdfNS + this._rdfDataSource._rdfNSSMTPservers + "/" + relevantSMTPs[smtp].smtp);
+                this._rdfDataSource._setRDFValue(resource, "label", relevantSMTPs[smtp].label);
+                this._rdfDataSource._setRDFValue(resource, "hostname", relevantSMTPs[smtp].hostname);
+                this._rdfDataSource._setRDFValue(resource, "username", relevantSMTPs[smtp].username);
+                
+                var position = this._rdfDataSource._smtpContainer.IndexOf(resource); // check for index in new recType
+                if (position != -1) this._rdfDataSource._smtpContainer.InsertElementAt(resource, position, false);
+                else this._rdfDataSource._smtpContainer.AppendElement(resource);
+            }
+        }
+    },
+    
     import : function() {
         var filePicker = Components.classes["@mozilla.org/filepicker;1"]
             .createInstance(Components.interfaces.nsIFilePicker);
@@ -833,7 +921,7 @@ vI_rdfDatasourceImporter.prototype = {
         filePicker.appendFilters(Components.interfaces.nsIFilePicker.filterText | Components.interfaces.nsIFilePicker.filterAll );
         
         if (filePicker.show() == Components.interfaces.nsIFilePicker.returnOK) {
-            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: preparation:\n");
+            if (vI_notificationBar) vI_notificationBar.dump("\n## vI_rdfDatasourceImporter IMPORT\n## vI_rdfDatasourceImporter import: preparation:\n");
             
             var importRdfDataFile = Components.classes["@mozilla.org/file/local;1"]
                 .createInstance(Components.interfaces.nsILocalFile);
@@ -841,102 +929,67 @@ vI_rdfDatasourceImporter.prototype = {
                 .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
             var delimiter = (file.path.match(/\\/))?"\\":"/";
             importRdfDataFile.initWithPath(file.path + delimiter + this._rdfFileName + "_import");
-//             importRdfDataFile.createUnique( Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 600);  
-            
-            var inp_fstream = Components.classes["@mozilla.org/network/file-input-stream;1"]
-                .createInstance(Components.interfaces.nsIFileInputStream);
-            var inp_cstream = Components.classes["@mozilla.org/intl/converter-input-stream;1"]
-                .createInstance(Components.interfaces.nsIConverterInputStream);
-            var out_fstream = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                .createInstance(Components.interfaces.nsIFileOutputStream);
-            var out_cstream = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
-                .createInstance(Components.interfaces.nsIConverterOutputStream);  
-
-            inp_fstream.init(filePicker.file, -1, 0, 0);
-            inp_cstream.init(inp_fstream, "UTF-8", 0, 0); // you can use another encoding here if you wish
-            out_fstream.init(importRdfDataFile, 0x04 | 0x08 | 0x20, 0600, 0); // readwrite, create, truncate
-            out_cstream.init(out_fstream, "UTF-8", 0, 0);  
-            
-            var regExpNamespace = new RegExp("http://virtual-id.absorb.it/","g");
-            let (str = {}) { let read = 0;
-                do { 
-                    read = inp_cstream.readString(0xffffffff, str); // read as much as we can and put it in str.value
-                    var string = str.value.replace(regExpNamespace, "http://virtual-id-import.absorb.it/");
-//                     out_fstream.write(string, string.length);
-                    out_cstream.writeString(string);
-                } while (read != 0);
-            }
-            inp_cstream.close();
-            out_cstream.close();
+            filePicker.file.copyTo(importRdfDataFile.parent,importRdfDataFile.leafName);
 
             if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: copied file from " + filePicker.file.path + " to " + importRdfDataFile.path + "'\n");
-            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: transferred NAMESPACES of import-file\n");
             
             // init Datasources
-            this._rdfImportDataSource = new vI_rdfDatasource(importRdfDataFile.leafName, true, "http://virtual-id-import.absorb.it/");
+            this._rdfImportDataSource = new vI_rdfDatasource(importRdfDataFile.leafName, true);
             
-            // search matching Identities for any used ones
-            var relevantIDs = this._rdfImportDataSource.getRelevantIDs();
-            for (var id in relevantIDs) {
-                var resource = this._rdfImportDataSource._rdfService.GetResource(this._rdfImportDataSource._rdfNS + this._rdfImportDataSource._rdfNSIdentities + "/" + id);
-                var rdfIdentityName = this._rdfImportDataSource._getRDFValue(resource, "identityName");
-                var rdfEmail = this._rdfImportDataSource._getRDFValue(resource, "email");
-                var rdfFullName = this._rdfImportDataSource._getRDFValue(resource, "fullName");
-                var newId = this._getMatchingIdentity(rdfIdentityName, rdfEmail, rdfFullName);
-                relevantIDs[id] = newId?newId:"import_" + id;
-                if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: translate relevant ID from " + id + " to " + relevantIDs[id] + "'\n");
-            }
-            // search matching SMTPs for any used ones
-            var relevantSMTPs = this._rdfImportDataSource.getRelevantSMTPs();
-            for (var smtp in relevantSMTPs) {
-                var resource = this._rdfImportDataSource._rdfService.GetResource(this._rdfImportDataSource._rdfNS + this._rdfImportDataSource._rdfNSSMTPservers + "/" + smtp);
-                var rdfSMTPlabel = this._rdfImportDataSource._getRDFValue(resource, "label");
-                var rdfHostname = this._rdfImportDataSource._getRDFValue(resource, "hostname");
-                var rdfUsername = this._rdfImportDataSource._getRDFValue(resource, "username")
-                var newSMTP = this._getMatchingSMTP(rdfSMTPlabel, rdfHostname, rdfUsername);
-                relevantSMTPs[smtp] = newSMTP?newSMTP:"import_" + smtp;
-                if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: translate relevant SMTP from " + smtp + " to " + relevantSMTPs[smtp] + "'\n");
-            }
+            // search matching IDs and SMTPs for anyones used in import-file
+            var relevantIDs = this._translateRelevantIDs();
+            var relevantSMTPs = this._translateRelevantSMTPs();
             
             if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: preparation done.\n");
-            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: starting import:");
+            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: starting import:\n");
 
             for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
+                // re-initialize importDataSource to point rdfService to the right Resources
+                this._rdfImportDataSource = new vI_rdfDatasource(importRdfDataFile.leafName, true);
                 var container = this._rdfImportDataSource.getContainer(treeType)
-                if (vI_notificationBar) vI_notificationBar.dump("\n## vI_rdfDatasource importing " + treeType + " :" + container.GetCount()+ "datasets from " + this._rdfImportDataSource._rdfDataSource.URI + "\n");
+                if (container.GetCount() == 0) continue;
+                if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter importing " + treeType + ": " + container.GetCount()+ " datasets from " + this._rdfImportDataSource._rdfDataSource.URI + "\n");
                 var enumerator = container.GetElements();
-                this._rdfDataSource = new vI_rdfDatasource("virtualIdentity.rdf", true, "http://virtual-id.absorb.it/");
+                // re-initialize dataSource to point rdfService to the right Resources
+                this._rdfDataSource = new vI_rdfDatasource(this._rdfFileName, true);
                 var count = 0;
                 while (enumerator.hasMoreElements()) {
                     var resource = enumerator.getNext(); count += 1;
                     resource.QueryInterface(Components.interfaces.nsIRDFResource);
-                    if (vI_notificationBar) vI_notificationBar.dump("## " + count + ": vI_rdfDatasource (" + this._rdfImportDataSource._rdfNS + "): importing " + resource.ValueUTF8 + ".\n");
+                    if (vI_notificationBar) vI_notificationBar.dump("## " + count + " ");
                     var name = this._rdfImportDataSource._getRDFValue(resource, "name")
                     var email = this._rdfImportDataSource._getRDFValue(resource, "email")
                     var fullName = this._rdfImportDataSource._getRDFValue(resource, "fullName")
                     var id = this._rdfImportDataSource._getRDFValue(resource, "id")
-                    id = id?relevantIDs[id]:null
+                    id = id?relevantIDs[id].id:null
                     var smtp = this._rdfImportDataSource._getRDFValue(resource, "smtp")
-                    smtp = (smtp && smtp != DEFAULT_SMTP_TAG)?relevantSMTPs[smtp]:smtp
-                    if (!smtp) smtp = NO_SMTP_TAG;
+                    smtp = (smtp && smtp != DEFAULT_SMTP_TAG)?relevantSMTPs[smtp].smtp:smtp
                     var extras = new vI_storageExtras(this._rdfImportDataSource, resource);
                     var localIdentityData = new vI_identityData(email, fullName, id, smtp, extras)
                     
-                    this._rdfDataSource.updateRDF(name, treeType, localIdentityData, true, true, null, null)
-                    if (vI_notificationBar) vI_notificationBar.dump(".");
+                    this._rdfDataSource.updateRDF(name, treeType, localIdentityData, false, false, null, null)
+                    var resource = this._rdfDataSource._getRDFResourceForVIdentity(name, treeType);
+                    if (id) this._rdfDataSource._setRDFValue(resource, "id", id);       // localIdentityData can only store valid id's, this one might be a temporary invalid id
+                    if (smtp) this._rdfDataSource._setRDFValue(resource, "smtp", smtp); // localIdentityData can only store valid smtp's, this one might be a temporary invalid smtp
                 }
-                this._rdfDataSource = null;
             }
-            if (vI_notificationBar) vI_notificationBar.dump("\n## vI_rdfDatasourceImporter import: import done.");
-            this._rdfImportDataSource = null;
-
-            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: cleaning ID/SMTP storages:");
-            this._rdfDataSource = new vI_rdfDatasource("virtualIdentity.rdf", true, "http://virtual-id.absorb.it/");
+            
+            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: removing temporary file " + importRdfDataFile.path + ".\n");
+            this._rdfImportDataSource = null; importRdfDataFile.remove(false);
+            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: import done.\n");
+            
+            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: cleaning ID/SMTP storages:\n");
+            this._rdfDataSource = new vI_rdfDatasource(this._rdfFileName, true);
+            
+            this._storeMappedIDs(relevantIDs);
             this._rdfDataSource.searchIdentityMismatch();
+            this._storeMappedSMTPs(relevantSMTPs);
             this._rdfDataSource.searchSmtpMismatch();
+            
             this._rdfDataSource.clean();
             this._rdfDataSource = null;
-            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: cleaning ID/SMTP storages done.");
+            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: cleaning ID/SMTP storages done.\n");
+            if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter IMPORT DONE.\n");
         }
     }
 }

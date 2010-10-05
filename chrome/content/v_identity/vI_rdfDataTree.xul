@@ -114,8 +114,8 @@
         </menu>
 		<menu id="tasksMenu" label="&tasksMenu.label;" accesskey="&tasksMenu.accesskey;">
 		<menupopup>
-            <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="vI_rdfDatasource = new vI_rdfDatasource(); vI_rdfDatasource.import('virtualIdentity.rdf')"/>
-            <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="vI_rdfDatasource = new vI_rdfDatasource(); vI_rdfDatasource.export('virtualIdentity.rdf')"/>
+            <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="var vI_localRdfDatasource = new vI_rdfDatasourceImporter('virtualIdentity.rdf');"/>
+            <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="var vI_localRdfDatasource = new vI_rdfDatasource(); vI_localRdfDatasource.export('virtualIdentity.rdf')"/>
 		</menupopup>
 		</menu>
 	</menubar>

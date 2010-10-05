@@ -92,16 +92,21 @@ function vI_storageExtras(rdfDatasource, resource) {
 	if (document.getElementById("menu_securityNoEncryption1"))	// TB 2.x
 		this.extras[4] = new vI_storageExtras_sMime_messageEncryption()
 
-	if (rdfDatasource) this.loopForRDF(rdfDatasource, resource)
+	if (rdfDatasource) this.loopForRDF(rdfDatasource, resource, "get")
 }
 
 vI_storageExtras.prototype = {
-	loopForRDF : function(rdfDatasource, resource) {
+	loopForRDF : function(rdfDatasource, resource, type) {
 		for( var i = 0; i < this.extras.length; i++ ) {
 // 			if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: loopForRDF " + rdfDatasource + "\n");
             // only if pref set and feature(element available) or for dataEditor
-			if (typeof(gMsgCompose) == "undefined" || !gMsgCompose || this.extras[i].active)
-				this.extras[i].value = rdfDatasource._getRDFValue(resource, this.extras[i].field, this.extras[i].value)
+			if (typeof(gMsgCompose) == "undefined" || !gMsgCompose || this.extras[i].active) {
+                switch (type) {
+                    case "get": this.extras[i].value = rdfDatasource._getRDFValue(resource, this.extras[i].field, this.extras[i].value); break;
+                    case "set": this.extras[i].value = rdfDatasource._setRDFValue(resource, this.extras[i].field, this.extras[i].value); break;
+                    case "unset": this.extras[i].value = rdfDatasource._unsetRDFValue(resource, this.extras[i].field, this.extras[i].value); break;
+                }
+            }
 		}
 	},
 	

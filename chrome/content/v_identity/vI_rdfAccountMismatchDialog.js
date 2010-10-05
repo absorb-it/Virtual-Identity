@@ -51,8 +51,8 @@ var vI_rdfAccountMismatchDialog = {
         for (var i = 0; i < vI_rdfAccountMismatchDialog.mismatchItems.length; i++) {
             vI_rdfAccountMismatchDialog.mismatchItems[i].key = document.getElementById("mismatchLine_" + i).key
         }
-		/* window.argument[2] stores callback function */
-        window.arguments[2](vI_rdfAccountMismatchDialog.type, vI_rdfAccountMismatchDialog.mismatchItems);
+		/* window.argument[2] stores callback parent */
+        window.arguments[2].repairAccountMismatch(vI_rdfAccountMismatchDialog.type, vI_rdfAccountMismatchDialog.mismatchItems);
 	}
 }
 window.addEventListener("load", vI_rdfAccountMismatchDialog.init, false);
