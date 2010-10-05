@@ -1,4 +1,4 @@
-<!ENTITY vident.vI_rdfAccountMismatchDialog.title "Virtual Identity - RDF Mismtach Alignment">
+<!ENTITY vident.vI_rdfAccountMismatchDialog.title "Virtual Identity - RDF Mismatch Alignment">
 <!ENTITY vident.vI_rdfAccountMismatchDialog.removeRelation.label "remove Relation">
 <!ENTITY vident.vI_rdfAccountMismatchDialog.dialogheader "Account Settings Correlation">
 <!ENTITY vident.vI_rdfAccountMismatchDialog_identity.desc "Some of the previously stored Identities don't match the current Identitiy-Settings. Please select if the following stored id-relations should be removed or assign those to existing Identities:">
