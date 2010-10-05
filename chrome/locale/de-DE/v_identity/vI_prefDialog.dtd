@@ -132,6 +132,8 @@
 <!ENTITY vI_prefDialog.storage.label "speichere (und lese) genutzte Identitäten">
 <!ENTITY vI_prefDialog.storage.tooltiptext "Verwendete Identitäten können gespeichert werden. Schreibst Du dem selben Empfänger erneut eine Email, wird die gleiche virtuelle oder nicht-virtuelle Identität benutzt.">
 <!ENTITY vI_prefDialog.storage.openEditor "bearbeite gespeicherte Daten">
+<!ENTITY vI_prefDialog.storage.export "exportiere gespeicherte Daten">
+<!ENTITY vI_prefDialog.storage.import "importiere Daten">
 
 <!ENTITY vI_prefDialog.storageTab.reading.header "Lesen von Identitäten">
 <!ENTITY vI_prefDialog.storageTab.reading.caption "Lesen von Identitäten">

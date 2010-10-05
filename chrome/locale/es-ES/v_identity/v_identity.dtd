@@ -10,6 +10,7 @@
 <!ENTITY vident.replySelector.caption.label "Elegir una identidad virtual">
 <!ENTITY vident.vI_Menu.label "Virtual Identity">
 <!ENTITY vident.vI_Menu.Settings.label "Opciones">
+<!ENTITY vident.vI_Menu.DataStorage.label "Data-Storage"> <!-- translate -->
 <!ENTITY vident.vI_Menu.DataEditor.label "Editor de datos almacenados">
 <!ENTITY vident.vI_Menu.storageSave.label "guardar la identidad al enviar">
 <!ENTITY vident.vI_Menu.saveBaseID.label "guardar la identidad base">

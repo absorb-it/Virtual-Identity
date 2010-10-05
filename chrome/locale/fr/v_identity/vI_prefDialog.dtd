@@ -132,6 +132,8 @@
 <!ENTITY vI_prefDialog.storage.label "Stocker (et ré-utiliser) les Identités utilisées">
 <!ENTITY vI_prefDialog.storage.tooltiptext "Les identités utilisées peuvent avoir été stockées en fonction des destinataires. Si vous écrivez à nouveau au même destinataire, la même identité, virtuelle ou non, sera utilisée.">
 <!ENTITY vI_prefDialog.storage.openEditor "Editeur d'identités stockées...">
+<!ENTITY vI_prefDialog.storage.export "export stored data"> <!-- translate -->
+<!ENTITY vI_prefDialog.storage.import "import data"> <!-- translate -->
 
 <!ENTITY vI_prefDialog.storageTab.reading.header "Ré-utilisation">
 <!ENTITY vI_prefDialog.storageTab.reading.caption "Mode de ré-utilisation des Identités stockées">

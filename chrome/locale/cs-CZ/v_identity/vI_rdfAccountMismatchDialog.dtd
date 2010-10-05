@@ -1,0 +1,13 @@
+<!ENTITY vident.vI_rdfAccountMismatchDialog.title "Virtual Identity - RDF Mismatch Alignment"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog.removeRelation.label "remove Relation"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog.dialogheader "Account Settings Correlation"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog_identity.desc "Some of the previously stored Identities don't match the current Identitiy-Settings. Please select if the following stored id-relations should be removed or assign those to existing Identities:"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog_identity.caption "assign related Identities"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog_smtp.desc "Some of the previously stored SMTP-servers don't match the current SMTP-Settings. Please select if the folowing stored SMTP-relations should be removed or assign those to existing SMTP servers:"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog_smtp.caption "assign related SMTP-server"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog_identity.old "previous Identity (email / full Name)"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog_identity.count "use-count"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog_identity.new "new Identitiy (email / full Name)"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog_smtp.old "previous SMTP (hostname / username)"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog_smtp.count "use-count"> <!-- translate -->
+<!ENTITY vident.vI_rdfAccountMismatchDialog_smtp.new "new SMTP (hostname / username)"> <!-- translate -->

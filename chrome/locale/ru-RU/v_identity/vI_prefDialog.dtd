@@ -132,6 +132,8 @@
 <!ENTITY vI_prefDialog.storage.label "Сохранять (и восстанавливать) используемые личные данные">
 <!ENTITY vI_prefDialog.storage.tooltiptext "Личные данные, используемые для отправки и связанные с получателями сообщений, будут сохраняться. Если вы снова пишите сообщение получателю, которому ранее уже отсылали сообщение, то будут использоваться соответствующие личные данные (виртуальные или реальные).">
 <!ENTITY vI_prefDialog.storage.openEditor "Редактировать сохраненные данные">
+<!ENTITY vI_prefDialog.storage.export "export stored data"> <!-- translate -->
+<!ENTITY vI_prefDialog.storage.import "import data"> <!-- translate -->
 
 <!ENTITY vI_prefDialog.storageTab.reading.header "Считывание виртуальных личных данных">
 <!ENTITY vI_prefDialog.storageTab.reading.caption "Считывание сохраненных виртуальных личных данных">

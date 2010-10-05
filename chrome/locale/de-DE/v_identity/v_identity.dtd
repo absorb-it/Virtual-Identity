@@ -10,7 +10,8 @@
 <!ENTITY vident.replySelector.caption.label "Wählen Sie eine Virtuelle Identität">
 <!ENTITY vident.vI_Menu.label "Virtual Identity">
 <!ENTITY vident.vI_Menu.Settings.label "Einstellungen">
-<!ENTITY vident.vI_Menu.DataEditor.label "Daten-Speicher">
+<!ENTITY vident.vI_Menu.DataStorage.label "Daten-Speicher">
+<!ENTITY vident.vI_Menu.DataEditor.label "Editor">
 <!ENTITY vident.vI_Menu.storageSave.label "speichere Identität beim Senden">
 <!ENTITY vident.vI_Menu.saveBaseID.label "speichere zugrunde liegende Identität">
 <!ENTITY vident.vI_Menu.saveSMTP.label "speichere SMTP-Server">

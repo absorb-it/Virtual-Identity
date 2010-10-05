@@ -10,6 +10,7 @@
 <!ENTITY vident.replySelector.caption.label "Kies een virtuele identiteit">
 <!ENTITY vident.vI_Menu.label "Virtual Identity">
 <!ENTITY vident.vI_Menu.Settings.label "Instellingen">
+<!ENTITY vident.vI_Menu.DataStorage.label "Data-Storage"> <!-- translate -->
 <!ENTITY vident.vI_Menu.DataEditor.label "Gegevensopslagbewerking">
 <!ENTITY vident.vI_Menu.storageSave.label "Identiteit opslaan bij verzenden">
 <!ENTITY vident.vI_Menu.saveBaseID.label "Onderliggende basisidentiteit opslaan">
