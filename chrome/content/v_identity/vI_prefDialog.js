@@ -140,7 +140,6 @@ var vI_prefDialog = {
                     else if (eltType == "listbox")
                         element.value =
                             vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"));
-                    }
 				} catch (ex) {}
 			}
 		},
