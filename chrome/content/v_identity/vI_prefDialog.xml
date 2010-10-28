@@ -35,9 +35,11 @@
         if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: constructor\n");
         var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
             .getService(Components.interfaces.nsIMsgAccountManager);
-        for (let i = 0; i < AccountManager.accounts.Count(); i++) {
+        var debugNotes = vI_prefDialog.preferences.getBoolPref("debug_notification");
+
+        for (let i = AccountManager.accounts.Count() - 1; i >= 0 ; i--) {
             var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-            for (let j = 0; j < account.identities.Count(); j++) {
+            for (let j = account.identities.Count() - 1; j >= 0 ; j--) {
                 var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
                 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
                 var listitem = document.createElementNS(XUL_NS, "listitem"); // create a new XUL listitem
@@ -45,9 +47,13 @@
                 listitem.setAttribute("label", identity.identityName);
                 listitem.setAttribute("value", identity.key);
                 listitem.setAttribute("description", " - " + account.incomingServer.prettyName);
-                this.appendChild(listitem);
+                listitem.setAttribute("debugNotesHidden", !debugNotes);
+                if (this.firstChild) this.insertBefore(listitem, this.firstChild);      // ensure that new elements are visible
+                else this.appendChild(listitem);                                        // otherwise checkbox will not be initialized
             }
         }
+        if (debugNotes)
+            document.getAnonymousElementByAttribute(this, "id", "ignoreIDs_debug").removeAttribute("hidden")
         ]]>
     </constructor>
     <property name="value" >
@@ -56,7 +62,8 @@
         var listItems = this.childNodes;
         for (var index = 0; index < listItems.length; index++) {
             var key = listItems[index].getAttribute("value");
-            listItems[index].checked = (val.indexOf(key) == -1);
+            listItems[index].checked = (val.indexOf(":" + key + ":") == -1);
+            if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: setting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n")
         }
         this._value = val;
         ]]></setter>
@@ -66,7 +73,7 @@
         var listItems = this.childNodes;
         for (var index = 0; index < listItems.length; index++) {
             if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: getting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n");
-            if (!listItems[index].checked) returnVal += listItems[index].getAttribute("value") + " "
+            if (!listItems[index].checked) returnVal += " :" + listItems[index].getAttribute("value") + ": "
         }
         if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: getting value, result '" + returnVal + "'\n");
         return returnVal;
@@ -78,12 +85,12 @@
     <binding id="selectorListitem" extends="chrome://global/content/bindings/listbox.xml#listitem">
     <content allowevents="true">
         <xul:checkbox anonid="selector_checkbox" />
-        <xul:label class="menupopup_clone-text" xbl:inherits="value=label,accesskey,crop" flex="1"/>
-        <xul:label class="menupopup_clone-description" xbl:inherits="value=value" />
-        <xul:label class="menupopup_clone-description" xbl:inherits="value=description" />
+        <xul:label class="menupopup_clone-text" xbl:inherits="value=label,accesskey,crop" />
+        <xul:label class="menupopup_clone-description" anonid="debugNote" xbl:inherits="value=value, hidden=debugNotesHidden" hidden="true" />
+        <xul:label class="menupopup_clone-description" xbl:inherits="value=description" flex="1" />
     </content>
     <implementation>
-    <property name="checked" onget="return this._checkbox.getAttribute('checked');" onset="if (val) this._checkbox.setAttribute('checked', val); else this._checkbox.removeAttribute('checked');" />
+    <property name="checked" onget="return this._checkbox.checked;" onset="this._checkbox.checked = val;" />
     <field name="_checkbox">document.getAnonymousElementByAttribute(this, "anonid", "selector_checkbox")</field>
     </implementation>
     </binding>
