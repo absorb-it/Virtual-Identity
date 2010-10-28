@@ -113,6 +113,7 @@ var vI_prefDialog = {
 				"VIdent_identity.idSelection_ask_always",
 				"VIdent_identity.idSelection_autocreate",
 				"VIdent_identity.idSelection_preferExisting",
+                "VIdent_identity.idSelection_ignoreIDs",
 				"VIdent_identity.autoReplyToSelf"],
 	
 		init : function() {
@@ -123,18 +124,23 @@ var vI_prefDialog = {
 				if (!element) break;
 				var eltType = element.localName;
 				try {
-				if (eltType == "radiogroup")
-					element.selectedItem = element.childNodes[
-						vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring"))];
-				else if (eltType == "checkbox")
-					element.checked = 
-						vI_prefDialog.preferences.getBoolPref(element.getAttribute("prefstring"));
-				else if (eltType == "textbox")
-					if (element.getAttribute("preftype") == "int")
-						element.setAttribute("value", 
-						vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring")) );
-					else element.setAttribute("value", 
-						vI_prefDialog.unicodeConverter.ConvertToUnicode(vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"))) );
+                    if (eltType == "radiogroup")
+                        element.selectedItem = element.childNodes[
+                            vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring"))];
+                    else if (eltType == "checkbox")
+                        element.checked = 
+                            vI_prefDialog.preferences.getBoolPref(element.getAttribute("prefstring"));
+                    else if (eltType == "textbox")
+                        if (element.getAttribute("preftype") == "int")
+                            element.setAttribute("value", 
+                            vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring")) );
+                        else
+                            element.setAttribute("value", 
+                            vI_prefDialog.unicodeConverter.ConvertToUnicode(vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"))) );
+                    else if (eltType == "listbox")
+                        element.value =
+                            vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"));
+                    }
 				} catch (ex) {}
 			}
 		},
@@ -157,8 +163,9 @@ var vI_prefDialog = {
 							element.getAttribute("prefstring"), element.value);
 					else vI_prefDialog.preferences.setCharPref(
 							element.getAttribute("prefstring"), vI_prefDialog.unicodeConverter.ConvertFromUnicode(element.value));
-					//~ alert(elementID + " " + element.getAttribute("prefstring") + " " + parseInt(element.value))
 				}
+                else if (eltType == "listbox")
+                    vI_prefDialog.preferences.setCharPref(element.getAttribute("prefstring"), element.value);
 			}
 		},
 		

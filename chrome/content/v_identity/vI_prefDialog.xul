@@ -255,15 +255,27 @@
 			hidecolumnpicker="true" hidehscroll="true">
 		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true" /></treecols>
 		<treechildren>
+            <treeitem><treerow><treecell label="Accouts / Identities" /></treerow></treeitem>
 			<treeitem><treerow><treecell label="&vI_prefDialog.idSelection.Cell0.label;" /></treerow></treeitem>
 			<treeitem><treerow><treecell label="&vI_prefDialog.idSelection.Cell1.label;" /></treerow></treeitem>
 		</treechildren>
 		</tree>
 		
 		<tabbox flex="1" >
-		<tabs hidden="true"><tab /><tab /></tabs>
+		<tabs hidden="true"><tab /><tab /><tab /></tabs>
 		
 		<tabpanels class="plain">
+            <tabpanel orient="vertical">
+                <dialogheader title="Accounts"/>
+                <groupbox>
+                <caption label="Account or Identity restrictions"/>
+                <vbox align="left">
+                    <description class="widthXX">Restrict to the following Identities</description>
+                    <listbox id="VIdent_identity.idSelection_ignoreIDs" class="identitySelector" 
+                        prefstring="idSelection_ignoreIDs" />
+                </vbox>
+                </groupbox>
+            </tabpanel>
 			<tabpanel orient="vertical">
 				<dialogheader title="&vI_prefDialog.idSelection.Tab0.header;"/>
 				<groupbox>
@@ -719,5 +731,11 @@
 <browserbox id="vI_remoteBrowserBox" class="vI_remoteBrowserBox" localCss="localDoc.css" flex="1" hidden="true" type="content" />
 <label id="extVersion" value="&vident.version;" hidden="true" />
 </hbox>
+
+<!--
+    <splitter id="vIDebugBoxSplitter" hidden="true"/>
+    <textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
+    DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
+        -->
 </dialog>
 </overlay>
