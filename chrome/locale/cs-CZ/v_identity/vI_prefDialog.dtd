@@ -47,20 +47,25 @@
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "pokud k žádné nalezené e-mailové adrese není uvedeno jméno, použít následující:">
 
 
-<!ENTITY vI_prefDialog.idSelection.Cell0.label "Vstup">
-<!ENTITY vI_prefDialog.idSelection.Cell1.label "Výsledné označení">
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Identity Input"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Cell2.label "Výsledné označení">
 
-<!ENTITY vI_prefDialog.idSelection.Tab0.header "Vstup identity">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Smart Reply a úložiště">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "Smart Draft a úložiště">
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Restrict Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.usage.desc "If you create a new message, your email program selects some Identity to use for this message. Here you can decide, which of those permanently stored Identities can be changed by virtual Identity if you create the message. By default all Identities can be changed (newly added Identities are enabled by default)."> <!-- translate -->
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Vstup identity">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Smart Reply a úložiště">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Smart Draft a úložiště">
 <!ENTITY vI_prefDialog.idSelection.reply.desc "Zde můžete nastavit prioritu uloženým virtuálním identitám, nebo identitám získaným funkcí 'Smart Reply' při odpovědi na e-mail.">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "preferovat identity z 'Smart Reply'">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "pokud je nalezena uložená identita, ignorovat identity z 'Smart Reply'">
 
 <!ENTITY vI_prefDialog.idSelection.draft.desc "Pokud upravujete Koncept nebo Šablonu, není třeba nic nastavovat. Pokud je rozšíření schopno číst hlavičky uložených e-mailů, vytvoří se odpovídající virtuální identita. V Konceptu/Šabloně není uložena informace o SMTP ani žádné další nastavení. Pokud je to možné, je tato informace získána z úložiště Virtual Identity.">
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.header "Zpracování výsledku">
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Obsluha výsledků">
+<!ENTITY vI_prefDialog.idSelection.Tab2.header "Zpracování výsledku">
+<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Obsluha výsledků">
 <!ENTITY vI_prefDialog.idSelection.multiselect.desc "Výsledky hledání v úložišti Virtual Identity a Smart Reply nebo výsledky analýzy hlaviček Smart Draft jsou přidány do nabídky identit. Můžete si také zvolit, jak by mohly být použity coby nové identity odesílatele.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "otevřít dialog pro výběr identity">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "ptát se i tehdy, když je jen jedna možná adresa">

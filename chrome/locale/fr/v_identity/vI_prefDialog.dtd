@@ -47,20 +47,25 @@
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "Si aucune adresse courriel trouvée ne contient un nom, utiliser le nom suivant :">
 
 
-<!ENTITY vI_prefDialog.idSelection.Cell0.label "Saisie">
-<!ENTITY vI_prefDialog.idSelection.Cell1.label "Sélection de résultats">
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Identity Input"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Cell2.label "Sélection de résultats">
 
-<!ENTITY vI_prefDialog.idSelection.Tab0.header "Saisie de l'identité">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Réponse intelligente et stockage">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "Brouillon intelligent et stockage">
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Restrict Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.usage.desc "If you create a new message, your email program selects some Identity to use for this message. Here you can decide, which of those permanently stored Identities can be changed by virtual Identity if you create the message. By default all Identities can be changed (newly added Identities are enabled by default)."> <!-- translate -->
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Saisie de l'identité">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Réponse intelligente et stockage">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Brouillon intelligent et stockage">
 <!ENTITY vI_prefDialog.idSelection.reply.desc "Si vous répondez à tous vos mails, vous pouvez configurer ici la priorité donnée aux identités virtuelles par rapport à celles qui sont récupérées dans 'Réponse intelligente'.">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "préférer les identités 'Réponse intelligente'">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "ignorer les identités 'Réponse intelligente' si des identités ont été trouvées stockées">
 
 <!ENTITY vI_prefDialog.idSelection.draft.desc "Si vous éditez un brouillon (ou un modèle) il n'y a rien à configurer. Si l'extension peut lire l'en-tête du mail stocké, une identité virtuelle sera créée. Il n'y a aucune information de SMTP ou d'autres paramètres spécifiques de brouillon/modèle. Cette information est, si possible, récupérée depuis le stockage d'identité virtuelle.">
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.header "Gestion des résultats">
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Traitement des résultats">
+<!ENTITY vI_prefDialog.idSelection.Tab2.header "Gestion des résultats">
+<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Traitement des résultats">
 <!ENTITY vI_prefDialog.idSelection.multiselect.desc "Les résultats de la recherche dans le stockage d'identité virtuelle et l'analyse des en-têtes par la 'réponse intelligente' et le &quot;brouillon intelligent' seront ajoutés  au menu déroulant des identités de messages. Vous pouvez aussi choisir comment ils pourraient être utilisés pour de nouvelles identités d'expéditeur.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "ouvrir une boîte de dialogue pour choisir l'identité">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "également demander si une seule adresse est possible">

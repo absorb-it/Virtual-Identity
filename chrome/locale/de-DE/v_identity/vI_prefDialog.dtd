@@ -47,20 +47,25 @@
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "falls kein Name zu einer Email-Adresse gefunden wurde, benutze folgenden Namen:">
 
 
-<!ENTITY vI_prefDialog.idSelection.Cell0.label "Eingang">
-<!ENTITY vI_prefDialog.idSelection.Cell1.label "Ergebnis-Auswahl">
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Virtual Identity Nutzung">
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Identitäten Eingang">
+<!ENTITY vI_prefDialog.idSelection.Cell2.label "Ergebnis-Auswahl">
 
-<!ENTITY vI_prefDialog.idSelection.Tab0.header "Identitäten-Eingang">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Smart Reply und Speicher">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "Smart Draft und Speicher">
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Virtual Identity Nutzung">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Beschränke dir Nutzung von Virtual Identity">
+<!ENTITY vI_prefDialog.idSelection.usage.desc "Wenn Du eine neue Nachricht erstellst, wählt Dein Mail-Programm eine Identität für Dich aus. An dieser Stelle kannst Du entscheiden, welche dieser gespeicherten Identitäten Du mit virtual Identity verändern möchtest. Normalerweise werden alle Identitäten verändert, auch neu hinzugefügte.">
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Identitäten-Eingang">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Smart Reply und Speicher">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Smart Draft und Speicher">
 <!ENTITY vI_prefDialog.idSelection.reply.desc "Die Priorität von im Speicher gefundenen Identitäten gegenüber solchen, die mit 'Smart Reply' gefunden wurden, kann hier konfiguriert werden.">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "bevorzuge Smart Reply-Identitäten">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "ignoriere Smart Reply-Identitäten wenn Identitäten im Identity-Speicher gefunden werden">
 
 <!ENTITY vI_prefDialog.idSelection.draft.desc "Wenn Du eine Vorlage oder einen Entwurf bearbeitest, gibt es nichts weiter zu konfigurieren. Wenn die Erweiterung in den Kopfzeilen der gespeicherten Email Informationen findet, wird eine entsprechende Identität erzeugt. Allerdings finden sich im Entwurf keine Informationen über SMTP oder weitere spezifische Einstellungen. Diese Informationen werde, wenn möglich, aus dem Identitäten-Speicher erfragt.">
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.header "Ergebnis-Auswahl">
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Verwendung der Ergebnisse">
+<!ENTITY vI_prefDialog.idSelection.Tab2.header "Ergebnis-Auswahl">
+<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Verwendung der Ergebnisse">
 <!ENTITY vI_prefDialog.idSelection.multiselect.desc "Die Ergebnisse der Suche im Identitäten-Speicher und der 'Smart reply' bzw. 'Smart Draft' Kopfzeilen-Analyse werden zum Identitäten-Menu hinzugefügt. Hier kannst Du auswählen, wie und ob diese als neue Sender-Identität genutzt werden.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "öffne ein Dialogfenster zur Auswahl der Identität">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "auch nachfragen, wenn nur eine Adresse zur Auswahl steht">

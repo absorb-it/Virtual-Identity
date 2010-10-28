@@ -47,20 +47,25 @@
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "При отсутствии имен у полученных E-mail адресов, использовать имя:">
 
 
-<!ENTITY vI_prefDialog.idSelection.Cell0.label "Ввод личных данных">
-<!ENTITY vI_prefDialog.idSelection.Cell1.label "Выбор результатов">
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Ввод личных данных">
+<!ENTITY vI_prefDialog.idSelection.Cell2.label "Выбор результатов">
 
-<!ENTITY vI_prefDialog.idSelection.Tab0.header "Ввод личных данных">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption "«Умный ответ» и хранилище">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "«Умный черновик» и хранилище">
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Restrict Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.usage.desc "If you create a new message, your email program selects some Identity to use for this message. Here you can decide, which of those permanently stored Identities can be changed by virtual Identity if you create the message. By default all Identities can be changed (newly added Identities are enabled by default)."> <!-- translate -->
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Ввод личных данных">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "«Умный ответ» и хранилище">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "«Умный черновик» и хранилище">
 <!ENTITY vI_prefDialog.idSelection.reply.desc "Когда Вы отвечаете на сообщения, Вы можете определить, каким данным отдавать приоритет: личным данным, находящимся в хранилище или личными данными, полученными модулем «Умный ответ».">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "Отдавать приоритет личным данным, полученным модулем «Умный ответ»">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "Игнорировать данные, полученные модулем «Умный ответ», если данные для этого получателя найдены в хранилище">
 
 <!ENTITY vI_prefDialog.idSelection.draft.desc "Если Вы редактируете черновик (или шаблон) нет необходимости что-то настраивать. Расширение в состоянии считывать заголовки сохраненного сообщения, а все соответствующие виртуальные личные данные создаются. В черновиках и шаблонах не сохраняется информация о SMTP-серверах и других специфичных настройках. Если эта информация доступна, она будет восстановлена из личных данных находящихся в хранилище.">
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.header "Обработка результатов">
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Обработка результатов">
+<!ENTITY vI_prefDialog.idSelection.Tab2.header "Обработка результатов">
+<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Обработка результатов">
 <!ENTITY vI_prefDialog.idSelection.multiselect.desc "Результаты поиска личных данных в хранилище и личных данных полученных в результате анализа заголовков сообщений модулем «Умный ответ» или «Умный черновик» могут быть отображены во всплывающем диалоговом окне. Вы также можете выбрать, какие из них могут быть использованы в качестве новых личных данных отправителя.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "Открывать диалоговое окно для выбора доступных адресов">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "Спрашивать и в том случае, когда имеется только один доступный адрес">

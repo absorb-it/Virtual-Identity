@@ -47,20 +47,25 @@
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "if there is no name to any found email-address, use the following one:">
 
 
-<!ENTITY vI_prefDialog.idSelection.Cell0.label "Input">
-<!ENTITY vI_prefDialog.idSelection.Cell1.label "Result Selection">
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Virtual Identity Usage">
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Identity Input">
+<!ENTITY vI_prefDialog.idSelection.Cell2.label "Result Selection">
 
-<!ENTITY vI_prefDialog.idSelection.Tab0.header "Identity Input">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Smart Reply and Storage">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "Smart Draft and Storage">
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Virtual Identity Usage">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Restrict Virtual Identity Usage">
+<!ENTITY vI_prefDialog.idSelection.usage.desc "If you create a new message, your email program selects some Identity to use for this message. Here you can decide, which of those permanently stored Identities can be changed by virtual Identity if you create the message. By default all Identities can be changed (newly added Identities are enabled by default).">
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Identity Input">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Smart Reply and Storage">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Smart Draft and Storage">
 <!ENTITY vI_prefDialog.idSelection.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with &apos;Smart Reply&apos; can configured here.">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "prefer &apos;Smart Reply&apos;-Identities">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "ignore &apos;Smart Reply&apos;-Identities if Identities for recipients found stored">
 
 <!ENTITY vI_prefDialog.idSelection.draft.desc "If you edit a Draft (or a Template) there is nothing to configure. If the extension is able to read the header of the stored email, a related Virtual Identity is created. There is no information about SMTP or any other specific settings in the Draft/Template. This information is, if possible, retrieved from the Virtual Identity Storage.">
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.header "Result Handling">
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Handling of the Results">
+<!ENTITY vI_prefDialog.idSelection.Tab2.header "Result Handling">
+<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Handling of the Results">
 <!ENTITY vI_prefDialog.idSelection.multiselect.desc "The results of the search in the Virtual Identity Storage and the Smart Reply or Smart Draft header analysis are added to the message-identity dropdown menu. You can also select, how they are might be used as the new senders identity.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "open a dialog to choose Identity">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "ask also if there is only one possible address">
