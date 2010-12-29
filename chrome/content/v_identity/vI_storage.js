@@ -333,25 +333,38 @@ var vI_storage = {
 			var addrbook = enumerator.getNext();  // an addressbook directory
 			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
 			var searchUri = (addrbook.directoryProperties?addrbook.directoryProperties.URI:addrbook.URI) + queryString;
-			
 			// just try the following steps, they might fail if addressbook wasn't configured the right way
 			// not completely reproducible, but caused bug https://www.absorb.it/virtual-id/ticket/41
 			try {
 				var AbView = Components.classes["@mozilla.org/addressbook/abview;1"].createInstance(Components.interfaces.nsIAbView);
-				AbView.init(searchUri, true, null, "GeneratedName", "ascending");
+				if (typeof(AbView.init)=="function")	// <= TB-3.0a1
+					AbView.init(searchUri, true, null, "GeneratedName", "ascending");
+				else {									// >= TB-3.0a2
+					var rdf = Components.classes["@mozilla.org/rdf/rdf-service;1"].getService(Components.interfaces.nsIRDFService);
+					AbView.setView(rdf.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory), null, "GeneratedName", "ascending");
+				}
 			} catch (ex) { break; };
 			var directory = AbView.directory;
-			
 			// directory will now be a subset of the addressbook containing only those cards that match the searchstring
 			if (!directory) break;
-			var childCards = null; var keepGoing = 1;
-			try { childCards = directory.childCards; childCards.first(); } catch (ex) { keepGoing = 0; }
+            try { var childCards = directory.childCards; } catch (ex) { break; };
 			
-			while (keepGoing == 1) {
-				var currentCard = childCards.currentItem();
-				currentCard.QueryInterface(Components.interfaces.nsIAbCard);
-				callFunction(addrbook, currentCard, returnVar);
-				try { childCards.next(); } catch (ex) {	keepGoing = 0; }
+			if (typeof(childCards.first)=="function") {	// old versions don't use enumerator
+				var keepGoing = 1;
+				try { childCards.first(); } catch (ex) { keepGoing = 0; }
+				while (keepGoing == 1) {
+					var currentCard = childCards.currentItem();
+					currentCard.QueryInterface(Components.interfaces.nsIAbCard);
+					callFunction(addrbook, currentCard, returnVar);
+					try { childCards.next(); } catch (ex) {	keepGoing = 0; }
+				}
+			}
+			else {
+				while (childCards.hasMoreElements()) {
+					var currentCard = childCards.getNext();
+					currentCard.QueryInterface(Components.interfaces.nsIAbCard);
+					callFunction(addrbook, currentCard, returnVar);
+				}
 			}
 		}
 		return returnVar;
@@ -365,6 +378,7 @@ var vI_storage = {
 		var queryString = "?(or(DisplayName,c," + encodeURIComponent(vI_storage.getMailListName(recipient)) + "))"
 		var returnVar = vI_storage._walkTroughCards(queryString, vI_storage._isMailingListCard,
 			{ mailListName : vI_storage.getMailListName(recipient), isMailList : false } )
+		vI_notificationBar.dump("## vI_storage: isMailingList " + returnVar.isMailList + "\n")
 		return returnVar.isMailList;
 	},	
 	
