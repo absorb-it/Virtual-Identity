@@ -334,17 +334,12 @@ var vI_storage = {
 			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
 			var searchUri = (addrbook.directoryProperties?addrbook.directoryProperties.URI:addrbook.URI) + queryString;
 			vI_notificationBar.dump("## vI_storage: _walkTroughCards searchUri='" + searchUri + "'\n")
-		
 			// just try the following steps, they might fail if addressbook wasn't configured the right way
 			// not completely reproducible, but caused bug https://www.absorb.it/virtual-id/ticket/41
 			try {
 				var AbView = Components.classes["@mozilla.org/addressbook/abview;1"].createInstance(Components.interfaces.nsIAbView);
-				if (typeof(AbView.init)=="function")	// <= TB-3.0a1
-					AbView.init(searchUri, true, null, "GeneratedName", "ascending");
-				else {									// >= TB-3.0a2
-					var rdf = Components.classes["@mozilla.org/rdf/rdf-service;1"].getService(Components.interfaces.nsIRDFService);
-					AbView.setView(rdf.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory), null, "GeneratedName", "ascending");
-				}
+				var rdf = Components.classes["@mozilla.org/rdf/rdf-service;1"].getService(Components.interfaces.nsIRDFService);
+				AbView.setView(rdf.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory), null, "GeneratedName", "ascending");
 			} catch (ex) { break; };
 			var directory = AbView.directory;
 			// directory will now be a subset of the addressbook containing only those cards that match the searchstring
@@ -364,7 +359,6 @@ var vI_storage = {
 			else {
 				while (childCards.hasMoreElements()) {
 					vI_notificationBar.dump("## vI_storage: _walkTroughCards found card\n")
-		
 					var currentCard = childCards.getNext();
 					currentCard.QueryInterface(Components.interfaces.nsIAbCard);
 					callFunction(addrbook, currentCard, returnVar);

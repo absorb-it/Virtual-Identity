@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - This program is free software; you can redistribute it and/or modify
+   - it under the terms of the GNU General Public License as published by
+   - the Free Software Foundation; either version 2 of the License, or
+   - (at your option) any later version.
+
+   - This program is distributed in the hope that it will be useful,
+   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   - GNU General Public License for more details.
+
+   - You should have received a copy of the GNU General Public License
+   - along with this program; if not, write to the Free Software
+   - Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+   - The Original Code is the Virtual Identity Extension.
+
+   - The Initial Developer of the Original Code is Rene Ejury.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+
+   - Contributor(s):
+   - ***** END LICENSE BLOCK ***** -->
+
+<bindings id="prefDialogBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:xbl="http://www.mozilla.org/xbl">
+	
+    <binding id="identitySelector" extends="chrome://global/content/bindings/listbox.xml#listbox">
+    <implementation>
+    <constructor>
+        <![CDATA[
+        if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: constructor\n");
+        var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+            .getService(Components.interfaces.nsIMsgAccountManager);
+        var debugNotes = vI_prefDialog.preferences.getBoolPref("debug_notification");
+
+        for (let i = AccountManager.accounts.Count() - 1; i >= 0 ; i--) {
+            var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
+            for (let j = account.identities.Count() - 1; j >= 0 ; j--) {
+                var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
+                const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+                var listitem = document.createElementNS(XUL_NS, "listitem"); // create a new XUL listitem
+                listitem.setAttribute("class", "selectorListitem");
+                listitem.setAttribute("label", identity.identityName);
+                listitem.setAttribute("value", identity.key);
+                listitem.setAttribute("description", " - " + account.incomingServer.prettyName);
+                listitem.setAttribute("debugNotesHidden", !debugNotes);
+                if (this.firstChild) this.insertBefore(listitem, this.firstChild);      // ensure that new elements are visible
+                else this.appendChild(listitem);                                        // otherwise checkbox will not be initialized
+            }
+        }
+        if (debugNotes)
+            document.getAnonymousElementByAttribute(this, "id", "ignoreIDs_debug").removeAttribute("hidden")
+        ]]>
+    </constructor>
+    <property name="value" >
+        <setter><![CDATA[
+        if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: setting value to '" + val + "'\n");
+        var listItems = this.childNodes;
+        for (var index = 0; index < listItems.length; index++) {
+            var key = listItems[index].getAttribute("value");
+            listItems[index].checked = (val.indexOf(":" + key + ":") == -1);
+            if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: setting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n")
+        }
+        this._value = val;
+        ]]></setter>
+        <getter><![CDATA[
+        if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: getting value\n");
+        var returnVal = "";
+        var listItems = this.childNodes;
+        for (var index = 0; index < listItems.length; index++) {
+            if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: getting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n");
+            if (!listItems[index].checked) returnVal += " :" + listItems[index].getAttribute("value") + ": "
+        }
+        if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: getting value, result '" + returnVal + "'\n");
+        return returnVal;
+        ]]></getter>        
+    </property>
+    </implementation>
+    </binding>
+
+    <binding id="selectorListitem" extends="chrome://global/content/bindings/listbox.xml#listitem">
+    <content allowevents="true">
+        <xul:checkbox anonid="selector_checkbox" />
+        <xul:label class="menupopup_clone-text" xbl:inherits="value=label,accesskey,crop" />
+        <xul:label class="menupopup_clone-description" anonid="debugNote" xbl:inherits="value=value, hidden=debugNotesHidden" hidden="true" />
+        <xul:label class="menupopup_clone-description" xbl:inherits="value=description" flex="1" />
+    </content>
+    <implementation>
+    <property name="checked" onget="return this._checkbox.checked;" onset="this._checkbox.checked = val;" />
+    <field name="_checkbox">document.getAnonymousElementByAttribute(this, "anonid", "selector_checkbox")</field>
+    </implementation>
+    </binding>
+
+</bindings>

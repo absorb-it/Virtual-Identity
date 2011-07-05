@@ -47,20 +47,25 @@
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "Als er geen naam bij een gevonden e-mailadres staat de volgende gebruiken:">
 
 
-<!ENTITY vI_prefDialog.idSelection.Cell0.label "Invoer">
-<!ENTITY vI_prefDialog.idSelection.Cell1.label "Resultaatselectie">
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Invoer">
+<!ENTITY vI_prefDialog.idSelection.Cell2.label "Resultaatselectie">
 
-<!ENTITY vI_prefDialog.idSelection.Tab0.header "Identiteitsinvoer">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Slim Antwoorden en Opslaan">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "Slim Concept en Opslaan">
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Restrict Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.usage.desc "If you create a new message, your email program selects some Identity to use for this message. Here you can decide, which of those permanently stored Identities can be changed by virtual Identity if you create the message. By default all Identities can be changed (newly added Identities are enabled by default)."> <!-- translate -->
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Identiteitsinvoer">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Slim Antwoorden en Opslaan">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Slim Concept en Opslaan">
 <!ENTITY vI_prefDialog.idSelection.reply.desc "Als u antwoordt op e-mailberichten kan de prioriteit van opgeslagen virtuele identiteiten in vergelijking met de identiteiten die met Slim Antwoorden worden verkregen hier worden ingesteld.">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "Voorkeur geven aan Slim Antwoorden-identiteiten">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "Slim Antwoorden-identiteiten negeren indien opgeslagen identiteiten worden aangetroffen">
 
 <!ENTITY vI_prefDialog.idSelection.draft.desc "Indien u een Concept (of Sjabloon) bewerkt is er niets in te stellen. Als de extensie in staat is om de koptekst van het opgeslagen bericht te lezen wordt een eraan gerelateerde virtuele identiteit gecreëerd. Er is geen informatie over SMTP of een andere specifieke instelling in het Concept/de Sjabloon. Deze informatie wordt, indien mogelijk, opgehaald uit de opgeslagen virtuele identiteiten.">
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.header "Resultaatverwerking">
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Resultaatverwerking">
+<!ENTITY vI_prefDialog.idSelection.Tab2.header "Resultaatverwerking">
+<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Resultaatverwerking">
 <!ENTITY vI_prefDialog.idSelection.multiselect.desc "De resultaten van de zoekopdracht in de opgeslagen virtuele identiteiten en de koptekstanalyse van Slim Antwoorden of Slim Concept worden toegevoegd aan het dropdownmenu van de berichtidentiteit. U kunt ook selecteren hoe ze kunnen worden gebruikt als de identiteit van de nieuwe afzender.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "Dialoogvenster openen om identiteit te kiezen">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "Ook vragen als er slechts één adres mogelijk is">

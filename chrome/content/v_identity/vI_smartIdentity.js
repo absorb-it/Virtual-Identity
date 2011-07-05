@@ -37,7 +37,7 @@ var vI_smartIdentity = {
 		var type = gMsgCompose.type;
 		var msgComposeType = Components.interfaces.nsIMsgCompType;
 		vI_notificationBar.dump("## vI_smartIdentity: msgComposeType = " + type + "\n");
-			
+        
 		switch (type) {
 			case msgComposeType.ForwardAsAttachment:
 			case msgComposeType.ForwardInline:
@@ -80,7 +80,19 @@ var vI_smartIdentity = {
 		document.getElementById("msgIdentity_clone").email = new_email;
 	},
 	
-	NewMail : function() {
+	__ignoreID : function() {
+        vI_notificationBar.dump("## vI_smartIdentity: checking " + vI_main.preferences.getCharPref("idSelection_ignoreIDs") + " against " + vI_main.elements.Obj_MsgIdentity.value + "\n")
+        // check if usage if virtual Identities should be used at all for the currently selected ID
+        if (vI_main.preferences.getCharPref("idSelection_ignoreIDs").indexOf(":" + vI_main.elements.Obj_MsgIdentity.value + ":") != -1) {
+            vI_notificationBar.dump("## vI_smartIdentity: not using virtual Identites for ID " + vI_main.elements.Obj_MsgIdentity.value + "\n");
+            return true;
+        }
+        return false
+    },
+    
+    NewMail : function() {
+        if (vI_smartIdentity.__ignoreID()) return;
+        
 		var storageIdentities = new vI_identityCollection();
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		
@@ -291,7 +303,9 @@ var vI_smartIdentity = {
 				}
 			}
 		}
-			
+		
+        if (vI_smartIdentity.__ignoreID()) return;
+		
 		var storageIdentities = new vI_identityCollection();
 		vI_storage.getVIdentityFromAllRecipients(storageIdentities);
 		

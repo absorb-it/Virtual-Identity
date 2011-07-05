@@ -47,13 +47,13 @@
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "if there is no name to any found email-address, use the following one:">
 
 
-<!ENTITY vI_prefDialog.idSelection.Cell0.label "OthersXXXXS">
-<!ENTITY vI_prefDialog.idSelection.Cell1.label "Input">
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Virtual Identity Usage">
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Identity Input">
 <!ENTITY vI_prefDialog.idSelection.Cell2.label "Result Selection">
 
-<!ENTITY vI_prefDialog.idSelection.Tab0.header "XXXX Tab2">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption "ähh, was jetzt?">
-<!ENTITY vI_prefDialog.idSelection.usage.desc "XXXX Test">
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Virtual Identity Usage">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Restrict Virtual Identity Usage">
+<!ENTITY vI_prefDialog.idSelection.usage.desc "If you create a new message, your email program selects some Identity to use for this message. Here you can decide, which of those permanently stored Identities can be changed by virtual Identity if you create the message. By default all Identities can be changed (newly added Identities are enabled by default).">
 
 <!ENTITY vI_prefDialog.idSelection.Tab1.header "Identity Input">
 <!ENTITY vI_prefDialog.idSelection.Tab1.caption "Smart Reply and Storage">

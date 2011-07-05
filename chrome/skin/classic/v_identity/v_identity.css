@@ -23,6 +23,16 @@
     -moz-binding: url("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xml#mismatch-menupopup");
 }
 
+
+.selectorListitem {
+    -moz-binding: url("chrome://v_identity/content/vI_prefDialog.xml#selectorListitem");
+}
+.identitySelector {
+    -moz-binding: url("chrome://v_identity/content/vI_prefDialog.xml#identitySelector");
+}
+
+
+
 .mismatchMenuitem {
     -moz-binding: url("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xml#mismatch-menuitem");
 }

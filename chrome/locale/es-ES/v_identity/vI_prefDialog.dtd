@@ -47,20 +47,25 @@
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "si no hay nombres en las direcciones encontradas, usar el siguiente:">
 
 
-<!ENTITY vI_prefDialog.idSelection.Cell0.label "Entrada">
-<!ENTITY vI_prefDialog.idSelection.Cell1.label "Selección resultante">
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Cell1.label "Identity Input"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Cell2.label "Selección resultante">
 
-<!ENTITY vI_prefDialog.idSelection.Tab0.header "Entrada de la identidad">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Respuesta rápida y almacén">
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption2 "Borrador rápido y almacén">
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Restrict Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.usage.desc "If you create a new message, your email program selects some Identity to use for this message. Here you can decide, which of those permanently stored Identities can be changed by virtual Identity if you create the message. By default all Identities can be changed (newly added Identities are enabled by default)."> <!-- translate -->
+
+<!ENTITY vI_prefDialog.idSelection.Tab1.header "Entrada de la identidad">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Respuesta rápida y almacén">
+<!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Borrador rápido y almacén">
 <!ENTITY vI_prefDialog.idSelection.reply.desc "Al responder un mensaje, aquí puede configurar la prioridad de las identidades virtuales guardadas en comparación con las recuperadas de 'Respuesta rápida'.">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "preferir las identidades de 'respuesta rápida'">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "Ignorar las identidades de 'respuesta rápida' si se encuentran en la Storage">
 
 <!ENTITY vI_prefDialog.idSelection.draft.desc "Si edita un borrador o plantilla no hay nada que configurar. Si la extensión es capaz de leer la cabecera del mensaje guardado, se creará una identidad virtual relacionada. No hay información sobre SMTP ni otras opciones específicas en los borradores y plantillas. Esta información se obtendrá, si es posible, del almacén de identidades virtuales.">
 
-<!ENTITY vI_prefDialog.idSelection.Tab1.header "Manejo de resultados">
-<!ENTITY vI_prefDialog.idSelection.Tab1.caption "Manejo de resultados">
+<!ENTITY vI_prefDialog.idSelection.Tab2.header "Manejo de resultados">
+<!ENTITY vI_prefDialog.idSelection.Tab2.caption "Manejo de resultados">
 <!ENTITY vI_prefDialog.idSelection.multiselect.desc "Los resultados de la búsqueda en el análisis de las cabecers del almacén de identidades virtuales y la respuesta rápida o el borrador rápido se añadirán al desplegable de identidades. También puede seleccionar como se usarán como las nuevas identidades de envío.">
 <!ENTITY vI_prefDialog.idSelection.ask.label "abrir una ventana para preguntar la identidad">
 <!ENTITY vI_prefDialog.idSelection.ask_always.label "preguntar incluso si solo hay una dirección posible">
