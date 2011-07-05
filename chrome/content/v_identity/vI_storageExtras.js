@@ -37,7 +37,6 @@ var vI_storageExtrasHelper = {
 			.getBranch("extensions.virtualIdentity."),
 	
 	hideUnusedEditorFields : function() {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		var storageExtras = new vI_storageExtras();
 		var allHidden = true;
 		var hide = (document.getElementById("vI_storageExtras_hideUnusedEditorFields").getAttribute("checked") == "true")
@@ -50,12 +49,6 @@ var vI_storageExtrasHelper = {
 		document.getElementById("storeValue").setAttribute("hidden", allHidden)
 		// resize the window to the content
 		window.sizeToContent();
-	},
-
-	seamonkey_to_old : function() {
-		if (vI_storageExtrasHelper.seamonkey_old != "true")
-			vI_storageExtrasHelper.seamonkey_old = vI_helper.olderVersion("SM", "1.5a")
-		return (vI_storageExtrasHelper.seamonkey_old)	
 	}
 }
 
@@ -89,9 +82,6 @@ function vI_storageExtras(rdfDatasource, resource) {
 				function() { return ((typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null) },
 				function(identity) { return (identity.getBoolAttribute('pgpMimeMode')) })
 		]
-	if (document.getElementById("menu_securityNoEncryption1"))	// TB 2.x
-		this.extras[4] = new vI_storageExtras_sMime_messageEncryption()
-
 	if (rdfDatasource) this.loopForRDF(rdfDatasource, resource, "get")
 }
 
@@ -112,7 +102,6 @@ vI_storageExtras.prototype = {
 	
 	// just give a duplicate of the current storageExtras, else we will work with pointers
 	getDuplicate : function() {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return null;
 		var newExtras = new vI_storageExtras();
 		for( var i = 0; i < this.extras.length; i++ ) {
 			newExtras.extras[i].value = this.extras[i].value;
@@ -122,7 +111,6 @@ vI_storageExtras.prototype = {
 	
 	// copys all values of an identity. This way we can create a new object with a different document-context
 	copy : function(extras) {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) {
 			this.extras[i].value = extras.extras[i].value;
 		}
@@ -167,7 +155,6 @@ vI_storageExtras.prototype = {
 		return string;
 	},
 	status : function() {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return null;
 		var returnVal = "";
 		for( var i = 0; i < this.extras.length; i++ )
 			if (this.extras[i].active && this.extras[i].value)
@@ -176,7 +163,6 @@ vI_storageExtras.prototype = {
 	},
 
 	readIdentityValues : function(identity) {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) this.extras[i].readIdentityValue(identity)
 // 			vI_notificationBar.dump("## vI_storageExtras readIdentityValues "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
@@ -184,14 +170,12 @@ vI_storageExtras.prototype = {
 	},
 
 	setValues : function() {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) this.extras[i].setValue()
 // 			vI_notificationBar.dump("## vI_storageExtras setValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 	readValues : function() {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) {
 // 			vI_notificationBar.dump("## vI_storageExtras preparing readValue "+ this.extras[i].field +"\n");
 			if (this.extras[i].active) this.extras[i].readValue()
@@ -199,11 +183,9 @@ vI_storageExtras.prototype = {
 		}
 	},
 	setEditorValues : function() {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) this.extras[i].setEditorValue();
 	},
 	readEditorValues : function() {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ ) {
 			this.extras[i].readEditorValue();
 // 			vI_notificationBar.dump("## vI_storageExtras readValue " + this.extras[i].field + "=" + this.extras[i].value + "\n");
@@ -212,7 +194,6 @@ vI_storageExtras.prototype = {
 
 	// add value's to the pref object, required for rdfDataTree
 	addPrefs : function(pref) {
-		if (vI_storageExtrasHelper.seamonkey_to_old()) return;
 		for( var i = 0; i < this.extras.length; i++ )
 			pref[this.extras[i].field + "Col"] = this.extras[i].valueNice;
 	}

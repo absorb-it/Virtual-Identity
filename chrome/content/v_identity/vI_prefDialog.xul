@@ -50,13 +50,7 @@
 <dialog id="vI_prefDialog">
 
 <script type="application/x-javascript"
-            src="chrome://v_identity/content/vI_prefDialog.js" />
-<script type="application/x-javascript"
-	    src="chrome://v_identity/content/vI_prefDialog_FolderPicker.js" />
-<script type="application/x-javascript"
             src="chrome://v_identity/content/vI_storageExtras.js" />
-<script type="application/x-javascript"
-            src="chrome://v_identity/content/vI_helper.js" />
 <script type="application/x-javascript"
             src="chrome://v_identity/content/vI_rdfDatasource.js" />
 <script type="application/x-javascript"
@@ -255,19 +249,33 @@
 			hidecolumnpicker="true" hidehscroll="true">
 		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true" /></treecols>
 		<treechildren>
-			<treeitem><treerow><treecell label="&vI_prefDialog.idSelection.Cell0.label;" /></treerow></treeitem>
+            <treeitem><treerow><treecell label="&vI_prefDialog.idSelection.Cell0.label;" /></treerow></treeitem>
 			<treeitem><treerow><treecell label="&vI_prefDialog.idSelection.Cell1.label;" /></treerow></treeitem>
+			<treeitem><treerow><treecell label="&vI_prefDialog.idSelection.Cell2.label;" /></treerow></treeitem>
 		</treechildren>
 		</tree>
 		
 		<tabbox flex="1" >
-		<tabs hidden="true"><tab /><tab /></tabs>
+		<tabs hidden="true"><tab /><tab /><tab /></tabs>
 		
 		<tabpanels class="plain">
+            <tabpanel orient="vertical">
+                <dialogheader title="&vI_prefDialog.idSelection.Tab0.header;"/>
+                <groupbox>
+                <caption label="&vI_prefDialog.idSelection.Tab0.caption;"/>
+                <vbox align="left">
+                    <description class="widthXX">&vI_prefDialog.idSelection.usage.desc;</description>
+                    <listbox id="VIdent_identity.idSelection_ignoreIDs" class="identitySelector widthXX" 
+                        prefstring="idSelection_ignoreIDs" rows="5">
+                            <listcols><listcol /><listcol /><listcol id="ignoreIDs_debug" hidden="true" /><listcol flex="1"/></listcols>
+                    </listbox>
+                </vbox>
+                </groupbox>
+            </tabpanel>
 			<tabpanel orient="vertical">
-				<dialogheader title="&vI_prefDialog.idSelection.Tab0.header;"/>
+				<dialogheader title="&vI_prefDialog.idSelection.Tab1.header;"/>
 				<groupbox>
-				<caption label="&vI_prefDialog.idSelection.Tab0.caption;"/>
+				<caption label="&vI_prefDialog.idSelection.Tab1.caption;"/>
 				<vbox align="left">
 					<description class="widthXX">&vI_prefDialog.idSelection.reply.desc;</description>
 					<checkbox id="VIdent_identity.idSelection_storage_prefer_smart_reply" label="&vI_prefDialog.idSelection.prefer_smart_reply.label;"
@@ -277,16 +285,16 @@
 				</vbox>
 				</groupbox>
 <!--				<groupbox>
-				<caption label="&vI_prefDialog.idSelection.Tab0.caption2;"/>
+				<caption label="&vI_prefDialog.idSelection.Tab1.caption2;"/>
 				<vbox align="left">
 					<description class="widthXX">&vI_prefDialog.idSelection.draft.desc;</description>
 				</vbox>
 				</groupbox>		-->
 			</tabpanel>
 			<tabpanel orient="vertical">
-				<dialogheader title="&vI_prefDialog.idSelection.Tab1.header;"/>
+				<dialogheader title="&vI_prefDialog.idSelection.Tab2.header;"/>
 				<groupbox>
-				<caption label="&vI_prefDialog.idSelection.Tab1.caption;"/>
+				<caption label="&vI_prefDialog.idSelection.Tab2.caption;"/>
 				<vbox align="left">
 					<description class="widthXX">&vI_prefDialog.idSelection.multiselect.desc;</description>
 					<checkbox id="VIdent_identity.idSelection_ask" label="&vI_prefDialog.idSelection.ask.label;"
@@ -719,5 +727,10 @@
 <browserbox id="vI_remoteBrowserBox" class="vI_remoteBrowserBox" localCss="localDoc.css" flex="1" hidden="true" type="content" />
 <label id="extVersion" value="&vident.version;" hidden="true" />
 </hbox>
+<!--
+    <splitter id="vIDebugBoxSplitter" hidden="true"/>
+    <textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
+    DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
+        -->
 </dialog>
 </overlay>

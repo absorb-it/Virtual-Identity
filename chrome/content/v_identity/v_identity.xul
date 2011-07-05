@@ -90,7 +90,7 @@
 			oncommand="vI_statusmenu.menuConstraint(vI_statusmenu.objStorageSaveMenuItem);"/>
 		  <menuseparator id="vI_statusMenu_separator" />
 		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.Settings.label;"
-			oncommand="window.open('chrome://v_identity/content/vI_prefDialogOpener.xul', '', 'chrome, dialog, resizable=yes');" />
+			oncommand="window.open('chrome://v_identity/content/vI_prefDialog_TB3.xul', '', 'chrome, dialog, alwaysRaised, resizable=yes');" />
 		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.DataEditor.label;"
 			oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome, dialog, resizable=yes');" />
 	  </popup>

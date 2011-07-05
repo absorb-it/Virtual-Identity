@@ -36,4 +36,13 @@
 	ondialoghelp="vI_prefDialog.toggleHelp();"
 	buttonlabelhelp="&vI_prefDialog.dlgHelpButton.label;"
         persist="screenX screenY"
-        title="&vI_prefDialog.dlgTitle.label;" />
+			title="&vI_prefDialog.dlgTitle.label;" >
+		
+		<script type="application/x-javascript"
+            src="chrome://v_identity/content/vI_prefDialog.js" />
+		<script type="application/x-javascript"
+			src="chrome://v_identity/content/vI_prefDialog_FolderPicker.js" />
+		<script type="application/x-javascript"
+            src="chrome://v_identity/content/vI_helper.js" />
+
+</dialog>

@@ -468,21 +468,13 @@ vI_rdfDatasource.prototype = {
             var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
                 .getService(Components.interfaces.nsISmtpService).smtpServers;
             var found = false;
-            if (typeof(servers.Count) == "undefined")       // TB 3.x
-                while (servers && servers.hasMoreElements()) {
-                    var server = servers.getNext();
-                    if (server instanceof Components.interfaces.nsISmtpServer && 
-                        !server.redirectorType && smtp == server.key) {
-                        found = true; break;
-                    }
-                }
-            else                            // TB 2.x
-                for (var i=0 ; i < servers.Count(); i++) {
-                    var server = servers.QueryElementAt(i,Components.interfaces.nsISmtpServer);
-                    if (!server.redirectorType && smtp == server.key) {
-                        found = true; break;
-                    }
-                }
+			while (servers && servers.hasMoreElements()) {
+				var server = servers.getNext();
+				if (server instanceof Components.interfaces.nsISmtpServer && 
+					!server.redirectorType && smtp == server.key) {
+					found = true; break;
+				}
+			}
             var resource = this._rdfService.GetResource(this._rdfNS + this._rdfNSSMTPservers + "/" + smtp);
             var rdfSMTPlabel = this._getRDFValue(resource, "label");
             var rdfHostname = this._getRDFValue(resource, "hostname");
@@ -538,13 +530,10 @@ vI_rdfDatasource.prototype = {
         
         var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
             .getService(Components.interfaces.nsISmtpService).smtpServers;
-        if (typeof(servers.Count) == "undefined")       // TB 3.x
-            while (servers && servers.hasMoreElements()) {
-                var server = servers.getNext(); 
-                if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) storeSmtp(server, this);
-            }
-        else                            // TB 2.x
-            for (var i=0 ; i<servers.Count(); i++) storeSmtp(servers.QueryElementAt(i, Components.interfaces.nsISmtpServer), this);
+		while (servers && servers.hasMoreElements()) {
+			var server = servers.getNext(); 
+			if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) storeSmtp(server, this);
+		}
 
 //         if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: storeAccounts done\n");
     },
@@ -834,17 +823,12 @@ vI_rdfDatasourceImporter.prototype = {
     _getMatchingSMTP : function(label, hostname, username) {
         var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
             .getService(Components.interfaces.nsISmtpService).smtpServers;
-        if (typeof(servers.Count) == "undefined")       // TB 3.x
-            while (servers && servers.hasMoreElements()) {
-                var server = servers.getNext(); 
-                if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType)
-                    if (label == (server.description?server.description:server.hostname) || (hostname == server.hostname && username == server.username))
-                        return server.key;
-            }
-        else                            // TB 2.x
-            for (var i=0 ; i<servers.Count(); i++)
-                if (label == (server.description?server.description:server.hostname) || (hostname == server.hostname && username == server.username))
-                        return server.key;
+		while (servers && servers.hasMoreElements()) {
+			var server = servers.getNext(); 
+			if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType)
+				if (label == (server.description?server.description:server.hostname) || (hostname == server.hostname && username == server.username))
+					return server.key;
+		}
         return null;
     },
     

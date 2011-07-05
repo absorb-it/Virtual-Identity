@@ -113,6 +113,7 @@ var vI_prefDialog = {
 				"VIdent_identity.idSelection_ask_always",
 				"VIdent_identity.idSelection_autocreate",
 				"VIdent_identity.idSelection_preferExisting",
+                "VIdent_identity.idSelection_ignoreIDs",
 				"VIdent_identity.autoReplyToSelf"],
 	
 		init : function() {
@@ -123,18 +124,22 @@ var vI_prefDialog = {
 				if (!element) break;
 				var eltType = element.localName;
 				try {
-				if (eltType == "radiogroup")
-					element.selectedItem = element.childNodes[
-						vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring"))];
-				else if (eltType == "checkbox")
-					element.checked = 
-						vI_prefDialog.preferences.getBoolPref(element.getAttribute("prefstring"));
-				else if (eltType == "textbox")
-					if (element.getAttribute("preftype") == "int")
-						element.setAttribute("value", 
-						vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring")) );
-					else element.setAttribute("value", 
-						vI_prefDialog.unicodeConverter.ConvertToUnicode(vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"))) );
+                    if (eltType == "radiogroup")
+                        element.selectedItem = element.childNodes[
+                            vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring"))];
+                    else if (eltType == "checkbox")
+                        element.checked = 
+                            vI_prefDialog.preferences.getBoolPref(element.getAttribute("prefstring"));
+                    else if (eltType == "textbox")
+                        if (element.getAttribute("preftype") == "int")
+                            element.setAttribute("value", 
+                            vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring")) );
+                        else
+                            element.setAttribute("value", 
+                            vI_prefDialog.unicodeConverter.ConvertToUnicode(vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"))) );
+                    else if (eltType == "listbox")
+                        element.value =
+                            vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"));
 				} catch (ex) {}
 			}
 		},
@@ -157,8 +162,9 @@ var vI_prefDialog = {
 							element.getAttribute("prefstring"), element.value);
 					else vI_prefDialog.preferences.setCharPref(
 							element.getAttribute("prefstring"), vI_prefDialog.unicodeConverter.ConvertFromUnicode(element.value));
-					//~ alert(elementID + " " + element.getAttribute("prefstring") + " " + parseInt(element.value))
 				}
+                else if (eltType == "listbox")
+                    vI_prefDialog.preferences.setCharPref(element.getAttribute("prefstring"), element.value);
 			}
 		},
 		
@@ -292,18 +298,6 @@ var vI_prefDialog = {
 		vI_prefDialog.base.init();
 		onInitCopiesAndFolders()
 
-		if (vI_helper.olderVersion("TB", "2.0b") || vI_helper.olderVersion("SM", "1.5a")) {
-			document.getElementById("version-warning").setAttribute("hidden", "false");
-			document.getElementById("VIdent_identity.smart_draft").setAttribute("disabled", "true");
-			document.getElementById("VIdent_messageDraftsTab").setAttribute("hidden", "true");
-			document.getElementById("VIdent_messageTemplatesTab").setAttribute("hidden", "true");
-		}
-		if (vI_helper.olderVersion("TB", "1.5.0.7")) {
-			document.getElementById("notificationGroupBox").setAttribute("hidden", "true");	
-		}
-		if (vI_helper.olderVersion("TB", "2.0")) {
-			document.getElementById("fccReplyFollowsParentBox").setAttribute("hidden", "true");
-		}
 		const enigmail_ID="{847b3a00-7ab1-11d4-8f02-006008948af5}"
 		if (!vI_helper.extensionActive(enigmail_ID)) {
 			document.getElementById("openPGPencryption").setAttribute("hidden", "true");
@@ -317,10 +311,6 @@ var vI_prefDialog = {
 		vI_prefDialog.base.menuButtonConstraints();
 		vI_prefDialog.base.initTreeValues();
 
-		if (vI_storageExtrasHelper.seamonkey_to_old()) {
-			document.getElementById("storageExtrasTreeitem1").setAttribute("hidden", "true")
-			document.getElementById("storageExtrasTreeitem2").setAttribute("hidden", "true")
-		}
 	},
 	
 	savePrefs : function() {

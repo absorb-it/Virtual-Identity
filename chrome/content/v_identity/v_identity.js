@@ -38,8 +38,7 @@ var vI_main = {
 	// Those variables keep pointers to original functions which might get replaced later
 	original_functions : {
 		GenericSendMessage : null,
-		FillIdentityListPopup : null,	// TB 2.x
-		FillIdentityList : null		// TB 3.x
+		FillIdentityList : null
 	},
 
 	// some pointers to the layout-elements of the extension
@@ -59,11 +58,10 @@ var vI_main = {
 	ComposeStateListener : {
 		NotifyComposeBodyReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeBodyReady\n");
-			if (!vI_helper.olderVersion("TB", "2.0a")) vI_main.initSystemStage2();
+			vI_main.initSystemStage2();
 		},
 		NotifyComposeFieldsReady: function() { 
 			vI_notificationBar.dump("## v_identity: NotifyComposeFieldsReady\n");
-			if (vI_helper.olderVersion("TB", "2.0a")) vI_main.initSystemStage2();
 		},
 		ComposeProcessDone: function(aResult) {
 			vI_notificationBar.dump("## v_identity: StateListener reports ComposeProcessDone\n");
@@ -78,39 +76,10 @@ var vI_main = {
 	},
 		
 	replacement_functions : {
-		// TB 2.x
-		FillIdentityListPopup: function(popup) {
-			vI_notificationBar.dump("## v_identity: mod. FillIdentityListPopup\n");
-			var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
-			accounts.sort(compareAccountSortOrder);
-
-			for (var i in accounts) {
-				var server = accounts[i].incomingServer;
-				if (!server) continue;
-				// check for VirtualIdentity Account
-				try {	vI_account.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
-					continue; } catch (e) { };
-
-				var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
-				for (var j in identities) {
-					var identity = identities[j];
-					var item = document.createElement("menuitem");
-					item.className = "identity-popup-item";
-					item.setAttribute("label", identity.identityName);
-					item.setAttribute("value", identity.key);
-					item.setAttribute("accountkey", accounts[i].key);
-					item.setAttribute("accountname", " - " + server.prettyName);
-					popup.appendChild(item);
-				}
-			}
-		},
-		
-		// TB 3.x
 		FillIdentityList: function(menulist) {
 			vI_notificationBar.dump("## v_identity: mod. FillIdentityList\n");
 			var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
-			if (typeof(sortAccounts)=="function") // TB 3.x
-				accounts.sort(sortAccounts);
+			accounts.sort(sortAccounts);
 
 			for (var i in accounts) {
 				var server = accounts[i].incomingServer;
@@ -142,25 +111,7 @@ var vI_main = {
 			
 			var vid = document.getElementById("msgIdentity_clone").vid
 
-			if (msgType != nsIMsgCompDeliverMode.Now) {
-				// dont allow user to fake identity if Message is not sended NOW and thunderbird-version is below 2.0 !!!!
-				if (vid && (vI_helper.olderVersion("TB", "2.0b") || vI_helper.olderVersion("SM", "1.5a"))) {
-					var server = gAccountManager.defaultAccount.incomingServer.prettyName
-					var name = gAccountManager.defaultAccount.defaultIdentity.fullName
-					var email = gAccountManager.defaultAccount.defaultIdentity.email
-					var query = vI_main.elements.strings.getString("vident.sendLater.warning") +
-						vI_main.elements.strings.getString("vident.sendLater.prefix") +
-						name + " " + email + " [" + server + "]" + 
-						vI_main.elements.strings.getString("vident.sendLater.postfix")
-					
-					if (!promptService.confirm(window,"Error",query)) {
-						vI_main.replacement_functions.GenericSendMessageInProgress = false;
-						return;
-					}
-					else { document.getElementById("msgIdentity_clone").selectedMenuItem = "default"; vid = false; }
-				}
-			}
-			else {
+			if (msgType == nsIMsgCompDeliverMode.Now) {
 				if ( (vid && vI_main.preferences.getBoolPref("warn_virtual") &&
 					!(promptService.confirm(window,"Warning",
 						vI_main.elements.strings.getString("vident.sendVirtual.warning")))) ||
@@ -208,16 +159,9 @@ var vI_main = {
 		},
 		
 		replace_FillIdentityList : function() {
-			if (typeof(FillIdentityList)=="function") {
-				//~ vI_notificationBar.dump("## v_identity: replace FillIdentityList (TB 3.x)\n");
-				vI_main.original_functions.FillIdentityList = FillIdentityList;
-				FillIdentityList = vI_main.replacement_functions.FillIdentityList;
-			}
-			else {
-				//~ vI_notificationBar.dump("## v_identity: replace FillIdentityListPopup (TB 2.x)\n");
-				vI_main.original_functions.FillIdentityListPopup = FillIdentityListPopup;
-				FillIdentityListPopup = vI_main.replacement_functions.FillIdentityListPopup;
-			}
+			//~ vI_notificationBar.dump("## v_identity: replace FillIdentityList \n");
+			vI_main.original_functions.FillIdentityList = FillIdentityList;
+			FillIdentityList = vI_main.replacement_functions.FillIdentityList;
 		}
 	},
 
@@ -422,8 +366,7 @@ var vI_main = {
 
 
 vI_main.replacement_functions.replace_FillIdentityList();
-window.addEventListener('load', vI_main.init, false);		// TB 1.5x, SM
-window.addEventListener('compose-window-init', vI_main.init, true);	// TB 2.x 3.x
+window.addEventListener('compose-window-init', vI_main.init, true);
 
 window.addEventListener("unload", function(e) { vI_main.AccountManagerObserver.unregister(); try {vI_statusmenu.removeObserver();} catch (ex) { } }, false);
 

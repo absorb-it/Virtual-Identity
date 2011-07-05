@@ -297,24 +297,14 @@ vI_smtpObj.prototype = {
 			else if (this._key) {
 				var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
 					.getService(Components.interfaces.nsISmtpService).smtpServers;
-				if (typeof(servers.Count) == "undefined")		// TB 3.x
-					while (servers && servers.hasMoreElements()) {
-						var server = servers.getNext();
-						if (server instanceof Components.interfaces.nsISmtpServer && 
-							!server.redirectorType && this._key == server.key) {
-							this._value = server.description?server.description:server.hostname;
-							break;
-						}
+				while (servers && servers.hasMoreElements()) {
+					var server = servers.getNext();
+					if (server instanceof Components.interfaces.nsISmtpServer && 
+						!server.redirectorType && this._key == server.key) {
+						this._value = server.description?server.description:server.hostname;
+						break;
 					}
-				else							// TB 2.x
-					for (var i=0 ; i < servers.Count(); i++) {
-						var server = servers.QueryElementAt(i,
-							Components.interfaces.nsISmtpServer);
-						if (!server.redirectorType && this._key == server.key) {
-							this._value = server.description?server.description:server.hostname;
-							break;
-						}
-					}
+				}
 			}
 		}
 		if (!this._value) this._key = NO_SMTP_TAG; // if non-existant SMTP handle like non available
