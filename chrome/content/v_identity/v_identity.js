@@ -78,7 +78,10 @@ var vI_main = {
 	replacement_functions : {
 		FillIdentityList: function(menulist) {
 			vI_notificationBar.dump("## v_identity: mod. FillIdentityList\n");
-			var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
+			var mgr = Components.classes["@mozilla.org/messenger/account-manager;1"]
+								.getService(Components.interfaces.nsIMsgAccountManager);
+			var accounts = queryISupportsArray(mgr.accounts,
+                                     Components.interfaces.nsIMsgAccount);
 
 			// Ugly hack to work around bug 41133. :-(
 			accounts = accounts.filter(function isNonSuckyAccount(a) { return !!a.incomingServer; });
