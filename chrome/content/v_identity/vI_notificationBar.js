@@ -110,6 +110,21 @@ var vI_notificationBar = {
 		vI_notificationBar.dump_app_version();
 	},
 	
+	// copied and adapted from nightly tester tools from Dave Townsend (http://www.oxymoronical.com/web/firefox/nightly)
+	__getExtensionList: function(callback) {
+		Components.utils.import("resource://gre/modules/AddonManager.jsm");  
+
+		AddonManager.getAllAddons(function(addons) {
+		
+		var strings = addons.map(function(addon) {
+			return "addon: " + addon.name + " " + addon.version
+			+ (addon.userDisabled || addon.appDisabled ? " [DISABLED]" : "");
+		});
+		
+		try { callback(strings.join("\n")) } catch(e) {};
+		});
+	},
+	
 	dump_app_version : function(note) {
 		// add some information about the mail-client and the extensions installed
 		if ("@mozilla.org/xre/app-info;1" in Components.classes) {
@@ -121,32 +136,10 @@ var vI_notificationBar = {
 		}
 		else vI_notificationBar.__dumpDebugBox("mail-client seems not supported by Virtual Identity Extension")
 		
-		// copied and adapted from nightly tester tools from Dave Townsend (http://www.oxymoronical.com/web/firefox/nightly)
-		if (Components.classes["@mozilla.org/extensions/manager;1"]) { // only works if extensionsmanager is available
-		try { 	var em = Components.classes["@mozilla.org/extensions/manager;1"]
-				.getService(Components.interfaces.nsIExtensionManager);
-			var items = em.getItemList(Components.interfaces.nsIUpdateItem.TYPE_EXTENSION, {});
-			var rdfS = Components.classes["@mozilla.org/rdf/rdf-service;1"].getService(Components.interfaces.nsIRDFService);
-			var ds = em.datasource;
-			var disabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#disabled");
-			var isDisabledResource = rdfS.GetResource("http://www.mozilla.org/2004/em-rdf#isDisabled");
-			var text = [];
-			for (var i=0; i<items.length; i++)
-			{
-				var output = " - " + items[i].name + " " + items[i].id + " " + items[i].version;
-				var source = rdfS.GetResource("urn:mozilla:item:"+items[i].id);
-				var disabled = ds.GetTarget(source, disabledResource, true);
-				if (!disabled) disabled = ds.GetTarget(source, isDisabledResource, true);
-				try {
-					disabled=disabled.QueryInterface(Components.interfaces.nsIRDFLiteral);
-					if (disabled.Value=="true") output += " [DISABLED]";
-				}
-				catch (e) { }
-				vI_notificationBar.__dumpDebugBox(output + "\n")
-			}
-		}
-		catch (e) {};
-		};
+		vI_notificationBar.__getExtensionList(vI_notificationBar.__dumpDebugBox)
+
+// 		vI_notificationBar.__dumpDebugBox(output + "\n")
+
 		vI_notificationBar.__dumpDebugBox("--------------------------------------------------------------------------------\n")
 	},
 	
