@@ -330,8 +330,8 @@
 	</constructor>
 	<destructor>
 		<![CDATA[
-		document.getElementById("vI_tooltipPopupset")
-			.removeTooltip(this.tooltipElem.getAttribute("tooltip"));
+		vI_tooltipPopupset = document.getElementById("vI_tooltipPopupset")
+		if (vI_tooltipPopupset) vI_tooltipPopupset.removeTooltip(this.tooltipElem.getAttribute("tooltip"));
 		this._prefroot.removeObserver("extensions.virtualIdentity.show_smtp", this._observer);
 		]]>
 	</destructor>
