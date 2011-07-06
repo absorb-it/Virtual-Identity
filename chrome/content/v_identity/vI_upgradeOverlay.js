@@ -24,7 +24,7 @@
 
 var vI_upgradeOverlay = {
 	init: function() {
-        var rdfDatasource = new vI_rdfDatasource("virtualIdentity.rdf", true);
+		var rdfDatasource = new vI_rdfDatasource("virtualIdentity.rdf", true);
         if (rdfDatasource.extUpgradeRequired()) {
 			if (!vI_upgrade.quick_upgrade(rdfDatasource.getCurrentExtFileVersion()))
 				window.open("chrome://v_identity/content/vI_upgrade.xul",0,
@@ -41,6 +41,22 @@ var vI_upgradeOverlay = {
 		var prefroot = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch(null);
+		
+		Components.utils.import("resource://gre/modules/AddonManager.jsm");  
+
+		const switch_signature_ID="{2ab1b709-ba03-4361-abf9-c50b964ff75d}"		
+		prefroot.setBoolPref("extensions.virtualIdentity." + switch_signature_ID, false)
+		AddonManager.getAddonByID(switch_signature_ID, function(addon) {
+			prefroot.setBoolPref("extensions.virtualIdentity." + switch_signature_ID, addon.userDisabled || addon.appDisabled ? false : true)
+		});	
+		
+		const enigmail_ID="{847b3a00-7ab1-11d4-8f02-006008948af5}"
+		prefroot.setBoolPref("extensions.virtualIdentity." + enigmail_ID, false)
+		AddonManager.getAddonByID(enigmail_ID, function(addon) {
+			prefroot.setBoolPref("extensions.virtualIdentity." + enigmail_ID, addon.userDisabled || addon.appDisabled ? false : true)
+		});	
+		
+		
 		if (prefroot.getBoolPref("extensions.virtualIdentity.error_console")) {
 			document.getElementById("vIErrorBoxSplitter").removeAttribute("hidden");
 			document.getElementById("vIErrorBox").removeAttribute("hidden");
