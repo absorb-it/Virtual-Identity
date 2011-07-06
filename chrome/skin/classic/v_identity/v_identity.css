@@ -311,7 +311,7 @@ treechildren::-moz-tree-cell-text(locked) {
 #vINotification {
   -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#vI_notificationbox");
   -moz-box-orient: vertical;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 #vINotification notification {
