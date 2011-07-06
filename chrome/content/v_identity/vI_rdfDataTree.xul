@@ -27,18 +27,19 @@
 <?xml-stylesheet href="chrome://global/skin/tree.css" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/mailWindow1.css" type="text/css"?>
 
-<!DOCTYPE overlay [
-<!ENTITY % dataTreeDTD SYSTEM "chrome://v_identity/locale/vI_rdfDataTree.dtd">
-%dataTreeDTD;
-<!ENTITY % editDTD SYSTEM "chrome://global/locale/editMenuOverlay.dtd">
-%editDTD;
-<!ENTITY % communicatorDTD SYSTEM "chrome://communicator/locale/contentAreaCommands.dtd" >
-  %communicatorDTD;
+<!DOCTYPE window [
   <!ENTITY % messengercomposeDTD SYSTEM "chrome://messenger/locale/messengercompose/messengercompose.dtd" >
-%messengercomposeDTD;
-<!ENTITY % filtersDTD SYSTEM "chrome://messenger/locale/FilterListDialog.dtd">%filtersDTD;
-<!ENTITY % abMainWindowDTD SYSTEM "chrome://messenger/locale/addressbook/abMainWindow.dtd" >
-%abMainWindowDTD;
+  %messengercomposeDTD;
+  <!ENTITY % editDTD SYSTEM "chrome://global/locale/editMenuOverlay.dtd" >
+  %editDTD;
+  <!ENTITY % filtersDTD SYSTEM "chrome://messenger/locale/FilterListDialog.dtd" >
+  %filtersDTD;
+  <!ENTITY % dataTreeDTD SYSTEM "chrome://v_identity/locale/vI_rdfDataTree.dtd">
+  %dataTreeDTD;
+  <!ENTITY % abMainWindowDTD SYSTEM "chrome://messenger/locale/addressbook/abMainWindow.dtd">
+  %abMainWindowDTD;
+  <!ENTITY % communicatorDTD SYSTEM "chrome://communicator/locale/contentAreaCommands.dtd">
+  %communicatorDTD;
 ]>
 
 <window id="vI_rdfDataTreeWindow"
@@ -65,10 +66,10 @@
 </stringbundleset>
 
 <menupopup hidden="true">  <!--just to hold the localized labels-->
-	<menuitem label="&autoFormatCmd.label;" accesskey="&autoFormatCmd.accesskey;" id="format_auto"/>
-	<menuitem label="&plainTextFormatCmd.label;" accesskey="&plainTextFormatCmd.accesskey;" id="format_plain"/>
-	<menuitem label="&htmlFormatCmd.label;" accesskey="&htmlFormatCmd.accesskey;" id="format_html"/>
-	<menuitem label="&bothFormatCmd.label;" accesskey="&bothFormatCmd.accesskey;" id="format_both"/>
+	<menuitem type="radio" name="output_format" label="&autoFormatCmd.label;" accesskey="&autoFormatCmd.accesskey;" id="format_auto" checked="true"/>
+	<menuitem type="radio" name="output_format" label="&plainTextFormatCmd.label;" accesskey="&plainTextFormatCmd.accesskey;" id="format_plain"/>
+	<menuitem type="radio" name="output_format" label="&htmlFormatCmd.label;" accesskey="&htmlFormatCmd.accesskey;" id="format_html"/>
+	<menuitem type="radio" name="output_format" label="&bothFormatCmd.label;" accesskey="&bothFormatCmd.accesskey;" id="format_both"/>
 </menupopup>
 
 <popup id="configContext" onpopupshowing="if (event.target == this) vI_rdfDataTree.updateContextMenu();">
