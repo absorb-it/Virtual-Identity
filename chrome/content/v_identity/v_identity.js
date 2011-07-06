@@ -262,6 +262,9 @@ var vI_main = {
 		vI_main.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
 		vI_main.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
 		
+		var access_label = parent_hbox.getElementsByAttribute( "control", "msgIdentity" )[0];
+		access_label.setAttribute("control", "msgIdentity_clone");
+		
 		// initialize the pointers to extension elements (initialize those earlier might brake the interface)
 		vI_main.elements.init_rest();	
 	},
