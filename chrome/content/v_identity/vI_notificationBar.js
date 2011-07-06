@@ -41,24 +41,6 @@ var vI_notificationBar = {
 	Obj_DebugBoxSplitter : null,
 	Obj_DebugBaseID : null,
 	
-	versionOk : false,
-	
-	checkVersion : function() {
-		// the notification-bar only works from 1.5.0.7 on, else thunderbird segfaults
-		const THUNDERBIRD_ID = "{3550f703-e582-4d05-9a08-453d09bdfdc6}";
-		if (("@mozilla.org/xre/app-info;1" in Components.classes) &&
-			("@mozilla.org/xpcom/version-comparator;1" in Components.classes)) {
-			var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
-				.getService(Components.interfaces.nsIXULAppInfo);
-			var appID = appInfo.ID
-			var appVersion = appInfo.version
-			var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
-				.getService(Components.interfaces.nsIVersionComparator);
-			if (appID != THUNDERBIRD_ID || versionChecker.compare(appVersion, "1.5.0.7") >= 0)
-				vI_notificationBar.versionOk = true
-		}
-	},
-
 	observe: function() {
 		var showDebugArea = vI_notificationBar.preferences.getBoolPref("debug_notification")
 		vI_notificationBar.Obj_DebugBox.setAttribute("hidden", !showDebugArea)
@@ -88,7 +70,6 @@ var vI_notificationBar = {
 		
 		vI_notificationBar.addObserver();
 		vI_notificationBar.observe();
-		vI_notificationBar.checkVersion();
 		vI_notificationBar.dump_app_version();
 
 		return true;
@@ -196,7 +177,6 @@ var vI_notificationBar = {
 		if (!vI_notificationBar.preferences.getBoolPref(prefstring)) return;
 		if (!vI_notificationBar.Obj_vINotification) vI_notificationBar.init();
 		if (!vI_notificationBar.Obj_vINotification) return;
-		if (!vI_notificationBar.versionOk) return;
 		var oldNotification = vI_notificationBar.Obj_vINotification.currentNotification
 		var newLabel = (oldNotification)?oldNotification.label + note:note;
 		vI_notificationBar.clear();
