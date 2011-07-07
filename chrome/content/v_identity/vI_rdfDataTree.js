@@ -153,8 +153,17 @@ var vI_rdfDataTree = {
 	_strings : null,
     _vI_rdfDatasource : null,
 	
+	onTabSelect : function () {
+		vI_rdfDataTree.hideInfoBox();
+		if (vI_rdfDataTree.tabbox) {
+			vI_rdfDataTree.moveConstraints();
+			vI_rdfDataTree.updateButtonMenu();
+		}
+	},
+	
 	onselect : function () {
 		vI_rdfDataTree.moveConstraints();
+		vI_rdfDataTree.updateButtonMenu();
 
 		var tree = vI_rdfDataTree.trees[vI_rdfDataTree.tabbox.selectedPanel.id];
 		var htmlBox = document.getElementById("vI_rdfDataTreeInfoBox")
@@ -276,6 +285,12 @@ var vI_rdfDataTree = {
 		var noSelections = (tree.treeElem.view.selection.count == 0)
 		modifySelected.setAttribute("disabled", noSelections)
 		removeSelected.setAttribute("disabled", noSelections)	
+	},
+	
+	updateButtonMenu : function() {
+		vI_rdfDataTree.__updateMenu(
+			document.getElementById("editButton_" + vI_rdfDataTree.tabbox.selectedPanel.id),
+			document.getElementById("deleteButton_" + vI_rdfDataTree.tabbox.selectedPanel.id))
 	},
 	
 	updateContextMenu : function() {

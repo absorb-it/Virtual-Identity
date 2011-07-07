@@ -137,7 +137,7 @@
 </hbox>
 
 <tabbox id="TreeTabbox" flex="1">
-<tabs onselect="vI_rdfDataTree.hideInfoBox();" >
+<tabs onselect="vI_rdfDataTree.onTabSelect();" >
 <tab id="emailTab" />
 <tab id="maillistTab" />
 <tab id="newsgroupTab" />
@@ -173,9 +173,9 @@
           <button id="newButton_email" label="&newButton.label;" accesskey="&newButton.accesskey;"
                   oncommand="vI_rdfDataTree.newItem();"/>
           <button id="editButton_email" label="&editButton.label;" accesskey="&editButton.accesskey;" 
-                  oncommand="vI_rdfDataTree.modifySelected();"/>
+				  oncommand="vI_rdfDataTree.modifySelected();" disabled="true"/>
           <button id="deleteButton_email" label="&deleteButton.label;" accesskey="&deleteButton.accesskey;" 
-                  oncommand="vI_rdfDataTree.removeSelected();"/>
+				  oncommand="vI_rdfDataTree.removeSelected();" disabled="true"/>
           <spacer flex="1"/>
 </vbox>
 </hbox>
@@ -210,9 +210,9 @@
           <button id="newButton_maillist" label="&newButton.label;" accesskey="&newButton.accesskey;"
                   oncommand="vI_rdfDataTree.newItem();"/>
           <button id="editButton_maillist" label="&editButton.label;" accesskey="&editButton.accesskey;" 
-                  oncommand="vI_rdfDataTree.modifySelected();"/>
+                  oncommand="vI_rdfDataTree.modifySelected();" disabled="true"/>
           <button id="deleteButton_maillist" label="&deleteButton.label;" accesskey="&deleteButton.accesskey;" 
-                  oncommand="vI_rdfDataTree.removeSelected();"/>
+                  oncommand="vI_rdfDataTree.removeSelected();" disabled="true"/>
           <spacer flex="1"/>
 </vbox>
 </hbox>
@@ -246,9 +246,9 @@
           <button id="newButton_newsgroup" label="&newButton.label;" accesskey="&newButton.accesskey;"
                   oncommand="vI_rdfDataTree.newItem();"/>
           <button id="editButton_newsgroup" label="&editButton.label;" accesskey="&editButton.accesskey;" 
-                  oncommand="vI_rdfDataTree.modifySelected();"/>
+                  oncommand="vI_rdfDataTree.modifySelected();" disabled="true"/>
           <button id="deleteButton_newsgroup" label="&deleteButton.label;" accesskey="&deleteButton.accesskey;" 
-                  oncommand="vI_rdfDataTree.removeSelected();"/>
+                  oncommand="vI_rdfDataTree.removeSelected();" disabled="true"/>
           <spacer flex="1"/>
 </vbox>
 </hbox>
@@ -287,9 +287,9 @@
           <button id="newButton_filter" label="&newButton.label;" accesskey="&newButton.accesskey;"
                   oncommand="vI_rdfDataTree.newItem();"/>
           <button id="editButton_filter" label="&editButton.label;" accesskey="&editButton.accesskey;" 
-                  oncommand="vI_rdfDataTree.modifySelected();"/>
+                  oncommand="vI_rdfDataTree.modifySelected();" disabled="true"/>
           <button id="deleteButton_filter" label="&deleteButton.label;" accesskey="&deleteButton.accesskey;" 
-                  oncommand="vI_rdfDataTree.removeSelected();"/>
+                  oncommand="vI_rdfDataTree.removeSelected();" disabled="true"/>
           <spacer flex="1"/>
           <button id="reorderUpButton_filter" label="&reorderUpButton.label;" accesskey="&reorderUpButton.accesskey;" 
                   class="up"
