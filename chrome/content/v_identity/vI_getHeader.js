@@ -74,23 +74,13 @@ var vI_getHeader = {
 		}
 	},
 
-	getHeader: function() {
+	getHeaderDummy: function() {
+		
+	},
+	
+	getHeader: function(hdr) {
 		vI_notificationBar.clear_dump()
 		var index;
-
-		try { var srcMsgURI = gDBView.URIForFirstSelectedMessage; } catch (ex) { return; }
-		if (srcMsgURI == null) return;
-		
-		if (/type=application\/x-message-display/.test(srcMsgURI)) {
-			vI_notificationBar.dump("## vI_getHeader: opening stored Message, can't get Message Header\n");
-			return;
-		}
-		
-		try { var hdr = vI_getHeader.messenger.messageServiceFromURI(srcMsgURI).messageURIToMsgHdr(srcMsgURI); }
-		catch(vErr) {
-			vI_notificationBar.dump("## vI_getHeader: can't get Message Header.\n");
-			return;
-		};
 
 		if (!vI_getHeader.headerToSearch) vI_getHeader.prepareHeaderToSearchArray()
 
@@ -177,7 +167,7 @@ var vI_getHeader = {
 	setupEventListener: function() {
 		var listener = {};
 		listener.onStartHeaders	= vI_getHeader.hideExtraHeader;
-		listener.onEndHeaders	= vI_getHeader.getHeader;
+		listener.onEndHeaders	= vI_getHeader.getHeaderDummy;
 		gMessageListeners.push(listener);
 
 		vI_getHeader.messenger = Components.classes["@mozilla.org/messenger;1"].createInstance();
@@ -185,6 +175,23 @@ var vI_getHeader = {
 		vI_getHeader.strings = document.getElementById("vIdentBundle");
 		
 		vI_getHeader.unicodeConverter.charset = "UTF-8";
+		
+		// read headers later if msg is loaded completely - this ensures compatibility to Thunderbird Conversation
+		vI_getHeader.orig_OnMsgLoaded = OnMsgLoaded;
+		OnMsgLoaded = vI_getHeader.OnMsgLoaded;
+	},
+	
+	OnMsgLoaded: function(url) {
+		const Cc = Components.classes;
+		const Ci = Components.interfaces;
+		// Necko URL, so convert it into a message header
+        let ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+        var neckoURL = ioService.newURI(null, null, url.baseURI);
+		neckoURL.QueryInterface(Ci.nsIMsgMessageUrl);
+		
+		var msgHdr = neckoURL.messageHeader;
+		if (msgHdr) vI_getHeader.getHeader(msgHdr);
+		vI_getHeader.orig_OnMsgLoaded(url)
 	}
 }
 
