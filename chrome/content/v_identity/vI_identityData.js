@@ -200,7 +200,7 @@ vI_identityData.prototype = {
 	getMatrix : function() {
 		const Items = Array("smtp", "id");
 		var string = "";
-		for each (item in Items) if (this[item+"Html"])
+		for each (var item in Items) if (this[item+"Html"])
 			string += "<tr><td class='col1'>" + this[item+"Label"] + ":</td>" +
 				"<td class='col2'>" + this[item+"Html"] + "</td></tr>"
 		string += this.extras.getMatrix();
