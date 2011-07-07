@@ -28,8 +28,17 @@
 <?xml-stylesheet href="chrome://messenger/skin/mailWindow1.css" type="text/css"?>
 
 <!DOCTYPE window [
+<!-- for some unknown reason Seamonkey does not recognize the dtd correctly, or I made something wrong. -->
+<!-- therefore at the beginning an explizit declaration of tasksMenu.label / tasksMenu.accesskey -->
+<!-- this will be overridden by messengercomposeDTD if everything works right -->
+  <!ENTITY tasksMenu.label "Tools">
+  <!ENTITY tasksMenu.accesskey "T">
+<!-- for some unknown reason Thunderbird does not recognize the dtd correctly, or I made something wrong. -->
+<!-- therefore the declaration of messengercomposeDTD must be at the beginning -->
+<!-- at every later stage it will be not recognized the right way -->
   <!ENTITY % messengercomposeDTD SYSTEM "chrome://messenger/locale/messengercompose/messengercompose.dtd" >
   %messengercomposeDTD;
+<!-- now everything as usual -->
   <!ENTITY % editDTD SYSTEM "chrome://global/locale/editMenuOverlay.dtd" >
   %editDTD;
   <!ENTITY % filtersDTD SYSTEM "chrome://messenger/locale/FilterListDialog.dtd" >
