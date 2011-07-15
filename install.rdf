@@ -12,25 +12,15 @@
                    em:id="{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}"
                    em:minVersion="2.1"
                    em:maxVersion="2.2.*" />
-  <RDF:Description RDF:about="urn:mozilla:extension:file:v_identity.jar"
-                   em:package="content/v_identity/"
-                   em:skin="skin/classic/v_identity/">
-    <em:locale>locale/cs-CZ/v_identity/</em:locale>
-    <em:locale>locale/de-DE/v_identity/</em:locale>
-    <em:locale>locale/en-US/v_identity/</em:locale>
-    <em:locale>locale/es-ES/v_identity/</em:locale>
-    <em:locale>locale/fr/v_identity/</em:locale>
-    <em:locale>locale/nl/v_identity/</em:locale>
-    <em:locale>locale/ru-RU/v_identity/</em:locale>
-  </RDF:Description>
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
                    em:name="Virtual Identity"
                    em:version="0.8.0pre1"
+				   em:type="2"
                    em:description="Allows you to modify your Identity settings for a single Mail on the fly."
                    em:creator="Rene Ejury"
                    em:homepageURL="http://www.absorb.it/virtual-id"
-                   em:updateURL="http://absorb.it/software/virtual_identity/pre/v_identity_update.rdf"
+                   em:updateURL="http://absorb.it/software/virtual_identity/v_identity_update.rdf"
                    em:updateKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDY5lTLkMzbwKDrWvC5rAjR9Uiv6THmeOK03lBCsQ89KXYlz8i2CNTgvp44+/kK+73u+ZdduNSID+HGuzfoWy+cJLznFSlKx5DcYWDKKGKhCrXvRZ/nFX1JowmfdR5LskQMLNHMjadUCuS6ka3tX+yWErxOMPTdYmSWazU8tp1fGwIDAQAB"
                    em:optionsURL="chrome://v_identity/content/vI_prefDialog_TB3.xul" >
     <em:targetApplication RDF:resource="rdf:#$njP94"/>
@@ -42,7 +32,6 @@
     <em:translator>PatheticCockroach</em:translator>
     <em:translator>Antoine</em:translator>
     <em:translator>Vinser (www.ukrntb.com)</em:translator>
-    <em:translator>Michal Kec (MiK)</em:translator>
-    <em:file RDF:resource="urn:mozilla:extension:file:v_identity.jar"/>
+    <em:translator>Michal Kec (MiK)</em:translator> />
   </RDF:Description>
 </RDF:RDF>
