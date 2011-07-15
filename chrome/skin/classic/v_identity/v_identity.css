@@ -405,6 +405,7 @@ treechildren::-moz-tree-cell-text(locked) {
 
 .menulist_clone-icon {
 	margin: 	-2px 0pt -2px 3px;
+	-moz-image-region: rect(0px, 16px, 16px, 0px);
 }
 
 .menupopup_clone-icon{
