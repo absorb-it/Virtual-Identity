@@ -1,4 +1,4 @@
-#banner, #mainnav, #ctxtnav, div.buttons, #altlinks, #footer, p.path, .system-message {
+#banner, #mainnav, #pagepath, #ctxtnav, .trac-modifiedby, div.buttons, #altlinks, #footer, p.path, .system-message {
 	display: none;
 }
 
