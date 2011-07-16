@@ -41,7 +41,7 @@
 				<xul:progressmeter mode="undetermined" />
 				<xul:spacer flex="1" />
 			</xul:vbox>
-			<xul:browser xbl:inherits="src=url" class="vI_htmlTextBox" hidden="true" flex="1" disablehistory="true" />
+			<xul:browser xbl:inherits="src=url" type="content" class="vI_htmlTextBox" hidden="true" flex="1" disablehistory="true" />
 			<xul:button xbl:inherits="tooltiptext=url" label="&vI_prefDialog.openHelpInBrowserButton.label;"
 					oncommand="vI_prefDialog.openURL(this.tooltipText); vI_prefDialog.toggleHelp();" />
 		</xul:vbox>

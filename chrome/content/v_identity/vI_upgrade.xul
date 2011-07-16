@@ -56,7 +56,7 @@
 		pageid="intro" next="features" >
 		<groupbox>
 			<caption label="&vident.upgrade.intro.caption;"/>
-			<browser id="vITextBox.intro" class="vI_htmlTextBox" disablehistory="true"
+			<browser id="vITextBox.intro" type="content" class="vI_htmlTextBox" disablehistory="true"
 	 			documentStyle="background-color: -moz-dialog; font: -moz-dialog;" />
 		</groupbox>
 	</wizardpage>
@@ -66,7 +66,7 @@
 		pageid="features" next="license" >
 		<groupbox>
 			<caption label="&vident.upgrade.features.caption;"/>
-			<browser id="vITextBox.features" class="vI_htmlTextBox" disablehistory="true"
+			<browser id="vITextBox.features" type="content" class="vI_htmlTextBox" disablehistory="true"
 	 			documentStyle="background-color: -moz-dialog; font: -moz-dialog;" />
 		</groupbox>
 	</wizardpage>
@@ -76,7 +76,7 @@
 		pageid="license" next="upgrade" >
 		<groupbox>
 			<caption label="&vident.upgrade.license.caption;"/>
-			<browser id="vITextBox.license" class="vI_htmlTextBox" disablehistory="true"
+			<browser id="vITextBox.license" type="content" class="vI_htmlTextBox" disablehistory="true"
 	 			 cssSource="vI_upgrade_license.css"
 				 documentStyle="background-color: -moz-dialog; font: -moz-dialog;" />
 		</groupbox>
@@ -96,7 +96,7 @@
 		pageid="finish" >
 		<groupbox>
 			<caption label="&vident.upgrade.finish.caption;"/>
-			<browser id="vITextBox.finish" class="vI_htmlTextBox" disablehistory="true"
+			<browser id="vITextBox.finish" type="content" class="vI_htmlTextBox" disablehistory="true"
 	 			documentStyle="background-color: -moz-dialog; font: -moz-dialog;" />
 		</groupbox>
 	</wizardpage>	
