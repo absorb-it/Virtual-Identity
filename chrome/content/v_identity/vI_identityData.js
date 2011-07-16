@@ -267,8 +267,8 @@ vI_identityCollection.prototype =
 	}
 };
 
-const DEFAULT_SMTP_TAG = "vI_useDefaultSMTP"
-const NO_SMTP_TAG = "vI_noStoredSMTP"
+const vI_DEFAULT_SMTP_TAG = "vI_useDefaultSMTP"
+const vI_NO_SMTP_TAG = "vI_noStoredSMTP"
 
 function vI_smtpObj(key) {
 	this._key = key;
@@ -284,15 +284,15 @@ vI_smtpObj.prototype = {
 		var dummy = this.value; // just to be sure key is adapted if SMTP is not available
 		return this._key
 	},
-	get keyNice() { // the same as key but with "" for DEFAULT_SMTP_TAG
-		if (this.key == DEFAULT_SMTP_TAG) return ""; // this is the key used for default server
+	get keyNice() { // the same as key but with "" for vI_DEFAULT_SMTP_TAG
+		if (this.key == vI_DEFAULT_SMTP_TAG) return ""; // this is the key used for default server
 		return this.key
 	},
 	get value() {
 		if (this._value == null) {
 			this._value = "";
-			if (this._key == null || this._key == "") this._key = DEFAULT_SMTP_TAG;
-			if (this._key == DEFAULT_SMTP_TAG) this._value = this.DEFAULT_TAG;
+			if (this._key == null || this._key == "") this._key = vI_DEFAULT_SMTP_TAG;
+			if (this._key == vI_DEFAULT_SMTP_TAG) this._value = this.DEFAULT_TAG;
 			else if (!this._key) this._value = null;
 			else if (this._key) {
 				var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
@@ -307,15 +307,15 @@ vI_smtpObj.prototype = {
 				}
 			}
 		}
-		if (!this._value) this._key = NO_SMTP_TAG; // if non-existant SMTP handle like non available
+		if (!this._value) this._key = vI_NO_SMTP_TAG; // if non-existant SMTP handle like non available
 		return this._value;
 	},
 	equal : function(compareSmtpObj) {
-		if (this.key == NO_SMTP_TAG || compareSmtpObj.key == NO_SMTP_TAG) return true;
+		if (this.key == vI_NO_SMTP_TAG || compareSmtpObj.key == vI_NO_SMTP_TAG) return true;
 		return (this.keyNice == compareSmtpObj.keyNice);
 	},
 	hasNoDefinedSMTP : function() {
-		return (this.key == NO_SMTP_TAG);
+		return (this.key == vI_NO_SMTP_TAG);
 	}
 }
 

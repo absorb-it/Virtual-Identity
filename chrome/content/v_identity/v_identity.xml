@@ -181,7 +181,7 @@
 		listitem.setAttribute("class", "menuitem-non-iconic");
 		listitem.setAttribute("type", "non-iconic-noaccel");
 		listitem.setAttribute("label", " ");
-		listitem.setAttribute("key", NO_SMTP_TAG);
+		listitem.setAttribute("key", vI_NO_SMTP_TAG);
 		this._smtpPopup.insertBefore(listitem, this._smtpPopup.firstChild);
 		this._smtpMenu.selectedItem = listitem;
 		]]></body>
@@ -241,7 +241,7 @@
 	</constructor>
 	<property name="smtp" onget="return this._smtpMenu.selectedItem.getAttribute('key');" >
 		<setter><![CDATA[
-		if (val == NO_SMTP_TAG) return; // dont overwrite if not set
+		if (val == vI_NO_SMTP_TAG) return; // dont overwrite if not set
 		vI_notificationBar.dump("** v_identity.xml smtp set to '" + val + "'\n")
 		var MenuItems = this._smtpPopup.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
