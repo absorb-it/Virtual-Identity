@@ -508,9 +508,9 @@ vI_rdfDatasource.prototype = {
 
         var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
             .getService(Components.interfaces.nsIMsgAccountManager);
-        for (let i = 0; i < AccountManager.accounts.Count(); i++) {
+        for (var i = 0; i < AccountManager.accounts.Count(); i++) {
             var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-            for (let j = 0; j < account.identities.Count(); j++) {
+            for (var j = 0; j < account.identities.Count(); j++) {
                 var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
 //                 if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: storeAccounts identity store id " + identity.key + "\n");
 
@@ -821,9 +821,9 @@ vI_rdfDatasourceImporter.prototype = {
     _getMatchingIdentity : function(name, email, fullName) {
         var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
             .getService(Components.interfaces.nsIMsgAccountManager);
-        for (let i = 0; i < AccountManager.accounts.Count(); i++) {
+        for (var i = 0; i < AccountManager.accounts.Count(); i++) {
             var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-            for (let j = 0; j < account.identities.Count(); j++) {
+            for (var j = 0; j < account.identities.Count(); j++) {
                 var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
                 if (name == identity.identityName || (fullName == identity.fullName && email == identity.email)) return identity.key;
             }

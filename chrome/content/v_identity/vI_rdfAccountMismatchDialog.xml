@@ -157,9 +157,9 @@
         vI_notificationBar.dump("## mismatchID-menupopup: _addIdentities.\n");
         var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
             .getService(Components.interfaces.nsIMsgAccountManager);
-        for (let i = 0; i < AccountManager.accounts.Count(); i++) {
+        for (var i = 0; i < AccountManager.accounts.Count(); i++) {
             var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-            for (let j = 0; j < account.identities.Count(); j++) {
+            for (var j = 0; j < account.identities.Count(); j++) {
                 var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
                 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
                 var menuitem = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
