@@ -210,9 +210,12 @@ var vI_storage = {
 	
 	__getDescriptionAndType : function (recipient, recipientType) {
 		if (recipientType == "addr_newsgroups")	return { recDesc : recipient, recType : "newsgroup" }
-		else if (vI_storage.isMailingList(recipient))
-			return { recDesc : vI_storage.getMailListName(recipient), recType : "maillist" }
+		else if (vI_storage.__isMailingList(recipient)) {
+			vI_notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is MailList\n");
+			return { recDesc : vI_storage.__getMailListName(recipient), recType : "maillist" }
+		}
 		else {
+			vI_notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is no MailList\n");
 			var localIdentityData = new vI_identityData(recipient, null, null, null, null, null, null);
 			return { recDesc : localIdentityData.combinedName, recType : "email" }
 		}
@@ -320,75 +323,28 @@ var vI_storage = {
 		return true;
 	},
 		
-	
-	// --------------------------------------------------------------------
-	// the following function gets a queryString, a callFunction to call for every found Card related to the queryString
-	// and a returnVar, which is passed to the callFunction and returned at the end.
-	// this way the Storage-search is unified for all tasks
-	_walkTroughCards : function (queryString, callFunction, returnVar) {
-		var parentDir = vI_storage.rdfService.GetResource("moz-abdirectory://").QueryInterface(Components.interfaces.nsIAbDirectory);
-		var enumerator = parentDir.childNodes;
-		if (!enumerator) {vI_notificationBar.dump("## vI_storage: no addressbooks?\n"); return null;} // uups, no addressbooks?	
-		while (enumerator && enumerator.hasMoreElements()) {
-			var addrbook = enumerator.getNext();  // an addressbook directory
-			addrbook.QueryInterface(Components.interfaces.nsIAbDirectory);
-			var searchUri = (addrbook.directoryProperties?addrbook.directoryProperties.URI:addrbook.URI) + queryString;
-			vI_notificationBar.dump("## vI_storage: _walkTroughCards searchUri='" + searchUri + "'\n")
-			// just try the following steps, they might fail if addressbook wasn't configured the right way
-			// not completely reproducible, but caused bug https://www.absorb.it/virtual-id/ticket/41
-			try {
-				var AbView = Components.classes["@mozilla.org/addressbook/abview;1"].createInstance(Components.interfaces.nsIAbView);
-				var rdf = Components.classes["@mozilla.org/rdf/rdf-service;1"].getService(Components.interfaces.nsIRDFService);
-				AbView.setView(rdf.GetResource(searchUri).QueryInterface(Components.interfaces.nsIAbDirectory), null, "GeneratedName", "ascending");
-			} catch (ex) { break; };
-			var directory = AbView.directory;
-			// directory will now be a subset of the addressbook containing only those cards that match the searchstring
-			if (!directory) break;
-            try { var childCards = directory.childCards; } catch (ex) { break; };
-			
-			if (typeof(childCards.first)=="function") {	// old versions don't use enumerator
-				var keepGoing = 1;
-				try { childCards.first(); } catch (ex) { keepGoing = 0; }
-				while (keepGoing == 1) {
-					var currentCard = childCards.currentItem();
-					currentCard.QueryInterface(Components.interfaces.nsIAbCard);
-					callFunction(addrbook, currentCard, returnVar);
-					try { childCards.next(); } catch (ex) {	keepGoing = 0; }
-				}
-			}
-			else {
-				while (childCards.hasMoreElements()) {
-					vI_notificationBar.dump("## vI_storage: _walkTroughCards found card\n")
-					var currentCard = childCards.getNext();
-					currentCard.QueryInterface(Components.interfaces.nsIAbCard);
-					callFunction(addrbook, currentCard, returnVar);
-				}
-			}
-		}
-		return returnVar;
-	},
-		
 	// --------------------------------------------------------------------
 	// check if recipient is a mailing list.
 	// Similiar to Thunderbird, if there are muliple cards with the same displayName the mailinglist is preferred
 	// see also https://bugzilla.mozilla.org/show_bug.cgi?id=408575
-	isMailingList: function(recipient) {
-		var queryString = "?(or(DisplayName,c," + encodeURIComponent(vI_storage.getMailListName(recipient)) + "))"
-		var returnVar = vI_storage._walkTroughCards(queryString, vI_storage._isMailingListCard,
-			{ mailListName : vI_storage.getMailListName(recipient), isMailList : false } )
-		vI_notificationBar.dump("## vI_storage: isMailingList " + returnVar.isMailList + "\n")
-		return returnVar.isMailList;
+	__isMailingList: function(recipient) {
+		let abManager = Components.classes["@mozilla.org/abmanager;1"]
+			.getService(Components.interfaces.nsIAbManager);
+		let allAddressBooks = abManager.directories;
+		while (allAddressBooks.hasMoreElements()) {
+			let ab = allAddressBooks.getNext();
+			if (ab instanceof Components.interfaces.nsIAbDirectory && !ab.isRemote) {
+				let cards = abManager.getDirectory(ab.URI + 
+					"?(and(DisplayName,=," + encodeURIComponent(vI_storage.__getMailListName(recipient)) + ")(IsMailList,=,TRUE))").childCards;
+				if (cards.hasMoreElements()) return true;	// only interested if there is at least one element...
+			}
+		}
+		return false;
 	},	
-	
-	_isMailingListCard : function (addrbook, Card, returnVar) {
-	// returnVar = { mailListName : mailListName, isMailList : false } 
-		returnVar.isMailList = (returnVar.isMailList ||
-			Card.isMailList && Card.displayName.toLowerCase() == returnVar.mailListName.toLowerCase() )
-	},
 	
 	// --------------------------------------------------------------------
 	
-	getMailListName : function(recipient) {
+	__getMailListName : function(recipient) {
 		if (recipient.match(/<[^>]*>/) || recipient.match(/$/)) {
 			var mailListName = RegExp.leftContext + RegExp.rightContext
 			mailListName = mailListName.replace(/^\s+|\s+$/g,"")
