@@ -12,8 +12,8 @@
 <!ENTITY vI_rdfDataTree.smtpColumn.label "SMTP-сервер">
 <!ENTITY vI_rdfDataTree.menuEntry.label "Хранилище виртуальных личных данных">
 
-<!ENTITY vI_rdfDataTree.editMenu.label "Редактировать">
-<!ENTITY vI_rdfDataTree.editMenu.accesskey "Р">
+<!ENTITY vI_rdfDataTree.editMenu.label "Правка">
+<!ENTITY vI_rdfDataTree.editMenu.accesskey "П">
 <!ENTITY vI_rdfDataTree.modifySelected.label "Изменить выделенные записи">
 <!ENTITY vI_rdfDataTree.modifySelected.accesskey "И">
 <!ENTITY vI_rdfDataTree.removeSelected.label "Удалить выделенные записи">

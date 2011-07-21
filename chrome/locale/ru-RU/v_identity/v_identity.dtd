@@ -10,7 +10,7 @@
 <!ENTITY vident.replySelector.caption.label "Выбрать виртуальные личные данные">
 <!ENTITY vident.vI_Menu.label "Virtual Identity">
 <!ENTITY vident.vI_Menu.Settings.label "Настройки">
-<!ENTITY vident.vI_Menu.DataStorage.label "Data-Storage"> <!-- translate -->
+<!ENTITY vident.vI_Menu.DataStorage.label "Хранилище данных">
 <!ENTITY vident.vI_Menu.DataEditor.label "Редактор виртуальных личных данных">
 <!ENTITY vident.vI_Menu.storageSave.label "Сохранять личные данные при отправке">
 <!ENTITY vident.vI_Menu.saveBaseID.label "Сохранять учетную запись">

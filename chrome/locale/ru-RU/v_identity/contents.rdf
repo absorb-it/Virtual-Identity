@@ -10,7 +10,7 @@
   <!-- locale information -->
   <RDF:Description about="urn:mozilla:locale:ru-RU"
         chrome:displayName="Русский"
-        chrome:author="Vinser (www.ukrntb.com)"
+        chrome:author="Vinser (ukrntb.com)"
         chrome:name="ru-RU">
     <chrome:packages>
       <RDF:Seq about="urn:mozilla:locale:ru-RU:packages">

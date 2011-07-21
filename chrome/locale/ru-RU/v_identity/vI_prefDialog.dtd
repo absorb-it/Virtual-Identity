@@ -1,8 +1,8 @@
 <!ENTITY vI_prefDialog.dlgTitle.label "Настройки Virtual Identity">
 <!ENTITY vI_prefDialog.vidLogo.tooltiptext "Открыть домашнюю страницу Virtual Identity">
 
-<!ENTITY vI_prefDialog.dlgHelpButton.label "Online Help"> <!-- translate -->
-<!ENTITY vI_prefDialog.openHelpInBrowserButton.label "Open in Browser"> <!-- translate -->
+<!ENTITY vI_prefDialog.dlgHelpButton.label "Онлайн справка">
+<!ENTITY vI_prefDialog.openHelpInBrowserButton.label "Открыть в браузере">
 
 <!ENTITY vI_prefDialog.tabbox.tab0.label "Исходное сообщение">
 <!ENTITY vI_prefDialog.tabbox.tab1.label "Выбор личных данных">
@@ -13,14 +13,14 @@
 
 
 <!ENTITY vI_prefDialog.smartCell.label "Анализ заголовков">
-<!ENTITY vI_prefDialog.smartCell.row0.label "Чтение">
-<!ENTITY vI_prefDialog.smartCell.row1.label "Фильтрация / Сортировка">
-<!ENTITY vI_prefDialog.smartCell.row2.label "Сравнение">
+<!ENTITY vI_prefDialog.smartCell.row0.label "1. Чтение">
+<!ENTITY vI_prefDialog.smartCell.row1.label "2. Фильтр / Сортировка">
+<!ENTITY vI_prefDialog.smartCell.row2.label "3. Сравнение">
 
 <!ENTITY vI_prefDialog.smartTab0.header "Анализ заголовков сообщений">
 <!ENTITY vI_prefDialog.smartTab0.Draft.caption "«Умный черновик»">
 <!ENTITY vI_prefDialog.smartTab0.Reply.caption "«Умный ответ»">
-<!ENTITY vI_prefDialog.versionWarning.label "Ваша почтовая программа слишком стара для использования функции «Умный черновик».">
+<!ENTITY vI_prefDialog.versionWarning.label "Ваша почтовая программа слишком устарела для использования функции «Умный черновик».">
 <!ENTITY vI_prefDialog.smartDraft.label "Использовать «Умный черновик»">
 <!ENTITY vI_prefDialog.smartDraft.tooltiptext "«Умный черновик», анализируя заголовки сохраняемого сообщения, пытается определить, какие какие личные данные будут использоваться отправителем в черновике или шаблоне. Рекомендуется по умолчанию.">
 <!ENTITY vI_prefDialog.smartReply.label "Использовать «Умный ответ»">
@@ -47,13 +47,13 @@
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "При отсутствии имен у полученных E-mail адресов, использовать имя:">
 
 
-<!ENTITY vI_prefDialog.idSelection.Cell0.label "Virtual Identity Usage"> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Cell0.label "Использование Virtual Identity">
 <!ENTITY vI_prefDialog.idSelection.Cell1.label "Ввод личных данных">
 <!ENTITY vI_prefDialog.idSelection.Cell2.label "Выбор результатов">
 
-<!ENTITY vI_prefDialog.idSelection.Tab0.header "Virtual Identity Usage"> <!-- translate -->
-<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Restrict Virtual Identity Usage"> <!-- translate -->
-<!ENTITY vI_prefDialog.idSelection.usage.desc "If you create a new message, your email program selects some Identity to use for this message. Here you can decide, which of those permanently stored Identities can be changed by virtual Identity if you create the message. By default all Identities can be changed (newly added Identities are enabled by default)."> <!-- translate -->
+<!ENTITY vI_prefDialog.idSelection.Tab0.header "Использование Virtual Identity">
+<!ENTITY vI_prefDialog.idSelection.Tab0.caption "Ограничение использования Virtual Identity">
+<!ENTITY vI_prefDialog.idSelection.usage.desc "Если Вы создаете новое сообщение, почтовая программа выбирает определенные личные данные (e-mail учетных записей и/или дополнительные e-mail), чтобы использовать их в редактируемом сообщении. Здесь Вы можете решить какие из этих личных данных, постоянно хранящихся в параметрах учетных записей почтовой программы, будут заменяться виртуальными личными данными Virtual Identity при редактировании сообщений. По умолчанию все учетные записи и дополнительные e-mail разрешены для изменений (вновь созданные учетные записи также по умолчанию будут разрешены).">
 
 <!ENTITY vI_prefDialog.idSelection.Tab1.header "Ввод личных данных">
 <!ENTITY vI_prefDialog.idSelection.Tab1.caption "«Умный ответ» и хранилище">
@@ -137,8 +137,8 @@
 <!ENTITY vI_prefDialog.storage.label "Сохранять (и восстанавливать) используемые личные данные">
 <!ENTITY vI_prefDialog.storage.tooltiptext "Личные данные, используемые для отправки и связанные с получателями сообщений, будут сохраняться. Если вы снова пишите сообщение получателю, которому ранее уже отсылали сообщение, то будут использоваться соответствующие личные данные (виртуальные или реальные).">
 <!ENTITY vI_prefDialog.storage.openEditor "Редактировать сохраненные данные">
-<!ENTITY vI_prefDialog.storage.export "export stored data"> <!-- translate -->
-<!ENTITY vI_prefDialog.storage.import "import data"> <!-- translate -->
+<!ENTITY vI_prefDialog.storage.export "Экспорт данных">
+<!ENTITY vI_prefDialog.storage.import "Импорт данных">
 
 <!ENTITY vI_prefDialog.storageTab.reading.header "Считывание виртуальных личных данных">
 <!ENTITY vI_prefDialog.storageTab.reading.caption "Считывание сохраненных виртуальных личных данных">

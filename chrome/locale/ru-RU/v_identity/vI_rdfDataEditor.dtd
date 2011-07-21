@@ -13,6 +13,6 @@
 <!ENTITY vI_rdfDataEditor.sender.label "Отправитель:">
 <!ENTITY vI_rdfDataEditor.sender.accesskey "О">
 <!ENTITY vI_rdfDataEditor.smtp.label "SMTP-сервер:">
-<!ENTITY vI_rdfDataEditor.smtp.accesskey "c">
+<!ENTITY vI_rdfDataEditor.smtp.accesskey "с">
 <!ENTITY vI_rdfDataEditor.identity.label "Учетная запись">
 <!ENTITY vI_rdfDataEditor.identity.accesskey "У">
