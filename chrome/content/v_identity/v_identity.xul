@@ -81,7 +81,7 @@
   </vbox>
   
   <popupset>
-	  <popup id="vI_statusMenu">
+	  <menupopup id="vI_statusMenu">
 		  <menuitem type="checkbox" id="vI_statusMenu_storage_save" label="&vident.vI_Menu.storageSave.label;"
 			oncommand="vI_statusmenu.menuConstraint(this);"/>
 		  <menuitem type="checkbox" id="vI_statusMenu_storage_saveBaseID" label="&vident.vI_Menu.saveBaseID.label;"
@@ -93,13 +93,13 @@
 			oncommand="window.open('chrome://v_identity/content/vI_prefDialog_TB3.xul', '', 'chrome, dialog, alwaysRaised, resizable=yes');" />
 		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.DataEditor.label;"
 			oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome, dialog, resizable=yes');" />
-	  </popup>
+	  </menupopup>
   </popupset>
   <popupset>
-	  <popup id="vI_autoReplyToSelfMenu">
+	  <menupopup id="vI_autoReplyToSelfMenu">
 		  <menuitem type="menuitem-iconic" label="&vident.composeDialog.autoReplyToSelf.menuLabel;"
 			oncommand="document.getElementById('autoReplyToSelfLabel').setAttribute('hidden', 'true');"/>
-	  </popup>
+		</menupopup>
   </popupset>
   <popupset>
 	  <tooltip id="vI_statusMenuTooltip" orient="vertical" >

@@ -81,7 +81,7 @@
 	<menuitem type="radio" name="output_format" label="&bothFormatCmd.label;" accesskey="&bothFormatCmd.accesskey;" id="format_both"/>
 </menupopup>
 
-<popup id="configContext" onpopupshowing="if (event.target == this) vI_rdfDataTree.updateContextMenu();">
+<menupopup id="configContext" onpopupshowing="if (event.target == this) vI_rdfDataTree.updateContextMenu();">
 	<menuitem id="context_modifySelected" label="&vI_rdfDataTree.modifySelected.label;"
 		oncommand="vI_rdfDataTree.modifySelected(this);"/>
 	<menuitem id="context_removeSelected" label="&vI_rdfDataTree.removeSelected.label;"
@@ -91,7 +91,7 @@
 	<menuseparator />
 	<menuitem id="context_menu_selectAll" label="&selectAllCmd.label;"
 		oncommand="vI_rdfDataTree.selectAll();"/>
-</popup>
+</menupopup>
 
 <keyset>
 	<key keycode="VK_ENTER" oncommand="vI_rdfDataTree.modifySelected();"/>
