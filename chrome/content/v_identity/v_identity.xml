@@ -65,7 +65,7 @@
 	
 	<binding id="vI_identityDataTooltip" extends="chrome://global/content/bindings/popup.xml#tooltip">
  	<content onpopuphidden="popuphidden();" onpopupshowing="this.popupshowing();this.resize()" onpopupshown="this.resize()" >
-			<xul:browser style="overflow:hidden" anonid="tooltipBrowser" type="content" class="vI_htmlTextBox" cssSource="vI_TooltipBrowser.css" flex="1" disablehistory="true" onoverflow="document.getBindingParent(this).resize()"/>
+			<xul:browser style="overflow:hidden" anonid="tooltipBrowser" type="chrome" class="vI_htmlTextBox" cssSource="vI_TooltipBrowser.css" flex="1" disablehistory="true" onoverflow="document.getBindingParent(this).resize()"/>
 			<children />
 	</content>
 	<implementation>

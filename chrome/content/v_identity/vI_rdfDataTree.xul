@@ -305,7 +305,7 @@
 </tabpanels>
 </tabbox>
 <!-- <splitter /> -->
-<browser id="vI_rdfDataTreeInfoBox" class="vI_htmlTextBox" type="content" cssSource="vI_rdfTreeInfo.css" disablehistory="true" onoverflow="vI_rdfDataTree.overflow();"/>
+<browser id="vI_rdfDataTreeInfoBox" class="vI_htmlTextBox" type="chrome" cssSource="vI_rdfTreeInfo.css" disablehistory="true" onoverflow="vI_rdfDataTree.overflow();"/>
 
 	<splitter id="vIDebugBoxSplitter" hidden="true"/>
 	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
