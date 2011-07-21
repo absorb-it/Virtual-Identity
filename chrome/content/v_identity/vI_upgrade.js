@@ -104,7 +104,7 @@ var vI_upgrade = {
 			currentVersion + "\nextension-upgrade required.\n")
 		switch (currentVersion) {
 			case null:
-				vI_upgrade.__transferAllVIdentityABookToRDF(); // no break
+				// no break
 			default:
 				vI_upgrade.__transferMovedUserPrefs(currentVersion);
 				vI_upgrade.__removeObsoleteUserPrefs(currentVersion);
@@ -182,52 +182,6 @@ var vI_upgrade = {
 		}
 	},
 
-	CardFields : Array("Custom1", "Custom2", "Custom3", "Custom4", "Notes"),
-	// --------------------------------------------------------------------
-	// remove all VirtualIdentity-related Information from the AddressBook
-	// and transfer it to the RDF File.
-	__transferAllVIdentityABookToRDF : function() {
-		var returnVar = { prop : null, counter : 0, warning : true }
-		for each (returnVar.prop in vI_upgrade.CardFields) {
-			var queryString = "?(or(" +returnVar.prop + ",c,vIdentity:))";
-			returnVar.prop = returnVar.prop.toLowerCase();
-			returnVar = vI_storage._walkTroughCards(queryString,vI_upgrade.__transferVIdentityABookToRDF, returnVar )
-		}
-		vI_notificationBar.dump("\ntransferred " + returnVar.counter + " VirtualIdentity information items from AddressBook to RDF.\n")
-	},
-	
-	__transferVIdentityABookToRDF: function(addrbook, Card, returnVar) {
-		if (!Card[returnVar.prop].match(/^vIdentity:/)) return returnVar;
-		if (returnVar.warning) {
-			vI_notificationBar.dump("transferring VirtualIdentity information from AddressBook to RDF file,\nthis might take a while:\n");
-			returnVar.warning = false
-		}
-		
-		var newFullEmail=Card[returnVar.prop].replace(/vIdentity: /,"");
-		var infoIndex = newFullEmail.indexOf(" (id")
-		if (!infoIndex) infoIndex = newFullEmail.indexOf(" (smtp")
-		var info = null; var id= null; var smtp = null;
-		if ( infoIndex != -1) {
-			info = newFullEmail.substr(infoIndex+2).replace(/\)/,"").split(/,/)
-			newFullEmail = newFullEmail.substr(0, infoIndex);
-		}
-		if ( info && info[0] ) id = info[0];
-		if ( info && info[1] ) smtp = info[1];
-		
-		var localIdentityData = new vI_identityData(newFullEmail, null, id, smtp, null)
-		
-		vI_upgrade.vI_rdfDatasource.updateRDF(localIdentityData.combinedName,
-						"email", localIdentityData, true, true, null, null)
-		if (Card.secondEmail.replace(/^\s+|\s+$/g,""))
-			vI_upgrade.vI_rdfDatasource.updateRDF(localIdentityData.combinedName,
-					"email", localIdentityData, true, true, null, null)
-		
-		Card[returnVar.prop] = "";
-		Card.editCardToDatabase("");
-		vI_notificationBar.dump(".");
-		return { prop: returnVar.prop, counter : ++returnVar.counter, warning : returnVar.warning };
-	},
-	
 	openURL : function(aURL) {
             var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
             var protocolSvc = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"].getService(Components.interfaces.nsIExternalProtocolService);
