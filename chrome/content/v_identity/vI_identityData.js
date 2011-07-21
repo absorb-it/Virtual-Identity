@@ -184,7 +184,7 @@ vI_identityData.prototype = {
 		var string = "";		
 		var saveBaseId = (vI_statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true")
 		var saveSMTP = (vI_statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true")
-		for each (item in Items) {
+		for each (let item in Items) {
 			var classEqual = (this.comp.equals[item])?"equal":"unequal";
 			var classIgnore = (((!saveBaseId) && (item == "id")) || ((!saveSMTP) && (item == "smtp")))?" ignoreValues":""
 			string += "<tr>" +
