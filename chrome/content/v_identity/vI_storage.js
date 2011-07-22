@@ -334,9 +334,12 @@ var vI_storage = {
 		while (allAddressBooks.hasMoreElements()) {
 			let ab = allAddressBooks.getNext();
 			if (ab instanceof Components.interfaces.nsIAbDirectory && !ab.isRemote) {
-				let cards = abManager.getDirectory(ab.URI + 
-					"?(and(DisplayName,=," + encodeURIComponent(vI_storage.__getMailListName(recipient)) + ")(IsMailList,=,TRUE))").childCards;
-				if (cards.hasMoreElements()) return true;	// only interested if there is at least one element...
+				let abdirectory = abManager.getDirectory(ab.URI + 
+					"?(and(DisplayName,=," + encodeURIComponent(vI_storage.__getMailListName(recipient)) + ")(IsMailList,=,TRUE))");
+				if (abdirectory) {
+					let cards = abdirectory.childCards;
+					if (cards.hasMoreElements()) return true;	// only interested if there is at least one element...
+				}
 			}
 		}
 		return false;
