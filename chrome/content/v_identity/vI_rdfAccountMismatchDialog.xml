@@ -194,8 +194,8 @@
             const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
             var menuitem = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
             menuitem.setAttribute("class", "mismatchMenuitem");
-            const DEFAULT_SMTP_TAG = "vI_useDefaultSMTP"
-            menuitem.setAttribute("key", DEFAULT_SMTP_TAG);
+            const vI_DEFAULT_SMTP_TAG = "vI_useDefaultSMTP"
+            menuitem.setAttribute("key", vI_DEFAULT_SMTP_TAG);
             menuitem.setAttribute("label", document.getElementById("bundle_messenger").getString("defaultServerTag"));
             this.appendChild(menuitem);
             

@@ -212,7 +212,7 @@ vI_rdfDatasource.prototype = {
                 var resource = enumerator.getNext();
                 resource.QueryInterface(Components.interfaces.nsIRDFResource);
                 var smtp = this._getRDFValue(resource, "smtp")
-                if (!smtp || smtp == "") this._setRDFValue(resource, "smtp", DEFAULT_SMTP_TAG);
+                if (!smtp || smtp == "") this._setRDFValue(resource, "smtp", vI_DEFAULT_SMTP_TAG);
                 if (vI_notificationBar) vI_notificationBar.dump(".");
             }
         }
@@ -450,7 +450,7 @@ vI_rdfDatasource.prototype = {
                 var resource = enumerator.getNext();
                 resource.QueryInterface(Components.interfaces.nsIRDFResource);
                 var smtp = this._getRDFValue(resource, "smtp")
-                if (smtp && smtp != DEFAULT_SMTP_TAG) {
+                if (smtp && smtp != vI_DEFAULT_SMTP_TAG) {
                     if (!relevantSMTPs[smtp]) relevantSMTPs[smtp] = 1; else relevantSMTPs[smtp] += 1;
                 }
             }
@@ -623,7 +623,7 @@ vI_rdfDatasource.prototype = {
 			var fullName = this._getRDFValue(resource, "fullName")
 			var id = this._getRDFValue(resource, "id")
 			var smtp = this._getRDFValue(resource, "smtp")
-			if (!smtp) smtp = NO_SMTP_TAG;
+			if (!smtp) smtp = vI_NO_SMTP_TAG;
 			var extras = new vI_storageExtras(this, resource);
 			
 			var localIdentityData = new vI_identityData(email, fullName, id, smtp, extras)
@@ -689,7 +689,7 @@ vI_rdfDatasource.prototype = {
 		var fullName = this._getRDFValue(resource, "fullName")
 		var id = this._getRDFValue(resource, "id")
 		var smtp = this._getRDFValue(resource, "smtp")
-		if (!smtp) smtp = NO_SMTP_TAG;
+		if (!smtp) smtp = vI_NO_SMTP_TAG;
 		
 		if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: email='" + email + 
 			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'\n");
@@ -750,7 +750,7 @@ vI_rdfDatasource.prototype = {
 		if (storeBaseID)
 			this._setRDFValue(resource, "id", localIdentityData.id.key);
 		else	this._unsetRDFValue(resource, "id", this._getRDFValue(resource, "id"))
-		if (storeSMTP && localIdentityData.smtp.key != NO_SMTP_TAG)
+		if (storeSMTP && localIdentityData.smtp.key != vI_NO_SMTP_TAG)
 			this._setRDFValue(resource, "smtp", localIdentityData.smtp.key);
 		else	this._unsetRDFValue(resource, "smtp", this._getRDFValue(resource, "smtp"))
         this._setRDFValue(resource, "name", recDescription);
@@ -963,7 +963,7 @@ vI_rdfDatasourceImporter.prototype = {
                     var id = this._rdfImportDataSource._getRDFValue(resource, "id")
                     id = id?relevantIDs[id].id:null
                     var smtp = this._rdfImportDataSource._getRDFValue(resource, "smtp")
-                    smtp = (smtp && smtp != DEFAULT_SMTP_TAG)?relevantSMTPs[smtp].smtp:smtp
+                    smtp = (smtp && smtp != vI_DEFAULT_SMTP_TAG)?relevantSMTPs[smtp].smtp:smtp
                     var extras = new vI_storageExtras(this._rdfImportDataSource, resource);
                     var localIdentityData = new vI_identityData(email, fullName, id, smtp, extras)
                     
