@@ -28,7 +28,7 @@ var vI_upgradeOverlay = {
         if (rdfDatasource.extUpgradeRequired()) {
 			if (!vI_upgrade.quick_upgrade(rdfDatasource.getCurrentExtFileVersion()))
 				window.open("chrome://v_identity/content/vI_upgrade.xul",0,
-					"chrome, dialog, modal, alwaysRaised, resizable=yes").focus();
+					"chrome, dialog, alwaysRaised, resizable=yes").focus();
 		}
 		else {
 			vI_account.cleanupSystem(); // always clean leftover accounts and directories
