@@ -206,8 +206,8 @@ vI_rdfDatasource.prototype = {
     // **************    RDF UPGRADE CODE    ****************************************************
     _tagDefaultSMTP: function() {
         if (vI_notificationBar) vI_notificationBar.dump("upgrade: tagDefaultSMTP ");
-        for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
-            var enumerator = this.getContainer(treeType).GetElements();
+        for each (vI_treeType in Array("email", "maillist", "newsgroup", "filter")) {
+            var enumerator = this.getContainer(vI_treeType).GetElements();
             while (enumerator && enumerator.hasMoreElements()) {
                 var resource = enumerator.getNext();
                 resource.QueryInterface(Components.interfaces.nsIRDFResource);
@@ -365,8 +365,8 @@ vI_rdfDatasource.prototype = {
     getRelevantIDs : function() {
         var relevantIDs = new Object();
         // search relevant Identities
-        for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
-            var enumerator = this.getContainer(treeType).GetElements();
+        for each (vI_treeType in Array("email", "maillist", "newsgroup", "filter")) {
+            var enumerator = this.getContainer(vI_treeType).GetElements();
             while (enumerator && enumerator.hasMoreElements()) {
                 var resource = enumerator.getNext();
                 resource.QueryInterface(Components.interfaces.nsIRDFResource);
@@ -425,8 +425,8 @@ vI_rdfDatasource.prototype = {
         for (var i = 0; i < mismatchItems.length; i++) {
             if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: repairAccountMismatch change " + mismatchItems[i].oldkey + " into " + mismatchItems[i].key + ": ");
             // search relevant Identities
-            for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
-                var enumerator = this.getContainer(treeType).GetElements();
+            for each (vI_treeType in Array("email", "maillist", "newsgroup", "filter")) {
+                var enumerator = this.getContainer(vI_treeType).GetElements();
                 while (enumerator && enumerator.hasMoreElements()) {
                     var resource = enumerator.getNext();
                     resource.QueryInterface(Components.interfaces.nsIRDFResource);
@@ -444,8 +444,8 @@ vI_rdfDatasource.prototype = {
     getRelevantSMTPs : function() {
         var relevantSMTPs = new Object();
         // search relevant SMTPs
-        for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
-            var enumerator = this.getContainer(treeType).GetElements();
+        for each (vI_treeType in Array("email", "maillist", "newsgroup", "filter")) {
+            var enumerator = this.getContainer(vI_treeType).GetElements();
             while (enumerator && enumerator.hasMoreElements()) {
                 var resource = enumerator.getNext();
                 resource.QueryInterface(Components.interfaces.nsIRDFResource);
@@ -612,9 +612,9 @@ vI_rdfDatasource.prototype = {
 	},
 	
 	// this will be used from rdfDataTree to get all RDF values, callFunction is vI_rdfDataTree.__addNewDatum
-	readAllEntriesFromRDF : function (addNewDatum, treeType, idData) {
+	readAllEntriesFromRDF : function (addNewDatum, vI_treeType, idData) {
 // 		if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: readAllEntriesFromRDF " + this._rdfService  + " " + this._rdfDataSource + " " + this + "\n");
-		var enumerator = this.getContainer(treeType).GetElements();
+		var enumerator = this.getContainer(vI_treeType).GetElements();
 		while (enumerator && enumerator.hasMoreElements()) {
 			var resource = enumerator.getNext();
 			resource.QueryInterface(Components.interfaces.nsIRDFResource);
@@ -943,12 +943,12 @@ vI_rdfDatasourceImporter.prototype = {
             if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: preparation done.\n");
             if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter import: starting import:\n");
 
-            for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
+            for each (vI_treeType in Array("email", "maillist", "newsgroup", "filter")) {
                 // re-initialize importDataSource to point rdfService to the right Resources
                 this._rdfImportDataSource = new vI_rdfDatasource(importRdfDataFile.leafName, true);
-                var container = this._rdfImportDataSource.getContainer(treeType)
+                var container = this._rdfImportDataSource.getContainer(vI_treeType)
                 if (container.GetCount() == 0) continue;
-                if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter importing " + treeType + ": " + container.GetCount()+ " datasets from " + this._rdfImportDataSource._rdfDataSource.URI + "\n");
+                if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasourceImporter importing " + vI_treeType + ": " + container.GetCount()+ " datasets from " + this._rdfImportDataSource._rdfDataSource.URI + "\n");
                 var enumerator = container.GetElements();
                 // re-initialize dataSource to point rdfService to the right Resources
                 this._rdfDataSource = new vI_rdfDatasource(this._rdfFileName, true);
@@ -967,8 +967,8 @@ vI_rdfDatasourceImporter.prototype = {
                     var extras = new vI_storageExtras(this._rdfImportDataSource, resource);
                     var localIdentityData = new vI_identityData(email, fullName, id, smtp, extras)
                     
-                    this._rdfDataSource.updateRDF(name, treeType, localIdentityData, false, false, null, null)
-                    var resource = this._rdfDataSource._getRDFResourceForVIdentity(name, treeType);
+                    this._rdfDataSource.updateRDF(name, vI_treeType, localIdentityData, false, false, null, null)
+                    var resource = this._rdfDataSource._getRDFResourceForVIdentity(name, vI_treeType);
                     if (id) this._rdfDataSource._setRDFValue(resource, "id", id);       // localIdentityData can only store valid id's, this one might be a temporary invalid id
                     if (smtp) this._rdfDataSource._setRDFValue(resource, "smtp", smtp); // localIdentityData can only store valid smtp's, this one might be a temporary invalid smtp
                 }

@@ -37,8 +37,8 @@ function prepareForComparison (o) {
 };
 
 
-function rdfDataTree(treeType, vI_rdfDatasource) {
-	this.treeType = treeType;
+function rdfDataTree(vI_treeType, vI_rdfDatasource) {
+	this.vI_treeType = vI_treeType;
     this._vI_rdfDatasource = vI_rdfDatasource;
 	this.filterText = "";
 	this.loadTable();
@@ -47,11 +47,11 @@ rdfDataTree.prototype = {
 	idTable : null,
 	idData : null,
 	filterText : null,
-	treeType : null,
+	vI_treeType : null,
     _vI_rdfDatasource : null,
 
-    get treeElem() { return document.getElementById("rdfDataTree_" + this.treeType); },
-	get tabElem() { return document.getElementById(this.treeType + "Tab"); },
+    get treeElem() { return document.getElementById("rdfDataTree_" + this.vI_treeType); },
+	get tabElem() { return document.getElementById(this.vI_treeType + "Tab"); },
 	
 	//this function is called every time the tree is sorted, filtered, or reloaded
 	loadTable : function() {
@@ -62,7 +62,7 @@ rdfDataTree.prototype = {
 		if (this.idTable) { topVisibleRow = this.treeElem.treeBoxObject.getFirstVisibleRow(); }
 		if (this.idData == null) {
 			this.idData = [];
-			this._vI_rdfDatasource.readAllEntriesFromRDF(this.addNewDatum, this.treeType, this.idData);
+			this._vI_rdfDatasource.readAllEntriesFromRDF(this.addNewDatum, this.vI_treeType, this.idData);
 		}
 		if (this.filterText == "") {
 			//show all of them
@@ -90,7 +90,7 @@ rdfDataTree.prototype = {
 		}
 
 		// set Tab label
-		this.tabElem.setAttribute("label", this.treeType + " (" + this.idTable.length + ")");
+		this.tabElem.setAttribute("label", this.vI_treeType + " (" + this.idTable.length + ")");
 //         if (vI_notificationBar) vI_notificationBar.dump("## rdfDataTree: loadTable done.\n");
 	},
 
@@ -145,7 +145,7 @@ var vI_rdfDataTree = {
 	promptService : Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 			.getService(Components.interfaces.nsIPromptService),
 
-	treeTypes : Array("email", "maillist", "newsgroup", "filter"),
+	vI_treeTypes : Array("email", "maillist", "newsgroup", "filter"),
 
 	trees : {},
 	tabbox : null,
@@ -186,8 +186,8 @@ var vI_rdfDataTree = {
 
 		vI_rdfDataTree._vI_rdfDatasource = new vI_rdfDatasource("virtualIdentity.rdf");
 		
-		for each (var treeType in vI_rdfDataTree.treeTypes)
-			vI_rdfDataTree.trees[treeType] = new rdfDataTree(treeType, vI_rdfDataTree._vI_rdfDatasource);
+		for each (var vI_treeType in vI_rdfDataTree.vI_treeTypes)
+			vI_rdfDataTree.trees[vI_treeType] = new rdfDataTree(vI_treeType, vI_rdfDataTree._vI_rdfDatasource);
 	},
 	
     clean : function() {
@@ -231,9 +231,9 @@ var vI_rdfDataTree = {
 		this.getCellProperties = function(row,col,props){};
 		this.getColumnProperties = function(colid,col,props){};
 		this.cycleHeader = function(col, elem) {
-			var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-			if (treeType != "filter")
-				vI_rdfDataTree.trees[treeType].sort(col.id.substr(0,col.id.indexOf("_")));
+			var vI_treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+			if (vI_treeType != "filter")
+				vI_rdfDataTree.trees[vI_treeType].sort(col.id.substr(0,col.id.indexOf("_")));
 		};
 		this.getCellProperties = function(row,col,props){
 			if (vI_rdfDataTree._braille) return;
@@ -249,8 +249,8 @@ var vI_rdfDataTree = {
 	
 	__setFilter : function (text) {
 		// loop trough all trees
-		for each (var treeType in vI_rdfDataTree.treeTypes) {
-			var tree = vI_rdfDataTree.trees[treeType];
+		for each (var vI_treeType in vI_rdfDataTree.vI_treeTypes) {
+			var tree = vI_rdfDataTree.trees[vI_treeType];
 			tree.filterText = text;
 			tree.loadTable();
 		}
@@ -291,8 +291,8 @@ var vI_rdfDataTree = {
 	},
 
 	modifySelected : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		var tree = vI_rdfDataTree.trees[treeType];
+		var vI_treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var tree = vI_rdfDataTree.trees[vI_treeType];
 		if (tree.treeElem.view.selection.count == 0) return;
 		if (tree.treeElem.view.selection.count > 5) {
 			var warning = vI_rdfDataTree._strings.getString("vI_rdfDataTree.modify.Warning1") + " " +
@@ -304,29 +304,29 @@ var vI_rdfDataTree = {
 		var start = new Object(); var end = new Object();
 		var numRanges = tree.treeElem.view.selection.getRangeCount();
 
-		var retVar = { treeType: null };
+		var retVar = { vI_treeType: null };
 		for (var t=0; t<numRanges; t++){
 			tree.treeElem.view.selection.getRangeAt(t,start,end);
 			for (var v=start.value; v<=end.value; v++)
 				window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
-					tree.idTable[v], treeType,
+					tree.idTable[v], vI_treeType,
 					vI_rdfDataTree._vI_rdfDatasource, retVar).focus();
 		}
 		
 		// reload all trees (multiple types might have changed)
-		for each (var treeType in vI_rdfDataTree.treeTypes) {
-			vI_rdfDataTree.trees[treeType].idData = null;
-			vI_rdfDataTree.trees[treeType].idTable = null;
-			vI_rdfDataTree.trees[treeType].loadTable()
+		for each (var vI_treeType in vI_rdfDataTree.vI_treeTypes) {
+			vI_rdfDataTree.trees[vI_treeType].idData = null;
+			vI_rdfDataTree.trees[vI_treeType].idTable = null;
+			vI_rdfDataTree.trees[vI_treeType].loadTable()
 		}
-		vI_rdfDataTree.tabbox.selectedTab = document.getElementById(retVar.treeType + "Tab");
+		vI_rdfDataTree.tabbox.selectedTab = document.getElementById(retVar.vI_treeType + "Tab");
 		vI_rdfDataTree.hideInfoBox();
 	},
 	
 	removeSelected : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		var tree = vI_rdfDataTree.trees[treeType];
+		var vI_treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var tree = vI_rdfDataTree.trees[vI_treeType];
 		if (tree.treeElem.view.selection.count == 0) return;
 		var warning = vI_rdfDataTree._strings.getString("vI_rdfDataTree.remove.Warning1") + " " +
 			tree.treeElem.view.selection.count + " " +
@@ -340,7 +340,7 @@ var vI_rdfDataTree = {
 		for (var t=0; t<numRanges; t++){
 			tree.treeElem.view.selection.getRangeAt(t,start,end);
 			for (var v=start.value; v<=end.value; v++){
-				vI_rdfDataTree._vI_rdfDatasource.removeVIdentityFromRDF(tree.idTable[v]["resource"], treeType)
+				vI_rdfDataTree._vI_rdfDatasource.removeVIdentityFromRDF(tree.idTable[v]["resource"], vI_treeType)
 			}
 		}
 		
@@ -350,9 +350,9 @@ var vI_rdfDataTree = {
 	},
 	
 	moveConstraints : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		if (treeType != "filter") return;
-		var tree = vI_rdfDataTree.trees[treeType];
+		var vI_treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		if (vI_treeType != "filter") return;
+		var tree = vI_rdfDataTree.trees[vI_treeType];
 		if (tree.treeElem.view.selection.count == 0) {
 			document.getElementById("reorderUpButton_filter").setAttribute("disabled","true");
 			document.getElementById("reorderDownButton_filter").setAttribute("disabled","true");
@@ -375,9 +375,9 @@ var vI_rdfDataTree = {
 	},
 
 	moveUpSelected : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		if (treeType != "filter") return; // just to be safe, button should be disabled
-		var tree = vI_rdfDataTree.trees[treeType];
+		var vI_treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		if (vI_treeType != "filter") return; // just to be safe, button should be disabled
+		var tree = vI_rdfDataTree.trees[vI_treeType];
 		if (tree.treeElem.view.selection.count == 0) return; // just to be safe, button should be disabled
 
 		var start = new Object(); var end = new Object();
@@ -395,9 +395,9 @@ var vI_rdfDataTree = {
 	},
 
 	moveDownSelected : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		if (treeType != "filter") return; // just to be safe, button should be disabled
-		var tree = vI_rdfDataTree.trees[treeType];
+		var vI_treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		if (vI_treeType != "filter") return; // just to be safe, button should be disabled
+		var tree = vI_rdfDataTree.trees[vI_treeType];
 		if (tree.treeElem.view.selection.count == 0) return; // just to be safe, button should be disabled
 
 		var start = new Object(); var end = new Object();
@@ -424,36 +424,36 @@ var vI_rdfDataTree = {
 	hideInfoBox : function() {
 		vI_rdfDataTree.infoBoxHidden = true;
 		document.getElementById("vI_rdfDataTreeInfoBox").setAttribute("style", "height:0px");
-		for each (var treeType in vI_rdfDataTree.treeTypes) {
-			try { if (vI_rdfDataTree.trees[treeType])
-				vI_rdfDataTree.trees[treeType].treeElem.view.selection.selectNone() } catch (e) { }
+		for each (var vI_treeType in vI_rdfDataTree.vI_treeTypes) {
+			try { if (vI_rdfDataTree.trees[vI_treeType])
+				vI_rdfDataTree.trees[vI_treeType].treeElem.view.selection.selectNone() } catch (e) { }
 		}
 	},
 
 	selectAll : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		var tree = vI_rdfDataTree.trees[treeType];
+		var vI_treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var tree = vI_rdfDataTree.trees[vI_treeType];
 		tree.treeElem.view.selection.selectAll();
 	},
 	
 	newItem : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var vI_treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
 		var newItemPreset = { identityData : new vI_identityData ("", null, null, vI_NO_SMTP_TAG, null, null) };
 		// XXXX create useful preset
-		var retVar = { treeType: null };
+		var retVar = { vI_treeType: null };
 
 		window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 			"chrome, dialog, modal, alwaysRaised, resizable=yes",
-			newItemPreset, treeType,
+			newItemPreset, vI_treeType,
 			vI_rdfDataTree._vI_rdfDatasource, retVar).focus();
 
 		// reload all trees (multiple types might have changed)
-		for each (var treeType in vI_rdfDataTree.treeTypes) {
-			vI_rdfDataTree.trees[treeType].idData = null;
-			vI_rdfDataTree.trees[treeType].idTable = null;
-			vI_rdfDataTree.trees[treeType].loadTable()
+		for each (var vI_treeType in vI_rdfDataTree.vI_treeTypes) {
+			vI_rdfDataTree.trees[vI_treeType].idData = null;
+			vI_rdfDataTree.trees[vI_treeType].idTable = null;
+			vI_rdfDataTree.trees[vI_treeType].loadTable()
 		}
-		vI_rdfDataTree.tabbox.selectedTab = document.getElementById(retVar.treeType + "Tab");
+		vI_rdfDataTree.tabbox.selectedTab = document.getElementById(retVar.vI_treeType + "Tab");
 		vI_rdfDataTree.hideInfoBox();
 	}
 };
