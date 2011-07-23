@@ -82,7 +82,7 @@
 <textbox hidden="true" id="VIdent_identity.stationeryFolderPickerMode"
                 prefstring="stationeryFolderPickerMode"/>
 <hbox>
-<tabbox id="prefTabbox" class="viewSelector ">
+<tabbox id="vI_prefTabbox" class="viewSelector ">
 	<hbox>
 	<vbox>
 		<image id="toggleIcon" class="addresstwisty" onclick="vI_prefDialog.base.flipMenuButtons(this);" open="true" persist="open" />
@@ -93,19 +93,19 @@
 		<vbox>
 		<hbox>
 			<radio pane="source" id="sourceEmail"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 0; vI_prefDialog.updateHelpUrl();" 
+				oncommand="document.getElementById('vI_prefTabbox').selectedIndex = 0; vI_prefDialog.updateHelpUrl();" 
 				tooltiptext="&vI_prefDialog.tabbox.tab0.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="toSelection" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="selection"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 1; vI_prefDialog.updateHelpUrl();"
+				oncommand="document.getElementById('vI_prefTabbox').selectedIndex = 1; vI_prefDialog.updateHelpUrl();"
 				tooltiptext="&vI_prefDialog.tabbox.tab1.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="toCompose" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="composeDialog"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 2; vI_prefDialog.updateHelpUrl();"
+				oncommand="document.getElementById('vI_prefTabbox').selectedIndex = 2; vI_prefDialog.updateHelpUrl();"
 				tooltiptext="&vI_prefDialog.tabbox.tab2.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="toSend" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="emailOut"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 3; vI_prefDialog.updateHelpUrl();"
+				oncommand="document.getElementById('vI_prefTabbox').selectedIndex = 3; vI_prefDialog.updateHelpUrl();"
 				tooltiptext="&vI_prefDialog.tabbox.tab3.label;" />
 		</hbox>
 		<spacer class="heightS" />
@@ -113,7 +113,7 @@
 			<spacer id="beforeStorage" />
 			<vbox><spacer flex="1"/><image class="arrow" id="storageUp" /><spacer flex="1"/></vbox>
 			<radio pane="source" id="storageOut" 
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 4; vI_prefDialog.updateHelpUrl();"
+				oncommand="document.getElementById('vI_prefTabbox').selectedIndex = 4; vI_prefDialog.updateHelpUrl();"
 				tooltiptext="&vI_prefDialog.tabbox.tab4.label;" />
 			<vbox><spacer flex="1"/><image class="arrow" id="storageUpDown" /><spacer flex="1"/></vbox>
 			<spacer id="afterStorage" flex="1"/>
@@ -123,7 +123,7 @@
 		<vbox>
 			<spacer flex="1"/>
 			<hbox><spacer flex="1"/><radio pane="source" id="options"
-				oncommand="document.getElementById('prefTabbox').selectedIndex = 5; vI_prefDialog.updateHelpUrl();"
+				oncommand="document.getElementById('vI_prefTabbox').selectedIndex = 5; vI_prefDialog.updateHelpUrl();"
 				tooltiptext="&vI_prefDialog.tabbox.tab5.label;" />
 			</hbox>
 			<spacer flex="1"/>

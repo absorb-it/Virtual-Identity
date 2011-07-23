@@ -38,8 +38,8 @@ var vI_prefDialog = {
 	updateHelpUrl : function(tabpanel) {
 		var browserElem = document.getElementById("vI_remoteBrowserBox");
 		if (browserElem.getAttribute("hidden")) return;				// don't load any url if browser is hidden
-		var panelIndex = (tabpanel)?tabpanel:document.getElementById('prefTabbox').selectedIndex
-		var prefTree = document.getElementById('prefTabbox').selectedPanel.getElementsByAttribute("class", "vIprefTree")[0];
+		var panelIndex = (tabpanel)?tabpanel:document.getElementById('vI_prefTabbox').selectedIndex
+		var prefTree = document.getElementById('vI_prefTabbox').selectedPanel.getElementsByAttribute("class", "vIprefTree")[0];
 		var currentVersion = document.getElementById("vI_extVersion").getAttribute("value").split(/\./);
 		var extVersion = currentVersion[0] + "." + currentVersion[1];
 		var url = "https://www.absorb.it/virtual-id/wiki/docs/" + extVersion + "/tab" + panelIndex + "/tree" + prefTree.currentIndex;
@@ -288,7 +288,7 @@ var vI_prefDialog = {
 		},
 		
 		initTreeValues : function() {
-			var prefTrees = document.getElementById("prefTabbox").getElementsByAttribute("class", "vIprefTree");
+			var prefTrees = document.getElementById("vI_prefTabbox").getElementsByAttribute("class", "vIprefTree");
 			for (var i=0 ; i<prefTrees.length; i++) prefTrees[i].currentIndex = 0;
 		}
 	},
