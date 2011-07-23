@@ -49,7 +49,7 @@
 
 	<vbox id="messagepanebox" >
 		<!-- following element just stores the Ext-Version, seamonkey has no extensionmanager -->
-		<label id="extVersion" value="&vident.version;" hidden="true" />
+		<label id="vI_extVersion" value="&vident.version;" hidden="true" />
 	  	<splitter id="vIErrorBoxSplitter" hidden="true" />
 		<vbox id="vIErrorBox" context="ConsoleContext" sortOrder="reverse" hidden="true" />
 

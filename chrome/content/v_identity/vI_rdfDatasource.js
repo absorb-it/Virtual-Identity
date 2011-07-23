@@ -154,7 +154,7 @@ vI_rdfDatasource.prototype = {
 			.getService(Components.interfaces.nsIVersionComparator);
 		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
 		// var extVersion = this.extensionManager.getItemForID(this._virtualIdentityID).version
-		var extVersion = document.getElementById("extVersion").getAttribute("value");
+		var extVersion = document.getElementById("vI_extVersion").getAttribute("value");
 		return (!oldExtVersion || versionChecker.compare(oldExtVersion, extVersion) < 0)	
 	},
     // **************    RDF UPGRADE CODE    ****************************************************
@@ -316,7 +316,7 @@ vI_rdfDatasource.prototype = {
 	storeExtVersion: function() {
 		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
 		// var extVersion = this.extensionManager.getItemForID(this._virtualIdentityID).version
-		var extVersion = document.getElementById("extVersion").getAttribute("value");
+		var extVersion = document.getElementById("vI_extVersion").getAttribute("value");
 		this._setRDFValue(
 			this._rdfService.GetResource(this._rdfNS + "virtualIdentity"), "version", extVersion)
 		this._flush();

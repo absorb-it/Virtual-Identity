@@ -57,7 +57,7 @@ var vI_upgrade = {
 		if (currentVersion[2].match(/pre/))
 		 	nextVersion += parseInt(currentVersion[2])
 		else nextVersion += parseInt(currentVersion[2]) + 1
-		var extVersion = document.getElementById("extVersion").getAttribute("value");
+		var extVersion = document.getElementById("vI_extVersion").getAttribute("value");
 				
 		// don't show the dialog if we do a one-step upgrade
 		if (vI_upgrade.versionChecker.compare(extVersion, nextVersion) <= 0) {

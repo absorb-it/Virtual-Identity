@@ -731,7 +731,7 @@
 	</tabpanels>
 </tabbox>
 <browserbox id="vI_remoteBrowserBox" class="vI_remoteBrowserBox" localCss="localDoc.css" flex="1" hidden="true" type="content" />
-<label id="extVersion" value="&vident.version;" hidden="true" />
+<label id="vI_extVersion" value="&vident.version;" hidden="true" />
 </hbox>
 <!--
     <splitter id="vIDebugBoxSplitter" hidden="true"/>
