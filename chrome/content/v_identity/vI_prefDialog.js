@@ -78,6 +78,8 @@ var vI_prefDialog = {
 				"VIdent_identity.smart_reply_defaultFullName",
 				"VIdent_identity.smart_reply_ignoreFullName",
 				"VIdent_identity.autoTimestamp",
+				"VIdent_identity.autoTimeString",
+				"VIdent_identity.autoTimeFormat",
 				"VIdent_identity.notification_timeout",
 				"VIdent_identity.debug_notification",
 				"VIdent_identity.warn_nonvirtual",
@@ -123,7 +125,7 @@ var vI_prefDialog = {
 				var element = document.getElementById(elementID);
 				if (!element) break;
 				var eltType = element.localName;
-				try {
+// 				try {
                     if (eltType == "radiogroup")
                         element.selectedItem = element.childNodes[
                             vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring"))];
@@ -134,13 +136,15 @@ var vI_prefDialog = {
                         if (element.getAttribute("preftype") == "int")
                             element.setAttribute("value", 
                             vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring")) );
-                        else
+                        else {
                             element.setAttribute("value", 
                             vI_prefDialog.unicodeConverter.ConvertToUnicode(vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"))) );
+// 							alert(element.getAttribute("prefstring") + " " + element.getAttribute("value"))
+						}
                     else if (eltType == "listbox")
                         element.value =
                             vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"));
-				} catch (ex) {}
+// 				} catch (ex) {}
 			}
 		},
 
@@ -238,6 +242,11 @@ var vI_prefDialog = {
 			}
 		},
 		
+		autoTimestampConstraint : function(element) {
+			var mAttr = vI_prefDialog.base.modifyAttribute;
+			mAttr("VIdent_identity.autoTimestamp.options","hidden",element.checked);
+		},
+		
 		storageConstraint : function(element) {
 			var mAttr = vI_prefDialog.base.modifyAttribute;
 			mAttr("VIdent_identity.storage_storedefault","disabled",element.checked);
@@ -307,6 +316,7 @@ var vI_prefDialog = {
 		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
 		vI_prefDialog.base.smartReplyHideSignature();
 		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
+		vI_prefDialog.base.autoTimestampConstraint(document.getElementById("VIdent_identity.autoTimestamp"));
 		vI_prefDialog.base.constraints();
 		vI_prefDialog.base.menuButtonConstraints();
 		vI_prefDialog.base.initTreeValues();

@@ -67,11 +67,22 @@ var vI_smartIdentity = {
 			return;
 		}
 
-		var current_email = getCurrentIdentity().email;
-		vI_notificationBar.dump("## vI_smartIdentity: current email: " + current_email + "\n");
+		var current_email = getCurrentIdentity().email.split("@");
+		var localpart = current_email[0];
+		var domain = current_email[1];
 		
-		var dateobj = new Date();
-		var new_email = current_email.replace(/@/g, parseInt(dateobj.getTime()/1000)+"@");
+		vI_notificationBar.dump("## vI_smartIdentity: current email: " + current_email[0] + "@" + current_email[1] + "\n");
+		
+		var autoString = vI_main.preferences.getCharPref("autoString");
+		var formatString = vI_main.preferences.getCharPref("autoTimeFormat");
+		
+		var dateObj = new Date(); var dateString = "";
+		if (formatString == "") dateString = parseInt(dateObj.getTime()/1000);
+		else try {	//	you never know what the formatString will be...
+			dateString = dateObj.toLocaleFormat(formatString).replace(/\s+|[\x00-\x2a]|\x2c|\x2f|[\x3a-\x40]|[\x5b-\x5d]|\x60|\x7c|[\x7f-\xff]/g,"_");
+		} catch(e) { };
+		
+		var new_email = autoString.replace(/%l/g, localpart).replace(/%d/g, domain).replace(/%t/g,dateString);
 		vI_notificationBar.dump("## vI_smartIdentity: new email: " + new_email + "\n");
 
 		vI_notificationBar.setNote(vI_main.elements.strings.getString("vident.smartIdentity.vIUsage") + ".",
