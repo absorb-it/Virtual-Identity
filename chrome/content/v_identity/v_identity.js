@@ -112,7 +112,7 @@ var main = {
 				var server = accounts[i].incomingServer;
 				if (!server) continue;
 				// check for VirtualIdentity Account
-				try {	vI.account.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
+				try {	vI.account._prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
 					continue; } catch (e) { };
 
 				var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);

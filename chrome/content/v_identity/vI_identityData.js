@@ -128,7 +128,7 @@ identityData.prototype = {
 		var accounts = queryISupportsArray(gAccountManager.accounts, Components.interfaces.nsIMsgAccount);
 		for (var i in accounts) {
 			// skip possible active VirtualIdentity Accounts
-			try { vI.account.prefroot.getBoolPref("mail.account."+accounts[i].key+".vIdentity"); continue; } catch (e) { };
+			try { vI.account._prefroot.getBoolPref("mail.account."+accounts[i].key+".vIdentity"); continue; } catch (e) { };
 	
 			var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 			for (var j in identities) {
