@@ -21,7 +21,8 @@
 
  * ***** END LICENSE BLOCK ***** */
 
-function vI_storageExtras_adapt(sourceId, targetId) {
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+function storageExtras_adapt(sourceId, targetId) {
 	var checked = document.getElementById(sourceId).getAttribute("checked");
 	if (targetId) var target = document.getElementById(targetId)
 	else var target = document.getElementById(sourceId.replace(/_store/,""))
@@ -29,7 +30,7 @@ function vI_storageExtras_adapt(sourceId, targetId) {
 	else target.setAttribute("disabled", "true");
 }	
 
-var vI_storageExtrasHelper = {
+var storageExtrasHelper = {
 	seamonkey_old : null,
 
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
@@ -37,14 +38,14 @@ var vI_storageExtrasHelper = {
 			.getBranch("extensions.virtualIdentity."),
 	
 	hideUnusedEditorFields : function() {
-		var storageExtras = new vI_storageExtras();
+		var localStorageExtras = new storageExtras();
 		var allHidden = true;
 		var hide = (document.getElementById("vI_storageExtras_hideUnusedEditorFields").getAttribute("checked") == "true")
-		for( var i = 0; i < storageExtras.extras.length; i++ ) {
-			var hidden = hide && !vI_storageExtrasHelper.preferences.getBoolPref(storageExtras.extras[i].option)
+		for( var i = 0; i < localStorageExtras.extras.length; i++ ) {
+			var hidden = hide && !storageExtrasHelper.preferences.getBoolPref(localStorageExtras.extras[i].option)
 			if (!hidden) allHidden = false
-			document.getElementById("vI_" + storageExtras.extras[i].option).setAttribute("hidden", hidden)
-			document.getElementById("vI_" + storageExtras.extras[i].option + "_store").setAttribute("hidden", hidden)
+			document.getElementById("vI_" + localStorageExtras.extras[i].option).setAttribute("hidden", hidden)
+			document.getElementById("vI_" + localStorageExtras.extras[i].option + "_store").setAttribute("hidden", hidden)
 		}
 		document.getElementById("storeValue").setAttribute("hidden", allHidden)
 		// resize the window to the content
@@ -52,32 +53,32 @@ var vI_storageExtrasHelper = {
 	}
 }
 
-function vI_storageExtras(rdfDatasource, resource) {
-// function vI_storageExtras_checkbox(field, option, composeDialogElementID, updateFunction, identityValue) {
+function storageExtras(rdfDatasource, resource) {
+// function storageExtras_checkbox(field, option, composeDialogElementID, updateFunction, identityValue) {
 	this.extras = [
-		new vI_storageExtras_checkbox(
+		new storageExtras_checkbox(
 			"reciept", "storageExtras_returnReciept", "returnReceiptMenu", null, function(identity) { return identity.requestReturnReceipt; }),
-		new vI_storageExtras_checkbox(
+		new storageExtras_checkbox(
 			"fcc", "storageExtras_fcc", "fcc_switch", null, function(identity) { return identity.doFcc; }),
-		new vI_storageExtras_characterEncoding(),
-		new vI_storageExtras_msgFormat(),
-		new vI_storageExtras_checkbox(
+		new storageExtras_characterEncoding(),
+		new storageExtras_msgFormat(),
+		new storageExtras_checkbox(
 			"sMimeEnc", "storageExtras_sMime_messageEncryption", "menu_securityEncryptRequire1",
 				function() { return ((typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null) },
 				function(identity) { return (identity.getIntAttribute('encryptionpolicy') == 2) }),
-		new vI_storageExtras_checkbox(
+		new storageExtras_checkbox(
 			"sMimeSig", "storageExtras_sMime_messageSignature", "menu_securitySign1",
 				function() { return ((typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null) },
 				function(identity) { return (identity.getBoolAttribute('sign_mail')) }),
-		new vI_storageExtras_checkbox(
+		new storageExtras_checkbox(
 			"PGPEnc", "storageExtras_openPGP_messageEncryption", "enigmail_encrypted_send",
 				function() { return ((typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null) },
 				function(identity) { return (identity.getIntAttribute('defaultEncryptionPolicy') > 0) }),
-		new vI_storageExtras_checkbox(
+		new storageExtras_checkbox(
 			"PGPSig", "storageExtras_openPGP_messageSignature", "enigmail_signed_send",
 				function() { return ((typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null) },
 				function(identity) { return ((identity.getIntAttribute('defaultEncryptionPolicy') > 0)?identity.getBoolAttribute('pgpSignEncrypted'):identity.getBoolAttribute('pgpSignPlain')) }),
-		new vI_storageExtras_checkbox(
+		new storageExtras_checkbox(
 			"PGPMIME", "storageExtras_openPGP_PGPMIME", "enigmail_sendPGPMime",
 				function() { return ((typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null) },
 				function(identity) { return (identity.getBoolAttribute('pgpMimeMode')) })
@@ -85,10 +86,10 @@ function vI_storageExtras(rdfDatasource, resource) {
 	if (rdfDatasource) this.loopForRDF(rdfDatasource, resource, "get")
 }
 
-vI_storageExtras.prototype = {
+storageExtras.prototype = {
 	loopForRDF : function(rdfDatasource, resource, type) {
 		for( var i = 0; i < this.extras.length; i++ ) {
-// 			if (vI_notificationBar) vI_notificationBar.dump("## vI_rdfDatasource: loopForRDF " + rdfDatasource + "\n");
+// 			if (vI.notificationBar) vI.notificationBar.dump("## vI.rdfDatasource: loopForRDF " + rdfDatasource + "\n");
             // only if pref set and feature(element available) or for dataEditor
 			if (typeof(gMsgCompose) == "undefined" || !gMsgCompose || this.extras[i].active) {
                 switch (type) {
@@ -102,7 +103,7 @@ vI_storageExtras.prototype = {
 	
 	// just give a duplicate of the current storageExtras, else we will work with pointers
 	getDuplicate : function() {
-		var newExtras = new vI_storageExtras();
+		var newExtras = new storageExtras();
 		for( var i = 0; i < this.extras.length; i++ ) {
 			newExtras.extras[i].value = this.extras[i].value;
 		}
@@ -165,21 +166,21 @@ vI_storageExtras.prototype = {
 	readIdentityValues : function(identity) {
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) this.extras[i].readIdentityValue(identity)
-// 			vI_notificationBar.dump("## vI_storageExtras readIdentityValues "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
+// 			vI.notificationBar.dump("## storageExtras readIdentityValues "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 
 	setValues : function() {
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) this.extras[i].setValue()
-// 			vI_notificationBar.dump("## vI_storageExtras setValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
+// 			vI.notificationBar.dump("## storageExtras setValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 	readValues : function() {
 		for( var i = 0; i < this.extras.length; i++ ) {
-// 			vI_notificationBar.dump("## vI_storageExtras preparing readValue "+ this.extras[i].field +"\n");
+// 			vI.notificationBar.dump("## storageExtras preparing readValue "+ this.extras[i].field +"\n");
 			if (this.extras[i].active) this.extras[i].readValue()
-//  			vI_notificationBar.dump("## vI_storageExtras readValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
+//  			vI.notificationBar.dump("## storageExtras readValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 	setEditorValues : function() {
@@ -188,18 +189,18 @@ vI_storageExtras.prototype = {
 	readEditorValues : function() {
 		for( var i = 0; i < this.extras.length; i++ ) {
 			this.extras[i].readEditorValue();
-// 			vI_notificationBar.dump("## vI_storageExtras readValue " + this.extras[i].field + "=" + this.extras[i].value + "\n");
+// 			vI.notificationBar.dump("## storageExtras readValue " + this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 
-	// add value's to the pref object, required for rdfDataTree
+	// add value's to the pref object, required for rdfDataTreeCollection
 	addPrefs : function(pref) {
 		for( var i = 0; i < this.extras.length; i++ )
 			pref[this.extras[i].field + "Col"] = this.extras[i].valueNice;
 	}
 }
 
-function vI_storageExtras_characterEncoding_setMenuMark() {
+function storageExtras_characterEncoding_setMenuMark() {
 	var maileditCharsetMenu = document.getElementById("maileditCharsetMenu")
 	var value = maileditCharsetMenu.getAttribute("unmarkedValue")
 	if (value) {
@@ -208,12 +209,12 @@ function vI_storageExtras_characterEncoding_setMenuMark() {
 		maileditCharsetMenu.removeAttribute("unmarkedValue")
 	}
 }
-function vI_storageExtras_characterEncoding() {
-	this.active = vI_storageExtrasHelper.preferences.getBoolPref("storage") &&
-				vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+function storageExtras_characterEncoding() {
+	this.active = storageExtrasHelper.preferences.getBoolPref("storage") &&
+				storageExtrasHelper.preferences.getBoolPref(this.option)
 	this.comp = { compareValue : null, equal : null }
 }
-vI_storageExtras_characterEncoding.prototype = {
+storageExtras_characterEncoding.prototype = {
 	active : null,
 	value : null,
 	field : "charEnc",
@@ -245,7 +246,7 @@ vI_storageExtras_characterEncoding.prototype = {
 			maileditCharsetMenu.setAttribute("unmarkedValue", this.value)
 			var onpopupshowing = maileditCharsetMenu.getAttribute("onpopupshowing")
 			document.getElementById("maileditCharsetMenu").setAttribute("onpopupshowing",
-				onpopupshowing + ";vI_storageExtras_characterEncoding_setMenuMark();")
+				onpopupshowing + ";storageExtras_characterEncoding_setMenuMark();")
 		}
 		gMsgCompose.compFields.characterSet = this.value;
 		SetDocumentCharacterSet(this.value);
@@ -253,7 +254,7 @@ vI_storageExtras_characterEncoding.prototype = {
 	readValue : function() {
 		// read the value from the internal vI object, global object might not be available any more
 		// happens especially while storing after sending the message
-		this.value = vI_main.gMsgCompose.compFields.characterSet;
+		this.value = vI.main.gMsgCompose.compFields.characterSet;
 		if (gCharsetConvertManager) {
 			var charsetAlias = gCharsetConvertManager.getCharsetAlias(this.value);
 			if (charsetAlias == "us-ascii") this.value = "ISO-8859-1";   // no menu item for "us-ascii"
@@ -280,12 +281,12 @@ vI_storageExtras_characterEncoding.prototype = {
 	}
 }
 
-function vI_storageExtras_msgFormat() {
-	this.active = vI_storageExtrasHelper.preferences.getBoolPref("storage") &&
-				vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+function storageExtras_msgFormat() {
+	this.active = storageExtrasHelper.preferences.getBoolPref("storage") &&
+				storageExtrasHelper.preferences.getBoolPref(this.option)
 	this.comp = { value : null, compareValue : null, equal : null }
 }
-vI_storageExtras_msgFormat.prototype = {
+storageExtras_msgFormat.prototype = {
 	active : null,
 	value : null,
 	field : "msgFormat",
@@ -337,12 +338,12 @@ vI_storageExtras_msgFormat.prototype = {
 	}
 }
 
-function vI_storageExtras_sMime_messageEncryption() { 
-	this.active = vI_storageExtrasHelper.preferences.getBoolPref("storage") &&
-				vI_storageExtrasHelper.preferences.getBoolPref(this.option)
+function storageExtras_sMime_messageEncryption() { 
+	this.active = storageExtrasHelper.preferences.getBoolPref("storage") &&
+				storageExtrasHelper.preferences.getBoolPref(this.option)
 	this.comp = { value : null, compareValue : null, equal : null }
 }
-vI_storageExtras_sMime_messageEncryption.prototype = {
+storageExtras_sMime_messageEncryption.prototype = {
 	active : null,
 	value : null,
 	field : "sMimeEnc",
@@ -374,7 +375,7 @@ vI_storageExtras_sMime_messageEncryption.prototype = {
 	},
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
-		vI_notificationBar.dump("## storageExtras_sMime_messageEncryption \n");
+		vI.notificationBar.dump("## storageExtras_sMime_messageEncryption \n");
 		var doEncryptElem = document.getElementById("menu_securityEncryptRequire1");
 		if (this.value == null) return;
 		if (this.value == "true") var element = document.getElementById("menu_securityEncryptRequire1")
@@ -404,19 +405,19 @@ vI_storageExtras_sMime_messageEncryption.prototype = {
 }
 
 // a general checkbox for extra options. Has to provide some additional information
-function vI_storageExtras_checkbox(field, option, composeDialogElementID, updateFunction, identityValue) {
+function storageExtras_checkbox(field, option, composeDialogElementID, updateFunction, identityValue) {
 	this.field = field;		// description of the option
 	this.option = option;		// option string to get preference settings
 	this.composeDialogElementID = composeDialogElementID;
 	this.updateFunction = updateFunction;
 	this.valueFromIdentityFunction = identityValue;
-	this.active = vI_storageExtrasHelper.preferences.getBoolPref("storage") &&
-				vI_storageExtrasHelper.preferences.getBoolPref(this.option) 
+	this.active = storageExtrasHelper.preferences.getBoolPref("storage") &&
+				storageExtrasHelper.preferences.getBoolPref(this.option) 
 //		elements are never available in DataTree, so leave this out.
 // 		&& document.getElementById(this.composeDialogElementID);
 	this.comp = { compareValue : null, equal : null }
 }
-vI_storageExtras_checkbox.prototype = {
+storageExtras_checkbox.prototype = {
 	active : null,
 	value : null,
 	field : null,
@@ -456,7 +457,7 @@ vI_storageExtras_checkbox.prototype = {
 		if (typeof(this.updateFunction)=="function") this.updateFunction();
 
 		if ((element.getAttribute("checked") == "true") != (this.value == "true")) {
-			vI_notificationBar.dump("## vI_storageExtras change "+ this.field + " to " + this.value + " with doCommand\n");
+			vI.notificationBar.dump("## storageExtras change "+ this.field + " to " + this.value + " with doCommand\n");
 			element.doCommand();
 		}
 	},
@@ -482,3 +483,8 @@ vI_storageExtras_checkbox.prototype = {
 		else 	this.value = null;
 	}
 }
+
+vI.storageExtras = storageExtras;
+vI.storageExtrasHelper = storageExtrasHelper;
+vI.storageExtras_adapt = storageExtras_adapt;
+}});

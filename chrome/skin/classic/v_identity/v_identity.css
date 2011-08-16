@@ -378,8 +378,8 @@ treechildren::-moz-tree-cell-text(locked) {
 	-moz-binding: url("chrome://v_identity/content/v_identity.xml#vI_identityDataTooltip");
 }
 
-#vI_tooltipPopupset {
-	-moz-binding: url("chrome://v_identity/content/v_identity.xml#tooltipPopupset");
+#virtualIdentityExtension_tooltipPopupset {
+	-moz-binding: url("chrome://v_identity/content/v_identity.xml#vI_tooltipPopupset");
 }
 
 .vI_htmlTextBox {

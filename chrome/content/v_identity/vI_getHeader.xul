@@ -33,6 +33,8 @@
 ]>
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_overlayNameSpaceWrapper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_getHeader.js"/>
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_notificationBar.js"/>
 

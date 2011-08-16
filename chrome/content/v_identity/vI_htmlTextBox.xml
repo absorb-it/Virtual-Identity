@@ -43,7 +43,7 @@
 			</xul:vbox>
 			<xul:browser xbl:inherits="src=url" type="content" class="vI_htmlTextBox" hidden="true" flex="1" disablehistory="true" />
 			<xul:button xbl:inherits="tooltiptext=url" label="&vI_prefDialog.openHelpInBrowserButton.label;"
-					oncommand="vI_prefDialog.openURL(this.tooltipText); vI_prefDialog.toggleHelp();" />
+					oncommand="virtualIdentityExtension.prefDialog.openURL(this.tooltipText); virtualIdentityExtension.prefDialog.toggleHelp();" />
 		</xul:vbox>
 	</content>
  	<resources>

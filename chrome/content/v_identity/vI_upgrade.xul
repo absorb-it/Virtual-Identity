@@ -37,8 +37,9 @@
 
 <wizard id="upgradeWizard" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         title="&vident.upgrade.dlgTitle.label;"
-	zlevel="6" onload="vI_upgrade.init(); vI_upgrade.prepare(document.getElementById('introPage'));" onunload="vI_upgrade.clean();" >
+	zlevel="6" onload="virtualIdentityExtension.upgrade.init(); virtualIdentityExtension.upgrade.prepare(document.getElementById('introPage'));" onunload="virtualIdentityExtension.upgrade.clean();" >
 
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_overlayNameSpaceWrapper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_upgrade.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_account.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
@@ -61,7 +62,7 @@
 		</groupbox>
 	</wizardpage>
 	<!-- features -->
-	<wizardpage onpageshow="vI_upgrade.prepare(this);"
+	<wizardpage onpageshow="virtualIdentityExtension.upgrade.prepare(this);"
 		label="&vident.upgrade.features.label;" description="&vident.upgrade.features.description;" 
 		pageid="features" next="license" >
 		<groupbox>
@@ -71,7 +72,7 @@
 		</groupbox>
 	</wizardpage>
 	<!-- GPL license -->
-	<wizardpage onpageshow="vI_upgrade.prepare(this);"
+	<wizardpage onpageshow="virtualIdentityExtension.upgrade.prepare(this);"
 		label="&vident.upgrade.license.label;" description="&vident.upgrade.license.description;"
 		pageid="license" next="upgrade" >
 		<groupbox>
@@ -82,7 +83,7 @@
 		</groupbox>
 	</wizardpage>
 	<!-- upgrade procedure -->
-	<wizardpage onpageshow="vI_upgrade.prepare(this);vI_upgrade.upgrade();"
+	<wizardpage onpageshow="virtualIdentityExtension.upgrade.prepare(this);virtualIdentityExtension.upgrade.upgrade();"
 		label="&vident.upgrade.upgrade.label;" description="&vident.upgrade.upgrade.description;" 
 		pageid="upgrade" next="finish" >
 		<groupbox>
@@ -91,7 +92,7 @@
 		</groupbox>
 	</wizardpage>	
 	<!-- finish -->
-	<wizardpage onpageshow="vI_upgrade.prepare(this);"
+	<wizardpage onpageshow="virtualIdentityExtension.upgrade.prepare(this);"
 		label="&vident.upgrade.finish.label;" description="&vident.upgrade.finish.description;" 
 		pageid="finish" >
 		<groupbox>
@@ -104,7 +105,7 @@
 	<spacer flex="1" />
 	<button class="v_identity_logo v_identity_logo_button"
 		label="&vident.vidLogo.label; &vident.version;"
-		oncommand="vI_upgrade.openURL('http://www.absorb.it/virtual-id')" tooltiptext="&vident.upgrade.vidLogo.tooltiptext;" />
+		oncommand="virtualIdentityExtension.upgrade.openURL('http://www.absorb.it/virtual-id')" tooltiptext="&vident.upgrade.vidLogo.tooltiptext;" />
 	<spacer width="10px" />
 	<label id="extVersion" value="&vident.version;" hidden="true" />
 	</hbox>

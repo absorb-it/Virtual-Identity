@@ -22,7 +22,8 @@
     Contributor(s):
  * ***** END LICENSE BLOCK ***** */
 
-var vI_Dialog = {
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+var Dialog = {
 	setDescription : function(object, description) {
 		var new_text = document.createTextNode(description);
 		object.appendChild(new_text);
@@ -30,11 +31,11 @@ var vI_Dialog = {
 
 	init : function(warning) {
 		document.getElementById("vI_Dialog").setAttribute("class", warning.class); 
-		vI_Dialog.setDescription(document.getElementById("vI_Dialog_title"), warning.title);
-		vI_Dialog.setDescription(document.getElementById("vI_Dialog_recLabel"), warning.recLabel);
-		vI_Dialog.setDescription(document.getElementById("vI_Dialog_recipient"), warning.recipient);
+		Dialog.setDescription(document.getElementById("vI_Dialog_title"), warning.title);
+		Dialog.setDescription(document.getElementById("vI_Dialog_recLabel"), warning.recLabel);
+		Dialog.setDescription(document.getElementById("vI_Dialog_recipient"), warning.recipient);
 		document.getElementById("vI_Dialog_browser").outputString = warning.warning;
-		vI_Dialog.setDescription(document.getElementById("vI_Dialog_query"), warning.query);
+		Dialog.setDescription(document.getElementById("vI_Dialog_query"), warning.query);
 		// show abort button
 		if (warning.class == "replaceVIdentity") {
 			document.documentElement.getButton("extra1").hidden = true;
@@ -42,3 +43,5 @@ var vI_Dialog = {
 		}
 	}
 }
+vI.Dialog = Dialog;
+}});

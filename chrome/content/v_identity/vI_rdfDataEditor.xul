@@ -31,10 +31,11 @@
 
 <dialog id="vI_rdfDataEditor"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	onload="vI_rdfDataEditor.init();"
-	ondialogaccept="window.arguments[3].treeType = vI_rdfDataEditor.accept();"
+	onload="virtualIdentityExtension.rdfDataEditor.init();"
+	ondialogaccept="window.arguments[3].treeType = virtualIdentityExtension.rdfDataEditor.accept();"
 	title="&vI_rdfDataEditor.dlgTitle.label;" >
 
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_overlayNameSpaceWrapper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataEditor.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_identityData.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
@@ -67,7 +68,7 @@
 			<vbox><spacer flex="1"/>
 				<label value="&vI_rdfDataEditor.sender.label;" accesskey="&vI_rdfDataEditor.sender.accesskey;" control="sender"/>
 			<spacer flex="1"/></vbox>
-			<textbox id="sender" flex="1"  onblur="vI_rdfDataEditor.blurEvent('sender')" />
+			<textbox id="sender" flex="1"  onblur="virtualIdentityExtension.rdfDataEditor.blurEvent('sender')" />
 		</hbox>
 		<hbox>
 			<vbox><spacer flex="1"/>

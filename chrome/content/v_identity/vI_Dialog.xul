@@ -36,15 +36,15 @@
 	buttoniconextra2="no"
         title="Virtual Identity"
 	zlevel="6"
-	onload="vI_Dialog.init(window.arguments[0]);"
+	onload="virtualIdentityExtension.Dialog.init(window.arguments[0]);"
 	ondialogaccept="window.arguments[1].returnValue = 'accept';"
 	ondialogcancel="window.close(); window.arguments[1].returnValue = 'cancel';"
 	ondialogextra1="window.close(); window.arguments[1].returnValue = 'abort';"
 	ondialogextra2="window.close(); window.arguments[1].returnValue = 'takeover';"
 	persist="height width">
 
-	<script type="application/x-javascript"
-		src="chrome://v_identity/content/vI_Dialog.js" />
+	<script type="application/x-javascript" src="chrome://v_identity/content/vI_overlayNameSpaceWrapper.js" />
+	<script type="application/x-javascript" src="chrome://v_identity/content/vI_Dialog.js" />
 
 	<description id="vI_Dialog_title" />
 	<description id="vI_Dialog_recLabel" />

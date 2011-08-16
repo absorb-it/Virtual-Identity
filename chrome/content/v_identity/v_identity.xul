@@ -35,7 +35,7 @@
 
   <overlay id="v_identity" 
           xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_overlayNameSpaceWrapper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/v_identity.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_helper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_identityData.js" />
@@ -76,18 +76,18 @@
 	<checkbox id="fcc_switch" label="&vident.composeDialog.fcc_switch.label;" 
 		tooltiptext="&vident.composeDialog.fcc_switch.tooltiptext;" hidden="true" doFcc="false"
 		oncommand="if (this.doFcc == this.checked) this.checked = !(this.checked); this.doFcc = this.checked;" />
-	<popupset id="vI_tooltipPopupset" />
+	<popupset id="virtualIdentityExtension_tooltipPopupset" />
 </hbox>
   </vbox>
   
   <popupset>
 	  <menupopup id="vI_statusMenu">
 		  <menuitem type="checkbox" id="vI_statusMenu_storage_save" label="&vident.vI_Menu.storageSave.label;"
-			oncommand="vI_statusmenu.menuConstraint(this);"/>
+			oncommand="virtualIdentityExtension.statusmenu.menuConstraint(this);"/>
 		  <menuitem type="checkbox" id="vI_statusMenu_storage_saveBaseID" label="&vident.vI_Menu.saveBaseID.label;"
-			oncommand="vI_statusmenu.menuConstraint(vI_statusmenu.objStorageSaveMenuItem);"/>
+			oncommand="virtualIdentityExtension.statusmenu.menuConstraint(virtualIdentityExtension.statusmenu.objStorageSaveMenuItem);"/>
 		  <menuitem type="checkbox" id="vI_statusMenu_storage_saveSMTP" label="&vident.vI_Menu.saveSMTP.label;"
-			oncommand="vI_statusmenu.menuConstraint(vI_statusmenu.objStorageSaveMenuItem);"/>
+			oncommand="virtualIdentityExtension.statusmenu.menuConstraint(virtualIdentityExtension.statusmenu.objStorageSaveMenuItem);"/>
 		  <menuseparator id="vI_statusMenu_separator" />
 		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.Settings.label;"
 			oncommand="window.open('chrome://v_identity/content/vI_prefDialog_TB3.xul', '', 'chrome, dialog, alwaysRaised, resizable=yes');" />
@@ -124,7 +124,7 @@
 			  insertafter="totalMessageCount"
 			  context="vI_statusMenu"
 			  tooltip="vI_statusMenuTooltip"
-			  onclick="vI_statusmenu.clicked(event.button);" />
+			  onclick="virtualIdentityExtension.statusmenu.clicked(event.button);" />
 </statusbar>
   
 </overlay>

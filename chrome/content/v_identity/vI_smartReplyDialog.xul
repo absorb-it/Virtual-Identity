@@ -36,8 +36,8 @@
         title="Virtual Identity - Smart Identity"
 	zlevel="6">
 
-<script type="application/x-javascript"
-            src="chrome://v_identity/content/vI_smartReplyDialog.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_overlayNameSpaceWrapper.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_smartReplyDialog.js" />
 
 <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
 
@@ -48,7 +48,7 @@
   <groupbox>
     <caption label="&vident.replySelector.caption.label;"/>
 
-    <radiogroup id="replySelector.radiogroup" oncommand="vI_smartReply_dialog.accept();">
+    <radiogroup id="replySelector.radiogroup" oncommand="virtualIdentityExtension.smartReply_dialog.accept();">
     </radiogroup>
   </groupbox>
 </dialog>

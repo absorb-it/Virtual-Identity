@@ -22,7 +22,8 @@
     Contributor(s): Thunderbird Developers
  * ***** END LICENSE BLOCK ***** */
 
-var vI_notificationBar = {
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+var notificationBar = {
 	quiet : null,
 	timer : null,
 	timeout : 5000,
@@ -42,53 +43,53 @@ var vI_notificationBar = {
 	Obj_DebugBaseID : null,
 	
 	observe: function() {
-		var showDebugArea = vI_notificationBar.preferences.getBoolPref("debug_notification")
-		vI_notificationBar.Obj_DebugBox.setAttribute("hidden", !showDebugArea)
-		vI_notificationBar.Obj_DebugBoxSplitter.setAttribute("hidden", !showDebugArea)
-		if (vI_notificationBar.Obj_DebugBaseID) vI_notificationBar.Obj_DebugBaseID.setAttribute("base_id_key_hidden", !showDebugArea)
+		var showDebugArea = notificationBar.preferences.getBoolPref("debug_notification")
+		notificationBar.Obj_DebugBox.setAttribute("hidden", !showDebugArea)
+		notificationBar.Obj_DebugBoxSplitter.setAttribute("hidden", !showDebugArea)
+		if (notificationBar.Obj_DebugBaseID) notificationBar.Obj_DebugBaseID.setAttribute("base_id_key_hidden", !showDebugArea)
 	},
 	
 	addObserver: function() {
-		vI_notificationBar.prefroot.addObserver("extensions.virtualIdentity.debug_notification", vI_notificationBar, false);
+		notificationBar.prefroot.addObserver("extensions.virtualIdentity.debug_notification", notificationBar, false);
 	},
 	
 	removeObserver: function() {
-		vI_notificationBar.prefroot.removeObserver("extensions.virtualIdentity.debug_notification", vI_notificationBar);
+		notificationBar.prefroot.removeObserver("extensions.virtualIdentity.debug_notification", notificationBar);
 	},
 
 	init : function() {
-		vI_notificationBar.Obj_DebugBox = document.getElementById("vIDebugBox");
-		if (!vI_notificationBar.Obj_DebugBox) return false;
-		vI_notificationBar.upgrade = vI_notificationBar.Obj_DebugBox.getAttribute("upgrade")
+		notificationBar.Obj_DebugBox = document.getElementById("vIDebugBox");
+		if (!notificationBar.Obj_DebugBox) return false;
+		notificationBar.upgrade = notificationBar.Obj_DebugBox.getAttribute("upgrade")
 
 		// nothing else to do for the upgrade dialog
-		if (vI_notificationBar.upgrade) return true;
+		if (notificationBar.upgrade) return true;
 		
-		vI_notificationBar.Obj_vINotification = document.getElementById("vINotification");
-		vI_notificationBar.Obj_DebugBoxSplitter = document.getElementById("vIDebugBoxSplitter");
-		vI_notificationBar.Obj_DebugBaseID = document.getElementById("msgIdentity_clone");
+		notificationBar.Obj_vINotification = document.getElementById("vINotification");
+		notificationBar.Obj_DebugBoxSplitter = document.getElementById("vIDebugBoxSplitter");
+		notificationBar.Obj_DebugBaseID = document.getElementById("msgIdentity_clone");
 		
-		vI_notificationBar.addObserver();
-		vI_notificationBar.observe();
-		vI_notificationBar.dump_app_version();
+		notificationBar.addObserver();
+		notificationBar.observe();
+		notificationBar.dump_app_version();
 
 		return true;
 	},
 	
 	clear : function() {
-		if (!vI_notificationBar.Obj_vINotification) return;
-		if (vI_notificationBar.timer) window.clearTimeout(vI_notificationBar.timer);
-		vI_notificationBar.timer = null;
-		vI_notificationBar.Obj_vINotification.removeAllNotifications(true);
+		if (!notificationBar.Obj_vINotification) return;
+		if (notificationBar.timer) window.clearTimeout(notificationBar.timer);
+		notificationBar.timer = null;
+		notificationBar.Obj_vINotification.removeAllNotifications(true);
 	},
 	
 	clear_dump : function() {
-		if (!vI_notificationBar.Obj_DebugBox) return;
-		var new_DebugBox = vI_notificationBar.Obj_DebugBox.cloneNode(false);
-		vI_notificationBar.Obj_DebugBox.parentNode.replaceChild(
-			new_DebugBox, vI_notificationBar.Obj_DebugBox);
-		vI_notificationBar.Obj_DebugBox = new_DebugBox;
-		vI_notificationBar.dump_app_version();
+		if (!notificationBar.Obj_DebugBox) return;
+		var new_DebugBox = notificationBar.Obj_DebugBox.cloneNode(false);
+		notificationBar.Obj_DebugBox.parentNode.replaceChild(
+			new_DebugBox, notificationBar.Obj_DebugBox);
+		notificationBar.Obj_DebugBox = new_DebugBox;
+		notificationBar.dump_app_version();
 	},
 	
 	// copied and adapted from nightly tester tools from Dave Townsend (http://www.oxymoronical.com/web/firefox/nightly)
@@ -113,43 +114,43 @@ var vI_notificationBar = {
 				.getService(Components.interfaces.nsIXULAppInfo);
 			var protohandler = Components.classes["@mozilla.org/network/protocol;1?name=http"]
 				.getService(Components.interfaces.nsIHttpProtocolHandler);
-			vI_notificationBar.__dumpDebugBox(appInfo.name + " " + appInfo.version + " (" + appInfo.appBuildID + "; " + protohandler.oscpu + ")\n")
+			notificationBar.__dumpDebugBox(appInfo.name + " " + appInfo.version + " (" + appInfo.appBuildID + "; " + protohandler.oscpu + ")\n")
 		}
-		else vI_notificationBar.__dumpDebugBox("mail-client seems not supported by Virtual Identity Extension")
+		else notificationBar.__dumpDebugBox("mail-client seems not supported by Virtual Identity Extension")
 		
-		vI_notificationBar.__getExtensionList(vI_notificationBar.__dumpDebugBox)
+		notificationBar.__getExtensionList(notificationBar.__dumpDebugBox)
 
-// 		vI_notificationBar.__dumpDebugBox(output + "\n")
+// 		notificationBar.__dumpDebugBox(output + "\n")
 
-		vI_notificationBar.__dumpDebugBox("--------------------------------------------------------------------------------\n")
+		notificationBar.__dumpDebugBox("--------------------------------------------------------------------------------\n")
 	},
 	
 	dump : function(note) {
-		if (!vI_notificationBar.Obj_DebugBox) vI_notificationBar.init()
-		if (!vI_notificationBar.preferences.getBoolPref("debug_notification") &&
-			!vI_notificationBar.upgrade) return;
-		dump(note); vI_notificationBar.__dumpDebugBox(note);
+		if (!notificationBar.Obj_DebugBox) notificationBar.init()
+		if (!notificationBar.preferences.getBoolPref("debug_notification") &&
+			!notificationBar.upgrade) return;
+		dump(note); notificationBar.__dumpDebugBox(note);
 	},
 
 	__dumpDebugBox : function(note) {
-		if ((!vI_notificationBar.preferences.getBoolPref("debug_notification") &&
-			!vI_notificationBar.upgrade) ||
-			vI_notificationBar.quiet) return;
-		if (!vI_notificationBar.Obj_DebugBox &&
-			!vI_notificationBar.init()) return;
+		if ((!notificationBar.preferences.getBoolPref("debug_notification") &&
+			!notificationBar.upgrade) ||
+			notificationBar.quiet) return;
+		if (!notificationBar.Obj_DebugBox &&
+			!notificationBar.init()) return;
 
 		var new_text = document.createTextNode(note);
 		var new_br = document.createElementNS("http://www.w3.org/1999/xhtml", 'br');
-		vI_notificationBar.Obj_DebugBox.inputField.appendChild(new_text);
-		vI_notificationBar.Obj_DebugBox.inputField.appendChild(new_br);
-		vI_notificationBar.Obj_DebugBox.inputField.scrollTop = 
-			vI_notificationBar.Obj_DebugBox.inputField.scrollHeight -
-			vI_notificationBar.Obj_DebugBox.inputField.clientHeight
+		notificationBar.Obj_DebugBox.inputField.appendChild(new_text);
+		notificationBar.Obj_DebugBox.inputField.appendChild(new_br);
+		notificationBar.Obj_DebugBox.inputField.scrollTop = 
+			notificationBar.Obj_DebugBox.inputField.scrollHeight -
+			notificationBar.Obj_DebugBox.inputField.clientHeight
 	},
 	
 	setNote: function(note, prefstring, title) {
-		vI_notificationBar.clear();
-		vI_notificationBar.addNote(note, prefstring, title);
+		notificationBar.clear();
+		notificationBar.addNote(note, prefstring, title);
 	},
 
 	overflow : function(elem) {
@@ -166,27 +167,29 @@ var vI_notificationBar = {
 
 	__setTitle: function(title) {
 		if (!title) return;
-// 		vI_notificationBar.dump("** setTitle: " + title + "\n");
+// 		notificationBar.dump("** setTitle: " + title + "\n");
 		var Obj_vINotificationTitle = document.getElementById("vINotificationTitle");
 		Obj_vINotificationTitle.setAttribute("value", title);
 		Obj_vINotificationTitle.removeAttribute("hidden");
 	},
 
 	addNote: function(note, prefstring, title) {
-// 		vI_notificationBar.dump("** " + note + "\n\n");
-		if (!vI_notificationBar.preferences.getBoolPref(prefstring)) return;
-		if (!vI_notificationBar.Obj_vINotification) vI_notificationBar.init();
-		if (!vI_notificationBar.Obj_vINotification) return;
-		var oldNotification = vI_notificationBar.Obj_vINotification.currentNotification
+// 		notificationBar.dump("** " + note + "\n\n");
+		if (!notificationBar.preferences.getBoolPref(prefstring)) return;
+		if (!notificationBar.Obj_vINotification) notificationBar.init();
+		if (!notificationBar.Obj_vINotification) return;
+		var oldNotification = notificationBar.Obj_vINotification.currentNotification
 		var newLabel = (oldNotification)?oldNotification.label + note:note;
-		vI_notificationBar.clear();
-		vI_notificationBar.Obj_vINotification
+		notificationBar.clear();
+		notificationBar.Obj_vINotification
 				.appendNotification(newLabel, "", "chrome://messenger/skin/icons/flag.png");
-		vI_notificationBar.__setTitle(title);
+		notificationBar.__setTitle(title);
 
-		if (vI_notificationBar.preferences.getIntPref("notification_timeout") != 0)
-			vI_notificationBar.timer = window.setTimeout(vI_notificationBar.clear,
-				vI_notificationBar.preferences.getIntPref("notification_timeout") * 1000);
+		if (notificationBar.preferences.getIntPref("notification_timeout") != 0)
+			notificationBar.timer = window.setTimeout(virtualIdentityExtension.notificationBar.clear,
+				notificationBar.preferences.getIntPref("notification_timeout") * 1000);
 	}
 }
-window.addEventListener("unload", function(e) { try {vI_notificationBar.removeObserver();} catch (ex) { } }, false);
+window.addEventListener("unload", function(e) { try {notificationBar.removeObserver();} catch (ex) { } }, false);
+vI.notificationBar = notificationBar;	
+}});

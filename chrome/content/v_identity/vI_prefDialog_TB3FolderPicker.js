@@ -42,6 +42,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+
 function InitFolderDisplays(msgFolder, accountPickerId, folderPickerId) {
     var accountPicker = document.getElementById(accountPickerId);
     var folderPicker = document.getElementById(folderPickerId);
@@ -122,3 +124,6 @@ function SaveFolderSettings(radioElemChoice,
     formElement = document.getElementById(folderPickerModeId);
     formElement.setAttribute("value", radioElemChoice);
 }
+vI.InitFolderDisplays = InitFolderDisplays;
+vI.SaveFolderSettings = SaveFolderSettings;
+}});

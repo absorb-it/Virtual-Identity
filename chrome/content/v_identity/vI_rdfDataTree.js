@@ -28,7 +28,7 @@
     http://www.ibiblio.org/pub/Linux/LICENSES/mit.license
 */
 
-
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 //prepares an object for easy comparison against another. for strings, lowercases them
 function prepareForComparison (o) {
 	if (typeof o == "string") { return o.toLowerCase().replace(/\"/g,""); }
@@ -37,32 +37,33 @@ function prepareForComparison (o) {
 };
 
 
-function rdfDataTree(treeType, vI_rdfDatasource) {
+function rdfDataTree(treeType, rdfDatasource) {
 	this.treeType = treeType;
-    this._vI_rdfDatasource = vI_rdfDatasource;
+    this._rdfDatasource = rdfDatasource;
 	this.filterText = "";
 	this.loadTable();
-}
+};
+
 rdfDataTree.prototype = {
 	idTable : null,
 	idData : null,
 	filterText : null,
 	treeType : null,
-    _vI_rdfDatasource : null,
+    _rdfDatasource : null,
 
     get treeElem() { return document.getElementById("rdfDataTree_" + this.treeType); },
 	get tabElem() { return document.getElementById(this.treeType + "Tab"); },
 	
 	//this function is called every time the tree is sorted, filtered, or reloaded
 	loadTable : function() {
-//         if (vI_notificationBar) vI_notificationBar.dump("## rdfDataTree: loadTable.\n");
+//         if (vI.notificationBar) vI.notificationBar.dump("## rdfDataTree: loadTable.\n");
 		//remember scroll position. this is useful if this is an editable table
 		//to prevent the user from losing the row they edited
 		var topVisibleRow = null;
 		if (this.idTable) { topVisibleRow = this.treeElem.treeBoxObject.getFirstVisibleRow(); }
 		if (this.idData == null) {
 			this.idData = [];
-			this._vI_rdfDatasource.readAllEntriesFromRDF(this.addNewDatum, this.treeType, this.idData);
+			this._rdfDatasource.readAllEntriesFromRDF(this.addNewDatum, this.treeType, this.idData);
 		}
 		if (this.filterText == "") {
 			//show all of them
@@ -91,7 +92,7 @@ rdfDataTree.prototype = {
 
 		// set Tab label
 		this.tabElem.setAttribute("label", this.treeType + " (" + this.idTable.length + ")");
-//         if (vI_notificationBar) vI_notificationBar.dump("## rdfDataTree: loadTable done.\n");
+//         if (vI.notificationBar) vI.notificationBar.dump("## rdfDataTree: loadTable done.\n");
 	},
 
 	addNewDatum : function(resource, name, localIdentityData, idData) {
@@ -104,12 +105,12 @@ rdfDataTree.prototype = {
 //				idKey : localIdentityData.id.key,
 				resource : resource,
 				identityData : localIdentityData}
-// 		vI_notificationBar.dump("## addNewDatum.\n");
+// 		vI.notificationBar.dump("## addNewDatum.\n");
 		localIdentityData.extras.addPrefs(pref);
 		idData.push(pref);
 	},
 	sort : function(columnName) {
-// 		vI_notificationBar.dump("## sort: " + columnName + ".\n");
+// 		vI.notificationBar.dump("## sort: " + columnName + ".\n");
 		var order = this.treeElem.getAttribute("sortDirection") == "ascending" ? 1 : -1;
 		//if the column is passed and it's already sorted by that column, reverse sort
 		if (columnName && (this.treeElem.getAttribute("sortResource") == columnName)) {
@@ -129,7 +130,7 @@ rdfDataTree.prototype = {
 		this.treeElem.setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
 		this.treeElem.setAttribute("sortResource", columnName);
 		
-		this.treeElem.view = new vI_rdfDataTree.treeView(this.idTable);
+		this.treeElem.view = new rdfDataTreeCollection.treeView(this.idTable);
 		
 		//set the appropriate attributes to show to indicator
 		var cols = this.treeElem.getElementsByTagName("treecol");
@@ -139,9 +140,9 @@ rdfDataTree.prototype = {
 				cols[i].setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
 		}
 	}
-}
+};
 
-var vI_rdfDataTree = {
+var rdfDataTreeCollection = {
 	promptService : Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 			.getService(Components.interfaces.nsIPromptService),
 
@@ -151,24 +152,24 @@ var vI_rdfDataTree = {
 	tabbox : null,
 	
 	_strings : null,
-    _vI_rdfDatasource : null,
+    _rdfDatasource : null,
 	
 	onTabSelect : function () {
-		vI_rdfDataTree.hideInfoBox();
-		if (vI_rdfDataTree.tabbox) {
-			vI_rdfDataTree.moveConstraints();
-			vI_rdfDataTree.updateButtonMenu();
+		rdfDataTreeCollection.hideInfoBox();
+		if (rdfDataTreeCollection.tabbox) {
+			rdfDataTreeCollection.moveConstraints();
+			rdfDataTreeCollection.updateButtonMenu();
 		}
 	},
 	
 	onselect : function () {
-		vI_rdfDataTree.moveConstraints();
-		vI_rdfDataTree.updateButtonMenu();
+		rdfDataTreeCollection.moveConstraints();
+		rdfDataTreeCollection.updateButtonMenu();
 
-		var tree = vI_rdfDataTree.trees[vI_rdfDataTree.tabbox.selectedPanel.id];
-		var htmlBox = document.getElementById("vI_rdfDataTreeInfoBox")
+		var tree = rdfDataTreeCollection.trees[rdfDataTreeCollection.tabbox.selectedPanel.id];
+		var htmlBox = document.getElementById("rdfDataTreeCollectionInfoBox")
 		if (tree.treeElem.view.selection.count != 1)
-			{ vI_rdfDataTree.hideInfoBox(); return; }
+			{ rdfDataTreeCollection.hideInfoBox(); return; }
 		
 		var identityData = tree.idTable[tree.treeElem.currentIndex]["identityData"];
 		var _identityInfo = 
@@ -184,23 +185,23 @@ var vI_rdfDataTree = {
 			"</tr></table></div>"
 
 		htmlBox.outputString = _identityInfo;
-		vI_rdfDataTree.infoBoxHidden = false;
+		rdfDataTreeCollection.infoBoxHidden = false;
 		htmlBox.setAttribute("style", "height:" + htmlBox.contentDocument.lastChild.scrollHeight +"px");
-		vI_rdfDataTree.overflow(); // better resize one time too much, mozilla is still magic  :)
+		rdfDataTreeCollection.overflow(); // better resize one time too much, mozilla is still magic  :)
 	},
 
 	init : function() {
-		vI_rdfDataTree.tabbox = document.getElementById("TreeTabbox");
-		vI_rdfDataTree._strings = document.getElementById("vI_rdfDataTreeBundle");
+		rdfDataTreeCollection.tabbox = document.getElementById("TreeTabbox");
+		rdfDataTreeCollection._strings = document.getElementById("vI_rdfDataTreeBundle");
 
-		vI_rdfDataTree._vI_rdfDatasource = new vI_rdfDatasource("virtualIdentity.rdf");
+		rdfDataTreeCollection._rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf");
 		
-		for each (var treeType in vI_rdfDataTree.treeTypes)
-			vI_rdfDataTree.trees[treeType] = new rdfDataTree(treeType, vI_rdfDataTree._vI_rdfDatasource);
+		for each (var treeType in rdfDataTreeCollection.treeTypes)
+			rdfDataTreeCollection.trees[treeType] = new rdfDataTree(treeType, rdfDataTreeCollection._rdfDatasource);
 	},
 	
     clean : function() {
-        if (vI_rdfDataTree._vI_rdfDatasource) vI_rdfDataTree._vI_rdfDatasource.clean();
+        if (rdfDataTreeCollection._rdfDatasource) rdfDataTreeCollection._rdfDatasource.clean();
     },
 
     get _braille() {
@@ -218,7 +219,7 @@ var vI_rdfDataTree = {
 		this.rowCount = table.length;
 		this.getCellText = function(row, col) {
 			var retValue = table[row][col.id.substr(0,col.id.indexOf("_"))];
-			if (!vI_rdfDataTree._braille && (retValue == "no" || retValue == "yes"))
+			if (!rdfDataTreeCollection._braille && (retValue == "no" || retValue == "yes"))
 				return ""; // image will be used as indicator
 			else return retValue;
 		};
@@ -240,12 +241,12 @@ var vI_rdfDataTree = {
 		this.getCellProperties = function(row,col,props){};
 		this.getColumnProperties = function(colid,col,props){};
 		this.cycleHeader = function(col, elem) {
-			var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+			var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
 			if (treeType != "filter")
-				vI_rdfDataTree.trees[treeType].sort(col.id.substr(0,col.id.indexOf("_")));
+				rdfDataTreeCollection.trees[treeType].sort(col.id.substr(0,col.id.indexOf("_")));
 		};
 		this.getCellProperties = function(row,col,props){
-			if (vI_rdfDataTree._braille) return;
+			if (rdfDataTreeCollection._braille) return;
 			var aserv=Components.classes["@mozilla.org/atom-service;1"].
 				getService(Components.interfaces.nsIAtomService);
 			switch (table[row][col.id.substr(0,col.id.indexOf("_"))]) {
@@ -258,8 +259,8 @@ var vI_rdfDataTree = {
 	
 	__setFilter : function (text) {
 		// loop trough all trees
-		for each (var treeType in vI_rdfDataTree.treeTypes) {
-			var tree = vI_rdfDataTree.trees[treeType];
+		for each (var treeType in rdfDataTreeCollection.treeTypes) {
+			var tree = rdfDataTreeCollection.trees[treeType];
 			tree.filterText = text;
 			tree.loadTable();
 		}
@@ -268,7 +269,7 @@ var vI_rdfDataTree = {
 	inputFilter : function(event) {
 		//do this now rather than doing it at every comparison
 		var value = prepareForComparison(event.target.value);
-		vI_rdfDataTree.__setFilter(value);
+		rdfDataTreeCollection.__setFilter(value);
 		document.getElementById("clearFilter").disabled = value.length == 0;
 	},
 	
@@ -277,43 +278,43 @@ var vI_rdfDataTree = {
 		var filterElement = document.getElementById("filter");
 		filterElement.focus();
 		filterElement.value = "";
-		vI_rdfDataTree.__setFilter("");
+		rdfDataTreeCollection.__setFilter("");
 	},
 	
 	__updateMenu : function(modifySelected, removeSelected) {
-		var tree = vI_rdfDataTree.trees[vI_rdfDataTree.tabbox.selectedPanel.id];
+		var tree = rdfDataTreeCollection.trees[rdfDataTreeCollection.tabbox.selectedPanel.id];
 		var noSelections = (tree.treeElem.view.selection.count == 0)
 		modifySelected.setAttribute("disabled", noSelections)
 		removeSelected.setAttribute("disabled", noSelections)	
 	},
 	
 	updateButtonMenu : function() {
-		vI_rdfDataTree.__updateMenu(
-			document.getElementById("editButton_" + vI_rdfDataTree.tabbox.selectedPanel.id),
-			document.getElementById("deleteButton_" + vI_rdfDataTree.tabbox.selectedPanel.id))
+		rdfDataTreeCollection.__updateMenu(
+			document.getElementById("editButton_" + rdfDataTreeCollection.tabbox.selectedPanel.id),
+			document.getElementById("deleteButton_" + rdfDataTreeCollection.tabbox.selectedPanel.id))
 	},
 	
 	updateContextMenu : function() {
-		vI_rdfDataTree.__updateMenu(
+		rdfDataTreeCollection.__updateMenu(
 			document.getElementById("context_modifySelected"),
 			document.getElementById("context_removeSelected"))
 	},
 	
 	updateMenu : function() {
-		vI_rdfDataTree.__updateMenu(
+		rdfDataTreeCollection.__updateMenu(
 			document.getElementById("menu_modifySelected"),
 			document.getElementById("menu_removeSelected"))
 	},
 
 	modifySelected : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		var tree = vI_rdfDataTree.trees[treeType];
+		var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
+		var tree = rdfDataTreeCollection.trees[treeType];
 		if (tree.treeElem.view.selection.count == 0) return;
 		if (tree.treeElem.view.selection.count > 5) {
-			var warning = vI_rdfDataTree._strings.getString("vI_rdfDataTree.modify.Warning1") + " " +
+			var warning = rdfDataTreeCollection._strings.getString("rdfDataTree.modify.Warning1") + " " +
 				tree.treeElem.view.selection.count + " " +
-				vI_rdfDataTree._strings.getString("vI_rdfDataTree.modify.Warning2")
-			if (!vI_rdfDataTree.promptService.confirm(window,"Warning",warning)) return;
+				rdfDataTreeCollection._strings.getString("rdfDataTree.modify.Warning2")
+			if (!rdfDataTreeCollection.promptService.confirm(window,"Warning",warning)) return;
 		}
 		
 		var start = new Object(); var end = new Object();
@@ -326,28 +327,28 @@ var vI_rdfDataTree = {
 				window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
 					tree.idTable[v], treeType,
-					vI_rdfDataTree._vI_rdfDatasource, retVar).focus();
+					rdfDataTreeCollection._rdfDatasource, retVar).focus();
 		}
 		
 		// reload all trees (multiple types might have changed)
-		for each (var treeType in vI_rdfDataTree.treeTypes) {
-			vI_rdfDataTree.trees[treeType].idData = null;
-			vI_rdfDataTree.trees[treeType].idTable = null;
-			vI_rdfDataTree.trees[treeType].loadTable()
+		for each (var treeType in rdfDataTreeCollection.treeTypes) {
+			rdfDataTreeCollection.trees[treeType].idData = null;
+			rdfDataTreeCollection.trees[treeType].idTable = null;
+			rdfDataTreeCollection.trees[treeType].loadTable()
 		}
-		vI_rdfDataTree.tabbox.selectedTab = document.getElementById(retVar.treeType + "Tab");
-		vI_rdfDataTree.hideInfoBox();
+		rdfDataTreeCollection.tabbox.selectedTab = document.getElementById(retVar.treeType + "Tab");
+		rdfDataTreeCollection.hideInfoBox();
 	},
 	
 	removeSelected : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		var tree = vI_rdfDataTree.trees[treeType];
+		var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
+		var tree = rdfDataTreeCollection.trees[treeType];
 		if (tree.treeElem.view.selection.count == 0) return;
-		var warning = vI_rdfDataTree._strings.getString("vI_rdfDataTree.remove.Warning1") + " " +
+		var warning = rdfDataTreeCollection._strings.getString("rdfDataTreeCollection.remove.Warning1") + " " +
 			tree.treeElem.view.selection.count + " " +
-			vI_rdfDataTree._strings.getString("vI_rdfDataTree.remove.Warning2")
+			rdfDataTreeCollection._strings.getString("rdfDataTreeCollection.remove.Warning2")
 		
-		if (!vI_rdfDataTree.promptService.confirm(window,"Warning",warning)) return;
+		if (!rdfDataTreeCollection.promptService.confirm(window,"Warning",warning)) return;
 		
 		var start = new Object(); var end = new Object();
 		var numRanges = tree.treeElem.view.selection.getRangeCount();
@@ -355,19 +356,19 @@ var vI_rdfDataTree = {
 		for (var t=0; t<numRanges; t++){
 			tree.treeElem.view.selection.getRangeAt(t,start,end);
 			for (var v=start.value; v<=end.value; v++){
-				vI_rdfDataTree._vI_rdfDatasource.removeVIdentityFromRDF(tree.idTable[v]["resource"], treeType)
+				rdfDataTreeCollection._rdfDatasource.removeVIdentityFromRDF(tree.idTable[v]["resource"], treeType)
 			}
 		}
 		
 		tree.idData = null; tree.idTable = null;
 		tree.loadTable();
-		vI_rdfDataTree.hideInfoBox();
+		rdfDataTreeCollection.hideInfoBox();
 	},
 	
 	moveConstraints : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
 		if (treeType != "filter") return;
-		var tree = vI_rdfDataTree.trees[treeType];
+		var tree = rdfDataTreeCollection.trees[treeType];
 		if (tree.treeElem.view.selection.count == 0) {
 			document.getElementById("reorderUpButton_filter").setAttribute("disabled","true");
 			document.getElementById("reorderDownButton_filter").setAttribute("disabled","true");
@@ -390,9 +391,9 @@ var vI_rdfDataTree = {
 	},
 
 	moveUpSelected : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
 		if (treeType != "filter") return; // just to be safe, button should be disabled
-		var tree = vI_rdfDataTree.trees[treeType];
+		var tree = rdfDataTreeCollection.trees[treeType];
 		if (tree.treeElem.view.selection.count == 0) return; // just to be safe, button should be disabled
 
 		var start = new Object(); var end = new Object();
@@ -401,8 +402,8 @@ var vI_rdfDataTree = {
 		
 		tree.treeElem.view.selection.getRangeAt(0,start,end);
 		for (var v=start.value; v<=end.value; v++){
-			var resource = vI_rdfDataTree._vI_rdfDatasource.filterContainer.RemoveElementAt(v+1, true);
-			vI_rdfDataTree._vI_rdfDatasource.filterContainer.InsertElementAt(resource,v,true); 
+			var resource = rdfDataTreeCollection._rdfDatasource.filterContainer.RemoveElementAt(v+1, true);
+			rdfDataTreeCollection._rdfDatasource.filterContainer.InsertElementAt(resource,v,true); 
 		}
 		tree.idData = null; tree.idTable = null;
 		tree.loadTable();
@@ -410,9 +411,9 @@ var vI_rdfDataTree = {
 	},
 
 	moveDownSelected : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
+		var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
 		if (treeType != "filter") return; // just to be safe, button should be disabled
-		var tree = vI_rdfDataTree.trees[treeType];
+		var tree = rdfDataTreeCollection.trees[treeType];
 		if (tree.treeElem.view.selection.count == 0) return; // just to be safe, button should be disabled
 
 		var start = new Object(); var end = new Object();
@@ -421,8 +422,8 @@ var vI_rdfDataTree = {
 		
 		tree.treeElem.view.selection.getRangeAt(0,start,end);
 		for (var v=end.value; v>=start.value; v--){
-			var resource = vI_rdfDataTree._vI_rdfDatasource.filterContainer.RemoveElementAt(v+1, true);
-			vI_rdfDataTree._vI_rdfDatasource.filterContainer.InsertElementAt(resource,v+2,true); 
+			var resource = rdfDataTreeCollection._rdfDatasource.filterContainer.RemoveElementAt(v+1, true);
+			rdfDataTreeCollection._rdfDatasource.filterContainer.InsertElementAt(resource,v+2,true); 
 		}
 		tree.idData = null; tree.idTable = null;
 		tree.loadTable();
@@ -431,44 +432,48 @@ var vI_rdfDataTree = {
 
 	infoBoxHidden : true,
 	overflow : function() {
-		if (vI_rdfDataTree.infoBoxHidden) return;
-		var htmlBox = document.getElementById("vI_rdfDataTreeInfoBox")
+		if (rdfDataTreeCollection.infoBoxHidden) return;
+		var htmlBox = document.getElementById("rdfDataTreeCollectionInfoBox")
 		htmlBox.setAttribute("style", "height:" + htmlBox.contentDocument.lastChild.scrollHeight +"px");
 	},
 
 	hideInfoBox : function() {
-		vI_rdfDataTree.infoBoxHidden = true;
-		document.getElementById("vI_rdfDataTreeInfoBox").setAttribute("style", "height:0px");
-		for each (var treeType in vI_rdfDataTree.treeTypes) {
-			try { if (vI_rdfDataTree.trees[treeType])
-				vI_rdfDataTree.trees[treeType].treeElem.view.selection.selectNone() } catch (e) { }
+		rdfDataTreeCollection.infoBoxHidden = true;
+		document.getElementById("rdfDataTreeCollectionInfoBox").setAttribute("style", "height:0px");
+		for each (var treeType in rdfDataTreeCollection.treeTypes) {
+			try { if (rdfDataTreeCollection.trees[treeType])
+				rdfDataTreeCollection.trees[treeType].treeElem.view.selection.selectNone() } catch (e) { }
 		}
 	},
 
 	selectAll : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		var tree = vI_rdfDataTree.trees[treeType];
+		var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
+		var tree = rdfDataTreeCollection.trees[treeType];
 		tree.treeElem.view.selection.selectAll();
 	},
 	
 	newItem : function() {
-		var treeType = vI_rdfDataTree.tabbox.selectedPanel.id;
-		var newItemPreset = { identityData : new vI_identityData ("", null, null, vI_NO_SMTP_TAG, null, null) };
-		// XXXX create useful preset
+		var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
+		var newItemPreset = { identityData : new vI.identityData ("", null, null, vI.NO_SMTP_TAG, null, null) };
 		var retVar = { treeType: null };
 
 		window.openDialog("chrome://v_identity/content/vI_rdfDataEditor.xul",0,
 			"chrome, dialog, modal, alwaysRaised, resizable=yes",
 			newItemPreset, treeType,
-			vI_rdfDataTree._vI_rdfDatasource, retVar).focus();
+			rdfDataTreeCollection._rdfDatasource, retVar).focus();
 
 		// reload all trees (multiple types might have changed)
-		for each (var treeType in vI_rdfDataTree.treeTypes) {
-			vI_rdfDataTree.trees[treeType].idData = null;
-			vI_rdfDataTree.trees[treeType].idTable = null;
-			vI_rdfDataTree.trees[treeType].loadTable()
+		for each (var treeType in rdfDataTreeCollection.treeTypes) {
+			rdfDataTreeCollection.trees[treeType].idData = null;
+			rdfDataTreeCollection.trees[treeType].idTable = null;
+			rdfDataTreeCollection.trees[treeType].loadTable()
 		}
-		vI_rdfDataTree.tabbox.selectedTab = document.getElementById(retVar.treeType + "Tab");
-		vI_rdfDataTree.hideInfoBox();
+		rdfDataTreeCollection.tabbox.selectedTab = document.getElementById(retVar.treeType + "Tab");
+		rdfDataTreeCollection.hideInfoBox();
 	}
 };
+dump("registering global rdfDataTreeCollection\n");
+vI.rdfDataTreeCollection = rdfDataTreeCollection;
+vI.rdfDataTree = rdfDataTree;
+dump("registering global rdfDataTreeCollection done " + vI.initTime + " " + vI.rdfDataTreeCollection + "\n");
+}});

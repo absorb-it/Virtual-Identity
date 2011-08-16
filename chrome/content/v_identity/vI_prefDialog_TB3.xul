@@ -23,25 +23,26 @@
    - Contributor(s):
    - ***** END LICENSE BLOCK ***** -->
 
-<?xul-overlay href="chrome://v_identity/content/vI_prefDialog.xul"?>
 <?xul-overlay href="chrome://v_identity/content/vI_prefDialog_TB3FolderPicker.xul"?>
+<?xul-overlay href="chrome://v_identity/content/vI_prefDialog.xul"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/vI_prefDialog.dtd">
 
 <dialog id="vI_prefDialog"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        onload="vI_prefDialog.init();"
+        onload="virtualIdentityExtension.prefDialog.init();"
         buttons="accept,cancel,help"
-        ondialogaccept="vI_prefDialog.savePrefs();"
-	ondialoghelp="vI_prefDialog.toggleHelp();"
-	buttonlabelhelp="&vI_prefDialog.dlgHelpButton.label;"
+        ondialogaccept="virtualIdentityExtension.prefDialog.savePrefs();"
+		ondialoghelp="virtualIdentityExtension.prefDialog.toggleHelp();"
+		buttonlabelhelp="&vI_prefDialog.dlgHelpButton.label;"
         persist="screenX screenY"
 			title="&vI_prefDialog.dlgTitle.label;" >
 		
-		<script type="application/x-javascript"
-            src="chrome://v_identity/content/vI_prefDialog.js" />
+<script type="application/x-javascript" src="chrome://v_identity/content/vI_overlayNameSpaceWrapper.js" />
 		<script type="application/x-javascript"
 			src="chrome://v_identity/content/vI_prefDialog_FolderPicker.js" />
+		<script type="application/x-javascript"
+            src="chrome://v_identity/content/vI_prefDialog.js" />
 		<script type="application/x-javascript"
             src="chrome://v_identity/content/vI_helper.js" />
 

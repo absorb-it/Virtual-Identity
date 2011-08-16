@@ -22,7 +22,8 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-var vI_helper = {
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+var helper = {
 	// simplified versionChecker, type is "TB" or "SM"
 	// returns true if appVersion is smaller or equal version
 	olderVersion : function (type, version) {
@@ -52,7 +53,7 @@ var vI_helper = {
 	},
 
 	extensionActive : function (extensionID) {
-	// new AddonManager uses asynchronous calls, therefore status is pre-stored in vI_upgradeOverlay.js
+	// new AddonManager uses asynchronous calls, therefore status is pre-stored in vI.upgradeOverlay.js
 		try {
 			var prefroot = Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
@@ -61,3 +62,5 @@ var vI_helper = {
 		} catch(e) { return false };
 	}
 }
+vI.helper = helper;
+}});

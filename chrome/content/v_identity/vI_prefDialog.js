@@ -22,7 +22,8 @@
     Contributor(s): Thunderbird Developers
  * ***** END LICENSE BLOCK ***** */
 
-var vI_prefDialog = {
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+var prefDialog = {
 	toggleHelp : function() {
 		var browserElem = document.getElementById("vI_remoteBrowserBox");
 		if (browserElem.getAttribute("hidden")) {
@@ -32,7 +33,7 @@ var vI_prefDialog = {
 			window.resizeBy( -(browserElem.clientWidth+7), 0);
 			browserElem.setAttribute("hidden", "true");
 		}
-		vI_prefDialog.updateHelpUrl();
+		prefDialog.updateHelpUrl();
 	},
 
 	updateHelpUrl : function(tabpanel) {
@@ -120,55 +121,55 @@ var vI_prefDialog = {
 	
 		init : function() {
 		// initialize the default window values...
-			for( var i = 0; i < vI_prefDialog.base._elementIDs.length; i++ ) {
-				var elementID = vI_prefDialog.base._elementIDs[i];
+			for( var i = 0; i < prefDialog.base._elementIDs.length; i++ ) {
+				var elementID = prefDialog.base._elementIDs[i];
 				var element = document.getElementById(elementID);
 				if (!element) break;
 				var eltType = element.localName;
 // 				try {
                     if (eltType == "radiogroup")
                         element.selectedItem = element.childNodes[
-                            vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring"))];
+                            prefDialog.preferences.getIntPref(element.getAttribute("prefstring"))];
                     else if (eltType == "checkbox")
                         element.checked = 
-                            vI_prefDialog.preferences.getBoolPref(element.getAttribute("prefstring"));
+                            prefDialog.preferences.getBoolPref(element.getAttribute("prefstring"));
                     else if (eltType == "textbox")
                         if (element.getAttribute("preftype") == "int")
                             element.setAttribute("value", 
-                            vI_prefDialog.preferences.getIntPref(element.getAttribute("prefstring")) );
+                            prefDialog.preferences.getIntPref(element.getAttribute("prefstring")) );
                         else {
                             element.setAttribute("value", 
-                            vI_prefDialog.unicodeConverter.ConvertToUnicode(vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"))) );
+                            prefDialog.unicodeConverter.ConvertToUnicode(prefDialog.preferences.getCharPref(element.getAttribute("prefstring"))) );
 // 							alert(element.getAttribute("prefstring") + " " + element.getAttribute("value"))
 						}
                     else if (eltType == "listbox")
                         element.value =
-                            vI_prefDialog.preferences.getCharPref(element.getAttribute("prefstring"));
+                            prefDialog.preferences.getCharPref(element.getAttribute("prefstring"));
 // 				} catch (ex) {}
 			}
 		},
 
 		savePrefs : function() {
-			for( var i = 0; i < vI_prefDialog.base._elementIDs.length; i++ ) {
-				var elementID = vI_prefDialog.base._elementIDs[i];
+			for( var i = 0; i < prefDialog.base._elementIDs.length; i++ ) {
+				var elementID = prefDialog.base._elementIDs[i];
 				var element = document.getElementById(elementID);
 				if (!element) break;
 				var eltType = element.localName;
 				if (eltType == "radiogroup")
-					vI_prefDialog.preferences.setIntPref(
+					prefDialog.preferences.setIntPref(
 						element.getAttribute("prefstring"), parseInt(element.value));
 				else if (eltType == "checkbox")
-					vI_prefDialog.preferences.setBoolPref(
+					prefDialog.preferences.setBoolPref(
 						element.getAttribute("prefstring"), element.checked);
 				else if (eltType == "textbox") {
 					if (element.getAttribute("preftype") == "int")
-						vI_prefDialog.preferences.setIntPref(
+						prefDialog.preferences.setIntPref(
 							element.getAttribute("prefstring"), element.value);
-					else vI_prefDialog.preferences.setCharPref(
-							element.getAttribute("prefstring"), vI_prefDialog.unicodeConverter.ConvertFromUnicode(element.value));
+					else prefDialog.preferences.setCharPref(
+							element.getAttribute("prefstring"), prefDialog.unicodeConverter.ConvertFromUnicode(element.value));
 				}
                 else if (eltType == "listbox")
-                    vI_prefDialog.preferences.setCharPref(element.getAttribute("prefstring"), element.value);
+                    prefDialog.preferences.setCharPref(element.getAttribute("prefstring"), element.value);
 			}
 		},
 		
@@ -181,7 +182,7 @@ var vI_prefDialog = {
 			var storage = document.getElementById("VIdent_identity.storage").checked;
 			var smartDraft = document.getElementById("VIdent_identity.smart_draft").checked;
 			var smartReply = document.getElementById("VIdent_identity.smart_reply").checked;
-			var mAttr = vI_prefDialog.base.modifyAttribute;
+			var mAttr = prefDialog.base.modifyAttribute;
 
 			// idSelectionConstraint
 			var idSelectionConstraint = (storage || smartReply || smartDraft);
@@ -197,7 +198,7 @@ var vI_prefDialog = {
 			var idSelectionInputConstraint = (storage && smartReply);
 			mAttr("VIdent_identity.idSelection_storage_prefer_smart_reply","disabled",idSelectionInputConstraint);
 			mAttr("VIdent_identity.idSelection_storage_ignore_smart_reply","disabled",idSelectionInputConstraint);
-			if (idSelectionInputConstraint) vI_prefDialog.base.idSelectionResultConstraint();
+			if (idSelectionInputConstraint) prefDialog.base.idSelectionResultConstraint();
 
 			// sourceEmailConstraint
 			var sourceEmailConstraint = (smartReply || smartDraft);
@@ -218,7 +219,7 @@ var vI_prefDialog = {
 		},
 
 		smartReplyConstraint : function(element) {
-			var mAttr = vI_prefDialog.base.modifyAttribute;
+			var mAttr = prefDialog.base.modifyAttribute;
 			mAttr("VIdent_identity.smart_reply_for_newsgroups","disabled",element.checked);
 			mAttr("VIdent_identity.smart_reply_headers","disabled",element.checked);
 			mAttr("VIdent_identity.smart_reply_filter","disabled",element.checked);
@@ -226,7 +227,7 @@ var vI_prefDialog = {
 			mAttr("VIdent_identity.smart_reply_ignoreFullName","disabled",element.checked);
 			mAttr("VIdent_identity.smart_reply_headers_reset","disabled",element.checked);
 			mAttr("VIdent_identity.smart_detectByReceivedHeader","disabled",element.checked);
-			vI_prefDialog.base.constraints();
+			prefDialog.base.constraints();
 		},
 		
 		smartReplyHeaderReset : function() {
@@ -236,19 +237,19 @@ var vI_prefDialog = {
 		
 		smartReplyHideSignature : function() {
 			const switch_signature_ID="{2ab1b709-ba03-4361-abf9-c50b964ff75d}"
-			if (vI_helper.extensionActive(switch_signature_ID)) {
+			if (vI.helper.extensionActive(switch_signature_ID)) {
 				document.getElementById("VIdent_identity.HideSignature.warning").setAttribute("hidden", "true");
 				document.getElementById("VIdent_identity.hide_signature").setAttribute("disabled", "false");
 			}
 		},
 		
 		autoTimestampConstraint : function(element) {
-			var mAttr = vI_prefDialog.base.modifyAttribute;
+			var mAttr = prefDialog.base.modifyAttribute;
 			mAttr("VIdent_identity.autoTimestamp.options","hidden",element.checked);
 		},
 		
 		storageConstraint : function(element) {
-			var mAttr = vI_prefDialog.base.modifyAttribute;
+			var mAttr = prefDialog.base.modifyAttribute;
 			mAttr("VIdent_identity.storage_storedefault","disabled",element.checked);
 			mAttr("VIdent_identity.storage_store_base_id","disabled",element.checked);
 			mAttr("VIdent_identity.storage_store_SMTP","disabled",element.checked);
@@ -273,11 +274,11 @@ var vI_prefDialog = {
 			mAttr("storageOut","featureDisabled",element.checked);
 			mAttr("storageUp","featureDisabled",element.checked);
 			mAttr("storageUpDown","featureDisabled",element.checked);
-			vI_prefDialog.base.constraints();
+			prefDialog.base.constraints();
 		},
 
 		menuButtonConstraints : function(elem) {
-			var mAttr = vI_prefDialog.base.modifyAttribute;
+			var mAttr = prefDialog.base.modifyAttribute;
 			var valueParam = (document.getElementById("viewGroup").getAttribute("hidden") == "true");	// true -> removeAttribute
 			var dialogElem = document.getElementById("vI_prefDialog");
 			mAttr("logoButton2","hidden", valueParam);
@@ -286,7 +287,7 @@ var vI_prefDialog = {
 		},
 
 		flipMenuButtons : function(elem) {
-			var mAttr = vI_prefDialog.base.modifyAttribute;
+			var mAttr = prefDialog.base.modifyAttribute;
 			var valueParam = (elem.getAttribute("open") == "true");
 			var dialogElem = document.getElementById("vI_prefDialog");
 			var oldContentElemHeight = document.getAnonymousElementByAttribute(dialogElem, "class", "box-inherit dialog-content-box").clientHeight;
@@ -303,30 +304,30 @@ var vI_prefDialog = {
 	},
 
 	init : function() {
-		vI_prefDialog.unicodeConverter.charset="UTF-8";
-		vI_prefDialog.base.init();
-		onInitCopiesAndFolders()
+		prefDialog.unicodeConverter.charset="UTF-8";
+		prefDialog.base.init();
+		vI.onInitCopiesAndFolders()
 
 		const enigmail_ID="{847b3a00-7ab1-11d4-8f02-006008948af5}"
-		if (!vI_helper.extensionActive(enigmail_ID)) {
+		if (!vI.helper.extensionActive(enigmail_ID)) {
 			document.getElementById("openPGPencryption").setAttribute("hidden", "true");
 			document.getElementById("VIdent_identity.hide_openPGP_messageSignature").setAttribute("hidden", "true");
 		}
 		
-		vI_prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
-		vI_prefDialog.base.smartReplyHideSignature();
-		vI_prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
-		vI_prefDialog.base.autoTimestampConstraint(document.getElementById("VIdent_identity.autoTimestamp"));
-		vI_prefDialog.base.constraints();
-		vI_prefDialog.base.menuButtonConstraints();
-		vI_prefDialog.base.initTreeValues();
+		prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
+		prefDialog.base.smartReplyHideSignature();
+		prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
+		prefDialog.base.autoTimestampConstraint(document.getElementById("VIdent_identity.autoTimestamp"));
+		prefDialog.base.constraints();
+		prefDialog.base.menuButtonConstraints();
+		prefDialog.base.initTreeValues();
 
 	},
 	
 	savePrefs : function() {
 		// Copy all changes to Elements
-		onSaveCopiesAndFolders();
-		vI_prefDialog.base.savePrefs();
+		vI.onSaveCopiesAndFolders();
+		prefDialog.base.savePrefs();
 	},
 
         openURL : function(aURL) {
@@ -337,3 +338,5 @@ var vI_prefDialog = {
             protocolSvc.loadUrl(uri);
         }
 }
+vI.prefDialog = prefDialog;
+}});

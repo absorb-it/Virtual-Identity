@@ -9,8 +9,8 @@ locale	v_identity	ru-RU	jar:chrome/v_identity.jar!/locale/ru-RU/v_identity/
 skin	v_identity	classic/1.0	jar:chrome/v_identity.jar!/skin/classic/v_identity/
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://v_identity/content/v_identity.xul
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://v_identity/content/vI_context.xul
-overlay chrome://messenger/content/messenger.xul				chrome://v_identity/content/vI_context.xul
 overlay chrome://messenger/content/messenger.xul				chrome://v_identity/content/vI_upgradeOverlay.xul
+overlay chrome://messenger/content/messenger.xul				chrome://v_identity/content/vI_context.xul
 overlay chrome://messenger/content/mailWindowOverlay.xul			chrome://v_identity/content/vI_getHeader.xul
 overlay	chrome://v_identity/content/vI_rdfDataTree.xul	chrome://v_identity/content/vI_storageExtrasDataTreeOverlay.xul
 overlay	chrome://v_identity/content/vI_rdfDataEditor.xul	chrome://v_identity/content/vI_storageExtrasDataEditorOverlay.xul

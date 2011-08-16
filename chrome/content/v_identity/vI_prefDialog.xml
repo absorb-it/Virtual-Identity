@@ -32,10 +32,11 @@
     <implementation>
     <constructor>
         <![CDATA[
-        if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: constructor\n");
+        with (virtualIdentityExtension.LIB) { 
+		if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: constructor\n");
         var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
             .getService(Components.interfaces.nsIMsgAccountManager);
-        var debugNotes = vI_prefDialog.preferences.getBoolPref("debug_notification");
+        var debugNotes = vI.prefDialog.preferences.getBoolPref("debug_notification");
 
         for (let i = AccountManager.accounts.Count() - 1; i >= 0 ; i--) {
             var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
@@ -54,29 +55,34 @@
         }
         if (debugNotes)
             document.getAnonymousElementByAttribute(this, "id", "ignoreIDs_debug").removeAttribute("hidden")
+		}
         ]]>
     </constructor>
     <property name="value" >
         <setter><![CDATA[
-        if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: setting value to '" + val + "'\n");
+        with (virtualIdentityExtension.LIB) { 
+		if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: setting value to '" + val + "'\n");
         var listItems = this.childNodes;
         for (var index = 0; index < listItems.length; index++) {
             var key = listItems[index].getAttribute("value");
             listItems[index].checked = (val.indexOf(":" + key + ":") == -1);
-            if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: setting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n")
+            if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: setting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n")
         }
         this._value = val;
+		}
         ]]></setter>
         <getter><![CDATA[
-        if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: getting value\n");
+        with (virtualIdentityExtension.LIB) { 
+		if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: getting value\n");
         var returnVal = "";
         var listItems = this.childNodes;
         for (var index = 0; index < listItems.length; index++) {
-            if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: getting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n");
+            if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: getting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n");
             if (!listItems[index].checked) returnVal += " :" + listItems[index].getAttribute("value") + ": "
         }
-        if (vI_notificationBar) vI_notificationBar.dump("## identitySelector: getting value, result '" + returnVal + "'\n");
+        if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: getting value, result '" + returnVal + "'\n");
         return returnVal;
+		}
         ]]></getter>        
     </property>
     </implementation>

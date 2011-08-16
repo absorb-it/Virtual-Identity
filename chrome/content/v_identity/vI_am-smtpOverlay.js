@@ -22,7 +22,8 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-var vI_am_smtpOverlay = {
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+var am_smtpOverlay = {
     refreshServerList : function(aServerKeyToSelect, aFocusList) {
         gSmtpServerListWindow.orig_refreshServerList(aServerKeyToSelect, aFocusList);
         var gObserver = Components.classes["@mozilla.org/observer-service;1"].
@@ -32,7 +33,8 @@ var vI_am_smtpOverlay = {
     
     init : function() {
         gSmtpServerListWindow.orig_refreshServerList = gSmtpServerListWindow.refreshServerList;
-        gSmtpServerListWindow.refreshServerList = vI_am_smtpOverlay.refreshServerList;
+        gSmtpServerListWindow.refreshServerList = am_smtpOverlay.refreshServerList;
     }
 }
-window.addEventListener('load', vI_am_smtpOverlay.init, false);
+window.addEventListener('load', am_smtpOverlay.init, false);
+}});

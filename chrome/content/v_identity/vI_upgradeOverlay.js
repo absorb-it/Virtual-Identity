@@ -22,16 +22,17 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-var vI_upgradeOverlay = {
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+var upgradeOverlay = {
 	init: function() {
-		var rdfDatasource = new vI_rdfDatasource("virtualIdentity.rdf", true);
+		var rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf", true);
         if (rdfDatasource.extUpgradeRequired()) {
-			if (!vI_upgrade.quick_upgrade(rdfDatasource.getCurrentExtFileVersion()))
+			if (!vI.upgrade.quick_upgrade(rdfDatasource.getCurrentExtFileVersion()))
 				window.open("chrome://v_identity/content/vI_upgrade.xul",0,
 					"chrome, dialog, modal, alwaysRaised, resizable=yes").focus();
 		}
 		else {
-			vI_account.cleanupSystem(); // always clean leftover accounts and directories
+			vI.account.cleanupSystem(); // always clean leftover accounts and directories
 			rdfDatasource.storeExtVersion();
 		}
 		rdfDatasource.refreshAccountInfo();
@@ -67,4 +68,5 @@ var vI_upgradeOverlay = {
 		}
 	}
 }
-addEventListener('messagepane-loaded', vI_upgradeOverlay.init, true);
+addEventListener('messagepane-loaded', upgradeOverlay.init, true);
+}});

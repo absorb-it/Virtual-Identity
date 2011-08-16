@@ -38,7 +38,8 @@
 * thanks to the unknown programmer
 */
 
-var vI_getHeader = {
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+var getHeader = {
 	messenger: null,
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
@@ -52,9 +53,9 @@ var vI_getHeader = {
 	headerToSearch : null,
 	
 	prepareHeaderToSearchArray : function() {
-		var headerList = vI_getHeader.unicodeConverter.ConvertToUnicode(vI_getHeader.preferences.getCharPref("smart_reply_headers")).split(/\n/)
+		var headerList = getHeader.unicodeConverter.ConvertToUnicode(getHeader.preferences.getCharPref("smart_reply_headers")).split(/\n/)
 		
-		vI_getHeader.headerToSearch = [];
+		getHeader.headerToSearch = [];
 		
 		// prepare headerToSearch for speedup.
 		for (var index = 0; index < headerList.length; index++) {
@@ -66,10 +67,10 @@ var vI_getHeader = {
 			if (isNaN(headerNumberToSearch)) headerNumberToSearch = parseInt(headerToSearch_splitted[2])
 			
 			// create header name to store the value
-			var headerNameToStore = "vI_" + headerNameToSearch
+			var headerNameToStore = "vI." + headerNameToSearch
 			if (!isNaN(headerNumberToSearch)) headerNameToStore += ":" + headerNumberToSearch
 			
-			vI_getHeader.headerToSearch.push({ headerNameToSearch : headerNameToSearch, headerNumberToSearch : headerNumberToSearch,
+			getHeader.headerToSearch.push({ headerNameToSearch : headerNameToSearch, headerNumberToSearch : headerNumberToSearch,
 					headerNameToStore : headerNameToStore });
 		}
 	},
@@ -79,63 +80,63 @@ var vI_getHeader = {
 	},
 	
 	getHeader: function(hdr) {
-		vI_notificationBar.clear_dump()
+		vI.notificationBar.clear_dump()
 		var index;
 
-		if (!vI_getHeader.headerToSearch) vI_getHeader.prepareHeaderToSearchArray()
+		if (!getHeader.headerToSearch) getHeader.prepareHeaderToSearchArray()
 
 		var found = false; var label = "";
-		var subtitle = vI_getHeader.strings.getString("vident.getHeader.noHeader");
+		var subtitle = getHeader.strings.getString("vident.getHeader.noHeader");
 		// create array to count the header
 		var currentHeadersCounter = [];
 		
-		var vI_listId = false; var vI_received = false; var vI_content_base = false;
+		var listId = false; var received = false; var content_base = false;
 		for (var header in currentHeaderData) {
 			var headerName = currentHeaderData[header].headerName.toLowerCase();
-// 			vI_notificationBar.dump("## vI_getHeader: found header: " + currentHeaderData[header].headerName + "\n");
+// 			vI.notificationBar.dump("## getHeader: found header: " + currentHeaderData[header].headerName + "\n");
 
 			// remember list-id header to prevent using Mailing-List addresses as sender
-			if (!vI_listId && headerName == "list-id") {
-				hdr.setStringProperty("vI_list-id","found"); vI_listId = true;
-				vI_notificationBar.dump("## vI_getHeader: found header: list-id  ...stored to recognize mailing-list\n");
+			if (!listId && headerName == "list-id") {
+				hdr.setStringProperty("vI_list-id","found"); listId = true;
+				vI.notificationBar.dump("## getHeader: found header: list-id  ...stored to recognize mailing-list\n");
 // 				continue;
 			}
 
 			// remember received header to prevent using Mailing-List addresses as sender
-			if (!vI_received && headerName == "received") {
-				hdr.setStringProperty("vI_received","found"); vI_received = true;
-				vI_notificationBar.dump("## vI_getHeader: found header: received  ...stored to recognize received mail\n");
+			if (!received && headerName == "received") {
+				hdr.setStringProperty("vI_received","found"); received = true;
+				vI.notificationBar.dump("## getHeader: found header: received  ...stored to recognize received mail\n");
 // 				continue;
 			}
 			
 			// remember content-base header to prevent using Blog/News-Feed addresses as sender
-			if (!vI_content_base && headerName == "content-base") {
-				hdr.setStringProperty("vI_content_base","found"); vI_content_base = true;
-				vI_notificationBar.dump("## vI_getHeader: found header: content-base  ...stored to recognize blog/news-feed\n");
+			if (!content_base && headerName == "content-base") {
+				hdr.setStringProperty("vI_content_base","found"); content_base = true;
+				vI.notificationBar.dump("## getHeader: found header: content-base  ...stored to recognize blog/news-feed\n");
 // 				continue;
 			}
 
 			if (currentHeadersCounter[headerName]) currentHeadersCounter[headerName]++
 			else currentHeadersCounter[headerName] = 1
 			
-			for (var index = 0; index < vI_getHeader.headerToSearch.length; index++) {
-				if (headerName == vI_getHeader.headerToSearch[index].headerNameToSearch &&
-					(isNaN(vI_getHeader.headerToSearch[index].headerNumberToSearch) ||
-						vI_getHeader.headerToSearch[index].headerNumberToSearch == currentHeadersCounter[headerName])) {
+			for (var index = 0; index < getHeader.headerToSearch.length; index++) {
+				if (headerName == getHeader.headerToSearch[index].headerNameToSearch &&
+					(isNaN(getHeader.headerToSearch[index].headerNumberToSearch) ||
+						getHeader.headerToSearch[index].headerNumberToSearch == currentHeadersCounter[headerName])) {
 					
 					var value = currentHeaderData[header].headerValue;
 					if (currentHeadersCounter[headerName] != 1)
-						value = hdr.getStringProperty(vI_getHeader.headerToSearch[index].headerNameToStore) + 
+						value = hdr.getStringProperty(getHeader.headerToSearch[index].headerNameToStore) + 
 						", " + value;
-					hdr.setStringProperty(vI_getHeader.headerToSearch[index].headerNameToStore,vI_getHeader.unicodeConverter.ConvertFromUnicode(value) + vI_getHeader.unicodeConverter.Finish());
+					hdr.setStringProperty(getHeader.headerToSearch[index].headerNameToStore,getHeader.unicodeConverter.ConvertFromUnicode(value) + getHeader.unicodeConverter.Finish());
 
-					var storedValue = hdr.getProperty(vI_getHeader.headerToSearch[index].headerNameToStore)
-					var storedConvValue = vI_getHeader.unicodeConverter.ConvertToUnicode(storedValue)
-					vI_notificationBar.dump("## vI_getHeader: found header: " + headerName +
+					var storedValue = hdr.getProperty(getHeader.headerToSearch[index].headerNameToStore)
+					var storedConvValue = getHeader.unicodeConverter.ConvertToUnicode(storedValue)
+					vI.notificationBar.dump("## getHeader: found header: " + headerName +
 						"[:" + currentHeadersCounter[headerName] + "] - stored as '" + 
 						storedConvValue + "'\n");
 					if (!found) { 
-						subtitle = vI_getHeader.strings.getString("vident.getHeader.headerFound");
+						subtitle = getHeader.strings.getString("vident.getHeader.headerFound");
 						found = true;
 					}
 					label += (label)?"\n":""
@@ -145,11 +146,11 @@ var vI_getHeader = {
 				}
 			}
 		}
-		vI_notificationBar.setNote(label, "get_header_notification", subtitle);
+		vI.notificationBar.setNote(label, "get_header_notification", subtitle);
 	},
 	
 	hideExtraHeader: function() {
-		var addedHdrs = vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders").split(/ /);
+		var addedHdrs = prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders").split(/ /);
 		for (var index = 0; index < addedHdrs.length; index++) {
 			var header_to_search_splitted=addedHdrs[index].split(/:/)
 			var header_to_search=header_to_search_splitted[0].toLowerCase()
@@ -166,19 +167,19 @@ var vI_getHeader = {
 
 	setupEventListener: function() {
 		var listener = {};
-		listener.onStartHeaders	= vI_getHeader.hideExtraHeader;
-		listener.onEndHeaders	= vI_getHeader.getHeaderDummy;
+		listener.onStartHeaders	= getHeader.hideExtraHeader;
+		listener.onEndHeaders	= getHeader.getHeaderDummy;
 		gMessageListeners.push(listener);
 
-		vI_getHeader.messenger = Components.classes["@mozilla.org/messenger;1"].createInstance();
-		vI_getHeader.messenger = vI_getHeader.messenger.QueryInterface(Components.interfaces.nsIMessenger);
-		vI_getHeader.strings = document.getElementById("vIdentBundle");
+		getHeader.messenger = Components.classes["@mozilla.org/messenger;1"].createInstance();
+		getHeader.messenger = getHeader.messenger.QueryInterface(Components.interfaces.nsIMessenger);
+		getHeader.strings = document.getElementById("vIdentBundle");
 		
-		vI_getHeader.unicodeConverter.charset = "UTF-8";
+		getHeader.unicodeConverter.charset = "UTF-8";
 		
 		// read headers later if msg is loaded completely - this ensures compatibility to Thunderbird Conversation
-		vI_getHeader.orig_OnMsgLoaded = OnMsgLoaded;
-		OnMsgLoaded = vI_getHeader.OnMsgLoaded;
+		getHeader.orig_OnMsgLoaded = OnMsgLoaded;
+		OnMsgLoaded = getHeader.OnMsgLoaded;
 	},
 	
 	OnMsgLoaded: function(url) {
@@ -190,13 +191,13 @@ var vI_getHeader = {
 		neckoURL.QueryInterface(Ci.nsIMsgMessageUrl);
 		
 		var msgHdr = neckoURL.messageHeader;
-		if (msgHdr) vI_getHeader.getHeader(msgHdr);
-		vI_getHeader.orig_OnMsgLoaded(url)
+		if (msgHdr) getHeader.getHeader(msgHdr);
+		getHeader.orig_OnMsgLoaded(url)
 	}
 }
 
 
-var vI_prepareHeader = {
+var prepareHeader = {
 	prefroot : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch(null),
@@ -207,42 +208,42 @@ var vI_prepareHeader = {
 	observer_added : false,
 	
 	init : function() {
-		vI_prepareHeader.orig_initializeHeaderViewTables = initializeHeaderViewTables;
-		initializeHeaderViewTables = vI_prepareHeader.replacement_initializeHeaderViewTables;
-		if (vI_prepareHeader.addExtraHeader()) vI_prepareHeader.addObserver();
+		prepareHeader.orig_initializeHeaderViewTables = initializeHeaderViewTables;
+		initializeHeaderViewTables = prepareHeader.replacement_initializeHeaderViewTables;
+		if (prepareHeader.addExtraHeader()) prepareHeader.addObserver();
 	},
 	
 	replacement_initializeHeaderViewTables : function() {
-		vI_prepareHeader.cleanup();
-		vI_notificationBar.dump("## vI_getHeader: initializeHeaderViewTables\n");
-		vI_prepareHeader.orig_initializeHeaderViewTables();
-		if (vI_prepareHeader.addExtraHeader()) vI_prepareHeader.addObserver();
+		prepareHeader.cleanup();
+		vI.notificationBar.dump("## getHeader: initializeHeaderViewTables\n");
+		prepareHeader.orig_initializeHeaderViewTables();
+		if (prepareHeader.addExtraHeader()) prepareHeader.addObserver();
 	},
 	
 	cleanup : function() {
-		vI_prepareHeader.removeObserver();
-		vI_prepareHeader.removeExtraHeader();
+		prepareHeader.removeObserver();
+		prepareHeader.removeExtraHeader();
 	},
 	
 	addObserver : function() {
-		if (vI_prepareHeader.observer_added) return;
-		vI_prepareHeader.prefroot.QueryInterface(Components.interfaces.nsIPrefBranch2);
-		vI_prepareHeader.prefroot.addObserver("extensions.virtualIdentity.smart_reply_headers", this, false);
-        vI_prepareHeader.uninstallObserver.register();
-		vI_prepareHeader.observer_added = true;
+		if (prepareHeader.observer_added) return;
+		prepareHeader.prefroot.QueryInterface(Components.interfaces.nsIPrefBranch2);
+		prepareHeader.prefroot.addObserver("extensions.virtualIdentity.smart_reply_headers", this, false);
+        prepareHeader.uninstallObserver.register();
+		prepareHeader.observer_added = true;
 	},
 	
 	removeObserver : function() {
-		if (!vI_prepareHeader.observer_added) return;
-		vI_prepareHeader.prefroot.removeObserver("extensions.virtualIdentity.smart_reply_headers", this);
-        vI_prepareHeader.uninstallObserver.unregister();
-		vI_prepareHeader.observer_added = false;
+		if (!prepareHeader.observer_added) return;
+		prepareHeader.prefroot.removeObserver("extensions.virtualIdentity.smart_reply_headers", this);
+        prepareHeader.uninstallObserver.unregister();
+		prepareHeader.observer_added = false;
 	},
 	
 	// this is a adapted copy of enigEnsureExtraHeaders() from enigmail, thanks
 	addExtraHeader : function() {
-		vI_prepareHeader.unicodeConverter.charset = "UTF-8";
-		var header_list = vI_prepareHeader.unicodeConverter.ConvertToUnicode(vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_headers")).split(/\n/)
+		prepareHeader.unicodeConverter.charset = "UTF-8";
+		var header_list = prepareHeader.unicodeConverter.ConvertToUnicode(prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_headers")).split(/\n/)
 		
 		// add List-Id to recognizable headers to prevent using Mailing-List addresses as sender
 		header_list.push("List-Id")
@@ -255,9 +256,9 @@ var vI_prepareHeader = {
 
 // 		try {
 			var extraHdrs = " " + 
-				vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase();
+				prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase();
 
-            var addedHeaders = vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders");
+            var addedHeaders = prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders");
 
 			for (var index = 0; index < header_list.length; index++) {
 				var headerToSearch_splitted = header_list[index].split(/:/)
@@ -272,7 +273,7 @@ var vI_prepareHeader = {
 					// check if Header is included in collapsed HeaderView
 					for (var j = 0; j < gCollapsedHeaderList.length; j++) {
 						if (gCollapsedHeaderList[j].name == headerToSearch) {
-	// 						vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' in gCollapsedHeaderList\n");
+	// 						vI.notificationBar.dump("## prepareHeader: Header '" + headerToSearch + "' in gCollapsedHeaderList\n");
 							found = true; break;
 						}
 					}
@@ -282,7 +283,7 @@ var vI_prepareHeader = {
 				// check if Header is included in expanded HeaderView
 				for (var j = 0; j < gExpandedHeaderList.length; j++) {
 					if (gExpandedHeaderList[j].name == headerToSearch) {
-// 						vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' in gExpandedHeaderList\n");
+// 						vI.notificationBar.dump("## prepareHeader: Header '" + headerToSearch + "' in gExpandedHeaderList\n");
 						found = true; break;
 					}
 				}
@@ -291,33 +292,33 @@ var vI_prepareHeader = {
 				if ((extraHdrs.indexOf(" " + headerToSearch + " ") < 0) &&
 					(addedHeaders.indexOf(" " + headerToSearch + " ") < 0))
                         addedHeaders += " " + headerToSearch;
-// 				else vI_notificationBar.dump("## vI_prepareHeader: Header '" + headerToSearch + "' already in extraExpandedHeaders\n");
+// 				else vI.notificationBar.dump("## prepareHeader: Header '" + headerToSearch + "' already in extraExpandedHeaders\n");
 			}
 			
 			addedHeaders = addedHeaders.replace(/^\s+|\s+$/g,"")
 			if (addedHeaders.length > 0) {
                 extraHdrs += " " + addedHeaders;
 				extraHdrs = extraHdrs.replace(/^\s+|\s+$/g,"")
-				vI_prepareHeader.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", extraHdrs)
-				vI_prepareHeader.prefroot.setCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders", addedHeaders)
-				vI_notificationBar.dump("## vI_prepareHeader: extraExpandedHeaders '" + addedHeaders + "' added\n");
+				prepareHeader.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", extraHdrs)
+				prepareHeader.prefroot.setCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders", addedHeaders)
+				vI.notificationBar.dump("## prepareHeader: extraExpandedHeaders '" + addedHeaders + "' added\n");
 			}		
 
 			return true;
 // 		}
 // 		catch (e) {
-// 			vI_notificationBar.dump("## vI_prepareHeader: your application is too old, please update. Otherwise try to install mnenhy or enigmail to use additional headers.")
+// 			vI.notificationBar.dump("## prepareHeader: your application is too old, please update. Otherwise try to install mnenhy or enigmail to use additional headers.")
 // 			return false;
 // 		}
 	},
 
 	removeExtraHeader: function() {
-		vI_notificationBar.dump("## vI_prepareHeader: cleanupExtraHeader\n");
+		vI.notificationBar.dump("## prepareHeader: cleanupExtraHeader\n");
 
-        var addedHdrs = vI_prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders").split(/ /);
+        var addedHdrs = prepareHeader.prefroot.getCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders").split(/ /);
 
 		if (addedHdrs.length > 0) {
-			var extraHdrs = vI_prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase().split(/ /);
+			var extraHdrs = prepareHeader.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders").toLowerCase().split(/ /);
 		
 			for (var i = 0; i < addedHdrs.length; i++) {
 				for (var j = 0; j < extraHdrs.length; j++) {
@@ -327,22 +328,22 @@ var vI_prepareHeader = {
 					}
 				}
 			}
-			vI_notificationBar.dump("## vI_prepareHeader: extraExpandedHeaders '" + addedHdrs.join(" ") + "' removed\n");
-            vI_prepareHeader.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", extraHdrs.join(" "))
-			vI_prepareHeader.prefroot.setCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders", "")
+			vI.notificationBar.dump("## prepareHeader: extraExpandedHeaders '" + addedHdrs.join(" ") + "' removed\n");
+            prepareHeader.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", extraHdrs.join(" "))
+			prepareHeader.prefroot.setCharPref("extensions.virtualIdentity.smart_reply_added_extraHeaders", "")
 		}
 	},
 	
 	observe: function(subject, topic, data) {
 		if (topic == "nsPref:changed") {
-			vI_prepareHeader.removeExtraHeader();
-			vI_prepareHeader.addExtraHeader();
-			vI_notificationBar.dump("## vI_prepareHeader: changed preference '" + subject + " " + topic + " " + data + "'\n");
+			prepareHeader.removeExtraHeader();
+			prepareHeader.addExtraHeader();
+			vI.notificationBar.dump("## prepareHeader: changed preference '" + subject + " " + topic + " " + data + "'\n");
 			
 			// remove (old) prepared headerArray
-			vI_getHeader.headerToSearch = null;
+			getHeader.headerToSearch = null;
 			
-			vI_notificationBar.dump("## vI_prepareHeader: reload Message\n");
+			vI.notificationBar.dump("## prepareHeader: reload Message\n");
 			MsgReload();
 		}
 	},
@@ -353,9 +354,9 @@ var vI_prepareHeader = {
         observe : function(subject, topic, data) {
             if (topic == "quit-application-granted") {
                 /* uninstall stuff. */
-                vI_notificationBar.dump("## vI_uninstall: uninstall/disabledment \n");
-                vI_prepareHeader.removeExtraHeader();
-                vI_notificationBar.dump("## vI_uninstall: uninstall/disablement done\n");
+                vI.notificationBar.dump("## vI.uninstall: uninstall/disabledment \n");
+                prepareHeader.removeExtraHeader();
+                vI.notificationBar.dump("## vI.uninstall: uninstall/disablement done\n");
                 this.unregister();
             }
         },
@@ -371,8 +372,7 @@ var vI_prepareHeader = {
         }
     }
 }
-
-addEventListener('messagepane-loaded', vI_getHeader.setupEventListener, true);
-window.addEventListener("load", function(e) { vI_prepareHeader.init(); }, false);
-window.addEventListener("unload", function(e) { vI_prepareHeader.cleanup(); }, false);
-// window.addEventListener("load", initializeOverlay, false);
+addEventListener('messagepane-loaded', getHeader.setupEventListener, true);
+window.addEventListener("load", function(e) { prepareHeader.init(); }, false);
+window.addEventListener("unload", function(e) { prepareHeader.cleanup(); }, false);
+}});

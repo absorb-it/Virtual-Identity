@@ -42,6 +42,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+
 var gFccRadioElemChoice, gDraftsRadioElemChoice, gTmplRadioElemChoice;
 var gFccRadioElemChoiceLocked, gDraftsRadioElemChoiceLocked, gTmplRadioElemChoiceLocked;
 var gDefaultPickerMode = "3";
@@ -155,7 +157,7 @@ function SetFolderDisplay(pickerMode, disableMode,
     // these folders are created on demand at runtime in case of imap accounts.
     // For POP3 accounts, special folders are created at the account creation time.
     var msgFolder = GetMsgFolderFromUri(uri, false);
-    InitFolderDisplays(msgFolder, accountPickerId, folderPickerId)
+    vI.InitFolderDisplays(msgFolder, accountPickerId, folderPickerId)
 
     switch (pickerMode) 
     {
@@ -209,7 +211,7 @@ function SetSpecialFolderNamesWithDelims()
 
 function onSaveCopiesAndFolders()
 {
-    SaveFolderSettings( gFccRadioElemChoice, 
+    vI.SaveFolderSettings( gFccRadioElemChoice, 
                         "doFcc",
                         gFccFolderWithDelim, 
                         fccAccountPickerId, 
@@ -217,7 +219,7 @@ function onSaveCopiesAndFolders()
                         "VIdent_identity.fccFolder",
                         "VIdent_identity.fccFolderPickerMode" );
 
-    SaveFolderSettings( gDraftsRadioElemChoice, 
+    vI.SaveFolderSettings( gDraftsRadioElemChoice, 
                         "messageDrafts",
                         gDraftsFolderWithDelim, 
                         draftsAccountPickerId, 
@@ -225,7 +227,7 @@ function onSaveCopiesAndFolders()
                         "VIdent_identity.draftFolder",
                         "VIdent_identity.draftFolderPickerMode" );
 
-    SaveFolderSettings( gTmplRadioElemChoice,
+    vI.SaveFolderSettings( gTmplRadioElemChoice,
                         "messageTemplates",
                         gTemplatesFolderWithDelim, 
                         tmplAccountPickerId, 
@@ -336,3 +338,6 @@ function SetRadioButtons(selectPickerId, unselectPickerId)
     var activeRadioElem = document.getElementById(selectPickerId);
     activeRadioElem.radioGroup.selectedItem = activeRadioElem;
 }
+vI.onInitCopiesAndFolders = onInitCopiesAndFolders;
+vI.onSaveCopiesAndFolders = onSaveCopiesAndFolders;
+}});

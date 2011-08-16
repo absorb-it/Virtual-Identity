@@ -22,9 +22,9 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 function orig_onAccept() {};
-
-var vI_am_Overlay = {
+var am_Overlay = {
     onAccept : function(aServerKeyToSelect, aFocusList) {
         orig_onAccept();
         var gObserver = Components.classes["@mozilla.org/observer-service;1"].
@@ -34,7 +34,8 @@ var vI_am_Overlay = {
     
     init : function() {
         orig_onAccept = onAccept;
-        onAccept = vI_am_Overlay.onAccept;
+        onAccept = am_Overlay.onAccept;
     }
 }
-window.addEventListener('load', vI_am_Overlay.init, false);
+window.addEventListener('load', am_Overlay.init, false);
+}});

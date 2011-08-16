@@ -21,10 +21,10 @@
 
     Contributor(s): Thunderbird Developers
  * ***** END LICENSE BLOCK ***** */
-
-var vI_msgIdentityCloneTools = {	
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+var msgIdentityCloneTools = {	
 	copySelectedIdentity : function(id_key) {
-		vI_notificationBar.dump("## vI_msgIdentityCloneTools: copySelectedIdentity\n");
+		vI.notificationBar.dump("## msgIdentityCloneTools: copySelectedIdentity\n");
 		var msgIdentityElem = document.getElementById("msgIdentity");
 		var msgIdentityPopupElem = document.getElementById("msgIdentityPopup");
 		// copy selected Menu-Value from clone to orig.
@@ -43,25 +43,25 @@ var vI_msgIdentityCloneTools = {
 		// always initialize Security/Enigmail-Options
 		try { setSecuritySettings(1); enigSetMenuSettings(''); } catch(vErr) { };
 		if (!existingIdentity) {
-			vI_notificationBar.dump("## vI_msgIdentityCloneTools: signatureSwitch hide/remove signatures\n");
+			vI.notificationBar.dump("## msgIdentityCloneTools: signatureSwitch hide/remove signatures\n");
 			// code to hide the text signature
-			try { if (vI_main.preferences.getBoolPref("hide_signature") && ss_signature.length == 0) {
-				vI_notificationBar.dump("## vI_msgIdentityCloneTools: hide text/html signature");
+			try { if (vI.main.preferences.getBoolPref("hide_signature") && ss_signature.length == 0) {
+				vI.notificationBar.dump("## msgIdentityCloneTools: hide text/html signature");
 				ss_main.signatureSwitch()
-				vI_notificationBar.dump("\n");
-			} } catch(vErr) { vI_notificationBar.dump(" -- missing signatureSwitch extension?\n"); };
+				vI.notificationBar.dump("\n");
+			} } catch(vErr) { vI.notificationBar.dump(" -- missing signatureSwitch extension?\n"); };
 			// code to hide the sMime signature
-			try { if (vI_main.preferences.getBoolPref("hide_sMime_messageSignature")) {
+			try { if (vI.main.preferences.getBoolPref("hide_sMime_messageSignature")) {
 				var element = document.getElementById("menu_securitySign1");
 				if (element.getAttribute("checked") == "true") {
-					vI_notificationBar.dump("## signatureSwitch hide_sMime_messageSignature with doCommand\n");
+					vI.notificationBar.dump("## signatureSwitch hide_sMime_messageSignature with doCommand\n");
 					element.doCommand();
 				}
 			}
 			//	document.getElementById("menu_securitySign1").removeAttribute("checked");
 			} catch(vErr) { };
 			// code to hide the openGPG signature
-			try { if (vI_main.preferences.getBoolPref("hide_openPGP_messageSignature")) {
+			try { if (vI.main.preferences.getBoolPref("hide_openPGP_messageSignature")) {
 				var element = document.getElementById("enigmail_signed_send");
 				if (element.getAttribute("checked") == "true") {
 					var skipChangeGPGsign = false;
@@ -73,9 +73,9 @@ var vI_msgIdentityCloneTools = {
 						skipChangeGPGsign = skipChangeGPGsign || (window.document.title == EnigGetString("enigAlert"));
 					}
 					if (skipChangeGPGsign)
-						vI_notificationBar.dump("## signatureSwitch skip hide_openPGP_messageSignature - EnigMail AlertWindow open\n");
+						vI.notificationBar.dump("## signatureSwitch skip hide_openPGP_messageSignature - EnigMail AlertWindow open\n");
 					else {
-						vI_notificationBar.dump("## signatureSwitch hide_openPGP_messageSignature with doCommand\n");
+						vI.notificationBar.dump("## signatureSwitch hide_openPGP_messageSignature with doCommand\n");
 						element.doCommand();
 					}
 				}
@@ -84,21 +84,21 @@ var vI_msgIdentityCloneTools = {
 			} catch(vErr) { };
 		}
 		else {
-			vI_notificationBar.dump("## vI_msgIdentityCloneTools: signatureSwitch restore signature\n");
+			vI.notificationBar.dump("## msgIdentityCloneTools: signatureSwitch restore signature\n");
 			// code to show the text signature
 			try { if (ss_signature.length > 0) {
-				vI_notificationBar.dump("## vI_msgIdentityCloneTools: show text/html signature");
+				vI.notificationBar.dump("## msgIdentityCloneTools: show text/html signature");
 				ss_main.signatureSwitch()
-				vI_notificationBar.dump("\n");
-			} } catch(vErr) { vI_notificationBar.dump(" -- missing signatureSwitch extension?\n"); };
+				vI.notificationBar.dump("\n");
+			} } catch(vErr) { vI.notificationBar.dump(" -- missing signatureSwitch extension?\n"); };
 			// sMime and openGPG signature will not be re-added automatically
 		}
 	},
 	
 	initReplyTo : function() {
-		if (vI_statusmenu.prefroot.getBoolPref("extensions.virtualIdentity.autoReplyToSelf")) {
+		if (vI.statusmenu.prefroot.getBoolPref("extensions.virtualIdentity.autoReplyToSelf")) {
 			document.getElementById("autoReplyToSelfLabel").removeAttribute("hidden");
-			vI_msgIdentityCloneTools.removeAllReplyTos();
+			msgIdentityCloneTools.removeAllReplyTos();
 		}
 		else document.getElementById("autoReplyToSelfLabel").setAttribute("hidden", "true");
 	},
@@ -108,7 +108,7 @@ var vI_msgIdentityCloneTools = {
 			for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 				var awType = awGetPopupElement(row).selectedItem.getAttribute("value");
 				if (awType == "addr_reply") {
-					vI_notificationBar.dump("## vI_msgIdentityCloneTools: removed ReplyTo found in row " + row + "\n");
+					vI.notificationBar.dump("## msgIdentityCloneTools: removed ReplyTo found in row " + row + "\n");
 					awDeleteRow(row--); // removed one line therefore decrease row-value
 				}
 			}
@@ -118,8 +118,10 @@ var vI_msgIdentityCloneTools = {
 	addReplyToSelf : function() {
 		if (!document.getElementById("autoReplyToSelfLabel").hasAttribute("hidden")) {
 			awAddRecipient("addr_reply",document.getElementById("msgIdentity_clone").label);
-			vI_notificationBar.dump("## vI_msgIdentityCloneTools: added ReplyToSelf");
+			vI.notificationBar.dump("## msgIdentityCloneTools: added ReplyToSelf");
 			document.getElementById("autoReplyToSelfLabel").setAttribute("hidden","true");
 		}
 	}
 }
+vI.msgIdentityCloneTools = msgIdentityCloneTools;	
+}});

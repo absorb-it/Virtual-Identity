@@ -27,7 +27,8 @@
 * thanks to Mike Krieger and Sebastian Apel
 */
 
-var vI_storage = {
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+var storage = {
 	multipleRecipients : null,
 	focusedElement : null,
 	
@@ -41,15 +42,15 @@ var vI_storage = {
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2),
 	
-    vI_rdfDatasource : null,    // local storage
+    rdfDatasource : null,    // local storage
 
 	clean: function() {
-		vI_notificationBar.dump("## vI_storage: clean.\n");
-		vI_storage.multipleRecipients = null;
-		vI_storage.lastCheckedEmail = {};
-		vI_storage.firstUsedInputElement = null;
-		awSetInputAndPopupValue = vI_storage.original_functions.awSetInputAndPopupValue;
-        if (vI_storage.vI_rdfDatasource) vI_storage.vI_rdfDatasource.clean();
+		vI.notificationBar.dump("## storage: clean.\n");
+		storage.multipleRecipients = null;
+		storage.lastCheckedEmail = {};
+		storage.firstUsedInputElement = null;
+		awSetInputAndPopupValue = storage.original_functions.awSetInputAndPopupValue;
+        if (storage.rdfDatasource) storage.rdfDatasource.clean();
 	},
 	
 	original_functions : {
@@ -58,28 +59,28 @@ var vI_storage = {
 
 	replacement_functions : {
 		awSetInputAndPopupValue : function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
-			vI_notificationBar.dump("## vI_storage: awSetInputAndPopupValue '" + inputElem.id +"'\n");
-			vI_storage.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
-			vI_storage.updateVIdentityFromStorage(inputElem);
+			vI.notificationBar.dump("## storage: awSetInputAndPopupValue '" + inputElem.id +"'\n");
+			storage.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
+			storage.updateVIdentityFromStorage(inputElem);
 		}
 	},
 		
 	awOnBlur : function (element) {
 		// only react on events triggered by addressCol2 - textinput Elements
 		if (!element || ! element.id.match(/^addressCol2*/)) return;
-		vI_notificationBar.dump("\n## vI_storage: awOnBlur '" + element.id +"'\n");
-		vI_storage.updateVIdentityFromStorage(element);
-		vI_storage.focusedElement = null;
+		vI.notificationBar.dump("\n## storage: awOnBlur '" + element.id +"'\n");
+		storage.updateVIdentityFromStorage(element);
+		storage.focusedElement = null;
 	},
 
 	awOnFocus : function (element) {
 		if (!element || ! element.id.match(/^addressCol2*/)) return;
-		vI_storage.focusedElement = element;
+		storage.focusedElement = element;
 	},
 
 	awPopupOnCommand : function (element) {
-		vI_notificationBar.dump("\n## vI_storage: awPopupOnCommand'" + element.id +"'\n");
-		vI_storage.updateVIdentityFromStorage(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")));
+		vI.notificationBar.dump("\n## storage: awPopupOnCommand'" + element.id +"'\n");
+		storage.updateVIdentityFromStorage(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")));
 		if (element.selectedItem.getAttribute("value") == "addr_reply") // if reply-to is manually entered disable AutoReplyToSelf
 			document.getElementById("autoReplyToSelfLabel").setAttribute("hidden", "true");
 
@@ -87,8 +88,8 @@ var vI_storage = {
 	
     initialized : null,
 	init: function() {
-		if (!vI_storage.initialized) {
-            vI_storage.vI_rdfDatasource = new vI_rdfDatasource("virtualIdentity.rdf");
+		if (!storage.initialized) {
+            storage.rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf");
 
 			// better approach would be to use te onchange event, but this one is not fired in any change case
 			// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
@@ -99,67 +100,67 @@ var vI_storage = {
 				if (input) {
 					var oldBlur = input.getAttribute("onblur")
 					input.setAttribute("onblur", (oldBlur?oldBlur+"; ":"") +
-						"window.setTimeout(vI_storage.awOnBlur, 250, this.parentNode.parentNode.parentNode);")
+						"window.setTimeout(virtualIdentityExtension.storage.awOnBlur, 250, this.parentNode.parentNode.parentNode);")
 					var oldFocus = input.getAttribute("onfocus")
 					input.setAttribute("onfocus", (oldFocus?oldFocus+"; ":"") +
-						"window.setTimeout(vI_storage.awOnFocus, 250, this.parentNode.parentNode.parentNode);")
+						"window.setTimeout(virtualIdentityExtension.storage.awOnFocus, 250, this.parentNode.parentNode.parentNode);")
 				}
 				var popup = awGetPopupElement(row);
 				if (popup) {
 					var oldCommand = popup.getAttribute("oncommand")
 					popup.setAttribute("oncommand", (oldCommand?oldCommand+"; ":"") +
-						"window.setTimeout(vI_storage.awPopupOnCommand, 250, this);")
+						"window.setTimeout(virtualIdentityExtension.storage.awPopupOnCommand, 250, this);")
 				}
 			}
-			vI_storage.initialized = true;
+			storage.initialized = true;
 		}
-		vI_storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
+		storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
 		awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
-			vI_storage.replacement_functions.awSetInputAndPopupValue (inputElem, inputValue, popupElem, popupValue, rowNumber) }
+			storage.replacement_functions.awSetInputAndPopupValue (inputElem, inputValue, popupElem, popupValue, rowNumber) }
 
 		// reset unavailable storageExtras preferences
 		const enigmail_ID="{847b3a00-7ab1-11d4-8f02-006008948af5}"
-		if (!vI_helper.extensionActive(enigmail_ID)) {
-			vI_main.preferences.setBoolPref("storageExtras_openPGP_messageEncryption", false)
-			vI_main.preferences.setBoolPref("storageExtras_openPGP_messageSignature", false)
-			vI_main.preferences.setBoolPref("storageExtras_openPGP_PGPMIME", false)
+		if (!vI.helper.extensionActive(enigmail_ID)) {
+			vI.main.preferences.setBoolPref("storageExtras_openPGP_messageEncryption", false)
+			vI.main.preferences.setBoolPref("storageExtras_openPGP_messageSignature", false)
+			vI.main.preferences.setBoolPref("storageExtras_openPGP_PGPMIME", false)
 		}
 	},
 	
 	
 	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
 	updateVIdentityFromStorage: function(inputElement) {		
-		if (!vI_main.preferences.getBoolPref("storage"))
-			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
-		vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage()\n");
+		if (!vI.main.preferences.getBoolPref("storage"))
+			{ vI.notificationBar.dump("## storage: Storage deactivated\n"); return; }
+		vI.notificationBar.dump("## storage: updateVIdentityFromStorage()\n");
 
 		var recipientType = document.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
 			.selectedItem.getAttribute("value");
 		var row = inputElement.id.replace(/^addressCol2#/,"")
-		if (recipientType == "addr_reply" || recipientType == "addr_followup" || vI_storage.__isDoBcc(row)) {
+		if (recipientType == "addr_reply" || recipientType == "addr_followup" || storage.__isDoBcc(row)) {
 			// reset firstUsedInputElement if recipientType was changed (and don't care about doBcc fields)
-			if (vI_storage.firstUsedInputElement == inputElement)
-				vI_storage.firstUsedInputElement = null;
-			vI_notificationBar.dump("## vI_storage: field is a 'reply-to' or 'followup-to' or preconfigured 'doBcc'. not searched.\n")
+			if (storage.firstUsedInputElement == inputElement)
+				storage.firstUsedInputElement = null;
+			vI.notificationBar.dump("## storage: field is a 'reply-to' or 'followup-to' or preconfigured 'doBcc'. not searched.\n")
 			return;
 		}
 		
 		if (inputElement.value == "") {
-			vI_notificationBar.dump("## vI_storage: no recipient found, not checked.\n"); return;
+			vI.notificationBar.dump("## storage: no recipient found, not checked.\n"); return;
 		}
 		
 		var row = inputElement.id.replace(/^addressCol2#/,"")
-		if (vI_storage.lastCheckedEmail[row] && vI_storage.lastCheckedEmail[row] == inputElement.value) {
-			vI_notificationBar.dump("## vI_storage: same email than before, not checked again.\n"); return;
+		if (storage.lastCheckedEmail[row] && storage.lastCheckedEmail[row] == inputElement.value) {
+			vI.notificationBar.dump("## storage: same email than before, not checked again.\n"); return;
 		}
-		vI_storage.lastCheckedEmail[row] = inputElement.value;
-		var recipient = vI_storage.__getDescriptionAndType(inputElement.value, recipientType);
+		storage.lastCheckedEmail[row] = inputElement.value;
+		var recipient = storage.__getDescriptionAndType(inputElement.value, recipientType);
 
 		var matchResults = { storageData : {}, menuItem : {} };
-		matchResults.storageData[0] = vI_storage.vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
-		matchResults.storageData[1] = vI_storage.vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
+		matchResults.storageData[0] = storage.rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
+		matchResults.storageData[1] = storage.rdfDatasource.findMatchingFilter(recipient.recDesc);
 
-		vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage add found Identities to CloneMenu.\n");
+		vI.notificationBar.dump("## storage: updateVIdentityFromStorage add found Identities to CloneMenu.\n");
 		var matchIndex = null;
 		for (var i = 0; i <= 1; i++) {
 			if (matchResults.storageData[i]) {			// check if there is a result in direct match or filter
@@ -169,81 +170,81 @@ var vI_storage = {
 			}
 		}
 		if (matchIndex == null) {
-			vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage no usable Storage-Data found.\n");
+			vI.notificationBar.dump("## storage: updateVIdentityFromStorage no usable Storage-Data found.\n");
 			return;
 		}
 		else {
-			vI_notificationBar.dump("## vI_storage: using data from " + ((matchIndex == 0)?"direct":"filter") + " match\n");
+			vI.notificationBar.dump("## storage: using data from " + ((matchIndex == 0)?"direct":"filter") + " match\n");
 		}
 		// found storageData, so store InputElement
-		if (!vI_storage.firstUsedInputElement) vI_storage.firstUsedInputElement = inputElement;
+		if (!storage.firstUsedInputElement) storage.firstUsedInputElement = inputElement;
 		
-		vI_notificationBar.dump("## vI_storage: compare with current Identity\n");
-		if (vI_main.preferences.getBoolPref("storage_getOneOnly") &&					// if requested to retrieve only storageID for first recipient entered
-			vI_storage.firstUsedInputElement &&						// and the request for the first recipient was already done
-			vI_storage.firstUsedInputElement != inputElement &&				// and it's not the same element we changed now
+		vI.notificationBar.dump("## storage: compare with current Identity\n");
+		if (vI.main.preferences.getBoolPref("storage_getOneOnly") &&					// if requested to retrieve only storageID for first recipient entered
+			storage.firstUsedInputElement &&						// and the request for the first recipient was already done
+			storage.firstUsedInputElement != inputElement &&				// and it's not the same element we changed now
 			!matchResults.storageData[matchIndex].equalsCurrentIdentity(false).equal)	// and this id is different than the current used one
-				vI_notificationBar.setNote(vI_main.elements.strings
+				vI.notificationBar.setNote(vI.main.elements.strings
 					.getString("vident.smartIdentity.vIStorageCollidingIdentity"),	// than drop the potential changes
 					"storage_notification");
 		// only update fields if new Identity is different than old one.
 		else {
-			vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage check if storage-data matches current Identity.\n");
+			vI.notificationBar.dump("## storage: updateVIdentityFromStorage check if storage-data matches current Identity.\n");
 			var compResult = matchResults.storageData[matchIndex].equalsCurrentIdentity(true);
 			if (!compResult.equal) {
-				var warning = vI_storage.__getWarning("replaceVIdentity", recipient, compResult.compareMatrix);
+				var warning = storage.__getWarning("replaceVIdentity", recipient, compResult.compareMatrix);
 				var msgIdentityCloneElem = document.getElementById("msgIdentity_clone")
 				if (	!msgIdentityCloneElem.vid ||
-					!vI_main.preferences.getBoolPref("storage_warn_vI_replace") ||
-					(vI_storage.__askWarning(warning) == "accept")) {
+					!vI.main.preferences.getBoolPref("storage_warn_vI_replace") ||
+					(storage.__askWarning(warning) == "accept")) {
 						msgIdentityCloneElem.selectedMenuItem = matchResults.menuItem[matchIndex];
 						if (msgIdentityCloneElem.vid)
-							vI_notificationBar.setNote(vI_main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
+							vI.notificationBar.setNote(vI.main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
 							"storage_notification");
 				}
 			}
 			else {
-				vI_notificationBar.dump("## vI_storage: updateVIdentityFromStorage doing nothing - equals current Identity.\n");
+				vI.notificationBar.dump("## storage: updateVIdentityFromStorage doing nothing - equals current Identity.\n");
 			}
 		}
 	},
 	
 	__getDescriptionAndType : function (recipient, recipientType) {
 		if (recipientType == "addr_newsgroups")	return { recDesc : recipient, recType : "newsgroup" }
-		else if (vI_storage.__isMailingList(recipient)) {
-			vI_notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is MailList\n");
-			return { recDesc : vI_storage.__getMailListName(recipient), recType : "maillist" }
+		else if (storage.__isMailingList(recipient)) {
+			vI.notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is MailList\n");
+			return { recDesc : storage.__getMailListName(recipient), recType : "maillist" }
 		}
 		else {
-			vI_notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is no MailList\n");
-			var localIdentityData = new vI_identityData(recipient, null, null, null, null, null, null);
+			vI.notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is no MailList\n");
+			var localIdentityData = new vI.identityData(recipient, null, null, null, null, null, null);
 			return { recDesc : localIdentityData.combinedName, recType : "email" }
 		}
 	},
 		
 	storeVIdentityToAllRecipients : function(msgType) {
 		if (msgType != nsIMsgCompDeliverMode.Now) return true;
-		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n")
-		if (!vI_main.preferences.getBoolPref("storage"))
-			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return true; }
+		vI.notificationBar.dump("## storage: ----------------------------------------------------------\n")
+		if (!vI.main.preferences.getBoolPref("storage"))
+			{ vI.notificationBar.dump("## storage: Storage deactivated\n"); return true; }
 		
-		if (vI_statusmenu.objStorageSaveMenuItem.getAttribute("checked") != "true") {
-			vI_notificationBar.dump("## vI_storage: SaveMenuItem not checked.\n")
+		if (vI.statusmenu.objStorageSaveMenuItem.getAttribute("checked") != "true") {
+			vI.notificationBar.dump("## storage: SaveMenuItem not checked.\n")
 			return true;
 		}
 		
-		vI_notificationBar.dump("## vI_storage: storeVIdentityToAllRecipients()\n");
+		vI.notificationBar.dump("## storage: storeVIdentityToAllRecipients()\n");
 		
 		// check if there are multiple recipients
-		vI_storage.multipleRecipients = false;
+		storage.multipleRecipients = false;
 		var recipients = 0;
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
-				vI_storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
+				storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
 			if (recipients++ == 1) {
-				vI_storage.multipleRecipients = true
-				vI_notificationBar.dump("## vI_storage: multiple recipients found.\n")
+				storage.multipleRecipients = true
+				vI.notificationBar.dump("## storage: multiple recipients found.\n")
 				break;
 			}
 		}			
@@ -251,30 +252,30 @@ var vI_storage = {
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
-				vI_storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
-			if (!vI_storage.__updateStorageFromVIdentity(awGetInputElement(row).value, recipientType)) {
-				vI_notificationBar.dump("## vI_storage: --------------  aborted  ---------------------------------\n")
+				storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
+			if (!storage.__updateStorageFromVIdentity(awGetInputElement(row).value, recipientType)) {
+				vI.notificationBar.dump("## storage: --------------  aborted  ---------------------------------\n")
 				return false; // abort sending
 			}
 		}
-		vI_notificationBar.dump("## vI_storage: ----------------------------------------------------------\n");
+		vI.notificationBar.dump("## storage: ----------------------------------------------------------\n");
 		return true;
 	},
 	
 	__getWarning : function(warningCase, recipient, compareMatrix) {
 		var warning = { title: null, recLabel : null, recipient : null, warning : null, css: null, query : null, class : null };
-		warning.title = vI_main.elements.strings.getString("vident." + warningCase + ".title")
-		warning.recLabel = vI_main.elements.strings.getString("vident." + warningCase + ".recipient") + " (" + recipient.recType + "):"
+		warning.title = vI.main.elements.strings.getString("vident." + warningCase + ".title")
+		warning.recLabel = vI.main.elements.strings.getString("vident." + warningCase + ".recipient") + " (" + recipient.recType + "):"
 		warning.recipient = recipient.recDesc;
 		warning.warning = 
 			"<table class='" + warningCase + "'><thead><tr><th class='col1'/>" +
-				"<th class='col2'>" + vI_main.elements.strings.getString("vident." + warningCase + ".currentIdentity") + "</th>" +
-				"<th class='col3'>" + vI_main.elements.strings.getString("vident." + warningCase + ".storedIdentity") + "</th>" +
+				"<th class='col2'>" + vI.main.elements.strings.getString("vident." + warningCase + ".currentIdentity") + "</th>" +
+				"<th class='col3'>" + vI.main.elements.strings.getString("vident." + warningCase + ".storedIdentity") + "</th>" +
 			"</tr></thead>" +
 			"<tbody>" + compareMatrix + "</tbody>" +
 			"</table>"
-		warning.css = "vI_DialogBrowser.css";
-		warning.query = vI_main.elements.strings.getString("vident." + warningCase + ".query");
+		warning.css = "vI.DialogBrowser.css";
+		warning.query = vI.main.elements.strings.getString("vident." + warningCase + ".query");
 		warning.class = warningCase;
 		return warning;
 	},
@@ -288,14 +289,14 @@ var vI_storage = {
 	},
 	
 	__updateStorageFromVIdentity : function(recipient, recipientType) {
-		vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity.\n")
-		var dontUpdateMultipleNoEqual = (vI_main.preferences.getBoolPref("storage_dont_update_multiple") &&
-					vI_storage.multipleRecipients)
-		vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'\n")
-		recipient = vI_storage.__getDescriptionAndType(recipient, recipientType);
+		vI.notificationBar.dump("## storage: __updateStorageFromVIdentity.\n")
+		var dontUpdateMultipleNoEqual = (vI.main.preferences.getBoolPref("storage_dont_update_multiple") &&
+					storage.multipleRecipients)
+		vI.notificationBar.dump("## storage: __updateStorageFromVIdentity dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'\n")
+		recipient = storage.__getDescriptionAndType(recipient, recipientType);
 
-		var storageDataByType = vI_storage.vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
-		var storageDataByFilter = vI_storage.vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
+		var storageDataByType = storage.rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
+		var storageDataByFilter = storage.rdfDatasource.findMatchingFilter(recipient.recDesc);
 		
 		// update (storing) of data by type is required if there is
 		// no data stored by type (or different data stored) and no equal filter found
@@ -306,11 +307,11 @@ var vI_storage = {
 		var doUpdate = "";
 		if (	(!storageDataByType && !storageDataByFilterEqual) ||
 			(!storageDataByTypeEqual && !storageDataByFilterEqual && !dontUpdateMultipleNoEqual) ) {
-			vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity updating\n")
+			vI.notificationBar.dump("## storage: __updateStorageFromVIdentity updating\n")
 			var doUpdate = "accept";
-			if (storageDataByType && !storageDataByTypeEqual && vI_main.preferences.getBoolPref("storage_warn_update")) {
-				vI_notificationBar.dump("## vI_storage: __updateStorageFromVIdentity overwrite warning\n");
-				doUpdate = vI_storage.__askWarning(vI_storage.__getWarning("updateStorage", recipient, storageDataByTypeCompResult.compareMatrix));
+			if (storageDataByType && !storageDataByTypeEqual && vI.main.preferences.getBoolPref("storage_warn_update")) {
+				vI.notificationBar.dump("## storage: __updateStorageFromVIdentity overwrite warning\n");
+				doUpdate = storage.__askWarning(storage.__getWarning("updateStorage", recipient, storageDataByTypeCompResult.compareMatrix));
 				if (doUpdate == "takeover") {
 					var msgIdentityCloneElem = document.getElementById("msgIdentity_clone");
 					msgIdentityCloneElem.selectedMenuItem = msgIdentityCloneElem.addIdentityToCloneMenu(storageDataByType);
@@ -319,7 +320,7 @@ var vI_storage = {
 				if (doUpdate == "abort") return false;
 			}
 		}
-		if (doUpdate == "accept") vI_storage.vI_rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
+		if (doUpdate == "accept") storage.rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
 		return true;
 	},
 		
@@ -335,7 +336,7 @@ var vI_storage = {
 			let ab = allAddressBooks.getNext();
 			if (ab instanceof Components.interfaces.nsIAbDirectory && !ab.isRemote) {
 				let abdirectory = abManager.getDirectory(ab.URI + 
-					"?(and(DisplayName,=," + encodeURIComponent(vI_storage.__getMailListName(recipient)) + ")(IsMailList,=,TRUE))");
+					"?(and(DisplayName,=," + encodeURIComponent(storage.__getMailListName(recipient)) + ")(IsMailList,=,TRUE))");
 				if (abdirectory) {
 					let cards = abdirectory.childCards;
 					if (cards.hasMoreElements()) return true;	// only interested if there is at least one element...
@@ -363,7 +364,7 @@ var vI_storage = {
 
 		for (var index = 0; index < doBccArray.count; index++ ) {
 			if (doBccArray.StringAt(index) == awGetInputElement(row).value) {
-				vI_notificationBar.dump("## vI_storage: ignoring doBcc field '" +
+				vI.notificationBar.dump("## storage: ignoring doBcc field '" +
 					doBccArray.StringAt(index) + "'.\n");
 				return true;
 			}
@@ -372,20 +373,22 @@ var vI_storage = {
 	},
 
 	getVIdentityFromAllRecipients : function(allIdentities) {
-		if (!vI_main.preferences.getBoolPref("storage"))
-			{ vI_notificationBar.dump("## vI_storage: Storage deactivated\n"); return; }
-		vI_notificationBar.dump("## vI_storage: getVIdentityFromAllRecipients()\n");
+		if (!vI.main.preferences.getBoolPref("storage"))
+			{ vI.notificationBar.dump("## storage: Storage deactivated\n"); return; }
+		vI.notificationBar.dump("## storage: getVIdentityFromAllRecipients()\n");
 
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
-			if (recipientType == "addr_reply" || recipientType == "addr_followup" || vI_storage.__isDoBcc(row)) continue;
-			vI_storage.lastCheckedEmail[row] = awGetInputElement(row).value;
-			var recipient = vI_storage.__getDescriptionAndType(awGetInputElement(row).value, recipientType);
-			var storageData = vI_storage.vI_rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
+			if (recipientType == "addr_reply" || recipientType == "addr_followup" || storage.__isDoBcc(row)) continue;
+			storage.lastCheckedEmail[row] = awGetInputElement(row).value;
+			var recipient = storage.__getDescriptionAndType(awGetInputElement(row).value, recipientType);
+			var storageData = storage.rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
 			if (storageData) allIdentities.addWithoutDuplicates(storageData);
-			storageData = vI_storage.vI_rdfDatasource.findMatchingFilter(recipient.recDesc);
+			storageData = storage.rdfDatasource.findMatchingFilter(recipient.recDesc);
 			if (storageData) allIdentities.addWithoutDuplicates(storageData);
 		}
-		vI_notificationBar.dump("## vI_storage: found " + allIdentities.number + " address(es)\n")
+		vI.notificationBar.dump("## storage: found " + allIdentities.number + " address(es)\n")
 	}
 }
+vI.storage = storage;
+}});

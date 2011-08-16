@@ -22,7 +22,8 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-var vI_upgrade = {
+virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+var upgrade = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.virtualIdentity."),
@@ -30,20 +31,20 @@ var vI_upgrade = {
 	versionChecker : Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 			.getService(Components.interfaces.nsIVersionComparator),
     
-    vI_rdfDatasource : null,
+    rdfDatasource : null,
 
 	init : function() {
-		vI_upgrade.__initRequirements();
+		upgrade.__initRequirements();
 		document.documentElement.getButton("cancel").setAttribute("hidden", "true")
 	},
 
     clean : function() {
-        if (vI_upgrade.vI_rdfDatasource) vI_upgrade.vI_rdfDatasource.clean();
+        if (upgrade.rdfDatasource) upgrade.rdfDatasource.clean();
     },
 
     __initRequirements : function() {
-		vI_notificationBar.dump("") // this initialises the debug-area
-		vI_upgrade.vI_rdfDatasource = new vI_rdfDatasource("virtualIdentity.rdf", true);
+		vI.notificationBar.dump("") // this initialises the debug-area
+		upgrade.rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf", true);
 	},
 	
 	// this function checks for the chance to ugrade without shoing the complete wizard
@@ -60,10 +61,10 @@ var vI_upgrade = {
 		var extVersion = document.getElementById("extVersion").getAttribute("value");
 				
 		// don't show the dialog if we do a one-step upgrade
-		if (vI_upgrade.versionChecker.compare(extVersion, nextVersion) <= 0) {
-			vI_notificationBar.dump("starting quick_upgrade.\n")
-			vI_upgrade.__initRequirements();
-			vI_upgrade.__upgrade();
+		if (upgrade.versionChecker.compare(extVersion, nextVersion) <= 0) {
+			vI.notificationBar.dump("starting quick_upgrade.\n")
+			upgrade.__initRequirements();
+			upgrade.__upgrade();
 			return true;
 		}
 		return false;
@@ -80,38 +81,38 @@ var vI_upgrade = {
 	},
 	
 	__upgrade : function() {
-		if (vI_upgrade.vI_rdfDatasource.extUpgradeRequired()) vI_upgrade.extUpgrade();
+		if (upgrade.rdfDatasource.extUpgradeRequired()) upgrade.extUpgrade();
 		
-		vI_account.cleanupSystem();
+		vI.account.cleanupSystem();
 	},			
 
 	upgrade : function() {
-		vI_notificationBar.dump("starting upgrade.\n\n")
+		vI.notificationBar.dump("starting upgrade.\n\n")
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "false")
 		document.documentElement.getButton('next').setAttribute('disabled','true');
 		
-		vI_upgrade.__upgrade();
+		upgrade.__upgrade();
 	
-		vI_notificationBar.dump("\n\nupgrade finished.\n");
+		vI.notificationBar.dump("\n\nupgrade finished.\n");
 		
 		document.documentElement.getButton('next').setAttribute('disabled','false');
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "true")
 	},
 	
 	extUpgrade : function() {
-		var currentVersion = vI_upgrade.vI_rdfDatasource.getCurrentExtFileVersion();
-		vI_notificationBar.dump("checking for previous version, found " + 
+		var currentVersion = upgrade.rdfDatasource.getCurrentExtFileVersion();
+		vI.notificationBar.dump("checking for previous version, found " + 
 			currentVersion + "\nextension-upgrade required.\n")
 		switch (currentVersion) {
 			case null:
 				// no break
 			default:
-				vI_upgrade.__transferMovedUserPrefs(currentVersion);
-				vI_upgrade.__removeObsoleteUserPrefs(currentVersion);
-                vI_upgrade.__removeExtraAddedHeaders(currentVersion);
+				upgrade.__transferMovedUserPrefs(currentVersion);
+				upgrade.__removeObsoleteUserPrefs(currentVersion);
+                upgrade.__removeExtraAddedHeaders(currentVersion);
 		}
-		vI_upgrade.vI_rdfDatasource.storeExtVersion();
-		vI_notificationBar.dump("extension-upgrade to " + vI_upgrade.vI_rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
+		upgrade.rdfDatasource.storeExtVersion();
+		vI.notificationBar.dump("extension-upgrade to " + upgrade.rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
 	},
     
     __removeExtraAddedHeaders : function(currentVersion) {
@@ -119,15 +120,15 @@ var vI_upgrade = {
             .getService(Components.interfaces.nsIPrefService)
             .getBranch(null);
         
-        vI_notificationBar.dump("extension-upgrade __removeExtraAddedHeaders " + currentVersion + "\n");
-        if ((!currentVersion || vI_upgrade.versionChecker.compare(currentVersion, "0.6.9") < 0) && 
+        vI.notificationBar.dump("extension-upgrade __removeExtraAddedHeaders " + currentVersion + "\n");
+        if ((!currentVersion || upgrade.versionChecker.compare(currentVersion, "0.6.9") < 0) && 
                 prefroot.getCharPref("mailnews.headers.extraExpandedHeaders") != "") {
             // clean extraExpandedHeaders once, because the whole header-saving and restoring was broken too long
-            vI_notificationBar.dump("cleaning extraExpandedHeaders\n");
+            vI.notificationBar.dump("cleaning extraExpandedHeaders\n");
             prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", "")
-            vI_notificationBar.dump("cleaned extraExpandedHeaders\n");
+            vI.notificationBar.dump("cleaned extraExpandedHeaders\n");
         }
-        vI_notificationBar.dump("extension-upgrade __removeExtraAddedHeaders done.\n\n");
+        vI.notificationBar.dump("extension-upgrade __removeExtraAddedHeaders done.\n\n");
     },
     
 	__transferMovedUserPrefs : function(currentVersion) {
@@ -142,18 +143,18 @@ var vI_upgrade = {
 		// remove obsolete preference-tree virtualIdentity
 		for (var i = 0; i < transferPrefs.length; i++) {
 			// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
-			if (!currentVersion || (vI_upgrade.versionChecker.compare(currentVersion, transferPrefs[i].version) < 0)) {
+			if (!currentVersion || (upgrade.versionChecker.compare(currentVersion, transferPrefs[i].version) < 0)) {
 				// remove any obsolete preferences under extensions.virtualIdentity
-				vI_notificationBar.dump("transfer changed preferences of pre-" + transferPrefs[i].version + " release:\n")
+				vI.notificationBar.dump("transfer changed preferences of pre-" + transferPrefs[i].version + " release:\n")
 				for each (transferPref in transferPrefs[i].prefs) {
-					try {	vI_upgrade.preferences.setBoolPref(transferPref.targetPref, 
-							vI_upgrade.preferences.getBoolPref(transferPref.sourcePref));
-						vI_upgrade.preferences.clearUserPref(transferPref.sourcePref);
-						vI_notificationBar.dump(".") 
+					try {	upgrade.preferences.setBoolPref(transferPref.targetPref, 
+							upgrade.preferences.getBoolPref(transferPref.sourcePref));
+						upgrade.preferences.clearUserPref(transferPref.sourcePref);
+						vI.notificationBar.dump(".") 
 					}
 					catch (e) { };
 				}
-				vI_notificationBar.dump("done.\n")
+				vI.notificationBar.dump("done.\n")
 			}
 		}
 	},
@@ -170,14 +171,14 @@ var vI_upgrade = {
 		// remove obsolete preference-tree virtualIdentity
 		for (var i = 0; i < obsoletePrefs.length; i++) {
 			// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
-			if (!currentVersion || (vI_upgrade.versionChecker.compare(currentVersion, obsoletePrefs[i].version) < 0)) {
+			if (!currentVersion || (upgrade.versionChecker.compare(currentVersion, obsoletePrefs[i].version) < 0)) {
 				// remove any obsolete preferences under extensions.virtualIdentity
-				vI_notificationBar.dump("removing obsolete preferences of pre-" + obsoletePrefs[i].version + " release:\n")
+				vI.notificationBar.dump("removing obsolete preferences of pre-" + obsoletePrefs[i].version + " release:\n")
 				for each (pref in obsoletePrefs[i].prefs) {
-					try { vI_upgrade.preferences.clearUserPref(pref); vI_notificationBar.dump(".") }
+					try { upgrade.preferences.clearUserPref(pref); vI.notificationBar.dump(".") }
 					catch (e) { };
 				}
-				vI_notificationBar.dump("done.\n")
+				vI.notificationBar.dump("done.\n")
 			}
 		}
 	},
@@ -190,5 +191,7 @@ var vI_upgrade = {
             protocolSvc.loadUrl(uri);
         }
 }
+vI.upgrade = upgrade;
 // start init only if wizard is shown, so it is done in vI_upgrade.xul
-// window.addEventListener('load', vI_upgrade.init, true);
+// window.addEventListener('load', upgrade.init, true);
+}});
