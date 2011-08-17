@@ -81,14 +81,14 @@
   </vbox>
   
   <popupset>
-	  <menupopup id="vI_statusMenu">
-		  <menuitem type="checkbox" id="vI_statusMenu_storage_save" label="&vident.vI_Menu.storageSave.label;"
+	  <menupopup id="virtualIdentityExtension_statusMenu">
+		  <menuitem type="checkbox" id="virtualIdentityExtension_statusMenu_storage_save" label="&vident.vI_Menu.storageSave.label;"
 			oncommand="virtualIdentityExtension.statusmenu.menuConstraint(this);"/>
-		  <menuitem type="checkbox" id="vI_statusMenu_storage_saveBaseID" label="&vident.vI_Menu.saveBaseID.label;"
+		  <menuitem type="checkbox" id="virtualIdentityExtension_statusMenu_storage_saveBaseID" label="&vident.vI_Menu.saveBaseID.label;"
 			oncommand="virtualIdentityExtension.statusmenu.menuConstraint(virtualIdentityExtension.statusmenu.objStorageSaveMenuItem);"/>
-		  <menuitem type="checkbox" id="vI_statusMenu_storage_saveSMTP" label="&vident.vI_Menu.saveSMTP.label;"
+		  <menuitem type="checkbox" id="virtualIdentityExtension_statusMenu_storage_saveSMTP" label="&vident.vI_Menu.saveSMTP.label;"
 			oncommand="virtualIdentityExtension.statusmenu.menuConstraint(virtualIdentityExtension.statusmenu.objStorageSaveMenuItem);"/>
-		  <menuseparator id="vI_statusMenu_separator" />
+		  <menuseparator id="virtualIdentityExtension_statusMenu_separator" />
 		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.Settings.label;"
 			oncommand="window.open('chrome://v_identity/content/vI_prefDialog_TB3.xul', '', 'chrome, dialog, alwaysRaised, resizable=yes');" />
 		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.DataEditor.label;"
@@ -102,11 +102,11 @@
 		</menupopup>
   </popupset>
   <popupset>
-	  <tooltip id="vI_statusMenuTooltip" orient="vertical" >
-		<label id="vI_statusMenuTooltip_Title" value="&vident.vI_Menu.TooltipTitle.label;" />
-		<label id="vI_statusMenuTooltip_StatusValueLine1" />
-		<label id="vI_statusMenuTooltip_StatusValueLine2" />
-		<label id="vI_statusMenuTooltip_Change" value="&vident.vI_Menu.TooltipChange.label;" />
+	  <tooltip id="virtualIdentityExtension_statusMenuTooltip" orient="vertical" >
+		<label id="virtualIdentityExtension_statusMenuTooltip_Title" value="&vident.vI_Menu.TooltipTitle.label;" />
+		<label id="virtualIdentityExtension_statusMenuTooltip_StatusValueLine1" />
+		<label id="virtualIdentityExtension_statusMenuTooltip_StatusValueLine2" />
+		<label id="virtualIdentityExtension_statusMenuTooltip_Change" value="&vident.vI_Menu.TooltipChange.label;" />
 	  </tooltip>
   </popupset>
 
@@ -122,8 +122,8 @@
 			  class="statusbarpanel-menu-iconic"
 			  collapsed="true"
 			  insertafter="totalMessageCount"
-			  context="vI_statusMenu"
-			  tooltip="vI_statusMenuTooltip"
+			  context="virtualIdentityExtension_statusMenu"
+			  tooltip="virtualIdentityExtension_statusMenuTooltip"
 			  onclick="virtualIdentityExtension.statusmenu.clicked(event.button);" />
 </statusbar>
   

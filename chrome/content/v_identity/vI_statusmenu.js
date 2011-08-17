@@ -117,17 +117,17 @@ var statusmenu = {
 		statusmenu.prefroot.QueryInterface(Components.interfaces.nsIPrefBranch2);
 
 		statusmenu.objStatusMenu = document.getElementById("vI-status-menu");
-		statusmenu.objSaveBaseIDMenuItem = document.getElementById("vI_statusMenu_storage_saveBaseID");
-		statusmenu.objSaveSMTPMenuItem = document.getElementById("vI_statusMenu_storage_saveSMTP");
-		statusmenu.objStorageSaveMenuItem = document.getElementById("vI_statusMenu_storage_save");
-		statusmenu.objStatusMenuSeparator = document.getElementById("vI_statusMenu_separator");
+		statusmenu.objSaveBaseIDMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_saveBaseID");
+		statusmenu.objSaveSMTPMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_saveSMTP");
+		statusmenu.objStorageSaveMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_save");
+		statusmenu.objStatusMenuSeparator = document.getElementById("virtualIdentityExtension_statusMenu_separator");
 		statusmenu.objSaveSwitch = document.getElementById("saveSwitch");
 		statusmenu.objSaveBaseIDSwitch = document.getElementById("saveBaseIDSwitch");
 		statusmenu.objSaveSMTPSwitch = document.getElementById("saveSMTPSwitch");
 		statusmenu.objFccSwitch = document.getElementById("fcc_switch");
 		statusmenu.objStatusText = document.getElementById("statusText");
-		statusmenu.objStatusTooltipLine1 = document.getElementById("vI_statusMenuTooltip_StatusValueLine1");
-		statusmenu.objStatusTooltipLine2 = document.getElementById("vI_statusMenuTooltip_StatusValueLine2");
+		statusmenu.objStatusTooltipLine1 = document.getElementById("virtualIdentityExtension_statusMenuTooltip_StatusValueLine1");
+		statusmenu.objStatusTooltipLine2 = document.getElementById("virtualIdentityExtension_statusMenuTooltip_StatusValueLine2");
 
 		statusmenu.addObserver();
 		statusmenu.observe(null, null, "extensions.virtualIdentity.fcc_show_switch");
