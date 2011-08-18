@@ -140,7 +140,7 @@
 		<spacer flex="1" />
 		<button id="logoButton2" class="v_identity_logo v_identity_logo_button"
 				label="&vident.vidLogo.label; &vident.version;"
-				oncommand="virtualIdentityExtension.prefDialogopenURL('http://www.absorb.it/virtual-id')"
+				oncommand="virtualIdentityExtension.prefDialog.openURL('http://www.absorb.it/virtual-id')"
 				tooltiptext="&vI_prefDialog.vidLogo.tooltiptext;" hidden="true" />
 	</hbox>
 	<tabpanels>
@@ -174,13 +174,13 @@
 					value="&vI_prefDialog.versionWarning.label;" hidden="true"/>
 				<checkbox id="VIdent_identity.smart_draft" label="&vI_prefDialog.smartDraft.label;"
 					tooltiptext="&vI_prefDialog.smartDraft.tooltiptext;" prefstring="smart_draft"
-					oncommand="virtualIdentityExtension.prefDialogbase.constraints();" />
+					oncommand="virtualIdentityExtension.prefDialog.base.constraints();" />
 				</groupbox>
 				<groupbox>
 				<caption label="&vI_prefDialog.smartTab0.Reply.caption;" />
 				<checkbox id="VIdent_identity.smart_reply" label="&vI_prefDialog.smartReply.label;"
 					tooltiptext="&vI_prefDialog.smartReply.tooltiptext;" prefstring="smart_reply"
-					oncommand="virtualIdentityExtension.prefDialogbase.smartReplyConstraint(this);" />
+					oncommand="virtualIdentityExtension.prefDialog.base.smartReplyConstraint(this);" />
 				<hbox><spacer class="widthS"/>
 					<vbox>
 					<checkbox id="VIdent_identity.smart_detectByReceivedHeader" label="&vI_prefDialog.smartDetectByReceivedHeader.label;"
@@ -200,7 +200,7 @@
 					<hbox>
 					<vbox><description class="widthX">&vI_prefDialog.smartReply.headers.desc;</description>
 					<spacer flex="1"/>
-					<button id="VIdent_identity.smart_reply_headers_reset" label="&vI_prefDialog.smartReply.headers.reset;" oncommand="virtualIdentityExtension.prefDialogbase.smartReplyHeaderReset();"/>
+					<button id="VIdent_identity.smart_reply_headers_reset" label="&vI_prefDialog.smartReply.headers.reset;" oncommand="virtualIdentityExtension.prefDialog.base.smartReplyHeaderReset();"/>
 					</vbox>
 					<textbox id="VIdent_identity.smart_reply_headers" multiline="true"
 						rows="4" size="20" wrap="false" flex="1"
@@ -299,14 +299,14 @@
 					<description class="widthXX">&vI_prefDialog.idSelection.multiselect.desc;</description>
 					<checkbox id="VIdent_identity.idSelection_ask" label="&vI_prefDialog.idSelection.ask.label;"
 						prefstring="idSelection_ask"
-						oncommand="virtualIdentityExtension.prefDialogbase.idSelectionResultConstraint();"/>
+						oncommand="virtualIdentityExtension.prefDialog.base.idSelectionResultConstraint();"/>
 					<hbox><spacer class="widthS"/><checkbox id="VIdent_identity.idSelection_ask_always" label="&vI_prefDialog.idSelection.ask_always.label;"
 						prefstring="idSelection_ask_always"
-						oncommand="virtualIdentityExtension.prefDialogbase.idSelectionResultConstraint();"/>
+						oncommand="virtualIdentityExtension.prefDialog.base.idSelectionResultConstraint();"/>
 					</hbox>
 					<checkbox id="VIdent_identity.idSelection_autocreate" label="&vI_prefDialog.idSelection.autocreate.label;"
 						prefstring="idSelection_autocreate"
-						oncommand="virtualIdentityExtension.prefDialogbase.idSelectionResultConstraint();"/>
+						oncommand="virtualIdentityExtension.prefDialog.base.idSelectionResultConstraint();"/>
 
 					<hbox><spacer class="widthS"/><label value="&vI_prefDialog.idSelection.autocreate.desc;" hidden="true"
 						id="VIdent_identity.idSelection_autocreate.desc" />
@@ -343,7 +343,7 @@
 				<groupbox>
 				<caption label="&vI_prefDialog.composeDialog.caption;"/>
 					<checkbox id="VIdent_identity.autoTimestamp" label="&vI_prefDialog.composeDialog.autoTimestamp.label;"
-						tooltiptext="&vI_prefDialog.composeDialog.autoTimestamp.tooltiptext;" prefstring="autoTimestamp" oncommand="virtualIdentityExtension.prefDialogbase.autoTimestampConstraint(this);"/>
+						tooltiptext="&vI_prefDialog.composeDialog.autoTimestamp.tooltiptext;" prefstring="autoTimestamp" oncommand="virtualIdentityExtension.prefDialog.base.autoTimestampConstraint(this);"/>
 					<hbox id="VIdent_identity.autoTimestamp.options" hidden="true"><spacer class="widthS"/>
 						<vbox>
 							<hbox>
@@ -591,7 +591,7 @@
 				<caption label="&vI_prefDialog.storageTab.Tab0.caption;" />
 				<checkbox id="VIdent_identity.storage" label="&vI_prefDialog.storage.label;"
 					tooltiptext="&vI_prefDialog.storage.tooltiptext;" prefstring="storage"
-					oncommand="virtualIdentityExtension.prefDialogbase.storageConstraint(this);" />
+					oncommand="virtualIdentityExtension.prefDialog.base.storageConstraint(this);" />
 				<spacer class="paragraph"/>
 				<button id="VIdent_identity.storage.openEditor" label="&vI_prefDialog.storage.openEditor;" oncommand="openDialog('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome, dialog, resizable=yes');" />
                 <button id="VIdent_identity.storage.import" label="&vI_prefDialog.storage.import;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter('virtualIdentity.rdf');" />

@@ -74,10 +74,10 @@ var upgrade = {
 		document.documentElement.getButton('back').setAttribute('hidden','true');
 		document.documentElement.getButton('next').focus();
 		var pageid = elem.getAttribute("pageid");
-		var browser = document.getElementById('vITextBox.' + pageid)
+		var browser = document.getElementById('virtualIdentityExtension_TextBox.' + pageid)
 		if (browser) 
 			browser.outputString =
-		    		document.getElementById('vITextBoxBundle').getString('vident.' + pageid);
+		    		document.getElementById('virtualIdentityExtension_TextBoxBundle').getString('vident.' + pageid);
 	},
 	
 	__upgrade : function() {

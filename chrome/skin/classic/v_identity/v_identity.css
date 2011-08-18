@@ -217,17 +217,17 @@ treechildren::-moz-tree-cell(yes) {
 	background-image: url("chrome://v_identity/skin/checked-unequal.png");
 }
 
-#vI_statusMenuTooltip {
+#virtualIdentityExtension_statusMenuTooltip {
 	text-align: center;
 	font-size: x-small;
 }
 
-#vI_statusMenuTooltip_StatusValueLine1, #vI_statusMenuTooltip_StatusValueLine2 {
+#virtualIdentityExtension_statusMenuTooltip_StatusValueLine1, #virtualIdentityExtension_statusMenuTooltip_StatusValueLine2 {
 	font-weight: bold;
 	font-size: small;
 }
 
-#vI_statusMenuTooltip_Change {
+#virtualIdentityExtension_statusMenuTooltip_Change {
 	margin-top: 1em;
 	font-style: italic;
 }
