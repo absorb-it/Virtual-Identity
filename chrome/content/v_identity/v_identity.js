@@ -333,10 +333,10 @@ var main = {
 		main.tempStorage.NewIdentity.className = "identity-popup-item";
 		
 		// set the account name in the choosen menu item
-		main.tempStorage.NewIdentity.setAttribute("label", vI.account.account.defaultIdentity.identityName);
-		main.tempStorage.NewIdentity.setAttribute("accountname", " - " +  vI.account.account.incomingServer.prettyName);
-		main.tempStorage.NewIdentity.setAttribute("accountkey", vI.account.account.key);
-		main.tempStorage.NewIdentity.setAttribute("value", vI.account.account.defaultIdentity.key);
+		main.tempStorage.NewIdentity.setAttribute("label", vI.account._account.defaultIdentity.identityName);
+		main.tempStorage.NewIdentity.setAttribute("accountname", " - " +  vI.account._account.incomingServer.prettyName);
+		main.tempStorage.NewIdentity.setAttribute("accountkey", vI.account._account.key);
+		main.tempStorage.NewIdentity.setAttribute("value", vI.account._account.defaultIdentity.key);
 		
 		main.elements.Obj_MsgIdentityPopup.appendChild(main.tempStorage.NewIdentity);
 		main.__setSelectedIdentity(main.tempStorage.NewIdentity);
