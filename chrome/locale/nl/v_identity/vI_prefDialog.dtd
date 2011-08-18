@@ -83,6 +83,8 @@
 <!ENTITY vI_prefDialog.composeDialog.caption3 "Opslagschakelaars">
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.label "Tijdsafdrukidentiteit voor nieuwe berichten automatisch aanmaken">
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "Bij het schrijven van een nieuw bericht kunt u uw gebruikelijke afzendersadres aanpassen met een tijdsafdruk. Een eenvoudige manier om unieke identiteiten aan te maken, staat standaard uit.">
+<!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;c&apos;)"> <!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.autoTimeString.label "Format of Result: &#37;l localpart, &#37;t timestamp, &#37;d domain. Default &apos;&#37;l&#37;t@&#37;d&apos;"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "Opmerking: Om dynamisch deactiveren van handtekeningen in te schakelen dient u de ‘Signature Switch’ extensie te installeren (en activeren). Op dit moment is deze optie niet beschikbaar.">
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.label "Alle handtekeningen verwijderen bij gebruik van een virtuele identiteit">
 <!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "S/MIME-ondertekening deactiveren bij gebruik virtuele identiteit">

@@ -349,7 +349,20 @@
 				<groupbox>
 				<caption label="&vI_prefDialog.composeDialog.caption;"/>
 					<checkbox id="VIdent_identity.autoTimestamp" label="&vI_prefDialog.composeDialog.autoTimestamp.label;"
-						tooltiptext="&vI_prefDialog.composeDialog.autoTimestamp.tooltiptext;" prefstring="autoTimestamp" />
+						tooltiptext="&vI_prefDialog.composeDialog.autoTimestamp.tooltiptext;" prefstring="autoTimestamp" oncommand="vI_prefDialog.base.autoTimestampConstraint(this);"/>
+					<hbox id="VIdent_identity.autoTimestamp.options" hidden="true"><spacer class="widthS"/>
+						<vbox>
+							<hbox>
+							<description class="widthX">&vI_prefDialog.composeDialog.autoTimeFormat.label;</description>
+							<vbox><spacer flex="1"/><textbox id="VIdent_identity.autoTimeFormat"
+								prefstring="autoTimeFormat" size="20" /><spacer flex="1"/></vbox>
+							</hbox><hbox>
+							<description class="widthX">&vI_prefDialog.composeDialog.autoTimeString.label;</description>
+							<vbox><spacer flex="1"/><textbox id="VIdent_identity.autoTimeString"
+								prefstring="autoString" size="20" /><spacer flex="1"/></vbox>
+							</hbox>
+						</vbox>
+					</hbox>
 					<description id="VIdent_identity.HideSignature.warning" class="widthXX">&vI_prefDialog.composeDialog.HideSignature.warning.desc;</description>
 					<checkbox id="VIdent_identity.hide_signature" label="&vI_prefDialog.composeDialog.HideSignature.label;" disabled="true"
 						prefstring="hide_signature"/>
