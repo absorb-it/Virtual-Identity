@@ -67,7 +67,7 @@ var getHeader = {
 			if (isNaN(headerNumberToSearch)) headerNumberToSearch = parseInt(headerToSearch_splitted[2])
 			
 			// create header name to store the value
-			var headerNameToStore = "vI." + headerNameToSearch
+			var headerNameToStore = "vI_" + headerNameToSearch
 			if (!isNaN(headerNumberToSearch)) headerNameToStore += ":" + headerNumberToSearch
 			
 			getHeader.headerToSearch.push({ headerNameToSearch : headerNameToSearch, headerNumberToSearch : headerNumberToSearch,
