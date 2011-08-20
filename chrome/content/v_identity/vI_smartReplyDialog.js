@@ -60,4 +60,5 @@ var smartReply_dialog = {
 	}
 }
 window.addEventListener("load", smartReply_dialog.init, false);
+vI.smartReply_dialog = smartReply_dialog;
 }});
