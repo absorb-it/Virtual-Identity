@@ -311,9 +311,9 @@ var rdfDataTreeCollection = {
 		var tree = rdfDataTreeCollection.trees[treeType];
 		if (tree.treeElem.view.selection.count == 0) return;
 		if (tree.treeElem.view.selection.count > 5) {
-			var warning = rdfDataTreeCollection._strings.getString("rdfDataTree.modify.Warning1") + " " +
+			var warning = rdfDataTreeCollection._strings.getString("vI_rdfDataTree.modify.Warning1") + " " +
 				tree.treeElem.view.selection.count + " " +
-				rdfDataTreeCollection._strings.getString("rdfDataTree.modify.Warning2")
+				rdfDataTreeCollection._strings.getString("vI_rdfDataTree.modify.Warning2")
 			if (!rdfDataTreeCollection.promptService.confirm(window,"Warning",warning)) return;
 		}
 		
@@ -344,9 +344,9 @@ var rdfDataTreeCollection = {
 		var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
 		var tree = rdfDataTreeCollection.trees[treeType];
 		if (tree.treeElem.view.selection.count == 0) return;
-		var warning = rdfDataTreeCollection._strings.getString("rdfDataTreeCollection.remove.Warning1") + " " +
+		var warning = rdfDataTreeCollection._strings.getString("vI_rdfDataTree.remove.Warning1") + " " +
 			tree.treeElem.view.selection.count + " " +
-			rdfDataTreeCollection._strings.getString("rdfDataTreeCollection.remove.Warning2")
+			rdfDataTreeCollection._strings.getString("vI_rdfDataTree.remove.Warning2")
 		
 		if (!rdfDataTreeCollection.promptService.confirm(window,"Warning",warning)) return;
 		
