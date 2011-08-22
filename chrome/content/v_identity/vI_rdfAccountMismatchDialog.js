@@ -59,4 +59,5 @@ var rdfAccountMismatchDialog = {
 	}
 }
 window.addEventListener("load", rdfAccountMismatchDialog.init, false);
+vI.rdfAccountMismatchDialog = rdfAccountMismatchDialog;
 }});
