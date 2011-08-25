@@ -338,8 +338,10 @@ var storage = {
 				let abdirectory = abManager.getDirectory(ab.URI + 
 					"?(and(DisplayName,=," + encodeURIComponent(storage.__getMailListName(recipient)) + ")(IsMailList,=,TRUE))");
 				if (abdirectory) {
-					let cards = abdirectory.childCards;
-					if (cards.hasMoreElements()) return true;	// only interested if there is at least one element...
+					try {	// just try, sometimes there are no childCards at all...
+						let cards = abdirectory.childCards;
+						if (cards.hasMoreElements()) return true;	// only interested if there is at least one element...
+					} catch(e) { }
 				}
 			}
 		}

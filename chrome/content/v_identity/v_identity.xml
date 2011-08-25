@@ -56,8 +56,11 @@
 	</method>
 	<method name="removeTooltip">
 	<parameter name="randID" />
-        	<body><![CDATA[
-		if (randID) this.removeChild(document.getElementById(randID))
+        <body><![CDATA[
+		if (randID) {
+			var randIDelem = document.getElementById(randID);
+			if (randIDelem) this.removeChild(randIDelem);
+		}
 		]]></body>
 	</method>
 	</implementation>
