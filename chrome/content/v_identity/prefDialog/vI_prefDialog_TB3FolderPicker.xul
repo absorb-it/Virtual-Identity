@@ -29,7 +29,7 @@
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	
 	<script type="application/x-javascript"
-		src="chrome://v_identity/content/vI_prefDialog_TB3FolderPicker.js" />
+		src="chrome://v_identity/content/prefDialog/vI_prefDialog_TB3FolderPicker.js" />
 	<script type="application/x-javascript"
 		src="chrome://messenger/content/widgetglue.js"/>
 	

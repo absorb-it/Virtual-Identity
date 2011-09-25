@@ -23,8 +23,8 @@
    - Contributor(s):
    - ***** END LICENSE BLOCK ***** -->
 
-<?xul-overlay href="chrome://v_identity/content/vI_prefDialog_TB3FolderPicker.xul"?>
-<?xul-overlay href="chrome://v_identity/content/vI_prefDialog.xul"?>
+<?xul-overlay href="chrome://v_identity/content/prefDialog/vI_prefDialog_TB3FolderPicker.xul"?>
+<?xul-overlay href="chrome://v_identity/content/prefDialog/vI_prefDialog.xul"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/vI_prefDialog.dtd">
 
@@ -40,9 +40,9 @@
 		
 <script type="application/x-javascript" src="chrome://v_identity/content/_overlayNameSpaceWrapper.js" />
 		<script type="application/x-javascript"
-			src="chrome://v_identity/content/vI_prefDialog_FolderPicker.js" />
+			src="chrome://v_identity/content/prefDialog/vI_prefDialog_FolderPicker.js" />
 		<script type="application/x-javascript"
-            src="chrome://v_identity/content/vI_prefDialog.js" />
+            src="chrome://v_identity/content/prefDialog/vI_prefDialog.js" />
 		<script type="application/x-javascript"
             src="chrome://v_identity/content/modules/vI_helper.js" />
 
