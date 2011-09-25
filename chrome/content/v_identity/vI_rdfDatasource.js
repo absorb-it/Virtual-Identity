@@ -28,9 +28,14 @@ function rdfDatasource(rdfFileName, dontRegisterObserver) {
     this._rdfFileName = rdfFileName;
     if (this._rdfFileName) this.init();
     if (!dontRegisterObserver) this.AccountManagerObserver.register();
+	let window = Components.classes['@mozilla.org/appshell/window-mediator;1']
+        .getService(Components.interfaces.nsIWindowMediator)
+        .getMostRecentWindow("mail:3pane");
+	this._extVersion = window.virtualIdentityExtension.extensionVersion;
 }
 
 rdfDatasource.prototype = {
+	_extVersion :		null,
     _rdfVersion :       "0.0.5",
     _rdfService :       Components.classes["@mozilla.org/rdf/rdf-service;1"]
                             .getService(Components.interfaces.nsIRDFService),
@@ -66,6 +71,10 @@ rdfDatasource.prototype = {
     _smtpContainer : Components.classes["@mozilla.org/rdf/container;1"]
             .createInstance(Components.interfaces.nsIRDFContainer),
     
+	_pref : Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefService)
+		.getBranch("extensions.virtualIdentity."),
+
     getContainer : function (type) {
 		switch (type) {
 			case "email": return this._emailContainer;
@@ -152,10 +161,7 @@ rdfDatasource.prototype = {
 		var oldExtVersion = this.getCurrentExtFileVersion()
 		var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 			.getService(Components.interfaces.nsIVersionComparator);
-		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
-		// var extVersion = this.extensionManager.getItemForID(this._virtualIdentityID).version
-		var extVersion = document.getElementById("extVersion").getAttribute("value");
-		return (!oldExtVersion || versionChecker.compare(oldExtVersion, extVersion) < 0)	
+		return (!oldExtVersion || versionChecker.compare(oldExtVersion, this._extVersion) < 0)	
 	},
     // **************    RDF UPGRADE CODE    ****************************************************
     rdfUpgrade : function() {
@@ -314,11 +320,8 @@ rdfDatasource.prototype = {
 	},
 	
 	storeExtVersion: function() {
-		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
-		// var extVersion = this.extensionManager.getItemForID(this._virtualIdentityID).version
-		var extVersion = document.getElementById("extVersion").getAttribute("value");
 		this._setRDFValue(
-			this._rdfService.GetResource(this._rdfNS + "virtualIdentity"), "version", extVersion)
+			this._rdfService.GetResource(this._rdfNS + "virtualIdentity"), "version", this._extVersion)
 		this._flush();
 	},
 
@@ -583,8 +586,8 @@ rdfDatasource.prototype = {
 		this._unsetRDFValue(resource, "smtp", this._getRDFValue(resource, "smtp"))
 		this._unsetRDFValue(resource, "name", this._getRDFValue(resource, "name"))
 		
-        var extras = new vI.storageExtras(this, resource);
-        extras.loopForRDF(this, resource, "unset");
+        var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
+        if (extras) extras.loopForRDF(this, resource, "unset");
         this.getContainer(recType).RemoveElement(resource, true);
 	},
 	
@@ -613,14 +616,62 @@ rdfDatasource.prototype = {
 			var id = this._getRDFValue(resource, "id")
 			var smtp = this._getRDFValue(resource, "smtp")
 			if (!smtp) smtp = vI.NO_SMTP_TAG;
-			var extras = new vI.storageExtras(this, resource);
+			var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
 			
 			var localIdentityData = new vI.identityData(email, fullName, id, smtp, extras)
 			addNewDatum (resource, name, localIdentityData, idData)
 		}
 	},
 	
-	findMatchingFilter : function (recDescription) {
+	__getDescriptionAndType : function (recipient, recipientType) {
+		if (recipientType == "addr_newsgroups")	return { recDesc : recipient, recType : "newsgroup" }
+		else if (this.__isMailingList(recipient)) {
+			vI.notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is MailList\n");
+			return { recDesc : this.__getMailListName(recipient), recType : "maillist" }
+		}
+		else {
+			vI.notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is no MailList\n");
+			var localIdentityData = new vI.identityData(recipient, null, null, null, null, null, null);
+			return { recDesc : localIdentityData.combinedName, recType : "email" }
+		}
+	},
+	
+	// --------------------------------------------------------------------
+	// check if recipient is a mailing list.
+	// Similiar to Thunderbird, if there are muliple cards with the same displayName the mailinglist is preferred
+	// see also https://bugzilla.mozilla.org/show_bug.cgi?id=408575
+	__isMailingList: function(recipient) {
+		let abManager = Components.classes["@mozilla.org/abmanager;1"]
+			.getService(Components.interfaces.nsIAbManager);
+		let allAddressBooks = abManager.directories;
+		while (allAddressBooks.hasMoreElements()) {
+			let ab = allAddressBooks.getNext();
+			if (ab instanceof Components.interfaces.nsIAbDirectory && !ab.isRemote) {
+				let abdirectory = abManager.getDirectory(ab.URI + 
+					"?(and(DisplayName,=," + encodeURIComponent(this.__getMailListName(recipient)) + ")(IsMailList,=,TRUE))");
+				if (abdirectory) {
+					try {	// just try, sometimes there are no childCards at all...
+						let cards = abdirectory.childCards;
+						if (cards.hasMoreElements()) return true;	// only interested if there is at least one element...
+					} catch(e) { }
+				}
+			}
+		}
+		return false;
+	},	
+	
+	// --------------------------------------------------------------------
+	
+	__getMailListName : function(recipient) {
+		if (recipient.match(/<[^>]*>/) || recipient.match(/$/)) {
+			var mailListName = RegExp.leftContext + RegExp.rightContext
+			mailListName = mailListName.replace(/^\s+|\s+$/g,"")
+		}
+		return mailListName;
+	},
+
+	findMatchingFilter : function (recipient, recipientType) {
+		var recDescription = this.__getDescriptionAndType(recipient, recipientType).recDesc;
 		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: findMatchingFilter for " + recDescription + ".\n");
 		var enumerator = this._filterContainer.GetElements();
 		while (enumerator && enumerator.hasMoreElements()) {
@@ -659,9 +710,10 @@ rdfDatasource.prototype = {
 		return null;
 	},
 	
-	readVIdentityFromRDF : function (recDescription, recType) {
+	readVIdentityFromRDF : function (recipient, recipientType) {
+		var storedRecipient = this.__getDescriptionAndType(recipient, recipientType);
 		var email = this._rdfService.GetResource(this._rdfNS + "rdf#email");
-		var resource = this._getRDFResourceForVIdentity(recDescription, recType);
+		var resource = this._getRDFResourceForVIdentity(storedRecipient.recDesc, storedRecipient.recType);
 		if (!resource) return null;
 		if (!this._rdfDataSource.hasArcOut(resource, email)) {
 			// no data available --> give up.
@@ -683,8 +735,9 @@ rdfDatasource.prototype = {
 		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: email='" + email + 
 			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'\n");
 		
-		var extras = new vI.storageExtras(this, resource);
-		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: extras:" + extras.status() + "\n");
+		var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
+		var extras_status = (typeof(vI.storageExtras)=='function')?extras.status():" not used";
+		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: extras:" + extras_status + "\n");
 		
 		var localIdentityData = new vI.identityData(email, fullName, id, smtp, extras)
 		return localIdentityData;
@@ -698,11 +751,13 @@ rdfDatasource.prototype = {
 		else return null;
 	},
 	
-	updateRDFFromVIdentity : function(recDescription, recType) {
-		this.updateRDF(recDescription, recType,
-			document.getElementById("msgIdentity_clone").identityData,
-			(vI.statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true"),
-			(vI.statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true"),
+	updateRDFFromVIdentity : function(identityData, recipientName, recipientType) {
+		var recipient = this.__getDescriptionAndType(recipientName, recipientType)
+		this.updateRDF(recipient.recDesc, recipient.recType, identityData,
+			(!vI.statusmenu && this._pref.getBoolPref("storage_store_base_id")
+				|| vI.statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true"),
+			(!vI.statusmenu && this._pref.getBoolPref("storage_store_SMTP")
+				|| vI.statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true"),
 			null, null);
 	},
 	
@@ -744,7 +799,7 @@ rdfDatasource.prototype = {
 		else	this._unsetRDFValue(resource, "smtp", this._getRDFValue(resource, "smtp"))
         this._setRDFValue(resource, "name", recDescription);
  
-        localIdentityData.extras.loopForRDF(this, resource, "set");
+        if (localIdentityData.extras) localIdentityData.extras.loopForRDF(this, resource, "set");
 		
 		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: updateRDF add " + resource.ValueUTF8 + " at position " + position + ".\n");
         if (position != -1) this.getContainer(recType).InsertElementAt(resource, position, true);
@@ -764,8 +819,8 @@ rdfDatasource.prototype = {
 		else	this._rdfDataSource.Assert(resource, predicate, name, true);
         return value;
 	},
-    
-    //  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
+
+	//  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
     AccountManagerObserver : {
         _uninstall : false,
         observe : function(subject, topic, data) {
@@ -793,6 +848,138 @@ rdfDatasource.prototype = {
         }
     }
 }
+
+
+function rdfDatasourceAccess() {
+	this._rdfDataSource = new rdfDatasource("virtualIdentity.rdf", false);
+	this.stringBundle = Services.strings.createBundle("chrome://v_identity/locale/v_identity.properties");
+}
+
+rdfDatasourceAccess.prototype = {
+	_rdfDataSource : null,
+	stringBundle : null,
+	
+	_pref : Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefService)
+		.getBranch("extensions.virtualIdentity."),
+	
+	clean : function() {
+		this._rdfDataSource.clean();
+	},
+	
+	updateVIdentityFromStorage : function(recipientName, recipientType, currentIdentity, currentIdentityIsVid, isNotFirstInputElement) {
+		var localIdentities = new vI.identityCollection();
+		localIdentities.addWithoutDuplicates(this._rdfDataSource.readVIdentityFromRDF(recipientName, recipientType));
+		if (localIdentities.number == 1) vI.notificationBar.dump("## rdfDatasourceAccess: using data from direct match\n");
+		localIdentities.addWithoutDuplicates(this._rdfDataSource.findMatchingFilter(recipientName, recipientType));
+		
+		var returnValue = {}; returnValue.identityCollection = localIdentities;
+		if (localIdentities.number == 0) {
+			vI.notificationBar.dump("## rdfDatasourceAccess: updateVIdentityFromStorage no usable Storage-Data found.\n");
+		}
+		else {
+			vI.notificationBar.dump("## rdfDatasourceAccess: compare with current Identity\n");
+			if (this._pref.getBoolPref("storage_getOneOnly") &&		// if requested to retrieve only storageID for first recipient entered
+				isNotFirstInputElement &&							// and it is now not the first recipient entered
+				!localIdentities.identityDataCollection[0].equalsIdentity(currentIdentity, false).equal) {		// and this id is different than the current used one
+					vI.notificationBar.setNote(
+						this.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageCollidingIdentity"),	// than drop the potential changes
+						"storage_notification");
+					returnValue.result = "drop";
+			}
+			// only update fields if new Identity is different than old one.
+			else {
+				vI.notificationBar.dump("## rdfDatasourceAccess: updateVIdentityFromStorage check if storage-data matches current Identity.\n");
+				var compResult = localIdentities.identityDataCollection[0].equalsIdentity(currentIdentity, true);
+				if (!compResult.equal) {
+					var warning = this.__getWarning("replaceVIdentity", recipientName, compResult.compareMatrix);
+					if (	!currentIdentityIsVid ||
+						!this._pref.getBoolPref("storage_warn_vI_replace") ||
+						(this.__askWarning(warning) == "accept")) {
+							returnValue.result = "accept";
+					}
+				}
+				else {
+					returnValue.result = "equal";
+				}
+			}
+		}
+		return returnValue;
+	},
+	
+	storeVIdentityToAllRecipients : function(identityData, recipients) {
+		var multipleRecipients = (recipients.length > 1);
+		var dontUpdateMultipleNoEqual = (this._pref.getBoolPref("storage_dont_update_multiple") && multipleRecipients)
+		vI.notificationBar.dump("## rdfDatasource: storeVIdentityToAllRecipients dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'\n")
+		
+		for (var j = 0; j < recipients.length; j++) {
+			var returnValue = this.__updateStorageFromVIdentity(identityData, recipients[j].recipient, recipients[j].recipientType, dontUpdateMultipleNoEqual);
+			if (returnValue.update != "accept")  break;
+		}
+		return returnValue;
+	},
+
+	getVIdentityFromAllRecipients : function(allIdentities, recipients) {
+		var initnumber = allIdentities.number;
+		for (var j = 0; j < recipients.length; j++) {
+			allIdentities.addWithoutDuplicates(this._rdfDataSource.readVIdentityFromRDF(recipients[j].recipient, recipients[j].recipientType));
+			allIdentities.addWithoutDuplicates(this._rdfDataSource.findMatchingFilter(recipients[j].recipient, recipients[j].recipientType));
+		}
+		vI.notificationBar.dump("## storage: found " + (allIdentities.number-initnumber) + " address(es)\n")
+	},
+
+	__updateStorageFromVIdentity : function(identityData, recipient, recipientType, dontUpdateMultipleNoEqual) {
+		vI.notificationBar.dump("## rdfDatasource: __updateStorageFromVIdentity.\n")
+		var storageDataByType = this._rdfDataSource.readVIdentityFromRDF(recipient, recipientType);
+		var storageDataByFilter = this._rdfDataSource.findMatchingFilter(recipient, recipientType);
+		
+		// update (storing) of data by type is required if there is
+		// no data stored by type (or different data stored) and no equal filter found
+		var storageDataByTypeCompResult = storageDataByType?storageDataByType.equalsIdentity(identityData, true):null;
+		var storageDataByTypeEqual = (storageDataByType && storageDataByTypeCompResult.equal);
+		var storageDataByFilterEqual = (storageDataByFilter && storageDataByFilter.equalsIdentity(identityData, false).equal);
+		
+		var doUpdate = "accept";
+		if (	(!storageDataByType && !storageDataByFilterEqual) ||
+			(!storageDataByTypeEqual && !storageDataByFilterEqual && !dontUpdateMultipleNoEqual) ) {
+			vI.notificationBar.dump("## storage: __updateStorageFromVIdentity updating\n")
+			if (storageDataByType && !storageDataByTypeEqual && this._pref.getBoolPref("storage_warn_update")) {
+				vI.notificationBar.dump("## storage: __updateStorageFromVIdentity overwrite warning\n");
+				doUpdate = this.__askWarning(this.__getWarning("updateStorage", recipient, storageDataByTypeCompResult.compareMatrix));
+			}
+		}
+		if (doUpdate == "accept") this._rdfDataSource.updateRDFFromVIdentity(identityData, recipient, recipientType);
+		return { update : doUpdate, storedIdentity : storageDataByType };
+	},
+	
+	__getWarning : function(warningCase, recipient, compareMatrix) {
+		var warning = { title: null, recLabel : null, recipient : null, warning : null, css: null, query : null, class : null };
+		warning.title = this.stringBundle.GetStringFromName("vident." + warningCase + ".title")
+		warning.recLabel = this.stringBundle.GetStringFromName("vident." + warningCase + ".recipient") + ":";
+		warning.recipient = recipient;
+		warning.warning = 
+			"<table class='" + warningCase + "'><thead><tr><th class='col1'/>" +
+				"<th class='col2'>" + this.stringBundle.GetStringFromName("vident." + warningCase + ".currentIdentity") + "</th>" +
+				"<th class='col3'>" + this.stringBundle.GetStringFromName("vident." + warningCase + ".storedIdentity") + "</th>" +
+			"</tr></thead>" +
+			"<tbody>" + compareMatrix + "</tbody>" +
+			"</table>"
+		warning.css = "vI.DialogBrowser.css";
+		warning.query = this.stringBundle.GetStringFromName("vident." + warningCase + ".query");
+		warning.class = warningCase;
+		return warning;
+	},
+
+	__askWarning : function(warning) {
+		var retVar = { returnValue: null };
+		var answer = window.openDialog("chrome://v_identity/content/vI_Dialog.xul","",
+					"chrome, dialog, modal, alwaysRaised, resizable=yes",
+					 warning, retVar)
+		dump("retVar.returnValue=" + retVar.returnValue + "\n")
+		return retVar.returnValue;
+	},
+}
+
 
 // create with name of the file to import into
 function rdfDatasourceImporter(rdfFileName) {
@@ -948,7 +1135,7 @@ rdfDatasourceImporter.prototype = {
                     id = id?relevantIDs[id].id:null
                     var smtp = this._rdfImportDataSource._getRDFValue(resource, "smtp")
                     smtp = (smtp && smtp != vI.DEFAULT_SMTP_TAG)?relevantSMTPs[smtp].smtp:smtp
-                    var extras = new vI.storageExtras(this._rdfImportDataSource, resource);
+                    var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this._rdfImportDataSource, resource):null;
                     var localIdentityData = new vI.identityData(email, fullName, id, smtp, extras)
                     
                     this._rdfDataSource.updateRDF(name, treeType, localIdentityData, false, false, null, null)
@@ -979,5 +1166,6 @@ rdfDatasourceImporter.prototype = {
     }
 }
 vI.rdfDatasource = rdfDatasource;
+vI.rdfDatasourceAccess = rdfDatasourceAccess;
 vI.rdfDatasourceImporter = rdfDatasourceImporter;
 }});

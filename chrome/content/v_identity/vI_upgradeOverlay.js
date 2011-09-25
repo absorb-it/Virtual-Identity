@@ -57,6 +57,10 @@ var upgradeOverlay = {
 			if (addon) prefroot.setBoolPref("extensions.virtualIdentity." + enigmail_ID, addon.userDisabled || addon.appDisabled ? false : true)
 		});	
 		
+		const virtualIdentity_ID="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
+		AddonManager.getAddonByID(virtualIdentity_ID, function(addon) {
+			if (addon) vI.extensionVersion = addon.version;
+		});
 		
 		if (prefroot.getBoolPref("extensions.virtualIdentity.error_console")) {
 			document.getElementById("vIErrorBoxSplitter").removeAttribute("hidden");

@@ -41,7 +41,7 @@ var prefDialog = {
 		if (browserElem.getAttribute("hidden")) return;				// don't load any url if browser is hidden
 		var panelIndex = (tabpanel)?tabpanel:document.getElementById('prefTabbox').selectedIndex
 		var prefTree = document.getElementById('prefTabbox').selectedPanel.getElementsByAttribute("class", "vIprefTree")[0];
-		var currentVersion = document.getElementById("extVersion").getAttribute("value").split(/\./);
+		var currentVersion = document.getElementById("virtualIdentityExtension_extVersion").getAttribute("value").split(/\./);
 		var extVersion = currentVersion[0] + "." + currentVersion[1];
 		var url = "https://www.absorb.it/virtual-id/wiki/docs/" + extVersion + "/tab" + panelIndex + "/tree" + prefTree.currentIndex;
 		document.getElementById("vI_remoteBrowserBox").url = url;

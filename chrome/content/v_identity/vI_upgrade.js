@@ -58,8 +58,12 @@ var upgrade = {
 		if (currentVersion[2].match(/pre/))
 		 	nextVersion += parseInt(currentVersion[2])
 		else nextVersion += parseInt(currentVersion[2]) + 1
-		var extVersion = document.getElementById("extVersion").getAttribute("value");
-				
+			
+		let window = Cc['@mozilla.org/appshell/window-mediator;1']
+			.getService(Ci.nsIWindowMediator)
+			.getMostRecentWindow("mail:3pane");
+		var extVersion = window.virtualIdentityExtension.extensionVersion;
+		
 		// don't show the dialog if we do a one-step upgrade
 		if (upgrade.versionChecker.compare(extVersion, nextVersion) <= 0) {
 			vI.notificationBar.dump("starting quick_upgrade.\n")

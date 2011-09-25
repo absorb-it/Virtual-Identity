@@ -51,7 +51,6 @@
   <stringbundleset id="stringbundleset">
     <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
     <stringbundle id="vIStorageExtrasBundle" src="chrome://v_identity/locale/vI_storageExtras.properties" />
-    <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />
   </stringbundleset>
 
 <vbox id="appcontent" >

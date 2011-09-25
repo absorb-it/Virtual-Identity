@@ -30,6 +30,7 @@ var Dialog = {
 	},
 
 	init : function(warning) {
+		dump("warning.class=" + warning.class + "warning.class=" + warning.title + "warning.warning=" + warning.warning + "\n")
 		document.getElementById("vI_Dialog").setAttribute("class", warning.class); 
 		Dialog.setDescription(document.getElementById("vI_Dialog_title"), warning.title);
 		Dialog.setDescription(document.getElementById("vI_Dialog_recLabel"), warning.recLabel);

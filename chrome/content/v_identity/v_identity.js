@@ -33,6 +33,10 @@ var main = {
 	
 	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
 				.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
+							
+	accountManager : Components.classes["@mozilla.org/messenger/account-manager;1"]
+			.getService(Components.interfaces.nsIMsgAccountManager),
+		
 
 	gMsgCompose : null, // to store the global gMsgCompose after MsgComposeDialog is closed
 
@@ -79,17 +83,15 @@ var main = {
 	replacement_functions : {
 		FillIdentityList: function(menulist) {
 			vI.notificationBar.dump("## v_identity: mod. FillIdentityList\n");
-			var mgr = Components.classes["@mozilla.org/messenger/account-manager;1"]
-								.getService(Components.interfaces.nsIMsgAccountManager);
-			var accounts = queryISupportsArray(mgr.accounts,
+			var accounts = queryISupportsArray(main.accountManager.accounts,
                                      Components.interfaces.nsIMsgAccount);
 
 			// Ugly hack to work around bug 41133. :-(
 			accounts = accounts.filter(function isNonSuckyAccount(a) { return !!a.incomingServer; });
 			function sortAccounts(a, b) {
-				if (a.key == mgr.defaultAccount.key)
+				if (a.key == main.accountManager.defaultAccount.key)
 				return -1;
-				if (b.key == mgr.defaultAccount.key)
+				if (b.key == main.accountManager.defaultAccount.key)
 				return 1;
 				var aIsNews = a.incomingServer.type == "nntp";
 				var bIsNews = b.incomingServer.type == "nntp";
@@ -132,57 +134,39 @@ var main = {
 			// if addressCol2 is focused while sending check storage for the entered address before continuing
 			vI.storage.awOnBlur(vI.storage.focusedElement);
 
-			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-				.getService(Components.interfaces.nsIPromptService);
 			vI.notificationBar.dump("\n## v_identity: VIdentity_GenericSendMessage\n");
 			
+			if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now) { vI.msgIdentityCloneTools.addReplyToSelf(); }
+
 			var vid = document.getElementById("msgIdentity_clone").vid
-
-			if (msgType == nsIMsgCompDeliverMode.Now) {
-				if ( (vid && main.preferences.getBoolPref("warn_virtual") &&
-					!(promptService.confirm(window,"Warning",
-						main.elements.strings.getString("vident.sendVirtual.warning")))) ||
-				  (!vid && main.preferences.getBoolPref("warn_nonvirtual") &&
-					!(promptService.confirm(window,"Warning",
-						main.elements.strings.getString("vident.sendNonvirtual.warning")))) ) {
-					main.replacement_functions.GenericSendMessageInProgress = false;
-					return;
-				}
-				if (!vI.storage.storeVIdentityToAllRecipients(msgType)) {
-// 					vI.notificationBar.dump("## v_identity: sending aborted\n");
-					main.replacement_functions.GenericSendMessageInProgress = false;
-					return;
-				}
-				vI.msgIdentityCloneTools.addReplyToSelf();
-			}
-			if (vid) main.prepareAccount();
-			main.replacement_functions.GenericSendMessageInProgress = false;
-// 			vI.notificationBar.dump("## v_identity: original_functions.GenericSendMessage\n");
-
-			// final check if eyerything is nice before we handover to the real sending...
 			var virtualIdentityData = document.getElementById("msgIdentity_clone").identityData;
-
-			var currentIdentity = getCurrentIdentity();
-            //                          vI.identityData(email, fullName, id, smtp, extras, sideDescription, existingID)
-            var currentIdentityData = new vI.identityData(currentIdentity.email, currentIdentity.fullName, null, currentIdentity.smtpServerKey, null, null, null);
 			
-			vI.notificationBar.dump("\n## vI.identityData GenericSendMessage Final Check\n");
-			vI.notificationBar.dump("## vI.identityData currentIdentity: fullName='" + currentIdentityData.fullName + "' email='" + currentIdentityData.email + "' smtp='" + currentIdentityData.smtp.key + "'\n");
-			vI.notificationBar.dump("## vI.identityData virtualIdentityData: fullName='" + virtualIdentityData.fullName + "' email='" + virtualIdentityData.email + "' smtp='" + virtualIdentityData.smtp.key + "'\n");
-
-			if	(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase()	&&
-				currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase()		&&
-				virtualIdentityData.smtp.equal(currentIdentityData.smtp)	) {
-					main.original_functions.GenericSendMessage(msgType);
+			returnValue = vI.prepareSendMsg(	vid, msgType, virtualIdentityData,
+							main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
+							main._getRecipients() );
+			if (returnValue.update == "abort") {
+				main.replacement_functions.GenericSendMessageInProgress = false;
+				vI.notificationBar.dump("## sending: --------------  aborted  ---------------------------------\n")
+				return;
 			}
-			else {
-				if (!(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase())) vI.notificationBar.dump("\n## vI.identityData failed check for fullName.\n");
-				if (!(currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase())) vI.notificationBar.dump("\n## vI.identityData failed check for email.\n");
-				if (!(virtualIdentityData.smtp.equal(currentIdentityData.smtp))) vI.notificationBar.dump("\n## vI.identityData failed check for SMTP.\n");
-				alert(main.elements.strings.getString("vident.genericSendMessage.error"));
-				main.Cleanup();
+			else if (returnValue.update == "takeover") {
+					var msgIdentityCloneElem = document.getElementById("msgIdentity_clone");
+					msgIdentityCloneElem.selectedMenuItem = msgIdentityCloneElem.addIdentityToCloneMenu(returnValue.storedIdentity);
+					main.replacement_functions.GenericSendMessageInProgress = false;
+					vI.notificationBar.dump("## sending: --------------  aborted  ---------------------------------\n")
+					return;
 			}
-// 			vI.notificationBar.dump("## v_identity: original_functions.GenericSendMessage done\n");
+			
+			if (vid) main.addVirtualIdentityToMsgIdentityMenu();
+			
+			// final check if eyerything is nice before we handover to the real sending...
+			if (vI.finalCheck(virtualIdentityData, getCurrentIdentity())) {
+				main.replacement_functions.GenericSendMessageInProgress = false;
+				main.original_functions.GenericSendMessage(msgType);
+			}
+			else	main.Cleanup();
+			main.replacement_functions.GenericSendMessageInProgress = false;
+			// 			vI.notificationBar.dump("## v_identity: original_functions.GenericSendMessage done\n");
 		},
 		
 		replace_FillIdentityList : function() {
@@ -198,6 +182,33 @@ var main = {
 		vI.notificationBar.dump("## v_identity: end. remove Account if there.\n")
 		main.Cleanup();
 		vI.storage.clean();
+	},
+
+	_getRecipients : function(row) {
+		var recipients = [];
+		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
+			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
+			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
+				main._recipientIsDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
+			recipients.push( { recipient: awGetInputElement(row).value, recipientType : recipientType } );
+		}
+		return recipients;
+	},
+	
+	_recipientIsDoBcc : function(row) {
+		var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
+		if (recipientType != "addr_bcc" || !getCurrentIdentity().doBcc) return false
+
+		var doBccArray = gMsgCompose.compFields.splitRecipients(getCurrentIdentity().doBccList, false, {});
+
+		for (var index = 0; index < doBccArray.count; index++ ) {
+			if (doBccArray.StringAt(index) == awGetInputElement(row).value) {
+				vI.notificationBar.dump("## main _recipientIsDoBcc: ignoring doBcc field '" +
+					doBccArray.StringAt(index) + "'.\n");
+				return true;
+			}
+		}		
+		return false
 	},
 
 	// initialization //
@@ -230,6 +241,7 @@ var main = {
 		main.gMsgCompose = gMsgCompose;
 		document.getElementById("msgIdentity_clone").init();
 		vI.statusmenu.init();
+		vI.notificationBar.dump("## v_identity: initSystemStage1 done.\n")
 	},
 	
 	initSystemStage2 : function() {
@@ -237,6 +249,7 @@ var main = {
 		vI.msgIdentityCloneTools.initReplyTo();
 		vI.storage.init();
 		vI.smartIdentity.init();
+		vI.notificationBar.dump("## v_identity: initSystemStage2 done.\n")
 	},
 	
 	close : function() {
@@ -285,7 +298,6 @@ var main = {
 		
 		// clean all elements
 		document.getElementById("msgIdentity_clone").clean();
-		vI.smartIdentity.clean();
 		vI.notificationBar.dump("## v_identity: everything cleaned.\n")
 		
 		// now (re)init the elements
@@ -355,7 +367,8 @@ var main = {
 
 	prepareAccount : function() {
 		main.Cleanup(); // just to be sure that nothing is left (maybe last time sending was irregularily stopped)
-		vI.account.createAccount();
+		vI.account.createAccount(document.getElementById("msgIdentity_clone").identityData,
+								 main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value));
 		main.addVirtualIdentityToMsgIdentityMenu();
 	},
 

@@ -39,6 +39,7 @@
 */
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+// var storedHeaders = { };
 var getHeader = {
 	messenger: null,
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
@@ -89,6 +90,7 @@ var getHeader = {
 		var subtitle = getHeader.strings.getString("vident.getHeader.noHeader");
 		// create array to count the header
 		var currentHeadersCounter = [];
+// 		storedHeaders = { };
 		
 		var listId = false; var received = false; var content_base = false;
 		for (var header in currentHeaderData) {
@@ -98,6 +100,7 @@ var getHeader = {
 			// remember list-id header to prevent using Mailing-List addresses as sender
 			if (!listId && headerName == "list-id") {
 				hdr.setStringProperty("vI_list-id","found"); listId = true;
+// 				storedHeaders["vI_list-id"] = "found";
 				vI.notificationBar.dump("## getHeader: found header: list-id  ...stored to recognize mailing-list\n");
 // 				continue;
 			}
@@ -105,6 +108,7 @@ var getHeader = {
 			// remember received header to prevent using Mailing-List addresses as sender
 			if (!received && headerName == "received") {
 				hdr.setStringProperty("vI_received","found"); received = true;
+// 				storedHeaders["vI_received"] = "found";
 				vI.notificationBar.dump("## getHeader: found header: received  ...stored to recognize received mail\n");
 // 				continue;
 			}
@@ -112,6 +116,7 @@ var getHeader = {
 			// remember content-base header to prevent using Blog/News-Feed addresses as sender
 			if (!content_base && headerName == "content-base") {
 				hdr.setStringProperty("vI_content_base","found"); content_base = true;
+// 				storedHeaders["vI_content_base"] = "found";
 				vI.notificationBar.dump("## getHeader: found header: content-base  ...stored to recognize blog/news-feed\n");
 // 				continue;
 			}
@@ -129,12 +134,16 @@ var getHeader = {
 						value = hdr.getStringProperty(getHeader.headerToSearch[index].headerNameToStore) + 
 						", " + value;
 					hdr.setStringProperty(getHeader.headerToSearch[index].headerNameToStore,getHeader.unicodeConverter.ConvertFromUnicode(value) + getHeader.unicodeConverter.Finish());
+					
+// 					storedHeaders[getHeader.headerToSearch[index].headerNameToStore] = getHeader.unicodeConverter.ConvertFromUnicode(value) + getHeader.unicodeConverter.Finish();
 
 					var storedValue = hdr.getProperty(getHeader.headerToSearch[index].headerNameToStore)
 					var storedConvValue = getHeader.unicodeConverter.ConvertToUnicode(storedValue)
 					vI.notificationBar.dump("## getHeader: found header: " + headerName +
 						"[:" + currentHeadersCounter[headerName] + "] - stored as '" + 
 						storedConvValue + "'\n");
+/*					vI.notificationBar.dump("## getHeader: additional stored header: " + getHeader.headerToSearch[index].headerNameToStore +
+						" '" + storedHeaders[getHeader.headerToSearch[index].headerNameToStore] + "'\n");*/
 					if (!found) { 
 						subtitle = getHeader.strings.getString("vident.getHeader.headerFound");
 						found = true;
@@ -375,4 +384,5 @@ var prepareHeader = {
 addEventListener('messagepane-loaded', getHeader.setupEventListener, true);
 window.addEventListener("load", function(e) { prepareHeader.init(); }, false);
 window.addEventListener("unload", function(e) { prepareHeader.cleanup(); }, false);
+// vI.storedHeaders = storedHeaders;
 }});

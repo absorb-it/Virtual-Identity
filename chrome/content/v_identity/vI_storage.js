@@ -29,20 +29,15 @@
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 var storage = {
-	multipleRecipients : null,
 	focusedElement : null,
+	_pref : Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefService)
+		.getBranch("extensions.virtualIdentity."),
 	
 	lastCheckedEmail : {}, 	// array of last checked emails per row,
 				// to prevent ugly double dialogs and time-consuming double-checks
 	
-	rdfService : Components.classes["@mozilla.org/rdf/rdf-service;1"]
-			.getService(Components.interfaces.nsIRDFService),
-
-	prefroot : Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2),
-	
-    rdfDatasource : null,    // local storage
+    _rdfDatasourceAccess : null,    // local storage
 
 	clean: function() {
 		vI.notificationBar.dump("## storage: clean.\n");
@@ -50,7 +45,7 @@ var storage = {
 		storage.lastCheckedEmail = {};
 		storage.firstUsedInputElement = null;
 		awSetInputAndPopupValue = storage.original_functions.awSetInputAndPopupValue;
-        if (storage.rdfDatasource) storage.rdfDatasource.clean();
+        if (storage._rdfDatasourceAccess) storage._rdfDatasourceAccess.clean();
 	},
 	
 	original_functions : {
@@ -89,7 +84,7 @@ var storage = {
     initialized : null,
 	init: function() {
 		if (!storage.initialized) {
-            storage.rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf");
+            storage._rdfDatasourceAccess = new vI.rdfDatasourceAccess();
 
 			// better approach would be to use te onchange event, but this one is not fired in any change case
 			// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
@@ -129,8 +124,8 @@ var storage = {
 	
 	
 	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
-	updateVIdentityFromStorage: function(inputElement) {		
-		if (!vI.main.preferences.getBoolPref("storage"))
+	updateVIdentityFromStorage: function(inputElement) {
+		if (!storage._pref.getBoolPref("storage"))
 			{ vI.notificationBar.dump("## storage: Storage deactivated\n"); return; }
 		vI.notificationBar.dump("## storage: updateVIdentityFromStorage()\n");
 
@@ -154,208 +149,32 @@ var storage = {
 			vI.notificationBar.dump("## storage: same email than before, not checked again.\n"); return;
 		}
 		storage.lastCheckedEmail[row] = inputElement.value;
-		var recipient = storage.__getDescriptionAndType(inputElement.value, recipientType);
-
-		var matchResults = { storageData : {}, menuItem : {} };
-		matchResults.storageData[0] = storage.rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
-		matchResults.storageData[1] = storage.rdfDatasource.findMatchingFilter(recipient.recDesc);
-
-		vI.notificationBar.dump("## storage: updateVIdentityFromStorage add found Identities to CloneMenu.\n");
-		var matchIndex = null;
-		for (var i = 0; i <= 1; i++) {
-			if (matchResults.storageData[i]) {			// check if there is a result in direct match or filter
-				if (matchIndex == null) matchIndex = i;		// prefer direct match instead of filter
-				matchResults.menuItem[i] = document.getElementById("msgIdentity_clone")
-								.addIdentityToCloneMenu(matchResults.storageData[i]);
-			}
-		}
-		if (matchIndex == null) {
-			vI.notificationBar.dump("## storage: updateVIdentityFromStorage no usable Storage-Data found.\n");
-			return;
-		}
-		else {
-			vI.notificationBar.dump("## storage: using data from " + ((matchIndex == 0)?"direct":"filter") + " match\n");
-		}
+		
+		// firstUsedInputElement was set before and we are not editing the same
+		var isNotFirstInputElement = (storage.firstUsedInputElement && storage.firstUsedInputElement != inputElement)
+		var currentIdentity = document.getElementById("msgIdentity_clone").identityData
+		var storageResult = storage._rdfDatasourceAccess.updateVIdentityFromStorage(inputElement.value, recipientType,
+			currentIdentity, document.getElementById("msgIdentity_clone").vid, isNotFirstInputElement);
+		
+		if (storageResult.identityCollection.number == 0) return; // return if there was no match
+		vI.notificationBar.dump("## storage: updateVIdentityFromStorage result: " + storageResult.result + "\n");
 		// found storageData, so store InputElement
 		if (!storage.firstUsedInputElement) storage.firstUsedInputElement = inputElement;
 		
-		vI.notificationBar.dump("## storage: compare with current Identity\n");
-		if (vI.main.preferences.getBoolPref("storage_getOneOnly") &&					// if requested to retrieve only storageID for first recipient entered
-			storage.firstUsedInputElement &&						// and the request for the first recipient was already done
-			storage.firstUsedInputElement != inputElement &&				// and it's not the same element we changed now
-			!matchResults.storageData[matchIndex].equalsCurrentIdentity(false).equal)	// and this id is different than the current used one
-				vI.notificationBar.setNote(vI.main.elements.strings
-					.getString("vident.smartIdentity.vIStorageCollidingIdentity"),	// than drop the potential changes
+		var selectedMenuItem;
+		if (storageResult.result != "equal") {
+			for (var j = 0; j < storageResult.identityCollection.number; j++) {
+				vI.notificationBar.dump("## storage: updateVIdentityFromStorage adding: " + storageResult.identityCollection.identityDataCollection[j].combinedName + "\n");
+				selectedMenuItem = document.getElementById("msgIdentity_clone").addIdentityToCloneMenu(storageResult.identityCollection.identityDataCollection[j])
+			}
+		}
+		if (storageResult.result == "accept") {
+			vI.notificationBar.dump("## storage: updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName + "\n");
+			document.getElementById("msgIdentity_clone").selectedMenuItem = selectedMenuItem;
+			if (document.getElementById("msgIdentity_clone").vid)
+				vI.notificationBar.setNote(vI.main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
 					"storage_notification");
-		// only update fields if new Identity is different than old one.
-		else {
-			vI.notificationBar.dump("## storage: updateVIdentityFromStorage check if storage-data matches current Identity.\n");
-			var compResult = matchResults.storageData[matchIndex].equalsCurrentIdentity(true);
-			if (!compResult.equal) {
-				var warning = storage.__getWarning("replaceVIdentity", recipient, compResult.compareMatrix);
-				var msgIdentityCloneElem = document.getElementById("msgIdentity_clone")
-				if (	!msgIdentityCloneElem.vid ||
-					!vI.main.preferences.getBoolPref("storage_warn_vI_replace") ||
-					(storage.__askWarning(warning) == "accept")) {
-						msgIdentityCloneElem.selectedMenuItem = matchResults.menuItem[matchIndex];
-						if (msgIdentityCloneElem.vid)
-							vI.notificationBar.setNote(vI.main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
-							"storage_notification");
-				}
-			}
-			else {
-				vI.notificationBar.dump("## storage: updateVIdentityFromStorage doing nothing - equals current Identity.\n");
-			}
 		}
-	},
-	
-	__getDescriptionAndType : function (recipient, recipientType) {
-		if (recipientType == "addr_newsgroups")	return { recDesc : recipient, recType : "newsgroup" }
-		else if (storage.__isMailingList(recipient)) {
-			vI.notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is MailList\n");
-			return { recDesc : storage.__getMailListName(recipient), recType : "maillist" }
-		}
-		else {
-			vI.notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is no MailList\n");
-			var localIdentityData = new vI.identityData(recipient, null, null, null, null, null, null);
-			return { recDesc : localIdentityData.combinedName, recType : "email" }
-		}
-	},
-		
-	storeVIdentityToAllRecipients : function(msgType) {
-		if (msgType != nsIMsgCompDeliverMode.Now) return true;
-		vI.notificationBar.dump("## storage: ----------------------------------------------------------\n")
-		if (!vI.main.preferences.getBoolPref("storage"))
-			{ vI.notificationBar.dump("## storage: Storage deactivated\n"); return true; }
-		
-		if (vI.statusmenu.objStorageSaveMenuItem.getAttribute("checked") != "true") {
-			vI.notificationBar.dump("## storage: SaveMenuItem not checked.\n")
-			return true;
-		}
-		
-		vI.notificationBar.dump("## storage: storeVIdentityToAllRecipients()\n");
-		
-		// check if there are multiple recipients
-		storage.multipleRecipients = false;
-		var recipients = 0;
-		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
-			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
-			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
-				storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
-			if (recipients++ == 1) {
-				storage.multipleRecipients = true
-				vI.notificationBar.dump("## storage: multiple recipients found.\n")
-				break;
-			}
-		}			
-		
-		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
-			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
-			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
-				storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
-			if (!storage.__updateStorageFromVIdentity(awGetInputElement(row).value, recipientType)) {
-				vI.notificationBar.dump("## storage: --------------  aborted  ---------------------------------\n")
-				return false; // abort sending
-			}
-		}
-		vI.notificationBar.dump("## storage: ----------------------------------------------------------\n");
-		return true;
-	},
-	
-	__getWarning : function(warningCase, recipient, compareMatrix) {
-		var warning = { title: null, recLabel : null, recipient : null, warning : null, css: null, query : null, class : null };
-		warning.title = vI.main.elements.strings.getString("vident." + warningCase + ".title")
-		warning.recLabel = vI.main.elements.strings.getString("vident." + warningCase + ".recipient") + " (" + recipient.recType + "):"
-		warning.recipient = recipient.recDesc;
-		warning.warning = 
-			"<table class='" + warningCase + "'><thead><tr><th class='col1'/>" +
-				"<th class='col2'>" + vI.main.elements.strings.getString("vident." + warningCase + ".currentIdentity") + "</th>" +
-				"<th class='col3'>" + vI.main.elements.strings.getString("vident." + warningCase + ".storedIdentity") + "</th>" +
-			"</tr></thead>" +
-			"<tbody>" + compareMatrix + "</tbody>" +
-			"</table>"
-		warning.css = "vI.DialogBrowser.css";
-		warning.query = vI.main.elements.strings.getString("vident." + warningCase + ".query");
-		warning.class = warningCase;
-		return warning;
-	},
-
-	__askWarning : function(warning) {
-		var retVar = { returnValue: null };
-		var answer = window.openDialog("chrome://v_identity/content/vI_Dialog.xul","",
-					"chrome, dialog, modal, alwaysRaised, resizable=yes",
-					 warning, retVar)
-		return retVar.returnValue;
-	},
-	
-	__updateStorageFromVIdentity : function(recipient, recipientType) {
-		vI.notificationBar.dump("## storage: __updateStorageFromVIdentity.\n")
-		var dontUpdateMultipleNoEqual = (vI.main.preferences.getBoolPref("storage_dont_update_multiple") &&
-					storage.multipleRecipients)
-		vI.notificationBar.dump("## storage: __updateStorageFromVIdentity dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'\n")
-		recipient = storage.__getDescriptionAndType(recipient, recipientType);
-
-		var storageDataByType = storage.rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
-		var storageDataByFilter = storage.rdfDatasource.findMatchingFilter(recipient.recDesc);
-		
-		// update (storing) of data by type is required if there is
-		// no data stored by type (or different data stored) and no equal filter found
-		var storageDataByTypeCompResult = storageDataByType?storageDataByType.equalsCurrentIdentity(true):null;
-		var storageDataByTypeEqual = (storageDataByType && storageDataByTypeCompResult.equal);
-		var storageDataByFilterEqual = (storageDataByFilter && storageDataByFilter.equalsCurrentIdentity(false).equal);
-		
-		var doUpdate = "";
-		if (	(!storageDataByType && !storageDataByFilterEqual) ||
-			(!storageDataByTypeEqual && !storageDataByFilterEqual && !dontUpdateMultipleNoEqual) ) {
-			vI.notificationBar.dump("## storage: __updateStorageFromVIdentity updating\n")
-			var doUpdate = "accept";
-			if (storageDataByType && !storageDataByTypeEqual && vI.main.preferences.getBoolPref("storage_warn_update")) {
-				vI.notificationBar.dump("## storage: __updateStorageFromVIdentity overwrite warning\n");
-				doUpdate = storage.__askWarning(storage.__getWarning("updateStorage", recipient, storageDataByTypeCompResult.compareMatrix));
-				if (doUpdate == "takeover") {
-					var msgIdentityCloneElem = document.getElementById("msgIdentity_clone");
-					msgIdentityCloneElem.selectedMenuItem = msgIdentityCloneElem.addIdentityToCloneMenu(storageDataByType);
-					return false;
-				}
-				if (doUpdate == "abort") return false;
-			}
-		}
-		if (doUpdate == "accept") storage.rdfDatasource.updateRDFFromVIdentity(recipient.recDesc, recipient.recType);
-		return true;
-	},
-		
-	// --------------------------------------------------------------------
-	// check if recipient is a mailing list.
-	// Similiar to Thunderbird, if there are muliple cards with the same displayName the mailinglist is preferred
-	// see also https://bugzilla.mozilla.org/show_bug.cgi?id=408575
-	__isMailingList: function(recipient) {
-		let abManager = Components.classes["@mozilla.org/abmanager;1"]
-			.getService(Components.interfaces.nsIAbManager);
-		let allAddressBooks = abManager.directories;
-		while (allAddressBooks.hasMoreElements()) {
-			let ab = allAddressBooks.getNext();
-			if (ab instanceof Components.interfaces.nsIAbDirectory && !ab.isRemote) {
-				let abdirectory = abManager.getDirectory(ab.URI + 
-					"?(and(DisplayName,=," + encodeURIComponent(storage.__getMailListName(recipient)) + ")(IsMailList,=,TRUE))");
-				if (abdirectory) {
-					try {	// just try, sometimes there are no childCards at all...
-						let cards = abdirectory.childCards;
-						if (cards.hasMoreElements()) return true;	// only interested if there is at least one element...
-					} catch(e) { }
-				}
-			}
-		}
-		return false;
-	},	
-	
-	// --------------------------------------------------------------------
-	
-	__getMailListName : function(recipient) {
-		if (recipient.match(/<[^>]*>/) || recipient.match(/$/)) {
-			var mailListName = RegExp.leftContext + RegExp.rightContext
-			mailListName = mailListName.replace(/^\s+|\s+$/g,"")
-		}
-		return mailListName;
 	},
 	
 	__isDoBcc : function(row) {
@@ -372,24 +191,6 @@ var storage = {
 			}
 		}		
 		return false
-	},
-
-	getVIdentityFromAllRecipients : function(allIdentities) {
-		if (!vI.main.preferences.getBoolPref("storage"))
-			{ vI.notificationBar.dump("## storage: Storage deactivated\n"); return; }
-		vI.notificationBar.dump("## storage: getVIdentityFromAllRecipients()\n");
-
-		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
-			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
-			if (recipientType == "addr_reply" || recipientType == "addr_followup" || storage.__isDoBcc(row)) continue;
-			storage.lastCheckedEmail[row] = awGetInputElement(row).value;
-			var recipient = storage.__getDescriptionAndType(awGetInputElement(row).value, recipientType);
-			var storageData = storage.rdfDatasource.readVIdentityFromRDF(recipient.recDesc, recipient.recType);
-			if (storageData) allIdentities.addWithoutDuplicates(storageData);
-			storageData = storage.rdfDatasource.findMatchingFilter(recipient.recDesc);
-			if (storageData) allIdentities.addWithoutDuplicates(storageData);
-		}
-		vI.notificationBar.dump("## storage: found " + allIdentities.number + " address(es)\n")
 	}
 }
 vI.storage = storage;
