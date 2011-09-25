@@ -12,29 +12,29 @@
 }
 
 .mismatchLine {
-    -moz-binding: url("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xml#mismatch-line");
+    -moz-binding: url("chrome://v_identity/content/bindings/vI_rdfAccountMismatchDialog.xml#mismatch-line");
 }
 
 .mismatchMenulist {
-    -moz-binding: url("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xml#mismatch-menulist");
+    -moz-binding: url("chrome://v_identity/content/bindings/vI_rdfAccountMismatchDialog.xml#mismatch-menulist");
 }
 
 .mismatchMenupopup {
-    -moz-binding: url("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xml#mismatch-menupopup");
+    -moz-binding: url("chrome://v_identity/content/bindings/vI_rdfAccountMismatchDialog.xml#mismatch-menupopup");
 }
 
 
 .selectorListitem {
-    -moz-binding: url("chrome://v_identity/content/vI_prefDialog.xml#selectorListitem");
+    -moz-binding: url("chrome://v_identity/content/bindings/vI_prefDialog.xml#selectorListitem");
 }
 .identitySelector {
-    -moz-binding: url("chrome://v_identity/content/vI_prefDialog.xml#identitySelector");
+    -moz-binding: url("chrome://v_identity/content/bindings/vI_prefDialog.xml#identitySelector");
 }
 
 
 
 .mismatchMenuitem {
-    -moz-binding: url("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xml#mismatch-menuitem");
+    -moz-binding: url("chrome://v_identity/content/bindings/vI_rdfAccountMismatchDialog.xml#mismatch-menuitem");
 }
 
 .identityDesc-ext1, .identityDesc-ext2, .identityDesc-count {
@@ -43,7 +43,7 @@
 }
 
 .smtpServerListHbox {
-	-moz-binding: url("chrome://v_identity/content/v_identity.xml#smtpServerList");
+	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#smtpServerList");
 }
 #vI_rdfDataEditorContent checkbox.vI_plain {
 	display: none;
@@ -309,13 +309,13 @@ treechildren::-moz-tree-cell-text(locked) {
 }
 
 #vINotification {
-  -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#vI_notificationbox");
+  -moz-binding: url("chrome://v_identity/content/notificationbar/vI_notificationBar.xml#vI_notificationbox");
   -moz-box-orient: vertical;
   overflow: hidden;
 }
 
 #vINotification notification {
-  -moz-binding: url("chrome://v_identity/content/vI_notificationBar.xml#vI_notification");
+  -moz-binding: url("chrome://v_identity/content/notificationbar/vI_notificationBar.xml#vI_notification");
 }
 
 .vINotificationLogo {
@@ -330,7 +330,7 @@ treechildren::-moz-tree-cell-text(locked) {
 }
 
 .identity_clone-menulist {
-	-moz-binding: url(chrome://v_identity/content/v_identity.xml#fromMenuList_clone);
+	-moz-binding: url(chrome://v_identity/content/bindings/v_identity.xml#fromMenuList_clone);
 	-moz-appearance: textfield;
 	margin: 2px 4px;
 	border: 2px solid;
@@ -344,7 +344,7 @@ treechildren::-moz-tree-cell-text(locked) {
 }
 
 .description-treecell {
-	-moz-binding: url("chrome://v_identity/content/v_identity.xml#descriptionTreeCell");
+	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#descriptionTreeCell");
 	color: red;
 }
 
@@ -370,37 +370,37 @@ treechildren::-moz-tree-cell-text(locked) {
 }
 
 .autoReplyTo {
-	-moz-binding: url("chrome://v_identity/content/v_identity.xml#autoReplyTo");
+	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#autoReplyTo");
 }
 
 
 .identityDataTooltip {
-	-moz-binding: url("chrome://v_identity/content/v_identity.xml#vI_identityDataTooltip");
+	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#vI_identityDataTooltip");
 }
 
 #virtualIdentityExtension_tooltipPopupset {
-	-moz-binding: url("chrome://v_identity/content/v_identity.xml#vI_tooltipPopupset");
+	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#vI_tooltipPopupset");
 }
 
 .vI_htmlTextBox {
-	-moz-binding: url("chrome://v_identity/content/vI_htmlTextBox.xml#vI_htmlTextBox");
+	-moz-binding: url("chrome://v_identity/content/bindings/vI_htmlTextBox.xml#vI_htmlTextBox");
 }
 
 .vI_remoteBrowserBox {
-	-moz-binding: url("chrome://v_identity/content/vI_htmlTextBox.xml#vI_remoteBrowserBox");
+	-moz-binding: url("chrome://v_identity/content/bindings/vI_htmlTextBox.xml#vI_remoteBrowserBox");
 	margin: 0;
 	-moz-appearance: listbox;
 	padding: 3px;
 }
 
 .identity_clone-popup-item {
-	-moz-binding: url("chrome://v_identity/content/v_identity.xml#fromPopupItem_clone");
+	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#fromPopupItem_clone");
 	padding: 0;
 	margin: 0;
 }
 
 .auto-reply-to {
-	-moz-binding: url("chrome://v_identity/content/v_identity.xml#autoReplyTo");
+	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#autoReplyTo");
 }
 
 .menulist_clone-icon {

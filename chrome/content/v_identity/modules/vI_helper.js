@@ -22,6 +22,8 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
+/* this is now used as a module - there is no required reference to any other interface-elements in this code */
+
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 var helper = {
 	// simplified versionChecker, type is "TB" or "SM"

@@ -43,7 +43,7 @@
 	ondialogextra2="window.close(); window.arguments[1].returnValue = 'takeover';"
 	persist="height width">
 
-	<script type="application/x-javascript" src="chrome://v_identity/content/vI_overlayNameSpaceWrapper.js" />
+	<script type="application/x-javascript" src="chrome://v_identity/content/_overlayNameSpaceWrapper.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_Dialog.js" />
 
 	<description id="vI_Dialog_title" />

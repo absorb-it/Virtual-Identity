@@ -24,6 +24,6 @@
    - ***** END LICENSE BLOCK ***** -->
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <script type="application/x-javascript" src="chrome://v_identity/content/vI_overlayNameSpaceWrapper.js" />
+    <script type="application/x-javascript" src="chrome://v_identity/content/_overlayNameSpaceWrapper.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_am-Overlay.js"/>
 </overlay>

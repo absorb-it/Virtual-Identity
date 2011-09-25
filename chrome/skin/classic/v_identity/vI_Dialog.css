@@ -42,7 +42,7 @@
 }
 
 .vI_htmlTextBox {
-  -moz-binding: url("chrome://v_identity/content/vI_htmlTextBox.xml#vI_htmlTextBox");
+  -moz-binding: url("chrome://v_identity/content/bindings/vI_htmlTextBox.xml#vI_htmlTextBox");
 }
 
 #vI_Dialog_query {

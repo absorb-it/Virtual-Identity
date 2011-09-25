@@ -22,6 +22,7 @@
     Contributor(s):
  * ***** END LICENSE BLOCK ***** */
 
+/* this is now used as a module - there is no required reference to any other interface-elements in this code */
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 function rdfDatasource(rdfFileName, dontRegisterObserver) {

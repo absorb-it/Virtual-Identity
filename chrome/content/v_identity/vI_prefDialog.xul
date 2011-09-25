@@ -52,9 +52,9 @@
 <script type="application/x-javascript"
             src="chrome://v_identity/content/vI_storageExtras.js" />
 <script type="application/x-javascript"
-            src="chrome://v_identity/content/vI_rdfDatasource.js" />
+            src="chrome://v_identity/content/modules/vI_rdfDatasource.js" />
 <script type="application/x-javascript"
-            src="chrome://v_identity/content/vI_notificationBar.js" />
+            src="chrome://v_identity/content/notificationbar/vI_notificationBar.js" />
 
 <stringbundleset id="stringbundleset">
 	<stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
