@@ -48,8 +48,9 @@
 	<script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_identityData.js" />
 	<script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_helper.js" />
 	<!-- include following script to enable conversation plugin -->
-	<script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />
-	<script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_smartIdentityCollection.js" />
+    <script type="application/x-javascript" src="chrome://v_identity/content/modules/plugins/conversation.js" />
+    <script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />
+    <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_smartIdentityCollection.js" />
 
 	<vbox id="messagepanebox" >
 	  	<splitter id="vIErrorBoxSplitter" hidden="true" />
