@@ -921,6 +921,8 @@ rdfDatasourceAccess.prototype = {
 	},
 
 	getVIdentityFromAllRecipients : function(allIdentities, recipients) {
+        if (!this._pref.getBoolPref("storage"))
+            { vI.notificationBar.dump("## storage: Storage deactivated\n"); return; }
 		var initnumber = allIdentities.number;
 		for (var j = 0; j < recipients.length; j++) {
 			allIdentities.addWithoutDuplicates(this._rdfDataSource.readVIdentityFromRDF(recipients[j].recipient, recipients[j].recipientType));
