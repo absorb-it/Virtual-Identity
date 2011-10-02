@@ -8,7 +8,10 @@ let pref = Cc["@mozilla.org/preferences-service;1"]
   .getService(Components.interfaces.nsIPrefService)
   .getBranch("extensions.virtualIdentity.");
 
-const gHeaderParser = Cc["@mozilla.org/messenger/headerparser;1"]
+const AccountManager = Cc["@mozilla.org/messenger/account-manager;1"]
+  .getService(Components.interfaces.nsIMsgAccountManager);
+ 
+const HeaderParser = Cc["@mozilla.org/messenger/headerparser;1"]
   .getService(Ci.nsIMsgHeaderParser);
 
 let virtualIdentityData;
@@ -24,30 +27,55 @@ function changeIdentityToSmartIdentity(allIdentities, index) {
 
 function _changeIdentityToSmartIdentity(identityData) {
   Log.debug("## changeIdentityToSmartIdentity\n");
+  // add code to set stored base identity
+  if ( identityData.id.key != null ) {
+    currentParams.identity = AccountManager.getIdentity(identityData.id.key);
+    Log.debug("## changed base identity to ", identityData.id.key);
+    virtualSenderNameElem.text(virtualIdSenderName);
+  }
   virtualIdInUse = !(identityData.isExistingIdentity(false));
   Log.debug("## changeIdentityToSmartIdentity virtualIdInUse=" + virtualIdInUse + "\n");
   if (virtualIdInUse) {
     virtualIdentityData = identityData;
-    virtualIdSenderName = gHeaderParser.makeFullAddress(virtualIdentityData.fullName, virtualIdentityData.email)
-    virtualSenderNameElem.text(virtualIdSenderName);
+    virtualIdSenderName = virtualIdentityData.combinedName;
   }
+  virtualSenderNameElem.text(identityData.combinedName); // change this also to reflect changes of base id
 }
 
 let conversationHook = {
-  onComposePrepared: function (aMsgHdr, gComposeParams, senderNameElem, ExternalLog) {
+  onComposeSessionConstructDone: function (params, match, senderNameElem, ExternalLog) {
+    // this.params = { identity: ???, msgHdr: ???, subject: ??? };
     Log = ExternalLog;
+
+    currentParams = params; virtualSenderNameElem = senderNameElem; // to enable access from out of this class.
     virtualIdentityData = null; virtualIdInUse = false; virtualIdSenderName = "";
-    virtualSenderNameElem = senderNameElem;
     
-    let recipients = [];
-    for each (let [i, { name, email }] in Iterator(gComposeParams.to))
-      recipients.push( { recipient: gHeaderParser.makeFullAddress(name, email), recipientType: "addr_to" } )
-    for each (let [i, { name, email }] in Iterator(gComposeParams.cc))
-      recipients.push( { recipient: gHeaderParser.makeFullAddress(name, email), recipientType: "addr_to" } )
+    
+    let recipientString = params.msgHdr.mime2DecodedRecipients;
+    if (params.identity.doCc) recipientString += "," + params.identity.doCcList;
+    recipientString += "," + params.msgHdr.ccList;
+    
+    let recipients = []; var combinedNames = {}; var number;
+    number = HeaderParser.parseHeadersWithArray(recipientString, {}, {}, combinedNames);
+    for (var index = 0; index < number; index++)
+      recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
   
-    var localSmartIdentityCollection = new vI.smartIdentityCollection(aMsgHdr, gComposeParams.identity, false, false, recipients);
-    localSmartIdentityCollection.Reply();
-  
+/*    match({
+      reply: function (aMessage, aReplyType) {
+        if (aReplyType == "replyAll") { // if we reply to all then take care of all the recipients
+
+          Log.debug("replyAll - adding cc recipients too");
+          number = HeaderParser.parseHeadersWithArray(params.msgHdr.ccList, {}, {}, combinedNames);
+          for (var index = 0; index < number; index++)
+            recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
+        }
+      },
+      draft: function ({ msgUri }) { Log.debug("match draft - currently not used", msgUri); }
+    });*/
+      
+    var localSmartIdentityCollection = new vI.smartIdentityCollection(params.msgHdr, params.identity, false, false, recipients);
+    localSmartIdentityCollection.Reply();   // we can always use the reply-case, msgHdr is set the right way
+    
     if (localSmartIdentityCollection._allIdentities.number == 0) return;
   
     if (pref.getBoolPref("idSelection_preferExisting")) {
@@ -70,19 +98,14 @@ let conversationHook = {
     else if (pref.getBoolPref("idSelection_autocreate")) changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, 0);
   },
   
-  onUIupdated: function() {
-    virtualSenderNameElem.text(virtualIdSenderName);
-    Log.debug("onUIupdated done");
-  },
-
-  onSendMessage: function(gComposeParams, toVal, ccVal, popOut, ExternalLog) {
+  onMessageBeforeSendOrPopup: function(gComposeParams, recipientString, popOut, aStatus, ExternalLog) {
     Log = ExternalLog;
-    Log.debug("toVal='" + toVal + "' ccVal='" + ccVal + "' gComposeParams.to='" + gComposeParams.to + "'\n" );
-
+    Log.debug("## onMessageBeforeSendOrPopup", recipientString);
+    
     if (virtualIdInUse) {
       if (!popOut) {
         let recipients = []; var combinedNames = {}; var number;
-        number = gHeaderParser.parseHeadersWithArray(toVal + "," + ccVal, {}, {}, combinedNames);
+        number = HeaderParser.parseHeadersWithArray(recipientString, {}, {}, combinedNames);
         for (var index = 0; index < number; index++)
           recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
 
@@ -90,16 +113,18 @@ let conversationHook = {
           virtualIdentityData, gComposeParams.identity, recipients );
         Log.debug("returnValue.update:", returnValue.update);
         
-        if (returnValue.update == "abort") return false;
+        if (returnValue.update == "abort") {
+          aStatus.canceled = true; return aStatus;
+        }
         else if (returnValue.update == "takeover") {
           _changeIdentityToSmartIdentity(returnValue.storedIdentity);
-          return false;
+          aStatus.canceled = true; return aStatus;
         }
         
         gComposeParams.identity = vI.account._account.defaultIdentity
         if (!vI.finalCheck(virtualIdentityData, gComposeParams.identity)) {
           vI.account.removeUsedVIAccount();
-          return false
+          aStatus.canceled = true; return aStatus;
         }
       }
       else {
@@ -109,7 +134,7 @@ let conversationHook = {
       }
     }
     Log.debug("onSendMessage done");
-    return true;
+    return aStatus;
   },
   
   onStopSending: function () {
@@ -125,7 +150,8 @@ let conversationHook = {
     if (recipient == "") return;
 
     // if we are editing the "cc" or not the first recipient, recognize this.
-    var isNotFirstInputElement = (recipientType != "to" || count == 0);
+    var isNotFirstInputElement = !(recipientType == "to" && count == 0);
+    Log.debug("onRecipientAdded isNotFirstInputElement", isNotFirstInputElement);
     
     if (!_rdfDatasourceAccess) _rdfDatasourceAccess = new vI.rdfDatasourceAccess();
     else _rdfDatasourceAccess.clean();
