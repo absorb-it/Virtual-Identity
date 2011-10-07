@@ -155,7 +155,7 @@ rdfDatasource.prototype = {
 		var oldRdfVersion = this.getCurrentRDFFileVersion();
 		var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 			.getService(Components.interfaces.nsIVersionComparator);
-		return (!oldRdfVersion || versionChecker.compare(oldRdfVersion, this.rdfVersion) < 0)
+		return (!oldRdfVersion || versionChecker.compare(oldRdfVersion, this._rdfVersion) < 0)
 	},
     // **************    RDF UPGRADE CODE    ****************************************************
 	extUpgradeRequired: function() {
