@@ -454,8 +454,11 @@
 	</method>
 	<property name="_popupMenu_separator" >
 		<getter><![CDATA[
-			if (this._menu_separator) this._menu_separator.removeAttribute("hidden");
-			return this._menu_separator;
+			if (this._menu_separator) {
+              this._menu_separator.removeAttribute("hidden");
+              return this._menu_separator;
+            }
+            else return null;
 		]]></getter>
 		<setter><![CDATA[
 			if (!val) return;
