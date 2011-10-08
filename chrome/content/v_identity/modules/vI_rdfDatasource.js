@@ -874,7 +874,7 @@ rdfDatasourceAccess.prototype = {
 		if (localIdentities.number == 1) vI.notificationBar.dump("## rdfDatasourceAccess: using data from direct match\n");
 		localIdentities.addWithoutDuplicates(this._rdfDataSource.findMatchingFilter(recipientName, recipientType));
 		
-		var returnValue = {}; returnValue.identityCollection = localIdentities;
+		var returnValue = {}; returnValue.identityCollection = localIdentities; returnValue.result = "drop";
 		if (localIdentities.number == 0) {
 			vI.notificationBar.dump("## rdfDatasourceAccess: updateVIdentityFromStorage no usable Storage-Data found.\n");
 		}
@@ -886,7 +886,7 @@ rdfDatasourceAccess.prototype = {
 					vI.notificationBar.setNote(
 						this.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageCollidingIdentity"),	// than drop the potential changes
 						"storage_notification");
-					returnValue.result = "drop";
+// 					returnValue.result = "drop";    // this is the default value
 			}
 			// only update fields if new Identity is different than old one.
 			else {
