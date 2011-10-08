@@ -21,11 +21,11 @@ let virtualSenderNameElem;
 let Log;
 let _rdfDatasourceAccess;
 
-function changeIdentityToSmartIdentity(allIdentities, index) {
+let changeIdentityToSmartIdentity = function(allIdentities, index) {
   _changeIdentityToSmartIdentity(allIdentities.identityDataCollection[index]);
-}
+};
 
-function _changeIdentityToSmartIdentity(identityData) {
+let _changeIdentityToSmartIdentity = function(identityData) {
   Log.debug("## changeIdentityToSmartIdentity\n");
   // add code to set stored base identity
   if ( identityData.id.key != null ) {
@@ -40,38 +40,20 @@ function _changeIdentityToSmartIdentity(identityData) {
     virtualIdSenderName = virtualIdentityData.combinedName;
   }
   virtualSenderNameElem.text(identityData.combinedName); // change this also to reflect changes of base id
-}
+};
 
 let conversationHook = {
-  onComposeSessionConstructDone: function (params, match, senderNameElem, ExternalLog) {
+  onComposeSessionConstructDone: function (recipientString, params, senderNameElem, ExternalLog) {
     // this.params = { identity: ???, msgHdr: ???, subject: ??? };
     Log = ExternalLog;
 
     currentParams = params; virtualSenderNameElem = senderNameElem; // to enable access from out of this class.
     virtualIdentityData = null; virtualIdInUse = false; virtualIdSenderName = "";
     
-    
-    let recipientString = params.msgHdr.mime2DecodedRecipients;
-    if (params.identity.doCc) recipientString += "," + params.identity.doCcList;
-    recipientString += "," + params.msgHdr.ccList;
-    
     let recipients = []; var combinedNames = {}; var number;
     number = HeaderParser.parseHeadersWithArray(recipientString, {}, {}, combinedNames);
     for (var index = 0; index < number; index++)
       recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
-  
-/*    match({
-      reply: function (aMessage, aReplyType) {
-        if (aReplyType == "replyAll") { // if we reply to all then take care of all the recipients
-
-          Log.debug("replyAll - adding cc recipients too");
-          number = HeaderParser.parseHeadersWithArray(params.msgHdr.ccList, {}, {}, combinedNames);
-          for (var index = 0; index < number; index++)
-            recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
-        }
-      },
-      draft: function ({ msgUri }) { Log.debug("match draft - currently not used", msgUri); }
-    });*/
       
     var localSmartIdentityCollection = new vI.smartIdentityCollection(params.msgHdr, params.identity, false, false, recipients);
     localSmartIdentityCollection.Reply();   // we can always use the reply-case, msgHdr is set the right way
@@ -81,8 +63,8 @@ let conversationHook = {
     if (pref.getBoolPref("idSelection_preferExisting")) {
       var existingIDIndex = localSmartIdentityCollection._foundExistingIdentity();
       if (existingIDIndex) {
-        Log.debug("## smartIdentity: found existing Identity, use without interaction.\n");
-        changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, existingIDIndex);
+        Log.debug("## smartIdentity: found existing Identity, use without interaction.\n", existingIDIndex.key);
+        changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, existingIDIndex.key);
         return;
       }
     }
