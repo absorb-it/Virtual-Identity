@@ -42,8 +42,6 @@ var smartIdentity = {
 		var autocreate = false;
 		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: msgComposeTypeReference = " + gMsgCompose.type + "\n");
 		switch (gMsgCompose.type) {
-			case msgComposeTypeReference.ForwardAsAttachment:
-			case msgComposeTypeReference.ForwardInline:
 			case msgComposeTypeReference.Reply:
 			case msgComposeTypeReference.ReplyAll:
 			case msgComposeTypeReference.ReplyToGroup: // reply to a newsgroup, would possibly be stopped later
@@ -65,7 +63,9 @@ var smartIdentity = {
 				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(msgHdr, getCurrentIdentity(), document.getElementById("msgIdentity_clone").vid, newsgroup, this._getRecipients());	
 				smartIdentity._smartIdentityCollection.Draft();
 				autocreate = false; break;
-			case msgComposeTypeReference.New:
+			case msgComposeTypeReference.ForwardAsAttachment:
+            case msgComposeTypeReference.ForwardInline:
+            case msgComposeTypeReference.New:
 			case msgComposeTypeReference.NewsPost:
 			case msgComposeTypeReference.MailToUrl:
 				if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: New Mail\n");
