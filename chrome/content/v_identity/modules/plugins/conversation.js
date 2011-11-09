@@ -14,8 +14,8 @@ const AccountManager = Cc["@mozilla.org/messenger/account-manager;1"]
 const HeaderParser = Cc["@mozilla.org/messenger/headerparser;1"]
   .getService(Ci.nsIMsgHeaderParser);
 
-let virtualIdentityData;
-let virtualIdSenderName;
+let currentIdentityData;
+let currentIdSenderName;
 let virtualIdInUse;
 let virtualSenderNameElem;
 let Log;
@@ -27,38 +27,46 @@ let changeIdentityToSmartIdentity = function(allIdentities, index) {
 
 let _changeIdentityToSmartIdentity = function(identityData) {
   Log.debug("## changeIdentityToSmartIdentity\n");
-  // add code to set stored base identity
+  
   if ( identityData.id.key != null ) {
     currentParams.identity = AccountManager.getIdentity(identityData.id.key);
     Log.debug("## changed base identity to ", identityData.id.key);
-    virtualSenderNameElem.text(virtualIdSenderName);
+    virtualSenderNameElem.text(currentIdSenderName);
   }
   virtualIdInUse = !(identityData.isExistingIdentity(false));
   Log.debug("## changeIdentityToSmartIdentity virtualIdInUse=" + virtualIdInUse + "\n");
   if (virtualIdInUse) {
-    virtualIdentityData = identityData;
-    virtualIdSenderName = virtualIdentityData.combinedName;
+    currentIdentityData = identityData;
+    currentIdSenderName = currentIdentityData.combinedName;
   }
   virtualSenderNameElem.text(identityData.combinedName); // change this also to reflect changes of base id
 };
 
 let conversationHook = {
-  onComposeSessionConstructDone: function (recipientString, params, senderNameElem, ExternalLog) {
-    // this.params = { identity: ???, msgHdr: ???, subject: ??? };
+  onComposeSessionChanged: function (aComposeSession, aAddress, ExternalLog) {
     Log = ExternalLog;
-
-    currentParams = params; virtualSenderNameElem = senderNameElem; // to enable access from out of this class.
-    virtualIdentityData = null; virtualIdInUse = false; virtualIdSenderName = "";
+    let toAddrList = aAddress.to.concat(aAddress.cc);
+    
+    currentParams = aComposeSession.params; virtualSenderNameElem = aComposeSession.senderNameElem; // to enable access from out of this class.
+    let identity = aComposeSession.params.identity;
+    
+    let server = AccountManager.GetServersForIdentity(identity).QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
+    currentIdentityData = new virtualIdentityExtension.identityData(identity.email, identity.fullName, identity.key,
+                                                                    identity.smtpServerKey, null, server.prettyName, true)
+    currentIdSenderName = currentIdentityData.combinedName;
+    virtualIdInUse = false;
     
     let recipients = []; var combinedNames = {}; var number;
-    number = HeaderParser.parseHeadersWithArray(recipientString, {}, {}, combinedNames);
+    number = HeaderParser.parseHeadersWithArray(toAddrList.join(", "), {}, {}, combinedNames);
     for (var index = 0; index < number; index++)
       recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
       
-    var localSmartIdentityCollection = new vI.smartIdentityCollection(params.msgHdr, params.identity, false, false, recipients);
+    var localSmartIdentityCollection = new vI.smartIdentityCollection(aComposeSession.params.msgHdr, identity, 
+                                                                      false, false, recipients);
     localSmartIdentityCollection.Reply();   // we can always use the reply-case, msgHdr is set the right way
     
-    if (localSmartIdentityCollection._allIdentities.number == 0) return;
+    if (localSmartIdentityCollection._allIdentities.number == 0)
+      return;
   
     if (pref.getBoolPref("idSelection_preferExisting")) {
       var existingIDIndex = localSmartIdentityCollection._foundExistingIdentity();
@@ -77,22 +85,24 @@ let conversationHook = {
           localSmartIdentityCollection._allIdentities,
           /* callback: */ changeIdentityToSmartIdentity).focus();
       }
-    else if (pref.getBoolPref("idSelection_autocreate")) changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, 0);
+    else if (pref.getBoolPref("idSelection_autocreate"))
+      changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, 0);
   },
   
-  onMessageBeforeSendOrPopup: function(gComposeParams, recipientString, popOut, aStatus, ExternalLog) {
+  onMessageBeforeSendOrPopout: function(aAddress, aStatus, aPopout, ExternalLog) {
     Log = ExternalLog;
-    Log.debug("## onMessageBeforeSendOrPopup", recipientString);
+    let toAddrList = aAddress.to.concat(aAddress.cc);
+    Log.debug("## onMessageBeforeSendOrPopup");
     
     if (virtualIdInUse) {
-      if (!popOut) {
+      if (!aPopout) {
         let recipients = []; var combinedNames = {}; var number;
-        number = HeaderParser.parseHeadersWithArray(recipientString, {}, {}, combinedNames);
+        number = HeaderParser.parseHeadersWithArray(toAddrList.join(", "), {}, {}, combinedNames);
         for (var index = 0; index < number; index++)
           recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
 
         returnValue = vI.prepareSendMsg(virtualIdInUse, Ci.nsIMsgCompDeliverMode.Now,
-          virtualIdentityData, gComposeParams.identity, recipients );
+          currentIdentityData, aAddress.params.identity, recipients );
         Log.debug("returnValue.update:", returnValue.update);
         
         if (returnValue.update == "abort") {
@@ -103,16 +113,16 @@ let conversationHook = {
           aStatus.canceled = true; return aStatus;
         }
         
-        gComposeParams.identity = vI.account._account.defaultIdentity
-        if (!vI.finalCheck(virtualIdentityData, gComposeParams.identity)) {
+        aAddress.params.identity = vI.account._account.defaultIdentity
+        if (!vI.finalCheck(currentIdentityData, aAddress.params.identity)) {
           vI.account.removeUsedVIAccount();
           aStatus.canceled = true; return aStatus;
         }
       }
       else {
         // code virtual Identity into subject - this will be decoded by smartIdentity - newMail
-        gComposeParams.subject = gComposeParams.subject + "\nvirtualIdentityExtension\n" + virtualIdSenderName;
-        Log.debug("coding virtualIdentity into subject:", gComposeParams.subject);
+        aAddress.params.subject = aAddress.params.subject + "\nvirtualIdentityExtension\n" + currentIdSenderName;
+        Log.debug("coding virtualIdentity into subject:", aAddress.params.subject);
       }
     }
     Log.debug("onSendMessage done");
@@ -124,22 +134,23 @@ let conversationHook = {
     Log.debug("onStopSending done");
   },
 
-  onRecipientAdded: function onRecipientAdded(recipient, recipientType, count, ExternalLog) {
+  onRecipientAdded: function onRecipientAdded(aData, aType, aCount, ExternalLog) {
     Log = ExternalLog;
-    Log.debug("onRecipientAdded", recipient, recipientType, count);
+    
+    Log.debug("onRecipientAdded", aData.data, aType, aCount);
     if (!pref.getBoolPref("storage")) return;
-    if (recipientType == "bcc") return;
-    if (recipient == "") return;
+    if (aType == "bcc") return;
+    if (aData.data == "") return;
 
     // if we are editing the "cc" or not the first recipient, recognize this.
-    var isNotFirstInputElement = !(recipientType == "to" && count == 0);
+    var isNotFirstInputElement = !(aType == "to" && aCount == 0);
     Log.debug("onRecipientAdded isNotFirstInputElement", isNotFirstInputElement);
     
     if (!_rdfDatasourceAccess) _rdfDatasourceAccess = new vI.rdfDatasourceAccess();
     else _rdfDatasourceAccess.clean();
     
-    var storageResult = _rdfDatasourceAccess.updateVIdentityFromStorage(recipient, "addr_to",
-      virtualIdentityData, virtualIdInUse, isNotFirstInputElement);
+    var storageResult = _rdfDatasourceAccess.updateVIdentityFromStorage(aData.data, "addr_to",
+      currentIdentityData, virtualIdInUse, isNotFirstInputElement);
     
     if (storageResult.identityCollection.number == 0) return; // return if there was no match
     if (storageResult.result != "accept") return; // return if we don't like the resulting id
