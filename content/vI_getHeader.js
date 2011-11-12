@@ -39,6 +39,7 @@
 */
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+  
 // var storedHeaders = { };
 var getHeader = {
 	messenger: null,
@@ -81,6 +82,9 @@ var getHeader = {
 	},
 	
 	getHeader: function(hdr) {
+      
+      
+      
 		vI.notificationBar.clear_dump()
 		var index;
 
