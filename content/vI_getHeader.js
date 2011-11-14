@@ -29,6 +29,7 @@ virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 // XXX still missing implementation to select specific header by number and to display notification.
 Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js");
+let Log = setupLogging("virtualIdentity.getHeader");
 
 // var storedHeaders = { };
 var getHeader = {
@@ -68,23 +69,23 @@ var getHeader = {
 	},
 
 	getHeader: function() {
-      vI.notificationBar.clear_dump();
-      vI.notificationBar.dump("\n");
+      clearDebugOutput();
+      Log.debug("\n");
       
       if (!getHeader.headerToSearch) getHeader.prefObserverToSearchArray()
       
       msgHdrGetHeaders(getHeader.hdr, function (aHeaders) {
         if (aHeaders.has("list-id")) {
           getHeader.hdr.setStringProperty("vI_list-id","found");
-          vI.notificationBar.dump("## getHeader: found header: list-id  ...stored to recognize mailing-list\n");
+          Log.debug("## getHeader: found header: list-id  ...stored to recognize mailing-list\n");
         }
         if (aHeaders.has("received")) {
           getHeader.hdr.setStringProperty("vI_received","found");
-          vI.notificationBar.dump("## getHeader: found header: received  ...stored to recognize received mail\n");
+          Log.debug("## getHeader: found header: received  ...stored to recognize received mail\n");
         }
         if (aHeaders.has("content-base")) {
           getHeader.hdr.setStringProperty("vI_content_base","found");
-          vI.notificationBar.dump("## getHeader: found header: content-base  ...stored to recognize blog/news-feed\n");
+          Log.debug("## getHeader: found header: content-base  ...stored to recognize blog/news-feed\n");
         }
         for (let index = 0; index < getHeader.headerToSearch.length; index++) {
           let headerNameToSearch = getHeader.headerToSearch[index].headerNameToSearch;
@@ -94,7 +95,7 @@ var getHeader = {
                                   getHeader.unicodeConverter.ConvertFromUnicode(value) + getHeader.unicodeConverter.Finish());
             let storedValue = getHeader.hdr.getProperty("vI_" + headerNameToSearch);
             let storedConvValue = getHeader.unicodeConverter.ConvertToUnicode(storedValue);
-            vI.notificationBar.dump("## getHeader: found header: " + headerNameToSearch +
+            Log.debug("## getHeader: found header: " + headerNameToSearch +
                 " - stored as '" + storedConvValue + "'\n");
           }
         }
@@ -151,7 +152,7 @@ var prefObserver = {
 			// remove (old) prepared headerArray
 			getHeader.headerToSearch = null;
 			
-			vI.notificationBar.dump("## prefObserver: reload Message\n");
+			Log.debug("## prefObserver: reload Message\n");
 			MsgReload();
 		}
 	},

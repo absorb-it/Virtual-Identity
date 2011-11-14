@@ -25,6 +25,10 @@
 /* this is now used as a module - there is no required reference to any other interface-elements in this code */
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+
+Components.utils.import("resource://v_identity/vI_log.js");
+let Log = setupLogging("virtualIdentity.rdfDatasource");
+
 function rdfDatasource(rdfFileName, dontRegisterObserver) {
     this._rdfFileName = rdfFileName;
     if (this._rdfFileName) this.init();
@@ -89,7 +93,7 @@ rdfDatasource.prototype = {
 	},
 
 	init: function() {
-//         if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource init.\n");
+//         Log.debug("## rdfDatasource init.\n");
 
         this._openRdfDataSource();
         if (!this._rdfDataSource) return;
@@ -100,7 +104,7 @@ rdfDatasource.prototype = {
         this.storeRDFVersion();
             
 //         this.refreshAccountInfo();
-//         if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource init done.\n");
+//         Log.debug("## rdfDatasource init done.\n");
     },
 	
     _openRdfDataSource: function() {
@@ -118,12 +122,12 @@ rdfDatasource.prototype = {
         newFile.initWithPath(file.path + delimiter + this._rdfFileName);
         var fileURI = protoHandler.newFileURI(newFile);
 
-        if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource init: read rdf from '" + fileURI.spec + "'\n");
+        Log.debug("## rdfDatasource init: read rdf from '" + fileURI.spec + "'\n");
 
         this._rdfDataSource =
             this._rdfService.GetDataSourceBlocking(fileURI.spec);
             
-//         if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource read rdf from '" + fileURI.spec + "' done." + this._rdfService + "\n");
+//         Log.debug("## rdfDatasource read rdf from '" + fileURI.spec + "' done." + this._rdfService + "\n");
     },
     
 	_initContainers: function() {
@@ -167,7 +171,7 @@ rdfDatasource.prototype = {
     // **************    RDF UPGRADE CODE    ****************************************************
     rdfUpgrade : function() {
         var currentVersion = this.getCurrentRDFFileVersion();
-        if (vI.notificationBar) vI.notificationBar.dump("checking for previous version of rdf, found " + 
+        Log.debug("checking for previous version of rdf, found " + 
             currentVersion + "\nrdf-upgrade required.\n")
         switch (currentVersion) {
             case null:
@@ -181,12 +185,12 @@ rdfDatasource.prototype = {
                 this._createAccountInfoContainers();
         }
         this.storeRDFVersion();
-        if (vI.notificationBar) vI.notificationBar.dump("rdf-upgrade to " + this.getCurrentRDFFileVersion() + " done.\n\n");
+        Log.debug("rdf-upgrade to " + this.getCurrentRDFFileVersion() + " done.\n\n");
     },
     // **************    RDF UPGRADE CODE    ****************************************************
     // only used for upgrade to 0.0.3 - loop through all ressources.
     _transferAllResources : function () {
-        if (vI.notificationBar) vI.notificationBar.dump("upgrade: transferAllResources ");
+        Log.debug("upgrade: transferAllResources ");
         var enumerator = this._rdfDataSource.GetAllResources();
         while (enumerator && enumerator.hasMoreElements()) {
             var resource = enumerator.getNext();
@@ -206,13 +210,13 @@ rdfDatasource.prototype = {
             
             if (container.IndexOf(resource) == -1) container.AppendElement(resource);
         
-            if (vI.notificationBar) vI.notificationBar.dump(".");
+            Log.debug(".");
         }
-        if (vI.notificationBar) vI.notificationBar.dump("\n");
+        Log.debug("\n");
     },
     // **************    RDF UPGRADE CODE    ****************************************************
     _tagDefaultSMTP: function() {
-        if (vI.notificationBar) vI.notificationBar.dump("upgrade: tagDefaultSMTP ");
+        Log.debug("upgrade: tagDefaultSMTP ");
         for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
             var enumerator = this.getContainer(treeType).GetElements();
             while (enumerator && enumerator.hasMoreElements()) {
@@ -220,14 +224,14 @@ rdfDatasource.prototype = {
                 resource.QueryInterface(Components.interfaces.nsIRDFResource);
                 var smtp = this._getRDFValue(resource, "smtp")
                 if (!smtp || smtp == "") this._setRDFValue(resource, "smtp", vI.DEFAULT_SMTP_TAG);
-                if (vI.notificationBar) vI.notificationBar.dump(".");
+                Log.debug(".");
             }
         }
-        if (vI.notificationBar) vI.notificationBar.dump("\n");
+        Log.debug("\n");
     },
     // **************    RDF UPGRADE CODE    ****************************************************
     _createAccountInfoContainers: function() {
-        if (vI.notificationBar) vI.notificationBar.dump("upgrade: createAccountInfoContainers \n");
+        Log.debug("upgrade: createAccountInfoContainers \n");
         var rdfContainerUtils = Components.classes["@mozilla.org/rdf/container-utils;1"].
             getService(Components.interfaces.nsIRDFContainerUtils);
         
@@ -259,7 +263,7 @@ rdfDatasource.prototype = {
     },
     // **************    RDF UPGRADE CODE    ****************************************************
     _createRDFContainers: function() {
-        if (vI.notificationBar) vI.notificationBar.dump("upgrade: createRDFContainers ");
+        Log.debug("upgrade: createRDFContainers ");
         var rdfContainerUtils = Components.classes["@mozilla.org/rdf/container-utils;1"].
             getService(Components.interfaces.nsIRDFContainerUtils);
 
@@ -343,7 +347,7 @@ rdfDatasource.prototype = {
     },
 	
 	cleanAccountInfo : function() {
-        if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: cleanAccountInfo\n");
+        Log.debug("## rdfDatasource: cleanAccountInfo\n");
         
         var enumerator = this._identityContainer.GetElements();
         while (enumerator && enumerator.hasMoreElements()) {
@@ -384,7 +388,7 @@ rdfDatasource.prototype = {
     },
     
 	searchIdentityMismatch : function() {
-        if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: searchIdentityMismatch");
+        Log.debug("## rdfDatasource: searchIdentityMismatch");
 
         var relevantIDs = this.getRelevantIDs();
         var mismatchIDs = [];
@@ -411,7 +415,7 @@ rdfDatasource.prototype = {
             mismatchIDs.push( { oldkey: id, label : rdfIdentityName, ext1: rdfEmail, ext2: rdfFullName, count: relevantIDs[id], key: "" } )
         }
         if (mismatchIDs.length > 0) {
-            if (vI.notificationBar) vI.notificationBar.dump(" found mismatches on id(s).\n");
+            Log.debug(" found mismatches on id(s).\n");
             
             window.openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul",0,
                     "chrome, dialog, modal, alwaysRaised, resizable=yes", "identity", mismatchIDs,
@@ -419,7 +423,7 @@ rdfDatasource.prototype = {
             return true;
         }
         else {
-            if (vI.notificationBar) vI.notificationBar.dump(" found no mismatch\n");
+            Log.debug(" found no mismatch\n");
             return false;
         }
     },
@@ -427,7 +431,7 @@ rdfDatasource.prototype = {
 	repairAccountMismatch : function(type, mismatchItems) {
         var keyField = (type == "identity")?"id":"smtp" // field to change is 'id' or 'smtp' dependent on type
         for (var i = 0; i < mismatchItems.length; i++) {
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: repairAccountMismatch change " + mismatchItems[i].oldkey + " into " + mismatchItems[i].key + ": ");
+            Log.debug("## rdfDatasource: repairAccountMismatch change " + mismatchItems[i].oldkey + " into " + mismatchItems[i].key + ": ");
             // search relevant Identities
             for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
                 var enumerator = this.getContainer(treeType).GetElements();
@@ -437,11 +441,11 @@ rdfDatasource.prototype = {
                     if (this._getRDFValue(resource, keyField) == mismatchItems[i].oldkey) {
                         if (mismatchItems[i].key == "") this._unsetRDFValue(resource, keyField, mismatchItems[i].oldkey)
                         else this._setRDFValue(resource, keyField, mismatchItems[i].key)
-                        if (vI.notificationBar) vI.notificationBar.dump(".");
+                        Log.debug(".");
                     }
                 }
             }
-            if (vI.notificationBar) vI.notificationBar.dump("\n");
+            Log.debug("\n");
         }
     },
 	
@@ -463,7 +467,7 @@ rdfDatasource.prototype = {
     },
     
     searchSmtpMismatch : function() {
-        if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: searchSmtpMismatch");
+        Log.debug("## rdfDatasource: searchSmtpMismatch");
 
         var relevantSMTPs = this.getRelevantSMTPs();
         var mismatchSMTPs = [];
@@ -487,20 +491,20 @@ rdfDatasource.prototype = {
                     mismatchSMTPs.push( { oldkey: smtp, label : rdfSMTPlabel, ext1: rdfHostname, ext2: rdfUsername, count: relevantSMTPs[smtp], key: "" } )
         }
         if (mismatchSMTPs.length > 0) {
-            if (vI.notificationBar) vI.notificationBar.dump(" found mismatches on smtp(s).\n");
+            Log.debug(" found mismatches on smtp(s).\n");
             window.openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul",0,
                     "chrome, dialog, modal, alwaysRaised, resizable=yes", "smtp", mismatchSMTPs,
                     /* callback: */ this).focus();
             return true;
         }
         else {
-            if (vI.notificationBar) vI.notificationBar.dump(" found no mismatch\n");
+            Log.debug(" found no mismatch\n");
             return false;
         }
     },
 
     storeAccountInfo : function() {
-        if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: storeAccounts\n");
+        Log.debug("## rdfDatasource: storeAccounts\n");
 
         var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
             .getService(Components.interfaces.nsIMsgAccountManager);
@@ -508,7 +512,7 @@ rdfDatasource.prototype = {
             var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
             for (let j = 0; j < account.identities.Count(); j++) {
                 var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
-//                 if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: storeAccounts identity store id " + identity.key + "\n");
+//                 Log.debug("## rdfDatasource: storeAccounts identity store id " + identity.key + "\n");
 
                 var resource = this._rdfService.GetResource(this._rdfNS + this._rdfNSIdentities + "/" + identity.key);
                 this._setRDFValue(resource, "identityName", identity.identityName);
@@ -522,7 +526,7 @@ rdfDatasource.prototype = {
         }
         
         function storeSmtp(server, parent) {
-//             if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: storeAccounts smtp store id " + server.key + "\n");
+//             Log.debug("## rdfDatasource: storeAccounts smtp store id " + server.key + "\n");
             var resource = parent._rdfService.GetResource(parent._rdfNS + parent._rdfNSSMTPservers + "/" + server.key);
             parent._setRDFValue(resource, "label", (server.description?server.description:server.hostname));
             parent._setRDFValue(resource, "hostname", server.hostname);
@@ -539,7 +543,7 @@ rdfDatasource.prototype = {
 			if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) storeSmtp(server, this);
 		}
 
-//         if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: storeAccounts done\n");
+//         Log.debug("## rdfDatasource: storeAccounts done\n");
     },
 
     export : function(rdfFileName) {
@@ -564,7 +568,7 @@ rdfDatasource.prototype = {
     _getRDFResourceForVIdentity : function (recDescription, recType) {
 		if (!this._rdfDataSource) return null;
 		if (!recDescription) {
-			if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: _getRDFResourceForVIdentity: no Recipient given.\n");
+			Log.debug("## rdfDatasource: _getRDFResourceForVIdentity: no Recipient given.\n");
 			return null;
 		}
 		var _rdfNSRecType = null
@@ -580,7 +584,7 @@ rdfDatasource.prototype = {
 	},
 	
 	removeVIdentityFromRDF : function (resource, recType) {
-// 		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: removeVIdentityFromRDF " + resource.ValueUTF8 + ".\n");
+// 		Log.debug("## rdfDatasource: removeVIdentityFromRDF " + resource.ValueUTF8 + ".\n");
 		this._unsetRDFValue(resource, "email", this._getRDFValue(resource, "email"))
 		this._unsetRDFValue(resource, "fullName", this._getRDFValue(resource, "fullName"))
 		this._unsetRDFValue(resource, "id", this._getRDFValue(resource, "id"))
@@ -593,7 +597,7 @@ rdfDatasource.prototype = {
 	},
 	
 	_unsetRDFValue : function (resource, field, value) {
-// 		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource _unsetRDFValue " + this._rdfService  + " " + this._rdfDataSource + "\n");
+// 		Log.debug("## rdfDatasource _unsetRDFValue " + this._rdfService  + " " + this._rdfDataSource + "\n");
         var predicate = this._rdfService.GetResource(this._rdfNS + "rdf#" + field);
 		var name = this._rdfService.GetLiteral(value?value:"");
 		var target = this._rdfDataSource.GetTarget(resource, predicate, true);
@@ -606,7 +610,7 @@ rdfDatasource.prototype = {
 	
 	// this will be used from rdfDataTree to get all RDF values, callFunction is vI.rdfDataTreeCollection.__addNewDatum
 	readAllEntriesFromRDF : function (addNewDatum, treeType, idData) {
-// 		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: readAllEntriesFromRDF " + this._rdfService  + " " + this._rdfDataSource + " " + this + "\n");
+// 		Log.debug("## rdfDatasource: readAllEntriesFromRDF " + this._rdfService  + " " + this._rdfDataSource + " " + this + "\n");
 		var enumerator = this.getContainer(treeType).GetElements();
 		while (enumerator && enumerator.hasMoreElements()) {
 			var resource = enumerator.getNext();
@@ -627,11 +631,11 @@ rdfDatasource.prototype = {
 	__getDescriptionAndType : function (recipient, recipientType) {
 		if (recipientType == "addr_newsgroups")	return { recDesc : recipient, recType : "newsgroup" }
 		else if (this.__isMailingList(recipient)) {
-			vI.notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is MailList\n");
+			Log.debug("## __getDescriptionAndType: '" + recipient + "' is MailList\n");
 			return { recDesc : this.__getMailListName(recipient), recType : "maillist" }
 		}
 		else {
-			vI.notificationBar.dump("## __getDescriptionAndType: '" + recipient + "' is no MailList\n");
+			Log.debug("## __getDescriptionAndType: '" + recipient + "' is no MailList\n");
 			var localIdentityData = new vI.identityData(recipient, null, null, null, null, null, null);
 			return { recDesc : localIdentityData.combinedName, recType : "email" }
 		}
@@ -673,7 +677,7 @@ rdfDatasource.prototype = {
 
 	findMatchingFilter : function (recipient, recipientType) {
 		var recDescription = this.__getDescriptionAndType(recipient, recipientType).recDesc;
-		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: findMatchingFilter for " + recDescription + ".\n");
+		Log.debug("## rdfDatasource: findMatchingFilter for " + recDescription + ".\n");
 		var enumerator = this._filterContainer.GetElements();
 		while (enumerator && enumerator.hasMoreElements()) {
 			var resource = enumerator.getNext();
@@ -685,29 +689,29 @@ rdfDatasource.prototype = {
 
 			if (filter == "") continue;
 			if (/^\/(.*)\/$/.exec(filter))
-				{ if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: findMatchingFilter with RegExp '"
+				{ Log.debug("## rdfDatasource: findMatchingFilter with RegExp '"
 					+ filter.replace(/\\/g,"\\\\") + "'\n"); recentfilterType = filterType.RegExp; }
-			else	{ if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: findMatchingFilter, compare with '"
+			else	{ Log.debug("## rdfDatasource: findMatchingFilter, compare with '"
 					+ filter + "'\n"); recentfilterType = filterType.StrCmp; }
 			
 			switch (recentfilterType) {
 				case filterType.RegExp:
 					try { 	/^\/(.*)\/$/.exec(filter);
 						if (recDescription.match(new RegExp(RegExp.$1,"i"))) {
-							if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: findMatchingFilter found stored data.\n");
+							Log.debug("## rdfDatasource: findMatchingFilter found stored data.\n");
 							return this._readVIdentityFromRDF(resource);
 						}
 					}
 					catch(vErr) { }; break;
 				case filterType.StrCmp:
 					if (recDescription.toLowerCase().indexOf(filter.toLowerCase()) != -1) {
-						if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: findMatchingFilter found stored data.\n");
+						Log.debug("## rdfDatasource: findMatchingFilter found stored data.\n");
 						return this._readVIdentityFromRDF(resource);
 					}
 					break;
 			}
 		}
-		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: findMatchingFilter no match found.\n");
+		Log.debug("## rdfDatasource: findMatchingFilter no match found.\n");
 		return null;
 	},
 	
@@ -718,10 +722,10 @@ rdfDatasource.prototype = {
 		if (!resource) return null;
 		if (!this._rdfDataSource.hasArcOut(resource, email)) {
 			// no data available --> give up.
-			if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: readVIdentityFromRDF no data found.\n");
+			Log.debug("## rdfDatasource: readVIdentityFromRDF no data found.\n");
 			return null;
 		}
-		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: readVIdentityFromRDF found stored data.\n");
+		Log.debug("## rdfDatasource: readVIdentityFromRDF found stored data.\n");
 		
 		return this._readVIdentityFromRDF(resource);
 	},
@@ -733,19 +737,19 @@ rdfDatasource.prototype = {
 		var smtp = this._getRDFValue(resource, "smtp")
 		if (!smtp) smtp = vI.NO_SMTP_TAG;
 		
-		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: email='" + email + 
+		Log.debug("## rdfDatasource: email='" + email + 
 			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'\n");
 		
 		var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
 		var extras_status = (typeof(vI.storageExtras)=='function')?extras.status():" not used";
-		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: extras:" + extras_status + "\n");
+		Log.debug("## rdfDatasource: extras:" + extras_status + "\n");
 		
 		var localIdentityData = new vI.identityData(email, fullName, id, smtp, extras)
 		return localIdentityData;
 	},
 
 	_getRDFValue : function (resource, field) {
-//         if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource _getRDFValue " + this._rdfService  + " " + this._rdfDataSource + " " + this + "\n");
+//         Log.debug("## rdfDatasource _getRDFValue " + this._rdfService  + " " + this._rdfDataSource + " " + this + "\n");
 		var predicate = this._rdfService.GetResource(this._rdfNS + "rdf#" + field);
 		var target = this._rdfDataSource.GetTarget(resource, predicate, true);
 		if (target instanceof Components.interfaces.nsIRDFLiteral) return target.Value
@@ -770,10 +774,10 @@ rdfDatasource.prototype = {
 	},
 
 	updateRDF : function (recDescription, recType, localIdentityData, storeBaseID, storeSMTP, prevRecDescription, prevRecType) {
-//         if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource (" + this._rdfNS + "): updateRDF recDescription=" + recDescription + " localIdentityData.email=" + localIdentityData.email + ".\n");
+//         Log.debug("## rdfDatasource (" + this._rdfNS + "): updateRDF recDescription=" + recDescription + " localIdentityData.email=" + localIdentityData.email + ".\n");
         
 // 		if (!localIdentityData.email) {
-// 			if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: updateRDF: no Sender-email for Recipient, aborting.\n");
+// 			Log.debug("## rdfDatasource: updateRDF: no Sender-email for Recipient, aborting.\n");
 // 			return;
 // 		}
 		if (!recDescription || recDescription.length == 0) return;
@@ -783,7 +787,7 @@ rdfDatasource.prototype = {
 
 		var resource = this._getRDFResourceForVIdentity(prevRecDescription, prevRecType);
 		if (!resource) return;
-// 		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: updateRDF " + resource.ValueUTF8 + ".\n");
+// 		Log.debug("## rdfDatasource: updateRDF " + resource.ValueUTF8 + ".\n");
 		
 		var position = this.getContainer(recType).IndexOf(resource); // check for index in new recType
 		this.removeVIdentityFromRDF(resource, prevRecType);
@@ -802,15 +806,15 @@ rdfDatasource.prototype = {
  
         if (localIdentityData.extras) localIdentityData.extras.loopForRDF(this, resource, "set");
 		
-		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: updateRDF add " + resource.ValueUTF8 + " at position " + position + ".\n");
+		Log.debug("## rdfDatasource: updateRDF add " + resource.ValueUTF8 + " at position " + position + ".\n");
         if (position != -1) this.getContainer(recType).InsertElementAt(resource, position, true);
 		else this.getContainer(recType).AppendElement(resource);
 	},
 
 	_setRDFValue : function (resource, field, value) {
-// 		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: _setRDFValue " + resource.ValueUTF8 + " " + field + " " + value + ".\n");
+// 		Log.debug("## rdfDatasource: _setRDFValue " + resource.ValueUTF8 + " " + field + " " + value + ".\n");
 		if (!value) return value; // return if some value was not set.
-// 		if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource _setRDFValue " + this._rdfService + " " + this._rdfDataSource + "\n");
+// 		Log.debug("## rdfDatasource _setRDFValue " + this._rdfService + " " + this._rdfDataSource + "\n");
         var predicate = this._rdfService.GetResource(this._rdfNS + "rdf#" + field);
 		var name = this._rdfService.GetLiteral(value);
 		var target = this._rdfDataSource.GetTarget(resource, predicate, true);
@@ -826,14 +830,14 @@ rdfDatasource.prototype = {
         _uninstall : false,
         observe : function(subject, topic, data) {
             if (topic == "am-smtpChanges" || topic == "am-acceptChanges") {
-                if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: account/smtp changes observed\n");
+                Log.debug("## rdfDatasource: account/smtp changes observed\n");
                 this.searchIdentityMismatch();
                 this.searchSmtpMismatch();
                 this.refreshAccountInfo();
             }
         },
         register : function() {
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasource: register AccountManagerObserver\n");
+            Log.debug("## rdfDatasource: register AccountManagerObserver\n");
             var obsService = Components.classes["@mozilla.org/observer-service;1"].
                 getService(Components.interfaces.nsIObserverService)
             obsService.addObserver(this, "am-smtpChanges", false);
@@ -871,26 +875,26 @@ rdfDatasourceAccess.prototype = {
 	updateVIdentityFromStorage : function(recipientName, recipientType, currentIdentity, currentIdentityIsVid, isNotFirstInputElement) {
 		var localIdentities = new vI.identityCollection();
 		localIdentities.addWithoutDuplicates(this._rdfDataSource.readVIdentityFromRDF(recipientName, recipientType));
-		if (localIdentities.number == 1) vI.notificationBar.dump("## rdfDatasourceAccess: using data from direct match\n");
+		if (localIdentities.number == 1) Log.debug("## rdfDatasourceAccess: using data from direct match\n");
 		localIdentities.addWithoutDuplicates(this._rdfDataSource.findMatchingFilter(recipientName, recipientType));
 		
 		var returnValue = {}; returnValue.identityCollection = localIdentities; returnValue.result = "drop";
 		if (localIdentities.number == 0) {
-			vI.notificationBar.dump("## rdfDatasourceAccess: updateVIdentityFromStorage no usable Storage-Data found.\n");
+			Log.debug("## rdfDatasourceAccess: updateVIdentityFromStorage no usable Storage-Data found.\n");
 		}
 		else {
-			vI.notificationBar.dump("## rdfDatasourceAccess: compare with current Identity\n");
+			Log.debug("## rdfDatasourceAccess: compare with current Identity\n");
 			if (this._pref.getBoolPref("storage_getOneOnly") &&		// if requested to retrieve only storageID for first recipient entered
 				isNotFirstInputElement &&							// and it is now not the first recipient entered
 				!localIdentities.identityDataCollection[0].equalsIdentity(currentIdentity, false).equal) {		// and this id is different than the current used one
-					vI.notificationBar.setNote(
+					setNote(
 						this.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageCollidingIdentity"),	// than drop the potential changes
 						"storage_notification");
 // 					returnValue.result = "drop";    // this is the default value
 			}
 			// only update fields if new Identity is different than old one.
 			else {
-				vI.notificationBar.dump("## rdfDatasourceAccess: updateVIdentityFromStorage check if storage-data matches current Identity.\n");
+				Log.debug("## rdfDatasourceAccess: updateVIdentityFromStorage check if storage-data matches current Identity.\n");
 				var compResult = localIdentities.identityDataCollection[0].equalsIdentity(currentIdentity, true);
 				if (!compResult.equal) {
 					var warning = this.__getWarning("replaceVIdentity", recipientName, compResult.compareMatrix);
@@ -911,7 +915,7 @@ rdfDatasourceAccess.prototype = {
 	storeVIdentityToAllRecipients : function(identityData, recipients) {
 		var multipleRecipients = (recipients.length > 1);
 		var dontUpdateMultipleNoEqual = (this._pref.getBoolPref("storage_dont_update_multiple") && multipleRecipients)
-		vI.notificationBar.dump("## rdfDatasource: storeVIdentityToAllRecipients dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'\n")
+		Log.debug("## rdfDatasource: storeVIdentityToAllRecipients dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'\n")
 		
 		for (var j = 0; j < recipients.length; j++) {
 			var returnValue = this.__updateStorageFromVIdentity(identityData, recipients[j].recipient, recipients[j].recipientType, dontUpdateMultipleNoEqual);
@@ -922,17 +926,17 @@ rdfDatasourceAccess.prototype = {
 
 	getVIdentityFromAllRecipients : function(allIdentities, recipients) {
         if (!this._pref.getBoolPref("storage"))
-            { vI.notificationBar.dump("## storage: Storage deactivated\n"); return; }
+            { Log.debug("## storage: Storage deactivated\n"); return; }
 		var initnumber = allIdentities.number;
 		for (var j = 0; j < recipients.length; j++) {
 			allIdentities.addWithoutDuplicates(this._rdfDataSource.readVIdentityFromRDF(recipients[j].recipient, recipients[j].recipientType));
 			allIdentities.addWithoutDuplicates(this._rdfDataSource.findMatchingFilter(recipients[j].recipient, recipients[j].recipientType));
 		}
-		vI.notificationBar.dump("## storage: found " + (allIdentities.number-initnumber) + " address(es)\n")
+		Log.debug("## storage: found " + (allIdentities.number-initnumber) + " address(es)\n")
 	},
 
 	__updateStorageFromVIdentity : function(identityData, recipient, recipientType, dontUpdateMultipleNoEqual) {
-		vI.notificationBar.dump("## rdfDatasource: __updateStorageFromVIdentity.\n")
+		Log.debug("## rdfDatasource: __updateStorageFromVIdentity.\n")
 		var storageDataByType = this._rdfDataSource.readVIdentityFromRDF(recipient, recipientType);
 		var storageDataByFilter = this._rdfDataSource.findMatchingFilter(recipient, recipientType);
 		
@@ -945,9 +949,9 @@ rdfDatasourceAccess.prototype = {
 		var doUpdate = "accept";
 		if (	(!storageDataByType && !storageDataByFilterEqual) ||
 			(!storageDataByTypeEqual && !storageDataByFilterEqual && !dontUpdateMultipleNoEqual) ) {
-			vI.notificationBar.dump("## storage: __updateStorageFromVIdentity updating\n")
+			Log.debug("## storage: __updateStorageFromVIdentity updating\n")
 			if (storageDataByType && !storageDataByTypeEqual && this._pref.getBoolPref("storage_warn_update")) {
-				vI.notificationBar.dump("## storage: __updateStorageFromVIdentity overwrite warning\n");
+				Log.debug("## storage: __updateStorageFromVIdentity overwrite warning\n");
 				doUpdate = this.__askWarning(this.__getWarning("updateStorage", recipient, storageDataByTypeCompResult.compareMatrix));
 			}
 		}
@@ -1033,7 +1037,7 @@ rdfDatasourceImporter.prototype = {
             values.id = this._getMatchingIdentity(values.identityName, values.email, values.fullName);
             values.id = values.id?values.id:"import_" + id
             relevantIDs[id] = values;
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasourceImporter import: translate relevant ID from previous '" + id + "' to current '" + relevantIDs[id].id + "'\n");
+            Log.debug("## rdfDatasourceImporter import: translate relevant ID from previous '" + id + "' to current '" + relevantIDs[id].id + "'\n");
         }
         return relevantIDs;
     },
@@ -1065,7 +1069,7 @@ rdfDatasourceImporter.prototype = {
             values.smtp =  this._getMatchingSMTP(values.label, values.hostname, values.username);
             values.smtp = values.smtp?values.smtp:"import_" + smtp;
             relevantSMTPs[smtp] = values;
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasourceImporter import: translate relevant SMTP from previous '" + smtp + "' to current '" + relevantSMTPs[smtp].smtp + "'\n");
+            Log.debug("## rdfDatasourceImporter import: translate relevant SMTP from previous '" + smtp + "' to current '" + relevantSMTPs[smtp].smtp + "'\n");
         }
         return relevantSMTPs;
     },
@@ -1095,7 +1099,7 @@ rdfDatasourceImporter.prototype = {
         filePicker.appendFilters(Components.interfaces.nsIFilePicker.filterText | Components.interfaces.nsIFilePicker.filterAll );
         
         if (filePicker.show() == Components.interfaces.nsIFilePicker.returnOK) {
-            if (vI.notificationBar) vI.notificationBar.dump("\n## rdfDatasourceImporter IMPORT\n## rdfDatasourceImporter import: preparation:\n");
+            Log.debug("\n## rdfDatasourceImporter IMPORT\n## rdfDatasourceImporter import: preparation:\n");
             
             var importRdfDataFile = Components.classes["@mozilla.org/file/local;1"]
                 .createInstance(Components.interfaces.nsILocalFile);
@@ -1105,7 +1109,7 @@ rdfDatasourceImporter.prototype = {
             importRdfDataFile.initWithPath(file.path + delimiter + this._rdfFileName + "_import");
             filePicker.file.copyTo(importRdfDataFile.parent,importRdfDataFile.leafName);
 
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasourceImporter import: copied file from " + filePicker.file.path + " to " + importRdfDataFile.path + "'\n");
+            Log.debug("## rdfDatasourceImporter import: copied file from " + filePicker.file.path + " to " + importRdfDataFile.path + "'\n");
             
             // init Datasources
             this._rdfImportDataSource = new rdfDatasource(importRdfDataFile.leafName, true);
@@ -1114,15 +1118,15 @@ rdfDatasourceImporter.prototype = {
             var relevantIDs = this._translateRelevantIDs();
             var relevantSMTPs = this._translateRelevantSMTPs();
             
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasourceImporter import: preparation done.\n");
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasourceImporter import: starting import:\n");
+            Log.debug("## rdfDatasourceImporter import: preparation done.\n");
+            Log.debug("## rdfDatasourceImporter import: starting import:\n");
 
             for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
                 // re-initialize importDataSource to point rdfService to the right Resources
                 this._rdfImportDataSource = new rdfDatasource(importRdfDataFile.leafName, true);
                 var container = this._rdfImportDataSource.getContainer(treeType)
                 if (container.GetCount() == 0) continue;
-                if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasourceImporter importing " + treeType + ": " + container.GetCount()+ " datasets from " + this._rdfImportDataSource._rdfDataSource.URI + "\n");
+                Log.debug("## rdfDatasourceImporter importing " + treeType + ": " + container.GetCount()+ " datasets from " + this._rdfImportDataSource._rdfDataSource.URI + "\n");
                 var enumerator = container.GetElements();
                 // re-initialize dataSource to point rdfService to the right Resources
                 this._rdfDataSource = new rdfDatasource(this._rdfFileName, true);
@@ -1130,7 +1134,7 @@ rdfDatasourceImporter.prototype = {
                 while (enumerator.hasMoreElements()) {
                     var resource = enumerator.getNext(); count += 1;
                     resource.QueryInterface(Components.interfaces.nsIRDFResource);
-                    if (vI.notificationBar) vI.notificationBar.dump("## " + count + " ");
+                    Log.debug("## " + count + " ");
                     var name = this._rdfImportDataSource._getRDFValue(resource, "name")
                     var email = this._rdfImportDataSource._getRDFValue(resource, "email")
                     var fullName = this._rdfImportDataSource._getRDFValue(resource, "fullName")
@@ -1148,11 +1152,11 @@ rdfDatasourceImporter.prototype = {
                 }
             }
             
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasourceImporter import: removing temporary file " + importRdfDataFile.path + ".\n");
+            Log.debug("## rdfDatasourceImporter import: removing temporary file " + importRdfDataFile.path + ".\n");
             this._rdfImportDataSource = null; importRdfDataFile.remove(false);
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasourceImporter import: import done.\n");
+            Log.debug("## rdfDatasourceImporter import: import done.\n");
             
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasourceImporter import: cleaning ID/SMTP storages:\n");
+            Log.debug("## rdfDatasourceImporter import: cleaning ID/SMTP storages:\n");
             this._rdfDataSource = new rdfDatasource(this._rdfFileName, true);
             
             this._storeMappedIDs(relevantIDs);
@@ -1163,8 +1167,8 @@ rdfDatasourceImporter.prototype = {
             this._rdfDataSource.refreshAccountInfo();
             this._rdfDataSource.clean();
             this._rdfDataSource = null;
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasourceImporter import: cleaning ID/SMTP storages done.\n");
-            if (vI.notificationBar) vI.notificationBar.dump("## rdfDatasourceImporter IMPORT DONE.\n");
+            Log.debug("## rdfDatasourceImporter import: cleaning ID/SMTP storages done.\n");
+            Log.debug("## rdfDatasourceImporter IMPORT DONE.\n");
         }
     }
 }

@@ -62,7 +62,6 @@
 
 <script type="application/x-javascript" src="chrome://v_identity/content/_overlayNameSpaceWrapper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_helper.js" />
-<script type="application/x-javascript" src="chrome://v_identity/content/notificationbar/vI_notificationBar.js"/>
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_identityData.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_rdfDatasource.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataTree.js" />
@@ -307,8 +306,5 @@
 </tabbox>
 <!-- <splitter /> -->
 <browser id="rdfDataTreeCollectionInfoBox" class="vI_htmlTextBox" type="chrome" cssSource="vI_rdfTreeInfo.css" disablehistory="true" onoverflow="virtualIdentityExtension.rdfDataTreeCollection.overflow();"/>
-	<splitter id="vIDebugBoxSplitter" hidden="true"/>
-	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
-	DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
-		<script type="application/x-javascript">dump('window rdfDataTreeCollection done ' + parseInt((new Date()).getTime()) + ' ' + virtualIdentityExtension.initTime + ' ' + virtualIdentityExtension.rdfDataTreeCollection + '\n');</script>
+<textbox id="vIDebugBox" />
 </window>

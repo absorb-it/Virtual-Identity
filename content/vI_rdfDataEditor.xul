@@ -41,7 +41,6 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_helper.js" />
-<script type="application/x-javascript" src="chrome://v_identity/content/notificationbar/vI_notificationBar.js"/>
 <script type="application/x-javascript" src="chrome://messenger/content/messengercompose/MsgComposeCommands.js"/>
 
   <stringbundleset id="stringbundleset">
@@ -86,8 +85,5 @@
 		</hbox>
 	</groupbox>
 	</vbox>
-	<splitter id="vIDebugBoxSplitter" hidden="true"/>
-	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
-	DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
-
+    <textbox id="vIDebugBox" />
 </dialog>

@@ -33,7 +33,7 @@
     <constructor>
         <![CDATA[
         with (virtualIdentityExtension.LIB) { 
-		if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: constructor\n");
+		MyLog.debug("## identitySelector: constructor\n");
         var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
             .getService(Components.interfaces.nsIMsgAccountManager);
         var debugNotes = vI.prefDialog.preferences.getBoolPref("debug_notification");
@@ -61,26 +61,26 @@
     <property name="value" >
         <setter><![CDATA[
         with (virtualIdentityExtension.LIB) { 
-		if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: setting value to '" + val + "'\n");
+		MyLog.debug("## identitySelector: setting value to '" + val + "'\n");
         var listItems = this.childNodes;
         for (var index = 0; index < listItems.length; index++) {
             var key = listItems[index].getAttribute("value");
             listItems[index].checked = (val.indexOf(":" + key + ":") == -1);
-            if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: setting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n")
+            MyLog.debug("## identitySelector: setting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n")
         }
         this._value = val;
 		}
         ]]></setter>
         <getter><![CDATA[
         with (virtualIdentityExtension.LIB) { 
-		if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: getting value\n");
+		MyLog.debug("## identitySelector: getting value\n");
         var returnVal = "";
         var listItems = this.childNodes;
         for (var index = 0; index < listItems.length; index++) {
-            if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: getting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n");
+            MyLog.debug("## identitySelector: getting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n");
             if (!listItems[index].checked) returnVal += " :" + listItems[index].getAttribute("value") + ": "
         }
-        if (vI.notificationBar) vI.notificationBar.dump("## identitySelector: getting value, result '" + returnVal + "'\n");
+        MyLog.debug("## identitySelector: getting value, result '" + returnVal + "'\n");
         return returnVal;
 		}
         ]]></getter>        

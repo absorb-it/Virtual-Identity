@@ -28,7 +28,7 @@ var msgIdentityCloneTools = {
 		.getBranch("extensions.virtualIdentity."),
 
 	copySelectedIdentity : function(id_key) {
-		vI.notificationBar.dump("## msgIdentityCloneTools: copySelectedIdentity\n");
+		MyLog.debug("## msgIdentityCloneTools: copySelectedIdentity\n");
 		var msgIdentityElem = document.getElementById("msgIdentity");
 		var msgIdentityPopupElem = document.getElementById("msgIdentityPopup");
 		// copy selected Menu-Value from clone to orig.
@@ -47,18 +47,18 @@ var msgIdentityCloneTools = {
 		// always initialize Security/Enigmail-Options
 		try { setSecuritySettings(1); enigSetMenuSettings(''); } catch(vErr) { };
 		if (!existingIdentity) {
-			vI.notificationBar.dump("## msgIdentityCloneTools: signatureSwitch hide/remove signatures\n");
+			MyLog.debug("## msgIdentityCloneTools: signatureSwitch hide/remove signatures\n");
 			// code to hide the text signature
 			try { if (msgIdentityCloneTools._pref.getBoolPref("hide_signature") && ss_signature.length == 0) {
-				vI.notificationBar.dump("## msgIdentityCloneTools: hide text/html signature");
+				MyLog.debug("## msgIdentityCloneTools: hide text/html signature");
 				ss_main.signatureSwitch()
-				vI.notificationBar.dump("\n");
-			} } catch(vErr) { vI.notificationBar.dump(" -- missing signatureSwitch extension?\n"); };
+				MyLog.debug("\n");
+			} } catch(vErr) { MyLog.debug(" -- missing signatureSwitch extension?\n"); };
 			// code to hide the sMime signature
 			try { if (msgIdentityCloneTools._pref.getBoolPref("hide_sMime_messageSignature")) {
 				var element = document.getElementById("menu_securitySign1");
 				if (element.getAttribute("checked") == "true") {
-					vI.notificationBar.dump("## signatureSwitch hide_sMime_messageSignature with doCommand\n");
+					MyLog.debug("## signatureSwitch hide_sMime_messageSignature with doCommand\n");
 					element.doCommand();
 				}
 			}
@@ -77,9 +77,9 @@ var msgIdentityCloneTools = {
 						skipChangeGPGsign = skipChangeGPGsign || (window.document.title == EnigGetString("enigAlert"));
 					}
 					if (skipChangeGPGsign)
-						vI.notificationBar.dump("## signatureSwitch skip hide_openPGP_messageSignature - EnigMail AlertWindow open\n");
+						MyLog.debug("## signatureSwitch skip hide_openPGP_messageSignature - EnigMail AlertWindow open\n");
 					else {
-						vI.notificationBar.dump("## signatureSwitch hide_openPGP_messageSignature with doCommand\n");
+						MyLog.debug("## signatureSwitch hide_openPGP_messageSignature with doCommand\n");
 						element.doCommand();
 					}
 				}
@@ -88,13 +88,13 @@ var msgIdentityCloneTools = {
 			} catch(vErr) { };
 		}
 		else {
-			vI.notificationBar.dump("## msgIdentityCloneTools: signatureSwitch restore signature\n");
+			MyLog.debug("## msgIdentityCloneTools: signatureSwitch restore signature\n");
 			// code to show the text signature
 			try { if (ss_signature.length > 0) {
-				vI.notificationBar.dump("## msgIdentityCloneTools: show text/html signature");
+				MyLog.debug("## msgIdentityCloneTools: show text/html signature");
 				ss_main.signatureSwitch()
-				vI.notificationBar.dump("\n");
-			} } catch(vErr) { vI.notificationBar.dump(" -- missing signatureSwitch extension?\n"); };
+				MyLog.debug("\n");
+			} } catch(vErr) { MyLog.debug(" -- missing signatureSwitch extension?\n"); };
 			// sMime and openGPG signature will not be re-added automatically
 		}
 	},
@@ -112,7 +112,7 @@ var msgIdentityCloneTools = {
 			for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 				var awType = awGetPopupElement(row).selectedItem.getAttribute("value");
 				if (awType == "addr_reply") {
-					vI.notificationBar.dump("## msgIdentityCloneTools: removed ReplyTo found in row " + row + "\n");
+					MyLog.debug("## msgIdentityCloneTools: removed ReplyTo found in row " + row + "\n");
 					awDeleteRow(row--); // removed one line therefore decrease row-value
 				}
 			}
@@ -122,7 +122,7 @@ var msgIdentityCloneTools = {
 	addReplyToSelf : function() {
 		if (!document.getElementById("autoReplyToSelfLabel").hasAttribute("hidden")) {
 			awAddRecipient("addr_reply",document.getElementById("msgIdentity_clone").label);
-			vI.notificationBar.dump("## msgIdentityCloneTools: added ReplyToSelf");
+			MyLog.debug("## msgIdentityCloneTools: added ReplyToSelf");
 			document.getElementById("autoReplyToSelfLabel").setAttribute("hidden","true");
 		}
 	}

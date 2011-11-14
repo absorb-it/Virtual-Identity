@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+
+<bindings id="vI_notificationBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <binding id="vI_debugBox">
+    <content>
+      <xul:textbox anonid="vI_debugBoxContent" multiline="true" readonly="true"
+        DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;" flex="1"/>
+    </content>
+    <implementation implements="nsIObserver">
+      <constructor><![CDATA[
+        this.splitter = document.createElement("splitter");
+        let prefroot = Components.classes["@mozilla.org/preferences-service;1"]
+          .getService(Components.interfaces.nsIPrefService)
+          .getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2);
+        prefroot.addObserver("extensions.virtualIdentity.debug_notification", this, false);
+        this.observe();
+      ]]></constructor>
+      <destructor><![CDATA[
+        let prefroot = Components.classes["@mozilla.org/preferences-service;1"]
+          .getService(Components.interfaces.nsIPrefService)
+          .getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2);
+        prefroot.removeObserver("extensions.virtualIdentity.debug_notification", this);
+      ]]></destructor>
+      <field name="_content">document.getAnonymousElementByAttribute(this, "anonid", "vI_debugBoxContent")</field>
+      <property name="splitter" />
+      <method name="observe">
+        <body><![CDATA[
+          this.clear();
+          let showDebugArea = Components.classes["@mozilla.org/preferences-service;1"]
+            .getService(Components.interfaces.nsIPrefService)
+            .getBranch("extensions.virtualIdentity.")
+            .getBoolPref("debug_notification");
+          if (showDebugArea) {
+            this.removeAttribute("hidden");
+            this.parentNode.insertBefore(this.splitter, this);
+          }
+          else {
+            this.setAttribute("hidden", "true");
+            try {
+              this.parentNode.removeChild(this.splitter);
+            } catch (e) { };
+          }
+        ]]></body>
+      </method>
+       <method name="clear">
+        <body><![CDATA[
+          if (this.getAttribute("hidden")) return;
+          while (this._content.inputField.firstChild)
+            this._content.inputField.removeChild(this._content.inputField.firstChild);
+          this.dump_app_version();
+        ]]></body>
+      </method>
+      <method name="dump">
+        <parameter name="text" />
+        <body><![CDATA[
+          if (this.getAttribute("hidden")) return;
+          let new_text = document.createTextNode(text);
+          var new_br = document.createElementNS("http://www.w3.org/1999/xhtml", 'br');
+          this._content.inputField.appendChild(new_text);
+          this._content.inputField.appendChild(new_br);
+          this._content.inputField.scrollTop = 
+            this._content.inputField.scrollHeight - this._content.inputField.clientHeight
+        ]]></body>
+      </method>
+      <method name="dump_app_version">
+        <body><![CDATA[
+          if (this.getAttribute("hidden")) return;
+          this.dump("--------------------------------------------------------------------------------\n")
+          // add some information about the mail-client and the extensions installed
+          if ("@mozilla.org/xre/app-info;1" in Components.classes) {
+            var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
+              .getService(Components.interfaces.nsIXULAppInfo);
+            var protohandler = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+              .getService(Components.interfaces.nsIHttpProtocolHandler);
+            this.dump(appInfo.name + " " + appInfo.version + " (" + appInfo.appBuildID + "; " + protohandler.oscpu + ")\n");
+          }
+          else
+            this.dump("mail-client seems not supported by Virtual Identity Extension")
+          
+          this.dump_extension_list(this.dump);
+          this.dump("--------------------------------------------------------------------------------\n")
+        ]]></body>
+      </method>
+      <method name="dump_extension_list">
+        <parameter name="callback" />
+        <body><![CDATA[
+          if (this.getAttribute("hidden")) return;
+          self = this;
+          Components.utils.import("resource://gre/modules/AddonManager.jsm");
+          AddonManager.getAllAddons(function(addons) {
+            var strings = addons.map(function(addon) {
+                return "addon: " + addon.name + " " + addon.version
+                + (addon.userDisabled || addon.appDisabled ? " [DISABLED]" : "");
+            });
+            self.dump("--------------------------------------------------------------------------------\n" +
+                      strings.join("\n") +
+                      "\n--------------------------------------------------------------------------------\n");
+          });
+        ]]></body>
+      </method>
+    </implementation>
+  </binding>
+</bindings>

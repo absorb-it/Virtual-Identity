@@ -47,7 +47,6 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_msgIdentityCloneTools.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_statusmenu.js" />
-<script type="application/x-javascript" src="chrome://v_identity/content/notificationbar/vI_notificationBar.js"/>
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js"/>
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js"/>
 
@@ -57,9 +56,7 @@
   </stringbundleset>
 
 <vbox id="appcontent" >
-	<splitter id="vIDebugBoxSplitter" hidden="true"/>
-	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
-	DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
+  <textbox id="vIDebugBox" />
 </vbox>
 
 <toolbox id="headers-box">

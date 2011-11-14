@@ -30,6 +30,8 @@
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
+Components.utils.import("resource://v_identity/vI_log.js");
+
 
 var storage = {
 	focusedElement : null,
@@ -43,7 +45,7 @@ var storage = {
     _rdfDatasourceAccess : null,    // local storage
 
 	clean: function() {
-		vI.notificationBar.dump("## storage: clean.\n");
+		MyLog.debug("## storage: clean.\n");
 		storage.multipleRecipients = null;
 		storage.lastCheckedEmail = {};
 		storage.firstUsedInputElement = null;
@@ -57,7 +59,7 @@ var storage = {
 
 	replacement_functions : {
 		awSetInputAndPopupValue : function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
-			vI.notificationBar.dump("## storage: awSetInputAndPopupValue '" + inputElem.id +"'\n");
+			MyLog.debug("## storage: awSetInputAndPopupValue '" + inputElem.id +"'\n");
 			storage.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
 			storage.updateVIdentityFromStorage(inputElem);
 		}
@@ -66,7 +68,7 @@ var storage = {
 	awOnBlur : function (element) {
 		// only react on events triggered by addressCol2 - textinput Elements
 		if (!element || ! element.id.match(/^addressCol2*/)) return;
-		vI.notificationBar.dump("\n## storage: awOnBlur '" + element.id +"'\n");
+		MyLog.debug("\n## storage: awOnBlur '" + element.id +"'\n");
 		storage.updateVIdentityFromStorage(element);
 		storage.focusedElement = null;
 	},
@@ -77,7 +79,7 @@ var storage = {
 	},
 
 	awPopupOnCommand : function (element) {
-		vI.notificationBar.dump("\n## storage: awPopupOnCommand'" + element.id +"'\n");
+		MyLog.debug("\n## storage: awPopupOnCommand'" + element.id +"'\n");
 		storage.updateVIdentityFromStorage(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")));
 		if (element.selectedItem.getAttribute("value") == "addr_reply") // if reply-to is manually entered disable AutoReplyToSelf
 			document.getElementById("autoReplyToSelfLabel").setAttribute("hidden", "true");
@@ -129,8 +131,8 @@ var storage = {
 	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
 	updateVIdentityFromStorage: function(inputElement) {
 		if (!storage._pref.getBoolPref("storage"))
-			{ vI.notificationBar.dump("## storage: Storage deactivated\n"); return; }
-		vI.notificationBar.dump("## storage: updateVIdentityFromStorage()\n");
+			{ MyLog.debug("## storage: Storage deactivated\n"); return; }
+		MyLog.debug("## storage: updateVIdentityFromStorage()\n");
 
 		var recipientType = document.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
 			.selectedItem.getAttribute("value");
@@ -139,17 +141,17 @@ var storage = {
 			// reset firstUsedInputElement if recipientType was changed (and don't care about doBcc fields)
 			if (storage.firstUsedInputElement == inputElement)
 				storage.firstUsedInputElement = null;
-			vI.notificationBar.dump("## storage: field is a 'reply-to' or 'followup-to' or preconfigured 'doBcc'. not searched.\n")
+			MyLog.debug("## storage: field is a 'reply-to' or 'followup-to' or preconfigured 'doBcc'. not searched.\n")
 			return;
 		}
 		
 		if (inputElement.value == "") {
-			vI.notificationBar.dump("## storage: no recipient found, not checked.\n"); return;
+			MyLog.debug("## storage: no recipient found, not checked.\n"); return;
 		}
 		
 		var row = inputElement.id.replace(/^addressCol2#/,"")
 		if (storage.lastCheckedEmail[row] && storage.lastCheckedEmail[row] == inputElement.value) {
-			vI.notificationBar.dump("## storage: same email than before, not checked again.\n"); return;
+			MyLog.debug("## storage: same email than before, not checked again.\n"); return;
 		}
 		storage.lastCheckedEmail[row] = inputElement.value;
 		
@@ -160,22 +162,22 @@ var storage = {
 			currentIdentity, document.getElementById("msgIdentity_clone").vid, isNotFirstInputElement);
 		
 		if (storageResult.identityCollection.number == 0) return; // return if there was no match
-		vI.notificationBar.dump("## storage: updateVIdentityFromStorage result: " + storageResult.result + "\n");
+		MyLog.debug("## storage: updateVIdentityFromStorage result: " + storageResult.result + "\n");
 		// found storageData, so store InputElement
 		if (!storage.firstUsedInputElement) storage.firstUsedInputElement = inputElement;
 		
 		var selectedMenuItem;
 		if (storageResult.result != "equal") {
 			for (var j = 0; j < storageResult.identityCollection.number; j++) {
-				vI.notificationBar.dump("## storage: updateVIdentityFromStorage adding: " + storageResult.identityCollection.identityDataCollection[j].combinedName + "\n");
+				MyLog.debug("## storage: updateVIdentityFromStorage adding: " + storageResult.identityCollection.identityDataCollection[j].combinedName + "\n");
 				selectedMenuItem = document.getElementById("msgIdentity_clone").addIdentityToCloneMenu(storageResult.identityCollection.identityDataCollection[j])
 			}
 		}
 		if (storageResult.result == "accept") {
-			vI.notificationBar.dump("## storage: updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName + "\n");
+			MyLog.debug("## storage: updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName + "\n");
 			document.getElementById("msgIdentity_clone").selectedMenuItem = selectedMenuItem;
 			if (document.getElementById("msgIdentity_clone").vid)
-				vI.notificationBar.setNote(vI.main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
+				setNote(vI.main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".",
 					"storage_notification");
 		}
 	},
@@ -188,7 +190,7 @@ var storage = {
 
 		for (var index = 0; index < doBccArray.count; index++ ) {
 			if (doBccArray.StringAt(index) == awGetInputElement(row).value) {
-				vI.notificationBar.dump("## storage: ignoring doBcc field '" +
+				MyLog.debug("## storage: ignoring doBcc field '" +
 					doBccArray.StringAt(index) + "'.\n");
 				return true;
 			}

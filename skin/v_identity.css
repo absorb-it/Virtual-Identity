@@ -309,13 +309,13 @@ treechildren::-moz-tree-cell-text(locked) {
 }
 
 #vINotification {
-  -moz-binding: url("chrome://v_identity/content/notificationbar/vI_notificationBar.xml#vI_notificationbox");
+  -moz-binding: url("chrome://global/content/bindings/notification.xml#notificationbox");
   -moz-box-orient: vertical;
   overflow: hidden;
 }
 
 #vINotification notification {
-  -moz-binding: url("chrome://v_identity/content/notificationbar/vI_notificationBar.xml#vI_notification");
+  -moz-binding: url("chrome://global/content/bindings/notification.xml#notification");
 }
 
 .vINotificationLogo {
@@ -323,14 +323,18 @@ treechildren::-moz-tree-cell-text(locked) {
 	padding: 0;
 }
 
+#vIDebugBox {
+    -moz-binding: url("chrome://v_identity/content/bindings/vI_debugBox.xml#vI_debugBox");
+}
+
 #vIDebugBox, #vIErrorBox{
-	overflow: auto;
-	font-size: x-small;
-	height: 10em;
+    overflow: auto;
+    font-size: x-small;
+    height: 10em;
 }
 
 .identity_clone-menulist {
-	-moz-binding: url(chrome://v_identity/content/bindings/v_identity.xml#fromMenuList_clone);
+	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#fromMenuList_clone");
 	-moz-appearance: textfield;
 	margin: 2px 4px;
 	border: 2px solid;

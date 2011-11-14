@@ -43,7 +43,7 @@ var upgrade = {
     },
 
     __initRequirements : function() {
-		vI.notificationBar.dump("") // this initialises the debug-area
+		MyLog.debug("") // this initialises the debug-area
 		upgrade.rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf", true);
 	},
 	
@@ -66,7 +66,7 @@ var upgrade = {
 		
 		// don't show the dialog if we do a one-step upgrade
 		if (upgrade.versionChecker.compare(extVersion, nextVersion) <= 0) {
-			vI.notificationBar.dump("starting quick_upgrade.\n")
+			MyLog.debug("starting quick_upgrade.\n")
 			upgrade.__initRequirements();
 			upgrade.__upgrade();
 			return true;
@@ -91,13 +91,13 @@ var upgrade = {
 	},			
 
 	upgrade : function() {
-		vI.notificationBar.dump("starting upgrade.\n\n")
+		MyLog.debug("starting upgrade.\n\n")
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "false")
 		document.documentElement.getButton('next').setAttribute('disabled','true');
 		
 		upgrade.__upgrade();
 	
-		vI.notificationBar.dump("\n\nupgrade finished.\n");
+		MyLog.debug("\n\nupgrade finished.\n");
 		
 		document.documentElement.getButton('next').setAttribute('disabled','false');
 		document.getElementById("upgradeWizard").setAttribute("canAdvance", "true")
@@ -105,7 +105,7 @@ var upgrade = {
 	
 	extUpgrade : function() {
 		var currentVersion = upgrade.rdfDatasource.getCurrentExtFileVersion();
-		vI.notificationBar.dump("checking for previous version, found " + 
+		MyLog.debug("checking for previous version, found " + 
 			currentVersion + "\nextension-upgrade required.\n")
 		switch (currentVersion) {
 			case null:
@@ -116,7 +116,7 @@ var upgrade = {
                 upgrade.__removeExtraAddedHeaders(currentVersion);
 		}
 		upgrade.rdfDatasource.storeExtVersion();
-		vI.notificationBar.dump("extension-upgrade to " + upgrade.rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
+		MyLog.debug("extension-upgrade to " + upgrade.rdfDatasource.getCurrentExtFileVersion() + " done.\n\n");
 	},
     
     __removeExtraAddedHeaders : function(currentVersion) {
@@ -124,15 +124,15 @@ var upgrade = {
             .getService(Components.interfaces.nsIPrefService)
             .getBranch(null);
         
-        vI.notificationBar.dump("extension-upgrade __removeExtraAddedHeaders " + currentVersion + "\n");
+        MyLog.debug("extension-upgrade __removeExtraAddedHeaders " + currentVersion + "\n");
         if ((!currentVersion || upgrade.versionChecker.compare(currentVersion, "0.6.9") < 0) && 
                 prefroot.getCharPref("mailnews.headers.extraExpandedHeaders") != "") {
             // clean extraExpandedHeaders once, because the whole header-saving and restoring was broken too long
-            vI.notificationBar.dump("cleaning extraExpandedHeaders\n");
+            MyLog.debug("cleaning extraExpandedHeaders\n");
             prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", "")
-            vI.notificationBar.dump("cleaned extraExpandedHeaders\n");
+            MyLog.debug("cleaned extraExpandedHeaders\n");
         }
-        vI.notificationBar.dump("extension-upgrade __removeExtraAddedHeaders done.\n\n");
+        MyLog.debug("extension-upgrade __removeExtraAddedHeaders done.\n\n");
     },
     
 	__transferMovedUserPrefs : function(currentVersion) {
@@ -149,16 +149,16 @@ var upgrade = {
 			// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
 			if (!currentVersion || (upgrade.versionChecker.compare(currentVersion, transferPrefs[i].version) < 0)) {
 				// remove any obsolete preferences under extensions.virtualIdentity
-				vI.notificationBar.dump("transfer changed preferences of pre-" + transferPrefs[i].version + " release:\n")
+				MyLog.debug("transfer changed preferences of pre-" + transferPrefs[i].version + " release:\n")
 				for each (transferPref in transferPrefs[i].prefs) {
 					try {	upgrade.preferences.setBoolPref(transferPref.targetPref, 
 							upgrade.preferences.getBoolPref(transferPref.sourcePref));
 						upgrade.preferences.clearUserPref(transferPref.sourcePref);
-						vI.notificationBar.dump(".") 
+						MyLog.debug(".") 
 					}
 					catch (e) { };
 				}
-				vI.notificationBar.dump("done.\n")
+				MyLog.debug("done.\n")
 			}
 		}
 	},
@@ -182,12 +182,12 @@ var upgrade = {
 			// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
 			if (!currentVersion || (upgrade.versionChecker.compare(currentVersion, obsoletePrefs[i].version) < 0)) {
 				// remove any obsolete preferences under extensions.virtualIdentity
-				vI.notificationBar.dump("removing obsolete preferences of pre-" + obsoletePrefs[i].version + " release:\n")
+				MyLog.debug("removing obsolete preferences of pre-" + obsoletePrefs[i].version + " release:\n")
 				for each (pref in obsoletePrefs[i].prefs) {
-					try { upgrade.preferences.clearUserPref(pref); vI.notificationBar.dump(".") }
+					try { upgrade.preferences.clearUserPref(pref); MyLog.debug(".") }
 					catch (e) { };
 				}
-				vI.notificationBar.dump("done.\n")
+				MyLog.debug("done.\n")
 			}
 		}
 	},

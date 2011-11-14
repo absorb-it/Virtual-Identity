@@ -45,7 +45,6 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_identityData.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_helper.js" />
-<script type="application/x-javascript" src="chrome://v_identity/content/notificationbar/vI_notificationBar.js"/>
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_rdfDatasource.js" />	
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
 
@@ -88,7 +87,7 @@
 		pageid="upgrade" next="finish" >
 		<groupbox>
 			<caption label="&vident.upgrade.upgrade.caption;"/>
-			<textbox id="vIDebugBox" upgrade="true" multiline="true" readonly="true" />
+			<textbox id="vIDebugBox" />
 		</groupbox>
 	</wizardpage>	
 	<!-- finish -->

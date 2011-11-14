@@ -36,7 +36,6 @@
 
 <script type="application/x-javascript" src="chrome://v_identity/content/_overlayNameSpaceWrapper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_getHeader.js"/>
-<script type="application/x-javascript" src="chrome://v_identity/content/notificationbar/vI_notificationBar.js"/>
 
 
 <stringbundleset id="stringbundleset">
@@ -44,9 +43,7 @@
   </stringbundleset>
 
 <vbox id="messagepanebox" >
-	<splitter id="vIDebugBoxSplitter" hidden="true"/>
-	<textbox id="vIDebugBox" hidden="true" multiline="true" readonly="true"
-	DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"/>
+  <textbox id="vIDebugBox" />
 </vbox>
 
 <vbox id="messagepanebox">

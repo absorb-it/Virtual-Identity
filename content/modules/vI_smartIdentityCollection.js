@@ -25,7 +25,9 @@
 /* this is now used as a module - there is no required reference to any other interface-elements in this code */
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
-	
+
+Components.utils.import("resource://v_identity/vI_log.js");
+
 function smartIdentityCollection(msgHdr, preseletedID, currentIDisVID, newsgroup, recipients) {
 	dump("## smartIdentityCollection: constructor\n");
 	this._IDisVID = currentIDisVID;
@@ -61,9 +63,9 @@ smartIdentityCollection.prototype = {
 
 	// this function adds a timestamp to the current sender
 	__autoTimestamp : function() {
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: __autoTimestamp()\n");
+		MyLog.debug("## smartIdentity: __autoTimestamp()\n");
 		if (this._IDisVID) {
-			if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: Virtual Identity in use, aborting\n");
+			MyLog.debug("## smartIdentity: Virtual Identity in use, aborting\n");
 			return;
 		}
 
@@ -71,7 +73,7 @@ smartIdentityCollection.prototype = {
 		var localpart = current_email[0];
 		var domain = current_email[1];
 		
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: current email: " + current_email[0] + "@" + current_email[1] + "\n");
+		MyLog.debug("## smartIdentity: current email: " + current_email[0] + "@" + current_email[1] + "\n");
 		
 		var autoString = this._pref.getCharPref("autoString");
 		var formatString = this._pref.getCharPref("autoTimeFormat");
@@ -83,7 +85,7 @@ smartIdentityCollection.prototype = {
 		} catch(e) { };
 		
 		var new_email = autoString.replace(/%l/g, localpart).replace(/%d/g, domain).replace(/%t/g,dateString);
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: new email: " + new_email + "\n");
+		MyLog.debug("## smartIdentity: new email: " + new_email + "\n");
 
 		var newIdentity = new vI.identityData(new_email,
 			this._preselectedID.fullName, this._preselectedID.key, this._preselectedID.smtpServerKey, null, null)
@@ -93,17 +95,17 @@ smartIdentityCollection.prototype = {
 	},
 	
 	__ignoreID : function() {
-        if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: checking " + this._pref.getCharPref("idSelection_ignoreIDs") + " against " + this._preselectedID.key + "\n")
+        MyLog.debug("## smartIdentity: checking " + this._pref.getCharPref("idSelection_ignoreIDs") + " against " + this._preselectedID.key + "\n")
         // check if usage if virtual Identities should be used at all for the currently selected ID
         if (this._pref.getCharPref("idSelection_ignoreIDs").indexOf(":" + this._preselectedID.key + ":") != -1) {
-            if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: not using virtual Identites for ID " + this._preselectedID.key + "\n");
+            MyLog.debug("## smartIdentity: not using virtual Identites for ID " + this._preselectedID.key + "\n");
             return true;
         }
         return false
     },
     
     NewMail : function() {
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: NewMail()\n");
+		MyLog.debug("## smartIdentity: NewMail()\n");
 		if (this.__ignoreID()) return;
 		this._rdfDatasourceAccess.getVIdentityFromAllRecipients(this._allIdentities, this._recipients);
 		if (this._allIdentities.number == 0 && this._pref.getBoolPref("autoTimestamp")) this.__autoTimestamp();
@@ -117,7 +119,7 @@ smartIdentityCollection.prototype = {
 				this._allIdentities.identityDataCollection[index].id.key = existingID;	// set found identity
 				// reorder list of Identities to prefer it on autoselect
 				// has to be done before Identities are added to the Menu
-				if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: found existing Identity, reorder to prefer this one.\n");
+				MyLog.debug("## smartIdentity: found existing Identity, reorder to prefer this one.\n");
 				var firstIdentity = this._allIdentities.identityDataCollection[index];
 				for (var i = index; index > 0; index--) {
 					this._allIdentities.identityDataCollection[index] = this._allIdentities.identityDataCollection[index-1];
@@ -130,13 +132,13 @@ smartIdentityCollection.prototype = {
 	},
 	
 	ReplyOnSent : function() {
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: ReplyOnSent() (rules like SmartDraft)\n");
+		MyLog.debug("## smartIdentity: ReplyOnSent() (rules like SmartDraft)\n");
 		this.__SmartDraftOrReplyOnSent();
 		this._rdfDatasourceAccess.getVIdentityFromAllRecipients(this._allIdentities, this._recipients);
 	},
 
 	Draft : function() {
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: Draft()\n");
+		MyLog.debug("## smartIdentity: Draft()\n");
 		
 		this.__SmartDraftOrReplyOnSent();
 		this._rdfDatasourceAccess.getVIdentityFromAllRecipients(this._allIdentities, this._recipients);
@@ -155,15 +157,15 @@ smartIdentityCollection.prototype = {
 	// this function checks if we have a draft-case and Smart-Draft should replace the Identity
 	__SmartDraftOrReplyOnSent : function() {
 		if (!this._pref.getBoolPref("smart_draft"))
-			{ if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: SmartDraft deactivated\n"); return; }
+			{ MyLog.debug("## smartIdentity: SmartDraft deactivated\n"); return; }
 
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: __SmartDraftOrReplyOnSent()\n");
+		MyLog.debug("## smartIdentity: __SmartDraftOrReplyOnSent()\n");
 
 		if (this._msgHdr) {
 			this.__parseHeadersWithArray(this._msgHdr.author, this._allIdentities)
-			if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: sender '" + this._allIdentities.identityDataCollection[0].combinedName + "'\n");
+			MyLog.debug("## smartIdentity: sender '" + this._allIdentities.identityDataCollection[0].combinedName + "'\n");
 		}
-		else if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: __SmartDraftOrReplyOnSent: No Header found, shouldn't happen\n");
+		else MyLog.debug("## smartIdentity: __SmartDraftOrReplyOnSent: No Header found, shouldn't happen\n");
 	},
 	
 	__filterAddresses : function() {
@@ -177,11 +179,11 @@ smartIdentityCollection.prototype = {
 			const filterType = { None : 0, RegExp : 1, StrCmp : 2 }
 			var recentfilterType; var skipRegExp = false;
 			if (filterList.length <= 1 && filterList[0] == "")
-				{ if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: no filters configured\n"); recentfilterType = filterType.None; }
+				{ MyLog.debug("## smartIdentity: no filters configured\n"); recentfilterType = filterType.None; }
 			else if (/^[+-]?\/(.*)\/$/.exec(filterList[i]))
-				{ if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: filter emails with RegExp '"
+				{ MyLog.debug("## smartIdentity: filter emails with RegExp '"
 					+ filterList[i].replace(/\\/g,"\\\\") + "'\n"); recentfilterType = filterType.RegExp; }
-			else	{ if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: filter emails, compare with '"
+			else	{ MyLog.debug("## smartIdentity: filter emails, compare with '"
 					+ filterList[i] + "'\n"); recentfilterType = filterType.StrCmp; }
 			for (var j = 0; j < this._allIdentities.number; j++) { // check if recent email-address (pre-choosen identity) is found in 
 			// copied and adapted from correctIdentity, thank you for the RegExp-idea!
@@ -199,7 +201,7 @@ smartIdentityCollection.prototype = {
 								add_addr = (this._allIdentities.identityDataCollection[j].email.match(new RegExp(RegExp.$1,"i")));
 						}
 						catch(vErr) {
-							if (vI.notificationBar) vI.notificationBar.addNote(
+							addNote(
 								vI.main.elements.strings.getString("vident.smartIdentity.ignoreRegExp") +
 								+filterList[i].replace(/\\/g,"\\\\") + " .",
 								"smart_reply_notification");
@@ -237,7 +239,7 @@ smartIdentityCollection.prototype = {
 			
 			// if mailing-list ignore to-header (usually the mailing list address)
 			if (replyHeaderNameToRead == "to" && this._msgHdr.getStringProperty("vI_list-id")) {
-				if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: header 'list-id' found (mailinglist), skipping header 'to'\n");
+				MyLog.debug("## smartIdentity: header 'list-id' found (mailinglist), skipping header 'to'\n");
 				continue;
 			}
 			
@@ -247,10 +249,10 @@ smartIdentityCollection.prototype = {
                  .getService(Components.interfaces.nsIWindowMediator)
                  .getMostRecentWindow("mail:3pane");
 			
-			if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: found stored header '" +
+			MyLog.debug("## smartIdentity: found stored header '" +
 				replyHeaderNameToRead + "': '" + window3pane.virtualIdentityExtension.storedHeaders["vI_" + replyHeaderNameToRead] + "'\n");*/
 			
-			if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: reading header '" +
+			MyLog.debug("## smartIdentity: reading header '" +
 				replyHeaderNameToRead + "': '" + value + "'\n");
 			
 			// ------------- parse address-string to get a field of single email-addresses
@@ -261,7 +263,7 @@ smartIdentityCollection.prototype = {
 			for (var i = 0; i < splitted.number; i++) {
 				// if there is no email than it makes no sense to use it as a sender
 				if (!splitted.identityDataCollection[i].email.match(/^.*@.*$/)) {
-					if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity:   skipping '" +
+					MyLog.debug("## smartIdentity:   skipping '" +
 					splitted.identityDataCollection[i].email + "', no email\n")
 					continue;
 				}
@@ -270,14 +272,14 @@ smartIdentityCollection.prototype = {
 
 				this._allIdentities.addWithoutDuplicates(splitted.identityDataCollection[i]);
 
-				if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity:   found '" +
+				MyLog.debug("## smartIdentity:   found '" +
 					splitted.identityDataCollection[i].combinedName + "'\n")
 			}
 		}
 	},
 	
 	Reply : function() {
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: Reply()\n");
+		MyLog.debug("## smartIdentity: Reply()\n");
 
 		if (this._msgHdr && this._newsgroup && !this._msgHdr.getStringProperty("vI_content_base")) {
 		//	RFC 2821 (http://www.ietf.org/rfc/rfc2821.txt) says:
@@ -291,7 +293,7 @@ smartIdentityCollection.prototype = {
 			// RFC-compliant
 			if (this._pref.getBoolPref("smart_detectByReceivedHeader")) {
 				if (!this._msgHdr.getStringProperty("vI_received")) { // mail was not received
-					if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: reply on non-received (sent?) mail. Using SmartDraft. \n");
+					MyLog.debug("## smartIdentity: reply on non-received (sent?) mail. Using SmartDraft. \n");
 					this.ReplyOnSent();
 					return;
 				}
@@ -302,11 +304,11 @@ smartIdentityCollection.prototype = {
 				const MSG_FOLDER_FLAG_SENTMAIL = 0x0200;
 
 				if (this._msgHdr && (this._msgHdr.folder.flags & MSG_FOLDER_FLAG_SENTMAIL)) {
-					if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: reply from Sent folder.");
+					MyLog.debug("## smartIdentity: reply from Sent folder.");
 					if (this._msgHdr.folder.flags & MSG_FOLDER_FLAG_INBOX)
-						if (vI.notificationBar) vI.notificationBar.dump(" Folder is INBOX, assuming Reply-Case. \n");
+						MyLog.debug(" Folder is INBOX, assuming Reply-Case. \n");
 					else {
-						if (vI.notificationBar) vI.notificationBar.dump(" Using SmartDraft. \n");
+						MyLog.debug(" Using SmartDraft. \n");
 						this.ReplyOnSent();
 						return;
 					}
@@ -321,7 +323,7 @@ smartIdentityCollection.prototype = {
 		
 		if (storageIdentities.number == 0 || !this._pref.getBoolPref("idSelection_storage_ignore_smart_reply"))
 			this.__SmartReply();
-		else if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: SmartReply skipped, Identities in Storage found.\n");
+		else MyLog.debug("## smartIdentity: SmartReply skipped, Identities in Storage found.\n");
 
 		// merge SmartReply-Identities and Storage-Identites
 		if (this._pref.getBoolPref("idSelection_storage_prefer_smart_reply"))
@@ -332,29 +334,29 @@ smartIdentityCollection.prototype = {
 			this._allIdentities.mergeWithoutDuplicates(smartIdentities);
 		}
 		
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: merged SmartReply & Storage, " + this._allIdentities.number + " address(es) left\n")
+		MyLog.debug("## smartIdentity: merged SmartReply & Storage, " + this._allIdentities.number + " address(es) left\n")
 	},
 	
 	// this function checks if we have a reply-case and Smart-Reply should replace the Identity
 	__SmartReply : function() {
 		if (!this._pref.getBoolPref("smart_reply"))
-			{ if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: SmartReply deactivated\n"); return; }
+			{ MyLog.debug("## smartIdentity: SmartReply deactivated\n"); return; }
 		if (this._newsgroup && !this._pref.getBoolPref("smart_reply_for_newsgroups")) {
-			if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: SmartReply, answering to a newsgroup, aborting\n");
+			MyLog.debug("## smartIdentity: SmartReply, answering to a newsgroup, aborting\n");
 			return;
 		}
 
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: __SmartReply()\n");
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: ----------------------------------------------------------\n")
+		MyLog.debug("## smartIdentity: __SmartReply()\n");
+		MyLog.debug("## smartIdentity: ----------------------------------------------------------\n")
 		if (this._msgHdr) {
 			/* first step: collect addresses */
 			this.__smartReplyCollectAddresses();
-			if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: " + this._allIdentities.number + " address(es) after parsing, before filtering\n")
+			MyLog.debug("## smartIdentity: " + this._allIdentities.number + " address(es) after parsing, before filtering\n")
 			
 			/* second step: filter (and sort) addresses */
 			this.__filterAddresses();
 			
-			if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: filtering done, " + this._allIdentities.number + " address(es) left\n")
+			MyLog.debug("## smartIdentity: filtering done, " + this._allIdentities.number + " address(es) left\n")
 			
 			/* set default FullName */
 			var smart_reply_defaultFullName = this._unicodeConverter.ConvertToUnicode(this._pref.getCharPref("smart_reply_defaultFullName"))
@@ -362,7 +364,7 @@ smartIdentityCollection.prototype = {
 				for (var index = 0; index < this._allIdentities.number; index++) {
 					if (this._allIdentities.identityDataCollection[index].fullName == "") {
 						this._allIdentities.identityDataCollection[index].fullName = smart_reply_defaultFullName
-						if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: added default FullName '" + 
+						MyLog.debug("## smartIdentity: added default FullName '" + 
 							smart_reply_defaultFullName + "' to '" + this._allIdentities.identityDataCollection[index].email + "'\n")
 					}
 				}
@@ -372,21 +374,21 @@ smartIdentityCollection.prototype = {
 			/* if match replace FullName with existing one, keep identity in list by now 		*/
 			/* will not be added to the menu but probably choosen with __smartIdentitySelection 	*/
 			if (this._pref.getBoolPref("smart_reply_ignoreFullName")) {
-				if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: compare with existing Identities (ignoring FullNames).\n")
+				MyLog.debug("## smartIdentity: compare with existing Identities (ignoring FullNames).\n")
 			
 				for (var index = 0; index < this._allIdentities.number; index++) {
 					var idKey = this._allIdentities.identityDataCollection[index].isExistingIdentity(true);
 					if (idKey) {
 						var newFullName = gAccountManager.getIdentity(idKey).fullName;
 						this._allIdentities.identityDataCollection[index].fullName = newFullName;
-						if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: replaced Fullname of '" + this._allIdentities.identityDataCollection[index].email + "' with '" + newFullName + "' \n");
+						MyLog.debug("## smartIdentity: replaced Fullname of '" + this._allIdentities.identityDataCollection[index].email + "' with '" + newFullName + "' \n");
 					}
 				}
 			}
 		}
-		else if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: SmartReply skipped. No Header-information found.\n");
+		else MyLog.debug("## smartIdentity: SmartReply skipped. No Header-information found.\n");
 		
-		if (vI.notificationBar) vI.notificationBar.dump("## smartIdentity: ----------------------------------------------------------\n")
+		MyLog.debug("## smartIdentity: ----------------------------------------------------------\n")
 	},
 	
 
