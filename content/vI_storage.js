@@ -28,6 +28,9 @@
 */
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+
+Components.utils.import("resource://gre/modules/AddonManager.jsm");
+
 var storage = {
 	focusedElement : null,
 	_pref : Components.classes["@mozilla.org/preferences-service;1"]
@@ -114,14 +117,14 @@ var storage = {
 			storage.replacement_functions.awSetInputAndPopupValue (inputElem, inputValue, popupElem, popupValue, rowNumber) }
 
 		// reset unavailable storageExtras preferences
-		const enigmail_ID="{847b3a00-7ab1-11d4-8f02-006008948af5}"
-		if (!vI.helper.extensionActive(enigmail_ID)) {
-			vI.main.preferences.setBoolPref("storageExtras_openPGP_messageEncryption", false)
-			vI.main.preferences.setBoolPref("storageExtras_openPGP_messageSignature", false)
-			vI.main.preferences.setBoolPref("storageExtras_openPGP_PGPMIME", false)
-		}
+        AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function(addon) {
+          if (addon && !addon.userDisabled && !addon.appDisable) {
+            vI.main.preferences.setBoolPref("storageExtras_openPGP_messageEncryption", false)
+            vI.main.preferences.setBoolPref("storageExtras_openPGP_messageSignature", false)
+            vI.main.preferences.setBoolPref("storageExtras_openPGP_PGPMIME", false)
+          }
+        }); 
 	},
-	
 	
 	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
 	updateVIdentityFromStorage: function(inputElement) {

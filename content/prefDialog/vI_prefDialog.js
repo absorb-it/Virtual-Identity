@@ -23,6 +23,9 @@
  * ***** END LICENSE BLOCK ***** */
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+
+Components.utils.import("resource://gre/modules/AddonManager.jsm");
+
 var prefDialog = {
 	toggleHelp : function() {
 		var browserElem = document.getElementById("vI_remoteBrowserBox");
@@ -236,11 +239,13 @@ var prefDialog = {
 		},
 		
 		smartReplyHideSignature : function() {
-			const switch_signature_ID="{2ab1b709-ba03-4361-abf9-c50b964ff75d}"
-			if (vI.helper.extensionActive(switch_signature_ID)) {
-				document.getElementById("VIdent_identity.HideSignature.warning").setAttribute("hidden", "true");
-				document.getElementById("VIdent_identity.hide_signature").setAttribute("disabled", "false");
-			}
+          // check for signature_switch extension
+          AddonManager.getAddonByID("{2ab1b709-ba03-4361-abf9-c50b964ff75d}", function(addon) {
+            if (addon && !addon.userDisabled && !addon.appDisable) {
+                document.getElementById("VIdent_identity.HideSignature.warning").setAttribute("hidden", "true");
+                document.getElementById("VIdent_identity.hide_signature").setAttribute("disabled", "false");
+            }
+          }); 
 		},
 		
 		autoTimestampConstraint : function(element) {
@@ -308,12 +313,14 @@ var prefDialog = {
 		prefDialog.base.init();
 		vI.onInitCopiesAndFolders()
 
-		const enigmail_ID="{847b3a00-7ab1-11d4-8f02-006008948af5}"
-		if (!vI.helper.extensionActive(enigmail_ID)) {
-			document.getElementById("openPGPencryption").setAttribute("hidden", "true");
-			document.getElementById("VIdent_identity.hide_openPGP_messageSignature").setAttribute("hidden", "true");
-		}
-		
+        // check for enigmail extension
+        AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function(addon) {
+          if (addon && !addon.userDisabled && !addon.appDisable) {
+            document.getElementById("openPGPencryption").removeAttribute("hidden");
+            document.getElementById("VIdent_identity.hide_openPGP_messageSignature").removeAttribute("hidden");
+          }
+        }); 
+
 		prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
 		prefDialog.base.smartReplyHideSignature();
 		prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));

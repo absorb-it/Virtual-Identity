@@ -45,18 +45,6 @@ var upgradeOverlay = {
 		
 		Components.utils.import("resource://gre/modules/AddonManager.jsm");  
 
-		const switch_signature_ID="{2ab1b709-ba03-4361-abf9-c50b964ff75d}"		
-		prefroot.setBoolPref("extensions.virtualIdentity." + switch_signature_ID, false)
-		AddonManager.getAddonByID(switch_signature_ID, function(addon) {
-			if (addon) prefroot.setBoolPref("extensions.virtualIdentity." + switch_signature_ID, addon.userDisabled || addon.appDisabled ? false : true)
-		});	
-		
-		const enigmail_ID="{847b3a00-7ab1-11d4-8f02-006008948af5}"
-		prefroot.setBoolPref("extensions.virtualIdentity." + enigmail_ID, false)
-		AddonManager.getAddonByID(enigmail_ID, function(addon) {
-			if (addon) prefroot.setBoolPref("extensions.virtualIdentity." + enigmail_ID, addon.userDisabled || addon.appDisabled ? false : true)
-		});	
-		
 		const virtualIdentity_ID="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
 		AddonManager.getAddonByID(virtualIdentity_ID, function(addon) {
 			if (addon) vI.extensionVersion = addon.version;

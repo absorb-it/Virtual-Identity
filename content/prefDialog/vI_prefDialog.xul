@@ -363,7 +363,7 @@
 					<checkbox id="VIdent_identity.hide_sMime_messageSignature" label="&vI_prefDialog.composeDialog.HideSMimeSignature.label;"
 						prefstring="hide_sMime_messageSignature"/>
 					<checkbox id="VIdent_identity.hide_openPGP_messageSignature" label="&vI_prefDialog.composeDialog.HideOpenPGPSignature.label;"
-						prefstring="hide_openPGP_messageSignature"/>
+						prefstring="hide_openPGP_messageSignature" hidden="true"/>
 					<checkbox id="VIdent_identity.autoReplyToSelf" label="&vI_prefDialog.composeDialog.autoReplyToSelf.label;"
 						prefstring="autoReplyToSelf"/>
 				</groupbox>
@@ -657,7 +657,7 @@
 						prefstring="storageExtras_sMime_messageEncryption"/>
 					<checkbox id="VIdent_identity.storageExtras_sMime_messageSignature" label="&vI_prefDialog.storageExtras.sMime.messageSignature.label;"
 						prefstring="storageExtras_sMime_messageSignature"/>
-					</vbox><spacer flex="1"/><vbox id="openPGPencryption">
+					</vbox><spacer flex="1"/><vbox id="openPGPencryption" hidden="true">
 					<label value="&vI_prefDialog.storageExtras.openPGP.label;"/>
 					<checkbox id="VIdent_identity.storageExtras_openPGP_messageEncryption" label="&vI_prefDialog.storageExtras.openPGP.messageEncryption.label;"
 						prefstring="storageExtras_openPGP_messageEncryption"/>

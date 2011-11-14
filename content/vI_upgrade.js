@@ -171,7 +171,12 @@ var upgrade = {
 					"aBook_use_non_vI", "aBook_notification", "storeVIdentity", "experimental",
 					"storage_use_for_smart_reply") },
 					{ version : "0.5.3", prefs : Array("storage_use_for_smart_reply") },
-					{ version : "0.5.6", prefs : Array("copyEnigmailSettings") } ];
+					{ version : "0.5.6", prefs : Array("copyEnigmailSettings") },
+                    { version: "0.9", prefs : Array("extensions.virtualIdentity.{2ab1b709-ba03-4361-abf9-c50b964ff75d}",
+                                                    "extensions.virtualIdentity.{847b3a00-7ab1-11d4-8f02-006008948af5}",
+                                                    "extensions.virtualIdentity.smart_reply_added_extraHeaders",
+                                                    "mailnews.headers.extraExpandedHeaders") }
+                    ];
 		// remove obsolete preference-tree virtualIdentity
 		for (var i = 0; i < obsoletePrefs.length; i++) {
 			// if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
