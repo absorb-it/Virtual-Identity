@@ -25,11 +25,11 @@
 
  * ***** END LICENSE BLOCK ***** */
 
-Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js");
-// XXX still missing implementation to select specific header by number and to display notification.
-  
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
-  
+
+// XXX still missing implementation to select specific header by number and to display notification.
+Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js");
+
 // var storedHeaders = { };
 var getHeader = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
