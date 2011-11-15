@@ -23,7 +23,8 @@
  * ***** END LICENSE BLOCK ***** */
 
 var EXPORTED_SYMBOLS = ["setupLogging", "dumpCallStack", "MyLog", "Colors",
-  "clearDebugOutput", "clearNote", "setNote", "addNote"]
+  "clearDebugOutput", "clearNote",
+  "SmartReplyNotification", "StorageNotification", "GetHeaderNotification" ]
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
@@ -32,17 +33,56 @@ preferences = Components.classes["@mozilla.org/preferences-service;1"]
   .getService(Components.interfaces.nsIPrefService)
   .getBranch("extensions.virtualIdentity.");
 
+// different formatters for the log output
+// Basic formatter that only prints the message / used for NotificationBox
+function NotificationFormatter() {}
+NotificationFormatter.prototype = {
+  __proto__: Log4Moz.Formatter.prototype,
+  format: function NF_format(message) {
+    // The trick below prevents errors further down because mo is null or
+    //  undefined.
+    let messageString = [
+      ("" + mo) for each
+      ([,mo] in Iterator(message.messageObjects))].join(" ");
+    return messageString;
+  }
+};
+// Basic formatter that doesn't do anything fancy but does not add a newline
+function BasicFormatter() {}
+BasicFormatter.prototype = {
+  __proto__: Log4Moz.Formatter.prototype,
+  dateFormat : "%Y-%m-%d %H:%M:%S",
+  format: function BF_format(message) {
+    let date = new Date(message.time);
+    // The trick below prevents errors further down because mo is null or
+    //  undefined.
+    let messageString = [
+      ("" + mo) for each
+      ([,mo] in Iterator(message.messageObjects))].join(" ");
+    return date.toLocaleFormat(this.dateFormat) + "\t" +
+      message.loggerName + "\t" + message.levelDesc + "\t" +
+      messageString;
+  }
+};
+// New formatter that only display's the source and message
+function NewFormatter() {}
+NewFormatter.prototype = {
+  __proto__: Log4Moz.Formatter.prototype,
 
-function setupLogging(name) {
-  let Log = Log4Moz.repository.getLogger(name);
-  return Log;
-}
+  format: function NF_format(message) {
+    // The trick below prevents errors further down because mo is null or
+    //  undefined.
+    let messageString = [
+      ("" + mo) for each
+      ([,mo] in Iterator(message.messageObjects))].join(" ");
+    return message.loggerName.replace("virtualIdentity.", "") + ":\t" + messageString;
+  }
+};
+
 /*
- * DumpAppender
+ * DebugOutputAppender
  * Logs to DebugOutput
  */
-
-
 function DebugOutputAppender(formatter) {
   this._name = "DebugOutputAppender";
   Log4Moz.Appender.call(this, formatter);
@@ -59,9 +99,69 @@ DebugOutputAppender.prototype = {
   }
 }
 
+/*
+ * NotificationOutputAppender
+ * Logs to NotificationBox
+ */
+function NotificationOutputAppender(formatter) {
+  this._name = "NotificationOutputAppender";
+  Log4Moz.Appender.call(this, formatter);
+}
+NotificationOutputAppender.prototype = {
+  __proto__: Log4Moz.Appender.prototype,
+  
+  currentWindow : null,
+
+  doAppend: function DOApp_doAppend(message) {
+    this.currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+      .getService(Ci.nsIWindowMediator)
+      .getMostRecentWindow(null);
+    this.addNote(message);
+  },
+  
+  timer : null,
+
+  clearNote: function(self) {
+    if (self.timer)
+      self.currentWindow.clearTimeout(self.timer);
+    self.timer = null;
+    obj_notificationBox = self.currentWindow.document.getElementById("vINotification");
+    if (!obj_notificationBox)
+      return;
+    obj_notificationBox.removeAllNotifications(true);
+  },
+
+  setNote: function(note) {
+    this.clearNote(this);
+    this.addNote(note);
+  },
+
+  addNote: function(note) {
+    obj_notificationBox = this.currentWindow.document.getElementById("vINotification");
+    if (!obj_notificationBox)
+      return;
+    var oldNotification = obj_notificationBox.currentNotification
+    var newLabel = (oldNotification)?oldNotification.label + note:note;
+    this.clearNote(this);
+    obj_notificationBox.appendNotification(newLabel, "", "chrome://messenger/skin/icons/flag.png");
+
+    if (preferences.getIntPref("notification_timeout") != 0)
+      this.timer =
+        this.currentWindow.setTimeout(this.clearNote,
+                                      preferences.getIntPref("notification_timeout") * 1000, this);
+  }
+}
+
+
+function setupLogging(name) {
+  let Log = Log4Moz.repository.getLogger(name);
+  return Log;
+}
+
 
 function setupFullLogging(name) {
-  let formatter = new Log4Moz.BasicFormatter();
+  let myBasicFormatter = new BasicFormatter();
+  let myNewFormatter = new NewFormatter();
   let Log = Log4Moz.repository.getLogger(name);
 
   // Loggers are hierarchical, lowering this log level will affect all output
@@ -70,30 +170,22 @@ function setupFullLogging(name) {
 
   if (preferences.getBoolPref("debug_notification")) {
     // A console appender outputs to the JS Error Console
-    let capp = new Log4Moz.ConsoleAppender(formatter);
+    let capp = new Log4Moz.ConsoleAppender(myBasicFormatter);
     capp.level = Log4Moz.Level["Warn"];
     root.addAppender(capp);
 
     // A dump appender outputs to standard out
-    let dapp = new Log4Moz.DumpAppender(formatter);
+    let dapp = new Log4Moz.DumpAppender(myBasicFormatter);
     dapp.level = Log4Moz.Level["All"];
     root.addAppender(dapp);
 
     // A dump appender outputs to Debug Output Box
-    let doapp = new DebugOutputAppender(formatter);
+    let doapp = new DebugOutputAppender(myNewFormatter);
     doapp.level = Log4Moz.Level["All"];
     root.addAppender(doapp);
-
   }
-
-  Log.debug("Logging enabled");
-
   return Log;
 }
-
-// Must call this once to setup the root logger
-let logRoot = "virtualIdentity";
-let MyLog = setupFullLogging(logRoot);
 
 function dumpCallStack(e) {
   let frame = e ? e.stack : Components.stack;
@@ -112,49 +204,43 @@ let Colors = {
 
 
 function clearDebugOutput() {
-    window = Cc["@mozilla.org/appshell/window-mediator;1"]
-      .getService(Ci.nsIWindowMediator)
-      .getMostRecentWindow(null);
-    obj_debugBox = window.document.getElementById("vIDebugBox");
-    if (obj_debugBox) obj_debugBox.clear();
+  currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+    .getService(Ci.nsIWindowMediator)
+    .getMostRecentWindow(null);
+  obj_debugBox = currentWindow.document.getElementById("vIDebugBox");
+  if (obj_debugBox)
+    obj_debugBox.clear();
 }
-
-timer = null;
 
 function clearNote() {
-    if (timer) window.clearTimeout(timer);
-    timer = null;
-    document.getElementById("vINotification").removeAllNotifications(true);
+  currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+    .getService(Ci.nsIWindowMediator)
+    .getMostRecentWindow(null);
+  obj_notificationBox = currentWindow.document.getElementById("vINotification");
+  if (!obj_notificationBox)
+    return;
+  obj_notificationBox.removeAllNotifications(true);
 }
 
-function setNote(note, prefstring) {
-  clearNote();
-  addNote(note, prefstring);
-};
+let logRoot = "virtualIdentity";
+let MyLog = setupFullLogging(logRoot);
 
-//  overflow : function(elem) {
-//      // height will be cut off from messagepane (in 3pane window)
-//      var objMessagepane = document.getElementById("messagepane");
-//      var maxHeight = (objMessagepane)?parseInt(objMessagepane.boxObject.height / 2)+1:null;
-//      if (maxHeight < 60) maxHeight = 60; // set a minimum size, if to small scrollbars are hidden
-//      var tooBig = (maxHeight)?(elem.inputField.scrollHeight > maxHeight):false;
-//      var newHeight = (tooBig)?maxHeight:elem.inputField.scrollHeight;
-//      elem.height = newHeight;
-//      // give the box a frame if it is to big
-//      if (tooBig) document.getElementById("vINotificationTextbox").setAttribute("class", "plain border")
-//  },
-
-function addNote(note, prefstring) {
-    if (!preferences.getBoolPref(prefstring)) return;
-    Log.debug("addNote: ", note);
-    
-    var oldNotification = document.getElementById("vINotification").currentNotification
-    var newLabel = (oldNotification)?oldNotification.label + note:note;
-    clearNote();
-    document.getElementById("vINotification")
-            .appendNotification(newLabel, "", "chrome://messenger/skin/icons/flag.png");
-
-    if (preferences.getIntPref("notification_timeout") != 0)
-        timer = window.setTimeout(virtualIdentityExtension.clearNote,
-            preferences.getIntPref("notification_timeout") * 1000);
+let myNotificationFormatter = new NotificationFormatter();
+let SmartReplyNotification = Log4Moz.repository.getLogger("virtualIdentity.SmartReply");
+if (preferences.getBoolPref("smart_reply_notification")) {
+  let napp = new NotificationOutputAppender(myNotificationFormatter);
+  napp.level = Log4Moz.Level["All"];
+  SmartReplyNotification.addAppender(napp);
+}
+let StorageNotification = Log4Moz.repository.getLogger("virtualIdentity.StorageNotification");
+if (preferences.getBoolPref("storage_notification")) {
+  let napp = new NotificationOutputAppender(myNotificationFormatter);
+  napp.level = Log4Moz.Level["All"];
+  StorageNotification.addAppender(napp);
+}
+let GetHeaderNotification = Log4Moz.repository.getLogger("virtualIdentity.GetHeaderNotification");
+if (preferences.getBoolPref("get_header_notification")) {
+  let napp = new NotificationOutputAppender(myNotificationFormatter);
+  napp.level = Log4Moz.Level["All"];
+  GetHeaderNotification.addAppender(napp);
 }

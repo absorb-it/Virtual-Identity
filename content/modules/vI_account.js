@@ -25,6 +25,10 @@
 /* this is now used as a module - there is no required reference to any other interface-elements in this code */
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+
+Components.utils.import("resource://v_identity/vI_log.js");
+let Log = setupLogging("virtualIdentity.account");
+
 function prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients) {
 	var stringBundle = Services.strings.createBundle("chrome://v_identity/locale/v_identity.properties");
 	
@@ -38,7 +42,7 @@ function prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients) {
 	var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
 			.getService(Components.interfaces.nsIMsgAccountManager);
 			
-	MyLog.debug("\n## prepareSendMsg " + msgType + " " + Components.interfaces.nsIMsgCompDeliverMode.Now + "\n");
+	Log.debug("\n## prepareSendMsg " + msgType + " " + Components.interfaces.nsIMsgCompDeliverMode.Now + "\n");
 	
 	returnValue = {};
 	
@@ -56,11 +60,11 @@ function prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients) {
 			var localeDatasourceAccess = new vI.rdfDatasourceAccess();
 			var returnValue = localeDatasourceAccess.storeVIdentityToAllRecipients(identityData, recipients)
 			if ( returnValue.update == "abort" || returnValue.update == "takeover" ) {
-				MyLog.debug("## prepareSendMsg: sending aborted\n");
+				Log.debug("## prepareSendMsg: sending aborted\n");
 				return returnValue;
 			}
 		}
-		else MyLog.debug("## prepareSendMsg: storage deactivated\n");
+		else Log.debug("## prepareSendMsg: storage deactivated\n");
 	}
 	if (vid) {
 		vI.account.removeUsedVIAccount();
@@ -75,9 +79,9 @@ function finalCheck(virtualIdentityData, currentIdentity) {
 	// vI.identityData(email, fullName, id, smtp, extras, sideDescription, existingID)
 	var currentIdentityData = new vI.identityData(currentIdentity.email, currentIdentity.fullName, null, currentIdentity.smtpServerKey, null, null, null);
 	
-	MyLog.debug("\n## vI.identityData SendMessage Final Check\n");
-	MyLog.debug("## vI.identityData currentIdentity: fullName='" + currentIdentityData.fullName + "' email='" + currentIdentityData.email + "' smtp='" + currentIdentityData.smtp.key + "'\n");
-	MyLog.debug("## vI.identityData virtualIdentityData: fullName='" + virtualIdentityData.fullName + "' email='" + virtualIdentityData.email + "' smtp='" + virtualIdentityData.smtp.key + "'\n");
+	Log.debug("\n## vI.identityData SendMessage Final Check\n");
+	Log.debug("## vI.identityData currentIdentity: fullName='" + currentIdentityData.fullName + "' email='" + currentIdentityData.email + "' smtp='" + currentIdentityData.smtp.key + "'\n");
+	Log.debug("## vI.identityData virtualIdentityData: fullName='" + virtualIdentityData.fullName + "' email='" + virtualIdentityData.email + "' smtp='" + virtualIdentityData.smtp.key + "'\n");
 
 	if	(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase()	&&
 		currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase()		&&
@@ -85,9 +89,9 @@ function finalCheck(virtualIdentityData, currentIdentity) {
 			return true
 	}
 	else {
-		if (!(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase())) MyLog.debug("\n## vI.identityData failed check for fullName.\n");
-		if (!(currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase())) MyLog.debug("\n## vI.identityData failed check for email.\n");
-		if (!(virtualIdentityData.smtp.equal(currentIdentityData.smtp))) MyLog.debug("\n## vI.identityData failed check for SMTP.\n");
+		if (!(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase())) Log.debug("\n## vI.identityData failed check for fullName.\n");
+		if (!(currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase())) Log.debug("\n## vI.identityData failed check for email.\n");
+		if (!(virtualIdentityData.smtp.equal(currentIdentityData.smtp))) Log.debug("\n## vI.identityData failed check for SMTP.\n");
 		alert(stringBundle.getStringFromName("vident.genericSendMessage.error"));
 		return false
 	}	
@@ -135,7 +139,7 @@ var account = {
 	_copyPreferences : function() {
 		if (account._pref.getBoolPref("copySMIMESettings")) {
 			// SMIME settings
-			MyLog.debug("## account: copy S/MIME settings\n")
+			Log.debug("## account: copy S/MIME settings\n")
 			account._copyUnicharAttribute("signing_cert_name");
 			account._copyUnicharAttribute("encryption_cert_name");
 			account._copyIntAttribute("encryptionpolicy");
@@ -143,7 +147,7 @@ var account = {
 /*		seems not required, encryption happens before Virtual Identity account is created
 		if (account._pref.getBoolPref("copyEnigmailSettings")) {
 			// pgp/enigmail settings
-			MyLog.debug("## account: copy PGP settings\n")
+			Log.debug("## account: copy PGP settings\n")
 			account._copyBoolAttribute("pgpSignEncrypted");
 			account._copyBoolAttribute("pgpSignPlain");
 			account._copyBoolAttribute("enablePgp");
@@ -156,7 +160,7 @@ var account = {
 		}	*/
 		if (account._pref.getBoolPref("copyAttachVCardSettings")) {
 			// attach vcard
-			MyLog.debug("## account: copy VCard settings\n")
+			Log.debug("## account: copy VCard settings\n")
 			account._copyBoolAttribute("attachVCard");
 			account._copyCharAttribute("escapedVCard");
 		}
@@ -180,7 +184,7 @@ var account = {
 	},
 
 	__cleanupDirectories : function() {
-		MyLog.debug("## account: checking for leftover VirtualIdentity directories ")
+		Log.debug("## account: checking for leftover VirtualIdentity directories ")
 
 		var file = Components.classes["@mozilla.org/file/directory_service;1"]
 		.getService(Components.interfaces.nsIProperties)
@@ -200,27 +204,27 @@ var account = {
 						// should be empty, VirtualIdentity never uses those directories
 						if (account.__dirEmpty(maildir)) {
 							try {maildir.remove(true)} catch(e) { }
-							MyLog.debug("x");
+							Log.debug("x");
 						}
-						else MyLog.debug(".");
+						else Log.debug(".");
 						
 					}
 				}
 			}
 		}
-		MyLog.debug(" - done\n")
+		Log.debug(" - done\n")
 	},
 	
 	cleanupSystem : function() {
-		MyLog.debug("## account: checking for leftover VirtualIdentity accounts ")
+		Log.debug("## account: checking for leftover VirtualIdentity accounts ")
 		for (var i=0; i < account._AccountManager.accounts.Count(); i++) {
 			var checkAccount = account._AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
 			if (account.__isVIdentityAccount(checkAccount)) {
-				MyLog.debug(".")
+				Log.debug(".")
 				account.__removeAccount(checkAccount);
 			}
 		}
-		MyLog.debug(" - done\n")
+		Log.debug(" - done\n")
 		account.__cleanupDirectories();
 	},
 	
@@ -235,7 +239,7 @@ var account = {
 	},
 	
 	__removeAccount : function(checkAccount) {
-		MyLog.debug("## account: __removeAccount\n")
+		Log.debug("## account: __removeAccount\n")
 		// in new (post 0.5.0) Virtual Identity accounts the incomingServer of the account
 		// points to an incoming server of a different account. Cause the internal
 		// removeAccount function tries to removes the incomingServer ether, create
@@ -251,7 +255,7 @@ var account = {
 		catch (e) { };
 		
 		var key = checkAccount.key;
-		MyLog.debug("## account: removing account " + key + ".\n")
+		Log.debug("## account: removing account " + key + ".\n")
 		// remove the account
 		account._AccountManager.removeAccount(checkAccount);
 		// remove the additional tagging-pref
@@ -324,7 +328,7 @@ var account = {
 		if (account._account.defaultIdentity.smtpServerKey == virtualIdentityExtension.NO_SMTP_TAG)
 			account._account.defaultIdentity.smtpServerKey = baseIdentity.smtpServerKey;
 
-		MyLog.debug("## account: Stored virtualIdentity (name "
+		Log.debug("## account: Stored virtualIdentity (name "
 			+ account._account.defaultIdentity.fullName + " email "
 			+ account._account.defaultIdentity.email + " smtp "
 			+ account._account.defaultIdentity.smtpServerKey +")\n");
@@ -340,21 +344,21 @@ var account = {
 			switch (account._pref.getCharPref("fccFolderPickerMode"))
 			{
 			    case "2"  :
-				MyLog.debug ("## account: preparing Fcc --- use Settings of Default Account\n");
+				Log.debug ("## account: preparing Fcc --- use Settings of Default Account\n");
 				account._account.defaultIdentity.doFcc = account._AccountManager.defaultAccount.defaultIdentity.doFcc;
 				account._account.defaultIdentity.fccFolder = account._AccountManager.defaultAccount.defaultIdentity.fccFolder;
 				account._account.defaultIdentity.fccFolderPickerMode = account._AccountManager.defaultAccount.defaultIdentity.fccFolderPickerMode;
 				account._account.defaultIdentity.fccReplyFollowsParent = account._AccountManager.defaultAccount.defaultIdentity.fccReplyFollowsParent;
 				break;
 			    case "3"  :
-				MyLog.debug ("## account: preparing Fcc --- use Settings of Modified Account\n");
+				Log.debug ("## account: preparing Fcc --- use Settings of Modified Account\n");
 				account._account.defaultIdentity.doFcc = account._baseIdentity.doFcc;
 				account._account.defaultIdentity.fccFolder = account._baseIdentity.fccFolder;
 				account._account.defaultIdentity.fccFolderPickerMode = account._baseIdentity.fccFolderPickerMode;
 				account._account.defaultIdentity.fccReplyFollowsParent = account._baseIdentity.fccReplyFollowsParent;
 				break;
 			    default  :
-				MyLog.debug ("## account: preparing Fcc --- use Virtual Identity Settings\n");
+				Log.debug ("## account: preparing Fcc --- use Virtual Identity Settings\n");
 				account._account.defaultIdentity.doFcc
 					= account._pref.getBoolPref("doFcc");
 				account._account.defaultIdentity.fccFolder
@@ -370,7 +374,7 @@ var account = {
 			dump ("## account: dont performing Fcc\n");
 			account._account.defaultIdentity.doFcc = false;
 		}
-		MyLog.debug("## account: Stored (doFcc " + account._account.defaultIdentity.doFcc + " fccFolder " +
+		Log.debug("## account: Stored (doFcc " + account._account.defaultIdentity.doFcc + " fccFolder " +
 			account._account.defaultIdentity.fccFolder + " fccFolderPickerMode " +
 			account._account.defaultIdentity.fccFolderPickerMode + "(" +
 			account._pref.getCharPref("fccFolderPickerMode") + "))\n");
@@ -380,24 +384,24 @@ var account = {
 		switch (account._pref.getCharPref("draftFolderPickerMode"))
 		{
 		    case "2"  :
-			MyLog.debug ("## account: preparing Draft --- use Settings of Default Account\n");
+			Log.debug ("## account: preparing Draft --- use Settings of Default Account\n");
 			account._account.defaultIdentity.draftFolder = account._AccountManager.defaultAccount.defaultIdentity.draftFolder;
 			account._account.defaultIdentity.draftsFolderPickerMode = account._AccountManager.defaultAccount.defaultIdentity.draftsFolderPickerMode;
 			break;
 		    case "3"  :
-			MyLog.debug ("## account: preparing Draft --- use Settings of Modified Account\n");
+			Log.debug ("## account: preparing Draft --- use Settings of Modified Account\n");
 			account._account.defaultIdentity.draftFolder = account._baseIdentity.draftFolder;
 			account._account.defaultIdentity.draftsFolderPickerMode = account._baseIdentity.draftsFolderPickerMode;
 			break;
 		    default  :
-			MyLog.debug ("## account: preparing Draft --- use Virtual Identity Settings\n");
+			Log.debug ("## account: preparing Draft --- use Virtual Identity Settings\n");
 			account._account.defaultIdentity.draftFolder
 				= account._unicodeConverter.ConvertToUnicode(account._pref.getCharPref("draftFolder"));
 			account._account.defaultIdentity.draftsFolderPickerMode
 				= account._pref.getCharPref("draftFolderPickerMode");
 			break;
 		}
-		MyLog.debug("## account: Stored (draftFolder " +
+		Log.debug("## account: Stored (draftFolder " +
 			account._account.defaultIdentity.draftFolder + " draftsFolderPickerMode " +
 			account._account.defaultIdentity.draftsFolderPickerMode + "(" +
 			account._pref.getCharPref("draftFolderPickerMode") + "))\n");
@@ -407,24 +411,24 @@ var account = {
 		switch (account._pref.getCharPref("stationeryFolderPickerMode"))
 		{
 		    case "2"  :
-			MyLog.debug ("## account: preparing Templates --- use Settings of Default Account\n");
+			Log.debug ("## account: preparing Templates --- use Settings of Default Account\n");
 			account._account.defaultIdentity.stationeryFolder = account._AccountManager.defaultAccount.defaultIdentity.stationeryFolder;
 			account._account.defaultIdentity.tmplFolderPickerMode = account._AccountManager.defaultAccount.defaultIdentity.tmplFolderPickerMode;
 			break;
 		    case "3"  :
-			MyLog.debug ("## account: preparing Templates --- use Settings of Modified Account\n");
+			Log.debug ("## account: preparing Templates --- use Settings of Modified Account\n");
 			account._account.defaultIdentity.stationeryFolder = account._baseIdentity.stationeryFolder;
 			account._account.defaultIdentity.tmplFolderPickerMode = account._baseIdentity.tmplFolderPickerMode;
 			break;
 		    default  :
-			MyLog.debug ("## account: preparing Templates --- use Virtual Identity Settings\n");
+			Log.debug ("## account: preparing Templates --- use Virtual Identity Settings\n");
 			account._account.defaultIdentity.stationeryFolder
 				= account._unicodeConverter.ConvertToUnicode(account._pref.getCharPref("stationeryFolder"));
 			account._account.defaultIdentity.tmplFolderPickerMode
 				= account._pref.getCharPref("stationeryFolderPickerMode");
 			break;
 		}
-		MyLog.debug("## account: Stored (stationeryFolder " +
+		Log.debug("## account: Stored (stationeryFolder " +
 			account._account.defaultIdentity.stationeryFolder + " tmplFolderPickerMode " +
 			account._account.defaultIdentity.tmplFolderPickerMode + "(" +
 			account._pref.getCharPref("stationeryFolderPickerMode") + "))\n");

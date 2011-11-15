@@ -25,6 +25,7 @@
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
+let Log = setupLogging("virtualIdentity.prefDialog");
 
 var prefDialog = {
 	toggleHelp : function() {
@@ -142,7 +143,7 @@ var prefDialog = {
                             prefDialog.preferences.getIntPref(element.getAttribute("prefstring")) );
                         else {
                             element.setAttribute("value", 
-                            prefDialog.unicodeConverter.ConvertToUnicode(prefDialog.preferences.getCharPref(element.getAttribute("prefstring"))) );
+                            prefDialog.unicodeConverter.ConvertToUnicode(prefDia/*log*/.preferences.getCharPref(element.getAttribute("prefstring"))) );
 // 							alert(element.getAttribute("prefstring") + " " + element.getAttribute("value"))
 						}
                     else if (eltType == "listbox")
@@ -337,13 +338,13 @@ var prefDialog = {
 		prefDialog.base.savePrefs();
 	},
 
-        openURL : function(aURL) {
-            var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
-            var protocolSvc = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"].getService(Components.interfaces.nsIExternalProtocolService);
-		dump("load url " + aURL + "\n");
-            uri.spec = aURL;
-            protocolSvc.loadUrl(uri);
-        }
+    openURL : function(aURL) {
+        var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
+        var protocolSvc = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"].getService(Components.interfaces.nsIExternalProtocolService);
+        Log.debug("load url " + aURL + "\n");
+        uri.spec = aURL;
+        protocolSvc.loadUrl(uri);
+    }
 }
 vI.prefDialog = prefDialog;
 }});

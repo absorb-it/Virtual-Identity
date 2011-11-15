@@ -24,6 +24,9 @@
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
+Components.utils.import("resource://v_identity/vI_log.js");
+let Log = setupLogging("virtualIdentity.main");
+
 var main = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
@@ -63,19 +66,19 @@ var main = {
 
 	ComposeStateListener : {
 		NotifyComposeBodyReady: function() { 
-			MyLog.debug("## v_identity: NotifyComposeBodyReady\n");
+			Log.debug("## v_identity: NotifyComposeBodyReady\n");
 			main.initSystemStage2();
 		},
 		NotifyComposeFieldsReady: function() { 
-			MyLog.debug("## v_identity: NotifyComposeFieldsReady\n");
+			Log.debug("## v_identity: NotifyComposeFieldsReady\n");
 		},
 		ComposeProcessDone: function(aResult) {
-			MyLog.debug("## v_identity: StateListener reports ComposeProcessDone\n");
+			Log.debug("## v_identity: StateListener reports ComposeProcessDone\n");
 			main.Cleanup(); // not really required, parallel handled by main.close
 			vI.storage.clean();
 		},
 		SaveInFolderDone: function(folderURI) { 
-			MyLog.debug("## v_identity: SaveInFolderDone\n");
+			Log.debug("## v_identity: SaveInFolderDone\n");
 			main.Cleanup();
 			vI.storage.clean();
 		}
@@ -83,7 +86,7 @@ var main = {
 		
 	replacement_functions : {
 		FillIdentityList: function(menulist) {
-			MyLog.debug("## v_identity: mod. FillIdentityList\n");
+			Log.debug("## v_identity: mod. FillIdentityList\n");
 			var accounts = queryISupportsArray(main.accountManager.accounts,
                                      Components.interfaces.nsIMsgAccount);
 
@@ -135,7 +138,7 @@ var main = {
 			// if addressCol2 is focused while sending check storage for the entered address before continuing
 			vI.storage.awOnBlur(vI.storage.focusedElement);
 
-			MyLog.debug("\n## v_identity: VIdentity_GenericSendMessage\n");
+			Log.debug("\n## v_identity: VIdentity_GenericSendMessage\n");
 			
 			if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now) { vI.msgIdentityCloneTools.addReplyToSelf(); }
 
@@ -147,14 +150,14 @@ var main = {
 							main._getRecipients() );
 			if (returnValue.update == "abort") {
 				main.replacement_functions.GenericSendMessageInProgress = false;
-				MyLog.debug("## sending: --------------  aborted  ---------------------------------\n")
+				Log.debug("## sending: --------------  aborted  ---------------------------------\n")
 				return;
 			}
 			else if (returnValue.update == "takeover") {
 					var msgIdentityCloneElem = document.getElementById("msgIdentity_clone");
 					msgIdentityCloneElem.selectedMenuItem = msgIdentityCloneElem.addIdentityToCloneMenu(returnValue.storedIdentity);
 					main.replacement_functions.GenericSendMessageInProgress = false;
-					MyLog.debug("## sending: --------------  aborted  ---------------------------------\n")
+					Log.debug("## sending: --------------  aborted  ---------------------------------\n")
 					return;
 			}
 			
@@ -167,11 +170,11 @@ var main = {
 			}
 			else	main.Cleanup();
 			main.replacement_functions.GenericSendMessageInProgress = false;
-			// 			MyLog.debug("## v_identity: original_functions.GenericSendMessage done\n");
+			// 			Log.debug("## v_identity: original_functions.GenericSendMessage done\n");
 		},
 		
 		replace_FillIdentityList : function() {
-			//~ MyLog.debug("## v_identity: replace FillIdentityList \n");
+			//~ Log.debug("## v_identity: replace FillIdentityList \n");
 			main.original_functions.FillIdentityList = FillIdentityList;
 			FillIdentityList = main.replacement_functions.FillIdentityList;
 		}
@@ -180,7 +183,7 @@ var main = {
 	remove: function() {
 		window.removeEventListener('compose-window-reopen', main.reopen, true);
 		window.removeEventListener('compose-window-close', main.close, true);
-		MyLog.debug("## v_identity: end. remove Account if there.\n")
+		Log.debug("## v_identity: end. remove Account if there.\n")
 		main.Cleanup();
 		vI.storage.clean();
 	},
@@ -204,7 +207,7 @@ var main = {
 
 		for (var index = 0; index < doBccArray.count; index++ ) {
 			if (doBccArray.StringAt(index) == awGetInputElement(row).value) {
-				MyLog.debug("## main _recipientIsDoBcc: ignoring doBcc field '" +
+				Log.debug("## main _recipientIsDoBcc: ignoring doBcc field '" +
 					doBccArray.StringAt(index) + "'.\n");
 				return true;
 			}
@@ -217,9 +220,9 @@ var main = {
 		window.removeEventListener('load', main.init, false);
 		window.removeEventListener('compose-window-init', main.init, true);
 		if (main.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
-		MyLog.debug("\n## v_identity: init.\n")
+		Log.debug("\n## v_identity: init.\n")
 		main.unicodeConverter.charset="UTF-8";
-		if (!main.adapt_genericSendMessage()) { MyLog.debug("\n## v_identity: init failed.\n"); return; }
+		if (!main.adapt_genericSendMessage()) { Log.debug("\n## v_identity: init failed.\n"); return; }
 		
 		main.adapt_interface();
 		gMsgCompose.RegisterStateListener(main.ComposeStateListener);
@@ -234,23 +237,23 @@ var main = {
         main.AccountManagerObserver.register();
         
 		main.initSystemStage1();
-		MyLog.debug("## v_identity: init done.\n\n")
+		Log.debug("## v_identity: init done.\n\n")
 	},
 	
 	initSystemStage1 : function() {
-		MyLog.debug("## v_identity: initSystemStage1.\n")
+		Log.debug("## v_identity: initSystemStage1.\n")
 		main.gMsgCompose = gMsgCompose;
 		document.getElementById("msgIdentity_clone").init();
 		vI.statusmenu.init();
-		MyLog.debug("## v_identity: initSystemStage1 done.\n")
+		Log.debug("## v_identity: initSystemStage1 done.\n")
 	},
 	
 	initSystemStage2 : function() {
-		MyLog.debug("## v_identity: initSystemStage2.\n")
+		Log.debug("## v_identity: initSystemStage2.\n")
 		vI.msgIdentityCloneTools.initReplyTo();
 		vI.storage.init();
 		vI.smartIdentity.init();
-		MyLog.debug("## v_identity: initSystemStage2 done.\n")
+		Log.debug("## v_identity: initSystemStage2 done.\n")
 	},
 	
 	close : function() {
@@ -286,7 +289,7 @@ var main = {
 	
 	adapt_genericSendMessage : function() {
 		if (main.original_functions.GenericSendMessage) return true; // only initialize this once
-		MyLog.debug("## v_identity: adapt GenericSendMessage\n");
+		Log.debug("## v_identity: adapt GenericSendMessage\n");
 		main.original_functions.GenericSendMessage = GenericSendMessage;
 		GenericSendMessage = main.replacement_functions.GenericSendMessage;
 		return true;
@@ -295,11 +298,11 @@ var main = {
 	reopen: function() {
 		clearNote();
 		clearDebugOutput();
-		MyLog.debug("## v_identity: composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
+		Log.debug("## v_identity: composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
 		
 		// clean all elements
 		document.getElementById("msgIdentity_clone").clean();
-		MyLog.debug("## v_identity: everything cleaned.\n")
+		Log.debug("## v_identity: everything cleaned.\n")
 		
 		// now (re)init the elements
 		main.initSystemStage1();
@@ -326,7 +329,7 @@ var main = {
 			case msgComposeType.ReplyToList:
 				gMsgCompose.RegisterStateListener(main.ComposeStateListener);
 		}
-		MyLog.debug("## v_identity: reopen done.\n")
+		Log.debug("## v_identity: reopen done.\n")
 	},
 	
 	tempStorage: { BaseIdentity : null, NewIdentity : null },
@@ -383,12 +386,12 @@ var main = {
         _uninstall : false,
         observe : function(subject, topic, data) {
             if (topic == "am-smtpChanges") {
-                MyLog.debug("## v_identity: smtp changes observed\n");
+                Log.debug("## v_identity: smtp changes observed\n");
                 var msgIdentity_clone = document.getElementById("msgIdentity_clone");
                 document.getAnonymousElementByAttribute(msgIdentity_clone, "class", "smtpServerListHbox").refresh();
             }
             if (topic == "am-acceptChanges") {
-                MyLog.debug("## v_identity: account changes observed\n");
+                Log.debug("## v_identity: account changes observed\n");
                 document.getElementById("msgIdentity_clone").clean();
                 document.getElementById("msgIdentity_clone").init();
             }

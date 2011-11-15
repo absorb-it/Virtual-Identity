@@ -70,11 +70,10 @@ var getHeader = {
 
 	getHeader: function() {
       clearDebugOutput();
-      Log.debug("\n");
-      
       if (!getHeader.headerToSearch) getHeader.prefObserverToSearchArray()
       
       msgHdrGetHeaders(getHeader.hdr, function (aHeaders) {
+        let label = "";
         if (aHeaders.has("list-id")) {
           getHeader.hdr.setStringProperty("vI_list-id","found");
           Log.debug("## getHeader: found header: list-id  ...stored to recognize mailing-list\n");
@@ -97,8 +96,11 @@ var getHeader = {
             let storedConvValue = getHeader.unicodeConverter.ConvertToUnicode(storedValue);
             Log.debug("## getHeader: found header: " + headerNameToSearch +
                 " - stored as '" + storedConvValue + "'\n");
+            label += (label)?"\n":""
+            label += headerNameToSearch + ":\t" + storedConvValue
           }
         }
+        GetHeaderNotification.info(label + ".");
       });
 	},
 	

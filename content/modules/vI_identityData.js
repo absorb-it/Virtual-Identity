@@ -23,6 +23,10 @@
  * ***** END LICENSE BLOCK ***** */
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+  
+Components.utils.import("resource://v_identity/vI_log.js");
+let Log = setupLogging("virtualIdentity.identityData");
+
 function identityData(email, fullName, id, smtp, extras, sideDescription, existingID) {
 	this._email = email?email:"";
 	this._emailParsed = false;
@@ -69,8 +73,8 @@ identityData.prototype = {
 		if (this._email.match(/<\s*[^>\s]*@[^>\s]*\s*>/) || this._email.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/) || this._email.match(/$/)) {
 			this._fullName += RegExp.leftContext + RegExp.rightContext;
 			this._email = RegExp.lastMatch;
-// 			MyLog.debug("## identityData: parseEmail _fullName = '" + this._fullName + "'\n");
-// 			MyLog.debug("## identityData: parseEmail _email =    '" + this._email + "'\n");
+// 			Log.debug("## identityData: parseEmail _fullName = '" + this._fullName + "'\n");
+// 			Log.debug("## identityData: parseEmail _email =    '" + this._email + "'\n");
 		}
 		this._emailParsed = true;
 	},
@@ -81,12 +85,12 @@ identityData.prototype = {
 	set email(email) { this._email = email; this._emailParsed = false; },
 
 	cleanName : function(fullName) {
-// 		MyLog.debug("## identityData: cleanName init '" + fullName + "'\n");
+// 		Log.debug("## identityData: cleanName init '" + fullName + "'\n");
 		var _fullName = fullName.replace(/^\s+|\s+$/g,"");
 		if (_fullName.search(/^\".+\"$|^'.+'$/g) != -1) {
 			_fullName = this.cleanName(_fullName.replace(/^\"(.+)\"$|^'(.+)'$/g,"$1$2"));
 		}
-// 		MyLog.debug("## identityData: cleanName done '" + _fullName + "'\n");
+// 		Log.debug("## identityData: cleanName done '" + _fullName + "'\n");
 		return _fullName;
 	},
 
@@ -131,8 +135,8 @@ identityData.prototype = {
 
 	// dependent on MsgComposeCommands, should/will only be called in ComposeDialog
 	isExistingIdentity : function(ignoreFullNameWhileComparing) {
-		MyLog.debug("## identityData: isExistingIdentity: ignoreFullNameWhileComparing='" + ignoreFullNameWhileComparing + "'\n");
-// 		MyLog.debug("## identityData base: fullName.toLowerCase()='" + this.fullName + "' email.toLowerCase()='" + this.email + "' smtp='" + this.smtp.key + "'\n");
+		Log.debug("## identityData: isExistingIdentity: ignoreFullNameWhileComparing='" + ignoreFullNameWhileComparing + "'\n");
+// 		Log.debug("## identityData base: fullName.toLowerCase()='" + this.fullName + "' email.toLowerCase()='" + this.email + "' smtp='" + this.smtp.key + "'\n");
 
 		var ignoreFullNameMatchKey = null;
 		var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
@@ -142,14 +146,14 @@ identityData.prototype = {
 			try { this._prefroot.getBoolPref("mail.account."+account.key+".vIdentity"); continue; } catch (e) { };
             for (let j = 0; j < account.identities.Count(); j++) {
                 var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
-// 				MyLog.debug("## identityData comp: fullName.toLowerCase()='" + identity.fullName.toLowerCase() + "' email.toLowerCase()='" + identity.email.toLowerCase() + "' smtp='" + identity.smtpServerKey + "'\n");
+// 				Log.debug("## identityData comp: fullName.toLowerCase()='" + identity.fullName.toLowerCase() + "' email.toLowerCase()='" + identity.email.toLowerCase() + "' smtp='" + identity.smtpServerKey + "'\n");
 				var email = this.email?this.email:"";				// might be null if no identity is set
 				var idEmail = identity.email?identity.email:"";	// might be null if no identity is set
 				if (	(email.toLowerCase() == idEmail.toLowerCase()) &&
 					this.smtp.equal(new smtpObj(identity.smtpServerKey))	) {
 						// if fullName matches, than this is a final match
 						if ( this.fullName.toLowerCase() == identity.fullName.toLowerCase() ) {
-							MyLog.debug("## identityData: isExistingIdentity: " + this.combinedName + " found, id='" + identity.key + "'\n");
+							Log.debug("## identityData: isExistingIdentity: " + this.combinedName + " found, id='" + identity.key + "'\n");
 							return identity.key; // return key and stop searching
 						}
 						// if fullNames don't match, remember the key but continue to search for full match
@@ -159,11 +163,11 @@ identityData.prototype = {
 		}
 
 		if ( ignoreFullNameWhileComparing && ignoreFullNameMatchKey ) {
-			MyLog.debug("## identityData: isExistingIdentity: " + this.combinedName + " found, id='" + ignoreFullNameMatchKey + "'\n");
+			Log.debug("## identityData: isExistingIdentity: " + this.combinedName + " found, id='" + ignoreFullNameMatchKey + "'\n");
 			return 	ignoreFullNameMatchKey;
 		}
 
-		MyLog.debug("## identityData: isExistingIdentity: " + this.combinedName + " not found\n");
+		Log.debug("## identityData: isExistingIdentity: " + this.combinedName + " not found\n");
 		return null;
 	},
 	
@@ -238,7 +242,7 @@ identityCollection.prototype =
 	},
 
 	dropIdentity : function(index) {
-		MyLog.debug("## identityCollection:   dropping address from inputList: " + this.identityDataCollection[index].combinedName + "\n");
+		Log.debug("## identityCollection:   dropping address from inputList: " + this.identityDataCollection[index].combinedName + "\n");
 		while (index < (this.number - 1)) { this.identityDataCollection[index] = this.identityDataCollection[++index]; };
 		this.identityDataCollection[--this.number] = null;
 	},
@@ -253,7 +257,7 @@ identityCollection.prototype =
 				// found, so check if we can use the Name of the new field
 				if (this.identityDataCollection[index].fullName == "" && identityData.fullName != "") {
 					this.identityDataCollection[index].fullName = identityData.fullName;
-					MyLog.debug("## identityCollection:   added fullName '" + identityData.fullName
+					Log.debug("## identityCollection:   added fullName '" + identityData.fullName
 						+ "' to stored email '" + this.identityDataCollection[index].email +"'\n")
 				}
 				// check if id_key, smtp_key or extras can be used
@@ -262,13 +266,13 @@ identityCollection.prototype =
 					this.identityDataCollection[index].id.key = identityData.id.key;
 					this.identityDataCollection[index].smtp.key = identityData.smtp.key;
 					this.identityDataCollection[index].extras = identityData.extras;
-					MyLog.debug("## identityCollection:   added id '" + identityData.id.value
+					Log.debug("## identityCollection:   added id '" + identityData.id.value
 						+ "' smtp '" + identityData.smtp.value + "' (+extras) to stored email '" + this.identityDataCollection[index].email +"'\n")
 				}
 				return;
 			}
 		}
-		MyLog.debug("## identityCollection:   add new address to result: " + identityData.combinedName + "\n")
+		Log.debug("## identityCollection:   add new address to result: " + identityData.combinedName + "\n")
 		this.identityDataCollection[index] = identityData;
 		this.number = index + 1;
 	},

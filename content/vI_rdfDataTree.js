@@ -29,6 +29,10 @@
 */
 
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+
+Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js");
+let Log = setupLogging("virtualIdentity.rdfDataTree");
+
 //prepares an object for easy comparison against another. for strings, lowercases them
 function prepareForComparison (o) {
 	if (typeof o == "string") { return o.toLowerCase().replace(/\"/g,""); }
@@ -56,7 +60,7 @@ rdfDataTree.prototype = {
 	
 	//this function is called every time the tree is sorted, filtered, or reloaded
 	loadTable : function() {
-//         MyLog.debug("## rdfDataTree: loadTable.\n");
+//         Log.debug("## rdfDataTree: loadTable.\n");
 		//remember scroll position. this is useful if this is an editable table
 		//to prevent the user from losing the row they edited
 		var topVisibleRow = null;
@@ -92,7 +96,7 @@ rdfDataTree.prototype = {
 
 		// set Tab label
 		this.tabElem.setAttribute("label", this.treeType + " (" + this.idTable.length + ")");
-//         MyLog.debug("## rdfDataTree: loadTable done.\n");
+//         Log.debug("## rdfDataTree: loadTable done.\n");
 	},
 
 	addNewDatum : function(resource, name, localIdentityData, idData) {
@@ -105,12 +109,12 @@ rdfDataTree.prototype = {
 //				idKey : localIdentityData.id.key,
 				resource : resource,
 				identityData : localIdentityData}
-// 		MyLog.debug("## addNewDatum.\n");
+// 		Log.debug("## addNewDatum.\n");
 		localIdentityData.extras.addPrefs(pref);
 		idData.push(pref);
 	},
 	sort : function(columnName) {
-// 		MyLog.debug("## sort: " + columnName + ".\n");
+// 		Log.debug("## sort: " + columnName + ".\n");
 		var order = this.treeElem.getAttribute("sortDirection") == "ascending" ? 1 : -1;
 		//if the column is passed and it's already sorted by that column, reverse sort
 		if (columnName && (this.treeElem.getAttribute("sortResource") == columnName)) {

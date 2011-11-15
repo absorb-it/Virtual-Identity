@@ -887,9 +887,7 @@ rdfDatasourceAccess.prototype = {
 			if (this._pref.getBoolPref("storage_getOneOnly") &&		// if requested to retrieve only storageID for first recipient entered
 				isNotFirstInputElement &&							// and it is now not the first recipient entered
 				!localIdentities.identityDataCollection[0].equalsIdentity(currentIdentity, false).equal) {		// and this id is different than the current used one
-					setNote(
-						this.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageCollidingIdentity"),	// than drop the potential changes
-						"storage_notification");
+					StorageNotification.info(this.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageCollidingIdentity"));
 // 					returnValue.result = "drop";    // this is the default value
 			}
 			// only update fields if new Identity is different than old one.

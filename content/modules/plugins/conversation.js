@@ -1,8 +1,9 @@
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-const Ci = Components.interfaces;
-const Cc = Components.classes;
-const Cu = Components.utils;
+Components.utils.import("resource://v_identity/vI_log.js");
+let Log = setupLogging("virtualIdentity.plugin.conversation");
+
+const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
 let pref = Cc["@mozilla.org/preferences-service;1"]
   .getService(Components.interfaces.nsIPrefService)
@@ -18,7 +19,8 @@ let currentIdentityData;
 let currentIdSenderName;
 let virtualIdInUse;
 let virtualSenderNameElem;
-let Log;
+
+
 let _rdfDatasourceAccess;
 
 let changeIdentityToSmartIdentity = function(allIdentities, index) {
@@ -43,8 +45,7 @@ let _changeIdentityToSmartIdentity = function(identityData) {
 };
 
 let conversationHook = {
-  onComposeSessionChanged: function (aComposeSession, aAddress, ExternalLog) {
-    Log = ExternalLog;
+  onComposeSessionChanged: function (aComposeSession, aAddress) {
     let toAddrList = aAddress.to.concat(aAddress.cc);
     
     currentParams = aComposeSession.params; virtualSenderNameElem = aComposeSession.senderNameElem; // to enable access from out of this class.
@@ -89,8 +90,7 @@ let conversationHook = {
       changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, 0);
   },
   
-  onMessageBeforeSendOrPopout: function(aAddress, aStatus, aPopout, ExternalLog) {
-    Log = ExternalLog;
+  onMessageBeforeSendOrPopout: function(aAddress, aStatus, aPopout) {
     let toAddrList = aAddress.to.concat(aAddress.cc);
     Log.debug("## onMessageBeforeSendOrPopup");
     
@@ -134,9 +134,7 @@ let conversationHook = {
     Log.debug("onStopSending done");
   },
 
-  onRecipientAdded: function onRecipientAdded(aData, aType, aCount, ExternalLog) {
-    Log = ExternalLog;
-    
+  onRecipientAdded: function onRecipientAdded(aData, aType, aCount) {
     Log.debug("onRecipientAdded", aData.data, aType, aCount);
     if (!pref.getBoolPref("storage")) return;
     if (aType == "bcc") return;
