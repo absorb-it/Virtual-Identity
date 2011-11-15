@@ -40,7 +40,6 @@
 	zlevel="6" onload="virtualIdentityExtension.upgrade.init(); virtualIdentityExtension.upgrade.prepare(document.getElementById('introPage'));" onunload="virtualIdentityExtension.upgrade.clean();" >
 
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_upgrade.js" />
-<script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_account.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_identityData.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_helper.js" />

@@ -27,6 +27,9 @@ virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 let Log = vI.setupLogging("virtualIdentity.smartIdentity");
 
+Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_smartIdentityCollection.js", virtualIdentityExtension);
+
 var smartIdentity = {
 	_pref : Components.classes["@mozilla.org/preferences-service;1"]
 		.getService(Components.interfaces.nsIPrefService)

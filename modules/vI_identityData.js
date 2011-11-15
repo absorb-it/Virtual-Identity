@@ -22,10 +22,13 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
-virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
-  
-let Log = vI.setupLogging("virtualIdentity.identityData");
+var EXPORTED_SYMBOLS = ["identityData", "identityCollection", "DEFAULT_SMTP_TAG", "NO_SMTP_TAG"]
+
+const DEFAULT_SMTP_TAG = "vI_useDefaultSMTP"
+const NO_SMTP_TAG = "vI_noStoredSMTP"
+
+Components.utils.import("resource://v_identity/vI_log.js");
+let Log = setupLogging("virtualIdentity.identityData");
 
 function identityData(email, fullName, id, smtp, extras, sideDescription, existingID) {
 	this._email = email?email:"";
@@ -34,7 +37,7 @@ function identityData(email, fullName, id, smtp, extras, sideDescription, existi
 	this.id = new idObj(id);
 	this.smtp = new smtpObj(smtp);
 	if (extras) this.extras = extras;
-	else if (typeof(vI.storageExtras)=='function') this.extras = new vI.storageExtras();
+// 	else if (typeof(vI.storageExtras)=='function') this.extras = new vI.storageExtras();
 	this.comp = {	// holds the results of the last comparison for later creation of a compareMatrix
 		compareID : null,
 		equals : { fullName : {}, email : {}, smtp : {}, id : {}, extras : {} }
@@ -196,11 +199,13 @@ identityData.prototype = {
 
 	getCompareMatrix : function() {
 		const Items = Array("fullName", "email", "smtp", "id");
-		var string = "";		
-		var saveBaseId = (!vI.statusmenu && this._pref.getBoolPref("storage_store_base_id")
-				|| vI.statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true")
-		var saveSMTP = (!vI.statusmenu && this._pref.getBoolPref("storage_store_SMTP")
-				|| vI.statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true")
+		var string = "";
+        var saveBaseId = this._pref.getBoolPref("storage_store_base_id");
+        var saveSMTP = this._pref.getBoolPref("storage_store_SMTP");
+//         var saveBaseId = (!vI.statusmenu && this._pref.getBoolPref("storage_store_base_id")
+// 				|| vI.statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true")
+// 		var saveSMTP = (!vI.statusmenu && this._pref.getBoolPref("storage_store_SMTP")
+// 				|| vI.statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true")
 		for each (let item in Items) {
 			var classEqual = (this.comp.equals[item])?"equal":"unequal";
 			var classIgnore = (((!saveBaseId) && (item == "id")) || ((!saveSMTP) && (item == "smtp")))?" ignoreValues":""
@@ -284,9 +289,6 @@ identityCollection.prototype =
 		this.identityDataCollection = newIdentityCollection.identityDataCollection
 	}
 };
-
-const DEFAULT_SMTP_TAG = "vI_useDefaultSMTP"
-const NO_SMTP_TAG = "vI_noStoredSMTP"
 
 function smtpObj(key) {
 	this._key = key;
@@ -375,8 +377,3 @@ idObj.prototype = {
 		return (this.key == compareIdObj.key);
 	}
 }
-vI.DEFAULT_SMTP_TAG = DEFAULT_SMTP_TAG;
-vI.NO_SMTP_TAG = NO_SMTP_TAG;
-vI.identityCollection = identityCollection;
-vI.identityData = identityData;
-}});

@@ -22,12 +22,13 @@
     Contributor(s):
  * ***** END LICENSE BLOCK ***** */
 
-/* this is now used as a module - there is no required reference to any other interface-elements in this code */
+var EXPORTED_SYMBOLS = ["rdfDatasource", "rdfDatasourceAccess", "rdfDatasourceImporter"]
 
-Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
-virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+Components.utils.import("resource://v_identity/vI_log.js");
+let Log = setupLogging("virtualIdentity.rdfDatasource");
 
-let Log = vI.setupLogging("virtualIdentity.rdfDatasource");
+Components.utils.import("resource://v_identity/vI_identityData.js");
+Components.utils.import("resource://gre/modules/Services.jsm");
 
 function rdfDatasource(rdfFileName, dontRegisterObserver) {
     this._rdfFileName = rdfFileName;
@@ -223,7 +224,7 @@ rdfDatasource.prototype = {
                 var resource = enumerator.getNext();
                 resource.QueryInterface(Components.interfaces.nsIRDFResource);
                 var smtp = this._getRDFValue(resource, "smtp")
-                if (!smtp || smtp == "") this._setRDFValue(resource, "smtp", vI.DEFAULT_SMTP_TAG);
+                if (!smtp || smtp == "") this._setRDFValue(resource, "smtp", DEFAULT_SMTP_TAG);
                 Log.debug(".");
             }
         }
@@ -458,7 +459,7 @@ rdfDatasource.prototype = {
                 var resource = enumerator.getNext();
                 resource.QueryInterface(Components.interfaces.nsIRDFResource);
                 var smtp = this._getRDFValue(resource, "smtp")
-                if (smtp && smtp != vI.DEFAULT_SMTP_TAG) {
+                if (smtp && smtp != DEFAULT_SMTP_TAG) {
                     if (!relevantSMTPs[smtp]) relevantSMTPs[smtp] = 1; else relevantSMTPs[smtp] += 1;
                 }
             }
@@ -591,7 +592,8 @@ rdfDatasource.prototype = {
 		this._unsetRDFValue(resource, "smtp", this._getRDFValue(resource, "smtp"))
 		this._unsetRDFValue(resource, "name", this._getRDFValue(resource, "name"))
 		
-        var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
+        var extras = null;
+//         var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
         if (extras) extras.loopForRDF(this, resource, "unset");
         this.getContainer(recType).RemoveElement(resource, true);
 	},
@@ -620,10 +622,11 @@ rdfDatasource.prototype = {
 			var fullName = this._getRDFValue(resource, "fullName")
 			var id = this._getRDFValue(resource, "id")
 			var smtp = this._getRDFValue(resource, "smtp")
-			if (!smtp) smtp = vI.NO_SMTP_TAG;
-			var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
+			if (!smtp) smtp = NO_SMTP_TAG;
+            var extras = null;
+// 			var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
 			
-			var localIdentityData = new vI.identityData(email, fullName, id, smtp, extras)
+			var localIdentityData = new identityData(email, fullName, id, smtp, extras)
 			addNewDatum (resource, name, localIdentityData, idData)
 		}
 	},
@@ -636,7 +639,7 @@ rdfDatasource.prototype = {
 		}
 		else {
 			Log.debug("__getDescriptionAndType: '" + recipient + "' is no MailList\n");
-			var localIdentityData = new vI.identityData(recipient, null, null, null, null, null, null);
+			var localIdentityData = new identityData(recipient, null, null, null, null, null, null);
 			return { recDesc : localIdentityData.combinedName, recType : "email" }
 		}
 	},
@@ -735,16 +738,17 @@ rdfDatasource.prototype = {
 		var fullName = this._getRDFValue(resource, "fullName")
 		var id = this._getRDFValue(resource, "id")
 		var smtp = this._getRDFValue(resource, "smtp")
-		if (!smtp) smtp = vI.NO_SMTP_TAG;
+		if (!smtp) smtp = NO_SMTP_TAG;
 		
 		Log.debug("email='" + email + 
 			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'\n");
-		
-		var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
-		var extras_status = (typeof(vI.storageExtras)=='function')?extras.status():" not used";
+		var extras = null;
+// 		var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
+		var extras_status = " not used";
+//         var extras_status = (typeof(vI.storageExtras)=='function')?extras.status():" not used";
 		Log.debug("extras:" + extras_status + "\n");
 		
-		var localIdentityData = new vI.identityData(email, fullName, id, smtp, extras)
+		var localIdentityData = new identityData(email, fullName, id, smtp, extras)
 		return localIdentityData;
 	},
 
@@ -758,12 +762,16 @@ rdfDatasource.prototype = {
 	
 	updateRDFFromVIdentity : function(identityData, recipientName, recipientType) {
 		var recipient = this.__getDescriptionAndType(recipientName, recipientType)
-		this.updateRDF(recipient.recDesc, recipient.recType, identityData,
-			(!vI.statusmenu && this._pref.getBoolPref("storage_store_base_id")
-				|| vI.statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true"),
-			(!vI.statusmenu && this._pref.getBoolPref("storage_store_SMTP")
-				|| vI.statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true"),
-			null, null);
+        this.updateRDF(recipient.recDesc, recipient.recType, identityData,
+            this._pref.getBoolPref("storage_store_base_id"),
+            this._pref.getBoolPref("storage_store_SMTP"),
+            null, null);
+// 		this.updateRDF(recipient.recDesc, recipient.recType, identityData,
+// 			(!vI.statusmenu && this._pref.getBoolPref("storage_store_base_id")
+// 				|| vI.statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true"),
+// 			(!vI.statusmenu && this._pref.getBoolPref("storage_store_SMTP")
+// 				|| vI.statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true"),
+// 			null, null);
 	},
 	
 	removeRDF : function (recDescription, recType) {
@@ -799,7 +807,7 @@ rdfDatasource.prototype = {
 		if (storeBaseID)
 			this._setRDFValue(resource, "id", localIdentityData.id.key);
 		else	this._unsetRDFValue(resource, "id", this._getRDFValue(resource, "id"))
-		if (storeSMTP && localIdentityData.smtp.key != vI.NO_SMTP_TAG)
+		if (storeSMTP && localIdentityData.smtp.key != NO_SMTP_TAG)
 			this._setRDFValue(resource, "smtp", localIdentityData.smtp.key);
 		else	this._unsetRDFValue(resource, "smtp", this._getRDFValue(resource, "smtp"))
         this._setRDFValue(resource, "name", recDescription);
@@ -873,7 +881,7 @@ rdfDatasourceAccess.prototype = {
 	},
 	
 	updateVIdentityFromStorage : function(recipientName, recipientType, currentIdentity, currentIdentityIsVid, isNotFirstInputElement) {
-		var localIdentities = new vI.identityCollection();
+		var localIdentities = new identityCollection();
 		localIdentities.addWithoutDuplicates(this._rdfDataSource.readVIdentityFromRDF(recipientName, recipientType));
 		if (localIdentities.number == 1) Log.debug("using data from direct match\n");
 		localIdentities.addWithoutDuplicates(this._rdfDataSource.findMatchingFilter(recipientName, recipientType));
@@ -887,7 +895,7 @@ rdfDatasourceAccess.prototype = {
 			if (this._pref.getBoolPref("storage_getOneOnly") &&		// if requested to retrieve only storageID for first recipient entered
 				isNotFirstInputElement &&							// and it is now not the first recipient entered
 				!localIdentities.identityDataCollection[0].equalsIdentity(currentIdentity, false).equal) {		// and this id is different than the current used one
-					vI.StorageNotification.info(this.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageCollidingIdentity"));
+					StorageNotification.info(this.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageCollidingIdentity"));
 // 					returnValue.result = "drop";    // this is the default value
 			}
 			// only update fields if new Identity is different than old one.
@@ -1139,9 +1147,10 @@ rdfDatasourceImporter.prototype = {
                     var id = this._rdfImportDataSource._getRDFValue(resource, "id")
                     id = id?relevantIDs[id].id:null
                     var smtp = this._rdfImportDataSource._getRDFValue(resource, "smtp")
-                    smtp = (smtp && smtp != vI.DEFAULT_SMTP_TAG)?relevantSMTPs[smtp].smtp:smtp
-                    var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this._rdfImportDataSource, resource):null;
-                    var localIdentityData = new vI.identityData(email, fullName, id, smtp, extras)
+                    smtp = (smtp && smtp != DEFAULT_SMTP_TAG)?relevantSMTPs[smtp].smtp:smtp
+                    var extras = null;
+//                     var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this._rdfImportDataSource, resource):null;
+                    var localIdentityData = new identityData(email, fullName, id, smtp, extras)
                     
                     this._rdfDataSource.updateRDF(name, treeType, localIdentityData, false, false, null, null)
                     var resource = this._rdfDataSource._getRDFResourceForVIdentity(name, treeType);
@@ -1170,7 +1179,3 @@ rdfDatasourceImporter.prototype = {
         }
     }
 }
-vI.rdfDatasource = rdfDatasource;
-vI.rdfDatasourceAccess = rdfDatasourceAccess;
-vI.rdfDatasourceImporter = rdfDatasourceImporter;
-}});

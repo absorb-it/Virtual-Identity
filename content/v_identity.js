@@ -26,8 +26,13 @@ Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 let Log = vI.setupLogging("virtualIdentity.main");
+Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
 
 var main = {
+    prefroot : Components.classes["@mozilla.org/preferences-service;1"]
+        .getService(Components.interfaces.nsIPrefService)
+        .getBranch(null),
+  
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
 			.getBranch("extensions.virtualIdentity."),
@@ -118,7 +123,7 @@ var main = {
 				var server = accounts[i].incomingServer;
 				if (!server) continue;
 				// check for VirtualIdentity Account
-				try {	vI.account._prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
+				try {	main.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
 					continue; } catch (e) { };
 
 				var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
@@ -145,7 +150,7 @@ var main = {
 			var vid = document.getElementById("msgIdentity_clone").vid
 			var virtualIdentityData = document.getElementById("msgIdentity_clone").identityData;
 			
-			returnValue = vI.prepareSendMsg(	vid, msgType, virtualIdentityData,
+			returnValue = vIaccount_prepareSendMsg(	vid, msgType, virtualIdentityData,
 							main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
 							main._getRecipients() );
 			if (returnValue.update == "abort") {
@@ -164,7 +169,7 @@ var main = {
 			if (vid) main.addVirtualIdentityToMsgIdentityMenu();
 			
 			// final check if eyerything is nice before we handover to the real sending...
-			if (vI.finalCheck(virtualIdentityData, getCurrentIdentity())) {
+			if (vIaccount_finalCheck(virtualIdentityData, getCurrentIdentity())) {
 				main.replacement_functions.GenericSendMessageInProgress = false;
 				main.original_functions.GenericSendMessage(msgType);
 			}
@@ -348,10 +353,10 @@ var main = {
 		main.tempStorage.NewIdentity.className = "identity-popup-item";
 		
 		// set the account name in the choosen menu item
-		main.tempStorage.NewIdentity.setAttribute("label", vI.account._account.defaultIdentity.identityName);
-		main.tempStorage.NewIdentity.setAttribute("accountname", " - " +  vI.account._account.incomingServer.prettyName);
-		main.tempStorage.NewIdentity.setAttribute("accountkey", vI.account._account.key);
-		main.tempStorage.NewIdentity.setAttribute("value", vI.account._account.defaultIdentity.key);
+		main.tempStorage.NewIdentity.setAttribute("label", get_vIaccount().defaultIdentity.identityName);
+		main.tempStorage.NewIdentity.setAttribute("accountname", " - " +  get_vIaccount().incomingServer.prettyName);
+		main.tempStorage.NewIdentity.setAttribute("accountkey", get_vIaccount().key);
+		main.tempStorage.NewIdentity.setAttribute("value", get_vIaccount().defaultIdentity.key);
 		
 		main.elements.Obj_MsgIdentityPopup.appendChild(main.tempStorage.NewIdentity);
 		main.__setSelectedIdentity(main.tempStorage.NewIdentity);
@@ -370,14 +375,14 @@ var main = {
 
 	prepareAccount : function() {
 		main.Cleanup(); // just to be sure that nothing is left (maybe last time sending was irregularily stopped)
-		vI.account.createAccount(document.getElementById("msgIdentity_clone").identityData,
+		vIaccount_createAccount(document.getElementById("msgIdentity_clone").identityData,
 								 main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value));
 		main.addVirtualIdentityToMsgIdentityMenu();
 	},
 
 	Cleanup : function() {
 		main.removeVirtualIdentityFromMsgIdentityMenu();
-		vI.account.removeUsedVIAccount();
+		vIaccount_removeUsedVIAccount();
 	},
 	
 	//  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html

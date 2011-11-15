@@ -22,14 +22,17 @@
     Contributor(s):
  * ***** END LICENSE BLOCK ***** */
 
-/* this is now used as a module - there is no required reference to any other interface-elements in this code */
+var EXPORTED_SYMBOLS = ["vIaccount_cleanupSystem", "get_vIaccount",
+  "vIaccount_prepareSendMsg", "vIaccount_finalCheck",
+  "vIaccount_createAccount", "vIaccount_removeUsedVIAccount" ]
 
-Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
-virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+Components.utils.import("resource://v_identity/vI_log.js");
+Components.utils.import("resource://v_identity/vI_identityData.js");
+Components.utils.import("resource://v_identity/vI_rdfDatasource.js");
 
-let Log = vI.setupLogging("virtualIdentity.account");
+let Log = setupLogging("virtualIdentity.account");
 
-function prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients) {
+function vIaccount_prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients) {
 	var stringBundle = Services.strings.createBundle("chrome://v_identity/locale/v_identity.properties");
 	
 	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
@@ -55,9 +58,10 @@ function prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients) {
 				stringBundle.GetStringFromName("vident.sendNonvirtual.warning")))) ) {
 			return { update : "abort", storedIdentity : null }; // completely abort sending
 		}
-		if (prefs.getBoolPref("storage") &&
-				(!vI.statusmenu || vI.statusmenu.objStorageSaveMenuItem.getAttribute("checked") == "true")) {
-			var localeDatasourceAccess = new vI.rdfDatasourceAccess();
+// 		if (prefs.getBoolPref("storage") &&
+// 				(!vI.statusmenu || vI.statusmenu.objStorageSaveMenuItem.getAttribute("checked") == "true")) {
+        if (prefs.getBoolPref("storage")) {
+			var localeDatasourceAccess = new rdfDatasourceAccess();
 			var returnValue = localeDatasourceAccess.storeVIdentityToAllRecipients(identityData, recipients)
 			if ( returnValue.update == "abort" || returnValue.update == "takeover" ) {
 				Log.debug("prepareSendMsg: sending aborted\n");
@@ -67,17 +71,17 @@ function prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients) {
 		else Log.debug("prepareSendMsg: storage deactivated\n");
 	}
 	if (vid) {
-		vI.account.removeUsedVIAccount();
-		vI.account.createAccount(identityData, baseIdentity);
+		account.removeUsedVIAccount();
+		account.createAccount(identityData, baseIdentity);
 	}
 	return { update : "accept", storedIdentity : null };
 };
 
-function finalCheck(virtualIdentityData, currentIdentity) {
+function vIaccount_finalCheck(virtualIdentityData, currentIdentity) {
 	var stringBundle = Services.strings.createBundle("chrome://v_identity/locale/v_identity.properties");
 
-	// vI.identityData(email, fullName, id, smtp, extras, sideDescription, existingID)
-	var currentIdentityData = new vI.identityData(currentIdentity.email, currentIdentity.fullName, null, currentIdentity.smtpServerKey, null, null, null);
+	// identityData(email, fullName, id, smtp, extras, sideDescription, existingID)
+	var currentIdentityData = new identityData(currentIdentity.email, currentIdentity.fullName, null, currentIdentity.smtpServerKey, null, null, null);
 	
 	Log.debug("\nSendMessage Final Check\n");
 	Log.debug("currentIdentity: fullName='" + currentIdentityData.fullName + "' email='" + currentIdentityData.email + "' smtp='" + currentIdentityData.smtp.key + "'\n");
@@ -434,7 +438,10 @@ var account = {
 			account._pref.getCharPref("stationeryFolderPickerMode") + "))\n");
 	}
 }
-vI.account = account;
-vI.prepareSendMsg = prepareSendMsg;
-vI.finalCheck = finalCheck;
-}});
+
+function get_vIaccount() {
+  return account._account;
+};
+vIaccount_cleanupSystem = account.cleanupSystem;
+vIaccount_createAccount = account.createAccount;
+vIaccount_removeUsedVIAccount = account.removeUsedVIAccount;

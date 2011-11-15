@@ -22,15 +22,12 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-/* this is now used as a module - there is no required reference to any other interface-elements in this code */
+var EXPORTED_SYMBOLS = ["smartIdentityCollection"]
 
-Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
-virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
-
-let Log = vI.setupLogging("virtualIdentity.smartIdentityCollection");
-
-Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
-Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_log.js");
+Components.utils.import("resource://v_identity/vI_identityData.js");
+Components.utils.import("resource://v_identity/vI_rdfDatasource.js");
+let Log = setupLogging("virtualIdentity.smartIdentityCollection");
 
 function smartIdentityCollection(msgHdr, preseletedID, currentIDisVID, newsgroup, recipients) {
 	dump("constructor\n");
@@ -40,8 +37,8 @@ function smartIdentityCollection(msgHdr, preseletedID, currentIDisVID, newsgroup
 	this._newsgroup = newsgroup;
 	this._unicodeConverter.charset = "UTF-8";
 	this._recipients = recipients;
-	this._rdfDatasourceAccess = new vI.rdfDatasourceAccess();
-	this._allIdentities = new vI.identityCollection();
+	this._rdfDatasourceAccess = new rdfDatasourceAccess();
+	this._allIdentities = new identityCollection();
 	dump("constructor done \n");
 };
 
@@ -91,7 +88,7 @@ smartIdentityCollection.prototype = {
 		var new_email = autoString.replace(/%l/g, localpart).replace(/%d/g, domain).replace(/%t/g,dateString);
 		Log.debug("new email: " + new_email + "\n");
 
-		var newIdentity = new vI.identityData(new_email,
+		var newIdentity = new identityData(new_email,
 			this._preselectedID.fullName, this._preselectedID.key, this._preselectedID.smtpServerKey, null, null)
 
 		this._allIdentities.addWithoutDuplicates(newIdentity);
@@ -152,8 +149,8 @@ smartIdentityCollection.prototype = {
 		var emails = {}; var fullNames = {}; var combinedNames = {};
 		var number = this._headerParser.parseHeadersWithArray(header, emails, fullNames, combinedNames);
 		for (var index = 0; index < number; index++) {
-			var newIdentity = new vI.identityData(emails.value[index], fullNames.value[index],
-				null, vI.NO_SMTP_TAG, null, null);
+			var newIdentity = new identityData(emails.value[index], fullNames.value[index],
+				null, NO_SMTP_TAG, null, null);
 			identityCollection.addWithoutDuplicates(newIdentity);
 		}
 	},
@@ -173,7 +170,7 @@ smartIdentityCollection.prototype = {
 	},
 	
 	__filterAddresses : function() {
-		var returnIdentities = new vI.identityCollection();
+		var returnIdentities = new identityCollection();
 		
 		var filterList	=
 			this._unicodeConverter.ConvertToUnicode(this._pref.getCharPref("smart_reply_filter")).split(/\n/)
@@ -205,8 +202,11 @@ smartIdentityCollection.prototype = {
 								add_addr = (this._allIdentities.identityDataCollection[j].email.match(new RegExp(RegExp.$1,"i")));
 						}
 						catch(vErr) {
-							vI.SmartReplyNotification.info(
-								vI.main.elements.strings.getString("vident.smartIdentity.ignoreRegExp") +
+                          this.stringBundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
+                            .getService(Components.interfaces.nsIStringBundleService)
+                            .createBundle("chrome://v_identity/locale/v_identity.properties");
+                          SmartReplyNotification.info(
+								this.stringBundle.GetStringFromName("vident.smartIdentity.ignoreRegExp") +
 								+filterList[i].replace(/\\/g,"\\\\") + " .");
 								skipRegExp = true; }
 						break;
@@ -259,7 +259,7 @@ smartIdentityCollection.prototype = {
 				replyHeaderNameToRead + "': '" + value + "'\n");
 			
 			// ------------- parse address-string to get a field of single email-addresses
-			var splitted = new vI.identityCollection();
+			var splitted = new identityCollection();
 			this.__parseHeadersWithArray(value, splitted);
 			
 			// move found addresses step by step to this._allIdentities, and change values if requested
@@ -321,7 +321,7 @@ smartIdentityCollection.prototype = {
 		
         if (this.__ignoreID()) return;
 		
-		var storageIdentities = new vI.identityCollection();
+		var storageIdentities = new identityCollection();
 		this._rdfDatasourceAccess.getVIdentityFromAllRecipients(storageIdentities, this._recipients);
 		
 		if (storageIdentities.number == 0 || !this._pref.getBoolPref("idSelection_storage_ignore_smart_reply"))
@@ -396,5 +396,3 @@ smartIdentityCollection.prototype = {
 	
 
 };
-vI.smartIdentityCollection = smartIdentityCollection;
-}});

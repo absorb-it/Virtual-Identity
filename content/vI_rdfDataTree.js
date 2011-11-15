@@ -33,6 +33,9 @@ virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 let Log = vI.setupLogging("virtualIdentity.rdfDataTree");
 
+Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
+
 //prepares an object for easy comparison against another. for strings, lowercases them
 function prepareForComparison (o) {
 	if (typeof o == "string") { return o.toLowerCase().replace(/\"/g,""); }

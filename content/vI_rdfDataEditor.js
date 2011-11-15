@@ -24,6 +24,9 @@
 
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+
+Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
+
 var rdfDataEditor = {
 	__rdfDatasource : null,
 	__rdfDataTree : null,

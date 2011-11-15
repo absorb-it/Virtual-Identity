@@ -24,6 +24,10 @@
 
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+  
+Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
+
 var upgradeOverlay = {
 	init: function() {
 		var rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf", true);
@@ -33,7 +37,7 @@ var upgradeOverlay = {
 					"chrome, dialog, modal, alwaysRaised, resizable=yes").focus();
 		}
 		else {
-			vI.account.cleanupSystem(); // always clean leftover accounts and directories
+			vIaccount_cleanupSystem(); // always clean leftover accounts and directories
 			rdfDatasource.storeExtVersion();
 		}
 		rdfDatasource.refreshAccountInfo();

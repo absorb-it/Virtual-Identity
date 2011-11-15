@@ -32,6 +32,7 @@ virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
 let Log = vI.setupLogging("virtualIdentity.storage");
+Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
 
 var storage = {
 	focusedElement : null,

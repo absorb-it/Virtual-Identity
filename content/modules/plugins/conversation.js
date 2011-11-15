@@ -3,6 +3,10 @@ virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 let Log = vI.setupLogging("virtualIdentity.plugin.conversation");
 
+Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_smartIdentityCollection.js", virtualIdentityExtension);
+
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
 let pref = Cc["@mozilla.org/preferences-service;1"]
@@ -113,9 +117,9 @@ let conversationHook = {
           aStatus.canceled = true; return aStatus;
         }
         
-        aAddress.params.identity = vI.account._account.defaultIdentity
+        aAddress.params.identity = vIaccount_defaultIdentity
         if (!vI.finalCheck(currentIdentityData, aAddress.params.identity)) {
-          vI.account.removeUsedVIAccount();
+          vIaccount_removeUsedVIAccountt();
           aStatus.canceled = true; return aStatus;
         }
       }
@@ -130,7 +134,7 @@ let conversationHook = {
   },
   
   onStopSending: function () {
-    vI.account.removeUsedVIAccount();
+    vIaccount_removeUsedVIAccount();
     Log.debug("onStopSending done");
   },
 

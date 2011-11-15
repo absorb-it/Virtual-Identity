@@ -26,6 +26,8 @@ Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 let Log = vI.setupLogging("virtualIdentity.upgrade");
+Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
 
 var upgrade = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
@@ -91,7 +93,7 @@ var upgrade = {
 	__upgrade : function() {
 		if (upgrade.rdfDatasource.extUpgradeRequired()) upgrade.extUpgrade();
 		
-		vI.account.cleanupSystem();
+		vIaccount_cleanupSystem();
 	},			
 
 	upgrade : function() {
