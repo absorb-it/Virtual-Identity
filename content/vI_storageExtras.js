@@ -93,7 +93,7 @@ function storageExtras(rdfDatasource, resource) {
 storageExtras.prototype = {
 	loopForRDF : function(rdfDatasource, resource, type) {
 		for( var i = 0; i < this.extras.length; i++ ) {
-// 			Log.debug("## vI.rdfDatasource: loopForRDF " + rdfDatasource + "\n");
+// 			Log.debug("loopForRDF " + rdfDatasource + "\n");
             // only if pref set and feature(element available) or for dataEditor
 			if (typeof(gMsgCompose) == "undefined" || !gMsgCompose || this.extras[i].active) {
                 switch (type) {
@@ -170,21 +170,21 @@ storageExtras.prototype = {
 	readIdentityValues : function(identity) {
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) this.extras[i].readIdentityValue(identity)
-// 			Log.debug("## storageExtras readIdentityValues "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
+// 			Log.debug("readIdentityValues "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 
 	setValues : function() {
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) this.extras[i].setValue()
-// 			Log.debug("## storageExtras setValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
+// 			Log.debug("setValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 	readValues : function() {
 		for( var i = 0; i < this.extras.length; i++ ) {
-// 			Log.debug("## storageExtras preparing readValue "+ this.extras[i].field +"\n");
+// 			Log.debug("preparing readValue "+ this.extras[i].field +"\n");
 			if (this.extras[i].active) this.extras[i].readValue()
-//  			Log.debug("## storageExtras readValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
+//  			Log.debug("readValue "+ this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 	setEditorValues : function() {
@@ -193,7 +193,7 @@ storageExtras.prototype = {
 	readEditorValues : function() {
 		for( var i = 0; i < this.extras.length; i++ ) {
 			this.extras[i].readEditorValue();
-// 			Log.debug("## storageExtras readValue " + this.extras[i].field + "=" + this.extras[i].value + "\n");
+// 			Log.debug("readValue " + this.extras[i].field + "=" + this.extras[i].value + "\n");
 		}
 	},
 
@@ -379,7 +379,7 @@ storageExtras_sMime_messageEncryption.prototype = {
 	},
 	// function to set or read the value from/to the MessageCompose Dialog
 	setValue : function() {
-		Log.debug("## storageExtras_sMime_messageEncryption \n");
+		Log.debug("sMime_messageEncryption \n");
 		var doEncryptElem = document.getElementById("menu_securityEncryptRequire1");
 		if (this.value == null) return;
 		if (this.value == "true") var element = document.getElementById("menu_securityEncryptRequire1")
@@ -461,7 +461,7 @@ storageExtras_checkbox.prototype = {
 		if (typeof(this.updateFunction)=="function") this.updateFunction();
 
 		if ((element.getAttribute("checked") == "true") != (this.value == "true")) {
-			Log.debug("## storageExtras change "+ this.field + " to " + this.value + " with doCommand\n");
+			Log.debug("change "+ this.field + " to " + this.value + " with doCommand\n");
 			element.doCommand();
 		}
 	},

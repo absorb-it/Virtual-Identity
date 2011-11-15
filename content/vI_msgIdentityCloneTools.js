@@ -32,7 +32,7 @@ var msgIdentityCloneTools = {
 		.getBranch("extensions.virtualIdentity."),
 
 	copySelectedIdentity : function(id_key) {
-		Log.debug("## msgIdentityCloneTools: copySelectedIdentity\n");
+		Log.debug("copySelectedIdentity\n");
 		var msgIdentityElem = document.getElementById("msgIdentity");
 		var msgIdentityPopupElem = document.getElementById("msgIdentityPopup");
 		// copy selected Menu-Value from clone to orig.
@@ -51,10 +51,10 @@ var msgIdentityCloneTools = {
 		// always initialize Security/Enigmail-Options
 		try { setSecuritySettings(1); enigSetMenuSettings(''); } catch(vErr) { };
 		if (!existingIdentity) {
-			Log.debug("## msgIdentityCloneTools: signatureSwitch hide/remove signatures\n");
+			Log.debug("signatureSwitch hide/remove signatures\n");
 			// code to hide the text signature
 			try { if (msgIdentityCloneTools._pref.getBoolPref("hide_signature") && ss_signature.length == 0) {
-				Log.debug("## msgIdentityCloneTools: hide text/html signature");
+				Log.debug("hide text/html signature");
 				ss_main.signatureSwitch()
 				Log.debug("\n");
 			} } catch(vErr) { Log.debug(" -- missing signatureSwitch extension?\n"); };
@@ -62,7 +62,7 @@ var msgIdentityCloneTools = {
 			try { if (msgIdentityCloneTools._pref.getBoolPref("hide_sMime_messageSignature")) {
 				var element = document.getElementById("menu_securitySign1");
 				if (element.getAttribute("checked") == "true") {
-					Log.debug("## signatureSwitch hide_sMime_messageSignature with doCommand\n");
+					Log.debug("signatureSwitch hide_sMime_messageSignature with doCommand\n");
 					element.doCommand();
 				}
 			}
@@ -81,9 +81,9 @@ var msgIdentityCloneTools = {
 						skipChangeGPGsign = skipChangeGPGsign || (window.document.title == EnigGetString("enigAlert"));
 					}
 					if (skipChangeGPGsign)
-						Log.debug("## signatureSwitch skip hide_openPGP_messageSignature - EnigMail AlertWindow open\n");
+						Log.debug("signatureSwitch skip hide_openPGP_messageSignature - EnigMail AlertWindow open\n");
 					else {
-						Log.debug("## signatureSwitch hide_openPGP_messageSignature with doCommand\n");
+						Log.debug("signatureSwitch hide_openPGP_messageSignature with doCommand\n");
 						element.doCommand();
 					}
 				}
@@ -92,10 +92,10 @@ var msgIdentityCloneTools = {
 			} catch(vErr) { };
 		}
 		else {
-			Log.debug("## msgIdentityCloneTools: signatureSwitch restore signature\n");
+			Log.debug("signatureSwitch restore signature\n");
 			// code to show the text signature
 			try { if (ss_signature.length > 0) {
-				Log.debug("## msgIdentityCloneTools: show text/html signature");
+				Log.debug("show text/html signature");
 				ss_main.signatureSwitch()
 				Log.debug("\n");
 			} } catch(vErr) { Log.debug(" -- missing signatureSwitch extension?\n"); };
@@ -116,7 +116,7 @@ var msgIdentityCloneTools = {
 			for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 				var awType = awGetPopupElement(row).selectedItem.getAttribute("value");
 				if (awType == "addr_reply") {
-					Log.debug("## msgIdentityCloneTools: removed ReplyTo found in row " + row + "\n");
+					Log.debug("removed ReplyTo found in row " + row + "\n");
 					awDeleteRow(row--); // removed one line therefore decrease row-value
 				}
 			}
@@ -126,7 +126,7 @@ var msgIdentityCloneTools = {
 	addReplyToSelf : function() {
 		if (!document.getElementById("autoReplyToSelfLabel").hasAttribute("hidden")) {
 			awAddRecipient("addr_reply",document.getElementById("msgIdentity_clone").label);
-			Log.debug("## msgIdentityCloneTools: added ReplyToSelf");
+			Log.debug("added ReplyToSelf");
 			document.getElementById("autoReplyToSelfLabel").setAttribute("hidden","true");
 		}
 	}

@@ -66,19 +66,19 @@ var main = {
 
 	ComposeStateListener : {
 		NotifyComposeBodyReady: function() { 
-			Log.debug("## v_identity: NotifyComposeBodyReady\n");
+			Log.debug("NotifyComposeBodyReady\n");
 			main.initSystemStage2();
 		},
 		NotifyComposeFieldsReady: function() { 
-			Log.debug("## v_identity: NotifyComposeFieldsReady\n");
+			Log.debug("NotifyComposeFieldsReady\n");
 		},
 		ComposeProcessDone: function(aResult) {
-			Log.debug("## v_identity: StateListener reports ComposeProcessDone\n");
+			Log.debug("StateListener reports ComposeProcessDone\n");
 			main.Cleanup(); // not really required, parallel handled by main.close
 			vI.storage.clean();
 		},
 		SaveInFolderDone: function(folderURI) { 
-			Log.debug("## v_identity: SaveInFolderDone\n");
+			Log.debug("SaveInFolderDone\n");
 			main.Cleanup();
 			vI.storage.clean();
 		}
@@ -86,7 +86,7 @@ var main = {
 		
 	replacement_functions : {
 		FillIdentityList: function(menulist) {
-			Log.debug("## v_identity: mod. FillIdentityList\n");
+			Log.debug("mod. FillIdentityList\n");
 			var accounts = queryISupportsArray(main.accountManager.accounts,
                                      Components.interfaces.nsIMsgAccount);
 
@@ -138,7 +138,7 @@ var main = {
 			// if addressCol2 is focused while sending check storage for the entered address before continuing
 			vI.storage.awOnBlur(vI.storage.focusedElement);
 
-			Log.debug("\n## v_identity: VIdentity_GenericSendMessage\n");
+			Log.debug("\nVIdentity_GenericSendMessage\n");
 			
 			if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now) { vI.msgIdentityCloneTools.addReplyToSelf(); }
 
@@ -150,14 +150,14 @@ var main = {
 							main._getRecipients() );
 			if (returnValue.update == "abort") {
 				main.replacement_functions.GenericSendMessageInProgress = false;
-				Log.debug("## sending: --------------  aborted  ---------------------------------\n")
+				Log.debug("sending: --------------  aborted  ---------------------------------\n")
 				return;
 			}
 			else if (returnValue.update == "takeover") {
 					var msgIdentityCloneElem = document.getElementById("msgIdentity_clone");
 					msgIdentityCloneElem.selectedMenuItem = msgIdentityCloneElem.addIdentityToCloneMenu(returnValue.storedIdentity);
 					main.replacement_functions.GenericSendMessageInProgress = false;
-					Log.debug("## sending: --------------  aborted  ---------------------------------\n")
+					Log.debug("sending: --------------  aborted  ---------------------------------\n")
 					return;
 			}
 			
@@ -170,11 +170,11 @@ var main = {
 			}
 			else	main.Cleanup();
 			main.replacement_functions.GenericSendMessageInProgress = false;
-			// 			Log.debug("## v_identity: original_functions.GenericSendMessage done\n");
+			// 			Log.debug("original_functions.GenericSendMessage done\n");
 		},
 		
 		replace_FillIdentityList : function() {
-			//~ Log.debug("## v_identity: replace FillIdentityList \n");
+			//~ Log.debug("replace FillIdentityList \n");
 			main.original_functions.FillIdentityList = FillIdentityList;
 			FillIdentityList = main.replacement_functions.FillIdentityList;
 		}
@@ -183,7 +183,7 @@ var main = {
 	remove: function() {
 		window.removeEventListener('compose-window-reopen', main.reopen, true);
 		window.removeEventListener('compose-window-close', main.close, true);
-		Log.debug("## v_identity: end. remove Account if there.\n")
+		Log.debug("end. remove Account if there.\n")
 		main.Cleanup();
 		vI.storage.clean();
 	},
@@ -207,7 +207,7 @@ var main = {
 
 		for (var index = 0; index < doBccArray.count; index++ ) {
 			if (doBccArray.StringAt(index) == awGetInputElement(row).value) {
-				Log.debug("## main _recipientIsDoBcc: ignoring doBcc field '" +
+				Log.debug("_recipientIsDoBcc: ignoring doBcc field '" +
 					doBccArray.StringAt(index) + "'.\n");
 				return true;
 			}
@@ -220,9 +220,9 @@ var main = {
 		window.removeEventListener('load', main.init, false);
 		window.removeEventListener('compose-window-init', main.init, true);
 		if (main.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
-		Log.debug("\n## v_identity: init.\n")
+		Log.debug("\ninit.\n")
 		main.unicodeConverter.charset="UTF-8";
-		if (!main.adapt_genericSendMessage()) { Log.debug("\n## v_identity: init failed.\n"); return; }
+		if (!main.adapt_genericSendMessage()) { Log.debug("\ninit failed.\n"); return; }
 		
 		main.adapt_interface();
 		gMsgCompose.RegisterStateListener(main.ComposeStateListener);
@@ -237,23 +237,23 @@ var main = {
         main.AccountManagerObserver.register();
         
 		main.initSystemStage1();
-		Log.debug("## v_identity: init done.\n\n")
+		Log.debug("init done.\n\n")
 	},
 	
 	initSystemStage1 : function() {
-		Log.debug("## v_identity: initSystemStage1.\n")
+		Log.debug("initSystemStage1.\n")
 		main.gMsgCompose = gMsgCompose;
 		document.getElementById("msgIdentity_clone").init();
 		vI.statusmenu.init();
-		Log.debug("## v_identity: initSystemStage1 done.\n")
+		Log.debug("initSystemStage1 done.\n")
 	},
 	
 	initSystemStage2 : function() {
-		Log.debug("## v_identity: initSystemStage2.\n")
+		Log.debug("initSystemStage2.\n")
 		vI.msgIdentityCloneTools.initReplyTo();
 		vI.storage.init();
 		vI.smartIdentity.init();
-		Log.debug("## v_identity: initSystemStage2 done.\n")
+		Log.debug("initSystemStage2 done.\n")
 	},
 	
 	close : function() {
@@ -289,7 +289,7 @@ var main = {
 	
 	adapt_genericSendMessage : function() {
 		if (main.original_functions.GenericSendMessage) return true; // only initialize this once
-		Log.debug("## v_identity: adapt GenericSendMessage\n");
+		Log.debug("adapt GenericSendMessage\n");
 		main.original_functions.GenericSendMessage = GenericSendMessage;
 		GenericSendMessage = main.replacement_functions.GenericSendMessage;
 		return true;
@@ -297,11 +297,11 @@ var main = {
 	
 	reopen: function() {
 		clearDebugOutput();
-		Log.debug("## v_identity: composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
+		Log.debug("composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
 		
 		// clean all elements
 		document.getElementById("msgIdentity_clone").clean();
-		Log.debug("## v_identity: everything cleaned.\n")
+		Log.debug("everything cleaned.\n")
 		
 		// now (re)init the elements
 		main.initSystemStage1();
@@ -328,7 +328,7 @@ var main = {
 			case msgComposeType.ReplyToList:
 				gMsgCompose.RegisterStateListener(main.ComposeStateListener);
 		}
-		Log.debug("## v_identity: reopen done.\n")
+		Log.debug("reopen done.\n")
 	},
 	
 	tempStorage: { BaseIdentity : null, NewIdentity : null },
@@ -385,12 +385,12 @@ var main = {
         _uninstall : false,
         observe : function(subject, topic, data) {
             if (topic == "am-smtpChanges") {
-                Log.debug("## v_identity: smtp changes observed\n");
+                Log.debug("smtp changes observed\n");
                 var msgIdentity_clone = document.getElementById("msgIdentity_clone");
                 document.getAnonymousElementByAttribute(msgIdentity_clone, "class", "smtpServerListHbox").refresh();
             }
             if (topic == "am-acceptChanges") {
-                Log.debug("## v_identity: account changes observed\n");
+                Log.debug("account changes observed\n");
                 document.getElementById("msgIdentity_clone").clean();
                 document.getElementById("msgIdentity_clone").init();
             }

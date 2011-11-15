@@ -75,15 +75,15 @@ var getHeader = {
         let label = "";
         if (aHeaders.has("list-id")) {
           getHeader.hdr.setStringProperty("vI_list-id","found");
-          Log.debug("## getHeader: found header: list-id  ...stored to recognize mailing-list\n");
+          Log.debug("found header: list-id  ...stored to recognize mailing-list\n");
         }
         if (aHeaders.has("received")) {
           getHeader.hdr.setStringProperty("vI_received","found");
-          Log.debug("## getHeader: found header: received  ...stored to recognize received mail\n");
+          Log.debug("found header: received  ...stored to recognize received mail\n");
         }
         if (aHeaders.has("content-base")) {
           getHeader.hdr.setStringProperty("vI_content_base","found");
-          Log.debug("## getHeader: found header: content-base  ...stored to recognize blog/news-feed\n");
+          Log.debug("found header: content-base  ...stored to recognize blog/news-feed\n");
         }
         for (let index = 0; index < getHeader.headerToSearch.length; index++) {
           let {headerNameToSearch: headerNameToSearch, headerNumberToSearch: headerNumberToSearch,
@@ -102,7 +102,7 @@ var getHeader = {
               let storedValue = getHeader.hdr.getProperty("vI_" + headerNameToStore);
               let storedConvValue = getHeader.unicodeConverter.ConvertToUnicode(storedValue);
               
-              Log.debug("## getHeader: found header: " + headerNameToStore +
+              Log.debug("found header: " + headerNameToStore +
                   " - stored as '" + storedConvValue + "'\n");
               label += (label)?"\n":""
               label += headerNameToStore + ":\t" + storedConvValue
@@ -163,7 +163,7 @@ var prefObserver = {
 			// remove (old) prepared headerArray
 			getHeader.headerToSearch = null;
 			
-			Log.debug("## prefObserver: reload Message\n");
+			Log.debug("reload Message\n");
 			MsgReload();
 		}
 	},

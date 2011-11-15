@@ -28,15 +28,15 @@ let changeIdentityToSmartIdentity = function(allIdentities, index) {
 };
 
 let _changeIdentityToSmartIdentity = function(identityData) {
-  Log.debug("## changeIdentityToSmartIdentity\n");
+  Log.debug("changeIdentityToSmartIdentity\n");
   
   if ( identityData.id.key != null ) {
     currentParams.identity = AccountManager.getIdentity(identityData.id.key);
-    Log.debug("## changed base identity to ", identityData.id.key);
+    Log.debug("changed base identity to ", identityData.id.key);
     virtualSenderNameElem.text(currentIdSenderName);
   }
   virtualIdInUse = !(identityData.isExistingIdentity(false));
-  Log.debug("## changeIdentityToSmartIdentity virtualIdInUse=" + virtualIdInUse + "\n");
+  Log.debug("changeIdentityToSmartIdentity virtualIdInUse=" + virtualIdInUse + "\n");
   if (virtualIdInUse) {
     currentIdentityData = identityData;
     currentIdSenderName = currentIdentityData.combinedName;
@@ -72,7 +72,7 @@ let conversationHook = {
     if (pref.getBoolPref("idSelection_preferExisting")) {
       var existingIDIndex = localSmartIdentityCollection._foundExistingIdentity();
       if (existingIDIndex) {
-        Log.debug("## smartIdentity: found existing Identity, use without interaction.\n", existingIDIndex.key);
+        Log.debug("smartIdentity: found existing Identity, use without interaction.\n", existingIDIndex.key);
         changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, existingIDIndex.key);
         return;
       }
@@ -92,7 +92,7 @@ let conversationHook = {
   
   onMessageBeforeSendOrPopout: function(aAddress, aStatus, aPopout) {
     let toAddrList = aAddress.to.concat(aAddress.cc);
-    Log.debug("## onMessageBeforeSendOrPopup");
+    Log.debug("onMessageBeforeSendOrPopup");
     
     if (virtualIdInUse) {
       if (!aPopout) {
