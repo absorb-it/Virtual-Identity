@@ -55,16 +55,15 @@ var getHeader = {
 			// use first part (all before ':') as the header name
 			var headerNameToSearch = headerToSearch_splitted[0].toLowerCase()
 			// check second or third part for any number
-// 			var headerNumberToSearch = parseInt(headerToSearch_splitted[1])
-// 			if (isNaN(headerNumberToSearch)) headerNumberToSearch = parseInt(headerToSearch_splitted[2])
+			var headerNumberToSearch = parseInt(headerToSearch_splitted[1])
+			if (isNaN(headerNumberToSearch)) headerNumberToSearch = parseInt(headerToSearch_splitted[2])
 			
 			// create header name to store the value
-// 			var headerNameToStore = "vI_" + headerNameToSearch
-// 			if (!isNaN(headerNumberToSearch)) headerNameToStore += ":" + headerNumberToSearch
+			var headerNameToStore = headerNameToSearch
+			if (!isNaN(headerNumberToSearch)) headerNameToStore += ":" + headerNumberToSearch
 			
-// 			getHeader.headerToSearch.push({ headerNameToSearch : headerNameToSearch, headerNumberToSearch : headerNumberToSearch,
-// 					headerNameToStore : headerNameToStore });
-            getHeader.headerToSearch.push({ headerNameToSearch : headerNameToSearch });
+			getHeader.headerToSearch.push({ headerNameToSearch : headerNameToSearch, headerNumberToSearch : headerNumberToSearch,
+					headerNameToStore : headerNameToStore });
 		}
 	},
 
@@ -87,24 +86,34 @@ var getHeader = {
           Log.debug("## getHeader: found header: content-base  ...stored to recognize blog/news-feed\n");
         }
         for (let index = 0; index < getHeader.headerToSearch.length; index++) {
-          let headerNameToSearch = getHeader.headerToSearch[index].headerNameToSearch;
+          let {headerNameToSearch: headerNameToSearch, headerNumberToSearch: headerNumberToSearch,
+            headerNameToStore: headerNameToStore} = getHeader.headerToSearch[index];
           if (aHeaders.has(headerNameToSearch)) {
-            let value = aHeaders.get(headerNameToSearch);
-            getHeader.hdr.setStringProperty("vI_" + headerNameToSearch,
-                                  getHeader.unicodeConverter.ConvertFromUnicode(value) + getHeader.unicodeConverter.Finish());
-            let storedValue = getHeader.hdr.getProperty("vI_" + headerNameToSearch);
-            let storedConvValue = getHeader.unicodeConverter.ConvertToUnicode(storedValue);
-            Log.debug("## getHeader: found header: " + headerNameToSearch +
-                " - stored as '" + storedConvValue + "'\n");
-            label += (label)?"\n":""
-            label += headerNameToSearch + ":\t" + storedConvValue
+            let value = "";
+            let values = aHeaders.getAll(headerNameToSearch);
+            if (isNaN(headerNumberToSearch))
+              for (let i = 0; i < values.length;)
+                value += (value)?", ":"" + values[i++];
+            else value = values[headerNumberToSearch-1];
+            if (value) {
+              getHeader.hdr.setStringProperty("vI_" + headerNameToStore,
+                getHeader.unicodeConverter.ConvertFromUnicode(value) + getHeader.unicodeConverter.Finish());
+              
+              let storedValue = getHeader.hdr.getProperty("vI_" + headerNameToStore);
+              let storedConvValue = getHeader.unicodeConverter.ConvertToUnicode(storedValue);
+              
+              Log.debug("## getHeader: found header: " + headerNameToStore +
+                  " - stored as '" + storedConvValue + "'\n");
+              label += (label)?"\n":""
+              label += headerNameToStore + ":\t" + storedConvValue
+            }
           }
         }
-        GetHeaderNotification.info(label + ".");
+        GetHeaderNotification.info(label);
       });
 	},
-	
-	setupEventListener: function() {
+    
+    setupEventListener: function() {
 		
 		getHeader.strings = document.getElementById("vIdentBundle");
 		
