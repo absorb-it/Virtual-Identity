@@ -143,7 +143,7 @@ var prefDialog = {
                             prefDialog.preferences.getIntPref(element.getAttribute("prefstring")) );
                         else {
                             element.setAttribute("value", 
-                            prefDialog.unicodeConverter.ConvertToUnicode(prefDia/*log*/.preferences.getCharPref(element.getAttribute("prefstring"))) );
+                            prefDialog.unicodeConverter.ConvertToUnicode(prefDialog.preferences.getCharPref(element.getAttribute("prefstring"))) );
 // 							alert(element.getAttribute("prefstring") + " " + element.getAttribute("value"))
 						}
                     else if (eltType == "listbox")

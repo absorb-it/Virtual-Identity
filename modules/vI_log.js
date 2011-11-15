@@ -23,7 +23,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 var EXPORTED_SYMBOLS = ["setupLogging", "dumpCallStack", "MyLog", "Colors",
-  "clearDebugOutput", "clearNote",
+  "clearDebugOutput", "notificationOverflow",
   "SmartReplyNotification", "StorageNotification", "GetHeaderNotification" ]
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
@@ -32,6 +32,7 @@ Cu.import("resource:///modules/gloda/log4moz.js");
 preferences = Components.classes["@mozilla.org/preferences-service;1"]
   .getService(Components.interfaces.nsIPrefService)
   .getBranch("extensions.virtualIdentity.");
+
 
 // different formatters for the log output
 // Basic formatter that only prints the message / used for NotificationBox
@@ -95,7 +96,8 @@ DebugOutputAppender.prototype = {
       .getService(Ci.nsIWindowMediator)
       .getMostRecentWindow(null);
     obj_debugBox = window.document.getElementById("vIDebugBox");
-    if (obj_debugBox) obj_debugBox.dump(message);
+    if (obj_debugBox)
+      obj_debugBox.dump(message);
   }
 }
 
@@ -116,7 +118,8 @@ NotificationOutputAppender.prototype = {
     this.currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
       .getService(Ci.nsIWindowMediator)
       .getMostRecentWindow(null);
-    this.addNote(message);
+    if (this.currentWindow)
+      this.addNote(message);
   },
   
   timer : null,
@@ -126,14 +129,8 @@ NotificationOutputAppender.prototype = {
       self.currentWindow.clearTimeout(self.timer);
     self.timer = null;
     obj_notificationBox = self.currentWindow.document.getElementById("vINotification");
-    if (!obj_notificationBox)
-      return;
-    obj_notificationBox.removeAllNotifications(true);
-  },
-
-  setNote: function(note) {
-    this.clearNote(this);
-    this.addNote(note);
+    if (obj_notificationBox)
+      obj_notificationBox.removeAllNotifications(true);
   },
 
   addNote: function(note) {
@@ -150,6 +147,23 @@ NotificationOutputAppender.prototype = {
         this.currentWindow.setTimeout(this.clearNote,
                                       preferences.getIntPref("notification_timeout") * 1000, this);
   }
+}
+
+
+function notificationOverflow(elem) {
+  currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+    .getService(Ci.nsIWindowMediator)
+    .getMostRecentWindow(null);
+  // height will be cut off from messagepane (in 3pane window)
+  var objMessagepane = currentWindow.document.getElementById("messagepane");
+  var maxHeight = (objMessagepane)?parseInt(objMessagepane.boxObject.height / 2)+1:null;
+  if (maxHeight < 60) maxHeight = 60; // set a minimum size, if to small scrollbars are hidden
+    var tooBig = (maxHeight)?(elem.inputField.scrollHeight > maxHeight):false;
+    var newHeight = (tooBig)?maxHeight:elem.inputField.scrollHeight;
+    elem.height = newHeight;
+  // give the box a frame if it is to big
+  if (tooBig)
+    currentWindow.document.getElementById("vINotificationTextbox").setAttribute("class", "plain border")
 }
 
 
@@ -202,7 +216,6 @@ let Colors = {
   default: "\u001b[00m",
 }
 
-
 function clearDebugOutput() {
   currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
     .getService(Ci.nsIWindowMediator)
@@ -210,16 +223,9 @@ function clearDebugOutput() {
   obj_debugBox = currentWindow.document.getElementById("vIDebugBox");
   if (obj_debugBox)
     obj_debugBox.clear();
-}
-
-function clearNote() {
-  currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
-    .getService(Ci.nsIWindowMediator)
-    .getMostRecentWindow(null);
   obj_notificationBox = currentWindow.document.getElementById("vINotification");
-  if (!obj_notificationBox)
-    return;
-  obj_notificationBox.removeAllNotifications(true);
+  if (obj_notificationBox)
+    obj_notificationBox.removeAllNotifications(true);
 }
 
 let logRoot = "virtualIdentity";

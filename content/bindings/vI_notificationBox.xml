@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE bindings [
+<!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
+%versionDTD;
+<!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
+%vIdentDTD;
+]>
+
+<bindings id="vI_notificationBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!--  <binding id="vI_notificationbox" extends="chrome://global/content/bindings/notification.xml#notificationbox">
+    <content>
+      <xul:stack xbl:inherits="hidden=notificationshidden">
+        <xul:spacer/>
+        <children includes="vI_notification"/>
+      </xul:stack>
+      <children/>
+    </content>
+  </binding>
+-->
+  <binding id="vI_notification" extends="chrome://global/content/bindings/notification.xml#notification">
+    <content>
+      <xul:hbox class="notification-inner outset" flex="1" xbl:inherits="type">
+        <xul:hbox anonid="details" align="center" flex="1"
+                  oncommand="this.parentNode.parentNode._doButtonCommand(event);">
+          <xul:image anonid="messageImage" class="messageImage" xbl:inherits="src=image"/>
+     <xul:vbox><xul:spacer flex="1" />
+         <xul:label id="vINotificationTitle" hidden="true" align="right" />
+         <xul:label class="v_identity_logo vINotificationLogo"
+           value="&vident.vidLogo.label; &vident.version;" align="right" />
+          <xul:spacer flex="1" /></xul:vbox>
+          <xul:textbox id="vINotificationTextbox" anonid="messageText" class="plain" height="3"
+           value="" flex="1" multiline="true" readonly="true" 
+           xbl:inherits="value=label"
+           DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"
+           onoverflow="notificationOverflow(this);" oncontextmenu="" />
+          <children/>
+        </xul:hbox>
+        <xul:toolbarbutton ondblclick="event.stopPropagation();"
+              class="vINotificationCloseButton"
+                           xbl:inherits="hidden=hideclose"
+                           oncommand="document.getBindingParent(this).close();"/>
+      </xul:hbox>
+    </content>
+  </binding>
+</bindings>

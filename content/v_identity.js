@@ -296,7 +296,6 @@ var main = {
 	},
 	
 	reopen: function() {
-		clearNote();
 		clearDebugOutput();
 		Log.debug("## v_identity: composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
 		

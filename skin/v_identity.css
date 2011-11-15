@@ -315,11 +315,15 @@ treechildren::-moz-tree-cell-text(locked) {
 }
 
 #vINotification notification {
-  -moz-binding: url("chrome://global/content/bindings/notification.xml#notification");
+  -moz-binding: url("chrome://v_identity/content/bindings/vI_notificationBox.xml#vI_notification");
+}
+
+#vINotification .messageImage {
+  display: none;
 }
 
 .vINotificationLogo {
-	margin: 0;
+	margin: 0 0 0 0.5em;
 	padding: 0;
 }
 
