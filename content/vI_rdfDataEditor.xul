@@ -35,7 +35,6 @@
 	ondialogaccept="window.arguments[3].treeType = virtualIdentityExtension.rdfDataEditor.accept();"
 	title="&vI_rdfDataEditor.dlgTitle.label;" >
 
-<script type="application/x-javascript" src="chrome://v_identity/content/_overlayNameSpaceWrapper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataEditor.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_identityData.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />

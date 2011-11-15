@@ -22,10 +22,10 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-Components.utils.import("resource://v_identity/vI_log.js");
-let Log = setupLogging("virtualIdentity.smartIdentity");
+let Log = vI.setupLogging("virtualIdentity.smartIdentity");
 
 var smartIdentity = {
 	_pref : Components.classes["@mozilla.org/preferences-service;1"]
@@ -146,7 +146,7 @@ var smartIdentity = {
 			var label=vI.main.elements.strings.getString("vident.smartIdentity.vIUsage");
 			if (allIdentities.number > 1) label += " "
 				+ vI.main.elements.strings.getString("vident.smartIdentity.moreThanOne");
-			SmartReplyNotification.info(label + ".");
+			vI.SmartReplyNotification.info(label + ".");
 		}
 		smartIdentity.__removeSmartIdentityFromRecipients(allIdentities, selectedValue);
 	},
@@ -189,7 +189,7 @@ var smartIdentity = {
 				input.value == allIdentities.identityDataCollection[index].combinedName) {
 					awSetInputAndPopupValue(input, "", popup, "addr_to", -1);
 					awCleanupRows()
-					SmartReplyNotification.info(" " +	vI.main.elements.strings.getString("vident.smartIdentity.remRecipient"));
+					vI.SmartReplyNotification.info(" " +	vI.main.elements.strings.getString("vident.smartIdentity.remRecipient"));
 					break;
 			}
 		}

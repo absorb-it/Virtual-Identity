@@ -37,7 +37,7 @@
            value="" flex="1" multiline="true" readonly="true" 
            xbl:inherits="value=label"
            DOMAttrModified="if(event.attrName == 'value') this.value = event.newValue; return true;"
-           onoverflow="notificationOverflow(this);" oncontextmenu="" />
+           onoverflow="virtualIdentityExtension.notificationOverflow(this);" oncontextmenu="" />
           <children/>
         </xul:hbox>
         <xul:toolbarbutton ondblclick="event.stopPropagation();"

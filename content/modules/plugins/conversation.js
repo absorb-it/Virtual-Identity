@@ -1,7 +1,7 @@
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-Components.utils.import("resource://v_identity/vI_log.js");
-let Log = setupLogging("virtualIdentity.plugin.conversation");
+let Log = vI.setupLogging("virtualIdentity.plugin.conversation");
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 

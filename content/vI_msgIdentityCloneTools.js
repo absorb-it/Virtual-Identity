@@ -21,10 +21,10 @@
 
     Contributor(s): Thunderbird Developers
  * ***** END LICENSE BLOCK ***** */
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js");
-let Log = setupLogging("virtualIdentity.msgIdentityCloneTools");
+let Log = vI.setupLogging("virtualIdentity.msgIdentityCloneTools");
 
 var msgIdentityCloneTools = {	
 	_pref : Components.classes["@mozilla.org/preferences-service;1"]

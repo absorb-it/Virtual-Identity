@@ -151,7 +151,7 @@ NotificationOutputAppender.prototype = {
 
 
 function notificationOverflow(elem) {
-  currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+  let currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
     .getService(Ci.nsIWindowMediator)
     .getMostRecentWindow(null);
   // height will be cut off from messagepane (in 3pane window)
@@ -217,13 +217,13 @@ let Colors = {
 }
 
 function clearDebugOutput() {
-  currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+  let currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
     .getService(Ci.nsIWindowMediator)
     .getMostRecentWindow(null);
-  obj_debugBox = currentWindow.document.getElementById("vIDebugBox");
+  let obj_debugBox = currentWindow.document.getElementById("vIDebugBox");
   if (obj_debugBox)
     obj_debugBox.clear();
-  obj_notificationBox = currentWindow.document.getElementById("vINotification");
+  let obj_notificationBox = currentWindow.document.getElementById("vINotification");
   if (obj_notificationBox)
     obj_notificationBox.removeAllNotifications(true);
 }

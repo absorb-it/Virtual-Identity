@@ -24,10 +24,10 @@
 
 /* this is now used as a module - there is no required reference to any other interface-elements in this code */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-Components.utils.import("resource://v_identity/vI_log.js");
-let Log = setupLogging("virtualIdentity.account");
+let Log = vI.setupLogging("virtualIdentity.account");
 
 function prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients) {
 	var stringBundle = Services.strings.createBundle("chrome://v_identity/locale/v_identity.properties");

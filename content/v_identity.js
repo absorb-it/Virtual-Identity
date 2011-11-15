@@ -22,10 +22,10 @@
     Contributor(s):
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-Components.utils.import("resource://v_identity/vI_log.js");
-let Log = setupLogging("virtualIdentity.main");
+let Log = vI.setupLogging("virtualIdentity.main");
 
 var main = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
@@ -296,7 +296,7 @@ var main = {
 	},
 	
 	reopen: function() {
-		clearDebugOutput();
+		vI.clearDebugOutput();
 		Log.debug("composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
 		
 		// clean all elements

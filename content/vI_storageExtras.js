@@ -21,10 +21,10 @@
 
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js");
-let Log = setupLogging("virtualIdentity.storageExtras");
+let Log = vI.setupLogging("virtualIdentity.storageExtras");
 
 function storageExtras_adapt(sourceId, targetId) {
 	var checked = document.getElementById(sourceId).getAttribute("checked");

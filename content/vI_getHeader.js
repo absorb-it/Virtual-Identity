@@ -25,11 +25,11 @@
 
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
+Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js", virtualIdentityExtension);
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-// XXX still missing implementation to select specific header by number and to display notification.
-Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js");
-let Log = setupLogging("virtualIdentity.getHeader");
+let Log = vI.setupLogging("virtualIdentity.getHeader");
 
 // var storedHeaders = { };
 var getHeader = {
@@ -68,10 +68,10 @@ var getHeader = {
 	},
 
 	getHeader: function() {
-      clearDebugOutput();
+      vI.clearDebugOutput();
       if (!getHeader.headerToSearch) getHeader.prefObserverToSearchArray()
       
-      msgHdrGetHeaders(getHeader.hdr, function (aHeaders) {
+      vI.msgHdrGetHeaders(getHeader.hdr, function (aHeaders) {
         let label = "";
         if (aHeaders.has("list-id")) {
           getHeader.hdr.setStringProperty("vI_list-id","found");
@@ -109,7 +109,7 @@ var getHeader = {
             }
           }
         }
-        GetHeaderNotification.info(label);
+        vI.GetHeaderNotification.info(label);
       });
 	},
     

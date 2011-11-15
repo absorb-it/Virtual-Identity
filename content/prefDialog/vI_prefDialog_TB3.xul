@@ -38,7 +38,6 @@
         persist="screenX screenY"
 			title="&vI_prefDialog.dlgTitle.label;" >
 		
-<script type="application/x-javascript" src="chrome://v_identity/content/_overlayNameSpaceWrapper.js" />
 		<script type="application/x-javascript"
 			src="chrome://v_identity/content/prefDialog/vI_prefDialog_FolderPicker.js" />
 		<script type="application/x-javascript"

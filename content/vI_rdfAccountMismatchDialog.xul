@@ -34,7 +34,6 @@
     ondialogaccept="virtualIdentityExtension.rdfAccountMismatchDialog.accept();"
     ondialogcancel="virtualIdentityExtension.rdfAccountMismatchDialog.accept();"
 	zlevel="6">
-	<script type="application/x-javascript" src="chrome://v_identity/content/_overlayNameSpaceWrapper.js" />
     <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfAccountMismatchDialog.js" />
     
     <stringbundleset id="stringbundleset">

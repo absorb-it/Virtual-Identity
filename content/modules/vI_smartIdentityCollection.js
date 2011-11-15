@@ -24,10 +24,10 @@
 
 /* this is now used as a module - there is no required reference to any other interface-elements in this code */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-Components.utils.import("resource://v_identity/vI_log.js");
-let Log = setupLogging("virtualIdentity.smartIdentityCollection");
+let Log = vI.setupLogging("virtualIdentity.smartIdentityCollection");
 
 function smartIdentityCollection(msgHdr, preseletedID, currentIDisVID, newsgroup, recipients) {
 	dump("constructor\n");
@@ -202,7 +202,7 @@ smartIdentityCollection.prototype = {
 								add_addr = (this._allIdentities.identityDataCollection[j].email.match(new RegExp(RegExp.$1,"i")));
 						}
 						catch(vErr) {
-							SmartReplyNotification.info(
+							vI.SmartReplyNotification.info(
 								vI.main.elements.strings.getString("vident.smartIdentity.ignoreRegExp") +
 								+filterList[i].replace(/\\/g,"\\\\") + " .");
 								skipRegExp = true; }

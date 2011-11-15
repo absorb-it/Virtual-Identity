@@ -35,7 +35,6 @@
 
   <overlay id="v_identity" 
           xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-<script type="application/x-javascript" src="chrome://v_identity/content/_overlayNameSpaceWrapper.js" />
 
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_helper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_account.js" />

@@ -28,10 +28,10 @@
     http://www.ibiblio.org/pub/Linux/LICENSES/mit.license
 */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js");
-let Log = setupLogging("virtualIdentity.rdfDataTree");
+let Log = vI.setupLogging("virtualIdentity.rdfDataTree");
 
 //prepares an object for easy comparison against another. for strings, lowercases them
 function prepareForComparison (o) {

@@ -33,7 +33,7 @@
     <constructor>
         <![CDATA[
         with (virtualIdentityExtension.LIB) { 
-		MyLog.debug("prefDialog.xml identitySelector: constructor\n");
+		virtualIdentityExtension.MyLog.debug("prefDialog.xml identitySelector: constructor\n");
         var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
             .getService(Components.interfaces.nsIMsgAccountManager);
         var debugNotes = vI.prefDialog.preferences.getBoolPref("debug_notification");
@@ -61,26 +61,26 @@
     <property name="value" >
         <setter><![CDATA[
         with (virtualIdentityExtension.LIB) { 
-		MyLog.debug("prefDialog.xml identitySelector: setting value to '" + val + "'\n");
+		virtualIdentityExtension.MyLog.debug("prefDialog.xml identitySelector: setting value to '" + val + "'\n");
         var listItems = this.childNodes;
         for (var index = 0; index < listItems.length; index++) {
             var key = listItems[index].getAttribute("value");
             listItems[index].checked = (val.indexOf(":" + key + ":") == -1);
-            MyLog.debug("prefDialog.xml identitySelector: setting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n")
+            virtualIdentityExtension.MyLog.debug("prefDialog.xml identitySelector: setting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n")
         }
         this._value = val;
 		}
         ]]></setter>
         <getter><![CDATA[
         with (virtualIdentityExtension.LIB) { 
-		MyLog.debug("prefDialog.xml identitySelector: getting value\n");
+		virtualIdentityExtension.MyLog.debug("prefDialog.xml identitySelector: getting value\n");
         var returnVal = "";
         var listItems = this.childNodes;
         for (var index = 0; index < listItems.length; index++) {
-            MyLog.debug("prefDialog.xml identitySelector: getting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n");
+            virtualIdentityExtension.MyLog.debug("prefDialog.xml identitySelector: getting value, '" + listItems[index].getAttribute("value") + "' '" + listItems[index].checked + "' '" + listItems[index].getAttribute("checked") + "'\n");
             if (!listItems[index].checked) returnVal += " :" + listItems[index].getAttribute("value") + ": "
         }
-        MyLog.debug("prefDialog.xml identitySelector: getting value, result '" + returnVal + "'\n");
+        virtualIdentityExtension.MyLog.debug("prefDialog.xml identitySelector: getting value, result '" + returnVal + "'\n");
         return returnVal;
 		}
         ]]></getter>        

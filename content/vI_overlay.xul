@@ -22,32 +22,8 @@
 
    - Contributor(s):
    - ***** END LICENSE BLOCK ***** -->
-   
-<?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
 
-<!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/v_identity.dtd">
-
-<?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://messenger/skin/prefPanels.css" type="text/css"?>
-
-<dialog id="vI_smartReplyDialog"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	buttons="cancel"
-        title="Virtual Identity - Smart Identity"
-	zlevel="6">
-
-<script type="application/x-javascript" src="chrome://v_identity/content/vI_smartReplyDialog.js" />
-
-<stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
-
-<broadcaster id="VIdent_broadcaster_doFcc"/>
-
-  <dialogheader title="&vident.replySelector.dialogheader.title;"/>
-  
-  <groupbox>
-    <caption label="&vident.replySelector.caption.label;"/>
-
-    <radiogroup id="replySelector.radiogroup" oncommand="virtualIdentityExtension.smartReply_dialog.accept();">
-    </radiogroup>
-  </groupbox>
-</dialog>
+<!DOCTYPE overlay SYSTEM "chrome://conversations/locale/overlay.dtd">
+<overlay id="messengerWindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/x-javascript" src="chrome://v_identity/content/vI_overlay.js" />
+</overlay>

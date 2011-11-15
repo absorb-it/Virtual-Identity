@@ -22,10 +22,10 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
   
-Components.utils.import("resource://v_identity/vI_log.js");
-let Log = setupLogging("virtualIdentity.identityData");
+let Log = vI.setupLogging("virtualIdentity.identityData");
 
 function identityData(email, fullName, id, smtp, extras, sideDescription, existingID) {
 	this._email = email?email:"";

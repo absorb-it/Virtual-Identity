@@ -27,11 +27,11 @@
 * thanks to Mike Krieger and Sebastian Apel
 */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
-Components.utils.import("resource://v_identity/vI_log.js");
-let Log = setupLogging("virtualIdentity.storage");
+let Log = vI.setupLogging("virtualIdentity.storage");
 
 var storage = {
 	focusedElement : null,
@@ -177,7 +177,7 @@ var storage = {
 			Log.debug("updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName + "\n");
 			document.getElementById("msgIdentity_clone").selectedMenuItem = selectedMenuItem;
 			if (document.getElementById("msgIdentity_clone").vid)
-				StorageNotification.info(vI.main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".");
+				vI.StorageNotification.info(vI.main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".");
 		}
 	},
 	

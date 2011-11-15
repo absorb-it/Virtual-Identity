@@ -24,10 +24,10 @@
 
 /* this is now used as a module - there is no required reference to any other interface-elements in this code */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-Components.utils.import("resource://v_identity/vI_log.js");
-let Log = setupLogging("virtualIdentity.rdfDatasource");
+let Log = vI.setupLogging("virtualIdentity.rdfDatasource");
 
 function rdfDatasource(rdfFileName, dontRegisterObserver) {
     this._rdfFileName = rdfFileName;
@@ -887,7 +887,7 @@ rdfDatasourceAccess.prototype = {
 			if (this._pref.getBoolPref("storage_getOneOnly") &&		// if requested to retrieve only storageID for first recipient entered
 				isNotFirstInputElement &&							// and it is now not the first recipient entered
 				!localIdentities.identityDataCollection[0].equalsIdentity(currentIdentity, false).equal) {		// and this id is different than the current used one
-					StorageNotification.info(this.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageCollidingIdentity"));
+					vI.StorageNotification.info(this.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageCollidingIdentity"));
 // 					returnValue.result = "drop";    // this is the default value
 			}
 			// only update fields if new Identity is different than old one.

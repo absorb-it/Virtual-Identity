@@ -22,6 +22,7 @@
     Contributor(s): Thunderbird Developers
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 Components.utils.import("resource://gre/modules/AddonManager.jsm");

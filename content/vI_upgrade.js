@@ -22,10 +22,10 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
+Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js");
-let Log = setupLogging("virtualIdentity.upgrade");
+let Log = vI.setupLogging("virtualIdentity.upgrade");
 
 var upgrade = {
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]
