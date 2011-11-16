@@ -33,12 +33,13 @@ Cu.import("resource://v_identity/vI_identityDataExtras.js");
 Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityDataExtras.PGPMIME");
 
-function identityDataExtrasObject_PGPMIME() {
-    this.field  = "PGPMIME";                        // description of the option
-    this.option = "storageExtras_openPGP_PGPMIME";    // option string to get preference settings
-    this.elementID_msgCompose = "enigmail_sendPGPMime";
-    this.updateFunction_msgCompose = function() {
-      (typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null };
+function identityDataExtrasObject_PGPMIME(currentWindow) {
+  this.currentWindow = currentWindow;
+  this.field  = "PGPMIME";                        // description of the option
+  this.option = "storageExtras_openPGP_PGPMIME";    // option string to get preference settings
+  this.elementID_msgCompose = "enigmail_sendPGPMime";
+  this.updateFunction_msgCompose = function() {
+    (typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null };
 }
 identityDataExtrasObject_PGPMIME.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,

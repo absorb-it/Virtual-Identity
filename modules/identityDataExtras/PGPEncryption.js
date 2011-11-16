@@ -33,12 +33,13 @@ Cu.import("resource://v_identity/vI_identityDataExtras.js");
 Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityDataExtras.PGPEncryption");
 
-function identityDataExtrasObject_PGPEncryption() {
-    this.field  = "PGPEnc";                        // description of the option
-    this.option = "storageExtras_openPGP_messageEncryption";    // option string to get preference settings
-    this.elementID_msgCompose = "enigmail_encrypted_send";
-    this.updateFunction_msgCompose = function() {
-      (typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null };
+function identityDataExtrasObject_PGPEncryption(currentWindow) {
+  this.currentWindow = currentWindow;
+  this.field  = "PGPEnc";                        // description of the option
+  this.option = "storageExtras_openPGP_messageEncryption";    // option string to get preference settings
+  this.elementID_msgCompose = "enigmail_encrypted_send";
+  this.updateFunction_msgCompose = function() {
+    (typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null };
 }
 identityDataExtrasObject_PGPEncryption.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,

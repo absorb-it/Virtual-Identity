@@ -33,12 +33,13 @@ Cu.import("resource://v_identity/vI_identityDataExtras.js");
 Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityDataExtras.PGPSignature");
 
-function identityDataExtrasObject_PGPSignature() {
-    this.field  = "PGPSig";                        // description of the option
-    this.option = "storageExtras_openPGP_messageSignature";    // option string to get preference settings
-    this.elementID_msgCompose = "enigmail_signed_send";
-    this.updateFunction_msgCompose = function() {
-      (typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null };
+function identityDataExtrasObject_PGPSignature(currentWindow) {
+  this.currentWindow = currentWindow;
+  this.field  = "PGPSig";                        // description of the option
+  this.option = "storageExtras_openPGP_messageSignature";    // option string to get preference settings
+  this.elementID_msgCompose = "enigmail_signed_send";
+  this.updateFunction_msgCompose = function() {
+    (typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null };
 }
 identityDataExtrasObject_PGPSignature.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,

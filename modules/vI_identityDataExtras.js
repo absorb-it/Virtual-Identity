@@ -45,8 +45,11 @@ function registerIdExtrasObject(h) {
 
 function identityDataExtras(rdfDatasource, resource) {
   this.extras = [];
+  let currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+    .getService(Ci.nsIWindowMediator)
+    .getMostRecentWindow(null);
   for each (let [, identityDataExtrasObject] in Iterator(idExtrasObjects)) {
-    this.extras.push(new identityDataExtrasObject());
+    this.extras.push(new identityDataExtrasObject(currentWindow));
   }
   if (rdfDatasource)
     this.loopThroughExtras(
@@ -150,11 +153,14 @@ identityDataExtras.prototype = {
   }
 }
 
-function identityDataExtrasObject() { };
+function identityDataExtrasObject(currentWindow) {
+  this.currentWindow = currentWindow;
+}
 identityDataExtrasObject.prototype = {
   value :   null,   // will contain the current value of the object and can be accessed from outside
   field :   null,   // short description of the field
   option :  null,   // option from preferences, boolean
+  window :  null,   // the current Window the object was created for
   
   lastCompareValue : "",
   lastCompareResult : false,
@@ -185,14 +191,9 @@ identityDataExtrasObject.prototype = {
   },
   // function to read the value from a given identity (probably not part of identity)
   readIdentityValue : function(identity) { },
-  get _currentWindow() {
-    return Cc["@mozilla.org/appshell/window-mediator;1"]
-      .getService(Ci.nsIWindowMediator)
-      .getMostRecentWindow(null);
-  },
   // function to set or read the value from/to the environment
   setValueToEnvironment : function() {
-    let id = this._currentWindow.document.documentElement.id;
+    let id = this.currentWindow.document.documentElement.id;
     switch(id) {
       case "msgcomposeWindow":
         this.setValueToEnvironment_msgCompose();
@@ -209,7 +210,7 @@ identityDataExtrasObject.prototype = {
     }
   },
   getValueFromEnvironment : function() {
-    let id = this._currentWindow.document.documentElement.id;
+    let id = this.currentWindow.document.documentElement.id;
     switch(id) {
       case "msgcomposeWindow":
         this.getValueFromEnvironment_msgCompose();
@@ -246,7 +247,9 @@ identityDataExtrasObject.prototype = {
 }
 
 
-function identityDataExtrasCheckboxObject() { };
+function identityDataExtrasCheckboxObject(currentWindow) {
+  this.currentWindow = currentWindow;
+}
 identityDataExtrasCheckboxObject.prototype = {
   __proto__: identityDataExtrasObject.prototype,
   
@@ -259,7 +262,7 @@ identityDataExtrasCheckboxObject.prototype = {
   },
 
   setValueToEnvironment_msgCompose: function() {
-    var element = this._currentWindow.document.getElementById(this.elementID_msgCompose);
+    var element = this.currentWindow.document.getElementById(this.elementID_msgCompose);
     if (!this.active || (this.value == null) || !element)
       return;
     
@@ -272,14 +275,14 @@ identityDataExtrasCheckboxObject.prototype = {
   
   setValueToEnvironment_dataEditor: function() {
     if (this.value != null) {
-      this._currentWindow.document.getElementById("vI_" + this.option).setAttribute("checked", this.value);
-      this._currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+      this.currentWindow.document.getElementById("vI_" + this.option).setAttribute("checked", this.value);
+      this.currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
     }
-    this._currentWindow.document.getElementById("vI_" + this.option + "_store").doCommand();
+    this.currentWindow.document.getElementById("vI_" + this.option + "_store").doCommand();
   },
   
   getValueFromEnvironment_msgCompose: function() {
-    var element = this._currentWindow.document.getElementById(this.elementID_msgCompose)
+    var element = this.currentWindow.document.getElementById(this.elementID_msgCompose)
     if (this.active && element) {
       this.updateFunction_msgCompose();
       this.value = ((element.getAttribute("checked") == "true")?"true":"false");
@@ -287,8 +290,8 @@ identityDataExtrasCheckboxObject.prototype = {
   },
   
   getValueFromEnvironment_dataEditor: function() {
-    if (this._currentWindow.document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true") {
-      var elementValue = this._currentWindow.document.getElementById("vI_" + this.option).getAttribute("checked");
+    if (this.currentWindow.document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true") {
+      var elementValue = this.currentWindow.document.getElementById("vI_" + this.option).getAttribute("checked");
       this.value = (elementValue == "true")?"true":"false"
     }
     else

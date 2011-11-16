@@ -33,10 +33,11 @@ Cu.import("resource://v_identity/vI_identityDataExtras.js");
 Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityDataExtras.fccSwitch");
 
-function identityDataExtrasObject_fccSwitch() {
-    this.field  = "fcc";                        // description of the option
-    this.option = "storageExtras_fcc";    // option string to get preference settings
-    this.elementID_msgCompose = "virtualIdentityExtension_fccSwitch";
+function identityDataExtrasObject_fccSwitch(currentWindow) {
+  this.currentWindow = currentWindow;
+  this.field  = "fcc";                        // description of the option
+  this.option = "storageExtras_fcc";    // option string to get preference settings
+  this.elementID_msgCompose = "virtualIdentityExtension_fccSwitch";
 }
 identityDataExtrasObject_fccSwitch.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,

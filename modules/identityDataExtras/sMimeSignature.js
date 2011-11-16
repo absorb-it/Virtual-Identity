@@ -33,12 +33,13 @@ Cu.import("resource://v_identity/vI_identityDataExtras.js");
 Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityDataExtras.sMimeSignature");
 
-function identityDataExtrasObject_sMimeSignature() {
-    this.field  = "sMimeSig";                        // description of the option
-    this.option = "storageExtras_sMime_messageSignature";    // option string to get preference settings
-    this.elementID_msgCompose = "menu_securitySign1";
-    this.updateFunction_msgCompose = function() {
-      (typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null };
+function identityDataExtrasObject_sMimeSignature(currentWindow) {
+  this.currentWindow = currentWindow;
+  this.field  = "sMimeSig";                        // description of the option
+  this.option = "storageExtras_sMime_messageSignature";    // option string to get preference settings
+  this.elementID_msgCompose = "menu_securitySign1";
+  this.updateFunction_msgCompose = function() {
+    (typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null };
 }
 identityDataExtrasObject_sMimeSignature.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,
