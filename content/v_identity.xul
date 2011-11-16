@@ -49,28 +49,28 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js"/>
 
   <stringbundleset id="stringbundleset">
-    <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
-    <stringbundle id="vIStorageExtrasBundle" src="chrome://v_identity/locale/vI_storageExtras.properties" />
+    <stringbundle id="virtualIdentityExtension_vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
+    <stringbundle id="virtualIdentityExtension_vIStorageExtrasBundle" src="chrome://v_identity/locale/vI_storageExtras.properties" />
   </stringbundleset>
 
 <vbox id="appcontent" >
-  <textbox id="vIDebugBox" />
+  <textbox id="virtualIdentityExtension_vIDebugBox" />
 </vbox>
 
 <toolbox id="headers-box">
-	<notificationbox id="vINotification" position="1" insertbefore="MsgHeadersToolbar" />
+	<notificationbox id="virtualIdentityExtension_vINotification" position="1" insertbefore="MsgHeadersToolbar" />
 </toolbox>
 
 <vbox flex="1" id="addresses-box"> <!-- this is used as a strorage, elements will be rearranged by v_identity_init -->
 
-<label id="autoReplyToSelfLabel" context="vI_autoReplyToSelfMenu" value="&vident.composeDialog.autoReplyToSelf.label;" hidden="true" />
+<label id="virtualIdentityExtension_autoReplyToSelfLabel" context="virtualIdentityExtension_vIAutoReplyToSelfMenu" value="&vident.composeDialog.autoReplyToSelf.label;" hidden="true" />
 	
-<hbox id="msgIdentityHbox" flex="1">
-	<menulist id="msgIdentity_clone" class="identity_clone-menulist" vid="false"
+<hbox id="virtualIdentityExtension_msgIdentityHbox" flex="1">
+	<menulist id="virtualIdentityExtension_msgIdentityClone" class="identity_clone-menulist" vid="false"
 		label="..." flex="1" oncommand="this.command();">
-		<menupopup id="msgIdentityPopup_clone"/>
+		<menupopup id="virtualIdentityExtension_msgIdentityPopupClone"/>
 	</menulist>
-	<checkbox id="fcc_switch" label="&vident.composeDialog.fcc_switch.label;" 
+	<checkbox id="virtualIdentityExtension_fccSwitch" label="&vident.composeDialog.fcc_switch.label;" 
 		tooltiptext="&vident.composeDialog.fcc_switch.tooltiptext;" hidden="true" doFcc="false"
 		oncommand="if (this.doFcc == this.checked) this.checked = !(this.checked); this.doFcc = this.checked;" />
 	<popupset id="virtualIdentityExtension_tooltipPopupset" />
@@ -93,9 +93,9 @@
 	  </menupopup>
   </popupset>
   <popupset>
-	  <menupopup id="vI_autoReplyToSelfMenu">
+	  <menupopup id="virtualIdentityExtension_vIAutoReplyToSelfMenu">
 		  <menuitem type="menuitem-iconic" label="&vident.composeDialog.autoReplyToSelf.menuLabel;"
-			oncommand="document.getElementById('autoReplyToSelfLabel').setAttribute('hidden', 'true');"/>
+			oncommand="document.getElementById('virtualIdentityExtension_autoReplyToSelfLabel').setAttribute('hidden', 'true');"/>
 		</menupopup>
   </popupset>
   <popupset>
@@ -108,14 +108,14 @@
   </popupset>
 
   <statusbar id="status-bar">
-	  <statusbarpanel class="v_identity_logo"
-			  id="v_identity_logo"
+	  <statusbarpanel class="virtualIdentityExtension_Logo"
+			  id="virtualIdentityExtension_Logo"
 			  insertafter="statusText"
 			  align="right">
 		<label value="&vident.vidLogo.label; &vident.version;" />
-		<observes id="msgIdentity_clone_observer" element="msgIdentity_clone" attribute="vid" />
+		<observes id="virtualIdentityExtension_msgIdentityClone_observer" element="virtualIdentityExtension_msgIdentityClone" attribute="vid" />
 	</statusbarpanel>
-	  <statusbarpanel id="vI-status-menu" save="off"
+	  <statusbarpanel id="virtualIdentityExtension_vIStatusMenu" save="off"
 			  class="statusbarpanel-menu-iconic"
 			  collapsed="true"
 			  insertafter="totalMessageCount"

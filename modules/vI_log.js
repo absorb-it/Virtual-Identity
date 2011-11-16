@@ -95,7 +95,7 @@ DebugOutputAppender.prototype = {
     window = Cc["@mozilla.org/appshell/window-mediator;1"]
       .getService(Ci.nsIWindowMediator)
       .getMostRecentWindow(null);
-    obj_debugBox = window.document.getElementById("vIDebugBox");
+    obj_debugBox = window.document.getElementById("virtualIdentityExtension_vIDebugBox");
     if (obj_debugBox)
       obj_debugBox.dump(message);
   }
@@ -128,13 +128,13 @@ NotificationOutputAppender.prototype = {
     if (self.timer)
       self.currentWindow.clearTimeout(self.timer);
     self.timer = null;
-    obj_notificationBox = self.currentWindow.document.getElementById("vINotification");
+    obj_notificationBox = self.currentWindow.document.getElementById("virtualIdentityExtension_vINotification");
     if (obj_notificationBox)
       obj_notificationBox.removeAllNotifications(true);
   },
 
   addNote: function(note) {
-    obj_notificationBox = this.currentWindow.document.getElementById("vINotification");
+    obj_notificationBox = this.currentWindow.document.getElementById("virtualIdentityExtension_vINotification");
     if (!obj_notificationBox)
       return;
     var oldNotification = obj_notificationBox.currentNotification
@@ -163,7 +163,7 @@ function notificationOverflow(elem) {
     elem.height = newHeight;
   // give the box a frame if it is to big
   if (tooBig)
-    currentWindow.document.getElementById("vINotificationTextbox").setAttribute("class", "plain border")
+    currentWindow.document.getElementById("virtualIdentityExtension_vINotificationTextbox").setAttribute("class", "plain border")
 }
 
 
@@ -220,10 +220,10 @@ function clearDebugOutput() {
   let currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
     .getService(Ci.nsIWindowMediator)
     .getMostRecentWindow(null);
-  let obj_debugBox = currentWindow.document.getElementById("vIDebugBox");
+  let obj_debugBox = currentWindow.document.getElementById("virtualIdentityExtension_vIDebugBox");
   if (obj_debugBox)
     obj_debugBox.clear();
-  let obj_notificationBox = currentWindow.document.getElementById("vINotification");
+  let obj_notificationBox = currentWindow.document.getElementById("virtualIdentityExtension_vINotification");
   if (obj_notificationBox)
     obj_notificationBox.removeAllNotifications(true);
 }

@@ -38,14 +38,14 @@
 
 
 <stringbundleset id="stringbundleset">
-    <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
+    <stringbundle id="virtualIdentityExtension_vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
   </stringbundleset>
 
 <vbox id="messagepanebox" >
-  <textbox id="vIDebugBox" />
+  <textbox id="virtualIdentityExtension_vIDebugBox" />
 </vbox>
 
 <vbox id="messagepanebox">
-	 <notificationbox id="vINotification" position="1" insertbefore="msgheaderstoolbar-box"/>
+	 <notificationbox id="virtualIdentityExtension_vINotification" position="1" insertbefore="msgheaderstoolbar-box"/>
 </vbox>
 </overlay>

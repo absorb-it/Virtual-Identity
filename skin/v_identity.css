@@ -2,11 +2,11 @@
 @import url("chrome://v_identity/locale/logo.css"); 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-#fcc_switch[vid="false"] {
+#virtualIdentityExtension_fccSwitch[vid="false"] {
 	display: none;
 }
 
-#msgIdentity_clone .smtpServerListHbox {
+#virtualIdentityExtension_msgIdentityClone .smtpServerListHbox {
 	margin: 0px;
 	-moz-appearance: textfield;
 }
@@ -232,12 +232,12 @@ treechildren::-moz-tree-cell(yes) {
 	font-style: italic;
 }
 
-#vINotificationTitle {
+#virtualIdentityExtension_vINotificationTitle {
 	text-align: right;
 	font-weight: bold;
 }
 
-#vINotificationTextbox {
+#virtualIdentityExtension_vINotificationTextbox {
 	background-color: transparent;
 	margin: 5px !important;
 	margin-left: 20px !important;
@@ -247,33 +247,33 @@ treechildren::-moz-tree-cell(yes) {
 	-moz-border-left-colors: grey;
 }
 
-#vINotificationTextbox.border {
+#virtualIdentityExtension_vINotificationTextbox.border {
       border-style: solid !important;
       border-right-style: none !important;
       border-width: 1px !important;
 }
 
-#vI-status-menu[save="off"] {
+#virtualIdentityExtension_vIStatusMenu[save="off"] {
 	list-style-image: url("chrome://v_identity/skin/vI_gr.png");
 	visibility: visible;
 }
 
-#vI-status-menu[save="ok"] {
+#virtualIdentityExtension_vIStatusMenu[save="ok"] {
 	list-style-image: url("chrome://v_identity/skin/vI_gn.png");
 	visibility: visible;
 }
 
-#vI-status-menu[save="base"] {
+#virtualIdentityExtension_vIStatusMenu[save="base"] {
 	list-style-image: url("chrome://v_identity/skin/vI_ge.png");
 	visibility: visible;
 }
 
-#vI-status-menu[save="ok"][smtp="save"] {
+#virtualIdentityExtension_vIStatusMenu[save="ok"][smtp="save"] {
 	list-style-image: url("chrome://v_identity/skin/vI_bl.png");
 	visibility: visible;
 }
 
-#vI-status-menu[save="base"][smtp="save"] {
+#virtualIdentityExtension_vIStatusMenu[save="base"][smtp="save"] {
 	list-style-image: url("chrome://v_identity/skin/vI_gebl.png");
 	visibility: visible;
 }
@@ -303,35 +303,35 @@ treechildren::-moz-tree-cell-text(locked) {
 	height:		175px;
 }
 	
-.v_identity_logo_button {
+.virtualIdentityExtension_Logo_button {
 	-moz-appearance: toolbarbutton;
 	border: medium none ; background-color: transparent;
 }
 
-#vINotification {
+#virtualIdentityExtension_vINotification {
   -moz-binding: url("chrome://global/content/bindings/notification.xml#notificationbox");
   -moz-box-orient: vertical;
   overflow: hidden;
 }
 
-#vINotification notification {
+#virtualIdentityExtension_vINotification notification {
   -moz-binding: url("chrome://v_identity/content/bindings/vI_notificationBox.xml#vI_notification");
 }
 
-#vINotification .messageImage {
+#virtualIdentityExtension_vINotification .messageImage {
   display: none;
 }
 
-.vINotificationLogo {
+.virtualIdentityExtension_vINotificationLogo {
 	margin: 0 0 0 0.5em;
 	padding: 0;
 }
 
-#vIDebugBox {
+#virtualIdentityExtension_vIDebugBox {
     -moz-binding: url("chrome://v_identity/content/bindings/vI_debugBox.xml#vI_debugBox");
 }
 
-#vIDebugBox, #vIErrorBox{
+#virtualIdentityExtension_vIDebugBox, #virtualIdentityExtension_vIErrorBox{
     overflow: auto;
     font-size: x-small;
     height: 10em;
@@ -475,7 +475,7 @@ treechildren::-moz-tree-cell-text(locked) {
   	color: green;
 }*/
 
-.virtIdLabel[vid="false"], .v_identity_logo[vid="false"] {
+.virtIdLabel[vid="false"], .virtualIdentityExtension_Logo[vid="false"] {
 	display:	none;
 }
 .virtIdLabel {
@@ -508,7 +508,7 @@ treechildren::-moz-tree-cell-text(locked) {
 	margin: 0px 5px 0px 5px;
 }
 
-.vINotificationCloseButton {
+.virtualIdentityExtension_vINotificationCloseButton {
 	display: inline;
 	padding: 4px 2px !important;
 	-moz-appearance: none;
@@ -519,17 +519,17 @@ treechildren::-moz-tree-cell-text(locked) {
 	list-style-image: url("chrome://v_identity/skin/close.png");
 }
 
-.vINotificationCloseButton:hover {
+.virtualIdentityExtension_vINotificationCloseButton:hover {
 	-moz-image-region: rect(0px, 28px, 14px, 14px);
 	opacity: 1.0;
 }
 
-.vINotificationCloseButton:hover:active {
+.virtualIdentityExtension_vINotificationCloseButton:hover:active {
 	-moz-image-region: rect(0px, 42px, 14px, 28px);
 	opacity: 1.0;
 }
 
-.vINotificationCloseButton:focus {
+.virtualIdentityExtension_vINotificationCloseButton:focus {
 	outline: none !important;
 }
 

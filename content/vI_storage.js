@@ -83,7 +83,7 @@ var storage = {
 		Log.debug("\nawPopupOnCommand'" + element.id +"'\n");
 		storage.updateVIdentityFromStorage(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")));
 		if (element.selectedItem.getAttribute("value") == "addr_reply") // if reply-to is manually entered disable AutoReplyToSelf
-			document.getElementById("autoReplyToSelfLabel").setAttribute("hidden", "true");
+			document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").setAttribute("hidden", "true");
 
 	},
 	
@@ -158,9 +158,9 @@ var storage = {
 		
 		// firstUsedInputElement was set before and we are not editing the same
 		var isNotFirstInputElement = (storage.firstUsedInputElement && storage.firstUsedInputElement != inputElement)
-		var currentIdentity = document.getElementById("msgIdentity_clone").identityData
+		var currentIdentity = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData
 		var storageResult = storage._rdfDatasourceAccess.updateVIdentityFromStorage(inputElement.value, recipientType,
-			currentIdentity, document.getElementById("msgIdentity_clone").vid, isNotFirstInputElement);
+			currentIdentity, document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, isNotFirstInputElement);
 		
 		if (storageResult.identityCollection.number == 0) return; // return if there was no match
 		Log.debug("updateVIdentityFromStorage result: " + storageResult.result + "\n");
@@ -171,13 +171,13 @@ var storage = {
 		if (storageResult.result != "equal") {
 			for (var j = 0; j < storageResult.identityCollection.number; j++) {
 				Log.debug("updateVIdentityFromStorage adding: " + storageResult.identityCollection.identityDataCollection[j].combinedName + "\n");
-				selectedMenuItem = document.getElementById("msgIdentity_clone").addIdentityToCloneMenu(storageResult.identityCollection.identityDataCollection[j])
+				selectedMenuItem = document.getElementById("virtualIdentityExtension_msgIdentityClone").addIdentityToCloneMenu(storageResult.identityCollection.identityDataCollection[j])
 			}
 		}
 		if (storageResult.result == "accept") {
 			Log.debug("updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName + "\n");
-			document.getElementById("msgIdentity_clone").selectedMenuItem = selectedMenuItem;
-			if (document.getElementById("msgIdentity_clone").vid)
+			document.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = selectedMenuItem;
+			if (document.getElementById("virtualIdentityExtension_msgIdentityClone").vid)
 				vI.StorageNotification.info(vI.main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".");
 		}
 	},

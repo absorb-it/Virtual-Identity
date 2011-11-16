@@ -40,7 +40,7 @@ var getHeader = {
 	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
 			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 
-// 	strings : document.getElementById("vIdentBundle"),
+// 	strings : document.getElementById("virtualIdentityExtension_vIdentBundle"),
 	
 	headerToSearch : null,
 	
@@ -115,7 +115,7 @@ var getHeader = {
     
     setupEventListener: function() {
 		
-		getHeader.strings = document.getElementById("vIdentBundle");
+		getHeader.strings = document.getElementById("virtualIdentityExtension_vIdentBundle");
 		
 		getHeader.unicodeConverter.charset = "UTF-8";
 		

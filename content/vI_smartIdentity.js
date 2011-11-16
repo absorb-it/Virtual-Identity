@@ -58,7 +58,7 @@ var smartIdentity = {
 				Log.debug("Reply\n");
 				msgHdr = smartIdentity.messenger.
 					messageServiceFromURI(gMsgCompose.originalMsgURI).messageURIToMsgHdr(gMsgCompose.originalMsgURI);
-				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(msgHdr, getCurrentIdentity(), document.getElementById("msgIdentity_clone").vid, newsgroup, this._getRecipients());	
+				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(msgHdr, getCurrentIdentity(), document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients());	
 				smartIdentity._smartIdentityCollection.Reply();
 				autocreate = false; break;
 			case msgComposeTypeReference.Draft:
@@ -66,7 +66,7 @@ var smartIdentity = {
 				Log.debug("Draft\n");
 				msgHdr = smartIdentity.messenger.
 					messageServiceFromURI(gMsgCompose.compFields.draftId).messageURIToMsgHdr(gMsgCompose.compFields.draftId);
-				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(msgHdr, getCurrentIdentity(), document.getElementById("msgIdentity_clone").vid, newsgroup, this._getRecipients());	
+				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(msgHdr, getCurrentIdentity(), document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients());	
 				smartIdentity._smartIdentityCollection.Draft();
 				autocreate = false; break;
 			case msgComposeTypeReference.ForwardAsAttachment:
@@ -75,7 +75,7 @@ var smartIdentity = {
 			case msgComposeTypeReference.NewsPost:
 			case msgComposeTypeReference.MailToUrl:
 				Log.debug("New Mail\n");
-				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(null, getCurrentIdentity(), document.getElementById("msgIdentity_clone").vid, newsgroup, this._getRecipients());	
+				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(null, getCurrentIdentity(), document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients());	
 				// to enable composing new email with new identity: identity is hidden in subject line
 				// used for instance from conversation addon
 				var subject = gMsgCompose.compFields.subject.split(/\n/);
@@ -110,13 +110,13 @@ var smartIdentity = {
 			if (existingIDIndex) {
 				Log.debug("found existing Identity, use without interaction.\n");
 				// add all Indentities to Clone Menu before selecting and leaving the function
-				document.getElementById("msgIdentity_clone").addIdentitiesToCloneMenu(smartIdentity._smartIdentityCollection._allIdentities);
+				document.getElementById("virtualIdentityExtension_msgIdentityClone").addIdentitiesToCloneMenu(smartIdentity._smartIdentityCollection._allIdentities);
 				smartIdentity.changeIdentityToSmartIdentity(smartIdentity._smartIdentityCollection._allIdentities, existingIDIndex.key);
 				return;
 			}
 		}
 		
-		document.getElementById("msgIdentity_clone").addIdentitiesToCloneMenu(smartIdentity._smartIdentityCollection._allIdentities);
+		document.getElementById("virtualIdentityExtension_msgIdentityClone").addIdentitiesToCloneMenu(smartIdentity._smartIdentityCollection._allIdentities);
 		Log.debug("__smartIdentitySelection smartIdentity._smartIdentityCollection._allIdentities.number=" +
 				smartIdentity._smartIdentityCollection._allIdentities.number +
 				" smartIdentity._pref.getBoolPref('idSelection_ask_always')=" +
@@ -144,8 +144,8 @@ var smartIdentity = {
 		Log.debug("changeIdentityToSmartIdentity selectedValue=" + selectedValue + " from " + allIdentities.number + "\n");
 		Log.debug("changeIdentityToSmartIdentity selectedValue=" + selectedValue + ": '" + allIdentities.identityDataCollection[selectedValue].combinedName + "' "
 			+ "(" + allIdentities.identityDataCollection[selectedValue].id.value + "," + allIdentities.identityDataCollection[selectedValue].smtp.value + ")\n");
-		document.getElementById("msgIdentity_clone").selectedMenuItem = allIdentities.menuItems[selectedValue];
-		if (document.getElementById("msgIdentity_clone").vid) {
+		document.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = allIdentities.menuItems[selectedValue];
+		if (document.getElementById("virtualIdentityExtension_msgIdentityClone").vid) {
 			var label=vI.main.elements.strings.getString("vident.smartIdentity.vIUsage");
 			if (allIdentities.number > 1) label += " "
 				+ vI.main.elements.strings.getString("vident.smartIdentity.moreThanOne");

@@ -63,7 +63,7 @@ function storageExtras(rdfDatasource, resource) {
 		new storageExtras_checkbox(
 			"reciept", "storageExtras_returnReciept", "returnReceiptMenu", null, function(identity) { return identity.requestReturnReceipt; }),
 		new storageExtras_checkbox(
-			"fcc", "storageExtras_fcc", "fcc_switch", null, function(identity) { return identity.doFcc; }),
+			"fcc", "storageExtras_fcc", "virtualIdentityExtension_fccSwitch", null, function(identity) { return identity.doFcc; }),
 		new storageExtras_characterEncoding(),
 		new storageExtras_msgFormat(),
 		new storageExtras_checkbox(
@@ -131,7 +131,7 @@ storageExtras.prototype = {
 		return equal;
 	},
 	getMatrix : function() {
-		var prefStrings = document.getElementById("vIStorageExtrasBundle");
+		var prefStrings = document.getElementById("virtualIdentityExtension_vIStorageExtrasBundle");
 		var string = "";
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) {
@@ -145,7 +145,7 @@ storageExtras.prototype = {
 		return string;
 	},
 	getCompareMatrix : function() {
-		var prefStrings = document.getElementById("vIStorageExtrasBundle");
+		var prefStrings = document.getElementById("virtualIdentityExtension_vIStorageExtrasBundle");
 		var string = "";
 		for( var i = 0; i < this.extras.length; i++ ) {
 			if (this.extras[i].active) {

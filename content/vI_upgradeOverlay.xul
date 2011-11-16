@@ -49,7 +49,7 @@
     <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_smartIdentityCollection.js" />
 
 	<vbox id="messagepanebox" >
-	  	<splitter id="vIErrorBoxSplitter" hidden="true" />
-		<vbox id="vIErrorBox" context="ConsoleContext" sortOrder="reverse" hidden="true" />
+	  	<splitter id="virtualIdentityExtension_vIErrorBoxSplitter" hidden="true" />
+		<vbox id="virtualIdentityExtension_vIErrorBox" context="ConsoleContext" sortOrder="reverse" hidden="true" />
 	</vbox>
 </overlay>

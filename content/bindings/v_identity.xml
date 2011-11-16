@@ -98,10 +98,10 @@
 	<method name="resize">
 		<body><![CDATA[
 		if (!this._identityInfo) return;
-		var width = document.getElementById("msgIdentity_clone").boxObject.width * 0.7;
+		var width = document.getElementById("virtualIdentityExtension_msgIdentityClone").boxObject.width * 0.7;
 		var height = this._tooltipBrowser.contentDocument.lastChild.scrollHeight + 5;
 		this.sizeTo(width, height);
-		width = document.getElementById("msgIdentity_clone").boxObject.width * 0.75;
+		width = document.getElementById("virtualIdentityExtension_msgIdentityClone").boxObject.width * 0.75;
 		this.sizeTo(width, height);
 		]]></body>
 	</method>
@@ -277,12 +277,12 @@
 		<xul:hbox class="contentHBox" anonid="contentHBox" flex="1"  >
 			<xul:hbox id="identityHbox" class="identityHbox" flex="1">
 				<xul:vbox><xul:spacer flex="1" />
-					<xul:image class="menulist_clone-icon" id="msgIdentity_clone_image" xbl:inherits="src"/>
+					<xul:image class="menulist_clone-icon" id="virtualIdentityExtension_msgIdentityClone_image" xbl:inherits="src"/>
 				<xul:spacer flex="1" /></xul:vbox>
-				<xul:vbox flex="1" id="msgIdentity_clone_fromVbox"><xul:spacer flex="1" />
+				<xul:vbox flex="1" id="virtualIdentityExtension_msgIdentityClone_fromVbox"><xul:spacer flex="1" />
 <!-- 					textbox is internally an html:input field which inherits the onblur event.
 					Thats why we have to search the textbox before calling blurEvent() -->
-					<xul:textbox anonid="textBox" type="search" id="msgIdentity_clonetextBoxElem" class="plain menulist_clone-textbox" allowevents="true" xbl:inherits="value=label,crop,accesskey,nomatch=vid" oncommand="event.stopPropagation(); document.getBindingParent(this).inputEvent();"
+					<xul:textbox anonid="textBox" type="search" id="virtualIdentityExtension_msgIdentityClonetextBoxElem" class="plain menulist_clone-textbox" allowevents="true" xbl:inherits="value=label,crop,accesskey,nomatch=vid" oncommand="event.stopPropagation(); document.getBindingParent(this).inputEvent();"
 					onblur="event.stopPropagation(); var elem = this; while (elem.localName != 'textbox') elem = elem.parentNode; document.getBindingParent(elem).blurEvent();"
 					crop="right" highlightnonmatches="true"/>
 				<xul:spacer flex="1" /></xul:vbox>
@@ -300,7 +300,7 @@
 				<xul:vbox><xul:spacer flex="1" />
 					<xul:hbox>
 						<xul:label id="msgIdentity_base_id_label" class="menu_clone-description" xbl:inherits="value,hidden=base_id_key_hidden" crop="right" hidden="true"/>
-						<xul:label id="msgIdentity_clone_label" class="menu_clone-description" xbl:inherits="value=description" crop="right"/>
+						<xul:label id="virtualIdentityExtension_msgIdentityClone_label" class="menu_clone-description" xbl:inherits="value=description" crop="right"/>
 					</xul:hbox>
 				<xul:spacer flex="1" /></xul:vbox>
 				<xul:vbox id="saveBaseIDSwitch"><xul:spacer flex="1" />
@@ -581,7 +581,7 @@
 		virtualIdentityExtension.MyLog.debug("** v_identity.xml identityData setter done.'\n")
 		]]></setter>
 	</property>
-	<field name="_popupElem">document.getElementById("msgIdentityPopup_clone")</field>
+	<field name="_popupElem">document.getElementById("virtualIdentityExtension_msgIdentityPopupClone")</field>
 	<field name="tooltipElem">document.getAnonymousElementByAttribute(this, "anonid", "contentHBox")</field>
 	<field name="textBoxElem">document.getAnonymousElementByAttribute(this, "anonid", "textBox");</field>
 	<field name="_prefroot">Components.classes["@mozilla.org/preferences-service;1"]

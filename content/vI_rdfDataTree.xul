@@ -69,8 +69,8 @@
 <stringbundleset id="stringbundleset">
 	<stringbundle id="vI_rdfDataTreeBundle" src="chrome://v_identity/locale/vI_rdfDataEditor.properties" />
 	<stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />
-    <stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
-        <stringbundle id="vIStorageExtrasBundle" src="chrome://v_identity/locale/vI_storageExtras.properties" />
+    <stringbundle id="virtualIdentityExtension_vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
+        <stringbundle id="virtualIdentityExtension_vIStorageExtrasBundle" src="chrome://v_identity/locale/vI_storageExtras.properties" />
 </stringbundleset>
 
 <menupopup hidden="true">  <!--just to hold the localized labels-->
@@ -305,5 +305,5 @@
 </tabbox>
 <!-- <splitter /> -->
 <browser id="rdfDataTreeCollectionInfoBox" class="vI_htmlTextBox" type="chrome" cssSource="vI_rdfTreeInfo.css" disablehistory="true" onoverflow="virtualIdentityExtension.rdfDataTreeCollection.overflow();"/>
-<textbox id="vIDebugBox" />
+<textbox id="virtualIdentityExtension_vIDebugBox" />
 </window>

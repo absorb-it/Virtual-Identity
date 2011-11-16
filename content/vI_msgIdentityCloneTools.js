@@ -105,14 +105,14 @@ var msgIdentityCloneTools = {
 	
 	initReplyTo : function() {
 		if (vI.statusmenu.prefroot.getBoolPref("extensions.virtualIdentity.autoReplyToSelf")) {
-			document.getElementById("autoReplyToSelfLabel").removeAttribute("hidden");
+			document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").removeAttribute("hidden");
 			msgIdentityCloneTools.removeAllReplyTos();
 		}
-		else document.getElementById("autoReplyToSelfLabel").setAttribute("hidden", "true");
+		else document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").setAttribute("hidden", "true");
 	},
 	
 	removeAllReplyTos : function() {
-		if (!document.getElementById("autoReplyToSelfLabel").hasAttribute("hidden")) {
+		if (!document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").hasAttribute("hidden")) {
 			for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 				var awType = awGetPopupElement(row).selectedItem.getAttribute("value");
 				if (awType == "addr_reply") {
@@ -124,10 +124,10 @@ var msgIdentityCloneTools = {
 	},
 
 	addReplyToSelf : function() {
-		if (!document.getElementById("autoReplyToSelfLabel").hasAttribute("hidden")) {
-			awAddRecipient("addr_reply",document.getElementById("msgIdentity_clone").label);
+		if (!document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").hasAttribute("hidden")) {
+			awAddRecipient("addr_reply",document.getElementById("virtualIdentityExtension_msgIdentityClone").label);
 			Log.debug("added ReplyToSelf");
-			document.getElementById("autoReplyToSelfLabel").setAttribute("hidden","true");
+			document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").setAttribute("hidden","true");
 		}
 	}
 }

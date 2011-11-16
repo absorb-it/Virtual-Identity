@@ -58,13 +58,13 @@ var main = {
 	// some pointers to the layout-elements of the extension
 	elements : {
 		init_base : function() {
-			main.elements.Area_MsgIdentityHbox = document.getElementById("msgIdentityHbox");
+			main.elements.Area_MsgIdentityHbox = document.getElementById("virtualIdentityExtension_msgIdentityHbox");
 			main.elements.Obj_MsgIdentity = document.getElementById("msgIdentity");
 		},
 		init_rest : function() {
 			main.elements.Obj_MsgIdentityPopup = document.getElementById("msgIdentityPopup");
-			main.elements.Obj_vILogo = document.getElementById("v_identity_logo");
-			main.elements.strings = document.getElementById("vIdentBundle");
+			main.elements.Obj_vILogo = document.getElementById("virtualIdentityExtension_Logo");
+			main.elements.strings = document.getElementById("virtualIdentityExtension_vIdentBundle");
 		},
 		strings : null
 	},
@@ -147,8 +147,8 @@ var main = {
 			
 			if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now) { vI.msgIdentityCloneTools.addReplyToSelf(); }
 
-			var vid = document.getElementById("msgIdentity_clone").vid
-			var virtualIdentityData = document.getElementById("msgIdentity_clone").identityData;
+			var vid = document.getElementById("virtualIdentityExtension_msgIdentityClone").vid
+			var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
 			
 			returnValue = vIaccount_prepareSendMsg(	vid, msgType, virtualIdentityData,
 							main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
@@ -159,7 +159,7 @@ var main = {
 				return;
 			}
 			else if (returnValue.update == "takeover") {
-					var msgIdentityCloneElem = document.getElementById("msgIdentity_clone");
+					var msgIdentityCloneElem = document.getElementById("virtualIdentityExtension_msgIdentityClone");
 					msgIdentityCloneElem.selectedMenuItem = msgIdentityCloneElem.addIdentityToCloneMenu(returnValue.storedIdentity);
 					main.replacement_functions.GenericSendMessageInProgress = false;
 					Log.debug("sending: --------------  aborted  ---------------------------------\n")
@@ -232,12 +232,12 @@ var main = {
 		main.adapt_interface();
 		gMsgCompose.RegisterStateListener(main.ComposeStateListener);
 		document.getElementById("virtualIdentityExtension_tooltipPopupset")
-			.addTooltip(document.getElementById("msgIdentity_clone"), false);
+			.addTooltip(document.getElementById("virtualIdentityExtension_msgIdentityClone"), false);
 		window.addEventListener('compose-window-reopen', main.reopen, true);
 		window.addEventListener('compose-window-close', main.close, true);
 		
-		// append observer to fcc_switch, because it does'n work with real identities (hidden by css)
-		document.getElementById("fcc_switch").appendChild(document.getElementById("msgIdentity_clone_observer").cloneNode(false));
+		// append observer to virtualIdentityExtension_fccSwitch, because it does'n work with real identities (hidden by css)
+		document.getElementById("virtualIdentityExtension_fccSwitch").appendChild(document.getElementById("virtualIdentityExtension_msgIdentityClone_observer").cloneNode(false));
 
         main.AccountManagerObserver.register();
         
@@ -248,7 +248,7 @@ var main = {
 	initSystemStage1 : function() {
 		Log.debug("initSystemStage1.\n")
 		main.gMsgCompose = gMsgCompose;
-		document.getElementById("msgIdentity_clone").init();
+		document.getElementById("virtualIdentityExtension_msgIdentityClone").init();
 		vI.statusmenu.init();
 		Log.debug("initSystemStage1 done.\n")
 	},
@@ -275,18 +275,18 @@ var main = {
 		// rearrange the positions of some elements
 		var parent_hbox = main.elements.Obj_MsgIdentity.parentNode;
 		var storage_box = document.getElementById("addresses-box");
-		var autoReplyToSelfLabel = document.getElementById("autoReplyToSelfLabel");
+		var virtualIdentityExtension_autoReplyToSelfLabel = document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel");
 		
-		storage_box.removeChild(autoReplyToSelfLabel);
-		parent_hbox.appendChild(autoReplyToSelfLabel);
+		storage_box.removeChild(virtualIdentityExtension_autoReplyToSelfLabel);
+		parent_hbox.appendChild(virtualIdentityExtension_autoReplyToSelfLabel);
 		storage_box.removeChild(main.elements.Area_MsgIdentityHbox);
 		parent_hbox.appendChild(main.elements.Area_MsgIdentityHbox);
 
 		main.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
-		main.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity_clone");
+		main.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "virtualIdentityExtension_msgIdentityClone");
 		
 		var access_label = parent_hbox.getElementsByAttribute( "control", "msgIdentity" )[0];
-		if (access_label) access_label.setAttribute("control", "msgIdentity_clone");
+		if (access_label) access_label.setAttribute("control", "virtualIdentityExtension_msgIdentityClone");
 		
 		// initialize the pointers to extension elements (initialize those earlier might brake the interface)
 		main.elements.init_rest();	
@@ -305,7 +305,7 @@ var main = {
 		Log.debug("composeDialog reopened. (msgType " + gMsgCompose.type + ")\n")
 		
 		// clean all elements
-		document.getElementById("msgIdentity_clone").clean();
+		document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
 		Log.debug("everything cleaned.\n")
 		
 		// now (re)init the elements
@@ -375,7 +375,7 @@ var main = {
 
 	prepareAccount : function() {
 		main.Cleanup(); // just to be sure that nothing is left (maybe last time sending was irregularily stopped)
-		vIaccount_createAccount(document.getElementById("msgIdentity_clone").identityData,
+		vIaccount_createAccount(document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData,
 								 main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value));
 		main.addVirtualIdentityToMsgIdentityMenu();
 	},
@@ -391,13 +391,13 @@ var main = {
         observe : function(subject, topic, data) {
             if (topic == "am-smtpChanges") {
                 Log.debug("smtp changes observed\n");
-                var msgIdentity_clone = document.getElementById("msgIdentity_clone");
-                document.getAnonymousElementByAttribute(msgIdentity_clone, "class", "smtpServerListHbox").refresh();
+                var virtualIdentityExtension_msgIdentityClone = document.getElementById("virtualIdentityExtension_msgIdentityClone");
+                document.getAnonymousElementByAttribute(virtualIdentityExtension_msgIdentityClone, "class", "smtpServerListHbox").refresh();
             }
             if (topic == "am-acceptChanges") {
                 Log.debug("account changes observed\n");
-                document.getElementById("msgIdentity_clone").clean();
-                document.getElementById("msgIdentity_clone").init();
+                document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
+                document.getElementById("virtualIdentityExtension_msgIdentityClone").init();
             }
         },
         register : function() {

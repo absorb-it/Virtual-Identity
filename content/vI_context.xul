@@ -43,7 +43,7 @@
 			.getBranch(null),
 			
 		observe: function(subject, topic, data) {
-			document.getElementById("vI_Menu").setAttribute("hidden", 
+			document.getElementById("virtualIdentityExtension_vIMenu").setAttribute("hidden", 
 				!vI_context.prefroot.getBoolPref("extensions.virtualIdentity.menu_entry"));
 		}
 		
@@ -61,7 +61,7 @@
 	</script>
 	
 	<menupopup id="taskPopup">
-		<menu id="vI_Menu" hidden="true" label="&vident.vI_Menu.label;">
+		<menu id="virtualIdentityExtension_vIMenu" hidden="true" label="&vident.vI_Menu.label;">
 			<menupopup>
 				<menuitem label="&vident.vI_Menu.Settings.label;"
 					  oncommand="window.open('chrome://v_identity/content/prefDialog/vI_prefDialog_TB3.xul', '', 'chrome, dialog, alwaysRaised, resizable=yes');" />

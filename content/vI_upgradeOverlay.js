@@ -56,9 +56,9 @@ var upgradeOverlay = {
 		});
 		
 		if (prefroot.getBoolPref("extensions.virtualIdentity.error_console")) {
-			document.getElementById("vIErrorBoxSplitter").removeAttribute("hidden");
-			document.getElementById("vIErrorBox").removeAttribute("hidden");
-			document.getElementById("vIErrorBox").setAttribute("class", "console-box");
+			document.getElementById("virtualIdentityExtension_vIErrorBoxSplitter").removeAttribute("hidden");
+			document.getElementById("virtualIdentityExtension_vIErrorBox").removeAttribute("hidden");
+			document.getElementById("virtualIdentityExtension_vIErrorBox").setAttribute("class", "console-box");
 			prefroot.setBoolPref("javascript.options.showInConsole", true);
 			prefroot.setBoolPref("browser.dom.window.dump.enabled", true);
 			prefroot.setBoolPref("javascript.options.strict", true);

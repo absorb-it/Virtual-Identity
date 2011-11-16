@@ -117,7 +117,7 @@ var statusmenu = {
 	init : function () {
 		statusmenu.prefroot.QueryInterface(Components.interfaces.nsIPrefBranch2);
 
-		statusmenu.objStatusMenu = document.getElementById("vI-status-menu");
+		statusmenu.objStatusMenu = document.getElementById("virtualIdentityExtension_vIStatusMenu");
 		statusmenu.objSaveBaseIDMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_saveBaseID");
 		statusmenu.objSaveSMTPMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_saveSMTP");
 		statusmenu.objStorageSaveMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_save");
@@ -125,7 +125,7 @@ var statusmenu = {
 		statusmenu.objSaveSwitch = document.getElementById("saveSwitch");
 		statusmenu.objSaveBaseIDSwitch = document.getElementById("saveBaseIDSwitch");
 		statusmenu.objSaveSMTPSwitch = document.getElementById("saveSMTPSwitch");
-		statusmenu.objFccSwitch = document.getElementById("fcc_switch");
+		statusmenu.objFccSwitch = document.getElementById("virtualIdentityExtension_fccSwitch");
 		statusmenu.objStatusText = document.getElementById("statusText");
 		statusmenu.objStatusTooltipLine1 = document.getElementById("virtualIdentityExtension_statusMenuTooltip_StatusValueLine1");
 		statusmenu.objStatusTooltipLine2 = document.getElementById("virtualIdentityExtension_statusMenuTooltip_StatusValueLine2");
