@@ -46,11 +46,9 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_statusmenu.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js"/>
-<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js"/>
 
   <stringbundleset id="stringbundleset">
     <stringbundle id="virtualIdentityExtension_vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
-    <stringbundle id="virtualIdentityExtension_vIStorageExtrasBundle" src="chrome://v_identity/locale/vI_storageExtras.properties" />
   </stringbundleset>
 
 <vbox id="appcontent" >

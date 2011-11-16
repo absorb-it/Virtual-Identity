@@ -16,7 +16,7 @@
 
 <!ENTITY vI_storageExtras.caption.label "Дополнительные параметры сохранения">
 
-<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Состояние уведомления о получении">
+<!ENTITY vI_storageExtrasDataTreeOverlay.receiptCol.label "Состояние уведомления о получении">
 <!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "Состояние FCC (File Carbon Copy)">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Выбранная кодировка сообщений">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Выбранный формат сообщений">
@@ -27,7 +27,7 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP: использование PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "Скрыть неактивные поля">
-<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Состояние уведомления о получении">
+<!ENTITY vI_storageExtrasDataEditorOverlay.receipt.label "Состояние уведомления о получении">
 <!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "Состояние FCC (File Carbon Copy)">
 <!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Выбранная кодировка сообщений">
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Выбранный формат сообщений">

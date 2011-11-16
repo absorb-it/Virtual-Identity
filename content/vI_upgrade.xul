@@ -44,7 +44,6 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_identityData.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_helper.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_rdfDatasource.js" />	
-<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
 
 <stringbundle id="virtualIdentityExtension_TextBoxBundle" src="chrome://v_identity/locale/vI_upgrade.properties" />
 <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />

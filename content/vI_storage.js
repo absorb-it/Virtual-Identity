@@ -167,16 +167,18 @@ var storage = {
 		// found storageData, so store InputElement
 		if (!storage.firstUsedInputElement) storage.firstUsedInputElement = inputElement;
 		
-		var selectedMenuItem;
+		var newMenuItem = null;
 		if (storageResult.result != "equal") {
 			for (var j = 0; j < storageResult.identityCollection.number; j++) {
 				Log.debug("updateVIdentityFromStorage adding: " + storageResult.identityCollection.identityDataCollection[j].combinedName + "\n");
-				selectedMenuItem = document.getElementById("virtualIdentityExtension_msgIdentityClone").addIdentityToCloneMenu(storageResult.identityCollection.identityDataCollection[j])
+				let menuItem = document.getElementById("virtualIdentityExtension_msgIdentityClone")
+                  .addIdentityToCloneMenu(storageResult.identityCollection.identityDataCollection[j])
+                if (!newMenuItem) newMenuItem = menuItem;
 			}
 		}
 		if (storageResult.result == "accept") {
 			Log.debug("updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName + "\n");
-			document.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = selectedMenuItem;
+			document.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = newMenuItem;
 			if (document.getElementById("virtualIdentityExtension_msgIdentityClone").vid)
 				vI.StorageNotification.info(vI.main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".");
 		}

@@ -35,10 +35,7 @@
 <overlay id="vI_storageExtras" 
           xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
 
-<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
 <script type="application/x-javascript" src="chrome://global/content/charsetOverlay.js"/>
-
-
 	<vbox id="vI_rdfDataEditorContent">
 	<groupbox>
 	<caption>
@@ -47,24 +44,24 @@
 		<spacer flex="1"/></vbox>
 		<spacer width="10px" />
 		<checkbox id="vI_storageExtras_hideUnusedEditorFields" label="&vI_storageExtrasDataEditorOverlay.hideUnused.label;"
-			oncommand="virtualIdentityExtension.storageExtrasHelper.hideUnusedEditorFields();"
+			oncommand="virtualIdentityExtension.rdfDataEditor.hideUnusedEditorFields();"
 			persist="checked" />
 	</caption>
 		<label id="storeValue" value="&vI_storageExtras.storeValue.label;" />
 	<!-- storageExtras_returnReciept -->
 		<hbox>
-		<checkbox id="vI_storageExtras_returnReciept_store" oncommand="virtualIdentityExtension.storageExtras_adapt(this.id, null);" />
-		<checkbox id="vI_storageExtras_returnReciept" label="&vI_storageExtrasDataEditorOverlay.reciept.label;"/>
+		<checkbox id="vI_storageExtras_returnReciept_store" oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, null);" />
+		<checkbox id="vI_storageExtras_returnReciept" label="&vI_storageExtrasDataEditorOverlay.receipt.label;"/>
 		</hbox>
 	<!-- storageExtras_fcc -->
 		<hbox>
-		<checkbox id="vI_storageExtras_fcc_store" oncommand="virtualIdentityExtension.storageExtras_adapt(this.id, null);" />
+		<checkbox id="vI_storageExtras_fcc_store" oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, null);" />
 		<checkbox id="vI_storageExtras_fcc" label="&vI_storageExtrasDataEditorOverlay.fcc.label;"/>
 		</hbox>
 	<!-- storageExtras_characterEncoding -->
 		<hbox>
 		<checkbox id="vI_storageExtras_characterEncoding_store"
-			oncommand="virtualIdentityExtension.storageExtras_adapt(this.id, 'maileditCharsetMenuLabel');virtualIdentityExtension.storageExtras_adapt(this.id, 'maileditCharsetMenu');" />
+			oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, 'maileditCharsetMenuLabel');virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, 'maileditCharsetMenu');" />
 		<hbox id="vI_storageExtras_characterEncoding">
 			<vbox><spacer flex="1"/>
 				<label id="maileditCharsetMenuLabel" value="&charsetMenu.label;"
@@ -89,7 +86,7 @@
 	<!-- storageExtras_messageFormat -->
 		<hbox>
 		<checkbox id="vI_storageExtras_messageFormat_store"
-			oncommand="virtualIdentityExtension.storageExtras_adapt(this.id, 'outputFormatMenuLabel');virtualIdentityExtension.storageExtras_adapt(this.id, 'outputFormatMenu');" />
+			oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, 'outputFormatMenuLabel');virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, 'outputFormatMenu');" />
 		<hbox id="vI_storageExtras_messageFormat">
 			<vbox><spacer flex="1"/>
 				<label id="outputFormatMenuLabel" value="&outputFormatMenu.label;"
@@ -107,31 +104,31 @@
 		</hbox>
 	<!-- storageExtras_sMime_messageEncryption -->
 		<hbox>
-		<checkbox id="vI_storageExtras_sMime_messageEncryption_store" oncommand="virtualIdentityExtension.storageExtras_adapt(this.id, null)" />
+		<checkbox id="vI_storageExtras_sMime_messageEncryption_store" oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, null)" />
 		<checkbox id="vI_storageExtras_sMime_messageEncryption"
 			label="&vI_storageExtrasDataEditorOverlay.sMimeEnc.label;"/>
 		</hbox>
 	<!-- storageExtras_sMime_messageSignature -->
 		<hbox>
-		<checkbox id="vI_storageExtras_sMime_messageSignature_store" oncommand="virtualIdentityExtension.storageExtras_adapt(this.id, null)" />
+		<checkbox id="vI_storageExtras_sMime_messageSignature_store" oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, null)" />
 		<checkbox id="vI_storageExtras_sMime_messageSignature"
 			label="&vI_storageExtrasDataEditorOverlay.sMimeSig.label;"/>
 		</hbox>
 	<!-- storageExtras_openPGP_messageEncryption -->
 		<hbox>
-		<checkbox id="vI_storageExtras_openPGP_messageEncryption_store" oncommand="virtualIdentityExtension.storageExtras_adapt(this.id, null)" />
+		<checkbox id="vI_storageExtras_openPGP_messageEncryption_store" oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, null)" />
 		<checkbox id="vI_storageExtras_openPGP_messageEncryption"
 			label="&vI_storageExtrasDataEditorOverlay.PGPEnc.label;"/>
 		</hbox>
 	<!-- storageExtras_openPGP_messageSignature -->
 		<hbox>
-		<checkbox id="vI_storageExtras_openPGP_messageSignature_store" oncommand="virtualIdentityExtension.storageExtras_adapt(this.id, null)" />
+		<checkbox id="vI_storageExtras_openPGP_messageSignature_store" oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, null)" />
 		<checkbox id="vI_storageExtras_openPGP_messageSignature"
 			label="&vI_storageExtrasDataEditorOverlay.PGPSig.label;"/>
 		</hbox>
 	<!-- storageExtras_openPGP_PGPMIME -->
 		<hbox>
-		<checkbox id="vI_storageExtras_openPGP_PGPMIME_store" oncommand="virtualIdentityExtension.storageExtras_adapt(this.id, null)" />
+		<checkbox id="vI_storageExtras_openPGP_PGPMIME_store" oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, null)" />
 		<checkbox id="vI_storageExtras_openPGP_PGPMIME"
 			label="&vI_storageExtrasDataEditorOverlay.PGPMIME.label;"/>
 		</hbox>

@@ -351,7 +351,7 @@
 		virtualIdentityExtension.MyLog.debug("\n** v_identity.xml msgIdentityCloneElem.doCommand() \n")
 		virtualIdentityExtension.MyLog.debug("\n** v_identity.xml msgIdentityCloneElem.doCommand() \n")
 		// copy selected Menu-Value from clone to orig.
-		virtualIdentityExtension.MyLog.debug("** v_identity.xmlcopy selected Menu-Value from clone to orig. Searching for id=" + this.selectedMenuItem.identityData.id.key + " \n")
+		virtualIdentityExtension.MyLog.debug("** v_identity.xml copy selected Menu-Value from clone to orig. Searching for id=" + this.selectedMenuItem.identityData.id.key + " \n")
 		if ( this.selectedMenuItem.identityData.id.key != null ) {
 			var MenuItems = this._msgIdentityPopupElem.childNodes
 			for (var index = 0; index < MenuItems.length; index++) {
@@ -548,7 +548,7 @@
 	</property>
 	<property name="identityData">
 		<getter><![CDATA[
-		this._identityDataStorage.extras.readValues(); // update with current data
+		this._identityDataStorage.extras.getValuesFromEnvironment(); // update with current data
 		return this._identityDataStorage;
 		]]></getter>
 		<setter><![CDATA[
@@ -566,7 +566,7 @@
 					this._identityDataStorage.email = oldIdentityData.email;
 				if (!this._identityDataStorage.smtp.key) this._identityDataStorage.smtp.key = oldIdentityData.smtp.key;
 				if (!this._identityDataStorage.id.key) this._identityDataStorage.id.key = oldIdentityData.id.key;
-				this._identityDataStorage.extras.setValues();
+				this._identityDataStorage.extras.setValuesToEnvironment();
 				if (this._identityDataStorage.existingID) this.vid = false;
 				else this.checkForVirtualIdentity();
 			}

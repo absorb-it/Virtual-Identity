@@ -18,7 +18,9 @@ overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome:
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://v_identity/content/vI_context.xul
 
 overlay chrome://messenger/content/mailWindowOverlay.xul			chrome://v_identity/content/vI_getHeader.xul
-overlay	chrome://v_identity/content/vI_rdfDataTree.xul	chrome://v_identity/content/vI_storageExtrasDataTreeOverlay.xul
-overlay	chrome://v_identity/content/vI_rdfDataEditor.xul	chrome://v_identity/content/vI_storageExtrasDataEditorOverlay.xul
-overlay chrome://messenger/content/am-smtp.xul chrome://v_identity/content/accountManagerOverlays/vI_am-smtpOverlay.xul
-overlay chrome://messenger/content/AccountManager.xul chrome://v_identity/content/accountManagerOverlays/vI_am-Overlay.xul
+
+overlay	chrome://v_identity/content/vI_rdfDataTree.xul	    chrome://v_identity/content/vI_rdfDataTree_dataExtrasOverlay.xul
+overlay	chrome://v_identity/content/vI_rdfDataEditor.xul	chrome://v_identity/content/vI_rdfDataEditor_dataExtrasOverlay.xul
+
+overlay chrome://messenger/content/am-smtp.xul          chrome://v_identity/content/accountManagerOverlays/vI_am-smtpOverlay.xul
+overlay chrome://messenger/content/AccountManager.xul   chrome://v_identity/content/accountManagerOverlays/vI_am-Overlay.xul

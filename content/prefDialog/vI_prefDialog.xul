@@ -49,11 +49,6 @@
 
 <dialog id="vI_prefDialog">
 
-<script type="application/x-javascript"
-            src="chrome://v_identity/content/vI_storageExtras.js" />
-<script type="application/x-javascript"
-            src="chrome://v_identity/content/modules/vI_rdfDatasource.js" />
-
 <stringbundleset id="stringbundleset">
 	<stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
 	<stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>

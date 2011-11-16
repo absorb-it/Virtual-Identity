@@ -16,7 +16,7 @@
 
 <!ENTITY vI_storageExtras.caption.label "zusätzlich gespeicherte Einstellungen">
 
-<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Empfangsbestätigung">
+<!ENTITY vI_storageExtrasDataTreeOverlay.receiptCol.label "Empfangsbestätigung">
 <!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC Sende-Kopie">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Zeichensatz">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Email-Format">
@@ -27,7 +27,7 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "verstecke unbenutzte Felder">
-<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Empfangsbestätigung">
+<!ENTITY vI_storageExtrasDataEditorOverlay.receipt.label "Empfangsbestätigung">
 <!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC Sende-Kopie">
 <!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Zeichensatz">
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Email-Format">

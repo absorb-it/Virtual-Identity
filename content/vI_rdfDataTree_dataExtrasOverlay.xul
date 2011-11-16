@@ -33,11 +33,9 @@
 <overlay id="vI_storageExtrasOverlay" 
 		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
 
-<script type="application/x-javascript" src="chrome://v_identity/content/vI_storageExtras.js" />
-
 	<treecols id="rdfDataTreeCols_email">
 		<splitter class="tree-splitter" />
-		<treecol id="recieptCol_email" label="&vI_storageExtrasDataTreeOverlay.recieptCol.label;" flex="2"
+		<treecol id="receiptCol_email" label="&vI_storageExtrasDataTreeOverlay.receiptCol.label;" flex="2"
 			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
@@ -76,7 +74,7 @@
 
 	<treecols id="rdfDataTreeCols_maillist">
 		<splitter class="tree-splitter" />
-		<treecol id="recieptCol_maillist" label="&vI_storageExtrasDataTreeOverlay.recieptCol.label;" flex="2"
+		<treecol id="receiptCol_maillist" label="&vI_storageExtrasDataTreeOverlay.receiptCol.label;" flex="2"
 			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
@@ -115,7 +113,7 @@
 
 	<treecols id="rdfDataTreeCols_newsgroup">
 		<splitter class="tree-splitter" />
-		<treecol id="recieptCol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.recieptCol.label;" flex="2"
+		<treecol id="receiptCol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.receiptCol.label;" flex="2"
 			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
@@ -155,7 +153,7 @@
 
 	<treecols id="rdfDataTreeCols_filter">
 		<splitter class="tree-splitter" />
-		<treecol id="recieptCol_filter" label="&vI_storageExtrasDataTreeOverlay.recieptCol.label;" flex="2"
+		<treecol id="receiptCol_filter" label="&vI_storageExtrasDataTreeOverlay.receiptCol.label;" flex="2"
 			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />

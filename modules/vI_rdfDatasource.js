@@ -30,14 +30,17 @@ let Log = setupLogging("virtualIdentity.rdfDatasource");
 Components.utils.import("resource://v_identity/vI_identityData.js");
 Components.utils.import("resource://gre/modules/Services.jsm");
 
+function get3PaneWindow() {
+  return Components.classes['@mozilla.org/appshell/window-mediator;1']
+    .getService(Components.interfaces.nsIWindowMediator)
+    .getMostRecentWindow("mail:3pane");
+};
+
 function rdfDatasource(rdfFileName, dontRegisterObserver) {
     this._rdfFileName = rdfFileName;
     if (this._rdfFileName) this.init();
     if (!dontRegisterObserver) this.AccountManagerObserver.register();
-	let window = Components.classes['@mozilla.org/appshell/window-mediator;1']
-        .getService(Components.interfaces.nsIWindowMediator)
-        .getMostRecentWindow("mail:3pane");
-	this._extVersion = window.virtualIdentityExtension.extensionVersion;
+	this._extVersion = get3PaneWindow().virtualIdentityExtension.extensionVersion;
 }
 
 rdfDatasource.prototype = {
@@ -417,8 +420,7 @@ rdfDatasource.prototype = {
         }
         if (mismatchIDs.length > 0) {
             Log.debug(" found mismatches on id(s).\n");
-            
-            window.openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul",0,
+            get3PaneWindow().openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul",0,
                     "chrome, dialog, modal, alwaysRaised, resizable=yes", "identity", mismatchIDs,
                     /* callback chance: */ this).focus();
             return true;
@@ -493,7 +495,7 @@ rdfDatasource.prototype = {
         }
         if (mismatchSMTPs.length > 0) {
             Log.debug(" found mismatches on smtp(s).\n");
-            window.openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul",0,
+            get3PaneWindow().openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul",0,
                     "chrome, dialog, modal, alwaysRaised, resizable=yes", "smtp", mismatchSMTPs,
                     /* callback: */ this).focus();
             return true;
@@ -550,7 +552,7 @@ rdfDatasource.prototype = {
     export : function(rdfFileName) {
         var filePicker = Components.classes["@mozilla.org/filepicker;1"]
             .createInstance(Components.interfaces.nsIFilePicker);
-        filePicker.init(window, "", Components.interfaces.nsIFilePicker.modeSave);
+        filePicker.init(get3PaneWindow(), "", Components.interfaces.nsIFilePicker.modeSave);
         filePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll | Components.interfaces.nsIFilePicker.filterText );
         filePicker.appendFilter("RDF Files","*.rdf");
         
@@ -592,9 +594,12 @@ rdfDatasource.prototype = {
 		this._unsetRDFValue(resource, "smtp", this._getRDFValue(resource, "smtp"))
 		this._unsetRDFValue(resource, "name", this._getRDFValue(resource, "name"))
 		
-        var extras = null;
-//         var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
-        if (extras) extras.loopForRDF(this, resource, "unset");
+        let self = this;
+        var extras = new identityDataExtras(self, resource)
+        extras.loopThroughExtras(
+          function (extra) {
+            extra.value = self._unsetRDFValue(resource, extra.field, extra.value) });
+        
         this.getContainer(recType).RemoveElement(resource, true);
 	},
 	
@@ -623,10 +628,8 @@ rdfDatasource.prototype = {
 			var id = this._getRDFValue(resource, "id")
 			var smtp = this._getRDFValue(resource, "smtp")
 			if (!smtp) smtp = NO_SMTP_TAG;
-            var extras = null;
-// 			var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
-			
-			var localIdentityData = new identityData(email, fullName, id, smtp, extras)
+            let self = this;
+            var localIdentityData = new identityData(email, fullName, id, smtp, new identityDataExtras(self, resource))
 			addNewDatum (resource, name, localIdentityData, idData)
 		}
 	},
@@ -742,13 +745,8 @@ rdfDatasource.prototype = {
 		
 		Log.debug("email='" + email + 
 			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'\n");
-		var extras = null;
-// 		var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this, resource):null;
-		var extras_status = " not used";
-//         var extras_status = (typeof(vI.storageExtras)=='function')?extras.status():" not used";
-		Log.debug("extras:" + extras_status + "\n");
-		
-		var localIdentityData = new identityData(email, fullName, id, smtp, extras)
+        let self = this;
+		var localIdentityData = new identityData(email, fullName, id, smtp, new identityDataExtras(self, resource))
 		return localIdentityData;
 	},
 
@@ -812,15 +810,21 @@ rdfDatasource.prototype = {
 		else	this._unsetRDFValue(resource, "smtp", this._getRDFValue(resource, "smtp"))
         this._setRDFValue(resource, "name", recDescription);
  
-        if (localIdentityData.extras) localIdentityData.extras.loopForRDF(this, resource, "set");
-		
+        if (localIdentityData.extras) {
+          let self = this;
+          localIdentityData.extras.loopThroughExtras(
+            function (extra) {
+              extra.value = self._setRDFValue(resource, extra.field, extra.value) });
+          Log.debug("extras: " + localIdentityData.extras.status() + "\n");
+        }
+        
 		Log.debug("updateRDF add " + resource.ValueUTF8 + " at position " + position + ".\n");
         if (position != -1) this.getContainer(recType).InsertElementAt(resource, position, true);
 		else this.getContainer(recType).AppendElement(resource);
 	},
 
 	_setRDFValue : function (resource, field, value) {
-// 		Log.debug("_setRDFValue " + resource.ValueUTF8 + " " + field + " " + value + ".\n");
+		Log.debug("_setRDFValue " + resource.ValueUTF8 + " " + field + " " + value + ".\n");
 		if (!value) return value; // return if some value was not set.
 // 		Log.debug("_setRDFValue " + this._rdfService + " " + this._rdfDataSource + "\n");
         var predicate = this._rdfService.GetResource(this._rdfNS + "rdf#" + field);
@@ -985,7 +989,7 @@ rdfDatasourceAccess.prototype = {
 
 	__askWarning : function(warning) {
 		var retVar = { returnValue: null };
-		var answer = window.openDialog("chrome://v_identity/content/vI_Dialog.xul","",
+		var answer = get3PaneWindow().openDialog("chrome://v_identity/content/vI_Dialog.xul","",
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
 					 warning, retVar)
 		dump("retVar.returnValue=" + retVar.returnValue + "\n")
@@ -1100,7 +1104,7 @@ rdfDatasourceImporter.prototype = {
         var filePicker = Components.classes["@mozilla.org/filepicker;1"]
             .createInstance(Components.interfaces.nsIFilePicker);
 
-        filePicker.init(window, "", Components.interfaces.nsIFilePicker.modeOpen);
+        filePicker.init(get3PaneWindow(), "", Components.interfaces.nsIFilePicker.modeOpen);
         filePicker.appendFilter("RDF Files","*.rdf");
         filePicker.appendFilters(Components.interfaces.nsIFilePicker.filterText | Components.interfaces.nsIFilePicker.filterAll );
         
@@ -1148,9 +1152,7 @@ rdfDatasourceImporter.prototype = {
                     id = id?relevantIDs[id].id:null
                     var smtp = this._rdfImportDataSource._getRDFValue(resource, "smtp")
                     smtp = (smtp && smtp != DEFAULT_SMTP_TAG)?relevantSMTPs[smtp].smtp:smtp
-                    var extras = null;
-//                     var extras = (typeof(vI.storageExtras)=='function')?new vI.storageExtras(this._rdfImportDataSource, resource):null;
-                    var localIdentityData = new identityData(email, fullName, id, smtp, extras)
+                    var localIdentityData = new identityData(email, fullName, id, smtp, new identityDataExtras(this._rdfImportDataSource, resource))
                     
                     this._rdfDataSource.updateRDF(name, treeType, localIdentityData, false, false, null, null)
                     var resource = this._rdfDataSource._getRDFResourceForVIdentity(name, treeType);

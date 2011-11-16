@@ -128,17 +128,17 @@ NotificationOutputAppender.prototype = {
     if (self.timer)
       self.currentWindow.clearTimeout(self.timer);
     self.timer = null;
-    obj_notificationBox = self.currentWindow.document.getElementById("virtualIdentityExtension_vINotification");
+    let obj_notificationBox = self.currentWindow.document.getElementById("virtualIdentityExtension_vINotification");
     if (obj_notificationBox)
       obj_notificationBox.removeAllNotifications(true);
   },
 
   addNote: function(note) {
-    obj_notificationBox = this.currentWindow.document.getElementById("virtualIdentityExtension_vINotification");
+    let obj_notificationBox = this.currentWindow.document.getElementById("virtualIdentityExtension_vINotification");
     if (!obj_notificationBox)
       return;
-    var oldNotification = obj_notificationBox.currentNotification
-    var newLabel = (oldNotification)?oldNotification.label + note:note;
+    let oldNotification = obj_notificationBox.currentNotification
+    let newLabel = (oldNotification)?oldNotification.label + note:note;
     this.clearNote(this);
     obj_notificationBox.appendNotification(newLabel, "", "chrome://messenger/skin/icons/flag.png");
 
@@ -155,11 +155,11 @@ function notificationOverflow(elem) {
     .getService(Ci.nsIWindowMediator)
     .getMostRecentWindow(null);
   // height will be cut off from messagepane (in 3pane window)
-  var objMessagepane = currentWindow.document.getElementById("messagepane");
-  var maxHeight = (objMessagepane)?parseInt(objMessagepane.boxObject.height / 2)+1:null;
+  let objMessagepane = currentWindow.document.getElementById("messagepane");
+  let maxHeight = (objMessagepane)?parseInt(objMessagepane.boxObject.height / 2)+1:null;
   if (maxHeight < 60) maxHeight = 60; // set a minimum size, if to small scrollbars are hidden
-    var tooBig = (maxHeight)?(elem.inputField.scrollHeight > maxHeight):false;
-    var newHeight = (tooBig)?maxHeight:elem.inputField.scrollHeight;
+    let tooBig = (maxHeight)?(elem.inputField.scrollHeight > maxHeight):false;
+    let newHeight = (tooBig)?maxHeight:elem.inputField.scrollHeight;
     elem.height = newHeight;
   // give the box a frame if it is to big
   if (tooBig)
@@ -204,7 +204,7 @@ function setupFullLogging(name) {
 function dumpCallStack(e) {
   let frame = e ? e.stack : Components.stack;
   while (frame) {
-    MyLog.debug("\n"+frame);
+    MyLog.debug("\n"+frame+"\n");
     frame = frame.caller;
   }
 }

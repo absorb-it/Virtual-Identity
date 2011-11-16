@@ -16,7 +16,7 @@
 
 <!ENTITY vI_storageExtras.caption.label "Aanvullende opgeslagen instellingen">
 
-<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Ontvangstbevestiging">
+<!ENTITY vI_storageExtrasDataTreeOverlay.receiptCol.label "Ontvangstbevestiging">
 <!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Codering">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Berichtopmaak">
@@ -27,7 +27,7 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "Inactieve velden verbergen">
-<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Ontvangstbevestiging">
+<!ENTITY vI_storageExtrasDataEditorOverlay.receipt.label "Ontvangstbevestiging">
 <!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC">
 <!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Codering">
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Berichtopmaak">

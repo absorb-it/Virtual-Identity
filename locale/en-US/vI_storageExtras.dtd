@@ -16,7 +16,7 @@
 
 <!ENTITY vI_storageExtras.caption.label "additionally stored settings">
 
-<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Return Receipt">
+<!ENTITY vI_storageExtrasDataTreeOverlay.receiptCol.label "Return Receipt">
 <!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Character Encoding">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Message Format">
@@ -27,7 +27,7 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "hide inactive fields">
-<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Return Receipt">
+<!ENTITY vI_storageExtrasDataEditorOverlay.receipt.label "Return Receipt">
 <!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC">
 <!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Character Encoding">
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Message Format">

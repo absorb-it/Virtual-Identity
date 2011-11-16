@@ -16,7 +16,7 @@
 
 <!ENTITY vI_storageExtras.caption.label "paramètres supplémentaires stockés">
 
-<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Accusé de réception">
+<!ENTITY vI_storageExtrasDataTreeOverlay.receiptCol.label "Accusé de réception">
 <!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FS">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Chiffrement des caractères">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Format du message">
@@ -27,7 +27,7 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP : PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "cacher les champs inactifs">
-<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Accusé de réception">
+<!ENTITY vI_storageExtrasDataEditorOverlay.receipt.label "Accusé de réception">
 <!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FS">
 <!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Chiffrement des caractères">
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Format du message">

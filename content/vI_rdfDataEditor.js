@@ -26,6 +26,7 @@ Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
+let Log = vI.setupLogging("virtualIdentity.rdfDataEditor");
 
 var rdfDataEditor = {
 	__rdfDatasource : null,
@@ -90,28 +91,59 @@ var rdfDataEditor = {
 		document.getElementById("smtpServerListHbox").smtp = rdfDataEditor.__identityData.smtp.keyNice;
 		
 		// set extra values
-		rdfDataEditor.__identityData.extras.setEditorValues();
-		vI.storageExtrasHelper.hideUnusedEditorFields();
+		Log.debug("set Values to Environment\n");
+        rdfDataEditor.__identityData.extras.setValuesToEnvironment();
+        Log.debug("init nearly done\n");
+		this.hideUnusedEditorFields();
+        Log.debug("init done\n");
 	},
 	
-	blurEvent : function(elementId) {
+    hideUnusedEditorFields : function() {
+      var allHidden = true;
+      var hide = (document.getElementById("vI_storageExtras_hideUnusedEditorFields").getAttribute("checked") == "true")
+      let preferences = Components.classes["@mozilla.org/preferences-service;1"]
+        .getService(Components.interfaces.nsIPrefService)
+        .getBranch("extensions.virtualIdentity.");
+      rdfDataEditor.__identityData.extras.loopThroughExtras(
+        function(extra) {
+          var hidden = hide && !preferences.getBoolPref(extra.option);
+          document.getElementById("vI_" + extra.option).setAttribute("hidden", hidden)
+          document.getElementById("vI_" + extra.option + "_store").setAttribute("hidden", hidden)
+          if (!hidden) allHidden = false
+        } );
+      document.getElementById("storeValue").setAttribute("hidden", allHidden)
+      // resize the window to the content
+      window.sizeToContent();
+    },
+
+	identityExtras_adapt: function(sourceId, targetId) {
+      var checked = document.getElementById(sourceId).getAttribute("checked");
+      if (targetId) var target = document.getElementById(targetId)
+      else var target = document.getElementById(sourceId.replace(/_store/,""))
+      if (checked == "true") target.removeAttribute("disabled")
+      else target.setAttribute("disabled", "true");
+    },
+  
+    blurEvent : function(elementId) {
 		var elem = document.getElementById(elementId);
 		var localIdentityData = new vI.identityData(elem.value, null, null, null, null, null, null);
 		elem.value = localIdentityData.combinedName;					
 	},
 	
 	accept : function() {
-		var localIdentityData = new vI.identityData(document.getElementById("sender").value, null,
+		Log.debug("accept\n");
+        var localIdentityData = new vI.identityData(document.getElementById("sender").value, null,
 			document.getElementById("identity_list").selectedItem.getAttribute("value"),
 			document.getElementById("smtp_server_list").selectedItem.getAttribute("key"));
-		localIdentityData.extras.readEditorValues();
-
-		rdfDataEditor.__rdfDatasource.updateRDF(
+        Log.debug("before getValuesFromEnvironment\n");
+        localIdentityData.extras.getValuesFromEnvironment();
+        Log.debug("after getValuesFromEnvironment\n");
+        rdfDataEditor.__rdfDatasource.updateRDF(
 				document.getElementById("recipient").value,
 				document.getElementById("type_menu").selectedItem.getAttribute("key"),
 				localIdentityData,
 				true, true, rdfDataEditor.__recipient, rdfDataEditor.__type);
-		
+		Log.debug("updateRDF done " + localIdentityData.extras.status() + "\n");
 		return document.getElementById("type_menu").selectedItem.getAttribute("key");
 	}
 }

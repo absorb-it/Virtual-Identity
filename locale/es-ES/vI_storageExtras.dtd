@@ -16,7 +16,7 @@
 
 <!ENTITY vI_storageExtras.caption.label "opciones adicionales del almacén">
 
-<!ENTITY vI_storageExtrasDataTreeOverlay.recieptCol.label "Acuse de recibo">
+<!ENTITY vI_storageExtrasDataTreeOverlay.receiptCol.label "Acuse de recibo">
 <!ENTITY vI_storageExtrasDataTreeOverlay.fccCol.label "FCC">
 <!ENTITY vI_storageExtrasDataTreeOverlay.charEncCol.label "Codificación de caracteres">
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Formato del mensaje">
@@ -27,7 +27,7 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "ocultar los campos inactivos">
-<!ENTITY vI_storageExtrasDataEditorOverlay.reciept.label "Acuse de recibo">
+<!ENTITY vI_storageExtrasDataEditorOverlay.receipt.label "Acuse de recibo">
 <!ENTITY vI_storageExtrasDataEditorOverlay.fcc.label "FCC">
 <!ENTITY vI_storageExtrasDataEditorOverlay.charEnc.label "Codificación de caracteres">
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Formato del mensaje">

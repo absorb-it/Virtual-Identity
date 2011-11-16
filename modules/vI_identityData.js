@@ -22,13 +22,23 @@
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
 
-var EXPORTED_SYMBOLS = ["identityData", "identityCollection", "DEFAULT_SMTP_TAG", "NO_SMTP_TAG"]
+var EXPORTED_SYMBOLS = ["identityCollection", "identityData", "identityDataExtras", "DEFAULT_SMTP_TAG", "NO_SMTP_TAG"]
 
 const DEFAULT_SMTP_TAG = "vI_useDefaultSMTP"
 const NO_SMTP_TAG = "vI_noStoredSMTP"
 
 Components.utils.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityData");
+Components.utils.import("resource://v_identity/vI_identityDataExtras.js");
+Components.utils.import("resource://v_identity/identityDataExtras/returnReceipt.js");
+Components.utils.import("resource://v_identity/identityDataExtras/fccSwitch.js");
+Components.utils.import("resource://v_identity/identityDataExtras/messageFormat.js");
+Components.utils.import("resource://v_identity/identityDataExtras/characterEncoding.js");
+Components.utils.import("resource://v_identity/identityDataExtras/sMimeEncryption.js");
+Components.utils.import("resource://v_identity/identityDataExtras/sMimeSignature.js");
+Components.utils.import("resource://v_identity/identityDataExtras/PGPEncryption.js");
+Components.utils.import("resource://v_identity/identityDataExtras/PGPSignature.js");
+Components.utils.import("resource://v_identity/identityDataExtras/PGPMIME.js");
 
 function identityData(email, fullName, id, smtp, extras, sideDescription, existingID) {
 	this._email = email?email:"";
@@ -37,7 +47,7 @@ function identityData(email, fullName, id, smtp, extras, sideDescription, existi
 	this.id = new idObj(id);
 	this.smtp = new smtpObj(smtp);
 	if (extras) this.extras = extras;
-// 	else if (typeof(vI.storageExtras)=='function') this.extras = new vI.storageExtras();
+	else this.extras = new identityDataExtras();
 	this.comp = {	// holds the results of the last comparison for later creation of a compareMatrix
 		compareID : null,
 		equals : { fullName : {}, email : {}, smtp : {}, id : {}, extras : {} }
