@@ -34,10 +34,10 @@
           xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
           xmlns:xbl="http://www.mozilla.org/xbl">
 	
-	<binding id="vI_remoteBrowserBox">
+	<binding id="virtualIdentityExtension_remoteBrowserBox">
 	<content>
 		<xul:vbox flex="1" >
-			<xul:vbox class="vI_remoteBrowserBoxProgressmeter" flex="1" >
+			<xul:vbox class="virtualIdentityExtension_remoteBrowserBoxProgressmeter" flex="1" >
 				<xul:progressmeter mode="undetermined" />
 				<xul:spacer flex="1" />
 			</xul:vbox>
@@ -136,7 +136,7 @@
 		document.getAnonymousElementByAttribute(this, "class", "vI_htmlTextBox");
 	</field>
 	<field name="_progress">
-		document.getAnonymousElementByAttribute(this, "class", "vI_remoteBrowserBoxProgressmeter");
+		document.getAnonymousElementByAttribute(this, "class", "virtualIdentityExtension_remoteBrowserBoxProgressmeter");
 	</field>
 	<property name="localCss" onget="return this.getAttribute('localCss');" onset="this.setAttribute('localCss', val); return val;" />
 	<method name="onError">

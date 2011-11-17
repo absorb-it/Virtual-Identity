@@ -30,7 +30,7 @@ let Log = vI.setupLogging("virtualIdentity.prefDialog");
 
 var prefDialog = {
 	toggleHelp : function() {
-		var browserElem = document.getElementById("vI_remoteBrowserBox");
+		var browserElem = document.getElementById("virtualIdentityExtension_remoteBrowserBox");
 		if (browserElem.getAttribute("hidden")) {
 			window.resizeBy( 200, 0);
 			browserElem.removeAttribute("hidden");
@@ -42,14 +42,14 @@ var prefDialog = {
 	},
 
 	updateHelpUrl : function(tabpanel) {
-		var browserElem = document.getElementById("vI_remoteBrowserBox");
+		var browserElem = document.getElementById("virtualIdentityExtension_remoteBrowserBox");
 		if (browserElem.getAttribute("hidden")) return;				// don't load any url if browser is hidden
 		var panelIndex = (tabpanel)?tabpanel:document.getElementById('prefTabbox').selectedIndex
 		var prefTree = document.getElementById('prefTabbox').selectedPanel.getElementsByAttribute("class", "vIprefTree")[0];
 		var currentVersion = document.getElementById("virtualIdentityExtension_extVersion").getAttribute("value").split(/\./);
 		var extVersion = currentVersion[0] + "." + currentVersion[1];
 		var url = "https://www.absorb.it/virtual-id/wiki/docs/" + extVersion + "/tab" + panelIndex + "/tree" + prefTree.currentIndex;
-		document.getElementById("vI_remoteBrowserBox").url = url;
+		document.getElementById("virtualIdentityExtension_remoteBrowserBox").url = url;
 	},
 
 	preferences : Components.classes["@mozilla.org/preferences-service;1"]

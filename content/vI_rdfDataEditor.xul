@@ -81,5 +81,5 @@
 		</hbox>
 	</groupbox>
 	</vbox>
-    <textbox id="virtualIdentityExtension_vIDebugBox" />
+    <textbox id="virtualIdentityExtension_debugBox" />
 </dialog>

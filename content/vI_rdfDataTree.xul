@@ -302,5 +302,5 @@
 </tabbox>
 <!-- <splitter /> -->
 <browser id="rdfDataTreeCollectionInfoBox" class="vI_htmlTextBox" type="chrome" cssSource="vI_rdfTreeInfo.css" disablehistory="true" onoverflow="virtualIdentityExtension.rdfDataTreeCollection.overflow();"/>
-<textbox id="virtualIdentityExtension_vIDebugBox" />
+<textbox id="virtualIdentityExtension_debugBox" />
 </window>

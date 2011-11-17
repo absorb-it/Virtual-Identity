@@ -730,9 +730,9 @@
 	</tabpanel>
 	</tabpanels>
 </tabbox>
-<browserbox id="vI_remoteBrowserBox" class="vI_remoteBrowserBox" localCss="localDoc.css" flex="1" hidden="true" type="content" />
+<browserbox id="virtualIdentityExtension_remoteBrowserBox" class="virtualIdentityExtension_remoteBrowserBox" localCss="localDoc.css" flex="1" hidden="true" type="content" />
 <label id="virtualIdentityExtension_extVersion" value="&vident.version;" hidden="true" />
 </hbox>
-<textbox id="vIDebugBox" />
+<textbox id="virtualIdentityExtension_debugBox" />
 </dialog>
 </overlay>

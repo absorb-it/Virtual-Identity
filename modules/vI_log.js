@@ -95,7 +95,7 @@ DebugOutputAppender.prototype = {
     window = Cc["@mozilla.org/appshell/window-mediator;1"]
       .getService(Ci.nsIWindowMediator)
       .getMostRecentWindow(null);
-    obj_debugBox = window.document.getElementById("virtualIdentityExtension_vIDebugBox");
+    obj_debugBox = window.document.getElementById("virtualIdentityExtension_debugBox");
     if (obj_debugBox)
       obj_debugBox.dump(message);
   }
@@ -220,7 +220,7 @@ function clearDebugOutput() {
   let currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
     .getService(Ci.nsIWindowMediator)
     .getMostRecentWindow(null);
-  let obj_debugBox = currentWindow.document.getElementById("virtualIdentityExtension_vIDebugBox");
+  let obj_debugBox = currentWindow.document.getElementById("virtualIdentityExtension_debugBox");
   if (obj_debugBox)
     obj_debugBox.clear();
   let obj_notificationBox = currentWindow.document.getElementById("virtualIdentityExtension_vINotification");

@@ -47,7 +47,7 @@
   </stringbundleset>
 
 <vbox id="appcontent" >
-  <textbox id="virtualIdentityExtension_vIDebugBox" />
+  <textbox id="virtualIdentityExtension_debugBox" />
 </vbox>
 
 <toolbox id="headers-box">

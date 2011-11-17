@@ -81,7 +81,7 @@
 		pageid="upgrade" next="finish" >
 		<groupbox>
 			<caption label="&vident.upgrade.upgrade.caption;"/>
-			<textbox id="virtualIdentityExtension_vIDebugBox" />
+			<textbox id="virtualIdentityExtension_debugBox" />
 		</groupbox>
 	</wizardpage>	
 	<!-- finish -->

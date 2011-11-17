@@ -327,11 +327,11 @@ treechildren::-moz-tree-cell-text(locked) {
 	padding: 0;
 }
 
-#virtualIdentityExtension_vIDebugBox {
+#virtualIdentityExtension_debugBox {
     -moz-binding: url("chrome://v_identity/content/bindings/vI_debugBox.xml#vI_debugBox");
 }
 
-#virtualIdentityExtension_vIDebugBox, #virtualIdentityExtension_vIErrorBox{
+#virtualIdentityExtension_debugBox, #virtualIdentityExtension_vIErrorBox{
     overflow: auto;
     font-size: x-small;
     height: 10em;
@@ -394,8 +394,8 @@ treechildren::-moz-tree-cell-text(locked) {
 	-moz-binding: url("chrome://v_identity/content/bindings/vI_htmlTextBox.xml#vI_htmlTextBox");
 }
 
-.vI_remoteBrowserBox {
-	-moz-binding: url("chrome://v_identity/content/bindings/vI_htmlTextBox.xml#vI_remoteBrowserBox");
+.virtualIdentityExtension_remoteBrowserBox {
+	-moz-binding: url("chrome://v_identity/content/bindings/vI_htmlTextBox.xml#virtualIdentityExtension_remoteBrowserBox");
 	margin: 0;
 	-moz-appearance: listbox;
 	padding: 3px;

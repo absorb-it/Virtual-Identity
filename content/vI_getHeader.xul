@@ -42,7 +42,7 @@
   </stringbundleset>
 
 <vbox id="messagepanebox" >
-  <textbox id="virtualIdentityExtension_vIDebugBox" />
+  <textbox id="virtualIdentityExtension_debugBox" />
 </vbox>
 
 <vbox id="messagepanebox">

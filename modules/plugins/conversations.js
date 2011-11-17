@@ -136,7 +136,7 @@ let virtualIdentityHook = {
         for (var index = 0; index < number; index++)
           recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
 
-        returnValue = prepareSendMsg(virtualIdInUse, Ci.nsIMsgCompDeliverMode.Now,
+        returnValue = vIaccount_prepareSendMsg(virtualIdInUse, Ci.nsIMsgCompDeliverMode.Now,
           currentIdentityData, aAddress.params.identity, recipients );
         Log.debug("returnValue.update:", returnValue.update);
         
@@ -148,9 +148,9 @@ let virtualIdentityHook = {
           aStatus.canceled = true; return aStatus;
         }
         
-        aAddress.params.identity = vIaccount_defaultIdentity
-        if (!finalCheck(currentIdentityData, aAddress.params.identity)) {
-          vIaccount_removeUsedVIAccountt();
+        aAddress.params.identity = get_vIaccount().defaultIdentity;
+        if (!vIaccount_finalCheck(currentIdentityData, aAddress.params.identity)) {
+          vIaccount_removeUsedVIAccount();
           aStatus.canceled = true; return aStatus;
         }
       }

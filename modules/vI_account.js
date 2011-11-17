@@ -26,6 +26,7 @@ var EXPORTED_SYMBOLS = ["vIaccount_cleanupSystem", "get_vIaccount",
   "vIaccount_prepareSendMsg", "vIaccount_finalCheck",
   "vIaccount_createAccount", "vIaccount_removeUsedVIAccount" ]
 
+Components.utils.import("resource://gre/modules/Services.jsm");
 Components.utils.import("resource://v_identity/vI_log.js");
 Components.utils.import("resource://v_identity/vI_identityData.js");
 Components.utils.import("resource://v_identity/vI_rdfDatasource.js");
@@ -329,7 +330,7 @@ var account = {
 		account._account.defaultIdentity.setUnicharAttribute("fullName", identityData.fullName);
 		
 		account._account.defaultIdentity.smtpServerKey = identityData.smtp.keyNice; // key with "" for vI.DEFAULT_SMTP_TAG
-		if (account._account.defaultIdentity.smtpServerKey == virtualIdentityExtension.NO_SMTP_TAG)
+		if (account._account.defaultIdentity.smtpServerKey == NO_SMTP_TAG)
 			account._account.defaultIdentity.smtpServerKey = baseIdentity.smtpServerKey;
 
 		Log.debug("Stored virtualIdentity (name "
