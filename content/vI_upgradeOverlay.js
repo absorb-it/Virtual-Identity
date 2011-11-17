@@ -37,7 +37,7 @@ var upgradeOverlay = {
 					"chrome, dialog, modal, alwaysRaised, resizable=yes").focus();
 		}
 		else {
-			vIaccount_cleanupSystem(); // always clean leftover accounts and directories
+			vI.vIaccount_cleanupSystem(); // always clean leftover accounts and directories
 			rdfDatasource.storeExtVersion();
 		}
 		rdfDatasource.refreshAccountInfo();

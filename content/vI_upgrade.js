@@ -93,7 +93,7 @@ var upgrade = {
 	__upgrade : function() {
 		if (upgrade.rdfDatasource.extUpgradeRequired()) upgrade.extUpgrade();
 		
-		vIaccount_cleanupSystem();
+		vI.vIaccount_cleanupSystem();
 	},			
 
 	upgrade : function() {

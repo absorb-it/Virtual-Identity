@@ -150,7 +150,7 @@ var main = {
 			var vid = document.getElementById("virtualIdentityExtension_msgIdentityClone").vid
 			var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
 			
-			returnValue = vIaccount_prepareSendMsg(	vid, msgType, virtualIdentityData,
+			returnValue = vI.vIaccount_prepareSendMsg(	vid, msgType, virtualIdentityData,
 							main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
 							main._getRecipients() );
 			if (returnValue.update == "abort") {
@@ -169,7 +169,7 @@ var main = {
 			if (vid) main.addVirtualIdentityToMsgIdentityMenu();
 			
 			// final check if eyerything is nice before we handover to the real sending...
-			if (vIaccount_finalCheck(virtualIdentityData, getCurrentIdentity())) {
+			if (vI.vIaccount_finalCheck(virtualIdentityData, getCurrentIdentity())) {
 				main.replacement_functions.GenericSendMessageInProgress = false;
 				main.original_functions.GenericSendMessage(msgType);
 			}
@@ -353,10 +353,10 @@ var main = {
 		main.tempStorage.NewIdentity.className = "identity-popup-item";
 		
 		// set the account name in the choosen menu item
-		main.tempStorage.NewIdentity.setAttribute("label", get_vIaccount().defaultIdentity.identityName);
-		main.tempStorage.NewIdentity.setAttribute("accountname", " - " +  get_vIaccount().incomingServer.prettyName);
-		main.tempStorage.NewIdentity.setAttribute("accountkey", get_vIaccount().key);
-		main.tempStorage.NewIdentity.setAttribute("value", get_vIaccount().defaultIdentity.key);
+		main.tempStorage.NewIdentity.setAttribute("label", vI.get_vIaccount().defaultIdentity.identityName);
+		main.tempStorage.NewIdentity.setAttribute("accountname", " - " +  vI.get_vIaccount().incomingServer.prettyName);
+		main.tempStorage.NewIdentity.setAttribute("accountkey", vI.get_vIaccount().key);
+		main.tempStorage.NewIdentity.setAttribute("value", vI.get_vIaccount().defaultIdentity.key);
 		
 		main.elements.Obj_MsgIdentityPopup.appendChild(main.tempStorage.NewIdentity);
 		main.__setSelectedIdentity(main.tempStorage.NewIdentity);
@@ -375,14 +375,14 @@ var main = {
 
 	prepareAccount : function() {
 		main.Cleanup(); // just to be sure that nothing is left (maybe last time sending was irregularily stopped)
-		vIaccount_createAccount(document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData,
+		vI.vIaccount_createAccount(document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData,
 								 main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value));
 		main.addVirtualIdentityToMsgIdentityMenu();
 	},
 
 	Cleanup : function() {
 		main.removeVirtualIdentityFromMsgIdentityMenu();
-		vIaccount_removeUsedVIAccount();
+		vI.vIaccount_removeUsedVIAccount();
 	},
 	
 	//  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
