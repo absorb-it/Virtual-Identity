@@ -33,10 +33,12 @@
 ]>
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_rdfDatasource.js" />
 	<script type="application/x-javascript">
 	Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
     virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+    
+    Components.utils.import("resource://v_identity/vI_rdfDatasource.js");
+    
 	var vI_context = {
 		prefroot : Components.classes["@mozilla.org/preferences-service;1"]
 			.getService(Components.interfaces.nsIPrefService)
@@ -69,8 +71,8 @@
                     <menupopup>                        
                         <menuitem label="&vident.vI_Menu.DataEditor.label;"
                             oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome, dialog, resizable=yes');" />
-                        <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="dump('command: ' + virtualIdentityExtension.initTime + '\n');var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter('virtualIdentity.rdf');"/>
-                        <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="dump('command: ' + virtualIdentityExtension.initTime + '\n');var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasource(); vI_localRdfDatasource.export('virtualIdentity.rdf')"/>
+                        <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="dump('command: ' + virtualIdentityExtension.initTime + '\n');var vI_localRdfDatasource = new rdfDatasourceImporter('virtualIdentity.rdf');"/>
+                        <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="dump('command: ' + virtualIdentityExtension.initTime + '\n');var vI_localRdfDatasource = new rdfDatasource(); vI_localRdfDatasource.export('virtualIdentity.rdf')"/>
                     </menupopup>
                 </menu>
 			</menupopup>

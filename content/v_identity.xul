@@ -36,12 +36,7 @@
   <overlay id="v_identity" 
           xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-<script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_helper.js" />
-<script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_smartIdentityCollection.js" />
-<script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_rdfDatasource.js"/>
-
 <script type="application/x-javascript" src="chrome://v_identity/content/v_identity.js" />
-<script type="application/x-javascript" src="chrome://v_identity/content/modules/vI_identityData.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_msgIdentityCloneTools.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_statusmenu.js" />

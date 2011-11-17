@@ -23,7 +23,6 @@
    - Contributor(s):
    - ***** END LICENSE BLOCK ***** -->
 
-<!DOCTYPE overlay SYSTEM "chrome://conversations/locale/overlay.dtd">
 <overlay id="messengerWindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="application/x-javascript" src="chrome://v_identity/content/vI_overlay.js" />
 </overlay>

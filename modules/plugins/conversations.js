@@ -1,13 +1,38 @@
-Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
-virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+/* ***** BEGIN LICENSE BLOCK *****
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
 
-let Log = vI.setupLogging("virtualIdentity.plugin.conversation");
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
-Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
-Components.utils.import("resource://v_identity/vI_smartIdentityCollection.js", virtualIdentityExtension);
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+    The Original Code is the Virtual Identity Extension.
+
+    The Initial Developer of the Original Code is Rene Ejury.
+    Portions created by the Initial Developer are Copyright (C) 2007
+    the Initial Developer. All Rights Reserved.
+
+    Contributor(s): 
+ * ***** END LICENSE BLOCK ***** */
+  
+var EXPORTED_SYMBOLS = [];
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
+
+Cu.import("resource://v_identity/vI_log.js");
+Cu.import("resource://v_identity/vI_rdfDatasource.js");
+Cu.import("resource://v_identity/vI_account.js");
+Cu.import("resource://v_identity/vI_smartIdentityCollection.js");
+Cu.import("resource://v_identity/vI_identityData.js");
+
+let Log = setupLogging("virtualIdentity.plugins.conversations");
 
 let pref = Cc["@mozilla.org/preferences-service;1"]
   .getService(Components.interfaces.nsIPrefService)
@@ -23,7 +48,6 @@ let currentIdentityData;
 let currentIdSenderName;
 let virtualIdInUse;
 let virtualSenderNameElem;
-
 
 let _rdfDatasourceAccess;
 
@@ -48,15 +72,15 @@ let _changeIdentityToSmartIdentity = function(identityData) {
   virtualSenderNameElem.text(identityData.combinedName); // change this also to reflect changes of base id
 };
 
-let conversationHook = {
-  onComposeSessionChanged: function (aComposeSession, aAddress) {
+let virtualIdentityHook = {
+  onComposeSessionChanged: function _virtualIdentityHook_onComposeSessionChanged(aComposeSession, aMessage, aAddress) {
     let toAddrList = aAddress.to.concat(aAddress.cc);
     
     currentParams = aComposeSession.params; virtualSenderNameElem = aComposeSession.senderNameElem; // to enable access from out of this class.
     let identity = aComposeSession.params.identity;
     
     let server = AccountManager.GetServersForIdentity(identity).QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
-    currentIdentityData = new virtualIdentityExtension.identityData(identity.email, identity.fullName, identity.key,
+    currentIdentityData = new identityData(identity.email, identity.fullName, identity.key,
                                                                     identity.smtpServerKey, null, server.prettyName, true)
     currentIdSenderName = currentIdentityData.combinedName;
     virtualIdInUse = false;
@@ -66,7 +90,7 @@ let conversationHook = {
     for (var index = 0; index < number; index++)
       recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
       
-    var localSmartIdentityCollection = new vI.smartIdentityCollection(aComposeSession.params.msgHdr, identity, 
+    var localSmartIdentityCollection = new smartIdentityCollection(aComposeSession.params.msgHdr, identity, 
                                                                       false, false, recipients);
     localSmartIdentityCollection.Reply();   // we can always use the reply-case, msgHdr is set the right way
     
@@ -85,7 +109,11 @@ let conversationHook = {
     if (pref.getBoolPref("idSelection_ask") && 
       ((localSmartIdentityCollection._allIdentities.number == 1 && pref.getBoolPref("idSelection_ask_always"))
       || localSmartIdentityCollection._allIdentities.number > 1)) {
-        window.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul",0,
+        recentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+          .getService(Ci.nsIWindowMediator)
+          .getMostRecentWindow("mail:3pane");
+      
+        recentWindow.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul",0,
           "chrome, dialog, modal, alwaysRaised, resizable=yes",
           localSmartIdentityCollection._allIdentities,
           /* callback: */ changeIdentityToSmartIdentity).focus();
@@ -94,7 +122,10 @@ let conversationHook = {
       changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, 0);
   },
   
-  onMessageBeforeSendOrPopout: function(aAddress, aStatus, aPopout) {
+  onMessageBeforeSendOrPopout_early: function _enigmailHook_onMessageBeforeSendOrPopout_early(aAddress, aEditor, aStatus, aPopout) {
+    if (aStatus.canceled)
+      return aStatus;
+
     let toAddrList = aAddress.to.concat(aAddress.cc);
     Log.debug("onMessageBeforeSendOrPopup");
     
@@ -105,7 +136,7 @@ let conversationHook = {
         for (var index = 0; index < number; index++)
           recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
 
-        returnValue = vI.prepareSendMsg(virtualIdInUse, Ci.nsIMsgCompDeliverMode.Now,
+        returnValue = prepareSendMsg(virtualIdInUse, Ci.nsIMsgCompDeliverMode.Now,
           currentIdentityData, aAddress.params.identity, recipients );
         Log.debug("returnValue.update:", returnValue.update);
         
@@ -118,7 +149,7 @@ let conversationHook = {
         }
         
         aAddress.params.identity = vIaccount_defaultIdentity
-        if (!vI.finalCheck(currentIdentityData, aAddress.params.identity)) {
+        if (!finalCheck(currentIdentityData, aAddress.params.identity)) {
           vIaccount_removeUsedVIAccountt();
           aStatus.canceled = true; return aStatus;
         }
@@ -133,12 +164,12 @@ let conversationHook = {
     return aStatus;
   },
   
-  onStopSending: function () {
+  onStopSending: function _virtualIdentityHook_onStopSending(aMsgID, aStatus, aMsg, aReturnFile) {
     vIaccount_removeUsedVIAccount();
     Log.debug("onStopSending done");
   },
 
-  onRecipientAdded: function onRecipientAdded(aData, aType, aCount) {
+  onRecipientAdded: function _virtualIdentityHook_onRecipientAdded(aData, aType, aCount) {
     Log.debug("onRecipientAdded", aData.data, aType, aCount);
     if (!pref.getBoolPref("storage")) return;
     if (aType == "bcc") return;
@@ -148,7 +179,7 @@ let conversationHook = {
     var isNotFirstInputElement = !(aType == "to" && aCount == 0);
     Log.debug("onRecipientAdded isNotFirstInputElement", isNotFirstInputElement);
     
-    if (!_rdfDatasourceAccess) _rdfDatasourceAccess = new vI.rdfDatasourceAccess();
+    if (!_rdfDatasourceAccess) _rdfDatasourceAccess = new rdfDatasourceAccess();
     else _rdfDatasourceAccess.clean();
     
     var storageResult = _rdfDatasourceAccess.updateVIdentityFromStorage(aData.data, "addr_to",
@@ -161,5 +192,16 @@ let conversationHook = {
   }
 }
 
-vI.conversationHook = conversationHook;
-}});
+try {
+  Cu.import("resource://conversations/hook.js");
+  mainWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+    .getService(Ci.nsIWindowMediator)
+    .getMostRecentWindow("mail:3pane");
+  mainWindow.addEventListener("load", function () {
+    Log.debug("Virtual Identity plugin for Thunderbird Conversations loaded!");
+    registerHook(virtualIdentityHook);
+  }, false);
+}
+catch(e) {
+  Log.debug("virtualIdentity is ready for conversations, but you don't use it\n");
+}
