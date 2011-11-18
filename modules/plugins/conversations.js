@@ -122,12 +122,22 @@ let virtualIdentityHook = {
       changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, 0);
   },
   
+  onMessageBeforeSendOrPopout_canceled: function _enigmailHook_onMessageBeforeSendOrPopout_canceledy(aAddress, aEditor, aStatus, aPopout) {
+    Log.debug("onMessageBeforeSendOrPopout_canceled\n");
+    return aStatus;
+
+  },
+  onMessageBeforeSendOrPopout: function _enigmailHook_onMessageBeforeSendOrPopout(aAddress, aEditor, aStatus, aPopout) {
+    Log.debug("onMessageBeforeSendOrPopout\n");
+    return aStatus;
+
+  },
   onMessageBeforeSendOrPopout_early: function _enigmailHook_onMessageBeforeSendOrPopout_early(aAddress, aEditor, aStatus, aPopout) {
     if (aStatus.canceled)
       return aStatus;
 
     let toAddrList = aAddress.to.concat(aAddress.cc);
-    Log.debug("onMessageBeforeSendOrPopup");
+    Log.debug("onMessageBeforeSendOrPopup_early");
     
     if (virtualIdInUse) {
       if (!aPopout) {
