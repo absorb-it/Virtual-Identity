@@ -27,6 +27,7 @@ virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
   
 Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
 Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 var upgradeOverlay = {
 	init: function() {
@@ -43,11 +44,6 @@ var upgradeOverlay = {
 		rdfDatasource.refreshAccountInfo();
         rdfDatasource.clean();
         
-		// show error-Console if required
-		var prefroot = Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch(null);
-		
 		Components.utils.import("resource://gre/modules/AddonManager.jsm");  
 
 		const virtualIdentity_ID="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
@@ -55,13 +51,13 @@ var upgradeOverlay = {
 			if (addon) vI.extensionVersion = addon.version;
 		});
 		
-		if (prefroot.getBoolPref("extensions.virtualIdentity.error_console")) {
+		if (vI.vIprefs.get("error_console")) {
 			document.getElementById("virtualIdentityExtension_vIErrorBoxSplitter").removeAttribute("hidden");
 			document.getElementById("virtualIdentityExtension_vIErrorBox").removeAttribute("hidden");
 			document.getElementById("virtualIdentityExtension_vIErrorBox").setAttribute("class", "console-box");
-			prefroot.setBoolPref("javascript.options.showInConsole", true);
-			prefroot.setBoolPref("browser.dom.window.dump.enabled", true);
-			prefroot.setBoolPref("javascript.options.strict", true);
+			vI.prefroot.setBoolPref("javascript.options.showInConsole", true);
+			vI.prefroot.setBoolPref("browser.dom.window.dump.enabled", true);
+			vI.prefroot.setBoolPref("javascript.options.strict", true);
 		}
 	}
 }

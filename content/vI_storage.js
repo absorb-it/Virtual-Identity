@@ -33,12 +33,10 @@ virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
 let Log = vI.setupLogging("virtualIdentity.storage");
 Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 var storage = {
 	focusedElement : null,
-	_pref : Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch("extensions.virtualIdentity."),
 	
 	lastCheckedEmail : {}, 	// array of last checked emails per row,
 				// to prevent ugly double dialogs and time-consuming double-checks
@@ -122,16 +120,16 @@ var storage = {
 		// reset unavailable storageExtras preferences
         AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function(addon) {
           if (addon && !addon.userDisabled && !addon.appDisable) {
-            vI.main.preferences.setBoolPref("storageExtras_openPGP_messageEncryption", false)
-            vI.main.preferences.setBoolPref("storageExtras_openPGP_messageSignature", false)
-            vI.main.preferences.setBoolPref("storageExtras_openPGP_PGPMIME", false)
+            vI.vI_prefs.commit("storageExtras_openPGP_messageEncryption", false)
+            vI.vI_prefs.commit("storageExtras_openPGP_messageSignature", false)
+            vI.vI_prefs.commit("storageExtras_openPGP_PGPMIME", false)
           }
         }); 
 	},
 	
 	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
 	updateVIdentityFromStorage: function(inputElement) {
-		if (!storage._pref.getBoolPref("storage"))
+		if (!vI.vIprefs.get("storage"))
 			{ Log.debug("Storage deactivated\n"); return; }
 		Log.debug("updateVIdentityFromStorage()\n");
 

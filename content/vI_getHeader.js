@@ -26,17 +26,14 @@
  * ***** END LICENSE BLOCK ***** */
 
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
-Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js", virtualIdentityExtension);
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
+Components.utils.import("resource://v_identity/stdlib/msgHdrUtils.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 let Log = vI.setupLogging("virtualIdentity.getHeader");
 
 // var storedHeaders = { };
 var getHeader = {
-	preferences : Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.virtualIdentity."),
-			
 	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
 			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 
@@ -45,7 +42,7 @@ var getHeader = {
 	headerToSearch : null,
 	
 	prefObserverToSearchArray : function() {
-		var headerList = getHeader.unicodeConverter.ConvertToUnicode(getHeader.preferences.getCharPref("smart_reply_headers")).split(/\n/)
+		var headerList = getHeader.unicodeConverter.ConvertToUnicode(vI.vIprefs.get("smart_reply_headers")).split(/\n/)
 		
 		getHeader.headerToSearch = [];
 		
@@ -141,21 +138,19 @@ var getHeader = {
 
 
 var prefObserver = {
-	prefroot : Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2),
-
 	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
 			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 			
 	observer_added : false,
 	
 	init : function() {
-      prefObserver.prefroot.addObserver("extensions.virtualIdentity.smart_reply_headers", this, false);
+      let self = this;
+      vI.vIprefs.addObserver("smart_reply_headers", self.observe);
 	},
 	
 	cleanup : function() {
-      prefObserver.prefroot.removeObserver("extensions.virtualIdentity.smart_reply_headers", this);
+      let self = this;
+      vI.vIprefs.removeObserver("smart_reply_headers", self.observe);
 	},
 	
 	observe: function(subject, topic, data) {

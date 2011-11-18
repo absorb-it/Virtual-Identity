@@ -24,11 +24,10 @@
 
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
-var statusmenu = {
-	prefroot : Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch(null),
 
+Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
+
+var statusmenu = {
 	objStatusMenu : null,
 	objSaveBaseIDMenuItem : null,
 	objStorageSaveMenuItem : null,
@@ -41,37 +40,37 @@ var statusmenu = {
 	
 	observe: function(subject, topic, data) {
 		switch (data) {
-			case "extensions.virtualIdentity.fcc_show_switch":
-				statusmenu.objFccSwitch.setAttribute("hidden", !statusmenu.prefroot.getBoolPref(data));
+			case "fcc_show_switch":
+				statusmenu.objFccSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
 				// no break, continue like with doFcc			
-			case "extensions.virtualIdentity.doFcc":
-				statusmenu.objFccSwitch.setAttribute("checked", statusmenu.prefroot.getBoolPref("extensions.virtualIdentity.doFcc"));
+			case "doFcc":
+				statusmenu.objFccSwitch.setAttribute("checked", vI.vIprefs.get("doFcc"));
 				break;
-			case "extensions.virtualIdentity.storage_show_switch":
-				statusmenu.objSaveSwitch.setAttribute("hidden", !statusmenu.prefroot.getBoolPref(data));
+			case "storage_show_switch":
+				statusmenu.objSaveSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
 				break;
-			case "extensions.virtualIdentity.storage_show_baseID_switch":
-				statusmenu.objSaveBaseIDSwitch.setAttribute("hidden", !statusmenu.prefroot.getBoolPref(data));
+			case "storage_show_baseID_switch":
+				statusmenu.objSaveBaseIDSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
 				break;
-			case "extensions.virtualIdentity.storage_show_SMTP_switch":
-				statusmenu.objSaveSMTPSwitch.setAttribute("hidden", !statusmenu.prefroot.getBoolPref(data));
+			case "storage_show_SMTP_switch":
+				statusmenu.objSaveSMTPSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
 				break;
-			case "extensions.virtualIdentity.storage_storedefault":
-				statusmenu.objStorageSaveMenuItem.setAttribute("checked", statusmenu.prefroot.getBoolPref("extensions.virtualIdentity.storage_storedefault"));
+			case "storage_storedefault":
+				statusmenu.objStorageSaveMenuItem.setAttribute("checked", vI.vIprefs.get("storage_storedefault"));
 				break;
-			case "extensions.virtualIdentity.storage_store_base_id":
-				statusmenu.objSaveBaseIDMenuItem.setAttribute("checked", statusmenu.prefroot.getBoolPref(data));
+			case "storage_store_base_id":
+				statusmenu.objSaveBaseIDMenuItem.setAttribute("checked", vI.vIprefs.get(data));
 				break;
-			case "extensions.virtualIdentity.storage_store_SMTP":
-				statusmenu.objSaveSMTPMenuItem.setAttribute("checked", statusmenu.prefroot.getBoolPref(data));
+			case "storage_store_SMTP":
+				statusmenu.objSaveSMTPMenuItem.setAttribute("checked", vI.vIprefs.get(data));
 				break;
-			case "extensions.virtualIdentity.storage_colorIndication":
-				document.getElementById("identityHbox").setAttribute("colorize", statusmenu.prefroot.getBoolPref(data))
-				document.getElementById("baseIDHbox").setAttribute("colorize", statusmenu.prefroot.getBoolPref(data))
-				document.getElementById("smtpServerHbox").setAttribute("colorize", statusmenu.prefroot.getBoolPref(data))
+			case "storage_colorIndication":
+				document.getElementById("identityHbox").setAttribute("colorize", vI.vIprefs.get(data))
+				document.getElementById("baseIDHbox").setAttribute("colorize", vI.vIprefs.get(data))
+				document.getElementById("smtpServerHbox").setAttribute("colorize", vI.vIprefs.get(data))
 				break;
-			case "extensions.virtualIdentity.storage":
-				if (statusmenu.prefroot.getBoolPref(data)) {
+			case "storage":
+				if (vI.vIprefs.get(data)) {
 					statusmenu.objStorageSaveMenuItem.removeAttribute("hidden");
 					statusmenu.objSaveBaseIDMenuItem.removeAttribute("hidden");
 					statusmenu.objSaveSMTPMenuItem.removeAttribute("hidden");
@@ -89,34 +88,32 @@ var statusmenu = {
 	},
 	
 	addObserver: function() {
-		statusmenu.prefroot.addObserver("extensions.virtualIdentity.fcc_show_switch", statusmenu, false);
-		statusmenu.prefroot.addObserver("extensions.virtualIdentity.doFcc", statusmenu, false);
-		statusmenu.prefroot.addObserver("extensions.virtualIdentity.storage", statusmenu, false);
-		statusmenu.prefroot.addObserver("extensions.virtualIdentity.storage_show_switch", statusmenu, false);
-		statusmenu.prefroot.addObserver("extensions.virtualIdentity.storage_show_baseID_switch", statusmenu, false);
-		statusmenu.prefroot.addObserver("extensions.virtualIdentity.storage_show_SMTP_switch", statusmenu, false);
-		statusmenu.prefroot.addObserver("extensions.virtualIdentity.storage_colorIndication", statusmenu, false);
-		statusmenu.prefroot.addObserver("extensions.virtualIdentity.storage_storedefault", statusmenu, false);
-		statusmenu.prefroot.addObserver("extensions.virtualIdentity.storage_store_base_id", statusmenu, false);
-		statusmenu.prefroot.addObserver("extensions.virtualIdentity.storage_store_SMTP", statusmenu, false);
+		vI.vIprefs.addObserver("fcc_show_switch", statusmenu, false);
+		vI.vIprefs.addObserver("doFcc", statusmenu, false);
+		vI.vIprefs.addObserver("storage", statusmenu, false);
+		vI.vIprefs.addObserver("storage_show_switch", statusmenu, false);
+		vI.vIprefs.addObserver("storage_show_baseID_switch", statusmenu, false);
+		vI.vIprefs.addObserver("storage_show_SMTP_switch", statusmenu, false);
+		vI.vIprefs.addObserver("storage_colorIndication", statusmenu, false);
+		vI.vIprefs.addObserver("storage_storedefault", statusmenu, false);
+		vI.vIprefs.addObserver("storage_store_base_id", statusmenu, false);
+		vI.vIprefs.addObserver("storage_store_SMTP", statusmenu, false);
 	},
 	
 	removeObserver: function() {
-		statusmenu.prefroot.removeObserver("extensions.virtualIdentity.fcc_show_switch", statusmenu);
-		statusmenu.prefroot.removeObserver("extensions.virtualIdentity.doFcc", statusmenu);
-		statusmenu.prefroot.removeObserver("extensions.virtualIdentity.storage", statusmenu);
-		statusmenu.prefroot.removeObserver("extensions.virtualIdentity.storage_show_switch", statusmenu);
-		statusmenu.prefroot.removeObserver("extensions.virtualIdentity.storage_show_baseID_switch", statusmenu);
-		statusmenu.prefroot.removeObserver("extensions.virtualIdentity.storage_show_SMTP_switch", statusmenu);
-		statusmenu.prefroot.removeObserver("extensions.virtualIdentity.storage_colorIndication", statusmenu);
-		statusmenu.prefroot.removeObserver("extensions.virtualIdentity.storage_storedefault", statusmenu);
-		statusmenu.prefroot.removeObserver("extensions.virtualIdentity.storage_store_base_id", statusmenu);
-		statusmenu.prefroot.removeObserver("extensions.virtualIdentity.storage_store_SMTP", statusmenu);
+		vI.vIprefs.removeObserver("fcc_show_switch", statusmenu);
+		vI.vIprefs.removeObserver("doFcc", statusmenu);
+		vI.vIprefs.removeObserver("storage", statusmenu);
+		vI.vIprefs.removeObserver("storage_show_switch", statusmenu);
+		vI.vIprefs.removeObserver("storage_show_baseID_switch", statusmenu);
+		vI.vIprefs.removeObserver("storage_show_SMTP_switch", statusmenu);
+		vI.vIprefs.removeObserver("storage_colorIndication", statusmenu);
+		vI.vIprefs.removeObserver("storage_storedefault", statusmenu);
+		vI.vIprefs.removeObserver("storage_store_base_id", statusmenu);
+		vI.vIprefs.removeObserver("storage_store_SMTP", statusmenu);
 	},
 	
 	init : function () {
-		statusmenu.prefroot.QueryInterface(Components.interfaces.nsIPrefBranch2);
-
 		statusmenu.objStatusMenu = document.getElementById("virtualIdentityExtension_vIStatusMenu");
 		statusmenu.objSaveBaseIDMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_saveBaseID");
 		statusmenu.objSaveSMTPMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_saveSMTP");
@@ -131,15 +128,15 @@ var statusmenu = {
 		statusmenu.objStatusTooltipLine2 = document.getElementById("virtualIdentityExtension_statusMenuTooltip_StatusValueLine2");
 
 		statusmenu.addObserver();
-		statusmenu.observe(null, null, "extensions.virtualIdentity.fcc_show_switch");
-		statusmenu.observe(null, null, "extensions.virtualIdentity.storage_show_switch");
-		statusmenu.observe(null, null, "extensions.virtualIdentity.storage_show_baseID_switch");
-		statusmenu.observe(null, null, "extensions.virtualIdentity.storage_show_SMTP_switch");
-		statusmenu.observe(null, null, "extensions.virtualIdentity.storage_colorIndication");
-		statusmenu.observe(null, null, "extensions.virtualIdentity.storage_store_base_id");
-		statusmenu.observe(null, null, "extensions.virtualIdentity.storage_store_SMTP");
-		statusmenu.observe(null, null, "extensions.virtualIdentity.storage_storedefault");
-		statusmenu.observe(null, null, "extensions.virtualIdentity.storage");
+		statusmenu.observe(null, null, "fcc_show_switch");
+		statusmenu.observe(null, null, "storage_show_switch");
+		statusmenu.observe(null, null, "storage_show_baseID_switch");
+		statusmenu.observe(null, null, "storage_show_SMTP_switch");
+		statusmenu.observe(null, null, "storage_colorIndication");
+		statusmenu.observe(null, null, "storage_store_base_id");
+		statusmenu.observe(null, null, "storage_store_SMTP");
+		statusmenu.observe(null, null, "storage_storedefault");
+		statusmenu.observe(null, null, "storage");
 	},
 	
 	__timeout : 5,	// timeout for status messages in seconds
@@ -186,7 +183,7 @@ var statusmenu = {
 		if (statusmenu.objStorageSaveMenuItem.getAttribute("checked") == "true") {
 			statusmenu.objSaveSMTPMenuItem.removeAttribute("disabled");
 			statusmenu.objSaveBaseIDMenuItem.removeAttribute("disabled");
-			if (statusmenu.prefroot.getBoolPref("extensions.virtualIdentity.storage")) {
+			if (vI.vIprefs.get("storage")) {
 				if (statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true") save = "base";
 				else save = "ok";
 				if (statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true") smtp = "save";
@@ -203,7 +200,7 @@ var statusmenu = {
 
 	clicked : function (button) {
 		if (button != 0) return; // only react on left mouse button
-		if (!statusmenu.prefroot.getBoolPref("extensions.virtualIdentity.storage")) return;
+		if (!vI.vIprefs.get("storage")) return;
 
 		var curSaveStatus = (statusmenu.objStorageSaveMenuItem.getAttribute("checked") == "true");
 		var curSaveSMTPStatus = (statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true");

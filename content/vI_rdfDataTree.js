@@ -35,6 +35,7 @@ let Log = vI.setupLogging("virtualIdentity.rdfDataTree");
 
 Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
 Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 //prepares an object for easy comparison against another. for strings, lowercases them
 function prepareForComparison (o) {
@@ -212,11 +213,9 @@ var rdfDataTreeCollection = {
     },
 
     get _braille() {
-		var prefRoot = Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService).getBranch(null);
 		var braille = false;
-		try {	braille = (prefRoot.getCharPref("accessibility.usebrailledisplay") || 
-				prefRoot.getCharPref("accessibility.usetexttospeech")); }
+		try {	braille = (vI.prefroot.getCharPref("accessibility.usebrailledisplay") || 
+				vI.prefroot.getCharPref("accessibility.usetexttospeech")); }
 		catch (e) { };
 		return braille;
 	},

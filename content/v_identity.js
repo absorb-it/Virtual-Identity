@@ -27,16 +27,9 @@ virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 let Log = vI.setupLogging("virtualIdentity.main");
 Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 var main = {
-    prefroot : Components.classes["@mozilla.org/preferences-service;1"]
-        .getService(Components.interfaces.nsIPrefService)
-        .getBranch(null),
-  
-	preferences : Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.virtualIdentity."),
-	
 	headerParser : Components.classes["@mozilla.org/messenger/headerparser;1"]
 				.getService(Components.interfaces.nsIMsgHeaderParser),
 	
@@ -123,7 +116,7 @@ var main = {
 				var server = accounts[i].incomingServer;
 				if (!server) continue;
 				// check for VirtualIdentity Account
-				try {	main.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
+				try {	vI.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
 					continue; } catch (e) { };
 
 				var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);

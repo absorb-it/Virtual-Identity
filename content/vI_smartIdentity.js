@@ -29,12 +29,9 @@ let Log = vI.setupLogging("virtualIdentity.smartIdentity");
 
 Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
 Components.utils.import("resource://v_identity/vI_smartIdentityCollection.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 var smartIdentity = {
-	_pref : Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch("extensions.virtualIdentity."),
-
 	messenger : Components.classes["@mozilla.org/messenger;1"].createInstance()
 		.QueryInterface(Components.interfaces.nsIMessenger),
 	
@@ -105,7 +102,7 @@ var smartIdentity = {
 	__smartIdentitySelection : function(autocreate) {
 		Log.debug("__smartIdentitySelection autocreate=" + autocreate + "\n");
 		
-		if (smartIdentity._pref.getBoolPref("idSelection_preferExisting")) {
+		if (vI.vIpref.get("idSelection_preferExisting")) {
 			var existingIDIndex = smartIdentity._smartIdentityCollection._foundExistingIdentity();
 			if (existingIDIndex) {
 				Log.debug("found existing Identity, use without interaction.\n");
@@ -119,12 +116,12 @@ var smartIdentity = {
 		document.getElementById("virtualIdentityExtension_msgIdentityClone").addIdentitiesToCloneMenu(smartIdentity._smartIdentityCollection._allIdentities);
 		Log.debug("__smartIdentitySelection smartIdentity._smartIdentityCollection._allIdentities.number=" +
 				smartIdentity._smartIdentityCollection._allIdentities.number +
-				" smartIdentity._pref.getBoolPref('idSelection_ask_always')=" +
-				smartIdentity._pref.getBoolPref("idSelection_ask_always") +
-				" smartIdentity._pref.getBoolPref('idSelection_ask')=" +
-				smartIdentity._pref.getBoolPref("idSelection_ask") + "\n");
-		if (!autocreate && smartIdentity._pref.getBoolPref("idSelection_ask") && 
-			((smartIdentity._smartIdentityCollection._allIdentities.number == 1 && smartIdentity._pref.getBoolPref("idSelection_ask_always"))
+				" vI.vIpref.get('idSelection_ask_always')=" +
+				vI.vIpref.get("idSelection_ask_always") +
+				" vI.vIpref.get('idSelection_ask')=" +
+				vI.vIpref.get("idSelection_ask") + "\n");
+		if (!autocreate && vI.vIpref.get("idSelection_ask") && 
+			((smartIdentity._smartIdentityCollection._allIdentities.number == 1 && vI.vIpref.get("idSelection_ask_always"))
 				|| smartIdentity._smartIdentityCollection._allIdentities.number > 1)) {
 			for (var index = 0; index < smartIdentity._smartIdentityCollection._allIdentities.number; index++) {
 				Log.debug("smartIdentityReplyDialog index=" + index + ": '" + smartIdentity._smartIdentityCollection._allIdentities.identityDataCollection[index].combinedName + "' "
@@ -135,7 +132,7 @@ var smartIdentity = {
 					 smartIdentity._smartIdentityCollection._allIdentities,
 					/* callback: */ smartIdentity.changeIdentityToSmartIdentity).focus();
 		}
-		else if (autocreate || smartIdentity._pref.getBoolPref("idSelection_autocreate")) {
+		else if (autocreate || vI.vIpref.get("idSelection_autocreate")) {
 			smartIdentity.changeIdentityToSmartIdentity(smartIdentity._smartIdentityCollection._allIdentities, 0);
 		}	
 	},
@@ -155,7 +152,7 @@ var smartIdentity = {
 	},
 	
 	__removeSmartIdentityFromRecipients : function(allIdentities, index) {
-		if (!smartIdentity._pref.getBoolPref("idSelection_removeSmartIdentityFromRecipients")) return;
+		if (!vI.vIpref.get("idSelection_removeSmartIdentityFromRecipients")) return;
 		
 		// check if selected email is defined as doBcc address. If so, it should not be removed.
 		var skip_bcc = false;

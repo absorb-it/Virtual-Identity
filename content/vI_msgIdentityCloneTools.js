@@ -25,12 +25,9 @@ Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 let Log = vI.setupLogging("virtualIdentity.msgIdentityCloneTools");
+Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 var msgIdentityCloneTools = {	
-	_pref : Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch("extensions.virtualIdentity."),
-
 	copySelectedIdentity : function(id_key) {
 		Log.debug("copySelectedIdentity\n");
 		var msgIdentityElem = document.getElementById("msgIdentity");
@@ -53,13 +50,13 @@ var msgIdentityCloneTools = {
 		if (!existingIdentity) {
 			Log.debug("signatureSwitch hide/remove signatures\n");
 			// code to hide the text signature
-			try { if (msgIdentityCloneTools._pref.getBoolPref("hide_signature") && ss_signature.length == 0) {
+			try { if (vI.vIpref.get("hide_signature") && ss_signature.length == 0) {
 				Log.debug("hide text/html signature");
 				ss_main.signatureSwitch()
 				Log.debug("\n");
 			} } catch(vErr) { Log.debug(" -- missing signatureSwitch extension?\n"); };
 			// code to hide the sMime signature
-			try { if (msgIdentityCloneTools._pref.getBoolPref("hide_sMime_messageSignature")) {
+			try { if (vI.vIpref.get("hide_sMime_messageSignature")) {
 				var element = document.getElementById("menu_securitySign1");
 				if (element.getAttribute("checked") == "true") {
 					Log.debug("signatureSwitch hide_sMime_messageSignature with doCommand\n");
@@ -69,7 +66,7 @@ var msgIdentityCloneTools = {
 			//	document.getElementById("menu_securitySign1").removeAttribute("checked");
 			} catch(vErr) { };
 			// code to hide the openGPG signature
-			try { if (msgIdentityCloneTools._pref.getBoolPref("hide_openPGP_messageSignature")) {
+			try { if (vI.vIpref.get("hide_openPGP_messageSignature")) {
 				var element = document.getElementById("enigmail_signed_send");
 				if (element.getAttribute("checked") == "true") {
 					var skipChangeGPGsign = false;

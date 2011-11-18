@@ -28,12 +28,9 @@ virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 let Log = vI.setupLogging("virtualIdentity.upgrade");
 Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
 Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 var upgrade = {
-	preferences : Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.virtualIdentity."),
-			
 	versionChecker : Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 			.getService(Components.interfaces.nsIVersionComparator),
     
@@ -126,16 +123,12 @@ var upgrade = {
 	},
     
     __removeExtraAddedHeaders : function(currentVersion) {
-        var prefroot = Components.classes["@mozilla.org/preferences-service;1"]
-            .getService(Components.interfaces.nsIPrefService)
-            .getBranch(null);
-        
         Log.debug("extension-upgrade __removeExtraAddedHeaders " + currentVersion + "\n");
         if ((!currentVersion || upgrade.versionChecker.compare(currentVersion, "0.6.9") < 0) && 
-                prefroot.getCharPref("mailnews.headers.extraExpandedHeaders") != "") {
+                vI.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders") != "") {
             // clean extraExpandedHeaders once, because the whole header-saving and restoring was broken too long
             Log.debug("cleaning extraExpandedHeaders\n");
-            prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", "")
+            vI.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", "")
             Log.debug("cleaned extraExpandedHeaders\n");
         }
         Log.debug("extension-upgrade __removeExtraAddedHeaders done.\n\n");
@@ -157,9 +150,9 @@ var upgrade = {
 				// remove any obsolete preferences under extensions.virtualIdentity
 				Log.debug("transfer changed preferences of pre-" + transferPrefs[i].version + " release:\n")
 				for each (transferPref in transferPrefs[i].prefs) {
-					try {	upgrade.preferences.setBoolPref(transferPref.targetPref, 
-							upgrade.preferences.getBoolPref(transferPref.sourcePref));
-						upgrade.preferences.clearUserPref(transferPref.sourcePref);
+					try {	vI.vIprefs.commit(transferPref.targetPref, 
+							vI.vIprefs.get(transferPref.sourcePref));
+						vI.vIprefs.clearUserPref(transferPref.sourcePref);
 						Log.debug(".") 
 					}
 					catch (e) { };
@@ -190,7 +183,7 @@ var upgrade = {
 				// remove any obsolete preferences under extensions.virtualIdentity
 				Log.debug("removing obsolete preferences of pre-" + obsoletePrefs[i].version + " release:\n")
 				for each (pref in obsoletePrefs[i].prefs) {
-					try { upgrade.preferences.clearUserPref(pref); Log.debug(".") }
+					try { vI.vIprefs.clearUserPref(pref); Log.debug(".") }
 					catch (e) { };
 				}
 				Log.debug("done.\n")

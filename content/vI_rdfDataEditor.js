@@ -27,6 +27,7 @@ virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
 Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
 let Log = vI.setupLogging("virtualIdentity.rdfDataEditor");
+Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 var rdfDataEditor = {
 	__rdfDatasource : null,
@@ -101,12 +102,9 @@ var rdfDataEditor = {
     hideUnusedEditorFields : function() {
       var allHidden = true;
       var hide = (document.getElementById("vI_storageExtras_hideUnusedEditorFields").getAttribute("checked") == "true")
-      let preferences = Components.classes["@mozilla.org/preferences-service;1"]
-        .getService(Components.interfaces.nsIPrefService)
-        .getBranch("extensions.virtualIdentity.");
       rdfDataEditor.__identityData.extras.loopThroughExtras(
         function(extra) {
-          var hidden = hide && !preferences.getBoolPref(extra.option);
+          var hidden = hide && !vI.vIpref.get(extra.option);
           document.getElementById("vI_" + extra.option).setAttribute("hidden", hidden)
           document.getElementById("vI_" + extra.option + "_store").setAttribute("hidden", hidden)
           if (!hidden) allHidden = false

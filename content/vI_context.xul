@@ -38,28 +38,22 @@
     virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
     
     Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
+    Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
     
-	var vI_context = {
-		prefroot : Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch(null),
-			
-		observe: function(subject, topic, data) {
-			document.getElementById("virtualIdentityExtension_vIMenu").setAttribute("hidden", 
-				!vI_context.prefroot.getBoolPref("extensions.virtualIdentity.menu_entry"));
-		}
-		
+    var vI_context = {
+      observe: function(subject, topic, data) {
+        document.getElementById("virtualIdentityExtension_vIMenu").setAttribute("hidden", 
+          !virtualIdentityExtension.vIprefs.get("menu_entry"));
+      }
 	}
 	window.addEventListener("load", function(e) {
-		vI_context.prefroot.QueryInterface(Components.interfaces.nsIPrefBranch2);
-		vI_context.prefroot.addObserver("extensions.virtualIdentity.menu_entry", vI_context, false);
-		vI_context.observe();
+      virtualIdentityExtension.vIprefs.addObserver("menu_entry", vI_context.observe);
+      vI_context.observe();
 	}, false);
 	window.addEventListener("unload", function(e) {
-		vI_context.prefroot.removeObserver("extensions.virtualIdentity.menu_entry", vI_context, false);
+      virtualIdentityExtension.vIprefs.removeObserver("menu_entry", vI_context.observe);
 	}, false);
 	}});
-	dump('context: ' + virtualIdentityExtension.initTime + '\n');
 	</script>
 	
 	<menupopup id="taskPopup">
