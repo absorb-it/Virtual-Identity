@@ -90,7 +90,7 @@ var getHeader = {
             let values = aHeaders.getAll(headerNameToSearch);
             if (isNaN(headerNumberToSearch))
               for (let i = 0; i < values.length;)
-                value += (value)?", ":"" + values[i++];
+                value += ((value)?(", "):("")) + values[i++];
             else value = values[headerNumberToSearch-1];
             if (value) {
               getHeader.hdr.setStringProperty("vI_" + headerNameToStore,
