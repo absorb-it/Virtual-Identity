@@ -38,7 +38,7 @@ var statusmenu = {
 	objFccSwitch : null,
 	objStatusText : null,
 	
-	observe: function(subject, topic, data) {
+	observe: function(self, subject, topic, data) {
 		switch (data) {
 			case "fcc_show_switch":
 				statusmenu.objFccSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
@@ -88,29 +88,29 @@ var statusmenu = {
 	},
 	
 	addObserver: function() {
-		vI.vIprefs.addObserver("fcc_show_switch", statusmenu, false);
-		vI.vIprefs.addObserver("doFcc", statusmenu, false);
-		vI.vIprefs.addObserver("storage", statusmenu, false);
-		vI.vIprefs.addObserver("storage_show_switch", statusmenu, false);
-		vI.vIprefs.addObserver("storage_show_baseID_switch", statusmenu, false);
-		vI.vIprefs.addObserver("storage_show_SMTP_switch", statusmenu, false);
-		vI.vIprefs.addObserver("storage_colorIndication", statusmenu, false);
-		vI.vIprefs.addObserver("storage_storedefault", statusmenu, false);
-		vI.vIprefs.addObserver("storage_store_base_id", statusmenu, false);
-		vI.vIprefs.addObserver("storage_store_SMTP", statusmenu, false);
+		vI.vIprefs.addObserver("fcc_show_switch", this.observe, this);
+		vI.vIprefs.addObserver("doFcc", this.observe, this);
+		vI.vIprefs.addObserver("storage", this.observe, this);
+		vI.vIprefs.addObserver("storage_show_switch", this.observe, this);
+		vI.vIprefs.addObserver("storage_show_baseID_switch", this.observe, this);
+		vI.vIprefs.addObserver("storage_show_SMTP_switch", this.observe, this);
+		vI.vIprefs.addObserver("storage_colorIndication", this.observe, this);
+		vI.vIprefs.addObserver("storage_storedefault", this.observe, this);
+		vI.vIprefs.addObserver("storage_store_base_id", this.observe, this);
+		vI.vIprefs.addObserver("storage_store_SMTP", this.observe, this);
 	},
 	
 	removeObserver: function() {
-		vI.vIprefs.removeObserver("fcc_show_switch", statusmenu);
-		vI.vIprefs.removeObserver("doFcc", statusmenu);
-		vI.vIprefs.removeObserver("storage", statusmenu);
-		vI.vIprefs.removeObserver("storage_show_switch", statusmenu);
-		vI.vIprefs.removeObserver("storage_show_baseID_switch", statusmenu);
-		vI.vIprefs.removeObserver("storage_show_SMTP_switch", statusmenu);
-		vI.vIprefs.removeObserver("storage_colorIndication", statusmenu);
-		vI.vIprefs.removeObserver("storage_storedefault", statusmenu);
-		vI.vIprefs.removeObserver("storage_store_base_id", statusmenu);
-		vI.vIprefs.removeObserver("storage_store_SMTP", statusmenu);
+		vI.vIprefs.removeObserver("fcc_show_switch", this.observe);
+		vI.vIprefs.removeObserver("doFcc", this.observe);
+		vI.vIprefs.removeObserver("storage", this.observe);
+		vI.vIprefs.removeObserver("storage_show_switch", this.observe);
+		vI.vIprefs.removeObserver("storage_show_baseID_switch", this.observe);
+		vI.vIprefs.removeObserver("storage_show_SMTP_switch", this.observe);
+		vI.vIprefs.removeObserver("storage_colorIndication", this.observe);
+		vI.vIprefs.removeObserver("storage_storedefault", this.observe);
+		vI.vIprefs.removeObserver("storage_store_base_id", this.observe);
+		vI.vIprefs.removeObserver("storage_store_SMTP", this.observe);
 	},
 	
 	init : function () {
@@ -128,15 +128,15 @@ var statusmenu = {
 		statusmenu.objStatusTooltipLine2 = document.getElementById("virtualIdentityExtension_statusMenuTooltip_StatusValueLine2");
 
 		statusmenu.addObserver();
-		statusmenu.observe(null, null, "fcc_show_switch");
-		statusmenu.observe(null, null, "storage_show_switch");
-		statusmenu.observe(null, null, "storage_show_baseID_switch");
-		statusmenu.observe(null, null, "storage_show_SMTP_switch");
-		statusmenu.observe(null, null, "storage_colorIndication");
-		statusmenu.observe(null, null, "storage_store_base_id");
-		statusmenu.observe(null, null, "storage_store_SMTP");
-		statusmenu.observe(null, null, "storage_storedefault");
-		statusmenu.observe(null, null, "storage");
+		statusmenu.observe(this, null, null, "fcc_show_switch");
+		statusmenu.observe(this, null, null, "storage_show_switch");
+		statusmenu.observe(this, null, null, "storage_show_baseID_switch");
+		statusmenu.observe(this, null, null, "storage_show_SMTP_switch");
+		statusmenu.observe(this, null, null, "storage_colorIndication");
+		statusmenu.observe(this, null, null, "storage_store_base_id");
+		statusmenu.observe(this, null, null, "storage_store_SMTP");
+		statusmenu.observe(this, null, null, "storage_storedefault");
+		statusmenu.observe(this, null, null, "storage");
 	},
 	
 	__timeout : 5,	// timeout for status messages in seconds

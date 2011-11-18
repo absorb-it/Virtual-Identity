@@ -26,42 +26,41 @@ var EXPORTED_SYMBOLS = ["vIaccount_cleanupSystem", "get_vIaccount",
   "vIaccount_prepareSendMsg", "vIaccount_finalCheck",
   "vIaccount_createAccount", "vIaccount_removeUsedVIAccount" ]
 
-Components.utils.import("resource://gre/modules/Services.jsm");
-Components.utils.import("resource://v_identity/vI_log.js");
-Components.utils.import("resource://v_identity/vI_identityData.js");
-Components.utils.import("resource://v_identity/vI_rdfDatasource.js");
+const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
+
+Cu.import("resource://gre/modules/Services.jsm");
+Cu.import("resource://v_identity/vI_log.js");
+Cu.import("resource://v_identity/vI_identityData.js");
+Cu.import("resource://v_identity/vI_rdfDatasource.js");
+Cu.import("resource://v_identity/vI_prefs.js");
 
 let Log = setupLogging("virtualIdentity.account");
 
 function vIaccount_prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients) {
 	var stringBundle = Services.strings.createBundle("chrome://v_identity/locale/v_identity.properties");
 	
-	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-		.getService(Components.interfaces.nsIPromptService);
+	var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
+		.getService(Ci.nsIPromptService);
 	
-	var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.virtualIdentity.");
-	
-	var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
-			.getService(Components.interfaces.nsIMsgAccountManager);
+	var AccountManager = Cc["@mozilla.org/messenger/account-manager;1"]
+			.getService(Ci.nsIMsgAccountManager);
 			
-	Log.debug("\nprepareSendMsg " + msgType + " " + Components.interfaces.nsIMsgCompDeliverMode.Now + "\n");
+	Log.debug("\nprepareSendMsg " + msgType + " " + Ci.nsIMsgCompDeliverMode.Now + "\n");
 	
 	returnValue = {};
 	
-	if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now) {
-		if ( (vid && prefs.getBoolPref("warn_virtual") &&
+	if (msgType == Ci.nsIMsgCompDeliverMode.Now) {
+		if ( (vid && vIprefs.get("warn_virtual") &&
 			!(promptService.confirm(window,"Warning",
 				stringBundle.GetStringFromName("vident.sendVirtual.warning")))) ||
-			(!vid && prefs.getBoolPref("warn_nonvirtual") &&
+			(!vid && vIprefs.get("warn_nonvirtual") &&
 			!(promptService.confirm(window,"Warning",
 				stringBundle.GetStringFromName("vident.sendNonvirtual.warning")))) ) {
 			return { update : "abort", storedIdentity : null }; // completely abort sending
 		}
-// 		if (prefs.getBoolPref("storage") &&
+// 		if (vIprefs.get("storage") &&
 // 				(!vI.statusmenu || vI.statusmenu.objStorageSaveMenuItem.getAttribute("checked") == "true")) {
-        if (prefs.getBoolPref("storage")) {
+        if (vIprefs.get("storage")) {
 			var localeDatasourceAccess = new rdfDatasourceAccess();
 			var returnValue = localeDatasourceAccess.storeVIdentityToAllRecipients(identityData, recipients)
 			if ( returnValue.update == "abort" || returnValue.update == "takeover" ) {
@@ -107,19 +106,11 @@ var account = {
 	
 	_baseIdentity : null,
 
-	_AccountManager : Components.classes["@mozilla.org/messenger/account-manager;1"]
-		.getService(Components.interfaces.nsIMsgAccountManager),
+	_AccountManager : Cc["@mozilla.org/messenger/account-manager;1"]
+		.getService(Ci.nsIMsgAccountManager),
 	
-	_prefroot : Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch(null),
-
-	_pref : Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch("extensions.virtualIdentity."),
-	
-	_unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
+	_unicodeConverter : Cc["@mozilla.org/intl/scriptableunicodeconverter"]
+			.createInstance(Ci.nsIScriptableUnicodeConverter),
 	
 	_copyBoolAttribute : function(name) {
 		account._account.defaultIdentity.setBoolAttribute(name,
@@ -142,7 +133,7 @@ var account = {
 	},
 
 	_copyPreferences : function() {
-		if (account._pref.getBoolPref("copySMIMESettings")) {
+		if (vIprefs.get("copySMIMESettings")) {
 			// SMIME settings
 			Log.debug("copy S/MIME settings\n")
 			account._copyUnicharAttribute("signing_cert_name");
@@ -150,7 +141,7 @@ var account = {
 			account._copyIntAttribute("encryptionpolicy");
 		}
 /*		seems not required, encryption happens before Virtual Identity account is created
-		if (account._pref.getBoolPref("copyEnigmailSettings")) {
+		if (vIprefs.get("copyEnigmailSettings")) {
 			// pgp/enigmail settings
 			Log.debug("copy PGP settings\n")
 			account._copyBoolAttribute("pgpSignEncrypted");
@@ -163,7 +154,7 @@ var account = {
 		
 			account._copyIntAttribute("defaultEncryptionPolicy");
 		}	*/
-		if (account._pref.getBoolPref("copyAttachVCardSettings")) {
+		if (vIprefs.get("copyAttachVCardSettings")) {
 			// attach vcard
 			Log.debug("copy VCard settings\n")
 			account._copyBoolAttribute("attachVCard");
@@ -177,7 +168,7 @@ var account = {
 		var dirEnumerator = directory.directoryEntries;
 		while (dirEnumerator.hasMoreElements()) {
 			var maildir = dirEnumerator.getNext();
-			maildir.QueryInterface(Components.interfaces.nsIFile);
+			maildir.QueryInterface(Ci.nsIFile);
 			// recurse into all subdirectories
 			if (maildir.isDirectory() &&
 				!account.__dirEmpty(maildir)) return false;
@@ -191,19 +182,19 @@ var account = {
 	__cleanupDirectories : function() {
 		Log.debug("checking for leftover VirtualIdentity directories ")
 
-		var file = Components.classes["@mozilla.org/file/directory_service;1"]
-		.getService(Components.interfaces.nsIProperties)
-			.get("ProfD", Components.interfaces.nsIFile);
+		var file = Cc["@mozilla.org/file/directory_service;1"]
+		.getService(Ci.nsIProperties)
+			.get("ProfD", Ci.nsIFile);
 		
 		var fileEnumerator = file.directoryEntries
 		while (fileEnumerator.hasMoreElements()) {
 			var dir = fileEnumerator.getNext()
-			dir.QueryInterface(Components.interfaces.nsIFile);
+			dir.QueryInterface(Ci.nsIFile);
 			if (dir.path.match(new RegExp("[/\\\\]Mail$","i"))) { // match Windows and Linux/Mac separators
 				var dirEnumerator = dir.directoryEntries
 				while (dirEnumerator.hasMoreElements()) {
 					var maildir = dirEnumerator.getNext()
-					maildir.QueryInterface(Components.interfaces.nsIFile);
+					maildir.QueryInterface(Ci.nsIFile);
 					// match Windows and Linux/Mac separators
 					if (maildir.path.match(new RegExp("[/\\\\]virtualIdentity.*$","i"))) {
 						// should be empty, VirtualIdentity never uses those directories
@@ -223,7 +214,7 @@ var account = {
 	cleanupSystem : function() {
 		Log.debug("checking for leftover VirtualIdentity accounts ")
 		for (var i=0; i < account._AccountManager.accounts.Count(); i++) {
-			var checkAccount = account._AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
+			var checkAccount = account._AccountManager.accounts.QueryElementAt(i, Ci.nsIMsgAccount);
 			if (account.__isVIdentityAccount(checkAccount)) {
 				Log.debug(".")
 				account.__removeAccount(checkAccount);
@@ -235,7 +226,7 @@ var account = {
 	
 	__isVIdentityAccount : function(checkAccount) {
 		// check for new (post0.5.0) accounts,
-		try {	account._prefroot.getBoolPref("mail.account." + checkAccount.key + ".vIdentity");
+		try {	prefroot.getBoolPref("mail.account." + checkAccount.key + ".vIdentity");
 			return true;
 		} catch (e) { };
 		// check for old (pre 0.5.0) accounts
@@ -264,13 +255,13 @@ var account = {
 		// remove the account
 		account._AccountManager.removeAccount(checkAccount);
 		// remove the additional tagging-pref
-		try { account._prefroot.clearUserPref("mail.account." + key + ".vIdentity");	}
+		try { prefroot.clearUserPref("mail.account." + key + ".vIdentity");	}
 		catch (e) { };
 	},
 	
 	removeUsedVIAccount : function() {
-		var mailWindow = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService()
-			.QueryInterface(Components.interfaces.nsIWindowMediator)
+		var mailWindow = Cc["@mozilla.org/appshell/window-mediator;1"].getService()
+			.QueryInterface(Ci.nsIWindowMediator)
 			.getMostRecentWindow("mail:3pane");
 		if (mailWindow) {				// it's not sure that we have an open 3-pane-window
 			var selectedFolder = (mailWindow.gFolderTreeView)?mailWindow.gFolderTreeView.getSelectedFolders()[0]:null;
@@ -303,14 +294,14 @@ var account = {
 		*/
 		
 		account._account = account._AccountManager.createAccount();
-		account._prefroot.setBoolPref("mail.account." + account._account.key + ".vIdentity", true)
+		prefroot.setBoolPref("mail.account." + account._account.key + ".vIdentity", true)
 		account._account.addIdentity(account._AccountManager.createIdentity());
 		// the new account uses the same incomingServer than the base one,
 		// it's especially required for NNTP cause incomingServer is used for sending newsposts.
 		// by pointing to the same incomingServer stored passwords can be reused
 		// the incomingServer has to be replaced before the account is removed, else it get removed ether
 		var servers = account._AccountManager.GetServersForIdentity(baseIdentity);
-		var server = servers.QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
+		var server = servers.QueryElementAt(0, Ci.nsIMsgIncomingServer);
 		// we mark the server as invalid so that the account manager won't
 		// tell RDF about the new server - we don't need this server for long
 		// but we should restore it, because it's actually the same server as the one of the base identity
@@ -346,7 +337,7 @@ var account = {
 		var doFcc = true;
 		try { doFcc = document.getElementById("fcc_switch").getAttribute("checked") } catch(e) { }
 		if (doFcc) {
-			switch (account._pref.getCharPref("fccFolderPickerMode"))
+			switch (vIprefs.get("fccFolderPickerMode"))
 			{
 			    case "2"  :
 				Log.debug ("preparing Fcc --- use Settings of Default Account\n");
@@ -365,12 +356,12 @@ var account = {
 			    default  :
 				Log.debug ("preparing Fcc --- use Virtual Identity Settings\n");
 				account._account.defaultIdentity.doFcc
-					= account._pref.getBoolPref("doFcc");
+					= vIprefs.get("doFcc");
 				account._account.defaultIdentity.fccFolder
-					= account._unicodeConverter.ConvertToUnicode(account._pref.getCharPref("fccFolder"));
+					= account._unicodeConverter.ConvertToUnicode(vIprefs.get("fccFolder"));
 				account._account.defaultIdentity.fccFolderPickerMode
-					= account._pref.getCharPref("fccFolderPickerMode");
-				account._account.defaultIdentity.fccReplyFollowsParent = account._pref.getBoolPref("fccReplyFollowsParent");
+					= vIprefs.get("fccFolderPickerMode");
+				account._account.defaultIdentity.fccReplyFollowsParent = vIprefs.get("fccReplyFollowsParent");
 
 				break;
 			}
@@ -382,11 +373,11 @@ var account = {
 		Log.debug("Stored (doFcc " + account._account.defaultIdentity.doFcc + " fccFolder " +
 			account._account.defaultIdentity.fccFolder + " fccFolderPickerMode " +
 			account._account.defaultIdentity.fccFolderPickerMode + "(" +
-			account._pref.getCharPref("fccFolderPickerMode") + "))\n");
+			vIprefs.get("fccFolderPickerMode") + "))\n");
 	},
 	
 	_setupDraft : function()	{
-		switch (account._pref.getCharPref("draftFolderPickerMode"))
+		switch (vIprefs.get("draftFolderPickerMode"))
 		{
 		    case "2"  :
 			Log.debug ("preparing Draft --- use Settings of Default Account\n");
@@ -401,19 +392,19 @@ var account = {
 		    default  :
 			Log.debug ("preparing Draft --- use Virtual Identity Settings\n");
 			account._account.defaultIdentity.draftFolder
-				= account._unicodeConverter.ConvertToUnicode(account._pref.getCharPref("draftFolder"));
+				= account._unicodeConverter.ConvertToUnicode(vIprefs.get("draftFolder"));
 			account._account.defaultIdentity.draftsFolderPickerMode
-				= account._pref.getCharPref("draftFolderPickerMode");
+				= vIprefs.get("draftFolderPickerMode");
 			break;
 		}
 		Log.debug("Stored (draftFolder " +
 			account._account.defaultIdentity.draftFolder + " draftsFolderPickerMode " +
 			account._account.defaultIdentity.draftsFolderPickerMode + "(" +
-			account._pref.getCharPref("draftFolderPickerMode") + "))\n");
+			vIprefs.get("draftFolderPickerMode") + "))\n");
 	},
 	
 	_setupTemplates : function()	{
-		switch (account._pref.getCharPref("stationeryFolderPickerMode"))
+		switch (vIprefs.get("stationeryFolderPickerMode"))
 		{
 		    case "2"  :
 			Log.debug ("preparing Templates --- use Settings of Default Account\n");
@@ -428,15 +419,15 @@ var account = {
 		    default  :
 			Log.debug ("preparing Templates --- use Virtual Identity Settings\n");
 			account._account.defaultIdentity.stationeryFolder
-				= account._unicodeConverter.ConvertToUnicode(account._pref.getCharPref("stationeryFolder"));
+				= account._unicodeConverter.ConvertToUnicode(vIprefs.get("stationeryFolder"));
 			account._account.defaultIdentity.tmplFolderPickerMode
-				= account._pref.getCharPref("stationeryFolderPickerMode");
+				= vIprefs.get("stationeryFolderPickerMode");
 			break;
 		}
 		Log.debug("Stored (stationeryFolder " +
 			account._account.defaultIdentity.stationeryFolder + " tmplFolderPickerMode " +
 			account._account.defaultIdentity.tmplFolderPickerMode + "(" +
-			account._pref.getCharPref("stationeryFolderPickerMode") + "))\n");
+			vIprefs.get("stationeryFolderPickerMode") + "))\n");
 	}
 }
 

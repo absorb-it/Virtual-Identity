@@ -102,8 +102,8 @@ var vIprefs = {
     clearUserPref: function(aPrefName) {
       Log.error(Colors.red, "XXXX not yet implemented clearUserPref!\n", Colors.default);
     },
-    addObserver: function(aPrefName, aFunction) {
-      this._localObservers.push({ pref: aPrefName, observe: aFunction });
+    addObserver: function(aPrefName, aFunction, aSelf) {
+      this._localObservers.push({ pref: aPrefName, observe: aFunction, context: aSelf });
     },
     removeObserver: function(aPrefName, aFunction) {
       for each (let [i, prefObserver] in Iterator(this._localObservers)) {
@@ -117,8 +117,11 @@ var vIprefs = {
       Log.debug("prefChange observed : " + aPrefName + "\n")
       this._retrievePref(aPrefName);
       for each (let [, prefObserver] in Iterator(this._localObservers)) {
-        if (prefObserver.pref == aPrefName)
-          prefObserver.observe(subject, topic, aPrefName);
+        if (prefObserver.pref == aPrefName) {
+          Log.debug("found observer, calling : " + prefObserver.observe + "\n")
+          prefObserver.observe(prefObserver.context, subject, topic, aPrefName);
+          Log.debug("found observer, calling : " + prefObserver.observe + " done\n")
+        }
       }
     }
 }

@@ -144,8 +144,7 @@ var prefObserver = {
 	observer_added : false,
 	
 	init : function() {
-      let self = this;
-      vI.vIprefs.addObserver("smart_reply_headers", self.observe);
+      vI.vIprefs.addObserver("smart_reply_headers", this.observe, this);
 	},
 	
 	cleanup : function() {
@@ -153,13 +152,11 @@ var prefObserver = {
       vI.vIprefs.removeObserver("smart_reply_headers", self.observe);
 	},
 	
-	observe: function(subject, topic, data) {
+	observe: function(self, subject, topic, data) {
 		if (topic == "nsPref:changed") {
 			// remove (old) prepared headerArray
 			getHeader.headerToSearch = null;
-			
-			Log.debug("reload Message\n");
-			MsgReload();
+			ReloadMessage();
 		}
 	},
 

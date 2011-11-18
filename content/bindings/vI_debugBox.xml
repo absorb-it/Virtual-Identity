@@ -13,35 +13,26 @@
     <implementation implements="nsIObserver">
       <constructor><![CDATA[
         this.splitter = document.createElement("splitter");
-        let prefroot = Components.classes["@mozilla.org/preferences-service;1"]
-          .getService(Components.interfaces.nsIPrefService)
-          .getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2);
-        prefroot.addObserver("extensions.virtualIdentity.debug_notification", this, false);
-        this.observe();
+        virtualIdentityExtension.vIprefs.addObserver("debug_notification", this.observe, this);
+        this.observe(this);
       ]]></constructor>
       <destructor><![CDATA[
-        let prefroot = Components.classes["@mozilla.org/preferences-service;1"]
-          .getService(Components.interfaces.nsIPrefService)
-          .getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2);
-        prefroot.removeObserver("extensions.virtualIdentity.debug_notification", this);
+        virtualIdentityExtension.vIprefs.removeObserver("debug_notification", this.observe);
       ]]></destructor>
       <field name="_content">document.getAnonymousElementByAttribute(this, "anonid", "vI_debugBoxContent")</field>
       <property name="splitter" />
       <method name="observe">
+        <parameter name="self" />
         <body><![CDATA[
-          this.clear();
-          let showDebugArea = Components.classes["@mozilla.org/preferences-service;1"]
-            .getService(Components.interfaces.nsIPrefService)
-            .getBranch("extensions.virtualIdentity.")
-            .getBoolPref("debug_notification");
-          if (showDebugArea) {
-            this.removeAttribute("hidden");
-            this.parentNode.insertBefore(this.splitter, this);
+          self.clear();
+          if (virtualIdentityExtension.vIprefs.get("debug_notification")) {
+            self.removeAttribute("hidden");
+            self.parentNode.insertBefore(self.splitter, self);
           }
           else {
-            this.setAttribute("hidden", "true");
+            self.setAttribute("hidden", "true");
             try {
-              this.parentNode.removeChild(this.splitter);
+              self.parentNode.removeChild(self.splitter);
             } catch (e) { };
           }
         ]]></body>
