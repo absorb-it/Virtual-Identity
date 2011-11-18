@@ -824,7 +824,7 @@ rdfDatasource.prototype = {
 	},
 
 	_setRDFValue : function (resource, field, value) {
-		Log.debug("_setRDFValue " + resource.ValueUTF8 + " " + field + " " + value + ".\n");
+// 		Log.debug("_setRDFValue " + resource.ValueUTF8 + " " + field + " " + value + ".\n");
 		if (!value) return value; // return if some value was not set.
 // 		Log.debug("_setRDFValue " + this._rdfService + " " + this._rdfDataSource + "\n");
         var predicate = this._rdfService.GetResource(this._rdfNS + "rdf#" + field);
