@@ -202,7 +202,7 @@ function setupFullLogging(name) {
 }
 
 function dumpCallStack(e) {
-  let frame = e ? e.stack : Components.stack;
+  let frame = (e && e.stack) ? e.stack : Components.stack;
   while (frame) {
     MyLog.debug("\n"+frame+"\n");
     frame = frame.caller;
