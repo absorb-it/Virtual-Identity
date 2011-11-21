@@ -44,7 +44,6 @@ currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
 
 
 function threadTreeColumn(aHeaderName) {
-  this.headerValues = {};
   this.headerName = aHeaderName;
   this.threadTreeBoxObj = currentWindow.document.getElementById("threadTree").boxObject;
   ObserverService.addObserver(this, "MsgCreateDBView", false);
@@ -70,6 +69,8 @@ threadTreeColumn.prototype = {
   },
 
   _addColumn: function() {
+    if (currentWindow.document.getElementById("col" + this.headerName))
+      return;
     let treecolElem = currentWindow.document.getElementById("threadCols");
     let splitter = currentWindow.document.createElement("splitter");
     splitter.setAttribute("class", "tree-splitter");
@@ -101,6 +102,7 @@ threadTreeColumn.prototype = {
 
   observe: function(aMsgFolder, aTopic, aData) {
     this._addColumn();
+    this.headerValues = {};
     self = this;
     currentWindow.gDBView.addColumnHandler("col" + self.headerName, self);
   }
