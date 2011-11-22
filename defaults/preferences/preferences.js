@@ -34,7 +34,7 @@ pref("extensions.virtualIdentity.hide_signature", false);
 pref("extensions.virtualIdentity.hide_sMime_messageSignature", false);
 pref("extensions.virtualIdentity.hide_openPGP_messageSignature", false);
 pref("extensions.virtualIdentity.storage", true);
-pref("extensions.virtualIdentity.storage_storedefault", true);
+pref("extensions.virtualIdentity.storage_store", true);
 pref("extensions.virtualIdentity.storage_store_base_id", false);
 pref("extensions.virtualIdentity.storage_store_SMTP", false);
 pref("extensions.virtualIdentity.storage_dont_update_multiple", true);

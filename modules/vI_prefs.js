@@ -80,23 +80,26 @@ var vIprefs = {
     },
 
     get: function(aPrefName) {
-      if (!this._localPrefs[aPrefName])
+      if (!(aPrefName in this._localPrefs))
         this._retrievePref(aPrefName);
       return this._localPrefs[aPrefName];
     },
     set: function(aPrefName, aPrefValue) {
-      if (!this._localPrefs[aPrefName])
+      if (!(aPrefName in this._localPrefs))
         this._retrievePref(aPrefName);
       this._localPrefs[aPrefName] = aPrefValue;
+//       Log.debug("changed pref " + aPrefName + " to " + aPrefValue + "\n")
       for each (let [, prefObserver] in Iterator(this._localObservers)) {
-        if (prefObserver.pref == aPrefName)
-          prefObserver.observe(aPrefName);
+//         Log.debug("check prefobserver " + prefObserver.pref + " against " + aPrefName + "\n")
+        if (prefObserver.pref == aPrefName) {
+          prefObserver.observe(prefObserver.context, aPrefValue, "nsPref:changed", aPrefName);
+        }
       }
     },
     commit: function(aPrefName, aPrefValue) {
       if (aPrefValue)
         this.set(aPrefName, aPrefValue);
-      if (this._localPrefs[aPrefName])
+      if (aPrefName in this._localPrefs)
         this._storePref(aPrefName);
     },
     clearUserPref: function(aPrefName) {
@@ -104,6 +107,7 @@ var vIprefs = {
     },
     addObserver: function(aPrefName, aFunction, aSelf) {
       this._localObservers.push({ pref: aPrefName, observe: aFunction, context: aSelf });
+//       Log.debug("added observer for " + aPrefName + "\n");
     },
     removeObserver: function(aPrefName, aFunction) {
       for each (let [i, prefObserver] in Iterator(this._localObservers)) {
@@ -118,9 +122,9 @@ var vIprefs = {
       this._retrievePref(aPrefName);
       for each (let [, prefObserver] in Iterator(this._localObservers)) {
         if (prefObserver.pref == aPrefName) {
-          Log.debug("found observer, calling : " + prefObserver.observe + "\n")
+//           Log.debug("found observer, calling : " + prefObserver.observe + "\n")
           prefObserver.observe(prefObserver.context, subject, topic, aPrefName);
-          Log.debug("found observer, calling : " + prefObserver.observe + " done\n")
+//           Log.debug("found observer, calling : " + prefObserver.observe + " done\n")
         }
       }
     }

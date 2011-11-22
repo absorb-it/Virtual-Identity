@@ -27,6 +27,7 @@ var EXPORTED_SYMBOLS = ["rdfDatasource", "rdfDatasourceAccess", "rdfDatasourceIm
 Components.utils.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.rdfDatasource");
 
+Components.utils.import("resource://v_identity/vI_prefs.js");
 Components.utils.import("resource://v_identity/vI_identityData.js");
 Components.utils.import("resource://gre/modules/Services.jsm");
 
@@ -80,10 +81,6 @@ rdfDatasource.prototype = {
     _smtpContainer : Components.classes["@mozilla.org/rdf/container;1"]
             .createInstance(Components.interfaces.nsIRDFContainer),
     
-	_pref : Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch("extensions.virtualIdentity."),
-
     getContainer : function (type) {
 		switch (type) {
 			case "email": return this._emailContainer;
@@ -761,15 +758,9 @@ rdfDatasource.prototype = {
 	updateRDFFromVIdentity : function(identityData, recipientName, recipientType) {
 		var recipient = this.__getDescriptionAndType(recipientName, recipientType)
         this.updateRDF(recipient.recDesc, recipient.recType, identityData,
-            this._pref.getBoolPref("storage_store_base_id"),
-            this._pref.getBoolPref("storage_store_SMTP"),
+            vIprefs.get("storage_store_base_id"),
+            vIprefs.get("storage_store_SMTP"),
             null, null);
-// 		this.updateRDF(recipient.recDesc, recipient.recType, identityData,
-// 			(!vI.statusmenu && this._pref.getBoolPref("storage_store_base_id")
-// 				|| vI.statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true"),
-// 			(!vI.statusmenu && this._pref.getBoolPref("storage_store_SMTP")
-// 				|| vI.statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true"),
-// 			null, null);
 	},
 	
 	removeRDF : function (recDescription, recType) {
@@ -876,10 +867,6 @@ rdfDatasourceAccess.prototype = {
 	_rdfDataSource : null,
 	stringBundle : null,
 	
-	_pref : Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch("extensions.virtualIdentity."),
-	
 	clean : function() {
 		this._rdfDataSource.clean();
 	},
@@ -896,7 +883,7 @@ rdfDatasourceAccess.prototype = {
 		}
 		else {
 			Log.debug("compare with current Identity\n");
-			if (this._pref.getBoolPref("storage_getOneOnly") &&		// if requested to retrieve only storageID for first recipient entered
+			if (vIprefs.get("storage_getOneOnly") &&		// if requested to retrieve only storageID for first recipient entered
 				isNotFirstInputElement &&							// and it is now not the first recipient entered
 				!localIdentities.identityDataCollection[0].equalsIdentity(currentIdentity, false).equal) {		// and this id is different than the current used one
 					StorageNotification.info(this.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageCollidingIdentity"));
@@ -909,7 +896,7 @@ rdfDatasourceAccess.prototype = {
 				if (!compResult.equal) {
 					var warning = this.__getWarning("replaceVIdentity", recipientName, compResult.compareMatrix);
 					if (	!currentIdentityIsVid ||
-						!this._pref.getBoolPref("storage_warn_vI_replace") ||
+						!vIprefs.get("storage_warn_vI_replace") ||
 						(this.__askWarning(warning) == "accept")) {
 							returnValue.result = "accept";
 					}
@@ -924,7 +911,7 @@ rdfDatasourceAccess.prototype = {
 	
 	storeVIdentityToAllRecipients : function(identityData, recipients) {
 		var multipleRecipients = (recipients.length > 1);
-		var dontUpdateMultipleNoEqual = (this._pref.getBoolPref("storage_dont_update_multiple") && multipleRecipients)
+		var dontUpdateMultipleNoEqual = (vIprefs.get("storage_dont_update_multiple") && multipleRecipients)
 		Log.debug("storeVIdentityToAllRecipients dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'\n")
 		
 		for (var j = 0; j < recipients.length; j++) {
@@ -935,7 +922,7 @@ rdfDatasourceAccess.prototype = {
 	},
 
 	getVIdentityFromAllRecipients : function(allIdentities, recipients) {
-        if (!this._pref.getBoolPref("storage"))
+        if (!vIprefs.get("storage"))
             { Log.debug("Storage deactivated\n"); return; }
 		var initnumber = allIdentities.number;
 		for (var j = 0; j < recipients.length; j++) {
@@ -960,7 +947,7 @@ rdfDatasourceAccess.prototype = {
 		if (	(!storageDataByType && !storageDataByFilterEqual) ||
 			(!storageDataByTypeEqual && !storageDataByFilterEqual && !dontUpdateMultipleNoEqual) ) {
 			Log.debug("__updateStorageFromVIdentity updating\n")
-			if (storageDataByType && !storageDataByTypeEqual && this._pref.getBoolPref("storage_warn_update")) {
+			if (storageDataByType && !storageDataByTypeEqual && vIprefs.get("storage_warn_update")) {
 				Log.debug("__updateStorageFromVIdentity overwrite warning\n");
 				doUpdate = this.__askWarning(this.__getWarning("updateStorage", recipient, storageDataByTypeCompResult.compareMatrix));
 			}

@@ -102,7 +102,7 @@ var smartIdentity = {
 	__smartIdentitySelection : function(autocreate) {
 		Log.debug("__smartIdentitySelection autocreate=" + autocreate + "\n");
 		
-		if (vI.vIpref.get("idSelection_preferExisting")) {
+		if (vI.vIprefs.get("idSelection_preferExisting")) {
 			var existingIDIndex = smartIdentity._smartIdentityCollection._foundExistingIdentity();
 			if (existingIDIndex) {
 				Log.debug("found existing Identity, use without interaction.\n");
@@ -116,12 +116,12 @@ var smartIdentity = {
 		document.getElementById("virtualIdentityExtension_msgIdentityClone").addIdentitiesToCloneMenu(smartIdentity._smartIdentityCollection._allIdentities);
 		Log.debug("__smartIdentitySelection smartIdentity._smartIdentityCollection._allIdentities.number=" +
 				smartIdentity._smartIdentityCollection._allIdentities.number +
-				" vI.vIpref.get('idSelection_ask_always')=" +
-				vI.vIpref.get("idSelection_ask_always") +
-				" vI.vIpref.get('idSelection_ask')=" +
-				vI.vIpref.get("idSelection_ask") + "\n");
-		if (!autocreate && vI.vIpref.get("idSelection_ask") && 
-			((smartIdentity._smartIdentityCollection._allIdentities.number == 1 && vI.vIpref.get("idSelection_ask_always"))
+				" vI.vIprefs.get('idSelection_ask_always')=" +
+				vI.vIprefs.get("idSelection_ask_always") +
+				" vI.vIprefs.get('idSelection_ask')=" +
+				vI.vIprefs.get("idSelection_ask") + "\n");
+		if (!autocreate && vI.vIprefs.get("idSelection_ask") && 
+			((smartIdentity._smartIdentityCollection._allIdentities.number == 1 && vI.vIprefs.get("idSelection_ask_always"))
 				|| smartIdentity._smartIdentityCollection._allIdentities.number > 1)) {
 			for (var index = 0; index < smartIdentity._smartIdentityCollection._allIdentities.number; index++) {
 				Log.debug("smartIdentityReplyDialog index=" + index + ": '" + smartIdentity._smartIdentityCollection._allIdentities.identityDataCollection[index].combinedName + "' "
@@ -132,7 +132,7 @@ var smartIdentity = {
 					 smartIdentity._smartIdentityCollection._allIdentities,
 					/* callback: */ smartIdentity.changeIdentityToSmartIdentity).focus();
 		}
-		else if (autocreate || vI.vIpref.get("idSelection_autocreate")) {
+		else if (autocreate || vI.vIprefs.get("idSelection_autocreate")) {
 			smartIdentity.changeIdentityToSmartIdentity(smartIdentity._smartIdentityCollection._allIdentities, 0);
 		}	
 	},
@@ -152,7 +152,7 @@ var smartIdentity = {
 	},
 	
 	__removeSmartIdentityFromRecipients : function(allIdentities, index) {
-		if (!vI.vIpref.get("idSelection_removeSmartIdentityFromRecipients")) return;
+		if (!vI.vIprefs.get("idSelection_removeSmartIdentityFromRecipients")) return;
 		
 		// check if selected email is defined as doBcc address. If so, it should not be removed.
 		var skip_bcc = false;

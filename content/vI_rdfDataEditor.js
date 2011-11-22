@@ -104,7 +104,7 @@ var rdfDataEditor = {
       var hide = (document.getElementById("vI_storageExtras_hideUnusedEditorFields").getAttribute("checked") == "true")
       rdfDataEditor.__identityData.extras.loopThroughExtras(
         function(extra) {
-          var hidden = hide && !vI.vIpref.get(extra.option);
+          var hidden = hide && !vI.vIprefs.get(extra.option);
           document.getElementById("vI_" + extra.option).setAttribute("hidden", hidden)
           document.getElementById("vI_" + extra.option + "_store").setAttribute("hidden", hidden)
           if (!hidden) allHidden = false

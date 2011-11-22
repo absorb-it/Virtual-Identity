@@ -171,7 +171,7 @@
 			<xul:menulist class="smtpServerMenuList" anonid="smtpServerMenuList" allowevents="true" id="smtp_server_list">
 				<xul:menupopup anonid="smtp_server_list_popup" />
 			</xul:menulist>
-			<xul:checkbox  id="saveSMTPSwitch" class="vI_plain" allowevents="true" oncommand="event.stopPropagation();virtualIdentityExtension.statusmenu.changeSMTPStatus(this);" >
+			<xul:checkbox  id="saveSMTPSwitch" class="vI_plain" allowevents="true" oncommand="event.stopPropagation();virtualIdentityExtension.vIprefs.set('storage_store_SMTP', this.checked);" >
 				<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveSMTP" attribute="checked" />
 				<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveSMTP" attribute="disabled" />
 			</xul:checkbox>
@@ -287,7 +287,7 @@
 					crop="right" highlightnonmatches="true"/>
 				<xul:spacer flex="1" /></xul:vbox>
 				<xul:vbox id="saveSwitch"><xul:spacer flex="1" />
-					<xul:checkbox class="vI_plain" allowevents="true" oncommand="event.stopPropagation();virtualIdentityExtension.statusmenu.changeSaveStatus(this);" >
+					<xul:checkbox class="vI_plain" allowevents="true" oncommand="event.stopPropagation();virtualIdentityExtension.vIprefs.set('storage_store', this.checked);" >
 						<xul:observes element="virtualIdentityExtension_statusMenu_storage_save" attribute="checked" />
 					</xul:checkbox>
 				<xul:spacer flex="1" /></xul:vbox>
@@ -304,7 +304,7 @@
 					</xul:hbox>
 				<xul:spacer flex="1" /></xul:vbox>
 				<xul:vbox id="saveBaseIDSwitch"><xul:spacer flex="1" />
-					<xul:checkbox class="vI_plain" allowevents="true" oncommand="event.stopPropagation();virtualIdentityExtension.statusmenu.changeBaseIDStatus(this);" >
+					<xul:checkbox class="vI_plain" allowevents="true" oncommand="event.stopPropagation();virtualIdentityExtension.vIprefs.set('storage_store_base_id', this.checked);" >
 						<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveBaseID" attribute="checked" />
 						<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveBaseID" attribute="disabled" />
 					</xul:checkbox>
@@ -329,16 +329,16 @@
 		// it will be done in v_identity.js init
 		// document.getElementById("virtualIdentityExtension_tooltipPopupset").addTooltip(this, false);
 		
-		this._prefroot.addObserver("extensions.virtualIdentity.show_smtp", this._observer, false);
-		this._observer.observe();
+		virtualIdentityExtension.vIprefs.addObserver("extensions.virtualIdentity.show_smtp", this.observe, this);
+		this.observe(this);
 		]]>
 	</constructor>
 	<destructor>
 		<![CDATA[
 		var tooltipPopupset = document.getElementById("virtualIdentityExtension_tooltipPopupset")
 		if (tooltipPopupset) tooltipPopupset.removeTooltip(this.tooltipElem.getAttribute("tooltip"));
-		this._prefroot.removeObserver("extensions.virtualIdentity.show_smtp", this._observer);
-		]]>
+		virtualIdentityExtension.vIprefs.removeObserver("extensions.virtualIdentity.show_smtp", this.observe);
+        ]]>
 	</destructor>
 
 	<!--
@@ -587,19 +587,20 @@
 	<field name="_prefroot">Components.classes["@mozilla.org/preferences-service;1"]
 		.getService(Components.interfaces.nsIPrefService)
 		.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2)</field>
-	<field name="_observer"><![CDATA[({
-		_self: this,
-	        observe: function(aSubject, aTopic, aPrefName) {
-			if (this._self._prefroot)
-				this._self.showSmtp = 
-				this._self._prefroot.getBoolPref("extensions.virtualIdentity.show_smtp");
-				var MenuItems = this._self._popupElem.childNodes;
-				for (var j = 0; j < MenuItems.length; j++) {
-					if (MenuItems[j].localName == "menuseparator") continue;
-					MenuItems[j].smtpStyle = "width:" + document.getElementById("smtp_server_list").clientWidth + "px;";
-				}
-		}
-      	})]]></field>
+    <method name="observe">
+      <parameter name="self" />
+      <parameter name="aSubject" />
+      <parameter name="aTopic" />
+      <parameter name="aPrefName" />
+      <![CDATA[
+        self.showSmtp = 
+          virtualIdentityExtension.vIprefs.get("show_smtp");
+        var MenuItems = self._popupElem.childNodes;
+        for (var j = 0; j < MenuItems.length; j++) {
+            if (MenuItems[j].localName == "menuseparator") continue;
+            MenuItems[j].smtpStyle = "width:" + document.getElementById("smtp_server_list").clientWidth + "px;";
+        }
+    ]]></method>
 	<property name="email" onset="this.identityData.email = val; this.label = this.identityData.combinedName; this.inputEvent()" />
 	<property name="vid" onget="return (this.getAttribute('vid') == 'true');" onset="this.setAttribute('vid',val?'true':'false'); return val;" />
 	<property name="label" onget="return this.textBoxElem.value;" onset="this.textBoxElem.value = val; return val;" />

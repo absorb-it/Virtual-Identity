@@ -29,6 +29,8 @@ const NO_SMTP_TAG = "vI_noStoredSMTP"
 
 Components.utils.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityData");
+Components.utils.import("resource://v_identity/vI_prefs.js");
+
 Components.utils.import("resource://v_identity/vI_identityDataExtras.js");
 Components.utils.import("resource://v_identity/identityDataExtras/returnReceipt.js");
 Components.utils.import("resource://v_identity/identityDataExtras/fccSwitch.js");
@@ -60,14 +62,6 @@ function identityData(email, fullName, id, smtp, extras, sideDescription, existi
 						.createBundle("chrome://v_identity/locale/v_identity.properties");
 }
 identityData.prototype = {
-	_prefroot : Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch(null),
-
-	_pref : Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch("extensions.virtualIdentity."),
-
 	_email : null,			// internal email-field might contain combinedName (until first queried via email)
 	_fullName : null,
 	_emailParsed : null,
@@ -156,7 +150,7 @@ identityData.prototype = {
             .getService(Components.interfaces.nsIMsgAccountManager);
         for (let i = 0; i < AccountManager.accounts.Count(); i++) {
             var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-			try { this._prefroot.getBoolPref("mail.account."+account.key+".vIdentity"); continue; } catch (e) { };
+			try { prefroot.getBoolPref("mail.account."+account.key+".vIdentity"); continue; } catch (e) { };
             for (let j = 0; j < account.identities.Count(); j++) {
                 var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
 // 				Log.debug("comp: fullName.toLowerCase()='" + identity.fullName.toLowerCase() + "' email.toLowerCase()='" + identity.email.toLowerCase() + "' smtp='" + identity.smtpServerKey + "'\n");
@@ -210,13 +204,9 @@ identityData.prototype = {
 	getCompareMatrix : function() {
 		const Items = Array("fullName", "email", "smtp", "id");
 		var string = "";
-        var saveBaseId = this._pref.getBoolPref("storage_store_base_id");
-        var saveSMTP = this._pref.getBoolPref("storage_store_SMTP");
-//         var saveBaseId = (!vI.statusmenu && this._pref.getBoolPref("storage_store_base_id")
-// 				|| vI.statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true")
-// 		var saveSMTP = (!vI.statusmenu && this._pref.getBoolPref("storage_store_SMTP")
-// 				|| vI.statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true")
-		for each (let item in Items) {
+        var saveBaseId = vIprefs.get("storage_store_base_id");
+        var saveSMTP = vIprefs.get("storage_store_SMTP");
+        for each (let item in Items) {
 			var classEqual = (this.comp.equals[item])?"equal":"unequal";
 			var classIgnore = (((!saveBaseId) && (item == "id")) || ((!saveSMTP) && (item == "smtp")))?" ignoreValues":""
 			string += "<tr>" +

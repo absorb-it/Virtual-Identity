@@ -58,9 +58,7 @@ function vIaccount_prepareSendMsg(vid, msgType, identityData, baseIdentity, reci
 				stringBundle.GetStringFromName("vident.sendNonvirtual.warning")))) ) {
 			return { update : "abort", storedIdentity : null }; // completely abort sending
 		}
-// 		if (vIprefs.get("storage") &&
-// 				(!vI.statusmenu || vI.statusmenu.objStorageSaveMenuItem.getAttribute("checked") == "true")) {
-        if (vIprefs.get("storage")) {
+        if (vIprefs.get("storage") && vIprefs.get("storage_store")) {
 			var localeDatasourceAccess = new rdfDatasourceAccess();
 			var returnValue = localeDatasourceAccess.storeVIdentityToAllRecipients(identityData, recipients)
 			if ( returnValue.update == "abort" || returnValue.update == "takeover" ) {
@@ -332,48 +330,44 @@ var account = {
 	
 	_setupFcc : function()
 	{
-		// fcc_switch is only available in modified ComposeDialog.
-		// XXXXX get rid of this Elem reference
-		var doFcc = true;
-		try { doFcc = document.getElementById("fcc_switch").getAttribute("checked") } catch(e) { }
-		if (doFcc) {
-			switch (vIprefs.get("fccFolderPickerMode"))
-			{
-			    case "2"  :
-				Log.debug ("preparing Fcc --- use Settings of Default Account\n");
-				account._account.defaultIdentity.doFcc = account._AccountManager.defaultAccount.defaultIdentity.doFcc;
-				account._account.defaultIdentity.fccFolder = account._AccountManager.defaultAccount.defaultIdentity.fccFolder;
-				account._account.defaultIdentity.fccFolderPickerMode = account._AccountManager.defaultAccount.defaultIdentity.fccFolderPickerMode;
-				account._account.defaultIdentity.fccReplyFollowsParent = account._AccountManager.defaultAccount.defaultIdentity.fccReplyFollowsParent;
-				break;
-			    case "3"  :
-				Log.debug ("preparing Fcc --- use Settings of Modified Account\n");
-				account._account.defaultIdentity.doFcc = account._baseIdentity.doFcc;
-				account._account.defaultIdentity.fccFolder = account._baseIdentity.fccFolder;
-				account._account.defaultIdentity.fccFolderPickerMode = account._baseIdentity.fccFolderPickerMode;
-				account._account.defaultIdentity.fccReplyFollowsParent = account._baseIdentity.fccReplyFollowsParent;
-				break;
-			    default  :
-				Log.debug ("preparing Fcc --- use Virtual Identity Settings\n");
-				account._account.defaultIdentity.doFcc
-					= vIprefs.get("doFcc");
-				account._account.defaultIdentity.fccFolder
-					= account._unicodeConverter.ConvertToUnicode(vIprefs.get("fccFolder"));
-				account._account.defaultIdentity.fccFolderPickerMode
-					= vIprefs.get("fccFolderPickerMode");
-				account._account.defaultIdentity.fccReplyFollowsParent = vIprefs.get("fccReplyFollowsParent");
+      if (vIprefs.get("doFcc")) {
+          switch (vIprefs.get("fccFolderPickerMode"))
+          {
+              case "2"  :
+              Log.debug ("preparing Fcc --- use Settings of Default Account\n");
+              account._account.defaultIdentity.doFcc = account._AccountManager.defaultAccount.defaultIdentity.doFcc;
+              account._account.defaultIdentity.fccFolder = account._AccountManager.defaultAccount.defaultIdentity.fccFolder;
+              account._account.defaultIdentity.fccFolderPickerMode = account._AccountManager.defaultAccount.defaultIdentity.fccFolderPickerMode;
+              account._account.defaultIdentity.fccReplyFollowsParent = account._AccountManager.defaultAccount.defaultIdentity.fccReplyFollowsParent;
+              break;
+              case "3"  :
+              Log.debug ("preparing Fcc --- use Settings of Modified Account\n");
+              account._account.defaultIdentity.doFcc = account._baseIdentity.doFcc;
+              account._account.defaultIdentity.fccFolder = account._baseIdentity.fccFolder;
+              account._account.defaultIdentity.fccFolderPickerMode = account._baseIdentity.fccFolderPickerMode;
+              account._account.defaultIdentity.fccReplyFollowsParent = account._baseIdentity.fccReplyFollowsParent;
+              break;
+              default  :
+              Log.debug ("preparing Fcc --- use Virtual Identity Settings\n");
+              account._account.defaultIdentity.doFcc
+                  = vIprefs.get("doFcc");
+              account._account.defaultIdentity.fccFolder
+                  = account._unicodeConverter.ConvertToUnicode(vIprefs.get("fccFolder"));
+              account._account.defaultIdentity.fccFolderPickerMode
+                  = vIprefs.get("fccFolderPickerMode");
+              account._account.defaultIdentity.fccReplyFollowsParent = vIprefs.get("fccReplyFollowsParent");
 
-				break;
-			}
-		}
-		else {
-			dump ("dont performing Fcc\n");
-			account._account.defaultIdentity.doFcc = false;
-		}
-		Log.debug("Stored (doFcc " + account._account.defaultIdentity.doFcc + " fccFolder " +
-			account._account.defaultIdentity.fccFolder + " fccFolderPickerMode " +
-			account._account.defaultIdentity.fccFolderPickerMode + "(" +
-			vIprefs.get("fccFolderPickerMode") + "))\n");
+              break;
+          }
+      }
+      else {
+          dump ("dont performing Fcc\n");
+          account._account.defaultIdentity.doFcc = false;
+      }
+      Log.debug("Stored (doFcc " + account._account.defaultIdentity.doFcc + " fccFolder " +
+          account._account.defaultIdentity.fccFolder + " fccFolderPickerMode " +
+          account._account.defaultIdentity.fccFolderPickerMode + "(" +
+          vIprefs.get("fccFolderPickerMode") + "))\n");
 	},
 	
 	_setupDraft : function()	{

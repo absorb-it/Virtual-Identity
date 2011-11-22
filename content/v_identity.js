@@ -143,7 +143,7 @@ var main = {
 			var vid = document.getElementById("virtualIdentityExtension_msgIdentityClone").vid
 			var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
 			
-			returnValue = vI.vIaccount_prepareSendMsg(	vid, msgType, virtualIdentityData,
+			let returnValue = vI.vIaccount_prepareSendMsg(	vid, msgType, virtualIdentityData,
 							main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
 							main._getRecipients() );
 			if (returnValue.update == "abort") {

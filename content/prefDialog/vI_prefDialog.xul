@@ -608,8 +608,8 @@
 				<groupbox>
 				<caption label="&vI_prefDialog.storageTab.storing.caption;"/>
 				<vbox align="left">
-					<checkbox id="VIdent_identity.storage_storedefault" label="&vI_prefDialog.storage.storedefault.label;"
-						prefstring="storage_storedefault"/>
+					<checkbox id="VIdent_identity.storage_store" label="&vI_prefDialog.storage.storedefault.label;"
+						prefstring="storage_store"/>
 					<checkbox id="VIdent_identity.storage_store_base_id" label="&vI_prefDialog.storage.store_base_id.label;"
 						prefstring="storage_store_base_id"/>
 					<checkbox id="VIdent_identity.storage_store_SMTP" label="&vI_prefDialog.storage.store_SMTP.label;"

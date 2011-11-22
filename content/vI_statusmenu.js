@@ -25,6 +25,8 @@
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
+let Log = vI.setupLogging("virtualIdentity.statusmenu");
+
 Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 var statusmenu = {
@@ -39,12 +41,13 @@ var statusmenu = {
 	objStatusText : null,
 	
 	observe: function(self, subject, topic, data) {
+//         Log.debug("statusmenu observe " + data + "\n");
 		switch (data) {
 			case "fcc_show_switch":
 				statusmenu.objFccSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
 				// no break, continue like with doFcc			
 			case "doFcc":
-				statusmenu.objFccSwitch.setAttribute("checked", vI.vIprefs.get("doFcc"));
+				statusmenu.objFccSwitch.setAttribute("checked", vI.vIprefs.get(data));
 				break;
 			case "storage_show_switch":
 				statusmenu.objSaveSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
@@ -53,16 +56,19 @@ var statusmenu = {
 				statusmenu.objSaveBaseIDSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
 				break;
 			case "storage_show_SMTP_switch":
+//                 Log.debug("changed storage_show_SMTP_switch to " + statusmenu.objSaveSMTPMenuItem + "=" + vI.vIprefs.get(data) + "\n");
 				statusmenu.objSaveSMTPSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
 				break;
-			case "storage_storedefault":
-				statusmenu.objStorageSaveMenuItem.setAttribute("checked", vI.vIprefs.get("storage_storedefault"));
+			case "storage_store":
+				statusmenu.objStorageSaveMenuItem.setAttribute("checked", vI.vIprefs.get(data));
 				break;
 			case "storage_store_base_id":
 				statusmenu.objSaveBaseIDMenuItem.setAttribute("checked", vI.vIprefs.get(data));
 				break;
 			case "storage_store_SMTP":
+//                 Log.debug("changed storage_store_SMTP to " + statusmenu.objSaveSMTPMenuItem + "=" + vI.vIprefs.get(data) + "\n");
 				statusmenu.objSaveSMTPMenuItem.setAttribute("checked", vI.vIprefs.get(data));
+//                 Log.debug("changed storage_store_SMTP done\n");
 				break;
 			case "storage_colorIndication":
 				document.getElementById("identityHbox").setAttribute("colorize", vI.vIprefs.get(data))
@@ -95,7 +101,7 @@ var statusmenu = {
 		vI.vIprefs.addObserver("storage_show_baseID_switch", this.observe, this);
 		vI.vIprefs.addObserver("storage_show_SMTP_switch", this.observe, this);
 		vI.vIprefs.addObserver("storage_colorIndication", this.observe, this);
-		vI.vIprefs.addObserver("storage_storedefault", this.observe, this);
+		vI.vIprefs.addObserver("storage_store", this.observe, this);
 		vI.vIprefs.addObserver("storage_store_base_id", this.observe, this);
 		vI.vIprefs.addObserver("storage_store_SMTP", this.observe, this);
 	},
@@ -108,7 +114,7 @@ var statusmenu = {
 		vI.vIprefs.removeObserver("storage_show_baseID_switch", this.observe);
 		vI.vIprefs.removeObserver("storage_show_SMTP_switch", this.observe);
 		vI.vIprefs.removeObserver("storage_colorIndication", this.observe);
-		vI.vIprefs.removeObserver("storage_storedefault", this.observe);
+		vI.vIprefs.removeObserver("storage_store", this.observe);
 		vI.vIprefs.removeObserver("storage_store_base_id", this.observe);
 		vI.vIprefs.removeObserver("storage_store_SMTP", this.observe);
 	},
@@ -135,7 +141,7 @@ var statusmenu = {
 		statusmenu.observe(this, null, null, "storage_colorIndication");
 		statusmenu.observe(this, null, null, "storage_store_base_id");
 		statusmenu.observe(this, null, null, "storage_store_SMTP");
-		statusmenu.observe(this, null, null, "storage_storedefault");
+		statusmenu.observe(this, null, null, "storage_store");
 		statusmenu.observe(this, null, null, "storage");
 	},
 	
@@ -202,15 +208,16 @@ var statusmenu = {
 		if (button != 0) return; // only react on left mouse button
 		if (!vI.vIprefs.get("storage")) return;
 
-		var curSaveStatus = (statusmenu.objStorageSaveMenuItem.getAttribute("checked") == "true");
-		var curSaveSMTPStatus = (statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true");
-		var curSaveBaseIDStatus = (statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true");
+		var curSaveStatus = vI.vIprefs.get("storage_store")
+		var curSaveSMTPStatus = vI.vIprefs.get("storage_store_SMTP")
+		var curSaveBaseIDStatus = vI.vIprefs.get("storage_store_base_id")
 		var newSaveStatus = ((!curSaveStatus) || (curSaveStatus && !curSaveSMTPStatus) || (curSaveStatus && !curSaveBaseIDStatus))
 		var newSaveSMTPStatus = ((!curSaveSMTPStatus && curSaveStatus) || (curSaveBaseIDStatus && !curSaveSMTPStatus))
 		var newSaveBaseIDStatus = ((curSaveSMTPStatus && curSaveStatus && !curSaveBaseIDStatus) || (curSaveBaseIDStatus && !curSaveSMTPStatus))
-		statusmenu.objStorageSaveMenuItem.setAttribute("checked", newSaveStatus)
-		statusmenu.objSaveSMTPMenuItem.setAttribute("checked", newSaveSMTPStatus)
-		statusmenu.objSaveBaseIDMenuItem.setAttribute("checked", newSaveBaseIDStatus)
+        
+		vI.vIprefs.set("storage_store", newSaveStatus)
+        vI.vIprefs.set("storage_store_SMTP", newSaveSMTPStatus)
+        vI.vIprefs.set("storage_store_base_id", newSaveBaseIDStatus)
 		
 		statusmenu.menuConstraint();
 	}

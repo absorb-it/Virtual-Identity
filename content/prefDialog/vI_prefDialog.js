@@ -94,7 +94,7 @@ var prefDialog = {
 				"VIdent_identity.hide_sMime_messageSignature",
 				"VIdent_identity.hide_openPGP_messageSignature",
 				"VIdent_identity.storage",
-				"VIdent_identity.storage_storedefault",
+				"VIdent_identity.storage_store",
 				"VIdent_identity.storage_store_base_id",
 				"VIdent_identity.storage_store_SMTP",
 				"VIdent_identity.storage_dont_update_multiple",
@@ -257,7 +257,7 @@ var prefDialog = {
 		
 		storageConstraint : function(element) {
 			var mAttr = prefDialog.base.modifyAttribute;
-			mAttr("VIdent_identity.storage_storedefault","disabled",element.checked);
+			mAttr("VIdent_identity.storage_store","disabled",element.checked);
 			mAttr("VIdent_identity.storage_store_base_id","disabled",element.checked);
 			mAttr("VIdent_identity.storage_store_SMTP","disabled",element.checked);
 			mAttr("VIdent_identity.storage_dont_update_multiple","disabled",element.checked);
