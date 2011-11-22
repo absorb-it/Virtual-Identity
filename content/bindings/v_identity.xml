@@ -584,9 +584,6 @@
 	<field name="_popupElem">document.getElementById("virtualIdentityExtension_msgIdentityPopupClone")</field>
 	<field name="tooltipElem">document.getAnonymousElementByAttribute(this, "anonid", "contentHBox")</field>
 	<field name="textBoxElem">document.getAnonymousElementByAttribute(this, "anonid", "textBox");</field>
-	<field name="_prefroot">Components.classes["@mozilla.org/preferences-service;1"]
-		.getService(Components.interfaces.nsIPrefService)
-		.getBranch(null).QueryInterface(Components.interfaces.nsIPrefBranch2)</field>
     <method name="observe">
       <parameter name="self" />
       <parameter name="aSubject" />

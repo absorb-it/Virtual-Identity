@@ -27,6 +27,8 @@ var EXPORTED_SYMBOLS = ["smartIdentityCollection"]
 Components.utils.import("resource://v_identity/vI_log.js");
 Components.utils.import("resource://v_identity/vI_identityData.js");
 Components.utils.import("resource://v_identity/vI_rdfDatasource.js");
+Components.utils.import("resource://v_identity/vI_prefs.js");
+
 let Log = setupLogging("virtualIdentity.smartIdentityCollection");
 
 function smartIdentityCollection(msgHdr, preseletedID, currentIDisVID, newsgroup, recipients) {
@@ -45,9 +47,6 @@ function smartIdentityCollection(msgHdr, preseletedID, currentIDisVID, newsgroup
 smartIdentityCollection.prototype = {
 	messenger : Components.classes["@mozilla.org/messenger;1"].createInstance()
 		.QueryInterface(Components.interfaces.nsIMessenger),
-	_pref : Components.classes["@mozilla.org/preferences-service;1"]
-			.getService(Components.interfaces.nsIPrefService)
-			.getBranch("extensions.virtualIdentity."),
 	_unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
 			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 	_headerParser : Components.classes["@mozilla.org/messenger/headerparser;1"]
@@ -76,8 +75,8 @@ smartIdentityCollection.prototype = {
 		
 		Log.debug("current email: " + current_email[0] + "@" + current_email[1] + "\n");
 		
-		var autoString = this._pref.getCharPref("autoString");
-		var formatString = this._pref.getCharPref("autoTimeFormat");
+		var autoString = vIprefs.get("autoString");
+		var formatString = vIprefs.get("autoTimeFormat");
 		
 		var dateObj = new Date(); var dateString = "";
 		if (formatString == "") dateString = parseInt(dateObj.getTime()/1000);
@@ -96,9 +95,9 @@ smartIdentityCollection.prototype = {
 	},
 	
 	__ignoreID : function() {
-        Log.debug("checking " + this._pref.getCharPref("idSelection_ignoreIDs") + " against " + this._preselectedID.key + "\n")
+        Log.debug("checking " + vIprefs.get("idSelection_ignoreIDs") + " against " + this._preselectedID.key + "\n")
         // check if usage if virtual Identities should be used at all for the currently selected ID
-        if (this._pref.getCharPref("idSelection_ignoreIDs").indexOf(":" + this._preselectedID.key + ":") != -1) {
+        if (vIprefs.get("idSelection_ignoreIDs").indexOf(":" + this._preselectedID.key + ":") != -1) {
             Log.debug("not using virtual Identites for ID " + this._preselectedID.key + "\n");
             return true;
         }
@@ -109,7 +108,7 @@ smartIdentityCollection.prototype = {
 		Log.debug("NewMail()\n");
 		if (this.__ignoreID()) return;
 		this._rdfDatasourceAccess.getVIdentityFromAllRecipients(this._allIdentities, this._recipients);
-		if (this._allIdentities.number == 0 && this._pref.getBoolPref("autoTimestamp")) this.__autoTimestamp();
+		if (this._allIdentities.number == 0 && vIprefs.get("autoTimestamp")) this.__autoTimestamp();
 	},
 	
 	_foundExistingIdentity : function() {
@@ -157,7 +156,7 @@ smartIdentityCollection.prototype = {
 
 	// this function checks if we have a draft-case and Smart-Draft should replace the Identity
 	__SmartDraftOrReplyOnSent : function() {
-		if (!this._pref.getBoolPref("smart_draft"))
+		if (!vIprefs.get("smart_draft"))
 			{ Log.debug("SmartDraft deactivated\n"); return; }
 
 		Log.debug("__SmartDraftOrReplyOnSent()\n");
@@ -173,7 +172,7 @@ smartIdentityCollection.prototype = {
 		var returnIdentities = new identityCollection();
 		
 		var filterList	=
-			this._unicodeConverter.ConvertToUnicode(this._pref.getCharPref("smart_reply_filter")).split(/\n/)
+			this._unicodeConverter.ConvertToUnicode(vIprefs.get("smart_reply_filter")).split(/\n/)
 		if (filterList.length == 0) filterList[0] == ""
 		
 		for (var i = 0; i < filterList.length; i++) {
@@ -222,7 +221,7 @@ smartIdentityCollection.prototype = {
 	
 	__smartReplyCollectAddresses : function() {
 		// add emails from selected headers (stored by vI_getHeader.xul/js)
-		var reply_headers = this._unicodeConverter.ConvertToUnicode(this._pref.getCharPref("smart_reply_headers")).split(/\n/)
+		var reply_headers = this._unicodeConverter.ConvertToUnicode(vIprefs.get("smart_reply_headers")).split(/\n/)
 					
 		for (var index = 0; index < reply_headers.length; index++) {
 			// ------------- prepare fields to read the stored header ----------------
@@ -294,7 +293,7 @@ smartIdentityCollection.prototype = {
 		//	so it should be always possible to decide if Reply or Draft based on received headers
 		//	hidden option smart_detectByReceivedHeader will act as a switch for not RFC-compliant servers
 			// RFC-compliant
-			if (this._pref.getBoolPref("smart_detectByReceivedHeader")) {
+			if (vIprefs.get("smart_detectByReceivedHeader")) {
 				if (!this._msgHdr.getStringProperty("vI_received")) { // mail was not received
 					Log.debug("reply on non-received (sent?) mail. Using SmartDraft. \n");
 					this.ReplyOnSent();
@@ -324,12 +323,12 @@ smartIdentityCollection.prototype = {
 		var storageIdentities = new identityCollection();
 		this._rdfDatasourceAccess.getVIdentityFromAllRecipients(storageIdentities, this._recipients);
 		
-		if (storageIdentities.number == 0 || !this._pref.getBoolPref("idSelection_storage_ignore_smart_reply"))
+		if (storageIdentities.number == 0 || !vIprefs.get("idSelection_storage_ignore_smart_reply"))
 			this.__SmartReply();
 		else Log.debug("SmartReply skipped, Identities in Storage found.\n");
 
 		// merge SmartReply-Identities and Storage-Identites
-		if (this._pref.getBoolPref("idSelection_storage_prefer_smart_reply"))
+		if (vIprefs.get("idSelection_storage_prefer_smart_reply"))
 			{ this._allIdentities.mergeWithoutDuplicates(storageIdentities); }
 		else {
 			var smartIdentities = this._allIdentities;
@@ -342,9 +341,9 @@ smartIdentityCollection.prototype = {
 	
 	// this function checks if we have a reply-case and Smart-Reply should replace the Identity
 	__SmartReply : function() {
-		if (!this._pref.getBoolPref("smart_reply"))
+		if (!vIprefs.get("smart_reply"))
 			{ Log.debug("SmartReply deactivated\n"); return; }
-		if (this._newsgroup && !this._pref.getBoolPref("smart_reply_for_newsgroups")) {
+		if (this._newsgroup && !vIprefs.get("smart_reply_for_newsgroups")) {
 			Log.debug("SmartReply, answering to a newsgroup, aborting\n");
 			return;
 		}
@@ -362,7 +361,7 @@ smartIdentityCollection.prototype = {
 			Log.debug("filtering done, " + this._allIdentities.number + " address(es) left\n")
 			
 			/* set default FullName */
-			var smart_reply_defaultFullName = this._unicodeConverter.ConvertToUnicode(this._pref.getCharPref("smart_reply_defaultFullName"))
+			var smart_reply_defaultFullName = this._unicodeConverter.ConvertToUnicode(vIprefs.get("smart_reply_defaultFullName"))
 			if (smart_reply_defaultFullName != "") {
 				for (var index = 0; index < this._allIdentities.number; index++) {
 					if (this._allIdentities.identityDataCollection[index].fullName == "") {
@@ -376,7 +375,7 @@ smartIdentityCollection.prototype = {
 			/* smart_reply_ignoreFullName: compare email with other Identities			*/
 			/* if match replace FullName with existing one, keep identity in list by now 		*/
 			/* will not be added to the menu but probably choosen with __smartIdentitySelection 	*/
-			if (this._pref.getBoolPref("smart_reply_ignoreFullName")) {
+			if (vIprefs.get("smart_reply_ignoreFullName")) {
 				Log.debug("compare with existing Identities (ignoring FullNames).\n")
 			
 				for (var index = 0; index < this._allIdentities.number; index++) {

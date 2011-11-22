@@ -31,12 +31,9 @@ Cu.import("resource://v_identity/vI_rdfDatasource.js");
 Cu.import("resource://v_identity/vI_account.js");
 Cu.import("resource://v_identity/vI_smartIdentityCollection.js");
 Cu.import("resource://v_identity/vI_identityData.js");
+Cu.import("resource://v_identity/vI_prefs.js");
 
 let Log = setupLogging("virtualIdentity.plugins.conversations");
-
-let pref = Cc["@mozilla.org/preferences-service;1"]
-  .getService(Components.interfaces.nsIPrefService)
-  .getBranch("extensions.virtualIdentity.");
 
 const AccountManager = Cc["@mozilla.org/messenger/account-manager;1"]
   .getService(Components.interfaces.nsIMsgAccountManager);
@@ -97,7 +94,7 @@ let virtualIdentityHook = {
     if (localSmartIdentityCollection._allIdentities.number == 0)
       return;
   
-    if (pref.getBoolPref("idSelection_preferExisting")) {
+    if (vIprefs.get("idSelection_preferExisting")) {
       var existingIDIndex = localSmartIdentityCollection._foundExistingIdentity();
       if (existingIDIndex) {
         Log.debug("smartIdentity: found existing Identity, use without interaction.\n", existingIDIndex.key);
@@ -106,8 +103,8 @@ let virtualIdentityHook = {
       }
     }
 
-    if (pref.getBoolPref("idSelection_ask") && 
-      ((localSmartIdentityCollection._allIdentities.number == 1 && pref.getBoolPref("idSelection_ask_always"))
+    if (vIprefs.get("idSelection_ask") && 
+      ((localSmartIdentityCollection._allIdentities.number == 1 && vIprefs.get("idSelection_ask_always"))
       || localSmartIdentityCollection._allIdentities.number > 1)) {
         recentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
           .getService(Ci.nsIWindowMediator)
@@ -118,7 +115,7 @@ let virtualIdentityHook = {
           localSmartIdentityCollection._allIdentities,
           /* callback: */ changeIdentityToSmartIdentity).focus();
       }
-    else if (pref.getBoolPref("idSelection_autocreate"))
+    else if (vIprefs.get("idSelection_autocreate"))
       changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, 0);
   },
   
@@ -181,7 +178,7 @@ let virtualIdentityHook = {
 
   onRecipientAdded: function _virtualIdentityHook_onRecipientAdded(aData, aType, aCount) {
     Log.debug("onRecipientAdded", aData.data, aType, aCount);
-    if (!pref.getBoolPref("storage")) return;
+    if (!vIprefs.get("storage")) return;
     if (aType == "bcc") return;
     if (aData.data == "") return;
 

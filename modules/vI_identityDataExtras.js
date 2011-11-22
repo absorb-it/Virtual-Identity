@@ -27,11 +27,9 @@ var EXPORTED_SYMBOLS = ["identityDataExtras", "registerIdExtrasObject", "identit
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
 Cu.import("resource://v_identity/vI_log.js");
-let Log = setupLogging("virtualIdentity.identityDataExtras");
+Cu.import("resource://v_identity/vI_prefs.js");
 
-let preferences = Cc["@mozilla.org/preferences-service;1"]
-  .getService(Ci.nsIPrefService)
-  .getBranch("extensions.virtualIdentity.");
+let Log = setupLogging("virtualIdentity.identityDataExtras");
 
 let stringBundle = Cc["@mozilla.org/intl/stringbundle;1"]
   .getService(Ci.nsIStringBundleService)
@@ -183,7 +181,7 @@ identityDataExtrasObject.prototype = {
       return this.field + "='" + this.value + "'";
     return "";
   },
-  get active() { return preferences.getBoolPref("storage") && preferences.getBoolPref(this.option) },
+  get active() { return vIprefs.get("storage") && vIprefs.get(this.option) },
   equal : function(compareIdentityDataExtrasObject) {
     this.lastCompareValue = compareIdentityDataExtrasObject.valueHtml;
     this.lastCompareResult = (!this.value || !compareIdentityDataExtrasObject.value || this.value == compareIdentityDataExtrasObject.value);

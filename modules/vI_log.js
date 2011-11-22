@@ -28,11 +28,7 @@ var EXPORTED_SYMBOLS = ["setupLogging", "dumpCallStack", "MyLog", "Colors",
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 
-Cu.import("resource:///modules/gloda/log4moz.js");
-preferences = Components.classes["@mozilla.org/preferences-service;1"]
-  .getService(Components.interfaces.nsIPrefService)
-  .getBranch("extensions.virtualIdentity.");
-
+Cu.import("resource://v_identity/vI_prefs.js");
 
 // different formatters for the log output
 // Basic formatter that only prints the message / used for NotificationBox
@@ -142,10 +138,10 @@ NotificationOutputAppender.prototype = {
     this.clearNote(this);
     obj_notificationBox.appendNotification(newLabel, "", "chrome://messenger/skin/icons/flag.png");
 
-    if (preferences.getIntPref("notification_timeout") != 0)
+    if (vIprefs.get("notification_timeout") != 0)
       this.timer =
         this.currentWindow.setTimeout(this.clearNote,
-                                      preferences.getIntPref("notification_timeout") * 1000, this);
+                                      vIprefs.get("notification_timeout") * 1000, this);
   }
 }
 
@@ -182,7 +178,7 @@ function setupFullLogging(name) {
   let root = Log;
   root.level = Log4Moz.Level["All"];
 
-  if (preferences.getBoolPref("debug_notification")) {
+  if (vIprefs.get("debug_notification")) {
     // A console appender outputs to the JS Error Console
     let capp = new Log4Moz.ConsoleAppender(myBasicFormatter);
     capp.level = Log4Moz.Level["Warn"];
@@ -233,19 +229,19 @@ let MyLog = setupFullLogging(logRoot);
 
 let myNotificationFormatter = new NotificationFormatter();
 let SmartReplyNotification = Log4Moz.repository.getLogger("virtualIdentity.SmartReply");
-if (preferences.getBoolPref("smart_reply_notification")) {
+if (vIprefs.get("smart_reply_notification")) {
   let napp = new NotificationOutputAppender(myNotificationFormatter);
   napp.level = Log4Moz.Level["All"];
   SmartReplyNotification.addAppender(napp);
 }
 let StorageNotification = Log4Moz.repository.getLogger("virtualIdentity.StorageNotification");
-if (preferences.getBoolPref("storage_notification")) {
+if (vIprefs.get("storage_notification")) {
   let napp = new NotificationOutputAppender(myNotificationFormatter);
   napp.level = Log4Moz.Level["All"];
   StorageNotification.addAppender(napp);
 }
 let GetHeaderNotification = Log4Moz.repository.getLogger("virtualIdentity.GetHeaderNotification");
-if (preferences.getBoolPref("get_header_notification")) {
+if (vIprefs.get("get_header_notification")) {
   let napp = new NotificationOutputAppender(myNotificationFormatter);
   napp.level = Log4Moz.Level["All"];
   GetHeaderNotification.addAppender(napp);
