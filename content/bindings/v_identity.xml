@@ -531,7 +531,7 @@
 		
 		this.vid = (!existingIdentity);
 		
-		virtualIdentityExtension.msgIdentityCloneTools.signatureSwitch(existingIdentity);
+		virtualIdentityExtension.signatureSwitch(existingIdentity);
 		
 		return existingIdentity;
 		]]></body>
