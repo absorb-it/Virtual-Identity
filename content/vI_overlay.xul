@@ -24,5 +24,12 @@
    - ***** END LICENSE BLOCK ***** -->
 
 <overlay id="messengerWindow" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-  <script type="application/x-javascript" src="chrome://v_identity/content/vI_overlay.js" />
+    <script type="application/x-javascript" src="chrome://v_identity/content/vI_overlay.js" />
+    <script type="application/x-javascript" src="chrome://v_identity/content/vI_upgrade.js" />
+    <script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js" />
+
+    <vbox id="messagepanebox" >
+        <splitter id="virtualIdentityExtension_vIErrorBoxSplitter" hidden="true" />
+        <vbox id="virtualIdentityExtension_vIErrorBox" context="ConsoleContext" sortOrder="reverse" hidden="true" />
+    </vbox>
 </overlay>

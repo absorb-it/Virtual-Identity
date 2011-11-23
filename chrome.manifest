@@ -12,7 +12,6 @@ locale	v_identity	ru-RU	locale/ru-RU/
 
 overlay chrome://messenger/content/messenger.xul                chrome://v_identity/content/vI_overlay.xul
 overlay chrome://messenger/content/messenger.xul                chrome://v_identity/content/vI_context.xul
-overlay chrome://messenger/content/messenger.xul                chrome://v_identity/content/vI_upgradeOverlay.xul
 
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://v_identity/content/v_identity.xul
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://v_identity/content/vI_context.xul

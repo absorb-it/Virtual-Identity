@@ -57,18 +57,19 @@ var upgrade = {
 		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
 		if (!currentVersion) return false;
 		currentVersion = currentVersion.split(/\./);
-		var nextVersion = currentVersion[0] + "." + currentVersion[1] + "."
-		if (currentVersion[2].match(/pre/))
+		var nextVersion = currentVersion[0];
+        if (currentVersion.length > 1)
+          nextVersion += "." + currentVersion[1] + "."
+		if (currentVersion.length > 2) {
+          if (currentVersion[2].match(/pre/))
 		 	nextVersion += parseInt(currentVersion[2])
-		else nextVersion += parseInt(currentVersion[2]) + 1
+          else nextVersion += parseInt(currentVersion[2]) + 1
+        }
+        else
+          nextVersion += "1"
 			
-		let window = Cc['@mozilla.org/appshell/window-mediator;1']
-			.getService(Ci.nsIWindowMediator)
-			.getMostRecentWindow("mail:3pane");
-		var extVersion = window.virtualIdentityExtension.extensionVersion;
-		
 		// don't show the dialog if we do a one-step upgrade
-		if (upgrade.versionChecker.compare(extVersion, nextVersion) <= 0) {
+		if (upgrade.versionChecker.compare(vI.extensionVersion, nextVersion) <= 0) {
 			Log.debug("starting quick_upgrade.\n")
 			upgrade.__initRequirements();
 			upgrade.__upgrade();
