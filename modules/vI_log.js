@@ -27,7 +27,7 @@ var EXPORTED_SYMBOLS = ["setupLogging", "dumpCallStack", "MyLog", "Colors",
   "SmartReplyNotification", "StorageNotification", "GetHeaderNotification" ]
 
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
-
+Cu.import("resource:///modules/gloda/log4moz.js");
 Cu.import("resource://v_identity/vI_prefs.js");
 
 // different formatters for the log output
