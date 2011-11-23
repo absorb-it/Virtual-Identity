@@ -17,7 +17,7 @@
    - The Original Code is the Virtual Identity Extension.
 
    - The Initial Developer of the Original Code is Rene Ejury.
-   - Portions created by the Initial Developer are Copyright (C) 2007
+   - Portions created by the Initial Developer are Copyright (C) 2011
    - the Initial Developer. All Rights Reserved.
 
    - Contributor(s):
@@ -33,11 +33,10 @@
 %vIdentDTD;
 ]>
 
-  <overlay id="v_identity" 
+<overlay id="virtualIdentityExtension_MsgComposeOverlay" 
           xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script type="application/x-javascript" src="chrome://v_identity/content/v_identity.js" />
-<script type="application/x-javascript" src="chrome://v_identity/content/vI_msgIdentityCloneTools.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_statusmenu.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js"/>
@@ -56,8 +55,11 @@
 
 <vbox flex="1" id="addresses-box"> <!-- this is used as a strorage, elements will be rearranged by v_identity_init -->
 
-<label id="virtualIdentityExtension_autoReplyToSelfLabel" context="virtualIdentityExtension_vIAutoReplyToSelfMenu" value="&vident.composeDialog.autoReplyToSelf.label;" hidden="true" />
-	
+<vbox id="virtualIdentityExtension_autoReplyToSelfLabelBox">
+  <spacer flex="1"/>
+  <label id="virtualIdentityExtension_autoReplyToSelfLabel" context="virtualIdentityExtension_vIAutoReplyToSelfMenu" value="&vident.composeDialog.autoReplyToSelf.label;" hidden="true" />
+  <spacer flex="1"/>
+</vbox>
 <hbox id="virtualIdentityExtension_msgIdentityHbox" flex="1">
 	<menulist id="virtualIdentityExtension_msgIdentityClone" class="identity_clone-menulist" vid="false"
 		label="..." flex="1" oncommand="this.command();">

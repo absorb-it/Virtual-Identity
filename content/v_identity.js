@@ -28,6 +28,8 @@ virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 let Log = vI.setupLogging("virtualIdentity.main");
 Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
 Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_replyToSelf.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/plugins/signatureSwitch.js", virtualIdentityExtension);
 
 var main = {
 	headerParser : Components.classes["@mozilla.org/messenger/headerparser;1"]
@@ -138,7 +140,8 @@ var main = {
 
 			Log.debug("\nVIdentity_GenericSendMessage\n");
 			
-			if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now) { vI.msgIdentityCloneTools.addReplyToSelf(); }
+			if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now)
+              vI.addReplyToSelf();
 
 			var vid = document.getElementById("virtualIdentityExtension_msgIdentityClone").vid
 			var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
@@ -248,7 +251,7 @@ var main = {
 	
 	initSystemStage2 : function() {
 		Log.debug("initSystemStage2.\n")
-		vI.msgIdentityCloneTools.initReplyTo();
+		vI.initReplyTo();
 		vI.storage.init();
 		vI.smartIdentity.init();
 		Log.debug("initSystemStage2 done.\n")
@@ -268,7 +271,7 @@ var main = {
 		// rearrange the positions of some elements
 		var parent_hbox = main.elements.Obj_MsgIdentity.parentNode;
 		var storage_box = document.getElementById("addresses-box");
-		var virtualIdentityExtension_autoReplyToSelfLabel = document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel");
+		var virtualIdentityExtension_autoReplyToSelfLabel = document.getElementById("virtualIdentityExtension_autoReplyToSelfLabelBox");
 		
 		storage_box.removeChild(virtualIdentityExtension_autoReplyToSelfLabel);
 		parent_hbox.appendChild(virtualIdentityExtension_autoReplyToSelfLabel);
