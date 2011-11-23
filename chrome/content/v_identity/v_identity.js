@@ -253,7 +253,7 @@ var main = {
 		// rearrange the positions of some elements
 		var parent_hbox = main.elements.Obj_MsgIdentity.parentNode;
 		var storage_box = document.getElementById("addresses-box");
-		var autoReplyToSelfLabel = document.getElementById("autoReplyToSelfLabel");
+		var autoReplyToSelfLabel = document.getElementById("autoReplyToSelfLabelBox");
 		
 		storage_box.removeChild(autoReplyToSelfLabel);
 		parent_hbox.appendChild(autoReplyToSelfLabel);

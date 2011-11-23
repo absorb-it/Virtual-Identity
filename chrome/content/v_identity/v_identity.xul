@@ -66,8 +66,12 @@
 
 <vbox flex="1" id="addresses-box"> <!-- this is used as a strorage, elements will be rearranged by v_identity_init -->
 
-<label id="autoReplyToSelfLabel" context="vI_autoReplyToSelfMenu" value="&vident.composeDialog.autoReplyToSelf.label;" hidden="true" />
-	
+<vbox id="autoReplyToSelfLabelBox">
+  <spacer flex="1" />
+  <label id="autoReplyToSelfLabel" context="vI_autoReplyToSelfMenu" value="&vident.composeDialog.autoReplyToSelf.label;" hidden="true" />
+  <spacer flex="1" />
+</vbox>
+
 <hbox id="msgIdentityHbox" flex="1">
 	<menulist id="msgIdentity_clone" class="identity_clone-menulist" vid="false"
 		label="..." flex="1" oncommand="this.command();">
