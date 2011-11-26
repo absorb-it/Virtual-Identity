@@ -200,7 +200,9 @@ var rdfDataTreeCollection = {
 
 	init : function() {
 		rdfDataTreeCollection.tabbox = document.getElementById("TreeTabbox");
-		rdfDataTreeCollection._strings = document.getElementById("vI_rdfDataTreeBundle");
+		rdfDataTreeCollection._strings = Components.classes["@mozilla.org/intl/stringbundle;1"]
+          .getService(Components.interfaces.nsIStringBundleService)
+          .createBundle("chrome://v_identity/locale/vI_rdfDataEditor.properties");
 
 		rdfDataTreeCollection._rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf");
 		
@@ -317,9 +319,9 @@ var rdfDataTreeCollection = {
 		var tree = rdfDataTreeCollection.trees[treeType];
 		if (tree.treeElem.view.selection.count == 0) return;
 		if (tree.treeElem.view.selection.count > 5) {
-			var warning = rdfDataTreeCollection._strings.getString("vI_rdfDataTree.modify.Warning1") + " " +
+			var warning = rdfDataTreeCollection._strings.GetStringFromName("vI_rdfDataTree.modify.Warning1") + " " +
 				tree.treeElem.view.selection.count + " " +
-				rdfDataTreeCollection._strings.getString("vI_rdfDataTree.modify.Warning2")
+				rdfDataTreeCollection._strings.GetStringFromName("vI_rdfDataTree.modify.Warning2")
 			if (!rdfDataTreeCollection.promptService.confirm(window,"Warning",warning)) return;
 		}
 		
@@ -350,9 +352,9 @@ var rdfDataTreeCollection = {
 		var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
 		var tree = rdfDataTreeCollection.trees[treeType];
 		if (tree.treeElem.view.selection.count == 0) return;
-		var warning = rdfDataTreeCollection._strings.getString("vI_rdfDataTree.remove.Warning1") + " " +
+		var warning = rdfDataTreeCollection._strings.GetStringFromName("vI_rdfDataTree.remove.Warning1") + " " +
 			tree.treeElem.view.selection.count + " " +
-			rdfDataTreeCollection._strings.getString("vI_rdfDataTree.remove.Warning2")
+			rdfDataTreeCollection._strings.GetStringFromName("vI_rdfDataTree.remove.Warning2")
 		
 		if (!rdfDataTreeCollection.promptService.confirm(window,"Warning",warning)) return;
 		

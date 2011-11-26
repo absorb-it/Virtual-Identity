@@ -109,9 +109,6 @@ var getHeader = {
 	},
     
     setupEventListener: function() {
-		
-		getHeader.strings = document.getElementById("virtualIdentityExtension_vIdentBundle");
-		
 		getHeader.unicodeConverter.charset = "UTF-8";
 		
         // read headers later if msg is loaded completely - this ensures compatibility to Thunderbird Conversation

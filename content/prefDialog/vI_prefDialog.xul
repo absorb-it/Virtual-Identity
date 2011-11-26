@@ -49,11 +49,6 @@
 
 <dialog id="vI_prefDialog">
 
-<stringbundleset id="stringbundleset">
-	<stringbundle id="vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
-	<stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties"/>
-</stringbundleset>
-
 <broadcaster id="VIdent_broadcaster_doFcc"/>
 
 <textbox hidden="true" id="VIdent_identity.fccFolder"

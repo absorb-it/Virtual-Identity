@@ -84,8 +84,10 @@ var upgrade = {
 		var pageid = elem.getAttribute("pageid");
 		var browser = document.getElementById('virtualIdentityExtension_TextBox.' + pageid)
 		if (browser) 
-			browser.outputString =
-		    		document.getElementById('virtualIdentityExtension_TextBoxBundle').getString('vident.' + pageid);
+			browser.outputString = Components.classes["@mozilla.org/intl/stringbundle;1"]
+            .getService(Components.interfaces.nsIStringBundleService)
+            .createBundle("chrome://v_identity/locale/vI_upgrade.properties")
+            .GetStringFromName('vident.' + pageid);
 	},
 	
 	__upgrade : function() {

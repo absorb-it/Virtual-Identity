@@ -94,7 +94,7 @@ function vIaccount_finalCheck(virtualIdentityData, currentIdentity) {
 		if (!(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase())) Log.error("\nfailed check for fullName.\n");
 		if (!(currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase())) Log.error("\nfailed check for email.\n");
 		if (!(virtualIdentityData.smtp.equal(currentIdentityData.smtp))) Log.error("\nfailed check for SMTP.\n");
-		alert(stringBundle.getStringFromName("vident.genericSendMessage.error"));
+		alert(stringBundle.GetStringFromName("vident.genericSendMessage.error"));
 		return false
 	}	
 };

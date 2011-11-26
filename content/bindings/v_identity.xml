@@ -196,7 +196,11 @@
 		var listitem = document.createElement("menuitem");
 		listitem.setAttribute("class", "menuitem-non-iconic");
 		listitem.setAttribute("type", "non-iconic-noaccel");
-		listitem.setAttribute("label", document.getElementById("bundle_messenger").getString("defaultServerTag"));
+		listitem.setAttribute("label", 
+          Components.classes["@mozilla.org/intl/stringbundle;1"]
+            .getService(Components.interfaces.nsIStringBundleService)
+            .createBundle("chrome://messenger/locale/messenger.properties")
+            .GetStringFromName("defaultServerTag"));
 		this._smtpPopup.appendChild(listitem);
 		this._smtpMenu.selectedItem = listitem;
 		]]></body>

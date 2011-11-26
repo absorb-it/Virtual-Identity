@@ -63,13 +63,6 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfDataTree.js" />
 <script type="application/x-javascript" src="chrome://messenger/content/messengercompose/MsgComposeCommands.js"/>
 
-<stringbundleset id="stringbundleset">
-	<stringbundle id="vI_rdfDataTreeBundle" src="chrome://v_identity/locale/vI_rdfDataEditor.properties" />
-	<stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />
-    <stringbundle id="virtualIdentityExtension_vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
-    <stringbundle id="virtualIdentityExtension_vIStorageExtrasBundle" src="chrome://v_identity/locale/vI_storageExtras.properties" />
-</stringbundleset>
-
 <menupopup hidden="true">  <!--just to hold the localized labels-->
 	<menuitem type="radio" name="output_format" label="&autoFormatCmd.label;" accesskey="&autoFormatCmd.accesskey;" id="format_auto" checked="true"/>
 	<menuitem type="radio" name="output_format" label="&plainTextFormatCmd.label;" accesskey="&plainTextFormatCmd.accesskey;" id="format_plain"/>

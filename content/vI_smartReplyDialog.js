@@ -40,10 +40,13 @@ var smartReply_dialog = {
 				id = smartReply_dialog.all_addresses.identityDataCollection[index].id.value;
 			if (smartReply_dialog.all_addresses.identityDataCollection[index].smtp)
 				smtp = smartReply_dialog.all_addresses.identityDataCollection[index].smtp.value;
-
-			menuentry += (id?" (" + id + "," + 
-					(smtp?smtp:document.getElementById("bundle_messenger").getString("defaultServerTag")) +
-					")":"")
+            
+            let defaultServerTag = Components.classes["@mozilla.org/intl/stringbundle;1"]
+              .getService(Components.interfaces.nsIStringBundleService)
+              .createBundle("chrome://messenger/locale/messenger.properties")
+              .GetStringFromName("defaultServerTag")
+            
+			menuentry += (id?" (" + id + "," + (smtp?smtp:defaultServerTag) + ")":"")
 			smartReply_dialog.add_row(menuentry);
 		}
 	},

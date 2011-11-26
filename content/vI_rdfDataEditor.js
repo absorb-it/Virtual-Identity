@@ -38,7 +38,6 @@ var rdfDataEditor = {
 	
 	__populateIdentityMenu : function() {
 		var listitem = document.createElement("menuitem");
-// 		listitem.setAttribute("label", document.getElementById("bundle_messenger").getString("defaultServerTag"));
 		listitem.setAttribute("label", "");
 		document.getElementById("identity_list_popup").appendChild(listitem);
 		document.getElementById("identity_list").selectedItem = listitem;
@@ -66,7 +65,10 @@ var rdfDataEditor = {
 		var typeMenuPopup = document.getElementById("type_menu_popup")
 		for each (var typeField in Array("email", "maillist", "newsgroup", "filter")) {
 			var menuitem = document.createElement("menuitem");
-			var label = document.getElementById("vI_rdfDataTreeBundle").getString("vI_rdfDataTree.dataType." + typeField)
+			var label = Components.classes["@mozilla.org/intl/stringbundle;1"]
+              .getService(Components.interfaces.nsIStringBundleService)
+              .createBundle("chrome://v_identity/locale/vI_rdfDataEditor.properties")
+              .GetStringFromName("vI_rdfDataTree.dataType." + typeField);
 			menuitem.setAttribute("label", label);
 			menuitem.setAttribute("key", typeField);
 			typeMenuPopup.appendChild(menuitem);
