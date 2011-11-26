@@ -306,6 +306,8 @@ var main = {
 		// now (re)init the elements
 		main.initSystemStage1();
 		
+        vI.vIprefs.dropLocalChanges();
+
 		// stateListener only works in reply-cases
 		// so activate stage2 in reply-cases trough StateListener
 		// in other cases directly

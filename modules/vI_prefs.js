@@ -127,6 +127,18 @@ var vIprefs = {
 //           Log.debug("found observer, calling : " + prefObserver.observe + " done\n")
         }
       }
+    },
+    dropLocalChanges: function() {
+      for each (let [aPrefName, aPrefValue] in Iterator(this._localPrefs)) {
+        this._retrievePref(aPrefName);
+        if (aPrefValue != this._localPrefs[aPrefName]) {
+          for each (let [, prefObserver] in Iterator(this._localObservers)) {
+            if (prefObserver.pref == aPrefName) {
+              prefObserver.observe(prefObserver.context, aPrefValue, "nsPref:changed", aPrefName);
+            }
+          }
+        }
+      }
     }
 }
 
