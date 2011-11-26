@@ -18,8 +18,8 @@
 <!ENTITY vident.vI_Menu.TooltipTitle.label "Virtual Identity status">
 <!ENTITY vident.vI_Menu.TooltipChange.label "Klik om te wijzigen">
 
-<!ENTITY vident.vI_Dialog.extra1Button.label "Verzenden afbreken">
-<!ENTITY vident.vI_Dialog.extra2Button.label "Opgeslagen identiteit gebruiken">
+<!ENTITY vident.virtualIdentityExtension_Dialog.extra1Button.label "Verzenden afbreken">
+<!ENTITY vident.virtualIdentityExtension_Dialog.extra2Button.label "Opgeslagen identiteit gebruiken">
 
 <!ENTITY fccMailFolder.accesskey "l">
 <!ENTITY sentFolderOn.accesskey "z">

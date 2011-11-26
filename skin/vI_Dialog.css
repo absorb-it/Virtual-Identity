@@ -1,4 +1,4 @@
-#vI_Dialog { 
+#virtualIdentityExtension_Dialog { 
 	width: 550px;
 	height: 320px;
 	padding: 0;
@@ -10,34 +10,34 @@
 
 .replaceVIdentity .dialog-content-box { border: 10px solid #d8e0e8; }
 .replaceVIdentity .dialog-button-box,
-.replaceVIdentity #vI_Dialog_title,
-.replaceVIdentity #vI_Dialog_query { background-color: #d8e0e8; }
+.replaceVIdentity #virtualIdentityExtension_Dialog_title,
+.replaceVIdentity #virtualIdentityExtension_Dialog_query { background-color: #d8e0e8; }
 
 .updateStorage .dialog-content-box { border: 10px solid infobackground; }
 .updateStorage .dialog-button-box,
-.updateStorage #vI_Dialog_title,
-.updateStorage #vI_Dialog_query { background-color: infobackground; }
+.updateStorage #virtualIdentityExtension_Dialog_title,
+.updateStorage #virtualIdentityExtension_Dialog_query { background-color: infobackground; }
 
-#vI_Dialog_title {
+#virtualIdentityExtension_Dialog_title {
 	font-size: medium;
 	font-weight:bold;
 	margin: 0pt 0pt 1em;
 	padding: 1px 5px 2em 6px;
 }
 
-#vI_Dialog_recLabel {
+#virtualIdentityExtension_Dialog_recLabel {
 	font-size: small;
 	font-weight: normal;
 }
 
-#vI_Dialog_recipient {
+#virtualIdentityExtension_Dialog_recipient {
 	font-size: small;
 	font-weight:bold;
 	text-align: center;
 	margin-bottom:2em;
 }
 
-#vI_Dialog_browser {
+#virtualIdentityExtension_Dialog_browser {
 	height:		100px;
 }
 
@@ -45,7 +45,7 @@
   -moz-binding: url("chrome://v_identity/content/bindings/vI_htmlTextBox.xml#vI_htmlTextBox");
 }
 
-#vI_Dialog_query {
+#virtualIdentityExtension_Dialog_query {
 	text-align: right;
 	font-size: medium;
 	font-weight:bold;

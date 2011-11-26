@@ -28,11 +28,11 @@
 
 <!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/v_identity.dtd">
 
-<dialog id="vI_Dialog" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+<dialog id="virtualIdentityExtension_Dialog" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	buttons="accept,cancel,extra1,extra2"
-        buttonlabelextra1="&vident.vI_Dialog.extra1Button.label;"
+        buttonlabelextra1="&vident.virtualIdentityExtension_Dialog.extra1Button.label;"
 	buttoniconextra1="no"
-        buttonlabelextra2="&vident.vI_Dialog.extra2Button.label;"
+        buttonlabelextra2="&vident.virtualIdentityExtension_Dialog.extra2Button.label;"
 	buttoniconextra2="no"
         title="Virtual Identity"
 	zlevel="6"
@@ -45,11 +45,11 @@
 
 	<script type="application/x-javascript" src="chrome://v_identity/content/vI_Dialog.js" />
 
-	<description id="vI_Dialog_title" />
-	<description id="vI_Dialog_recLabel" />
-	<description id="vI_Dialog_recipient" />
-	<browser id="vI_Dialog_browser" type="chrome" class="vI_htmlTextBox"
+	<description id="virtualIdentityExtension_Dialog_title" />
+	<description id="virtualIdentityExtension_Dialog_recLabel" />
+	<description id="virtualIdentityExtension_Dialog_recipient" />
+	<browser id="virtualIdentityExtension_Dialog_browser" type="chrome" class="vI_htmlTextBox"
 		 documentStyle="background-color: -moz-dialog; font: -moz-dialog;"
 		 cssSource="vI_DialogBrowser.css" flex="1" disablehistory="true" />
-	<description id="vI_Dialog_query" />
+	<description id="virtualIdentityExtension_Dialog_query" />
 </dialog>

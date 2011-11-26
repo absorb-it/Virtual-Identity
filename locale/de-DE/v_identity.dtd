@@ -18,8 +18,8 @@
 <!ENTITY vident.vI_Menu.TooltipTitle.label "Virtual Identity Status">
 <!ENTITY vident.vI_Menu.TooltipChange.label "ändere durch Maus-Klick">
 
-<!ENTITY vident.vI_Dialog.extra1Button.label "Senden Abbrechen">
-<!ENTITY vident.vI_Dialog.extra2Button.label "Nutze gespeicherte Identität">
+<!ENTITY vident.virtualIdentityExtension_Dialog.extra1Button.label "Senden Abbrechen">
+<!ENTITY vident.virtualIdentityExtension_Dialog.extra2Button.label "Nutze gespeicherte Identität">
 
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">

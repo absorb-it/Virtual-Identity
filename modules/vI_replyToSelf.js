@@ -40,7 +40,7 @@ function initReplyTo() {
 
 function removeAllReplyTos() {
   if (!replyToSelfObj.hasAttribute("hidden")) {
-    for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
+    for (var row = 1; row <= currentWindow.top.MAX_RECIPIENTS; row ++) {
       var awType = currentWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
       if (awType == "addr_reply") {
         Log.debug("removed ReplyTo found in row " + row + "\n");

@@ -43,7 +43,11 @@ var storage = {
 	
     _rdfDatasourceAccess : null,    // local storage
 
-	clean: function() {
+    stringBundle : Components.classes["@mozilla.org/intl/stringbundle;1"]
+        .getService(Components.interfaces.nsIStringBundleService)
+        .createBundle("chrome://v_identity/locale/v_identity.properties"),
+
+    clean: function() {
 		Log.debug("clean.\n");
 		storage.multipleRecipients = null;
 		storage.lastCheckedEmail = {};
@@ -178,7 +182,7 @@ var storage = {
 			Log.debug("updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName + "\n");
 			document.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = newMenuItem;
 			if (document.getElementById("virtualIdentityExtension_msgIdentityClone").vid)
-				vI.StorageNotification.info(vI.main.elements.strings.getString("vident.smartIdentity.vIStorageUsage") + ".");
+				vI.StorageNotification.info(storage.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageUsage") + ".");
 		}
 	},
 	

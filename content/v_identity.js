@@ -59,7 +59,6 @@ var main = {
 		init_rest : function() {
 			main.elements.Obj_MsgIdentityPopup = document.getElementById("msgIdentityPopup");
 			main.elements.Obj_vILogo = document.getElementById("virtualIdentityExtension_Logo");
-			main.elements.strings = document.getElementById("virtualIdentityExtension_vIdentBundle");
 		},
 		strings : null
 	},
@@ -263,7 +262,7 @@ var main = {
 	},
 	
 	adapt_interface : function() {
-		if (main.elements.strings) return; // only rearrange the interface once
+		if (main.elements.Obj_MsgIdentityPopup) return; // only rearrange the interface once
 		
 		// initialize the pointers to extension elements
 		main.elements.init_base()

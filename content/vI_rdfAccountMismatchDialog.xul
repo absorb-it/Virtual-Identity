@@ -27,41 +27,37 @@
 
 <!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/vI_rdfAccountMismatchDialog.dtd">
 
-<dialog id="vI_rdfAccountMismatchDialog"
+<dialog id="virtualIdentityExtension_rdfAccountMismatchDialog"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	buttons="accept"
-    title="&vident.vI_rdfAccountMismatchDialog.title;"
+    title="&vident.virtualIdentityExtension_rdfAccountMismatchDialog.title;"
     ondialogaccept="virtualIdentityExtension.rdfAccountMismatchDialog.accept();"
     ondialogcancel="virtualIdentityExtension.rdfAccountMismatchDialog.accept();"
 	zlevel="6">
     <script type="application/x-javascript" src="chrome://v_identity/content/vI_rdfAccountMismatchDialog.js" />
     
-    <stringbundleset id="stringbundleset">
-        <stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />
-    </stringbundleset>
-
-    <label id="removeRelationLabel" value="&vident.vI_rdfAccountMismatchDialog.removeRelation.label;" hidden="true" />
+    <label id="virtualIdentityExtension_removeRelationLabel" value="&vident.virtualIdentityExtension_rdfAccountMismatchDialog.removeRelation.label;" hidden="true" />
     
-    <dialogheader title="&vident.vI_rdfAccountMismatchDialog.dialogheader;"/>
-    <groupbox id="rdfAccountMismatchDialog_groupbox">
-        <vbox id="rdfAccountMismatchDialog_vbox_identity" align="left" hidden="true" >
-            <caption label="&vident.vI_rdfAccountMismatchDialog_identity.caption;"/>
-            <description class="widthXX">&vident.vI_rdfAccountMismatchDialog_identity.desc;</description>
+    <dialogheader title="&vident.virtualIdentityExtension_rdfAccountMismatchDialog.dialogheader;"/>
+    <groupbox id="virtualIdentityExtension_rdfAccountMismatchDialog_groupbox">
+        <vbox id="virtualIdentityExtension_rdfAccountMismatchDialog_vbox_identity" align="left" hidden="true" >
+            <caption label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.caption;"/>
+            <description class="widthXX">&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.desc;</description>
         </vbox>
-        <vbox id="rdfAccountMismatchDialog_vbox_smtp" align="left" hidden="true" >
-            <caption label="&vident.vI_rdfAccountMismatchDialog_smtp.caption;"/>
-            <description class="widthXX">&vident.vI_rdfAccountMismatchDialog_smtp.desc;</description>
+        <vbox id="virtualIdentityExtension_rdfAccountMismatchDialog_vbox_smtp" align="left" hidden="true" >
+            <caption label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.caption;"/>
+            <description class="widthXX">&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.desc;</description>
         </vbox>
-        <listbox id="rdfAccountMismatchDialog_listbox" suppressonselect="true" rows="5" >
-        <listhead id="rdfAccountMismatchDialog_listhead_identity" hidden="true">
-            <listheader label="&vident.vI_rdfAccountMismatchDialog_identity.old;" />
-            <listheader label="&vident.vI_rdfAccountMismatchDialog_identity.count;" />
-            <listheader label="&vident.vI_rdfAccountMismatchDialog_identity.new;" />
+        <listbox id="virtualIdentityExtension_rdfAccountMismatchDialog_listbox" suppressonselect="true" rows="5" >
+        <listhead id="virtualIdentityExtension_rdfAccountMismatchDialog_listhead_identity" hidden="true">
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.old;" />
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.count;" />
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.new;" />
         </listhead>
-        <listhead id="rdfAccountMismatchDialog_listhead_smtp" hidden="true">
-            <listheader label="&vident.vI_rdfAccountMismatchDialog_smtp.old;" />
-            <listheader label="&vident.vI_rdfAccountMismatchDialog_smtp.count;" />
-            <listheader label="&vident.vI_rdfAccountMismatchDialog_smtp.new;" />
+        <listhead id="virtualIdentityExtension_rdfAccountMismatchDialog_listhead_smtp" hidden="true">
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.old;" />
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.count;" />
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.new;" />
         </listhead>
         <listcols><listcol/><listcol/><listcol/></listcols>
         </listbox>

@@ -25,27 +25,12 @@
 
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
 
-<!DOCTYPE overlay [
-<!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
-%versionDTD;
-<!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
-%vIdentDTD;
-]>
-
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_getHeader.js"/>
 
-
-<stringbundleset id="stringbundleset">
-    <stringbundle id="virtualIdentityExtension_vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
-  </stringbundleset>
-
-<vbox id="messagepanebox" >
-  <textbox id="virtualIdentityExtension_debugBox" />
-</vbox>
-
 <vbox id="messagepanebox">
-	 <notificationbox id="virtualIdentityExtension_vINotification" position="1" insertbefore="msgheaderstoolbar-box"/>
+  <notificationbox id="virtualIdentityExtension_vINotification" position="1" insertbefore="msgheaderstoolbar-box"/>
+  <textbox id="virtualIdentityExtension_debugBox" />
 </vbox>
 </overlay>

@@ -24,6 +24,8 @@
 
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+let Log = vI.setupLogging("virtualIdentity.rdfAccountMismatchDialog");
+
 var rdfAccountMismatchDialog = {
 	mismatchItems : null,
     type : null,
@@ -31,15 +33,17 @@ var rdfAccountMismatchDialog = {
 	init : function() {	
 		rdfAccountMismatchDialog.type = window.arguments[0];
         rdfAccountMismatchDialog.mismatchItems = window.arguments[1];
-        
+
         // display the relevant help-tags
-        document.getElementById("rdfAccountMismatchDialog_vbox_" + rdfAccountMismatchDialog.type).removeAttribute("hidden");
-        document.getElementById("rdfAccountMismatchDialog_listhead_" + rdfAccountMismatchDialog.type).removeAttribute("hidden");
+        document.getElementById("virtualIdentityExtension_rdfAccountMismatchDialog_vbox_" + rdfAccountMismatchDialog.type).removeAttribute("hidden");
+        document.getElementById("virtualIdentityExtension_rdfAccountMismatchDialog_listhead_" + rdfAccountMismatchDialog.type).removeAttribute("hidden");
         
 		for (var i = 0; i < rdfAccountMismatchDialog.mismatchItems.length; i++) {
 //             var label = document.createElement("label");
+            Log.debug("adding line " + i + " for label " + rdfAccountMismatchDialog.mismatchItems[i].label + "\n");
+        
             var listitem = document.createElement("listitem");
-            listitem.setAttribute("id", "mismatchLine_" + i);
+            listitem.setAttribute("id", "virtualIdentityExtension_mismatchLine_" + i);
             listitem.setAttribute("class", "mismatchLine");
             listitem.setAttribute("type",rdfAccountMismatchDialog.type);
             listitem.setAttribute("oldkey",rdfAccountMismatchDialog.mismatchItems[i].oldkey);
@@ -47,13 +51,14 @@ var rdfAccountMismatchDialog = {
             listitem.setAttribute("ext1",rdfAccountMismatchDialog.mismatchItems[i].ext1);
             listitem.setAttribute("ext2",rdfAccountMismatchDialog.mismatchItems[i].ext2);
             listitem.setAttribute("count",rdfAccountMismatchDialog.mismatchItems[i].count);
-            document.getElementById("rdfAccountMismatchDialog_listbox").appendChild(listitem)
+            document.getElementById("virtualIdentityExtension_rdfAccountMismatchDialog_listbox").appendChild(listitem)
+            Log.debug("line added\n");
 		}
 	},
 
 	accept : function() {
         for (var i = 0; i < rdfAccountMismatchDialog.mismatchItems.length; i++) {
-            rdfAccountMismatchDialog.mismatchItems[i].key = document.getElementById("mismatchLine_" + i).key
+            rdfAccountMismatchDialog.mismatchItems[i].key = document.getElementById("virtualIdentityExtension_mismatchLine_" + i).key
         }
 		/* window.argument[2] stores callback parent */
         window.arguments[2].repairAccountMismatch(rdfAccountMismatchDialog.type, rdfAccountMismatchDialog.mismatchItems);

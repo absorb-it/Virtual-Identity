@@ -37,8 +37,6 @@ var getHeader = {
 	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
 			.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 
-// 	strings : document.getElementById("virtualIdentityExtension_vIdentBundle"),
-	
 	headerToSearch : null,
 	
 	prefObserverToSearchArray : function() {

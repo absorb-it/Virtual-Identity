@@ -67,7 +67,7 @@
 	<stringbundle id="vI_rdfDataTreeBundle" src="chrome://v_identity/locale/vI_rdfDataEditor.properties" />
 	<stringbundle id="bundle_messenger" src="chrome://messenger/locale/messenger.properties" />
     <stringbundle id="virtualIdentityExtension_vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
-        <stringbundle id="virtualIdentityExtension_vIStorageExtrasBundle" src="chrome://v_identity/locale/vI_storageExtras.properties" />
+    <stringbundle id="virtualIdentityExtension_vIStorageExtrasBundle" src="chrome://v_identity/locale/vI_storageExtras.properties" />
 </stringbundleset>
 
 <menupopup hidden="true">  <!--just to hold the localized labels-->

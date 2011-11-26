@@ -218,7 +218,7 @@ rdfDatasource.prototype = {
     // **************    RDF UPGRADE CODE    ****************************************************
     _tagDefaultSMTP: function() {
         Log.debug("upgrade: tagDefaultSMTP ");
-        for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
+        for each (let treeType in Array("email", "maillist", "newsgroup", "filter")) {
             var enumerator = this.getContainer(treeType).GetElements();
             while (enumerator && enumerator.hasMoreElements()) {
                 var resource = enumerator.getNext();
@@ -374,7 +374,7 @@ rdfDatasource.prototype = {
     getRelevantIDs : function() {
         var relevantIDs = new Object();
         // search relevant Identities
-        for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
+        for each (let treeType in Array("email", "maillist", "newsgroup", "filter")) {
             var enumerator = this.getContainer(treeType).GetElements();
             while (enumerator && enumerator.hasMoreElements()) {
                 var resource = enumerator.getNext();
@@ -433,7 +433,7 @@ rdfDatasource.prototype = {
         for (var i = 0; i < mismatchItems.length; i++) {
             Log.debug("repairAccountMismatch change " + mismatchItems[i].oldkey + " into " + mismatchItems[i].key + ": ");
             // search relevant Identities
-            for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
+            for each (let treeType in Array("email", "maillist", "newsgroup", "filter")) {
                 var enumerator = this.getContainer(treeType).GetElements();
                 while (enumerator && enumerator.hasMoreElements()) {
                     var resource = enumerator.getNext();
@@ -452,7 +452,7 @@ rdfDatasource.prototype = {
     getRelevantSMTPs : function() {
         var relevantSMTPs = new Object();
         // search relevant SMTPs
-        for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
+        for each (let treeType in Array("email", "maillist", "newsgroup", "filter")) {
             var enumerator = this.getContainer(treeType).GetElements();
             while (enumerator && enumerator.hasMoreElements()) {
                 var resource = enumerator.getNext();
@@ -806,10 +806,10 @@ rdfDatasource.prototype = {
           localIdentityData.extras.loopThroughExtras(
             function (extra) {
               extra.value = self._setRDFValue(resource, extra.field, extra.value) });
-          Log.debug("extras: " + localIdentityData.extras.status() + "\n");
+//           Log.debug("extras: " + localIdentityData.extras.status() + "\n");
         }
         
-		Log.debug("updateRDF add " + resource.ValueUTF8 + " at position " + position + ".\n");
+// 		Log.debug("updateRDF add " + resource.ValueUTF8 + " at position " + position + ".\n");
         if (position != -1) this.getContainer(recType).InsertElementAt(resource, position, true);
 		else this.getContainer(recType).AppendElement(resource);
 	},
@@ -1118,7 +1118,7 @@ rdfDatasourceImporter.prototype = {
             Log.debug("import: preparation done.\n");
             Log.debug("import: starting import:\n");
 
-            for each (treeType in Array("email", "maillist", "newsgroup", "filter")) {
+            for each (let treeType in Array("email", "maillist", "newsgroup", "filter")) {
                 // re-initialize importDataSource to point rdfService to the right Resources
                 this._rdfImportDataSource = new rdfDatasource(importRdfDataFile.leafName, true);
                 var container = this._rdfImportDataSource.getContainer(treeType)
@@ -1131,7 +1131,7 @@ rdfDatasourceImporter.prototype = {
                 while (enumerator.hasMoreElements()) {
                     var resource = enumerator.getNext(); count += 1;
                     resource.QueryInterface(Components.interfaces.nsIRDFResource);
-                    Log.debug(" " + count + " ");
+//                     Log.debug(" " + count + " ");
                     var name = this._rdfImportDataSource._getRDFValue(resource, "name")
                     var email = this._rdfImportDataSource._getRDFValue(resource, "email")
                     var fullName = this._rdfImportDataSource._getRDFValue(resource, "fullName")

@@ -30,7 +30,11 @@ let Log = vI.setupLogging("virtualIdentity.statusmenu");
 Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 var statusmenu = {
-	objStatusMenu : null,
+    stringBundle : Components.classes["@mozilla.org/intl/stringbundle;1"]
+        .getService(Components.interfaces.nsIStringBundleService)
+        .createBundle("chrome://v_identity/locale/v_identity.properties"),
+
+    objStatusMenu : null,
 	objSaveBaseIDMenuItem : null,
 	objStorageSaveMenuItem : null,
 	objStatusMenuSeparator : null,
@@ -149,8 +153,8 @@ var statusmenu = {
 	__addStatusMessage : function(save, smtp) {
 		var sourceString = "vident.statusText.save." + save;
 		if (smtp != "off") sourceString = sourceString + ".smtp"
-		var messageLine1 = vI.main.elements.strings.getString(sourceString + ".line1");
-		var messageLine2 = vI.main.elements.strings.getString(sourceString + ".line2");
+		var messageLine1 = statusmenu.stringBundle.GetStringFromName(sourceString + ".line1");
+		var messageLine2 = statusmenu.stringBundle.GetStringFromName(sourceString + ".line2");
 		if (!messageLine2) {
 			statusmenu.objStatusText.setAttribute("label", messageLine1);
 			statusmenu.objStatusTooltipLine1.setAttribute("value", messageLine1);

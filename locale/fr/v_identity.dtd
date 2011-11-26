@@ -18,8 +18,8 @@
 <!ENTITY vident.vI_Menu.TooltipTitle.label "Statut de l'identité virtuelle">
 <!ENTITY vident.vI_Menu.TooltipChange.label "Cliquer pour modifier">
 
-<!ENTITY vident.vI_Dialog.extra1Button.label "Interrompre l'envoi">
-<!ENTITY vident.vI_Dialog.extra2Button.label "Utiliser l'identité stockée">
+<!ENTITY vident.virtualIdentityExtension_Dialog.extra1Button.label "Interrompre l'envoi">
+<!ENTITY vident.virtualIdentityExtension_Dialog.extra2Button.label "Utiliser l'identité stockée">
 
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "D">

@@ -18,8 +18,8 @@
 <!ENTITY vident.vI_Menu.TooltipTitle.label "Состояние Virtual Identity">
 <!ENTITY vident.vI_Menu.TooltipChange.label "нажмите для изменения">
 
-<!ENTITY vident.vI_Dialog.extra1Button.label "Прервать отправку">
-<!ENTITY vident.vI_Dialog.extra2Button.label "Использовать сохраненные личные данные">
+<!ENTITY vident.virtualIdentityExtension_Dialog.extra1Button.label "Прервать отправку">
+<!ENTITY vident.virtualIdentityExtension_Dialog.extra2Button.label "Использовать сохраненные личные данные">
 
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">

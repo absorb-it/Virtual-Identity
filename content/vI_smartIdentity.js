@@ -35,6 +35,10 @@ var smartIdentity = {
 	messenger : Components.classes["@mozilla.org/messenger;1"].createInstance()
 		.QueryInterface(Components.interfaces.nsIMessenger),
 	
+    stringBundle : Components.classes["@mozilla.org/intl/stringbundle;1"]
+        .getService(Components.interfaces.nsIStringBundleService)
+        .createBundle("chrome://v_identity/locale/v_identity.properties"),
+
 	_smartIdentityCollection : null,
 		
 	// After Loading the MessageComposeDialog, check if smartIdentity is needed
@@ -143,9 +147,9 @@ var smartIdentity = {
 			+ "(" + allIdentities.identityDataCollection[selectedValue].id.value + "," + allIdentities.identityDataCollection[selectedValue].smtp.value + ")\n");
 		document.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = allIdentities.menuItems[selectedValue];
 		if (document.getElementById("virtualIdentityExtension_msgIdentityClone").vid) {
-			var label=vI.main.elements.strings.getString("vident.smartIdentity.vIUsage");
+			var label=statusmenu.stringBundle.GetStringFromName("vident.smartIdentity.vIUsage");
 			if (allIdentities.number > 1) label += " "
-				+ vI.main.elements.strings.getString("vident.smartIdentity.moreThanOne");
+				+ statusmenu.stringBundle.GetStringFromName("vident.smartIdentity.moreThanOne");
 			vI.SmartReplyNotification.info(label + ".");
 		}
 		smartIdentity.__removeSmartIdentityFromRecipients(allIdentities, selectedValue);
@@ -189,7 +193,7 @@ var smartIdentity = {
 				input.value == allIdentities.identityDataCollection[index].combinedName) {
 					awSetInputAndPopupValue(input, "", popup, "addr_to", -1);
 					awCleanupRows()
-					vI.SmartReplyNotification.info(" " +	vI.main.elements.strings.getString("vident.smartIdentity.remRecipient"));
+					vI.SmartReplyNotification.info(" " + statusmenu.stringBundle.GetStringFromName("vident.smartIdentity.remRecipient"));
 					break;
 			}
 		}

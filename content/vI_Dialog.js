@@ -32,12 +32,12 @@ var Dialog = {
 
 	init : function(warning) {
 		dump("warning.class=" + warning.class + "warning.class=" + warning.title + "warning.warning=" + warning.warning + "\n")
-		document.getElementById("vI_Dialog").setAttribute("class", warning.class); 
-		Dialog.setDescription(document.getElementById("vI_Dialog_title"), warning.title);
-		Dialog.setDescription(document.getElementById("vI_Dialog_recLabel"), warning.recLabel);
-		Dialog.setDescription(document.getElementById("vI_Dialog_recipient"), warning.recipient);
-		document.getElementById("vI_Dialog_browser").outputString = warning.warning;
-		Dialog.setDescription(document.getElementById("vI_Dialog_query"), warning.query);
+		document.getElementById("virtualIdentityExtension_Dialog").setAttribute("class", warning.class); 
+		Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_title"), warning.title);
+		Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_recLabel"), warning.recLabel);
+		Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_recipient"), warning.recipient);
+		document.getElementById("virtualIdentityExtension_Dialog_browser").outputString = warning.warning;
+		Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_query"), warning.query);
 		// show abort button
 		if (warning.class == "replaceVIdentity") {
 			document.documentElement.getButton("extra1").hidden = true;

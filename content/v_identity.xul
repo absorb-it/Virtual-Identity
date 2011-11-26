@@ -41,10 +41,6 @@
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_statusmenu.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_storage.js"/>
 
-  <stringbundleset id="stringbundleset">
-    <stringbundle id="virtualIdentityExtension_vIdentBundle" src="chrome://v_identity/locale/v_identity.properties" />
-  </stringbundleset>
-
 <vbox id="appcontent" >
   <textbox id="virtualIdentityExtension_debugBox" />
 </vbox>

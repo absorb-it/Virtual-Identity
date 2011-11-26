@@ -18,8 +18,8 @@
 <!ENTITY vident.vI_Menu.TooltipTitle.label "Status Virtual Identity">
 <!ENTITY vident.vI_Menu.TooltipChange.label "změníte kliknutím">
 
-<!ENTITY vident.vI_Dialog.extra1Button.label "Zrušit odesílání">
-<!ENTITY vident.vI_Dialog.extra2Button.label "Použít uloženou identitu">
+<!ENTITY vident.virtualIdentityExtension_Dialog.extra1Button.label "Zrušit odesílání">
+<!ENTITY vident.virtualIdentityExtension_Dialog.extra2Button.label "Použít uloženou identitu">
 
 <!ENTITY fccMailFolder.accesskey "P">
 <!ENTITY sentFolderOn.accesskey "e">
