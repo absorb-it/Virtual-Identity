@@ -910,8 +910,9 @@ rdfDatasourceAccess.prototype = {
 		var dontUpdateMultipleNoEqual = (vIprefs.get("storage_dont_update_multiple") && multipleRecipients)
 		Log.debug("storeVIdentityToAllRecipients dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'")
 		
+        let returnValue = { update : "cancel" };
 		for (var j = 0; j < recipients.length; j++) {
-			var returnValue = this.__updateStorageFromVIdentity(identityData, recipients[j].recipient, recipients[j].recipientType, dontUpdateMultipleNoEqual);
+			returnValue = this.__updateStorageFromVIdentity(identityData, recipients[j].recipient, recipients[j].recipientType, dontUpdateMultipleNoEqual);
 			if (returnValue.update != "accept")  break;
 		}
 		return returnValue;
@@ -975,7 +976,7 @@ rdfDatasourceAccess.prototype = {
 		var answer = get3PaneWindow().openDialog("chrome://v_identity/content/vI_Dialog.xul","",
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
 					 warning, retVar)
-		dump("retVar.returnValue=" + retVar.returnValue + "\n")
+		Log.debug("retVar.returnValue=" + retVar.returnValue)
 		return retVar.returnValue;
 	},
 }
