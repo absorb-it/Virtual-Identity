@@ -468,7 +468,6 @@
 			if (!val) return;
 			// add hidden separator as indicator that now only virtual identities are added
 			this._menu_separator = document.createElement("menuseparator");
-			this._menu_separator.setAttribute("id", "vid_separator");
 			this._menu_separator.setAttribute("hidden", "true");
 			this._popupElem.appendChild(this._menu_separator)
 		]]></setter>	
