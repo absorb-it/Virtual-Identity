@@ -31,85 +31,21 @@ Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityEx
 Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 var upgrade = {
-	versionChecker : Components.classes["@mozilla.org/xpcom/version-comparator;1"]
-			.getService(Components.interfaces.nsIVersionComparator),
-    
+    versionChecker : Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+      .getService(Components.interfaces.nsIVersionComparator),
+                            
     rdfDatasource : null,
 
-	init : function() {
-		upgrade.__initRequirements();
-		document.documentElement.getButton("cancel").setAttribute("hidden", "true")
+	quickUpgrade : function(currentVersion) {
+      upgrade.rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf", true);
+      if (upgrade.rdfDatasource.extUpgradeRequired())
+        upgrade.extUpgrade();
+      upgrade.rdfDatasource.refreshAccountInfo();
+      upgrade.rdfDatasource.clean();
+      return true;
 	},
 
-    clean : function() {
-        if (upgrade.rdfDatasource) upgrade.rdfDatasource.clean();
-    },
-
-    __initRequirements : function() {
-		Log.debug("") // this initialises the debug-area
-		upgrade.rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf", true);
-	},
-	
-	// this function checks for the chance to ugrade without shoing the complete wizard
-	// if so, perform the upgrade and return true
-	// by default the wizard is not shown if it is a one-version-forward upgrade
-	quick_upgrade : function(currentVersion) {
-		// seamonkey doesn't have a extensionmanager, so read version of extension from hidden version-label
-		if (!currentVersion) return false;
-		currentVersion = currentVersion.split(/\./);
-		var nextVersion = currentVersion[0];
-        if (currentVersion.length > 1)
-          nextVersion += "." + currentVersion[1] + "."
-		if (currentVersion.length > 2) {
-          if (currentVersion[2].match(/pre/))
-		 	nextVersion += parseInt(currentVersion[2])
-          else nextVersion += parseInt(currentVersion[2]) + 1
-        }
-        else
-          nextVersion += "1"
-			
-		// don't show the dialog if we do a one-step upgrade
-		if (upgrade.versionChecker.compare(vI.extensionVersion, nextVersion) <= 0) {
-			Log.debug("starting quick_upgrade.\n")
-			upgrade.__initRequirements();
-			upgrade.__upgrade();
-			return true;
-		}
-		return false;
-	},
-
-	prepare : function(elem) {
-		document.documentElement.getButton('back').setAttribute('hidden','true');
-		document.documentElement.getButton('next').focus();
-		var pageid = elem.getAttribute("pageid");
-		var browser = document.getElementById('virtualIdentityExtension_TextBox.' + pageid)
-		if (browser) 
-			browser.outputString = Components.classes["@mozilla.org/intl/stringbundle;1"]
-            .getService(Components.interfaces.nsIStringBundleService)
-            .createBundle("chrome://v_identity/locale/vI_upgrade.properties")
-            .GetStringFromName('vident.' + pageid);
-	},
-	
-	__upgrade : function() {
-		if (upgrade.rdfDatasource.extUpgradeRequired()) upgrade.extUpgrade();
-		
-		vI.vIaccount_cleanupSystem();
-	},			
-
-	upgrade : function() {
-		Log.debug("starting upgrade.\n\n")
-		document.getElementById("upgradeWizard").setAttribute("canAdvance", "false")
-		document.documentElement.getButton('next').setAttribute('disabled','true');
-		
-		upgrade.__upgrade();
-	
-		Log.debug("\n\nupgrade finished.\n");
-		
-		document.documentElement.getButton('next').setAttribute('disabled','false');
-		document.getElementById("upgradeWizard").setAttribute("canAdvance", "true")
-	},
-	
-	extUpgrade : function() {
+    extUpgrade : function() {
 		var currentVersion = upgrade.rdfDatasource.getCurrentExtFileVersion();
 		Log.debug("checking for previous version, found " + 
 			currentVersion + "\nextension-upgrade required.\n")
@@ -193,16 +129,6 @@ var upgrade = {
 			}
 		}
 	},
-
-	openURL : function(aURL) {
-            var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
-            var protocolSvc = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"].getService(Components.interfaces.nsIExternalProtocolService);
-
-            uri.spec = aURL;
-            protocolSvc.loadUrl(uri);
-        }
 }
 vI.upgrade = upgrade;
-// start init only if wizard is shown, so it is done in vI_upgrade.xul
-// window.addEventListener('load', upgrade.init, true);
 }});

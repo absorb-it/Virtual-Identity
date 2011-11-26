@@ -42,39 +42,26 @@ AddonManager.getAddonByID(virtualIdentity_ID, function(addon) {
 
 function extensionInit() {
   Log.debug("init")
-    var rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf", true);
-    if (rdfDatasource.extUpgradeRequired()) {
-        Log.debug("extension upgrade required")
-        if (!vI.upgrade.quick_upgrade(rdfDatasource.getCurrentExtFileVersion())) {
-            Log.debug("opening extension upgrade window")
-            window.open("chrome://v_identity/content/vI_upgrade.xul",0,
-                "chrome, dialog, modal, alwaysRaised, resizable=yes").focus();
-        }
-    }
-    else {
-        vI.vIaccount_cleanupSystem(); // always clean leftover accounts and directories
-        rdfDatasource.storeExtVersion();
-    }
-    rdfDatasource.refreshAccountInfo();
-    rdfDatasource.clean();
-    
-    if (vI.vIprefs.get("error_console")) {
-        document.getElementById("virtualIdentityExtension_vIErrorBoxSplitter").removeAttribute("hidden");
-        document.getElementById("virtualIdentityExtension_vIErrorBox").removeAttribute("hidden");
-        document.getElementById("virtualIdentityExtension_vIErrorBox").setAttribute("class", "console-box");
-        vI.prefroot.setBoolPref("javascript.options.showInConsole", true);
-        vI.prefroot.setBoolPref("browser.dom.window.dump.enabled", true);
-        vI.prefroot.setBoolPref("javascript.options.strict", true);
-    }
+  vI.upgrade.quickUpgrade();
+  vI.vIaccount_cleanupSystem(); // always clean leftover accounts and directories
+  
+  if (vI.vIprefs.get("error_console")) {
+    document.getElementById("virtualIdentityExtension_vIErrorBoxSplitter").removeAttribute("hidden");
+    document.getElementById("virtualIdentityExtension_vIErrorBox").removeAttribute("hidden");
+    document.getElementById("virtualIdentityExtension_vIErrorBox").setAttribute("class", "console-box");
+    vI.prefroot.setBoolPref("javascript.options.showInConsole", true);
+    vI.prefroot.setBoolPref("browser.dom.window.dump.enabled", true);
+    vI.prefroot.setBoolPref("javascript.options.strict", true);
+  }
 }
 
 addEventListener('messagepane-loaded', extensionInit, true);
-  // this is the entry place, nameSpaceWrapper is loaded and the show can start
-  try {
-    Components.utils.import("resource://v_identity/plugins/conversations.js", virtualIdentityExtension);
-  } catch(e) {
-    vI.dumpCallStack(e);
-  }
+// this is the entry place, nameSpaceWrapper is loaded and the show can start
+try {
+  Components.utils.import("resource://v_identity/plugins/conversations.js", virtualIdentityExtension);
+} catch(e) {
+  vI.dumpCallStack(e);
+}
 
 
 }});
