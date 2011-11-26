@@ -45,7 +45,7 @@
 .smtpServerListHbox {
 	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#smtpServerList");
 }
-#vI_rdfDataEditorContent checkbox.vI_plain {
+#virtualIdentityExtension_rdfDataEditorContent checkbox.vI_plain {
 	display: none;
 }
 

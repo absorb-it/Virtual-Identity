@@ -39,12 +39,12 @@ var rdfDataEditor = {
 	__populateIdentityMenu : function() {
 		var listitem = document.createElement("menuitem");
 		listitem.setAttribute("label", "");
-		document.getElementById("identity_list_popup").appendChild(listitem);
-		document.getElementById("identity_list").selectedItem = listitem;
+		document.getElementById("virtualIdentityExtension_IdentityListPopup").appendChild(listitem);
+		document.getElementById("virtualIdentityExtension_IdentityList").selectedItem = listitem;
 		var separator = document.createElement("menuseparator");
-		document.getElementById("identity_list_popup").appendChild(separator);
+		document.getElementById("virtualIdentityExtension_IdentityListPopup").appendChild(separator);
 
-		FillIdentityList(document.getElementById("identity_list"))
+		FillIdentityList(document.getElementById("virtualIdentityExtension_IdentityList"))
 	},
 
 	init : function() {
@@ -80,18 +80,18 @@ var rdfDataEditor = {
 
 		// set Identity
 		rdfDataEditor.__populateIdentityMenu();
-		var MenuItems = document.getElementById("identity_list_popup").childNodes;
+		var MenuItems = document.getElementById("virtualIdentityExtension_IdentityListPopup").childNodes;
 		for (var index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].getAttribute("value") == rdfDataEditor.__identityData.id.key) {
-				document.getElementById("identity_list").selectedItem =
+				document.getElementById("virtualIdentityExtension_IdentityList").selectedItem =
 						MenuItems[index];
 				break;
 			}
 		}
 
 		// set SMTP
-		document.getElementById("smtpServerListHbox").addNoneServer(); // add non (not stored) Server
-		document.getElementById("smtpServerListHbox").smtp = rdfDataEditor.__identityData.smtp.keyNice;
+		document.getElementById("virtualIdentityExtension_smtpServerListHbox").addNoneServer(); // add non (not stored) Server
+		document.getElementById("virtualIdentityExtension_smtpServerListHbox").smtp = rdfDataEditor.__identityData.smtp.keyNice;
 		
 		// set extra values
 		Log.debug("set Values to Environment\n");
@@ -133,8 +133,8 @@ var rdfDataEditor = {
 	accept : function() {
 		Log.debug("accept\n");
         var localIdentityData = new vI.identityData(document.getElementById("sender").value, null,
-			document.getElementById("identity_list").selectedItem.getAttribute("value"),
-			document.getElementById("smtp_server_list").selectedItem.getAttribute("key"));
+			document.getElementById("virtualIdentityExtension_IdentityList").selectedItem.getAttribute("value"),
+			document.getElementById("virtualIdentityExtension_SmtpServerList").selectedItem.getAttribute("key"));
         Log.debug("before getValuesFromEnvironment\n");
         localIdentityData.extras.getValuesFromEnvironment();
         Log.debug("after getValuesFromEnvironment\n");

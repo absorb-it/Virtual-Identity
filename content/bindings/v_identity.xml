@@ -134,7 +134,7 @@
 		this.description = this._identityDataStorage.sideDescription;
 		this.smtp = this._identityDataStorage.smtp.value;
 		virtualIdentityExtension.MyLog.debug("** v_identity.xml fromPopupItem_clone constructor smtp='" + this.smtp + "'.\n")
-		this.smtpStyle = "width:" + document.getElementById("smtp_server_list").clientWidth + "px;";
+		this.smtpStyle = "width:" + document.getElementById("virtualIdentityExtension_SmtpServerList").clientWidth + "px;";
 		this._identityDataStorage.smtp.value;
 		
 		document.getElementById("virtualIdentityExtension_tooltipPopupset").addTooltip(this, true);
@@ -168,10 +168,10 @@
   	</resources>
  	<content sizetopopup="pref">
 		<xul:hbox id="smtpServerHbox" class="smtpServerHbox">
-			<xul:menulist class="smtpServerMenuList" anonid="smtpServerMenuList" allowevents="true" id="smtp_server_list">
-				<xul:menupopup anonid="smtp_server_list_popup" />
+			<xul:menulist class="smtpServerMenuList" anonid="smtpServerMenuList" allowevents="true" id="virtualIdentityExtension_SmtpServerList">
+				<xul:menupopup anonid="virtualIdentityExtension_SmtpServerList_popup" />
 			</xul:menulist>
-			<xul:checkbox  id="saveSMTPSwitch" class="vI_plain" allowevents="true" oncommand="event.stopPropagation();virtualIdentityExtension.vIprefs.set('storage_store_SMTP', this.checked);" >
+			<xul:checkbox  id="virtualIdentityExtension_SaveSmtpSwitch" class="vI_plain" allowevents="true" oncommand="event.stopPropagation();virtualIdentityExtension.vIprefs.set('storage_store_SMTP', this.checked);" >
 				<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveSMTP" attribute="checked" />
 				<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveSMTP" attribute="disabled" />
 			</xul:checkbox>
@@ -262,7 +262,7 @@
 		}
 		]]></setter>
 	</property>
-	<field name="_smtpPopup">document.getAnonymousElementByAttribute(this, "anonid", "smtp_server_list_popup")</field>
+	<field name="_smtpPopup">document.getAnonymousElementByAttribute(this, "anonid", "virtualIdentityExtension_SmtpServerList_popup")</field>
 	<field name="_smtpMenu">document.getAnonymousElementByAttribute(this, "anonid", "smtpServerMenuList")</field>
 	<field name="_smtpService"></field>
 
@@ -290,7 +290,7 @@
 					onblur="event.stopPropagation(); var elem = this; while (elem.localName != 'textbox') elem = elem.parentNode; document.getBindingParent(elem).blurEvent();"
 					crop="right" highlightnonmatches="true"/>
 				<xul:spacer flex="1" /></xul:vbox>
-				<xul:vbox id="saveSwitch"><xul:spacer flex="1" />
+				<xul:vbox id="virtualIdentityExtension_saveSwitch"><xul:spacer flex="1" />
 					<xul:checkbox class="vI_plain" allowevents="true" oncommand="event.stopPropagation();virtualIdentityExtension.vIprefs.set('storage_store', this.checked);" >
 						<xul:observes element="virtualIdentityExtension_statusMenu_storage_save" attribute="checked" />
 					</xul:checkbox>
@@ -307,7 +307,7 @@
 						<xul:label id="virtualIdentityExtension_msgIdentityClone_label" class="menu_clone-description" xbl:inherits="value=description" crop="right"/>
 					</xul:hbox>
 				<xul:spacer flex="1" /></xul:vbox>
-				<xul:vbox id="saveBaseIDSwitch"><xul:spacer flex="1" />
+				<xul:vbox id="virtualIdentityExtension_saveBaseIDSwitch"><xul:spacer flex="1" />
 					<xul:checkbox class="vI_plain" allowevents="true" oncommand="event.stopPropagation();virtualIdentityExtension.vIprefs.set('storage_store_base_id', this.checked);" >
 						<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveBaseID" attribute="checked" />
 						<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveBaseID" attribute="disabled" />
@@ -599,7 +599,7 @@
         var MenuItems = self._popupElem.childNodes;
         for (var j = 0; j < MenuItems.length; j++) {
             if (MenuItems[j].localName == "menuseparator") continue;
-            MenuItems[j].smtpStyle = "width:" + document.getElementById("smtp_server_list").clientWidth + "px;";
+            MenuItems[j].smtpStyle = "width:" + document.getElementById("virtualIdentityExtension_SmtpServerList").clientWidth + "px;";
         }
     ]]></method>
 	<property name="email" onset="this.identityData.email = val; this.label = this.identityData.combinedName; this.inputEvent()" />
