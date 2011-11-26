@@ -118,12 +118,10 @@ var smartIdentity = {
 		}
 		
 		document.getElementById("virtualIdentityExtension_msgIdentityClone").addIdentitiesToCloneMenu(smartIdentity._smartIdentityCollection._allIdentities);
-		Log.debug("__smartIdentitySelection smartIdentity._smartIdentityCollection._allIdentities.number=" +
+		Log.debug("__smartIdentitySelection _allIdentities.number=" +
 				smartIdentity._smartIdentityCollection._allIdentities.number +
-				" vI.vIprefs.get('idSelection_ask_always')=" +
-				vI.vIprefs.get("idSelection_ask_always") +
-				" vI.vIprefs.get('idSelection_ask')=" +
-				vI.vIprefs.get("idSelection_ask"));
+				" _ask_always=" + vI.vIprefs.get("idSelection_ask_always") +
+				" _ask=" + vI.vIprefs.get("idSelection_ask"));
 		if (!autocreate && vI.vIprefs.get("idSelection_ask") && 
 			((smartIdentity._smartIdentityCollection._allIdentities.number == 1 && vI.vIprefs.get("idSelection_ask_always"))
 				|| smartIdentity._smartIdentityCollection._allIdentities.number > 1)) {

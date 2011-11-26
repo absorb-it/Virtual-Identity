@@ -129,11 +129,11 @@
 		
 		this.label = this._identityDataStorage.combinedName;
 		this.value = this._identityDataStorage.id.key;
-		virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor id='" + this.value)
+        // virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor id='" + this.value + "'")
 
 		this.description = this._identityDataStorage.sideDescription;
 		this.smtp = this._identityDataStorage.smtp.value;
-		virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor smtp='" + this.smtp)
+        // virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor smtp='" + this.smtp + "'")
 		this.smtpStyle = "width:" + document.getElementById("virtualIdentityExtension_SmtpServerList").clientWidth + "px;";
 		this._identityDataStorage.smtp.value;
 		
@@ -352,7 +352,7 @@
 	-->
 	<method name="command">
 		<body><![CDATA[
-		virtualIdentityExtension.MyLog.debug("\nv_identity.xml msgIdentityCloneElem.doCommand()")
+		virtualIdentityExtension.MyLog.debug("v_identity.xml msgIdentityCloneElem.doCommand()")
 		// copy selected Menu-Value from clone to orig.
 		virtualIdentityExtension.MyLog.debug("v_identity.xml copy selected Menu-Value from clone to orig. Searching for id=" + this.selectedMenuItem.identityData.id.key)
 		if ( this.selectedMenuItem.identityData.id.key != null ) {
@@ -367,7 +367,7 @@
 			this._msgIdentityPopupElem.doCommand();
 		}
 		this.identityData = this.selectedMenuItem.identityData.getDuplicate();
-		virtualIdentityExtension.MyLog.debug("\nv_identity.xml msgIdentityCloneElem.doCommand() this.value=" + this.value);
+		virtualIdentityExtension.MyLog.debug("v_identity.xml msgIdentityCloneElem.doCommand() this.value=" + this.value);
 		// if current SMTP is empty, take the one from current Identity
 		if (this.identityData.smtp.hasNoDefinedSMTP()) {
 			this.identityData.smtp.key = gAccountManager.getIdentity(this.value).smtpServerKey;

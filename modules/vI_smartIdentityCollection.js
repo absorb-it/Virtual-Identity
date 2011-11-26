@@ -32,7 +32,6 @@ Components.utils.import("resource://v_identity/vI_prefs.js");
 let Log = setupLogging("virtualIdentity.smartIdentityCollection");
 
 function smartIdentityCollection(msgHdr, preseletedID, currentIDisVID, newsgroup, recipients) {
-	dump("constructor\n");
 	this._IDisVID = currentIDisVID;
 	this._preselectedID = preseletedID;
 	this._msgHdr = msgHdr;
@@ -41,7 +40,6 @@ function smartIdentityCollection(msgHdr, preseletedID, currentIDisVID, newsgroup
 	this._recipients = recipients;
 	this._rdfDatasourceAccess = new rdfDatasourceAccess();
 	this._allIdentities = new identityCollection();
-	dump("constructor done \n");
 };
 
 smartIdentityCollection.prototype = {

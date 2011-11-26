@@ -480,8 +480,6 @@ var rdfDataTreeCollection = {
 		rdfDataTreeCollection.hideInfoBox();
 	}
 };
-dump("registering global rdfDataTreeCollection\n");
 vI.rdfDataTreeCollection = rdfDataTreeCollection;
 vI.rdfDataTree = rdfDataTree;
-dump("registering global rdfDataTreeCollection done " + vI.initTime + " " + vI.rdfDataTreeCollection + "\n");
 }});
