@@ -94,11 +94,9 @@ var rdfDataEditor = {
 		document.getElementById("virtualIdentityExtension_smtpServerListHbox").smtp = rdfDataEditor.__identityData.smtp.keyNice;
 		
 		// set extra values
-		Log.debug("set Values to Environment\n");
         rdfDataEditor.__identityData.extras.setValuesToEnvironment();
-        Log.debug("init nearly done\n");
 		this.hideUnusedEditorFields();
-        Log.debug("init done\n");
+        Log.debug("init done");
 	},
 	
     hideUnusedEditorFields : function() {
@@ -131,19 +129,17 @@ var rdfDataEditor = {
 	},
 	
 	accept : function() {
-		Log.debug("accept\n");
+		Log.debug("accept");
         var localIdentityData = new vI.identityData(document.getElementById("sender").value, null,
 			document.getElementById("virtualIdentityExtension_IdentityList").selectedItem.getAttribute("value"),
 			document.getElementById("virtualIdentityExtension_SmtpServerList").selectedItem.getAttribute("key"));
-        Log.debug("before getValuesFromEnvironment\n");
         localIdentityData.extras.getValuesFromEnvironment();
-        Log.debug("after getValuesFromEnvironment\n");
         rdfDataEditor.__rdfDatasource.updateRDF(
 				document.getElementById("recipient").value,
 				document.getElementById("type_menu").selectedItem.getAttribute("key"),
 				localIdentityData,
 				true, true, rdfDataEditor.__recipient, rdfDataEditor.__type);
-		Log.debug("updateRDF done " + localIdentityData.extras.status() + "\n");
+		Log.debug("updateRDF done " + localIdentityData.extras.status());
 		return document.getElementById("type_menu").selectedItem.getAttribute("key");
 	}
 }

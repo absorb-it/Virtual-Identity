@@ -48,7 +48,7 @@ var storage = {
         .createBundle("chrome://v_identity/locale/v_identity.properties"),
 
     clean: function() {
-		Log.debug("clean.\n");
+		Log.debug("clean.");
 		storage.multipleRecipients = null;
 		storage.lastCheckedEmail = {};
 		storage.firstUsedInputElement = null;
@@ -62,7 +62,7 @@ var storage = {
 
 	replacement_functions : {
 		awSetInputAndPopupValue : function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
-			Log.debug("awSetInputAndPopupValue '" + inputElem.id +"'\n");
+			Log.debug("awSetInputAndPopupValue '" + inputElem.id + "'");
 			storage.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
 			storage.updateVIdentityFromStorage(inputElem);
 		}
@@ -71,7 +71,7 @@ var storage = {
 	awOnBlur : function (element) {
 		// only react on events triggered by addressCol2 - textinput Elements
 		if (!element || ! element.id.match(/^addressCol2*/)) return;
-		Log.debug("\nawOnBlur '" + element.id +"'\n");
+		Log.debug("awOnBlur '" + element.id + "'");
 		storage.updateVIdentityFromStorage(element);
 		storage.focusedElement = null;
 	},
@@ -82,7 +82,7 @@ var storage = {
 	},
 
 	awPopupOnCommand : function (element) {
-		Log.debug("\nawPopupOnCommand'" + element.id +"'\n");
+		Log.debug("awPopupOnCommand '" + element.id + "'");
 		storage.updateVIdentityFromStorage(document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")));
 		if (element.selectedItem.getAttribute("value") == "addr_reply") // if reply-to is manually entered disable AutoReplyToSelf
 			document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").setAttribute("hidden", "true");
@@ -134,8 +134,8 @@ var storage = {
 	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
 	updateVIdentityFromStorage: function(inputElement) {
 		if (!vI.vIprefs.get("storage"))
-			{ Log.debug("Storage deactivated\n"); return; }
-		Log.debug("updateVIdentityFromStorage()\n");
+			{ Log.debug("Storage deactivated"); return; }
+		Log.debug("updateVIdentityFromStorage()");
 
 		var recipientType = document.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
 			.selectedItem.getAttribute("value");
@@ -144,17 +144,17 @@ var storage = {
 			// reset firstUsedInputElement if recipientType was changed (and don't care about doBcc fields)
 			if (storage.firstUsedInputElement == inputElement)
 				storage.firstUsedInputElement = null;
-			Log.debug("field is a 'reply-to' or 'followup-to' or preconfigured 'doBcc'. not searched.\n")
+			Log.debug("field is a 'reply-to' or 'followup-to' or preconfigured 'doBcc'. not searched.")
 			return;
 		}
 		
 		if (inputElement.value == "") {
-			Log.debug("no recipient found, not checked.\n"); return;
+			Log.debug("no recipient found, not checked."); return;
 		}
 		
 		var row = inputElement.id.replace(/^addressCol2#/,"")
 		if (storage.lastCheckedEmail[row] && storage.lastCheckedEmail[row] == inputElement.value) {
-			Log.debug("same email than before, not checked again.\n"); return;
+			Log.debug("same email than before, not checked again."); return;
 		}
 		storage.lastCheckedEmail[row] = inputElement.value;
 		
@@ -165,21 +165,21 @@ var storage = {
 			currentIdentity, document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, isNotFirstInputElement);
 		
 		if (storageResult.identityCollection.number == 0) return; // return if there was no match
-		Log.debug("updateVIdentityFromStorage result: " + storageResult.result + "\n");
+		Log.debug("updateVIdentityFromStorage result: " + storageResult.result);
 		// found storageData, so store InputElement
 		if (!storage.firstUsedInputElement) storage.firstUsedInputElement = inputElement;
 		
 		var newMenuItem = null;
 		if (storageResult.result != "equal") {
 			for (var j = 0; j < storageResult.identityCollection.number; j++) {
-				Log.debug("updateVIdentityFromStorage adding: " + storageResult.identityCollection.identityDataCollection[j].combinedName + "\n");
+				Log.debug("updateVIdentityFromStorage adding: " + storageResult.identityCollection.identityDataCollection[j].combinedName);
 				let menuItem = document.getElementById("virtualIdentityExtension_msgIdentityClone")
                   .addIdentityToCloneMenu(storageResult.identityCollection.identityDataCollection[j])
                 if (!newMenuItem) newMenuItem = menuItem;
 			}
 		}
 		if (storageResult.result == "accept") {
-			Log.debug("updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName + "\n");
+			Log.debug("updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName);
 			document.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = newMenuItem;
 			if (document.getElementById("virtualIdentityExtension_msgIdentityClone").vid)
 				vI.StorageNotification.info(storage.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageUsage") + ".");
@@ -195,7 +195,7 @@ var storage = {
 		for (var index = 0; index < doBccArray.count; index++ ) {
 			if (doBccArray.StringAt(index) == awGetInputElement(row).value) {
 				Log.debug("ignoring doBcc field '" +
-					doBccArray.StringAt(index) + "'.\n");
+					doBccArray.StringAt(index));
 				return true;
 			}
 		}		

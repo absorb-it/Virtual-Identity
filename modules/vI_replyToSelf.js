@@ -43,7 +43,7 @@ function removeAllReplyTos() {
     for (var row = 1; row <= currentWindow.top.MAX_RECIPIENTS; row ++) {
       var awType = currentWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
       if (awType == "addr_reply") {
-        Log.debug("removed ReplyTo found in row " + row + "\n");
+        Log.debug("removed ReplyTo found in row " + row);
         currentWindow.awDeleteRow(row--); // removed one line therefore decrease row-value
       }
     }

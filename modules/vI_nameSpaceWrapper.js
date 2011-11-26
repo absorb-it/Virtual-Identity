@@ -10,14 +10,14 @@ Components.utils.import("resource://v_identity/vI_log.js", virtualIdentityExtens
 virtualIdentityExtension.Log = virtualIdentityExtension.MyLog;
 
 virtualIdentityExtension.initTime = parseInt((new Date()).getTime());
-virtualIdentityExtension.Log.debug("init vI_overlayNameSpaceWrapper " + virtualIdentityExtension.initTime + "\n");
+virtualIdentityExtension.Log.debug("init vI_overlayNameSpaceWrapper " + virtualIdentityExtension.initTime);
 
 (function() { this.ns = function(fn) { fn.apply({}); };  }).apply(virtualIdentityExtension);
 
 virtualIdentityExtension.LIB = {
     // Shared APIs
     getCurrentURI: function() {
-      virtualIdentityExtension.Log.debug("getCurrentURI " + window.location.href + "\n");
+      virtualIdentityExtension.Log.debug("getCurrentURI " + window.location.href);
       return window.location.href;
     },
 

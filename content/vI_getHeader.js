@@ -70,15 +70,15 @@ var getHeader = {
         let label = "";
         if (aHeaders.has("list-id")) {
           getHeader.hdr.setStringProperty("vI_list-id","found");
-          Log.debug("found header: list-id  ...stored to recognize mailing-list\n");
+          Log.debug("found header: list-id  ...stored to recognize mailing-list");
         }
         if (aHeaders.has("received")) {
           getHeader.hdr.setStringProperty("vI_received","found");
-          Log.debug("found header: received  ...stored to recognize received mail\n");
+          Log.debug("found header: received  ...stored to recognize received mail");
         }
         if (aHeaders.has("content-base")) {
           getHeader.hdr.setStringProperty("vI_content_base","found");
-          Log.debug("found header: content-base  ...stored to recognize blog/news-feed\n");
+          Log.debug("found header: content-base  ...stored to recognize blog/news-feed");
         }
         for (let index = 0; index < getHeader.headerToSearch.length; index++) {
           let {headerNameToSearch: headerNameToSearch, headerNumberToSearch: headerNumberToSearch,
@@ -98,7 +98,7 @@ var getHeader = {
               let storedConvValue = getHeader.unicodeConverter.ConvertToUnicode(storedValue);
               
               Log.debug("found header: " + headerNameToStore +
-                  " - stored as '" + storedConvValue + "'\n");
+                  " - stored as '" + storedConvValue + "'");
               label += (label)?"\n":""
               label += headerNameToStore + ":\t" + storedConvValue
             }

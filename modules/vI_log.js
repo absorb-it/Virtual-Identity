@@ -44,23 +44,7 @@ NotificationFormatter.prototype = {
     return messageString;
   }
 };
-// Basic formatter that doesn't do anything fancy but does not add a newline
-function BasicFormatter() {}
-BasicFormatter.prototype = {
-  __proto__: Log4Moz.Formatter.prototype,
-  dateFormat : "%Y-%m-%d %H:%M:%S",
-  format: function BF_format(message) {
-    let date = new Date(message.time);
-    // The trick below prevents errors further down because mo is null or
-    //  undefined.
-    let messageString = [
-      ("" + mo) for each
-      ([,mo] in Iterator(message.messageObjects))].join(" ");
-    return date.toLocaleFormat(this.dateFormat) + "\t" +
-      message.loggerName + "\t" + message.levelDesc + "\t" +
-      messageString;
-  }
-};
+
 // New formatter that only display's the source and message
 function NewFormatter() {}
 NewFormatter.prototype = {
@@ -72,7 +56,7 @@ NewFormatter.prototype = {
     let messageString = [
       ("" + mo) for each
       ([,mo] in Iterator(message.messageObjects))].join(" ");
-    return message.loggerName.replace("virtualIdentity.", "") + ":\t" + messageString;
+    return message.loggerName.replace("virtualIdentity.", "") + ":\t" + messageString  + "\n";
   }
 };
 
@@ -170,7 +154,7 @@ function setupLogging(name) {
 
 
 function setupFullLogging(name) {
-  let myBasicFormatter = new BasicFormatter();
+  let myBasicFormatter = new Log4Moz.BasicFormatter();
   let myNewFormatter = new NewFormatter();
   let Log = Log4Moz.repository.getLogger(name);
 

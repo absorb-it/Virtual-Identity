@@ -74,7 +74,7 @@
 	<implementation>
 	<method name="popupshowing">
         	<body><![CDATA[
-			virtualIdentityExtension.MyLog.debug("** v_identity.xml vI_tooltipPopupset popupshowing.\n")
+			virtualIdentityExtension.MyLog.debug("v_identity.xml vI_tooltipPopupset popupshowing.")
 		if (!this._identityInfo) {
 			this._identityInfo = 
 				"<table><tr>" +
@@ -84,10 +84,10 @@
 						"<table><tbody>" + this.elem.identityData.getMatrix() + "</tbody></table>" +
 					"</td>" +
 				"</tr></table>"
-			virtualIdentityExtension.MyLog.debug("** v_identity.xml added tooltip with id='" +  this.elem.identityData.id.key + "'\n")
+			virtualIdentityExtension.MyLog.debug("v_identity.xml added tooltip with id='" +  this.elem.identityData.id.key + "'")
 			this._tooltipBrowser.outputString = this._identityInfo;
 		}
-		virtualIdentityExtension.MyLog.debug("** v_identity.xml vI_tooltipPopupset popupshowing done.\n")
+		virtualIdentityExtension.MyLog.debug("v_identity.xml vI_tooltipPopupset popupshowing done.")
 		]]></body>
 	</method>
 	<method name ="popuphidden">
@@ -129,11 +129,11 @@
 		
 		this.label = this._identityDataStorage.combinedName;
 		this.value = this._identityDataStorage.id.key;
-		virtualIdentityExtension.MyLog.debug("** v_identity.xml fromPopupItem_clone constructor id='" + this.value + "'.\n")
+		virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor id='" + this.value)
 
 		this.description = this._identityDataStorage.sideDescription;
 		this.smtp = this._identityDataStorage.smtp.value;
-		virtualIdentityExtension.MyLog.debug("** v_identity.xml fromPopupItem_clone constructor smtp='" + this.smtp + "'.\n")
+		virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor smtp='" + this.smtp)
 		this.smtpStyle = "width:" + document.getElementById("virtualIdentityExtension_SmtpServerList").clientWidth + "px;";
 		this._identityDataStorage.smtp.value;
 		
@@ -251,7 +251,7 @@
 	<property name="smtp" onget="return this._smtpMenu.selectedItem.getAttribute('key');" >
 		<setter><![CDATA[
 		if (val == virtualIdentityExtension.NO_SMTP_TAG) return; // dont overwrite if not set
-		virtualIdentityExtension.MyLog.debug("** v_identity.xml smtp set to '" + val + "'\n")
+		virtualIdentityExtension.MyLog.debug("v_identity.xml smtp set to '" + val + "'")
 		var MenuItems = this._smtpPopup.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
 			if (MenuItems[index].localName == "menuseparator") continue;
@@ -352,10 +352,9 @@
 	-->
 	<method name="command">
 		<body><![CDATA[
-		virtualIdentityExtension.MyLog.debug("\n** v_identity.xml msgIdentityCloneElem.doCommand() \n")
-		virtualIdentityExtension.MyLog.debug("\n** v_identity.xml msgIdentityCloneElem.doCommand() \n")
+		virtualIdentityExtension.MyLog.debug("\nv_identity.xml msgIdentityCloneElem.doCommand()")
 		// copy selected Menu-Value from clone to orig.
-		virtualIdentityExtension.MyLog.debug("** v_identity.xml copy selected Menu-Value from clone to orig. Searching for id=" + this.selectedMenuItem.identityData.id.key + " \n")
+		virtualIdentityExtension.MyLog.debug("v_identity.xml copy selected Menu-Value from clone to orig. Searching for id=" + this.selectedMenuItem.identityData.id.key)
 		if ( this.selectedMenuItem.identityData.id.key != null ) {
 			var MenuItems = this._msgIdentityPopupElem.childNodes
 			for (var index = 0; index < MenuItems.length; index++) {
@@ -368,7 +367,7 @@
 			this._msgIdentityPopupElem.doCommand();
 		}
 		this.identityData = this.selectedMenuItem.identityData.getDuplicate();
-		virtualIdentityExtension.MyLog.debug("\n** v_identity.xml msgIdentityCloneElem.doCommand() this.value=" + this.value + "\n");
+		virtualIdentityExtension.MyLog.debug("\nv_identity.xml msgIdentityCloneElem.doCommand() this.value=" + this.value);
 		// if current SMTP is empty, take the one from current Identity
 		if (this.identityData.smtp.hasNoDefinedSMTP()) {
 			this.identityData.smtp.key = gAccountManager.getIdentity(this.value).smtpServerKey;
@@ -500,9 +499,9 @@
 	<property name="_msgIdentity_selectedItem" >
 		<getter><![CDATA[
 			if (!this._msgIdentityElem.selectedItem) {
-				virtualIdentityExtension.MyLog.debug("** v_identity.xml: msgIdentityElem.selectedItem not set, using first Menuitem\n");
+				virtualIdentityExtension.MyLog.debug("v_identity.xml: msgIdentityElem.selectedItem not set, using first Menuitem");
 				this._msgIdentityElem.selectedItem = this._msgIdentityPopupElem.firstChild
-				virtualIdentityExtension.MyLog.debug("** v_identity.xml: msgIdentityElem.doCommand()\n");
+				virtualIdentityExtension.MyLog.debug("v_identity.xml: msgIdentityElem.doCommand()");
 				this._msgIdentityElem.doCommand();
 			}
 			return this._msgIdentityElem.selectedItem;
@@ -510,7 +509,7 @@
 	</property>	
 	<method name="blurEvent">
         	<body><![CDATA[
-		virtualIdentityExtension.MyLog.debug("\n** v_identity.xml blurEvent")
+		virtualIdentityExtension.MyLog.debug("v_identity.xml blurEvent")
 		this.inputEvent(); // timeout might prevent inputEvent to fire before blurEvent
 		
 		this.label = this.identityData.combinedName; // add "<" and ">" to email if required
@@ -519,7 +518,7 @@
 	</method>
 	<method name="inputEvent">
         	<body><![CDATA[		
-		virtualIdentityExtension.MyLog.debug("\n** v_identity.xml inputEvent\n")
+		virtualIdentityExtension.MyLog.debug("v_identity.xml inputEvent")
 		
 		this.identityData.combinedName = this.label;
 		
@@ -529,7 +528,7 @@
 	</method>
 	<method name="checkForVirtualIdentity">
 		<body><![CDATA[
-		virtualIdentityExtension.MyLog.debug("** v_identity.xml checkForVirtualIdentity: " + this.identityData.id.key + " '" + this.identityData.id.value + "'\n")
+		virtualIdentityExtension.MyLog.debug("v_identity.xml checkForVirtualIdentity: " + this.identityData.id.key + " '" + this.identityData.id.value + "'")
 		var existingIdentity = this.identityData.isExistingIdentity(false);
 		
 		this.vid = (!existingIdentity);
@@ -555,14 +554,14 @@
 		return this._identityDataStorage;
 		]]></getter>
 		<setter><![CDATA[
-		virtualIdentityExtension.MyLog.debug("** v_identity.xml identityData setter\n")
+		virtualIdentityExtension.MyLog.debug("v_identity.xml identityData setter")
 		if (!val) this._identityDataStorage = null
 		else {
 			var oldIdentityData = this._identityDataStorage;
 			this._identityDataStorage = val;
 			if (oldIdentityData) { // indicates that it's not first time after clean
-				virtualIdentityExtension.MyLog.debug("** v_identity.xml previousID: fullName='" + oldIdentityData.fullName + "' email='" + oldIdentityData.email + "' smtp='" + oldIdentityData.smtp.key + "' id='" + oldIdentityData.id.key + "' existingID='" + oldIdentityData.existingID + "'\n");
-				virtualIdentityExtension.MyLog.debug("** v_identity.xml newID: fullName='" + this._identityDataStorage.fullName + "' email='" + this._identityDataStorage.email + "' smtp='" + this._identityDataStorage.smtp.key + "' id='" + this._identityDataStorage.id.key + "' existingID='" + this._identityDataStorage.existingID + "'\n");
+				virtualIdentityExtension.MyLog.debug("v_identity.xml previousID: fullName='" + oldIdentityData.fullName + "' email='" + oldIdentityData.email + "' smtp='" + oldIdentityData.smtp.key + "' id='" + oldIdentityData.id.key + "' existingID='" + oldIdentityData.existingID + "'");
+				virtualIdentityExtension.MyLog.debug("v_identity.xml newID: fullName='" + this._identityDataStorage.fullName + "' email='" + this._identityDataStorage.email + "' smtp='" + this._identityDataStorage.smtp.key + "' id='" + this._identityDataStorage.id.key + "' existingID='" + this._identityDataStorage.existingID + "'");
 				if (!this._identityDataStorage.existingID && !this._identityDataStorage.combinedName)
 					this._identityDataStorage.fullName = oldIdentityData.fullName;
 				if (!this._identityDataStorage.existingID && !this._identityDataStorage.email)
@@ -579,9 +578,9 @@
 			this.value = this._identityDataStorage.id.key;
 			this.description = this._identityDataStorage.sideDescription;
 			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this._identityDataStorage.smtp.keyNice;
-			virtualIdentityExtension.MyLog.debug("** v_identity.xml resultingID: fullName='" + this._identityDataStorage.fullName + "' email='" + this._identityDataStorage.email + "' smtp='" + this._identityDataStorage.smtp.key + "' id='" + this._identityDataStorage.id.key + "' existingID='" + this._identityDataStorage.existingID + "'\n");			
+			virtualIdentityExtension.MyLog.debug("v_identity.xml resultingID: fullName='" + this._identityDataStorage.fullName + "' email='" + this._identityDataStorage.email + "' smtp='" + this._identityDataStorage.smtp.key + "' id='" + this._identityDataStorage.id.key + "' existingID='" + this._identityDataStorage.existingID + "'");
 		}
-		virtualIdentityExtension.MyLog.debug("** v_identity.xml identityData setter done.'\n")
+		virtualIdentityExtension.MyLog.debug("v_identity.xml identityData setter done.")
 		]]></setter>
 	</property>
 	<field name="_popupElem">document.getElementById("virtualIdentityExtension_msgIdentityPopupClone")</field>

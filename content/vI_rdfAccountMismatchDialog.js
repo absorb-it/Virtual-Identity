@@ -40,8 +40,6 @@ var rdfAccountMismatchDialog = {
         
 		for (var i = 0; i < rdfAccountMismatchDialog.mismatchItems.length; i++) {
 //             var label = document.createElement("label");
-            Log.debug("adding line " + i + " for label " + rdfAccountMismatchDialog.mismatchItems[i].label + "\n");
-        
             var listitem = document.createElement("listitem");
             listitem.setAttribute("id", "virtualIdentityExtension_mismatchLine_" + i);
             listitem.setAttribute("class", "mismatchLine");
@@ -52,7 +50,6 @@ var rdfAccountMismatchDialog = {
             listitem.setAttribute("ext2",rdfAccountMismatchDialog.mismatchItems[i].ext2);
             listitem.setAttribute("count",rdfAccountMismatchDialog.mismatchItems[i].count);
             document.getElementById("virtualIdentityExtension_rdfAccountMismatchDialog_listbox").appendChild(listitem)
-            Log.debug("line added\n");
 		}
 	},
 

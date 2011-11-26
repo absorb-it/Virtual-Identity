@@ -53,7 +53,7 @@ let changeIdentityToSmartIdentity = function(allIdentities, index) {
 };
 
 let _changeIdentityToSmartIdentity = function(identityData) {
-  Log.debug("changeIdentityToSmartIdentity\n");
+  Log.debug("changeIdentityToSmartIdentity");
   
   if ( identityData.id.key != null ) {
     currentParams.identity = AccountManager.getIdentity(identityData.id.key);
@@ -61,7 +61,7 @@ let _changeIdentityToSmartIdentity = function(identityData) {
     virtualSenderNameElem.text(currentIdSenderName);
   }
   virtualIdInUse = !(identityData.isExistingIdentity(false));
-  Log.debug("changeIdentityToSmartIdentity virtualIdInUse=" + virtualIdInUse + "\n");
+  Log.debug("changeIdentityToSmartIdentity virtualIdInUse=" + virtualIdInUse);
   if (virtualIdInUse) {
     currentIdentityData = identityData;
     currentIdSenderName = currentIdentityData.combinedName;
@@ -97,7 +97,7 @@ let virtualIdentityHook = {
     if (vIprefs.get("idSelection_preferExisting")) {
       var existingIDIndex = localSmartIdentityCollection._foundExistingIdentity();
       if (existingIDIndex) {
-        Log.debug("smartIdentity: found existing Identity, use without interaction.\n", existingIDIndex.key);
+        Log.debug("smartIdentity: found existing Identity, use without interaction.", existingIDIndex.key);
         changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, existingIDIndex.key);
         return;
       }
@@ -120,12 +120,12 @@ let virtualIdentityHook = {
   },
   
   onMessageBeforeSendOrPopout_canceled: function _enigmailHook_onMessageBeforeSendOrPopout_canceledy(aAddress, aEditor, aStatus, aPopout) {
-    Log.debug("onMessageBeforeSendOrPopout_canceled\n");
+    Log.debug("onMessageBeforeSendOrPopout_canceled");
     return aStatus;
 
   },
   onMessageBeforeSendOrPopout: function _enigmailHook_onMessageBeforeSendOrPopout(aAddress, aEditor, aStatus, aPopout) {
-    Log.debug("onMessageBeforeSendOrPopout\n");
+    Log.debug("onMessageBeforeSendOrPopout");
     return aStatus;
 
   },
@@ -210,5 +210,5 @@ try {
   }, false);
 }
 catch(e) {
-  Log.debug("virtualIdentity is ready for conversations, but you don't use it\n");
+  Log.debug("virtualIdentity is ready for conversations, but you don't use it");
 }

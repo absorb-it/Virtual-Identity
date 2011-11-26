@@ -45,7 +45,7 @@ var statusmenu = {
 	objStatusText : null,
 	
 	observe: function(self, subject, topic, data) {
-//         Log.debug("statusmenu observe " + data + "\n");
+//         Log.debug("statusmenu observe " + data);
 		switch (data) {
 			case "fcc_show_switch":
 				statusmenu.objFccSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
@@ -60,7 +60,7 @@ var statusmenu = {
 				statusmenu.objSaveBaseIDSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
 				break;
 			case "storage_show_SMTP_switch":
-//                 Log.debug("changed storage_show_SMTP_switch to " + statusmenu.objSaveSMTPMenuItem + "=" + vI.vIprefs.get(data) + "\n");
+//                 Log.debug("changed storage_show_SMTP_switch to " + statusmenu.objSaveSMTPMenuItem + "=" + vI.vIprefs.get(data));
 				statusmenu.objSaveSMTPSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
 				break;
 			case "storage_store":
@@ -70,9 +70,9 @@ var statusmenu = {
 				statusmenu.objSaveBaseIDMenuItem.setAttribute("checked", vI.vIprefs.get(data));
 				break;
 			case "storage_store_SMTP":
-//                 Log.debug("changed storage_store_SMTP to " + statusmenu.objSaveSMTPMenuItem + "=" + vI.vIprefs.get(data) + "\n");
+//                 Log.debug("changed storage_store_SMTP to " + statusmenu.objSaveSMTPMenuItem + "=" + vI.vIprefs.get(data));
 				statusmenu.objSaveSMTPMenuItem.setAttribute("checked", vI.vIprefs.get(data));
-//                 Log.debug("changed storage_store_SMTP done\n");
+//                 Log.debug("changed storage_store_SMTP done");
 				break;
 			case "storage_colorIndication":
 				document.getElementById("identityHbox").setAttribute("colorize", vI.vIprefs.get(data))

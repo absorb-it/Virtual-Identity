@@ -41,7 +41,7 @@ function signatureSwitch(existingIdentity) {
   try { setSecuritySettings(1); enigSetMenuSettings(''); } catch(vErr) { };
   
   if (!existingIdentity) {
-    Log.debug("signatureSwitch hide/remove signatures\n");
+    Log.debug("signatureSwitch hide/remove signatures");
     
     // code to hide the text signature
     if (vIprefs.get("hide_signature") && ss_signature.length == 0) {
@@ -53,7 +53,7 @@ function signatureSwitch(existingIdentity) {
     if (vIprefs.get("hide_sMime_messageSignature")) {
       var element = currentWindow.document.getElementById("menu_securitySign1");
       if (element && element.getAttribute("checked") == "true") {
-        Log.debug("signatureSwitch hide_sMime_messageSignature with doCommand\n");
+        Log.debug("signatureSwitch hide_sMime_messageSignature with doCommand");
         element.doCommand();
       }
     }
@@ -71,16 +71,16 @@ function signatureSwitch(existingIdentity) {
           skipChangeGPGsign = skipChangeGPGsign || (window.document.title == EnigGetString("enigAlert"));
         }
         if (skipChangeGPGsign)
-          Log.debug("signatureSwitch skip hide_openPGP_messageSignature - EnigMail AlertWindow open\n");
+          Log.debug("signatureSwitch skip hide_openPGP_messageSignature - EnigMail AlertWindow open");
         else {
-          Log.debug("signatureSwitch hide_openPGP_messageSignature with doCommand\n");
+          Log.debug("signatureSwitch hide_openPGP_messageSignature with doCommand");
           element.doCommand();
         }
       }
     }
   }
   else {
-    Log.debug("signatureSwitch restore signature\n");
+    Log.debug("signatureSwitch restore signature");
     // code to show the text signature
     if (ss_signature.length > 0) {
       Log.debug("show text/html signature");
@@ -97,5 +97,5 @@ AddonManager.getAddonByID("{2ab1b709-ba03-4361-abf9-c50b964ff75d}", function(add
   if (signatureSwitchInstalled)
     Log.debug("Virtual Identity plugin for signatureSwitch Extension loaded!");
   else
-    Log.debug("virtualIdentity is ready for signatureSwitch, but you don't use it\n");
+    Log.debug("virtualIdentity is ready for signatureSwitch, but you don't use it");
   });

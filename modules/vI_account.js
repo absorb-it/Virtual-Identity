@@ -45,7 +45,7 @@ function vIaccount_prepareSendMsg(vid, msgType, identityData, baseIdentity, reci
 	var AccountManager = Cc["@mozilla.org/messenger/account-manager;1"]
 			.getService(Ci.nsIMsgAccountManager);
 			
-	Log.debug("\nprepareSendMsg " + msgType + " " + Ci.nsIMsgCompDeliverMode.Now + "\n");
+	Log.debug("prepareSendMsg " + msgType + " " + Ci.nsIMsgCompDeliverMode.Now);
 	
 	returnValue = {};
 	
@@ -62,11 +62,11 @@ function vIaccount_prepareSendMsg(vid, msgType, identityData, baseIdentity, reci
 			var localeDatasourceAccess = new rdfDatasourceAccess();
 			var returnValue = localeDatasourceAccess.storeVIdentityToAllRecipients(identityData, recipients)
 			if ( returnValue.update == "abort" || returnValue.update == "takeover" ) {
-				Log.debug("prepareSendMsg: sending aborted\n");
+				Log.debug("prepareSendMsg: sending aborted");
 				return returnValue;
 			}
 		}
-		else Log.debug("prepareSendMsg: storage deactivated\n");
+		else Log.debug("prepareSendMsg: storage deactivated");
 	}
 	if (vid) {
 		account.removeUsedVIAccount();
@@ -81,9 +81,9 @@ function vIaccount_finalCheck(virtualIdentityData, currentIdentity) {
 	// identityData(email, fullName, id, smtp, extras, sideDescription, existingID)
 	var currentIdentityData = new identityData(currentIdentity.email, currentIdentity.fullName, null, currentIdentity.smtpServerKey, null, null, null);
 	
-	Log.debug("\nSendMessage Final Check\n");
-	Log.debug("currentIdentity: fullName='" + currentIdentityData.fullName + "' email='" + currentIdentityData.email + "' smtp='" + currentIdentityData.smtp.key + "'\n");
-	Log.debug("virtualIdentityData: fullName='" + virtualIdentityData.fullName + "' email='" + virtualIdentityData.email + "' smtp='" + virtualIdentityData.smtp.key + "'\n");
+	Log.debug("SendMessage Final Check");
+	Log.debug("currentIdentity: fullName='" + currentIdentityData.fullName + "' email='" + currentIdentityData.email + "' smtp='" + currentIdentityData.smtp.key + "'");
+	Log.debug("virtualIdentityData: fullName='" + virtualIdentityData.fullName + "' email='" + virtualIdentityData.email + "' smtp='" + virtualIdentityData.smtp.key + "'");
 
 	if	(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase()	&&
 		currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase()		&&
@@ -91,9 +91,12 @@ function vIaccount_finalCheck(virtualIdentityData, currentIdentity) {
 			return true
 	}
 	else {
-		if (!(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase())) Log.error("\nfailed check for fullName.\n");
-		if (!(currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase())) Log.error("\nfailed check for email.\n");
-		if (!(virtualIdentityData.smtp.equal(currentIdentityData.smtp))) Log.error("\nfailed check for SMTP.\n");
+		if (!(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase()))
+          Log.error("failed check for fullName.");
+		if (!(currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase()))
+          Log.error("failed check for email.");
+		if (!(virtualIdentityData.smtp.equal(currentIdentityData.smtp)))
+          Log.error("failed check for SMTP.");
 		alert(stringBundle.GetStringFromName("vident.genericSendMessage.error"));
 		return false
 	}	
@@ -133,7 +136,7 @@ var account = {
 	_copyPreferences : function() {
 		if (vIprefs.get("copySMIMESettings")) {
 			// SMIME settings
-			Log.debug("copy S/MIME settings\n")
+			Log.debug("copy S/MIME settings")
 			account._copyUnicharAttribute("signing_cert_name");
 			account._copyUnicharAttribute("encryption_cert_name");
 			account._copyIntAttribute("encryptionpolicy");
@@ -141,7 +144,7 @@ var account = {
 /*		seems not required, encryption happens before Virtual Identity account is created
 		if (vIprefs.get("copyEnigmailSettings")) {
 			// pgp/enigmail settings
-			Log.debug("copy PGP settings\n")
+			Log.debug("copy PGP settings")
 			account._copyBoolAttribute("pgpSignEncrypted");
 			account._copyBoolAttribute("pgpSignPlain");
 			account._copyBoolAttribute("enablePgp");
@@ -154,7 +157,7 @@ var account = {
 		}	*/
 		if (vIprefs.get("copyAttachVCardSettings")) {
 			// attach vcard
-			Log.debug("copy VCard settings\n")
+			Log.debug("copy VCard settings")
 			account._copyBoolAttribute("attachVCard");
 			account._copyCharAttribute("escapedVCard");
 		}
@@ -178,7 +181,7 @@ var account = {
 	},
 
 	__cleanupDirectories : function() {
-		Log.debug("checking for leftover VirtualIdentity directories ")
+		Log.debug("checking for leftover VirtualIdentity directories ...")
 
 		var file = Cc["@mozilla.org/file/directory_service;1"]
 		.getService(Ci.nsIProperties)
@@ -198,27 +201,23 @@ var account = {
 						// should be empty, VirtualIdentity never uses those directories
 						if (account.__dirEmpty(maildir)) {
 							try {maildir.remove(true)} catch(e) { }
-							Log.debug("x");
 						}
-						else Log.debug(".");
-						
 					}
 				}
 			}
 		}
-		Log.debug(" - done\n")
+		Log.debug("done.")
 	},
 	
 	cleanupSystem : function() {
-		Log.debug("checking for leftover VirtualIdentity accounts ")
+		Log.debug("checking for leftover VirtualIdentity accounts ...")
 		for (var i=0; i < account._AccountManager.accounts.Count(); i++) {
 			var checkAccount = account._AccountManager.accounts.QueryElementAt(i, Ci.nsIMsgAccount);
 			if (account.__isVIdentityAccount(checkAccount)) {
-				Log.debug(".")
 				account.__removeAccount(checkAccount);
 			}
 		}
-		Log.debug(" - done\n")
+		Log.debug("done.")
 		account.__cleanupDirectories();
 	},
 	
@@ -233,7 +232,7 @@ var account = {
 	},
 	
 	__removeAccount : function(checkAccount) {
-		Log.debug("__removeAccount\n")
+		Log.debug("__removeAccount")
 		// in new (post 0.5.0) Virtual Identity accounts the incomingServer of the account
 		// points to an incoming server of a different account. Cause the internal
 		// removeAccount function tries to removes the incomingServer ether, create
@@ -249,7 +248,7 @@ var account = {
 		catch (e) { };
 		
 		var key = checkAccount.key;
-		Log.debug("removing account " + key + ".\n")
+		Log.debug("removing account " + key)
 		// remove the account
 		account._AccountManager.removeAccount(checkAccount);
 		// remove the additional tagging-pref
@@ -325,7 +324,7 @@ var account = {
 		Log.debug("Stored virtualIdentity (name "
 			+ account._account.defaultIdentity.fullName + " email "
 			+ account._account.defaultIdentity.email + " smtp "
-			+ account._account.defaultIdentity.smtpServerKey +")\n");
+			+ account._account.defaultIdentity.smtpServerKey +")");
 	},
 	
 	_setupFcc : function()
@@ -334,21 +333,21 @@ var account = {
           switch (vIprefs.get("fccFolderPickerMode"))
           {
               case "2"  :
-              Log.debug ("preparing Fcc --- use Settings of Default Account\n");
+              Log.debug ("preparing Fcc --- use Settings of Default Account");
               account._account.defaultIdentity.doFcc = account._AccountManager.defaultAccount.defaultIdentity.doFcc;
               account._account.defaultIdentity.fccFolder = account._AccountManager.defaultAccount.defaultIdentity.fccFolder;
               account._account.defaultIdentity.fccFolderPickerMode = account._AccountManager.defaultAccount.defaultIdentity.fccFolderPickerMode;
               account._account.defaultIdentity.fccReplyFollowsParent = account._AccountManager.defaultAccount.defaultIdentity.fccReplyFollowsParent;
               break;
               case "3"  :
-              Log.debug ("preparing Fcc --- use Settings of Modified Account\n");
+              Log.debug ("preparing Fcc --- use Settings of Modified Account");
               account._account.defaultIdentity.doFcc = account._baseIdentity.doFcc;
               account._account.defaultIdentity.fccFolder = account._baseIdentity.fccFolder;
               account._account.defaultIdentity.fccFolderPickerMode = account._baseIdentity.fccFolderPickerMode;
               account._account.defaultIdentity.fccReplyFollowsParent = account._baseIdentity.fccReplyFollowsParent;
               break;
               default  :
-              Log.debug ("preparing Fcc --- use Virtual Identity Settings\n");
+              Log.debug ("preparing Fcc --- use Virtual Identity Settings");
               account._account.defaultIdentity.doFcc
                   = vIprefs.get("doFcc");
               account._account.defaultIdentity.fccFolder
@@ -367,24 +366,24 @@ var account = {
       Log.debug("Stored (doFcc " + account._account.defaultIdentity.doFcc + " fccFolder " +
           account._account.defaultIdentity.fccFolder + " fccFolderPickerMode " +
           account._account.defaultIdentity.fccFolderPickerMode + "(" +
-          vIprefs.get("fccFolderPickerMode") + "))\n");
+          vIprefs.get("fccFolderPickerMode") + "))");
 	},
 	
 	_setupDraft : function()	{
 		switch (vIprefs.get("draftFolderPickerMode"))
 		{
 		    case "2"  :
-			Log.debug ("preparing Draft --- use Settings of Default Account\n");
+			Log.debug ("preparing Draft --- use Settings of Default Account");
 			account._account.defaultIdentity.draftFolder = account._AccountManager.defaultAccount.defaultIdentity.draftFolder;
 			account._account.defaultIdentity.draftsFolderPickerMode = account._AccountManager.defaultAccount.defaultIdentity.draftsFolderPickerMode;
 			break;
 		    case "3"  :
-			Log.debug ("preparing Draft --- use Settings of Modified Account\n");
+			Log.debug ("preparing Draft --- use Settings of Modified Account");
 			account._account.defaultIdentity.draftFolder = account._baseIdentity.draftFolder;
 			account._account.defaultIdentity.draftsFolderPickerMode = account._baseIdentity.draftsFolderPickerMode;
 			break;
 		    default  :
-			Log.debug ("preparing Draft --- use Virtual Identity Settings\n");
+			Log.debug ("preparing Draft --- use Virtual Identity Settings");
 			account._account.defaultIdentity.draftFolder
 				= account._unicodeConverter.ConvertToUnicode(vIprefs.get("draftFolder"));
 			account._account.defaultIdentity.draftsFolderPickerMode
@@ -394,24 +393,24 @@ var account = {
 		Log.debug("Stored (draftFolder " +
 			account._account.defaultIdentity.draftFolder + " draftsFolderPickerMode " +
 			account._account.defaultIdentity.draftsFolderPickerMode + "(" +
-			vIprefs.get("draftFolderPickerMode") + "))\n");
+			vIprefs.get("draftFolderPickerMode") + "))");
 	},
 	
 	_setupTemplates : function()	{
 		switch (vIprefs.get("stationeryFolderPickerMode"))
 		{
 		    case "2"  :
-			Log.debug ("preparing Templates --- use Settings of Default Account\n");
+			Log.debug ("preparing Templates --- use Settings of Default Account");
 			account._account.defaultIdentity.stationeryFolder = account._AccountManager.defaultAccount.defaultIdentity.stationeryFolder;
 			account._account.defaultIdentity.tmplFolderPickerMode = account._AccountManager.defaultAccount.defaultIdentity.tmplFolderPickerMode;
 			break;
 		    case "3"  :
-			Log.debug ("preparing Templates --- use Settings of Modified Account\n");
+			Log.debug ("preparing Templates --- use Settings of Modified Account");
 			account._account.defaultIdentity.stationeryFolder = account._baseIdentity.stationeryFolder;
 			account._account.defaultIdentity.tmplFolderPickerMode = account._baseIdentity.tmplFolderPickerMode;
 			break;
 		    default  :
-			Log.debug ("preparing Templates --- use Virtual Identity Settings\n");
+			Log.debug ("preparing Templates --- use Virtual Identity Settings");
 			account._account.defaultIdentity.stationeryFolder
 				= account._unicodeConverter.ConvertToUnicode(vIprefs.get("stationeryFolder"));
 			account._account.defaultIdentity.tmplFolderPickerMode
@@ -421,7 +420,7 @@ var account = {
 		Log.debug("Stored (stationeryFolder " +
 			account._account.defaultIdentity.stationeryFolder + " tmplFolderPickerMode " +
 			account._account.defaultIdentity.tmplFolderPickerMode + "(" +
-			vIprefs.get("stationeryFolderPickerMode") + "))\n");
+			vIprefs.get("stationeryFolderPickerMode") + "))");
 	}
 }
 

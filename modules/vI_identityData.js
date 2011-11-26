@@ -80,8 +80,8 @@ identityData.prototype = {
 		if (this._email.match(/<\s*[^>\s]*@[^>\s]*\s*>/) || this._email.match(/<?\s*[^>\s]*@[^>\s]*\s*>?/) || this._email.match(/$/)) {
 			this._fullName += RegExp.leftContext + RegExp.rightContext;
 			this._email = RegExp.lastMatch;
-// 			Log.debug("parseEmail _fullName = '" + this._fullName + "'\n");
-// 			Log.debug("parseEmail _email =    '" + this._email + "'\n");
+// 			Log.debug("parseEmail _fullName = '" + this._fullName + "'");
+// 			Log.debug("parseEmail _email =    '" + this._email + "'");
 		}
 		this._emailParsed = true;
 	},
@@ -92,12 +92,12 @@ identityData.prototype = {
 	set email(email) { this._email = email; this._emailParsed = false; },
 
 	cleanName : function(fullName) {
-// 		Log.debug("cleanName init '" + fullName + "'\n");
+// 		Log.debug("cleanName init '" + fullName + "'");
 		var _fullName = fullName.replace(/^\s+|\s+$/g,"");
 		if (_fullName.search(/^\".+\"$|^'.+'$/g) != -1) {
 			_fullName = this.cleanName(_fullName.replace(/^\"(.+)\"$|^'(.+)'$/g,"$1$2"));
 		}
-// 		Log.debug("cleanName done '" + _fullName + "'\n");
+// 		Log.debug("cleanName done '" + _fullName + "'");
 		return _fullName;
 	},
 
@@ -142,8 +142,8 @@ identityData.prototype = {
 
 	// dependent on MsgComposeCommands, should/will only be called in ComposeDialog
 	isExistingIdentity : function(ignoreFullNameWhileComparing) {
-		Log.debug("isExistingIdentity: ignoreFullNameWhileComparing='" + ignoreFullNameWhileComparing + "'\n");
-// 		Log.debug("base: fullName.toLowerCase()='" + this.fullName + "' email.toLowerCase()='" + this.email + "' smtp='" + this.smtp.key + "'\n");
+		Log.debug("isExistingIdentity: ignoreFullNameWhileComparing='" + ignoreFullNameWhileComparing + "'");
+// 		Log.debug("base: fullName.toLowerCase()='" + this.fullName + "' email.toLowerCase()='" + this.email + "' smtp='" + this.smtp.key + "'");
 
 		var ignoreFullNameMatchKey = null;
 		var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
@@ -153,14 +153,14 @@ identityData.prototype = {
 			try { prefroot.getBoolPref("mail.account."+account.key+".vIdentity"); continue; } catch (e) { };
             for (let j = 0; j < account.identities.Count(); j++) {
                 var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
-// 				Log.debug("comp: fullName.toLowerCase()='" + identity.fullName.toLowerCase() + "' email.toLowerCase()='" + identity.email.toLowerCase() + "' smtp='" + identity.smtpServerKey + "'\n");
+// 				Log.debug("comp: fullName.toLowerCase()='" + identity.fullName.toLowerCase() + "' email.toLowerCase()='" + identity.email.toLowerCase() + "' smtp='" + identity.smtpServerKey + "'");
 				var email = this.email?this.email:"";				// might be null if no identity is set
 				var idEmail = identity.email?identity.email:"";	// might be null if no identity is set
 				if (	(email.toLowerCase() == idEmail.toLowerCase()) &&
 					this.smtp.equal(new smtpObj(identity.smtpServerKey))	) {
 						// if fullName matches, than this is a final match
 						if ( this.fullName.toLowerCase() == identity.fullName.toLowerCase() ) {
-							Log.debug("isExistingIdentity: " + this.combinedName + " found, id='" + identity.key + "'\n");
+							Log.debug("isExistingIdentity: " + this.combinedName + " found, id='" + identity.key + "'");
 							return identity.key; // return key and stop searching
 						}
 						// if fullNames don't match, remember the key but continue to search for full match
@@ -170,11 +170,11 @@ identityData.prototype = {
 		}
 
 		if ( ignoreFullNameWhileComparing && ignoreFullNameMatchKey ) {
-			Log.debug("isExistingIdentity: " + this.combinedName + " found, id='" + ignoreFullNameMatchKey + "'\n");
+			Log.debug("isExistingIdentity: " + this.combinedName + " found, id='" + ignoreFullNameMatchKey + "'");
 			return 	ignoreFullNameMatchKey;
 		}
 
-		Log.debug("isExistingIdentity: " + this.combinedName + " not found\n");
+		Log.debug("isExistingIdentity: " + this.combinedName + " not found");
 		return null;
 	},
 	
@@ -247,7 +247,7 @@ identityCollection.prototype =
 	},
 
 	dropIdentity : function(index) {
-		Log.debug("dropping address from inputList: " + this.identityDataCollection[index].combinedName + "\n");
+		Log.debug("dropping address from inputList: " + this.identityDataCollection[index].combinedName);
 		while (index < (this.number - 1)) { this.identityDataCollection[index] = this.identityDataCollection[++index]; };
 		this.identityDataCollection[--this.number] = null;
 	},
@@ -263,7 +263,7 @@ identityCollection.prototype =
 				if (this.identityDataCollection[index].fullName == "" && identityData.fullName != "") {
 					this.identityDataCollection[index].fullName = identityData.fullName;
 					Log.debug("added fullName '" + identityData.fullName
-						+ "' to stored email '" + this.identityDataCollection[index].email +"'\n")
+						+ "' to stored email '" + this.identityDataCollection[index].email + "'")
 				}
 				// check if id_key, smtp_key or extras can be used
 				// only try this once, for the first Identity where id is set)
@@ -272,12 +272,12 @@ identityCollection.prototype =
 					this.identityDataCollection[index].smtp.key = identityData.smtp.key;
 					this.identityDataCollection[index].extras = identityData.extras;
 					Log.debug("added id '" + identityData.id.value
-						+ "' smtp '" + identityData.smtp.value + "' (+extras) to stored email '" + this.identityDataCollection[index].email +"'\n")
+						+ "' smtp '" + identityData.smtp.value + "' (+extras) to stored email '" + this.identityDataCollection[index].email + "'")
 				}
 				return;
 			}
 		}
-		Log.debug("add new address to result: " + identityData.combinedName + "\n")
+		Log.debug("add new address to result: " + identityData.combinedName)
 		this.identityDataCollection[index] = identityData;
 		this.number = index + 1;
 	},

@@ -58,7 +58,7 @@ var vIprefs = {
           this._localPrefs[aPrefName] = vIprefroot.getBoolPref(aPrefName);
           break;
         case vIprefroot.PREF_INVALID:
-          Log.error("_retrievePref pref '" + aPrefName + "' not available\n");
+          Log.error("_retrievePref pref '" + aPrefName + "' not available");
           this._localPrefs[aPrefName] = null;
       }
     },
@@ -75,7 +75,7 @@ var vIprefs = {
           vIprefroot.setBoolPref(aPrefName, this._localPrefs[aPrefName]);
           break;
         case vIprefroot.PREF_INVALID:
-          Log.error("_storePref pref '" + aPrefName + "' not available\n");
+          Log.error("_storePref pref '" + aPrefName + "' not available");
       }
     },
 
@@ -88,9 +88,9 @@ var vIprefs = {
       if (!(aPrefName in this._localPrefs))
         this._retrievePref(aPrefName);
       this._localPrefs[aPrefName] = aPrefValue;
-//       Log.debug("changed pref " + aPrefName + " to " + aPrefValue + "\n")
+//       Log.debug("changed pref " + aPrefName + " to " + aPrefValue)
       for each (let [, prefObserver] in Iterator(this._localObservers)) {
-//         Log.debug("check prefobserver " + prefObserver.pref + " against " + aPrefName + "\n")
+//         Log.debug("check prefobserver " + prefObserver.pref + " against " + aPrefName)
         if (prefObserver.pref == aPrefName) {
           prefObserver.observe(prefObserver.context, aPrefValue, "nsPref:changed", aPrefName);
         }
@@ -103,11 +103,11 @@ var vIprefs = {
         this._storePref(aPrefName);
     },
     clearUserPref: function(aPrefName) {
-      Log.error(Colors.red, "XXXX not yet implemented clearUserPref!\n", Colors.default);
+      Log.error(Colors.red, "XXXX not yet implemented clearUserPref!", Colors.default);
     },
     addObserver: function(aPrefName, aFunction, aSelf) {
       this._localObservers.push({ pref: aPrefName, observe: aFunction, context: aSelf });
-//       Log.debug("added observer for " + aPrefName + "\n");
+//       Log.debug("added observer for " + aPrefName);
     },
     removeObserver: function(aPrefName, aFunction) {
       for each (let [i, prefObserver] in Iterator(this._localObservers)) {
@@ -118,13 +118,13 @@ var vIprefs = {
       }
     },
     observe: function(subject, topic, aPrefName) {
-      Log.debug("prefChange observed : " + aPrefName + "\n")
+      Log.debug("prefChange observed : " + aPrefName)
       this._retrievePref(aPrefName);
       for each (let [, prefObserver] in Iterator(this._localObservers)) {
         if (prefObserver.pref == aPrefName) {
-//           Log.debug("found observer, calling : " + prefObserver.observe + "\n")
+//           Log.debug("found observer, calling : " + prefObserver.observe)
           prefObserver.observe(prefObserver.context, subject, topic, aPrefName);
-//           Log.debug("found observer, calling : " + prefObserver.observe + " done\n")
+//           Log.debug("found observer, calling : " + prefObserver.observe + " done")
         }
       }
     },

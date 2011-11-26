@@ -204,7 +204,7 @@ identityDataExtrasObject.prototype = {
         this.setValueToEnvironment_dataEditor();
         break;
       default:
-        Log.error("getValueFromEnvironment unknown window: " + id + "\n")
+        Log.error("getValueFromEnvironment unknown window: " + id)
     }
   },
   getValueFromEnvironment : function() {
@@ -221,26 +221,26 @@ identityDataExtrasObject.prototype = {
         this.getValueFromEnvironment_dataEditor();
         break;
       default:
-        Log.error("getValueFromEnvironment unknown window: " + id + "\n")
+        Log.error("getValueFromEnvironment unknown window: " + id)
     }
   },
   setValueToEnvironment_msgCompose : function() {
-    Log.error("setValueToEnvironment not implemented for msgCompose and " + this.field + "\n")
+    Log.error("setValueToEnvironment not implemented for msgCompose and " + this.field)
   },
   setValueToEnvironment_messenger : function() {
-    Log.error("setValueToEnvironment not implemented for Messenger and " + this.field + "\n")
+    Log.error("setValueToEnvironment not implemented for Messenger and " + this.field)
   },
   setValueToEnvironment_dataEditor : function() {
-    Log.error("setValueToEnvironment not implemented for dataEditor and " + this.field + "\n")
+    Log.error("setValueToEnvironment not implemented for dataEditor and " + this.field)
   },
   getValueFromEnvironment_msgCompose : function() {
-    Log.error("setValueToEnvironment not implemented for msgCompose and " + this.field + "\n")
+    Log.error("setValueToEnvironment not implemented for msgCompose and " + this.field)
   },
   getValueFromEnvironment_messenger : function() {
-    Log.error("setValueToEnvironment not implemented for Messenger and " + this.field + "\n")
+    Log.error("setValueToEnvironment not implemented for Messenger and " + this.field)
   },
   getValueFromEnvironment_dataEditor : function() {
-    Log.error("setValueToEnvironment not implemented for dataEditor and " + this.field + "\n")
+    Log.error("setValueToEnvironment not implemented for dataEditor and " + this.field)
   }
 }
 
@@ -266,7 +266,7 @@ identityDataExtrasCheckboxObject.prototype = {
     
     this.updateFunction_msgCompose();
     if ((element.getAttribute("checked") == "true") != (this.value == "true")) {
-      Log.debug("change "+ this.field + " to " + this.value + " with doCommand\n");
+      Log.debug("change "+ this.field + " to " + this.value + " with doCommand");
       element.doCommand();
     }
   },

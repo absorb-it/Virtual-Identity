@@ -64,7 +64,7 @@ rdfDataTree.prototype = {
 	
 	//this function is called every time the tree is sorted, filtered, or reloaded
 	loadTable : function() {
-//         Log.debug("loadTable.\n");
+//         Log.debug("loadTable.");
 		//remember scroll position. this is useful if this is an editable table
 		//to prevent the user from losing the row they edited
 		var topVisibleRow = null;
@@ -100,7 +100,7 @@ rdfDataTree.prototype = {
 
 		// set Tab label
 		this.tabElem.setAttribute("label", this.treeType + " (" + this.idTable.length + ")");
-//         Log.debug("loadTable done.\n");
+//         Log.debug("loadTable done.");
 	},
 
 	addNewDatum : function(resource, name, localIdentityData, idData) {
@@ -113,12 +113,12 @@ rdfDataTree.prototype = {
 //				idKey : localIdentityData.id.key,
 				resource : resource,
 				identityData : localIdentityData}
-// 		Log.debug("addNewDatum.\n");
+// 		Log.debug("addNewDatum.");
 		localIdentityData.extras.addPrefs(pref);
 		idData.push(pref);
 	},
 	sort : function(columnName) {
-// 		Log.debug("sort: " + columnName + ".\n");
+// 		Log.debug("sort: " + columnName);
 		var order = this.treeElem.getAttribute("sortDirection") == "ascending" ? 1 : -1;
 		//if the column is passed and it's already sorted by that column, reverse sort
 		if (columnName && (this.treeElem.getAttribute("sortResource") == columnName)) {
