@@ -147,9 +147,9 @@ var smartIdentity = {
 			+ "(" + allIdentities.identityDataCollection[selectedValue].id.value + "," + allIdentities.identityDataCollection[selectedValue].smtp.value + ")\n");
 		document.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = allIdentities.menuItems[selectedValue];
 		if (document.getElementById("virtualIdentityExtension_msgIdentityClone").vid) {
-			var label=statusmenu.stringBundle.GetStringFromName("vident.smartIdentity.vIUsage");
+			var label=smartIdentity.stringBundle.GetStringFromName("vident.smartIdentity.vIUsage");
 			if (allIdentities.number > 1) label += " "
-				+ statusmenu.stringBundle.GetStringFromName("vident.smartIdentity.moreThanOne");
+				+ smartIdentity.stringBundle.GetStringFromName("vident.smartIdentity.moreThanOne");
 			vI.SmartReplyNotification.info(label + ".");
 		}
 		smartIdentity.__removeSmartIdentityFromRecipients(allIdentities, selectedValue);
@@ -193,7 +193,7 @@ var smartIdentity = {
 				input.value == allIdentities.identityDataCollection[index].combinedName) {
 					awSetInputAndPopupValue(input, "", popup, "addr_to", -1);
 					awCleanupRows()
-					vI.SmartReplyNotification.info(" " + statusmenu.stringBundle.GetStringFromName("vident.smartIdentity.remRecipient"));
+					vI.SmartReplyNotification.info(" " + smartIdentity.stringBundle.GetStringFromName("vident.smartIdentity.remRecipient"));
 					break;
 			}
 		}
