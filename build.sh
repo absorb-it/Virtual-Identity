@@ -140,8 +140,8 @@ if [ -z "$CLEAN" ] || [ -z "$TAG" ] || [ "$INTERMEDIATE" ]; then
 fi
 
 # generate the XPI file
-echo "Generating ${APP_NAME}_${VERSION}.xpi..."
-zip -r ../${APP_NAME}_${VERSION}.xpi *
+echo "Generating ${APP_NAME}_${VERSION}-tb+sm.xpi..."
+zip -r ../${APP_NAME}_${VERSION}-tb+sm.xpi *
 
 cd "$ROOT_DIR"
 
