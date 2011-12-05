@@ -10,6 +10,8 @@
 <!ENTITY vI_rdfDataTree.senderColumn.label "Afzender">
 <!ENTITY vI_rdfDataTree.idColumn.label "Identiteit">
 <!ENTITY vI_rdfDataTree.smtpColumn.label "SMTP">
+<!ENTITY vI_rdfDataTree.usedColumn.label "Used"> <!-- translate -->
+<!ENTITY vI_rdfDataTree.changedColumn.label "Created"> <!-- translate -->
 <!ENTITY vI_rdfDataTree.menuEntry.label "Virtual Identity gegevensopslag">
 
 <!ENTITY vI_rdfDataTree.editMenu.label "Bewerken">

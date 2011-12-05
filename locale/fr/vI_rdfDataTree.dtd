@@ -10,6 +10,8 @@
 <!ENTITY vI_rdfDataTree.senderColumn.label "Expéditeur">
 <!ENTITY vI_rdfDataTree.idColumn.label "Identité">
 <!ENTITY vI_rdfDataTree.smtpColumn.label "SMTP">
+<!ENTITY vI_rdfDataTree.usedColumn.label "Used"> <!-- translate -->
+<!ENTITY vI_rdfDataTree.changedColumn.label "Created"> <!-- translate -->
 <!ENTITY vI_rdfDataTree.menuEntry.label "Stockage de données de Virtual Identity">
 
 <!ENTITY vI_rdfDataTree.editMenu.label "Éditer">

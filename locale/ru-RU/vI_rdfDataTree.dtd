@@ -10,6 +10,8 @@
 <!ENTITY vI_rdfDataTree.senderColumn.label "Отправитель">
 <!ENTITY vI_rdfDataTree.idColumn.label "Учетная запись">
 <!ENTITY vI_rdfDataTree.smtpColumn.label "SMTP-сервер">
+<!ENTITY vI_rdfDataTree.usedColumn.label "Used"> <!-- translate -->
+<!ENTITY vI_rdfDataTree.changedColumn.label "Created"> <!-- translate -->
 <!ENTITY vI_rdfDataTree.menuEntry.label "Хранилище виртуальных личных данных">
 
 <!ENTITY vI_rdfDataTree.editMenu.label "Правка">

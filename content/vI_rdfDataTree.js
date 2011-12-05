@@ -103,13 +103,17 @@ rdfDataTree.prototype = {
 //         Log.debug("loadTable done.");
 	},
 
-	addNewDatum : function(resource, name, localIdentityData, idData) {
+	addNewDatum : function(resource, name, localIdentityData, idData, used, changed) {
+        var usedDate = new Date(parseFloat(used));
+        var changedDate = new Date(parseFloat(changed));
 		var pref = { 	recipientCol : name,
 				indexCol : idData.length + 1 + ".",
 				senderCol : localIdentityData.combinedName,
 				smtpCol : localIdentityData.smtp.value,
 //				smtpKey : localIdentityData.smtp.key,
 				idCol : localIdentityData.id.value,
+                usedCol : used?usedDate.toLocaleString():"",
+                changedCol : changed?changedDate.toLocaleString():"",
 //				idKey : localIdentityData.id.key,
 				resource : resource,
 				identityData : localIdentityData}

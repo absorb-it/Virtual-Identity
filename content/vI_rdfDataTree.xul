@@ -155,6 +155,14 @@
 		<treecol id="idCol_email" label="&vI_rdfDataTree.idColumn.label;" flex="10"
 			class="sortDirectionIndicator"
 			persist="hidden width ordinal sortDirection"/>		
+        <splitter class="tree-splitter" />
+        <treecol id="usedCol_email" label="&vI_rdfDataTree.usedColumn.label;" flex="10"
+            class="sortDirectionIndicator"
+            persist="hidden width ordinal sortDirection"/>      
+        <splitter class="tree-splitter" />
+        <treecol id="changedCol_email" label="&vI_rdfDataTree.changedColumn.label;" flex="10"
+            class="sortDirectionIndicator"
+            persist="hidden width ordinal sortDirection"/>      
 	</treecols>
 	<treechildren id="configTreeBody_email" ondblclick="if (event.button == 0) virtualIdentityExtension.rdfDataTreeCollection.modifySelected();" />
 </tree>
@@ -192,6 +200,14 @@
 		<treecol id="idCol_maillist" label="&vI_rdfDataTree.idColumn.label;" flex="10"
 			class="sortDirectionIndicator"
 			persist="hidden width ordinal sortDirection"/>		
+        <splitter class="tree-splitter" />
+        <treecol id="usedCol_maillist" label="&vI_rdfDataTree.usedColumn.label;" flex="10"
+            class="sortDirectionIndicator"
+            persist="hidden width ordinal sortDirection"/>      
+        <splitter class="tree-splitter" />
+        <treecol id="changedCol_maillist" label="&vI_rdfDataTree.changedColumn.label;" flex="10"
+            class="sortDirectionIndicator"
+            persist="hidden width ordinal sortDirection"/>      
 	</treecols>
 	<treechildren id="configTreeBody_maillist" ondblclick="if (event.button == 0) virtualIdentityExtension.rdfDataTreeCollection.modifySelected();" />
 </tree>
@@ -228,6 +244,14 @@
 		<treecol id="idCol_newsgroup" label="&vI_rdfDataTree.idColumn.label;" flex="10"
 			class="sortDirectionIndicator"
 			persist="hidden width ordinal sortDirection"/>		
+        <splitter class="tree-splitter" />
+        <treecol id="usedCol_newsgroup" label="&vI_rdfDataTree.usedColumn.label;" flex="10"
+            class="sortDirectionIndicator"
+            persist="hidden width ordinal sortDirection"/>      
+        <splitter class="tree-splitter" />
+        <treecol id="changedCol_newsgroup" label="&vI_rdfDataTree.changedColumn.label;" flex="10"
+            class="sortDirectionIndicator"
+            persist="hidden width ordinal sortDirection"/>      
 	</treecols>
 	<treechildren id="configTreeBody_newsgroup" ondblclick="if (event.button == 0) virtualIdentityExtension.rdfDataTreeCollection.modifySelected();" />
 </tree>
@@ -269,6 +293,14 @@
 		<treecol id="idCol_filter" label="&vI_rdfDataTree.idColumn.label;" flex="10"
 			class="sortDirectionIndicator"
 			persist="hidden width ordinal"/>		
+        <splitter class="tree-splitter" />
+        <treecol id="usedCol_filter" label="&vI_rdfDataTree.usedColumn.label;" flex="10"
+            class="sortDirectionIndicator"
+            persist="hidden width ordinal sortDirection"/>      
+        <splitter class="tree-splitter" />
+        <treecol id="changedCol_filter" label="&vI_rdfDataTree.changedColumn.label;" flex="10"
+            class="sortDirectionIndicator"
+            persist="hidden width ordinal sortDirection"/>      
 	</treecols>
 	<treechildren id="configTreeBody_filter" ondblclick="if (event.button == 0) virtualIdentityExtension.rdfDataTreeCollection.modifySelected();" />
 </tree>

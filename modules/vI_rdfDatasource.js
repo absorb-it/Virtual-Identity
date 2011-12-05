@@ -60,7 +60,7 @@ rdfDatasource.prototype = {
     _rdfNSAccounts :    "vIAccounts",
     _rdfNSIdentities :  "vIAccounts/id",
     _rdfNSSMTPservers : "vIAccounts/smtp",
-
+    
 	_virtualIdentityID : "{dddd428e-5ac8-4a81-9f78-276c734f75b8}",
 	
 	_emailContainer : Components.classes["@mozilla.org/rdf/container;1"]
@@ -617,10 +617,12 @@ rdfDatasource.prototype = {
 			var fullName = this._getRDFValue(resource, "fullName")
 			var id = this._getRDFValue(resource, "id")
 			var smtp = this._getRDFValue(resource, "smtp")
+            var used = this._getRDFValue(resource, "timeUsed")
+            var changed = this._getRDFValue(resource, "timeChanged")
 			if (!smtp) smtp = NO_SMTP_TAG;
             let self = this;
             var localIdentityData = new identityData(email, fullName, id, smtp, new identityDataExtras(self, resource))
-			addNewDatum (resource, name, localIdentityData, idData)
+			addNewDatum (resource, name, localIdentityData, idData, used, changed)
 		}
 	},
 	
@@ -736,10 +738,14 @@ rdfDatasource.prototype = {
 		var smtp = this._getRDFValue(resource, "smtp")
 		if (!smtp) smtp = NO_SMTP_TAG;
 		
-		Log.debug("email='" + email + 
+		let _date = new Date();
+        this._setRDFValue(resource, "timeUsed", _date.getTime());
+        
+        Log.debug("email='" + email + 
 			"' fullName='" + fullName + "' id='" + id + "' smtp='" + smtp + "'");
+        
         let self = this;
-		var localIdentityData = new identityData(email, fullName, id, smtp, new identityDataExtras(self, resource))
+        var localIdentityData = new identityData(email, fullName, id, smtp, new identityDataExtras(self, resource))
 		return localIdentityData;
 	},
 
@@ -804,6 +810,9 @@ rdfDatasource.prototype = {
               extra.value = self._setRDFValue(resource, extra.field, extra.value) });
 //           Log.debug("extras: " + localIdentityData.extras.status());
         }
+        
+        let _date = new Date();
+        this._setRDFValue(resource, "timeChanged", _date.getTime());
         
 // 		Log.debug("updateRDF add " + resource.ValueUTF8 + " at position " + position);
         if (position != -1) this.getContainer(recType).InsertElementAt(resource, position, true);
