@@ -68,7 +68,8 @@ rdfDataTree.prototype = {
 		//remember scroll position. this is useful if this is an editable table
 		//to prevent the user from losing the row they edited
 		var topVisibleRow = null;
-		if (this.idTable) { topVisibleRow = this.treeElem.treeBoxObject.getFirstVisibleRow(); }
+		if (this.idTable)
+          topVisibleRow = this.treeElem.treeBoxObject.getFirstVisibleRow();
 		if (this.idData == null) {
 			this.idData = [];
 			this._rdfDatasource.readAllEntriesFromRDF(this.addNewDatum, this.treeType, this.idData);
@@ -91,10 +92,11 @@ rdfDataTree.prototype = {
 			});
 			this.idTable = curTable;
 		}	
+		
 		this.sort();
 		
 		//restore scroll position
-		if (topVisibleRow) {
+		if (topVisibleRow && topVisibleRow <= this.idTable.length) {
 			this.treeElem.treeBoxObject.scrollToRow(topVisibleRow);
 		}
 
@@ -124,7 +126,7 @@ rdfDataTree.prototype = {
 	sort : function(columnName) {
 // 		Log.debug("sort: " + columnName);
 		var order = this.treeElem.getAttribute("sortDirection") == "ascending" ? 1 : -1;
-		//if the column is passed and it's already sorted by that column, reverse sort
+		// if the column is passed and it's already sorted by that column, reverse sort
 		if (columnName && (this.treeElem.getAttribute("sortResource") == columnName)) {
 				order *= -1;
 		}
@@ -136,7 +138,10 @@ rdfDataTree.prototype = {
 				prepareForComparison(b[columnName])) return -1 * order;
 			return 0;
 		}
-		if (columnName) this.idTable.sort(columnSort);
+		if (!columnName)
+          columnName = this.treeElem.getAttribute("sortResource")
+        
+        this.idTable.sort(columnSort);
 		
 		//setting these will make the sort option persist
 		this.treeElem.setAttribute("sortDirection", order == 1 ? "ascending" : "descending");
@@ -345,7 +350,6 @@ var rdfDataTreeCollection = {
 		// reload all trees (multiple types might have changed)
 		for each (var treeType in rdfDataTreeCollection.treeTypes) {
 			rdfDataTreeCollection.trees[treeType].idData = null;
-			rdfDataTreeCollection.trees[treeType].idTable = null;
 			rdfDataTreeCollection.trees[treeType].loadTable()
 		}
 		rdfDataTreeCollection.tabbox.selectedTab = document.getElementById(retVar.treeType + "Tab");
