@@ -124,9 +124,9 @@ var storage = {
 		// reset unavailable storageExtras preferences
         AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function(addon) {
           if (addon && !addon.userDisabled && !addon.appDisable) {
-            vI.vI_prefs.commit("storageExtras_openPGP_messageEncryption", false)
-            vI.vI_prefs.commit("storageExtras_openPGP_messageSignature", false)
-            vI.vI_prefs.commit("storageExtras_openPGP_PGPMIME", false)
+            vI.vIprefs.commit("storageExtras_openPGP_messageEncryption", false)
+            vI.vIprefs.commit("storageExtras_openPGP_messageSignature", false)
+            vI.vIprefs.commit("storageExtras_openPGP_PGPMIME", false)
           }
         }); 
 	},
