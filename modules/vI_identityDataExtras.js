@@ -62,7 +62,7 @@ identityDataExtras.prototype = {
       }
       catch (e) {
         Log.warn("identityDataExtras '" + this.extras[i].field + "' returned an error:", e);
-//         dumpCallStack(e);
+        dumpCallStack(e);
       }
     }
     return returnVal;

@@ -51,7 +51,7 @@ identityDataExtrasObject_messageFormat.prototype = {
     if (this.value == null)
       return
     this.currentWindow.document.getElementById(this.value).setAttribute("checked","true");
-    OutputFormatMenuSelect(this.currentWindow.document.getElementById(this.value))
+    this.currentWindow.OutputFormatMenuSelect(this.currentWindow.document.getElementById(this.value))
   },
   
   setValueToEnvironment_dataEditor: function() {

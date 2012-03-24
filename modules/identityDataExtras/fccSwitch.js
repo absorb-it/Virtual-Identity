@@ -44,6 +44,18 @@ identityDataExtrasObject_fccSwitch.prototype = {
   
   readIdentityValue : function(identity) { 
     if (this.active) this.value = (identity.doFcc)?"true":"false";
+  },
+
+  setValueToEnvironment_msgCompose: function() {
+    var element = this.currentWindow.document.getElementById(this.elementID_msgCompose);
+    if (!this.active || (this.value == null) || !element)
+      return;
+    
+    this.updateFunction_msgCompose();
+    if ((element.getAttribute("checked") == "true") != (this.value == "true")) {
+      Log.debug("change "+ this.field + " to " + this.value + " directly");
+      element.setAttribute("checked", (element.getAttribute("checked") != "true"));
+    }
   }
 }
 registerIdExtrasObject(identityDataExtrasObject_fccSwitch);
