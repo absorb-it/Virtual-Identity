@@ -97,7 +97,7 @@ var storage = {
 			// better approach would be to use te onchange event, but this one is not fired in any change case
 			// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
 			// same seems to happen with the ondragdrop event
-			if (top.MAX_RECIPIENTS == 0) top.MAX_RECIPIENTS = 1;
+			if (!top.MAX_RECIPIENTS || top.MAX_RECIPIENTS == 0) top.MAX_RECIPIENTS = 1;
 			for (var row = 1; row <= top.MAX_RECIPIENTS ; row ++) {
 				var input = awGetInputElement(row);
 				if (input) {
