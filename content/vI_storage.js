@@ -70,10 +70,7 @@ var storage = {
 		
 	awOnBlur : function (element) {
 		// only react on events triggered by addressCol2 - textinput Elements
-		if (!element || ! element.id.match(/^addressCol2*/)) {
-          Log.debug("awOnBlur '" + element.id + "' not matching /^addressCol2*/");
-          return;
-        }
+		if (!element || ! element.id.match(/^addressCol2*/)) return;
 		Log.debug("awOnBlur '" + element.id + "'");
 		storage.updateVIdentityFromStorage(element);
 		storage.focusedElement = null;
