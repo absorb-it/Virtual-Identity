@@ -145,9 +145,9 @@ var main = {
 			var vid = document.getElementById("virtualIdentityExtension_msgIdentityClone").vid
 			var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
 			
-			let returnValue = vI.vIaccount_prepareSendMsg(	vid, msgType, virtualIdentityData,
+			let returnValue = vI.vIaccount_prepareSendMsg(vid, msgType, virtualIdentityData,
 							main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
-							main._getRecipients() );
+							main._getRecipients(), window );
 			if (returnValue.update == "abort") {
 				main.replacement_functions.GenericSendMessageInProgress = false;
 				Log.debug("sending: --------------  aborted  ---------------------------------")

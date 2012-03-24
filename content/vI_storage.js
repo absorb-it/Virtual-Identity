@@ -169,7 +169,7 @@ var storage = {
 		var isNotFirstInputElement = (storage.firstUsedInputElement && storage.firstUsedInputElement != inputElement)
 		var currentIdentity = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData
 		var storageResult = storage._rdfDatasourceAccess.updateVIdentityFromStorage(inputElement.value, recipientType,
-			currentIdentity, document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, isNotFirstInputElement);
+			currentIdentity, document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, isNotFirstInputElement, window);
 		
 		if (storageResult.identityCollection.number == 0) return; // return if there was no match
 		Log.debug("updateVIdentityFromStorage result: " + storageResult.result);

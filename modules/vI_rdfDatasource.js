@@ -876,7 +876,7 @@ rdfDatasourceAccess.prototype = {
 		this._rdfDataSource.clean();
 	},
 	
-	updateVIdentityFromStorage : function(recipientName, recipientType, currentIdentity, currentIdentityIsVid, isNotFirstInputElement) {
+	updateVIdentityFromStorage : function(recipientName, recipientType, currentIdentity, currentIdentityIsVid, isNotFirstInputElement, currentWindow) {
 		var localIdentities = new identityCollection();
 		localIdentities.addWithoutDuplicates(this._rdfDataSource.readVIdentityFromRDF(recipientName, recipientType));
 		if (localIdentities.number == 1) Log.debug("using data from direct match");
@@ -902,7 +902,7 @@ rdfDatasourceAccess.prototype = {
 					var warning = this.__getWarning("replaceVIdentity", recipientName, compResult.compareMatrix);
 					if (	!currentIdentityIsVid ||
 						!vIprefs.get("storage_warn_vI_replace") ||
-						(this.__askWarning(warning) == "accept")) {
+						(this.__askWarning(warning, currentWindow) == "accept")) {
 							returnValue.result = "accept";
 					}
 				}
@@ -914,14 +914,14 @@ rdfDatasourceAccess.prototype = {
 		return returnValue;
 	},
 	
-	storeVIdentityToAllRecipients : function(identityData, recipients) {
+	storeVIdentityToAllRecipients : function(identityData, recipients, currentWindow) {
 		var multipleRecipients = (recipients.length > 1);
 		var dontUpdateMultipleNoEqual = (vIprefs.get("storage_dont_update_multiple") && multipleRecipients)
 		Log.debug("storeVIdentityToAllRecipients dontUpdateMultipleNoEqual='" + dontUpdateMultipleNoEqual + "'")
 		
         let returnValue = { update : "cancel" };
 		for (var j = 0; j < recipients.length; j++) {
-			returnValue = this.__updateStorageFromVIdentity(identityData, recipients[j].recipient, recipients[j].recipientType, dontUpdateMultipleNoEqual);
+			returnValue = this.__updateStorageFromVIdentity(identityData, recipients[j].recipient, recipients[j].recipientType, dontUpdateMultipleNoEqual, currentWindow);
 			if (returnValue.update != "accept")  break;
 		}
 		return returnValue;
@@ -938,7 +938,7 @@ rdfDatasourceAccess.prototype = {
 		Log.debug("found " + (allIdentities.number-initnumber) + " address(es)")
 	},
 
-	__updateStorageFromVIdentity : function(identityData, recipient, recipientType, dontUpdateMultipleNoEqual) {
+	__updateStorageFromVIdentity : function(identityData, recipient, recipientType, dontUpdateMultipleNoEqual, currentWindow) {
 		Log.debug("__updateStorageFromVIdentity.")
 		var storageDataByType = this._rdfDataSource.readVIdentityFromRDF(recipient, recipientType);
 		var storageDataByFilter = this._rdfDataSource.findMatchingFilter(recipient, recipientType);
@@ -955,7 +955,7 @@ rdfDatasourceAccess.prototype = {
 			Log.debug("__updateStorageFromVIdentity updating")
 			if (storageDataByType && !storageDataByTypeEqual && vIprefs.get("storage_warn_update")) {
 				Log.debug("__updateStorageFromVIdentity overwrite warning");
-				doUpdate = this.__askWarning(this.__getWarning("updateStorage", recipient, storageDataByTypeCompResult.compareMatrix));
+				doUpdate = this.__askWarning(this.__getWarning("updateStorage", recipient, storageDataByTypeCompResult.compareMatrix), currentWindow);
 			}
 		}
 		if (doUpdate == "accept") this._rdfDataSource.updateRDFFromVIdentity(identityData, recipient, recipientType);
@@ -980,9 +980,9 @@ rdfDatasourceAccess.prototype = {
 		return warning;
 	},
 
-	__askWarning : function(warning) {
+	__askWarning : function(warning, currentWindow) {
 		var retVar = { returnValue: null };
-		var answer = get3PaneWindow().openDialog("chrome://v_identity/content/vI_Dialog.xul","",
+		var answer = currentWindow.openDialog("chrome://v_identity/content/vI_Dialog.xul","",
 					"chrome, dialog, modal, alwaysRaised, resizable=yes",
 					 warning, retVar)
 		Log.debug("retVar.returnValue=" + retVar.returnValue)

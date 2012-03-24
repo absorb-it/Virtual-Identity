@@ -142,9 +142,13 @@ let virtualIdentityHook = {
         number = HeaderParser.parseHeadersWithArray(toAddrList.join(", "), {}, {}, combinedNames);
         for (var index = 0; index < number; index++)
           recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
-
+        
+        let recentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+          .getService(Ci.nsIWindowMediator)
+          .getMostRecentWindow("mail:3pane");
+          
         returnValue = vIaccount_prepareSendMsg(virtualIdInUse, Ci.nsIMsgCompDeliverMode.Now,
-          currentIdentityData, aAddress.params.identity, recipients );
+          currentIdentityData, aAddress.params.identity, recipients, recentWindow);
         Log.debug("returnValue.update:", returnValue.update);
         
         if (returnValue.update == "abort") {
@@ -188,9 +192,13 @@ let virtualIdentityHook = {
     
     if (!_rdfDatasourceAccess) _rdfDatasourceAccess = new rdfDatasourceAccess();
     else _rdfDatasourceAccess.clean();
-    
+
+    let recentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+          .getService(Ci.nsIWindowMediator)
+          .getMostRecentWindow("mail:3pane");
+
     var storageResult = _rdfDatasourceAccess.updateVIdentityFromStorage(aData.data, "addr_to",
-      currentIdentityData, virtualIdInUse, isNotFirstInputElement);
+      currentIdentityData, virtualIdInUse, isNotFirstInputElement, recentWindow);
     
     if (storageResult.identityCollection.number == 0) return; // return if there was no match
     if (storageResult.result != "accept") return; // return if we don't like the resulting id

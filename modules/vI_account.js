@@ -36,7 +36,7 @@ Cu.import("resource://v_identity/vI_prefs.js");
 
 let Log = setupLogging("virtualIdentity.account");
 
-function vIaccount_prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients) {
+function vIaccount_prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients, currentWindow) {
 	var stringBundle = Services.strings.createBundle("chrome://v_identity/locale/v_identity.properties");
 	
 	var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
@@ -51,16 +51,16 @@ function vIaccount_prepareSendMsg(vid, msgType, identityData, baseIdentity, reci
 	
 	if (msgType == Ci.nsIMsgCompDeliverMode.Now) {
 		if ( (vid && vIprefs.get("warn_virtual") &&
-			!(promptService.confirm(window,"Warning",
+			!(promptService.confirm(currentWindow,"Warning",
 				stringBundle.GetStringFromName("vident.sendVirtual.warning")))) ||
 			(!vid && vIprefs.get("warn_nonvirtual") &&
-			!(promptService.confirm(window,"Warning",
+			!(promptService.confirm(currentWindow,"Warning",
 				stringBundle.GetStringFromName("vident.sendNonvirtual.warning")))) ) {
 			return { update : "abort", storedIdentity : null }; // completely abort sending
 		}
         if (vIprefs.get("storage") && vIprefs.get("storage_store")) {
 			var localeDatasourceAccess = new rdfDatasourceAccess();
-			var returnValue = localeDatasourceAccess.storeVIdentityToAllRecipients(identityData, recipients)
+			var returnValue = localeDatasourceAccess.storeVIdentityToAllRecipients(identityData, recipients, currentWindow)
 			if ( returnValue.update == "abort" || returnValue.update == "takeover" ) {
 				Log.debug("prepareSendMsg: sending aborted");
 				return returnValue;
