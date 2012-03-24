@@ -200,7 +200,7 @@ let virtualIdentityHook = {
 }
 
 try {
-  Cu.import("resource://conversations/hook.js");
+  Cu.import("resource://conversations/modules/hook.js");
   mainWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
     .getService(Ci.nsIWindowMediator)
     .getMostRecentWindow("mail:3pane");
