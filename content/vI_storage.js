@@ -136,9 +136,16 @@ var storage = {
 		if (!vI.vIprefs.get("storage"))
 			{ Log.debug("Storage deactivated"); return; }
 		Log.debug("updateVIdentityFromStorage()");
-
-		var recipientType = document.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
+//      error: document is null in following line -- XXXXXXXXX
+        try {
+          var recipientType = document.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
 			.selectedItem.getAttribute("value");
+        }
+        catch(e) {
+          Log.debug("#### something went wrong, document seems to be null\n");
+          Log.debug("inputElement.id " + inputElement.id);
+          return;
+        }
 		var row = inputElement.id.replace(/^addressCol2#/,"")
 		if (recipientType == "addr_reply" || recipientType == "addr_followup" || storage.__isDoBcc(row)) {
 			// reset firstUsedInputElement if recipientType was changed (and don't care about doBcc fields)
