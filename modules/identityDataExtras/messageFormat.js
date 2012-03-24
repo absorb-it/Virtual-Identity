@@ -50,6 +50,7 @@ identityDataExtrasObject_messageFormat.prototype = {
   setValueToEnvironment_msgCompose: function() {
     if (this.value == null)
       return
+    this.currentWindow.document.getElementById("outputFormatMenu").removeAttribute("hidden");
     this.currentWindow.document.getElementById(this.value).setAttribute("checked","true");
     this.currentWindow.OutputFormatMenuSelect(this.currentWindow.document.getElementById(this.value))
   },
