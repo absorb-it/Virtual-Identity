@@ -58,7 +58,7 @@
 <!ENTITY vI_prefDialog.idSelection.Tab1.header "Identity Input">
 <!ENTITY vI_prefDialog.idSelection.Tab1.caption "Smart Reply and Storage">
 <!ENTITY vI_prefDialog.idSelection.Tab1.caption2 "Smart Draft and Storage">
-<!ENTITY vI_prefDialog.idSelection.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with &apos;Smart Reply&apos; can configured here.">
+<!ENTITY vI_prefDialog.idSelection.reply.desc "If you answer any emails, the priority of stored Virtual Identities compared to ones retrieved with &apos;Smart Reply&apos; can be configured here.">
 <!ENTITY vI_prefDialog.idSelection.prefer_smart_reply.label "prefer &apos;Smart Reply&apos;-Identities">
 <!ENTITY vI_prefDialog.idSelection.ignore_smart_reply.label "ignore &apos;Smart Reply&apos;-Identities if Identities for recipients found stored">
 
@@ -86,7 +86,7 @@
 <!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;c&apos;)">
 <!ENTITY vI_prefDialog.composeDialog.autoTimeString.label "Format of Result: &#37;l localpart, &#37;t timestamp, &#37;d domain. Default &apos;&#37;l&#37;t@&#37;d&apos;">
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the &apos;Signature Switch&apos; extension. By now this option is not available.">
-<!ENTITY vI_prefDialog.composeDialog.HideSignature.label "remove any &apos;Signatur&apos; while using a Virtual Identity">
+<!ENTITY vI_prefDialog.composeDialog.HideSignature.label "remove any &apos;Signature&apos; while using a Virtual Identity">
 <!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "deactivate S/MIME signature when using a Virtual Identity">
 <!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "deactivate openPGP signature when using a Virtual Identity">
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "set Virtual Identity as Reply-To address">
