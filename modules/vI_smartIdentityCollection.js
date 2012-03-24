@@ -232,11 +232,12 @@ smartIdentityCollection.prototype = {
 			// use first part (all before ':') as the header name
 			var replyHeaderName = replyHeader_splitted[0].toLowerCase()
 			// check second or third part for any number
-			var replyHeaderNumber = parseInt(replyHeader_splitted[1])
-			if (isNaN(replyHeaderNumber)) replyHeaderNumber = parseInt(replyHeader_splitted[2])
+			var replyHeaderNumber = null;
+            if (replyHeader_splitted.length > 1) parseInt(replyHeader_splitted[1]);
+            if (isNaN(replyHeaderNumber) && replyHeader_splitted.length > 2) replyHeaderNumber = parseInt(replyHeader_splitted[2]);
 			// check if Fullnames should be erased
 			var replyHeaderEmptyFullNames = ((replyHeader_splitted[1] && replyHeader_splitted[1].match(/@/)) ||
-							(replyHeader_splitted[2] && replyHeader_splitted[2].match(/@/)))
+							(replyHeader_splitted[2] && replyHeader_splitted[2].match(/@/)));
 			
 			// create header name to find the value
 			var replyHeaderNameToRead = replyHeaderName

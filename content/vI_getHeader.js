@@ -50,11 +50,12 @@ var getHeader = {
 			// use first part (all before ':') as the header name
 			var headerNameToSearch = headerToSearch_splitted[0].toLowerCase()
 			// check second or third part for any number
-			var headerNumberToSearch = parseInt(headerToSearch_splitted[1])
-			if (isNaN(headerNumberToSearch)) headerNumberToSearch = parseInt(headerToSearch_splitted[2])
+			var headerNumberToSearch = null;
+			if (headerToSearch_splitted.length > 1) parseInt(headerToSearch_splitted[1]);
+            if (isNaN(headerNumberToSearch) && headerToSearch_splitted.length > 2) headerNumberToSearch = parseInt(headerToSearch_splitted[2]);
 			
 			// create header name to store the value
-			var headerNameToStore = headerNameToSearch
+			var headerNameToStore = headerNameToSearch;
 			if (!isNaN(headerNumberToSearch)) headerNameToStore += ":" + headerNumberToSearch
 			
 			getHeader.headerToSearch.push({ headerNameToSearch : headerNameToSearch, headerNumberToSearch : headerNumberToSearch,
