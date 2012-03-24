@@ -132,12 +132,15 @@ rdfDataTree.prototype = {
 		}
 		
 		function columnSort(a, b) {
+          try {
 			if (prepareForComparison(a[columnName]) > 
 				prepareForComparison(b[columnName])) return 1 * order;
 			if (prepareForComparison(a[columnName]) < 
 				prepareForComparison(b[columnName])) return -1 * order;
+          } catch(e) {};
 			return 0;
 		}
+		
 		if (!columnName)
           columnName = this.treeElem.getAttribute("sortResource")
         
