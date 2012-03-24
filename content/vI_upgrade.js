@@ -62,7 +62,6 @@ var upgrade = {
 	},
     
     __removeExtraAddedHeaders : function(currentVersion) {
-        Log.debug("extension-upgrade __removeExtraAddedHeaders " + currentVersion);
         if ((!currentVersion || upgrade.versionChecker.compare(currentVersion, "0.6.9") < 0) && 
                 vI.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders") != "") {
             // clean extraExpandedHeaders once, because the whole header-saving and restoring was broken too long
@@ -70,7 +69,6 @@ var upgrade = {
             vI.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", "")
             Log.debug("cleaned extraExpandedHeaders");
         }
-        Log.debug("extension-upgrade __removeExtraAddedHeaders done.");
     },
     
 	__transferMovedUserPrefs : function(currentVersion) {
