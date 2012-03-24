@@ -70,7 +70,10 @@ var storage = {
 		
 	awOnBlur : function (element) {
 		// only react on events triggered by addressCol2 - textinput Elements
-		if (!element || ! element.id.match(/^addressCol2*/)) return;
+		if (!element || ! element.id.match(/^addressCol2*/)) {
+          Log.debug("awOnBlur '" + element.id + "' not matching /^addressCol2*/");
+          return;
+        }
 		Log.debug("awOnBlur '" + element.id + "'");
 		storage.updateVIdentityFromStorage(element);
 		storage.focusedElement = null;
@@ -103,10 +106,10 @@ var storage = {
 				if (input) {
 					var oldBlur = input.getAttribute("onblur")
 					input.setAttribute("onblur", (oldBlur?oldBlur+"; ":"") +
-						"window.setTimeout(virtualIdentityExtension.storage.awOnBlur, 250, this.parentNode.parentNode.parentNode);")
+						"window.setTimeout(virtualIdentityExtension.storage.awOnBlur, 250, this);")
 					var oldFocus = input.getAttribute("onfocus")
 					input.setAttribute("onfocus", (oldFocus?oldFocus+"; ":"") +
-						"window.setTimeout(virtualIdentityExtension.storage.awOnFocus, 250, this.parentNode.parentNode.parentNode);")
+						"window.setTimeout(virtualIdentityExtension.storage.awOnFocus, 250, this);")
 				}
 				var popup = awGetPopupElement(row);
 				if (popup) {
