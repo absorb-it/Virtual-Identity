@@ -445,24 +445,24 @@
 					<rows>
 						<radio id="VIdent_fcc_Settings_Of_Account" 
 							value="3" label="&vI_prefDialog.sending.vidAccount.label;"
-							oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
+							oncommand="virtualIdentityExtension.setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
 							observes="VIdent_broadcaster_doFcc"/>
 						<radio id="VIdent_fcc_Settings_Of_Default" 
 							value="2" label="&vI_prefDialog.sending.vidDefault.label;"
-							oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
+							oncommand="virtualIdentityExtension.setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
 							observes="VIdent_broadcaster_doFcc"/>
 						<row align="center" id="msgFccAccountPickerRow">
 							<radio id="VIdent_fcc_selectAccount" 
 								value="0" label="&sentFolderOn.label;"
 								accesskey="&sentFolderOn.accesskey;"
-								oncommand="setPickersState('msgFccAccountPicker', 'msgFccFolderPicker', event)" 
+								oncommand="virtualIdentityExtension.setPickersState('msgFccAccountPicker', 'msgFccFolderPicker', event)" 
 								observes="VIdent_broadcaster_doFcc"/>
 						</row> 
 						<row align="center" id="msgFccFolderPickerRow">
 							<radio id="VIdent_fcc_selectFolder" 
 								value="1" label="&sentInOtherFolder.label;"
 								accesskey="&sentInOtherFolder.accesskey;"
-								oncommand="setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
+								oncommand="virtualIdentityExtension.setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
 								observes="VIdent_broadcaster_doFcc"/>
 						</row>
 					</rows>
@@ -491,21 +491,21 @@
 					<rows>
 						<radio id="VIdent_draft_Settings_Of_Account" 
 							value="3" label="&vI_prefDialog.sending.vidAccount.label;"
-							oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
+							oncommand="virtualIdentityExtension.setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
 						<radio id="VIdent_draft_Settings_Of_Default" 
 							value="2" label="&vI_prefDialog.sending.vidDefault.label;"
-							oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
+							oncommand="virtualIdentityExtension.setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
 						<row align="center" id="msgDraftsAccountPickerRow">
 							<radio id="VIdent_draft_selectAccount" 
 								value="0" label="&draftsFolderOn.label;"
 								accesskey="&draftsFolderOn.accesskey;"
-								oncommand="setPickersState('msgDraftsAccountPicker', 'msgDraftsFolderPicker', event)" />
+								oncommand="virtualIdentityExtension.setPickersState('msgDraftsAccountPicker', 'msgDraftsFolderPicker', event)" />
 						</row> 
 						<row align="center" id="msgDraftsFolderPickerRow">
 							<radio id="VIdent_draft_selectFolder" 
 								value="1" label="&draftInOtherFolder.label;"
 								accesskey="&draftInOtherFolder.accesskey;"
-								oncommand="setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
+								oncommand="virtualIdentityExtension.setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
 						</row>
 					</rows>
 				</grid>
@@ -525,21 +525,21 @@
 					<rows>
 						<radio id="VIdent_tmpl_Settings_Of_Account" 
 							value="3" label="&vI_prefDialog.sending.vidAccount.label;"
-							oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
+							oncommand="virtualIdentityExtension.setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
 						<radio id="VIdent_tmpl_Settings_Of_Default" 
 							value="2" label="&vI_prefDialog.sending.vidDefault.label;"
-							oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
+							oncommand="virtualIdentityExtension.setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
 						<row align="center" id="msgStationeryAccountPickerRow">
 							<radio id="VIdent_tmpl_selectAccount" 
 								value="0" label="&templatesFolderOn.label;"
 								accesskey="&templatesFolderOn.accesskey;"
-								oncommand="setPickersState('msgStationeryAccountPicker', 'msgStationeryFolderPicker', event)" />
+								oncommand="virtualIdentityExtension.setPickersState('msgStationeryAccountPicker', 'msgStationeryFolderPicker', event)" />
 						</row> 
 						<row align="center" id="msgStationeryFolderPickerRow">
 							<radio id="VIdent_tmpl_selectFolder" 
 								value="1" label="&templateInOtherFolder.label;"
 								accesskey="&templateInOtherFolder.accesskey;"
-								oncommand="setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
+								oncommand="virtualIdentityExtension.setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
 						</row>
 					</rows>
 				</grid>

@@ -340,4 +340,5 @@ function SetRadioButtons(selectPickerId, unselectPickerId)
 }
 vI.onInitCopiesAndFolders = onInitCopiesAndFolders;
 vI.onSaveCopiesAndFolders = onSaveCopiesAndFolders;
+vI.setPickersState = setPickersState;
 }});
