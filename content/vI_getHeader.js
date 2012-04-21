@@ -52,11 +52,11 @@ var getHeader = {
 			// check second or third part for any number
 			var headerNumberToSearch = null;
 			if (headerToSearch_splitted.length > 1) parseInt(headerToSearch_splitted[1]);
-            if (isNaN(headerNumberToSearch) && headerToSearch_splitted.length > 2) headerNumberToSearch = parseInt(headerToSearch_splitted[2]);
+            if ((!headerNumberToSearch || isNaN(headerNumberToSearch)) && headerToSearch_splitted.length > 2) headerNumberToSearch = parseInt(headerToSearch_splitted[2]);
 			
 			// create header name to store the value
 			var headerNameToStore = headerNameToSearch;
-			if (!isNaN(headerNumberToSearch)) headerNameToStore += ":" + headerNumberToSearch
+			if (headerNumberToSearch && !isNaN(headerNumberToSearch)) headerNameToStore += ":" + headerNumberToSearch
 			
 			getHeader.headerToSearch.push({ headerNameToSearch : headerNameToSearch, headerNumberToSearch : headerNumberToSearch,
 					headerNameToStore : headerNameToStore });
@@ -87,7 +87,7 @@ var getHeader = {
           if (aHeaders.has(headerNameToSearch)) {
             let value = "";
             let values = aHeaders.getAll(headerNameToSearch);
-            if (isNaN(headerNumberToSearch))
+            if (!headerNumberToSearch || isNaN(headerNumberToSearch))
               for (let i = 0; i < values.length;)
                 value += ((value)?(", "):("")) + values[i++];
             else value = values[headerNumberToSearch-1];

@@ -234,14 +234,14 @@ smartIdentityCollection.prototype = {
 			// check second or third part for any number
 			var replyHeaderNumber = null;
             if (replyHeader_splitted.length > 1) parseInt(replyHeader_splitted[1]);
-            if (isNaN(replyHeaderNumber) && replyHeader_splitted.length > 2) replyHeaderNumber = parseInt(replyHeader_splitted[2]);
+            if ((!replyHeaderNumber || isNaN(replyHeaderNumber)) && replyHeader_splitted.length > 2) replyHeaderNumber = parseInt(replyHeader_splitted[2]);
 			// check if Fullnames should be erased
 			var replyHeaderEmptyFullNames = ((replyHeader_splitted[1] && replyHeader_splitted[1].match(/@/)) ||
 							(replyHeader_splitted[2] && replyHeader_splitted[2].match(/@/)));
 			
 			// create header name to find the value
 			var replyHeaderNameToRead = replyHeaderName
-			if (!isNaN(replyHeaderNumber)) replyHeaderNameToRead += ":" + replyHeaderNumber
+			if (replyHeaderNumber && !isNaN(replyHeaderNumber)) replyHeaderNameToRead += ":" + replyHeaderNumber
 			
 			// if mailing-list ignore to-header (usually the mailing list address)
 			if (replyHeaderNameToRead == "to" && this._msgHdr.getStringProperty("vI_list-id")) {
