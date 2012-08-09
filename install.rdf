@@ -20,7 +20,7 @@
                    em:description="Allows you to modify your Identity settings for a single Mail on the fly."
                    em:creator="Rene Ejury"
                    em:homepageURL="http://www.absorb.it/virtual-id"
-                   em:updateURL="http://absorb.it/software/virtual_identity/pre/v_identity_update.rdf"
+                   em:updateURL="http://absorb.it/software/virtual_identity/v_identity_update.rdf"
                    em:updateKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDY5lTLkMzbwKDrWvC5rAjR9Uiv6THmeOK03lBCsQ89KXYlz8i2CNTgvp44+/kK+73u+ZdduNSID+HGuzfoWy+cJLznFSlKx5DcYWDKKGKhCrXvRZ/nFX1JowmfdR5LskQMLNHMjadUCuS6ka3tX+yWErxOMPTdYmSWazU8tp1fGwIDAQAB"
                    em:optionsURL="chrome://v_identity/content/prefDialog/vI_prefDialog_TB3.xul" >
     <em:targetApplication RDF:resource="rdf:#$njP94"/>
