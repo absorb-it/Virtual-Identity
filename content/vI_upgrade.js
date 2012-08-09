@@ -86,7 +86,7 @@ var upgrade = {
 			if (!currentVersion || (upgrade.versionChecker.compare(currentVersion, transferPrefs[i].version) < 0)) {
 				// remove any obsolete preferences under extensions.virtualIdentity
 				Log.debug("transfer changed preferences of pre-" + transferPrefs[i].version + " release...")
-				for each (transferPref in transferPrefs[i].prefs) {
+				for each (let transferPref in transferPrefs[i].prefs) {
 					try {	vI.vIprefs.commit(transferPref.targetPref, 
 							vI.vIprefs.get(transferPref.sourcePref));
 						vI.vIprefs.clearUserPref(transferPref.sourcePref);
@@ -118,7 +118,7 @@ var upgrade = {
 			if (!currentVersion || (upgrade.versionChecker.compare(currentVersion, obsoletePrefs[i].version) < 0)) {
 				// remove any obsolete preferences under extensions.virtualIdentity
 				Log.debug("removing obsolete preferences of pre-" + obsoletePrefs[i].version + " release...")
-				for each (pref in obsoletePrefs[i].prefs) {
+				for each (let pref in obsoletePrefs[i].prefs) {
 					try { vI.vIprefs.clearUserPref(pref); Log.debug(".") }
 					catch (e) { };
 				}
