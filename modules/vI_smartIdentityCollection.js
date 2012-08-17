@@ -384,7 +384,9 @@ smartIdentityCollection.prototype = {
 				for (var index = 0; index < this._allIdentities.number; index++) {
 					var idKey = this._allIdentities.identityDataCollection[index].isExistingIdentity(true);
 					if (idKey) {
-						var newFullName = gAccountManager.getIdentity(idKey).fullName;
+                        var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+                          .getService(Components.interfaces.nsIMsgAccountManager);
+						var newFullName = AccountManager.getIdentity(idKey).fullName;
 						this._allIdentities.identityDataCollection[index].fullName = newFullName;
 						Log.debug("replaced Fullname of '" + this._allIdentities.identityDataCollection[index].email + "' with '" + newFullName + "'");
 					}
