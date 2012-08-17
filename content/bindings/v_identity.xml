@@ -370,7 +370,7 @@
 		virtualIdentityExtension.MyLog.debug("v_identity.xml msgIdentityCloneElem.doCommand() this.value=" + this.value);
 		// if current SMTP is empty, take the one from current Identity
 		if (this.identityData.smtp.hasNoDefinedSMTP()) {
-			this.identityData.smtp.key = gAccountManager.getIdentity(this.value).smtpServerKey;
+			this.identityData.smtp.key = this._AccountManager.getIdentity(this.value).smtpServerKey;
 			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this.identityData.smtp.keyNice;
 			this.checkForVirtualIdentity();
 		}
@@ -380,10 +380,10 @@
 		<body><![CDATA[
 		var MenuItems = this._msgIdentityPopupElem.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
-			var identity = gAccountManager.getIdentity(MenuItems[index].getAttribute("value"));
+			var identity = this._AccountManager.getIdentity(MenuItems[index].getAttribute("value"));
 			
 			var description;
-			var server = gAccountManager.GetServersForIdentity(identity).QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
+			var server = this._AccountManager.GetServersForIdentity(identity).QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
 			// if (server.type == "nntp")
 				description = server.prettyName
 			// else description = identity.description?"- "+identity.description:identity.accountname
@@ -478,7 +478,7 @@
 		<setter><![CDATA[
 			if (typeof(val) == "object") this.selectedItem = val
 			else if (val == "default")
-				this.selectedItem = this._getMenuItemForIdentity(gAccountManager.defaultAccount.defaultIdentity.key)
+				this.selectedItem = this._getMenuItemForIdentity(this._AccountManager.defaultAccount.defaultIdentity.key)
 			else this.selectedItem = this._getMenuItemForIdentity(val)
 			this.doCommand();
 		]]></setter>	
@@ -506,7 +506,13 @@
 			}
 			return this._msgIdentityElem.selectedItem;
 		]]></getter>
-	</property>	
+	</property>
+    <property name="_AccountManager" >
+        <getter><![CDATA[
+            return Components.classes["@mozilla.org/messenger/account-manager;1"]
+              .getService(Components.interfaces.nsIMsgAccountManager);
+        ]]></getter>
+    </property>
 	<method name="blurEvent">
         	<body><![CDATA[
 		virtualIdentityExtension.MyLog.debug("v_identity.xml blurEvent")
