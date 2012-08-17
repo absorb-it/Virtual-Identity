@@ -71,11 +71,14 @@ function DebugOutputAppender(formatter) {
 DebugOutputAppender.prototype = {
   __proto__: Log4Moz.Appender.prototype,
 
+  currentWindow : null,
+  
   doAppend: function DOApp_doAppend(message) {
-    window = Cc["@mozilla.org/appshell/window-mediator;1"]
+    if (!vIprefs.get("debug_notification")) return;
+    this.currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
       .getService(Ci.nsIWindowMediator)
       .getMostRecentWindow(null);
-    obj_debugBox = window.document.getElementById("virtualIdentityExtension_debugBox");
+    var obj_debugBox = this.currentWindow.document.getElementById("virtualIdentityExtension_debugBox");
     if (obj_debugBox)
       obj_debugBox.dump(message);
   }
@@ -172,12 +175,13 @@ function setupFullLogging(name) {
     let dapp = new Log4Moz.DumpAppender(myBasicFormatter);
     dapp.level = Log4Moz.Level["All"];
     root.addAppender(dapp);
-
-    // A dump appender outputs to Debug Output Box
-    let doapp = new DebugOutputAppender(myNewFormatter);
-    doapp.level = Log4Moz.Level["All"];
-    root.addAppender(doapp);
   }
+  
+  // A dump appender outputs to Debug Output Box
+  let doapp = new DebugOutputAppender(myNewFormatter);
+  doapp.level = Log4Moz.Level["All"];
+  root.addAppender(doapp);
+  
   return Log;
 }
 
