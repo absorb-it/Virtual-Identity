@@ -188,7 +188,7 @@ var main = {
 		vI.storage.clean();
 	},
 
-	_getRecipients : function(row) {
+	_getRecipients : function() {
 		var recipients = [];
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
 			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
