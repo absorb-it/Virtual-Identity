@@ -31,17 +31,22 @@ Components.utils.import("resource://v_identity/vI_prefs.js");
 Components.utils.import("resource://v_identity/vI_identityData.js");
 Components.utils.import("resource://gre/modules/Services.jsm");
 
+// if no 3pane-window found, return current window
 function get3PaneWindow() {
-  return Components.classes['@mozilla.org/appshell/window-mediator;1']
-    .getService(Components.interfaces.nsIWindowMediator)
-    .getMostRecentWindow("mail:3pane");
+  var windowMediator = Components.classes['@mozilla.org/appshell/window-mediator;1']
+    .getService(Components.interfaces.nsIWindowMediator);
+  var mail3paneWindow = windowMediator.getMostRecentWindow("mail:3pane");
+  if (!mail3paneWindow) return windowMediator.getMostRecentWindow(null);
+  return mail3paneWindow;
 };
 
 function rdfDatasource(rdfFileName, dontRegisterObserver) {
     this._rdfFileName = rdfFileName;
     if (this._rdfFileName) this.init();
     if (!dontRegisterObserver) this.AccountManagerObserver.register();
-	this._extVersion = get3PaneWindow().virtualIdentityExtension.extensionVersion;
+    try {
+      this._extVersion = get3PaneWindow().virtualIdentityExtension.extensionVersion;
+    } catch (e) { }
 }
 
 rdfDatasource.prototype = {
@@ -164,6 +169,7 @@ rdfDatasource.prototype = {
 	},
     // **************    RDF UPGRADE CODE    ****************************************************
 	extUpgradeRequired: function() {
+        if (!this._extVersion) return false;
 		var oldExtVersion = this.getCurrentExtFileVersion()
 		var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 			.getService(Components.interfaces.nsIVersionComparator);
