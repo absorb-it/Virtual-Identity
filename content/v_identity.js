@@ -311,6 +311,7 @@ var main = {
 		// stateListener only works in reply-cases
 		// so activate stage2 in reply-cases trough StateListener
 		// in other cases directly
+        // (but StateListener is required for Cleanup, so register)
 		var msgComposeType = Components.interfaces.nsIMsgCompType;
 		switch (gMsgCompose.type) {
 			case msgComposeType.New:
@@ -320,7 +321,7 @@ var main = {
 			case msgComposeType.Template:
 			case msgComposeType.ForwardAsAttachment:
 			case msgComposeType.ForwardInline:
-				main.initSystemStage2(); break;
+				main.initSystemStage2();
 			case msgComposeType.Reply:
 			case msgComposeType.ReplyAll:
 			case msgComposeType.ReplyToGroup:

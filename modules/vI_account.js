@@ -298,7 +298,6 @@ var account = {
 		// by pointing to the same incomingServer stored passwords can be reused
 		// the incomingServer has to be replaced before the account is removed, else it get removed ether
 		var servers = account._AccountManager.GetServersForIdentity(baseIdentity);
-        // XXXX strange, servers might be empty. Why? What can I do?
 		var server = servers.QueryElementAt(0, Ci.nsIMsgIncomingServer);
 		// we mark the server as invalid so that the account manager won't
 		// tell RDF about the new server - we don't need this server for long
