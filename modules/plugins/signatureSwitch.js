@@ -30,28 +30,28 @@ Cu.import("resource://v_identity/vI_prefs.js");
 Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.signatureSwitch");
 
-currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
-  .getService(Ci.nsIWindowMediator)
-  .getMostRecentWindow(null);
-
 function signatureSwitch(existingIdentity) {
   if (!signatureSwitchInstalled) return;
   
   // always try to initialize Security/Enigmail-Options
   try { setSecuritySettings(1); enigSetMenuSettings(''); } catch(vErr) { };
   
+  let signatureWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+      .getService(Ci.nsIWindowMediator)
+      .getMostRecentWindow(null);
+
   if (!existingIdentity) {
     Log.debug("signatureSwitch hide/remove signatures");
     
     // code to hide the text signature
-    if (vIprefs.get("hide_signature") && ss_signature.length == 0) {
+    if (vIprefs.get("hide_signature") && signatureWindow.ss_signature.length == 0) {
       Log.debug("hide text/html signature");
-      ss_main.signatureSwitch()
+      signatureWindow.ss_main.signatureSwitch()
     }
     
     // code to hide the sMime signature
     if (vIprefs.get("hide_sMime_messageSignature")) {
-      var element = currentWindow.document.getElementById("menu_securitySign1");
+      var element = signatureWindow.document.getElementById("menu_securitySign1");
       if (element && element.getAttribute("checked") == "true") {
         Log.debug("signatureSwitch hide_sMime_messageSignature with doCommand");
         element.doCommand();
@@ -60,7 +60,7 @@ function signatureSwitch(existingIdentity) {
 
     // code to hide the openGPG signature
     if (vIprefs.get("hide_openPGP_messageSignature")) {
-      var element = currentWindow.document.getElementById("enigmail_signed_send");
+      var element = signatureWindow.document.getElementById("enigmail_signed_send");
       if (element && element.getAttribute("checked") == "true") {
         var skipChangeGPGsign = false;
         // sometimes GPG delays changing with dialog, so don't act if EnigmailAlertWindow is open to prevent double changes
@@ -82,9 +82,9 @@ function signatureSwitch(existingIdentity) {
   else {
     Log.debug("signatureSwitch restore signature");
     // code to show the text signature
-    if (ss_signature.length > 0) {
+    if (signatureWindow.ss_signature.length > 0) {
       Log.debug("show text/html signature");
-      ss_main.signatureSwitch()
+      signatureWindow.ss_main.signatureSwitch()
     }
     // sMime and openGPG signature will not be re-added automatically
   }
