@@ -40,11 +40,11 @@ function initReplyTo() {
 
 function removeAllReplyTos() {
   if (!replyToSelfObj.hasAttribute("hidden")) {
-    for (var row = 1; row <= currentWindow.top.MAX_RECIPIENTS; row ++) {
-      var awType = currentWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
+    for (var row = 1; row <= vIcomposeWindow.top.MAX_RECIPIENTS; row ++) {
+      var awType = vIcomposeWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
       if (awType == "addr_reply") {
         Log.debug("removed ReplyTo found in row " + row);
-        currentWindow.awDeleteRow(row--); // removed one line therefore decrease row-value
+        vIcomposeWindow.awDeleteRow(row--); // removed one line therefore decrease row-value
       }
     }
   }
@@ -52,16 +52,18 @@ function removeAllReplyTos() {
 
 function addReplyToSelf() {
   if (!replyToSelfObj.hasAttribute("hidden")) {
-    currentWindow.awAddRecipient("addr_reply",currentWindow.document.getElementById("virtualIdentityExtension_msgIdentityClone").label);
-    Log.debug("added ReplyToSelf");
-    replyToSelfObj.setAttribute("hidden","true");
+    try {
+      vIcomposeWindow.awAddRecipient("addr_reply",vIcomposeWindow.document.getElementById("virtualIdentityExtension_msgIdentityClone").label);
+      Log.debug("added ReplyToSelf");
+      replyToSelfObj.setAttribute("hidden","true");
+    } catch (e) { Log.debug("ReplyToSelf failed"); dumpCallStack(e); };
   }
 }
 
 let replyToSelfObj = null;
-currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+let vIcomposeWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
   .getService(Ci.nsIWindowMediator)
   .getMostRecentWindow(null);
-currentWindow.addEventListener("load", function () {
-  replyToSelfObj = currentWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel");
+vIcomposeWindow.addEventListener("load", function () {
+  replyToSelfObj = vIcomposeWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel");
   }, false);
