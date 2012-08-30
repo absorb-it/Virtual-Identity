@@ -138,6 +138,8 @@ var main = {
 			vI.storage.awOnBlur(vI.storage.focusedElement);
 
 			Log.debug("VIdentity_GenericSendMessage");
+            
+            Log.debug("VIdentity_GenericSendMessage top=" + top);
 			
 			if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now)
               vI.addReplyToSelf();
