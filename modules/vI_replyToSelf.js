@@ -29,16 +29,17 @@ Cu.import("resource://v_identity/vI_prefs.js");
 Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.replyToSelf");
 
-function initReplyTo() {
+function initReplyTo(vIcomposeWindow) {
+  let replyToSelfObj = vIcomposeWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel");
   if (vIprefs.get("autoReplyToSelf")) {
     replyToSelfObj.removeAttribute("hidden");
-    removeAllReplyTos();
+    removeAllReplyTos(vIcomposeWindow, replyToSelfObj);
   }
   else
     replyToSelfObj.setAttribute("hidden", "true");
 };
 
-function removeAllReplyTos() {
+function removeAllReplyTos(vIcomposeWindow, replyToSelfObj) {
   if (!replyToSelfObj.hasAttribute("hidden")) {
     for (var row = 1; row <= vIcomposeWindow.top.MAX_RECIPIENTS; row ++) {
       var awType = vIcomposeWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
@@ -50,20 +51,11 @@ function removeAllReplyTos() {
   }
 };
 
-function addReplyToSelf() {
+function addReplyToSelf(vIcomposeWindow) {
+  let replyToSelfObj = vIcomposeWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel");
   if (!replyToSelfObj.hasAttribute("hidden")) {
-    try {
-      vIcomposeWindow.awAddRecipient("addr_reply",vIcomposeWindow.document.getElementById("virtualIdentityExtension_msgIdentityClone").label);
-      Log.debug("added ReplyToSelf");
-      replyToSelfObj.setAttribute("hidden","true");
-    } catch (e) { Log.debug("ReplyToSelf failed"); dumpCallStack(e); };
+    vIcomposeWindow.awAddRecipient("addr_reply",vIcomposeWindow.document.getElementById("virtualIdentityExtension_msgIdentityClone").label);
+    Log.debug("added ReplyToSelf");
+    replyToSelfObj.setAttribute("hidden","true");
   }
-}
-
-let replyToSelfObj = null;
-let vIcomposeWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
-  .getService(Ci.nsIWindowMediator)
-  .getMostRecentWindow(null);
-vIcomposeWindow.addEventListener("load", function () {
-  replyToSelfObj = vIcomposeWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel");
-  }, false);
+};

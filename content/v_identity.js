@@ -142,7 +142,7 @@ var main = {
             Log.debug("VIdentity_GenericSendMessage top=" + top);
 			
 			if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now)
-              vI.addReplyToSelf();
+              vI.addReplyToSelf(window);
 
 			var vid = document.getElementById("virtualIdentityExtension_msgIdentityClone").vid
 			var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
@@ -252,7 +252,7 @@ var main = {
 	
 	initSystemStage2 : function() {
 		Log.debug("initSystemStage2.")
-		vI.initReplyTo();
+        vI.initReplyTo(window);
 		vI.storage.init();
 		vI.smartIdentity.init();
 		Log.debug("initSystemStage2 done.")
