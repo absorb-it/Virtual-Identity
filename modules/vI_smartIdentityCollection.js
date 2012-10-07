@@ -287,7 +287,7 @@ smartIdentityCollection.prototype = {
 	Reply : function() {
 		Log.debug("Reply()");
 
-		if (this._msgHdr && this._newsgroup && !this._msgHdr.getStringProperty("vI_content_base")) {
+		if (this._msgHdr && !this._newsgroup && !this._msgHdr.getStringProperty("vI_content_base")) {
 		//	RFC 2821 (http://www.ietf.org/rfc/rfc2821.txt) says:
 		//	"4.4 Trace Information
 		//	When an SMTP server receives a message for delivery or further
