@@ -182,11 +182,15 @@ identityData.prototype = {
 		this.comp.compareID = compareIdentityData;
 
 		this.comp.equals.fullName = (((this.fullName)?this.fullName.toLowerCase():null) == ((compareIdentityData.fullName)?compareIdentityData.fullName.toLowerCase():null));
-		this.comp.equals.email = (((this.email)?this.email.toLowerCase():null) == ((compareIdentityData.email)?compareIdentityData.email.toLowerCase():null));
+		if (!this.comp.equals.fullName) {
+      Log.debug("fullName not equal ('" + ((this.fullName)?this.fullName.toLowerCase():null) + "' != '" + ((compareIdentityData.fullName)?compareIdentityData.fullName.toLowerCase():null) + "')");
+    }
+    this.comp.equals.email = (((this.email)?this.email.toLowerCase():null) == ((compareIdentityData.email)?compareIdentityData.email.toLowerCase():null));
+    if (!this.comp.equals.email) {
+      Log.debug("email not equal ('" + ((this.email)?this.email.toLowerCase():null) + "' != '" + ((compareIdentityData.email)?compareIdentityData.email.toLowerCase():null) + "')");
+    }
 
 		this.comp.equals.smtp = this.smtp.equal(compareIdentityData.smtp);
-
-
 		this.comp.equals.id = this.id.equal(compareIdentityData.id);
 		this.comp.equals.extras = this.extras?this.extras.equal(compareIdentityData.extras):true;
 		
@@ -335,6 +339,9 @@ smtpObj.prototype = {
 	},
 	equal : function(compareSmtpObj) {
 		if (this.key == NO_SMTP_TAG || compareSmtpObj.key == NO_SMTP_TAG) return true;
+    if (this.keyNice != compareSmtpObj.keyNice) {
+      Log.debug("smtp not equal ('" + this.keyNice + "' != '" + compareSmtpObj.keyNice + "')");
+    }
 		return (this.keyNice == compareSmtpObj.keyNice);
 	},
 	hasNoDefinedSMTP : function() {
@@ -374,6 +381,9 @@ idObj.prototype = {
 	},
 	equal : function(compareIdObj) {
 		if (!this.key || !compareIdObj.key) return true;
+    if (this.key != compareIdObj.key) {
+      Log.debug("id not equal ('" + this.key + "' != '" + compareIdObj.key + "')");
+    }
 		return (this.key == compareIdObj.key);
 	}
 }
