@@ -36,6 +36,9 @@
 <overlay id="virtualIdentityExtension_MsgComposeOverlay" 
           xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+ <!-- possible fix for https://www.absorb.it/virtual-id/ticket/400 , not sure why widgetOverlay is not always accessible -->
+<script type="application/javascript" src="chrome://messenger/content/messengercompose/addressingWidgetOverlay.js"/>
+
 <script type="application/x-javascript" src="chrome://v_identity/content/v_identity.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_smartIdentity.js" />
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_statusmenu.js" />
