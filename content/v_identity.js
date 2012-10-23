@@ -82,11 +82,20 @@ var main = {
 			vI.storage.clean();
 		}
 	},
-		
+	
+  // copy/pasted from MsgComposeCommands.js
+  queryISupportsArray: function(supportsArray, iid) {
+    var result = new Array;
+    let count = supportsArray.Count();
+    for (let i = 0; i < count; i++)
+      result[i] = supportsArray.QueryElementAt(i, iid);
+    return result;
+  },
+
 	replacement_functions : {
 		FillIdentityList: function(menulist) {
 			Log.debug("mod. FillIdentityList");
-			var accounts = queryISupportsArray(main.accountManager.accounts,
+			var accounts = main.queryISupportsArray(main.accountManager.accounts,
                                      Components.interfaces.nsIMsgAccount);
 
 			// Ugly hack to work around bug 41133. :-(
@@ -120,7 +129,7 @@ var main = {
 				try {	vI.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
 					continue; } catch (e) { };
 
-				var identities = queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
+				var identities = main.queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
 				for (var j in identities) {
 					var identity = identities[j];
 					var item = menulist.appendItem(identity.identityName, identity.key, server.prettyName);
