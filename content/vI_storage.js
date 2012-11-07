@@ -89,6 +89,18 @@ var storage = {
 
 	},
 	
+  awGetPopupElement : function (row) {
+    if (typeof awGetPopupElement === 'function')
+      return awGetPopupElement(row);
+    return document.getElementById("addressCol1#" + row);
+  },
+
+  awGetInputElement : function (row) {
+    if (typeof awGetInputElement === 'function')
+      return awGetInputElement(row);
+    return document.getElementById("addressCol2#" + row);
+  },
+
     initialized : null,
 	init: function() {
 		if (!storage.initialized) {
@@ -99,7 +111,7 @@ var storage = {
 			// same seems to happen with the ondragdrop event
 			if (!top.MAX_RECIPIENTS || top.MAX_RECIPIENTS == 0) top.MAX_RECIPIENTS = 1;
 			for (var row = 1; row <= top.MAX_RECIPIENTS ; row ++) {
-				var input = awGetInputElement(row);
+				var input = storage.awGetInputElement(row);
 				if (input) {
 					var oldBlur = input.getAttribute("onblur")
 					input.setAttribute("onblur", (oldBlur?oldBlur+"; ":"") +
@@ -108,7 +120,7 @@ var storage = {
 					input.setAttribute("onfocus", (oldFocus?oldFocus+"; ":"") +
 						"window.setTimeout(virtualIdentityExtension.storage.awOnFocus, 250, this);")
 				}
-				var popup = awGetPopupElement(row);
+				var popup = storage.awGetPopupElement(row);
 				if (popup) {
 					var oldCommand = popup.getAttribute("oncommand")
 					popup.setAttribute("oncommand", (oldCommand?oldCommand+"; ":"") +
