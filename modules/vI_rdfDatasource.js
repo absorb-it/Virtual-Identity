@@ -768,7 +768,7 @@ rdfDatasource.prototype = {
         this.updateRDF(recipient.recDesc, recipient.recType, identityData,
             vIprefs.get("storage_store_base_id"),
             vIprefs.get("storage_store_SMTP"),
-            null, null);
+            null, null, false);
 	},
 	
 	removeRDF : function (recDescription, recType) {
@@ -778,7 +778,7 @@ rdfDatasource.prototype = {
 		return resource;
 	},
 
-	updateRDF : function (recDescription, recType, localIdentityData, storeBaseID, storeSMTP, prevRecDescription, prevRecType) {
+	updateRDF : function (recDescription, recType, localIdentityData, storeBaseID, storeSMTP, prevRecDescription, prevRecType, updateAllExtras) {
 //         Log.debug("(" + this._rdfNS + "): updateRDF recDescription=" + recDescription + " localIdentityData.email=" + localIdentityData.email);
         
 // 		if (!localIdentityData.email) {
@@ -813,7 +813,8 @@ rdfDatasource.prototype = {
           let self = this;
           localIdentityData.extras.loopThroughExtras(
             function (extra) {
-              extra.value = self._setRDFValue(resource, extra.field, extra.value) });
+              if (updateAllExtras || extra.active)
+                extra.value = self._setRDFValue(resource, extra.field, extra.value) });
 //           Log.debug("extras: " + localIdentityData.extras.status());
         }
         
@@ -1152,7 +1153,7 @@ rdfDatasourceImporter.prototype = {
                     smtp = (smtp && smtp != DEFAULT_SMTP_TAG)?relevantSMTPs[smtp].smtp:smtp
                     var localIdentityData = new identityData(email, fullName, id, smtp, new identityDataExtras(this._rdfImportDataSource, resource))
                     
-                    this._rdfDataSource.updateRDF(name, treeType, localIdentityData, false, false, null, null)
+                    this._rdfDataSource.updateRDF(name, treeType, localIdentityData, false, false, null, null, true)
                     var resource = this._rdfDataSource._getRDFResourceForVIdentity(name, treeType);
                     if (id) this._rdfDataSource._setRDFValue(resource, "id", id);       // localIdentityData can only store valid id's, this one might be a temporary invalid id
                     if (smtp) this._rdfDataSource._setRDFValue(resource, "smtp", smtp); // localIdentityData can only store valid smtp's, this one might be a temporary invalid smtp

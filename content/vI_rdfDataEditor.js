@@ -138,7 +138,7 @@ var rdfDataEditor = {
 				document.getElementById("recipient").value,
 				document.getElementById("type_menu").selectedItem.getAttribute("key"),
 				localIdentityData,
-				true, true, rdfDataEditor.__recipient, rdfDataEditor.__type);
+				true, true, rdfDataEditor.__recipient, rdfDataEditor.__type, true);
 		Log.debug("updateRDF done " + localIdentityData.extras.status());
 		return document.getElementById("type_menu").selectedItem.getAttribute("key");
 	}
