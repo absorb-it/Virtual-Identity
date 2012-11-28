@@ -87,7 +87,7 @@ identityDataExtras.prototype = {
   equal : function(identityDataExtras) {
     var returnVal = true;
     return this.loopThroughExtras(function (extra, i, returnVal) {
-      return extra.equal(identityDataExtras.extras[i]) && returnVal;
+      return extra.active?(extra.equal(identityDataExtras.extras[i]) && returnVal):returnVal;
     }, returnVal);
   },
   
