@@ -144,7 +144,7 @@ var main = {
 			main.replacement_functions.GenericSendMessageInProgress = true;
 			
 			// if addressCol2 is focused while sending check storage for the entered address before continuing
-			vI.storage.awOnBlur(vI.storage.focusedElement);
+			vI.storage.awOnBlur(vI.storage.focusedElement, window);
 
 			Log.debug("VIdentity_GenericSendMessage");
             
