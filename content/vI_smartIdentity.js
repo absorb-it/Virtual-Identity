@@ -42,7 +42,7 @@ var smartIdentity = {
 	_smartIdentityCollection : null,
 		
 	// After Loading the MessageComposeDialog, check if smartIdentity is needed
-	init : function() {
+	init : function(currentWindow) {
 		var msgHdr;
 		var msgComposeTypeReference = Components.interfaces.nsIMsgCompType;
 		var newsgroup = gMsgCompose.compFields.newsgroups;
@@ -59,7 +59,7 @@ var smartIdentity = {
 				Log.debug("Reply");
 				msgHdr = smartIdentity.messenger.
 					messageServiceFromURI(gMsgCompose.originalMsgURI).messageURIToMsgHdr(gMsgCompose.originalMsgURI);
-				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(msgHdr, getCurrentIdentity(), document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients());	
+				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(msgHdr, getCurrentIdentity(), document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients(currentWindow));	
 				smartIdentity._smartIdentityCollection.Reply();
 				autocreate = false; break;
 			case msgComposeTypeReference.Draft:
@@ -67,7 +67,7 @@ var smartIdentity = {
 				Log.debug("Draft");
 				msgHdr = smartIdentity.messenger.
 					messageServiceFromURI(gMsgCompose.compFields.draftId).messageURIToMsgHdr(gMsgCompose.compFields.draftId);
-				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(msgHdr, getCurrentIdentity(), document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients());	
+				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(msgHdr, getCurrentIdentity(), document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients(currentWindow));	
 				smartIdentity._smartIdentityCollection.Draft();
 				autocreate = false; break;
 			case msgComposeTypeReference.ForwardAsAttachment:
@@ -92,13 +92,13 @@ var smartIdentity = {
 		if (smartIdentity._smartIdentityCollection._allIdentities.number > 0) smartIdentity.__smartIdentitySelection(autocreate);
 	},
 	
-	_getRecipients : function() {
+	_getRecipients : function(currentWindow) {
 		var recipients = [];
 		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
-			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
+			var recipientType = currentWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
 			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
-				vI.storage.__isDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
-			recipients.push( { recipient: awGetInputElement(row).value, recipientType : recipientType } );
+				vI.storage.isDoBcc(row, currentWindow) || currentWindow.awGetInputElement(row).value.match(/^\s*$/) ) continue;
+			recipients.push( { recipient: currentWindow.awGetInputElement(row).value, recipientType : recipientType } );
 		}
 		return recipients;
 	},

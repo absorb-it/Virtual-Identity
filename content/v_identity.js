@@ -263,7 +263,7 @@ var main = {
 		Log.debug("initSystemStage2.")
         vI.initReplyTo(window);
 		vI.storage.init();
-		vI.smartIdentity.init();
+		vI.smartIdentity.init(window);
 		Log.debug("initSystemStage2 done.")
 	},
 	
