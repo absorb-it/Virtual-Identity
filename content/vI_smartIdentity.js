@@ -76,7 +76,7 @@ var smartIdentity = {
 			case msgComposeTypeReference.NewsPost:
 			case msgComposeTypeReference.MailToUrl:
 				Log.debug("New Mail");
-				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(null, getCurrentIdentity(), document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients());	
+				smartIdentity._smartIdentityCollection = new vI.smartIdentityCollection(null, getCurrentIdentity(), document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients(currentWindow));	
 				// to enable composing new email with new identity: identity is hidden in subject line
 				// used for instance from conversation addon
 				var subject = gMsgCompose.compFields.subject.split(/\n/);
