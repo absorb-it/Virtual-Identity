@@ -39,7 +39,7 @@ function identityDataExtrasObject_PGPMIME(currentWindow) {
   this.option = "storageExtras_openPGP_PGPMIME";    // option string to get preference settings
   this.elementID_msgCompose = "enigmail_sendPGPMime";
   this.updateFunction_msgCompose = function() {
-    (typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null };
+    (typeof(this.currentWindow.Enigmail.msg.setMenuSettings)=='function')?this.currentWindow.Enigmail.msg.setMenuSettings(''):null };
 }
 identityDataExtrasObject_PGPMIME.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,

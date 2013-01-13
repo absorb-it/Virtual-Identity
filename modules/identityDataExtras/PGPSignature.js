@@ -39,7 +39,7 @@ function identityDataExtrasObject_PGPSignature(currentWindow) {
   this.option = "storageExtras_openPGP_messageSignature";    // option string to get preference settings
   this.elementID_msgCompose = "enigmail_signed_send";
   this.updateFunction_msgCompose = function() {
-    (typeof(enigSetMenuSettings)=='function')?enigSetMenuSettings(''):null };
+    (typeof(this.currentWindow.Enigmail.msg.setMenuSettings)=='function')?this.currentWindow.Enigmail.msg.setMenuSettings(''):null };
 }
 identityDataExtrasObject_PGPSignature.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,
