@@ -298,7 +298,12 @@ var account = {
 		// by pointing to the same incomingServer stored passwords can be reused
 		// the incomingServer has to be replaced before the account is removed, else it get removed ether
 		var servers = account._AccountManager.GetServersForIdentity(baseIdentity);
-		var server = servers.QueryElementAt(0, Ci.nsIMsgIncomingServer);
+		try {
+      var server = servers.QueryElementAt(0, Ci.nsIMsgIncomingServer);
+    } catch (NS_ERROR_FAILURE) {
+      Log.debug("createAccount missing incomingServer for baseIdentity, using default one");
+      var server = account._AccountManager.defaultAccount.incomingServer;
+    }
 		// we mark the server as invalid so that the account manager won't
 		// tell RDF about the new server - we don't need this server for long
 		// but we should restore it, because it's actually the same server as the one of the base identity
