@@ -136,6 +136,8 @@
 
 <!ENTITY vI_prefDialog.storageTab.Tab0.header "Identiteitsopslag">
 <!ENTITY vI_prefDialog.storageTab.Tab0.caption "Opslaggebruik">
+<!ENTITY vI_prefDialog.storageTab.Tab0.caption2 "Storage Editor"> <!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.DateFormat.label "Format of Dates: Leave empty or use strftime() syntax (&apos;&#37;c&apos;)"> <!-- translate -->
 <!ENTITY vI_prefDialog.storage.label "Gebruikte identiteiten opslaan (en herinneren)">
 <!ENTITY vI_prefDialog.storage.tooltiptext "Gebruikte identiteiten kunnen in relatie tot de ontvangers van uw bericht worden opgeslagen. Als u opnieuw een bericht aan dezelfde ontvanger stuurt wordt dezelfde virtuele of niet-virtuele identiteit gebruikt">
 <!ENTITY vI_prefDialog.storage.openEditor "Opgeslagen gegevens bewerken">

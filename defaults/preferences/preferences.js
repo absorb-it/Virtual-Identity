@@ -46,6 +46,7 @@ pref("extensions.virtualIdentity.storage_warn_update", true);
 pref("extensions.virtualIdentity.storage_warn_vI_replace", true);
 pref("extensions.virtualIdentity.storage_notification", true);
 pref("extensions.virtualIdentity.storage_getOneOnly", true);
+pref("extensions.virtualIdentity.storage_timeFormat", "");
 pref("extensions.virtualIdentity.storageExtras_returnReciept", false);
 pref("extensions.virtualIdentity.storageExtras_characterEncoding", false);
 pref("extensions.virtualIdentity.storageExtras_messageFormat", false);

@@ -106,6 +106,7 @@ var prefDialog = {
 				"VIdent_identity.storage_warn_vI_replace",
 				"VIdent_identity.storage_notification",
 				"VIdent_identity.storage_getOneOnly",
+                "VIdent_identity.storage_timeFormat",
 				"VIdent_identity.storageExtras_returnReciept",
 				"VIdent_identity.storageExtras_fcc",
 				"VIdent_identity.storageExtras_characterEncoding",

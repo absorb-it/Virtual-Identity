@@ -114,17 +114,24 @@ rdfDataTree.prototype = {
 	},
 
 	addNewDatum : function(resource, name, localIdentityData, idData, used, changed) {
-        var usedDate = new Date(parseFloat(used));
-        var changedDate = new Date(parseFloat(changed));
+        var usedDate = "", changedDate = "";
+        var format = vI.prefroot.getCharPref("extensions.virtualIdentity.storage_timeFormat")
+        if (format != "") {
+            if (used) usedDate = new Date(parseFloat(used)).toLocaleFormat(format);
+            if (changed) changedDate = new Date(parseFloat(changed)).toLocaleFormat(format);
+        } else {
+            if (used) usedDate = new Date(parseFloat(used)).toLocaleString();
+            if (changed) changedDate = new Date(parseFloat(changed)).toLocaleString();
+        }
 		var pref = { 	recipientCol : name,
 				indexCol : idData.length + 1 + ".",
 				senderCol : localIdentityData.combinedName,
 				smtpCol : localIdentityData.smtp.value,
 //				smtpKey : localIdentityData.smtp.key,
 				idCol : localIdentityData.id.value,
-                usedCol : used?usedDate.toLocaleString():"",
+                usedCol : usedDate,
                 used : used,
-                changedCol : changed?changedDate.toLocaleString():"",
+                changedCol : changedDate,
                 changed : changed,
 //				idKey : localIdentityData.id.key,
 				resource : resource,
