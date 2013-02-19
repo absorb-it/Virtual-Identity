@@ -37,10 +37,18 @@ Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdent
 Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
 Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
+tmpfield = null;
+
 //prepares an object for easy comparison against another. for strings, lowercases them
-function prepareForComparison (o) {
+function prepareForComparison (element, field) {
+    if (field == "changedCol") {
+        field = "changed"
+    }
+    if (field == "usedCol") {
+        field = "used"
+    }
+    var o = element[field];
 	if (typeof o == "string") { return o.toLowerCase().replace(/\"/g,""); }
-// 	if (typeof o == "number") { return o; }
 	return "";
 };
 
@@ -84,7 +92,7 @@ rdfDataTree.prototype = {
 			this.idData.forEach(function(element) {
 				//we'll match on every property
 				for (var i in element) {
-					if (prepareForComparison(element[i]).indexOf(curFilterText) != -1) {
+					if (prepareForComparison(element, i).indexOf(curFilterText) != -1) {
 						curTable.push(element);
 						break;
 					}
@@ -115,7 +123,9 @@ rdfDataTree.prototype = {
 //				smtpKey : localIdentityData.smtp.key,
 				idCol : localIdentityData.id.value,
                 usedCol : used?usedDate.toLocaleString():"",
+                used : used,
                 changedCol : changed?changedDate.toLocaleString():"",
+                changed : changed,
 //				idKey : localIdentityData.id.key,
 				resource : resource,
 				identityData : localIdentityData}
@@ -133,10 +143,10 @@ rdfDataTree.prototype = {
 		
 		function columnSort(a, b) {
           try {
-			if (prepareForComparison(a[columnName]) > 
-				prepareForComparison(b[columnName])) return 1 * order;
-			if (prepareForComparison(a[columnName]) < 
-				prepareForComparison(b[columnName])) return -1 * order;
+			if (prepareForComparison(a, columnName) > 
+				prepareForComparison(b, columnName)) return 1 * order;
+			if (prepareForComparison(a, columnName) < 
+				prepareForComparison(b, columnName)) return -1 * order;
           } catch(e) {};
 			return 0;
 		}
@@ -287,8 +297,10 @@ var rdfDataTreeCollection = {
 	},
 
 	inputFilter : function(event) {
-		//do this now rather than doing it at every comparison
-		var value = prepareForComparison(event.target.value);
+        var value = "";
+        if (typeof event.target.value == "string") {
+            value = event.target.value.toLowerCase().replace(/\"/g,"");
+        }
 		rdfDataTreeCollection.__setFilter(value);
 		document.getElementById("clearFilter").disabled = value.length == 0;
 	},
