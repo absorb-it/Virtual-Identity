@@ -44,7 +44,7 @@ function signatureSwitch(existingIdentity) {
     Log.debug("signatureSwitch hide/remove signatures");
     
     // code to hide the text signature
-    if (vIprefs.get("hide_signature") && signatureWindow.ss_signature.length == 0) {
+    if (vIprefs.get("hide_signature") && signatureWindow.ss_signature && signatureWindow.ss_signature.length == 0) {
       Log.debug("hide text/html signature");
       signatureWindow.ss_main.signatureSwitch()
     }
@@ -82,7 +82,7 @@ function signatureSwitch(existingIdentity) {
   else {
     Log.debug("signatureSwitch restore signature");
     // code to show the text signature
-    if (signatureWindow.ss_signature.length > 0) {
+    if (signatureWindow.ss_signature && signatureWindow.ss_signature.length > 0) {
       Log.debug("show text/html signature");
       signatureWindow.ss_main.signatureSwitch()
     }
