@@ -40,18 +40,20 @@
 	<parameter name="elem" />
 	<parameter name="permanent" />
         	<body><![CDATA[
-		var randID = elem.tooltipElem.getAttribute("tooltip");
-		this.removeTooltip(randID);
-		if (!randID) {
-			randID = "virtualIdentityExtension_tooltip_" + parseInt((new Date()).getTime());
-			elem.tooltipElem.setAttribute("tooltip", randID);
-		}
-		var toolTip = document.createElement("tooltip");
-		toolTip.setAttribute("class", "identityDataTooltip");
-		toolTip.setAttribute("id", randID);
-		toolTip.elem = elem;
-		toolTip.permanent = permanent;
-		this.appendChild(toolTip);
+            if (elem) {
+                var randID = elem.tooltipElem.getAttribute("tooltip");
+                this.removeTooltip(randID);
+                if (!randID) {
+                    randID = "virtualIdentityExtension_tooltip_" + parseInt((new Date()).getTime());
+                    elem.tooltipElem.setAttribute("tooltip", randID);
+                }
+                var toolTip = document.createElement("tooltip");
+                toolTip.setAttribute("class", "identityDataTooltip");
+                toolTip.setAttribute("id", randID);
+                toolTip.elem = elem;
+                toolTip.permanent = permanent;
+                this.appendChild(toolTip);
+                }
 		]]></body>
 	</method>
 	<method name="removeTooltip">
