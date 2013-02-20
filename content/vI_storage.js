@@ -193,14 +193,15 @@ var storage = {
 		if (recipientType != "addr_bcc" || !getCurrentIdentity().doBcc) return false
 
 		var doBccArray = gMsgCompose.compFields.splitRecipients(getCurrentIdentity().doBccList, false, {});
-
-		for (var index = 0; index < doBccArray.count; index++ ) {
-			if (doBccArray.StringAt(index) == currentWindow.awGetInputElement(row).value) {
-				Log.debug("ignoring doBcc field '" +
-					doBccArray.StringAt(index));
-				return true;
-			}
-		}		
+        if (doBccArray && doBccArray.count) {
+            for (var index = 0; index < doBccArray.count; index++ ) {
+                if (doBccArray.StringAt(index) == currentWindow.awGetInputElement(row).value) {
+                    Log.debug("ignoring doBcc field '" +
+                        doBccArray.StringAt(index));
+                    return true;
+                }
+            }
+        }
 		return false
 	}
 }
