@@ -24,7 +24,7 @@
 -->
   <binding id="vI_notification" extends="chrome://global/content/bindings/notification.xml#notification">
     <content>
-      <xul:hbox class="notification-inner outset" flex="1" xbl:inherits="type">
+      <xul:hbox class="notification-inner outset" flex="1" xbl:inherits="type" style="background-color: appworkspace; color: windowtext">
         <xul:hbox anonid="details" align="center" flex="1"
                   oncommand="this.parentNode.parentNode._doButtonCommand(event);">
           <xul:image anonid="messageImage" class="messageImage" xbl:inherits="src=image"/>
