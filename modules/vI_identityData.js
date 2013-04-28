@@ -30,6 +30,7 @@ const NO_SMTP_TAG = "vI_noStoredSMTP"
 Components.utils.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityData");
 Components.utils.import("resource://v_identity/vI_prefs.js");
+Components.utils.import("resource://v_identity/vI_accountUtils.js");
 
 Components.utils.import("resource://v_identity/vI_identityDataExtras.js");
 Components.utils.import("resource://v_identity/identityDataExtras/returnReceipt.js");
@@ -146,13 +147,13 @@ identityData.prototype = {
 // 		Log.debug("base: fullName.toLowerCase()='" + this.fullName + "' email.toLowerCase()='" + this.email + "' smtp='" + this.smtp.key + "'");
 
 		var ignoreFullNameMatchKey = null;
-		var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
-            .getService(Components.interfaces.nsIMsgAccountManager);
-        for (let i = 0; i < AccountManager.accounts.Count(); i++) {
-            var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-			try { prefroot.getBoolPref("mail.account."+account.key+".vIdentity"); continue; } catch (e) { };
-            for (let j = 0; j < account.identities.Count(); j++) {
-                var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
+        var accounts = getAccountsArray();
+        for (let acc = 0; acc < accounts.length; acc++) {
+            let account = accounts[acc];
+            try { prefroot.getBoolPref("mail.account."+account.key+".vIdentity"); continue; } catch (e) { };
+            let identities = getIdentitiesArray(account);
+            for (let i = 0; i < identities.length; i++) {
+                let identity = identities[i];
 // 				Log.debug("comp: fullName.toLowerCase()='" + identity.fullName.toLowerCase() + "' email.toLowerCase()='" + identity.email.toLowerCase() + "' smtp='" + identity.smtpServerKey + "'");
 				var email = this.email?this.email:"";				// might be null if no identity is set
 				var idEmail = identity.email?identity.email:"";	// might be null if no identity is set
@@ -359,23 +360,22 @@ idObj.prototype = {
 	get value() {
 		if (this._value == null) {
 			this._value = "";
-			if (this._key) {
-				var accountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
-					.getService(Components.interfaces.nsIMsgAccountManager);
-				for (var i = 0; i < accountManager.accounts.Count(); i++) {
-					var account = accountManager.accounts.GetElementAt(i)
-						.QueryInterface(Components.interfaces.nsIMsgAccount);
-					for (var j = 0; j < account.identities.Count(); j++) {
-						var identity = account.identities.GetElementAt(j)
-							.QueryInterface(Components.interfaces.nsIMsgIdentity);
-						if (this._key == identity.key) {
-							this._value = identity.identityName;
-							break;
-						}
-					}
-				}
-				if (!this._value) this._key = null;
-			}
+            // if this worked we are having at least seamonkey 1.17
+            accounts = getAccountsArray();
+            for (let acc = 0; acc < accounts.length; acc++) {
+                let account = accounts[acc];
+                let identities = getIdentitiesArray(account);
+                if (identities.length == 0)
+                    continue;
+                for (let i = 0; i < identities.length; i++) {
+                    let identity = identities[i];
+                    if (this._key == identity.key) {
+                        this._value = identity.identityName;
+                        break;
+                    }
+                }
+            }
+            if (!this._value) this._key = null;
 		}
 		return this._value;
 	},

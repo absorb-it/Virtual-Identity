@@ -33,6 +33,7 @@ Cu.import("resource://v_identity/vI_log.js");
 Cu.import("resource://v_identity/vI_identityData.js");
 Cu.import("resource://v_identity/vI_rdfDatasource.js");
 Cu.import("resource://v_identity/vI_prefs.js");
+Cu.import("resource://v_identity/vI_accountUtils.js");
 
 let Log = setupLogging("virtualIdentity.account");
 
@@ -211,8 +212,9 @@ var account = {
 	
 	cleanupSystem : function() {
 		Log.debug("checking for leftover VirtualIdentity accounts ...")
-		for (var i=0; i < account._AccountManager.accounts.Count(); i++) {
-			var checkAccount = account._AccountManager.accounts.QueryElementAt(i, Ci.nsIMsgAccount);
+        var accounts = getAccountsArray();
+        for (let acc = 0; acc < accounts.length; acc++) {
+            let checkAccount = accounts[acc];
 			if (account.__isVIdentityAccount(checkAccount)) {
 				account.__removeAccount(checkAccount);
 			}
@@ -297,9 +299,17 @@ var account = {
 		// it's especially required for NNTP cause incomingServer is used for sending newsposts.
 		// by pointing to the same incomingServer stored passwords can be reused
 		// the incomingServer has to be replaced before the account is removed, else it get removed ether
-		var servers = account._AccountManager.GetServersForIdentity(baseIdentity);
-		try {
-      var server = servers.QueryElementAt(0, Ci.nsIMsgIncomingServer);
+        if (typeof(this._AccountManager.getServersForIdentity) == 'function') { // new style
+            var servers = this._AccountManager.getServersForIdentity(identity);
+        } else {
+            var servers = this._AccountManager.GetServersForIdentity(identity);
+        }
+    try {
+      if (typeof(this._AccountManager.getServersForIdentity) == 'function') { // new style
+          var server = servers.queryElementAt(0, Ci.nsIMsgIncomingServer);
+      } else {
+          var server = servers.QueryElementAt(0, Ci.nsIMsgIncomingServer);
+      }
     } catch (NS_ERROR_FAILURE) {
       Log.debug("createAccount missing incomingServer for baseIdentity, using default one");
       var server = account._AccountManager.defaultAccount.incomingServer;

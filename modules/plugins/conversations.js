@@ -76,7 +76,12 @@ let virtualIdentityHook = {
     currentParams = aComposeSession.params; virtualSenderNameElem = aComposeSession.senderNameElem; // to enable access from out of this class.
     let identity = aComposeSession.params.identity;
     
-    let server = AccountManager.GetServersForIdentity(identity).QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
+    if (typeof(this._AccountManager.getServersForIdentity) == 'function') { // new style
+        let server = this._AccountManager.getServersForIdentity(identity).queryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
+    } else {
+        let server = this._AccountManager.GetServersForIdentity(identity).QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
+    }
+
     currentIdentityData = new identityData(identity.email, identity.fullName, identity.key,
                                                                     identity.smtpServerKey, null, server.prettyName, true)
     currentIdSenderName = currentIdentityData.combinedName;

@@ -38,10 +38,12 @@
             .getService(Components.interfaces.nsIMsgAccountManager);
         var debugNotes = vI.prefDialog.preferences.getBoolPref("debug_notification");
 
-        for (let i = AccountManager.accounts.Count() - 1; i >= 0 ; i--) {
-            var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-            for (let j = account.identities.Count() - 1; j >= 0 ; j--) {
-                var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
+        var accounts = virtualIdentityExtension.getAccountsArray();
+        for (let acc = 0; acc < accounts.length; acc++) {
+            let account = accounts[acc];
+            let identities = virtualIdentityExtension.getIdentitiesArray(account);
+            for (let i = 0; i < identities.length; i++) {
+                let identity = identities[i];
                 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
                 var listitem = document.createElementNS(XUL_NS, "listitem"); // create a new XUL listitem
                 listitem.setAttribute("class", "selectorListitem");

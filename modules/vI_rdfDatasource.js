@@ -27,6 +27,7 @@ var EXPORTED_SYMBOLS = ["rdfDatasource", "rdfDatasourceAccess", "rdfDatasourceIm
 Components.utils.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.rdfDatasource");
 
+Components.utils.import("resource://v_identity/vI_accountUtils.js");
 Components.utils.import("resource://v_identity/vI_prefs.js");
 Components.utils.import("resource://v_identity/vI_identityData.js");
 Components.utils.import("resource://gre/modules/Services.jsm");
@@ -395,15 +396,14 @@ rdfDatasource.prototype = {
         var relevantIDs = this.getRelevantIDs();
         var mismatchIDs = [];
         
-        var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
-            .getService(Components.interfaces.nsIMsgAccountManager);
         for (var id in relevantIDs) {
             var found = false;
-            for (var i = 0; i < AccountManager.accounts.Count(); i++) {
-                var account = AccountManager.accounts.GetElementAt(i)
-                    .QueryInterface(Components.interfaces.nsIMsgAccount);
-                for (var j = 0; j < account.identities.Count(); j++) {
-                    var identity = account.identities.GetElementAt(j).QueryInterface(Components.interfaces.nsIMsgIdentity);
+            var accounts = getAccountsArray();
+            for (let acc = 0; acc < accounts.length; acc++) {
+                let account = accounts[acc];
+                let identities = getIdentitiesArray(account);
+                for (let i = 0; i < identities.length; i++) {
+                    let identity = identities[i];
                     if (id == identity.key) { found = true; break; }
                 }
                 if (found) break;
@@ -504,13 +504,12 @@ rdfDatasource.prototype = {
 
     storeAccountInfo : function() {
         Log.debug("storeAccounts");
-
-        var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
-            .getService(Components.interfaces.nsIMsgAccountManager);
-        for (let i = 0; i < AccountManager.accounts.Count(); i++) {
-            var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-            for (let j = 0; j < account.identities.Count(); j++) {
-                var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
+        var accounts = getAccountsArray();
+        for (let acc = 0; acc < accounts.length; acc++) {
+            let account = accounts[acc];
+            let identities = getIdentitiesArray(account);
+            for (let i = 0; i < identities.length; i++) {
+                let identity = identities[i];
 //                 Log.debug("storeAccounts identity store id " + identity.key);
 
                 var resource = this._rdfService.GetResource(this._rdfNS + this._rdfNSIdentities + "/" + identity.key);
@@ -1012,12 +1011,12 @@ rdfDatasourceImporter.prototype = {
     _rdfImportDataSource :    null,
 
     _getMatchingIdentity : function(name, email, fullName) {
-        var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
-            .getService(Components.interfaces.nsIMsgAccountManager);
-        for (let i = 0; i < AccountManager.accounts.Count(); i++) {
-            var account = AccountManager.accounts.QueryElementAt(i, Components.interfaces.nsIMsgAccount);
-            for (let j = 0; j < account.identities.Count(); j++) {
-                var identity = account.identities.QueryElementAt(j, Components.interfaces.nsIMsgIdentity);
+        var accounts = getAccountsArray();
+        for (let acc = 0; acc < accounts.length; acc++) {
+            let account = accounts[acc];
+            let identities = getIdentitiesArray(account);
+            for (let i = 0; i < identities.length; i++) {
+                let identity = identities[i];
                 if (name == identity.identityName || (fullName == identity.fullName && email == identity.email)) return identity.key;
             }
         }

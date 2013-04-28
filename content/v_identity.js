@@ -29,6 +29,7 @@ let Log = vI.setupLogging("virtualIdentity.main");
 Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
 Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 Components.utils.import("resource://v_identity/vI_replyToSelf.js", virtualIdentityExtension);
+Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdentityExtension);
 Components.utils.import("resource://v_identity/plugins/signatureSwitch.js", virtualIdentityExtension);
 
 var main = {
@@ -83,59 +84,34 @@ var main = {
 		}
 	},
 	
-  // copy/pasted from MsgComposeCommands.js
-  queryISupportsArray: function(supportsArray, iid) {
-    var result = new Array;
-    let count = supportsArray.Count();
-    for (let i = 0; i < count; i++)
-      result[i] = supportsArray.QueryElementAt(i, iid);
-    return result;
-  },
-
 	replacement_functions : {
 		FillIdentityList: function(menulist) {
 			Log.debug("mod. FillIdentityList");
-			var accounts = main.queryISupportsArray(main.accountManager.accounts,
-                                     Components.interfaces.nsIMsgAccount);
+            var accounts = virtualIdentityExtension.getAccountsArray();
+            for (let acc = 0; acc < accounts.length; acc++) {
+                let server = accounts[acc].incomingServer;
+                if (!server)
+                    continue;
+                
+                // check for VirtualIdentity Account
+                try {   vI.prefroot.getBoolPref("mail.account." + accounts[acc].key + ".vIdentity"); continue; } catch (e) { };
+                let account = accounts[acc];
+                let identities = virtualIdentityExtension.getIdentitiesArray(account);
 
-			// Ugly hack to work around bug 41133. :-(
-			accounts = accounts.filter(function isNonSuckyAccount(a) { return !!a.incomingServer; });
-			function sortAccounts(a, b) {
-				if (a.key == main.accountManager.defaultAccount.key)
-				return -1;
-				if (b.key == main.accountManager.defaultAccount.key)
-				return 1;
-				var aIsNews = a.incomingServer.type == "nntp";
-				var bIsNews = b.incomingServer.type == "nntp";
-				if (aIsNews && !bIsNews)
-				return 1;
-				if (bIsNews && !aIsNews)
-				return -1;
+                if (identities.length == 0)
+                    continue;
 
-				var aIsLocal = a.incomingServer.type == "none";
-				var bIsLocal = b.incomingServer.type == "none";
-				if (aIsLocal && !bIsLocal)
-				return 1;
-				if (bIsLocal && !aIsLocal)
-				return -1;
-				return 0;
-			}
-			accounts.sort(sortAccounts);
-			
-			for (var i in accounts) {
-				var server = accounts[i].incomingServer;
-				if (!server) continue;
-				// check for VirtualIdentity Account
-				try {	vI.prefroot.getBoolPref("mail.account." + accounts[i].key + ".vIdentity");
-					continue; } catch (e) { };
-
-				var identities = main.queryISupportsArray(accounts[i].identities, Components.interfaces.nsIMsgIdentity);
-				for (var j in identities) {
-					var identity = identities[j];
-					var item = menulist.appendItem(identity.identityName, identity.key, server.prettyName);
-					item.setAttribute("accountkey", accounts[i].key);
-				}
-			}
+                for (let i = 0; i < identities.length; i++) {
+                    let identity = identities[i];
+                    let item = menulist.appendItem(identity.identityName, identity.key,
+                                                    account.incomingServer.prettyName);
+                    item.setAttribute("accountkey", account.key);
+                    if (i == 0) {
+                        // Mark the first identity as default.
+                        item.setAttribute("default", "true");
+                    }
+                }
+            }
 		},
 		
 		GenericSendMessageInProgress : false,
