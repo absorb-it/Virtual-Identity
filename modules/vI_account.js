@@ -300,9 +300,9 @@ var account = {
 		// by pointing to the same incomingServer stored passwords can be reused
 		// the incomingServer has to be replaced before the account is removed, else it get removed ether
         if (typeof(this._AccountManager.getServersForIdentity) == 'function') { // new style
-            var servers = this._AccountManager.getServersForIdentity(identity);
+            var servers = this._AccountManager.getServersForIdentity(baseIdentity);
         } else {
-            var servers = this._AccountManager.GetServersForIdentity(identity);
+            var servers = this._AccountManager.GetServersForIdentity(baseIdentity);
         }
     try {
       if (typeof(this._AccountManager.getServersForIdentity) == 'function') { // new style
