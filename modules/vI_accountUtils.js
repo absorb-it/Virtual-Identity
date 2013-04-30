@@ -57,12 +57,11 @@ function getAccountsArray() {
     if (Components.utils.import("resource:///modules/folderUtils.jsm") && Components.utils.import("resource:///modules/iteratorUtils.jsm")
         && typeof(allAccountsSorted)=='function') {
         // if this worked we are having at least seamonkey 1.17
-        Log.debug("getAccounts - new schema");
-        
+//        Log.debug("getAccounts - new schema");
         accounts = allAccountsSorted(true);
     } else {
         // still some older version
-        Log.debug("getAccounts - old schema");
+//        Log.debug("getAccounts - old schema");
         var accounts = queryISupportsArray(accountManager.accounts,
                                         Components.interfaces.nsIMsgAccount);
 
