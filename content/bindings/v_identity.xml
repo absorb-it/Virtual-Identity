@@ -133,7 +133,7 @@
 		this.value = this._identityDataStorage.id.key;
         // virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor id='" + this.value + "'")
 
-		this.description = this._identityDataStorage.sideDescription;
+		this.description = this._identityDataStorage.sideDescription?this._identityDataStorage.sideDescription:"";
 		this.smtp = this._identityDataStorage.smtp.value;
         // virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor smtp='" + this.smtp + "'")
 		this.smtpStyle = "width:" + document.getElementById("virtualIdentityExtension_SmtpServerList").clientWidth + "px;";
@@ -578,7 +578,10 @@
 				if (!this._identityDataStorage.existingID && !this._identityDataStorage.email)
 					this._identityDataStorage.email = oldIdentityData.email;
 				if (!this._identityDataStorage.smtp.key) this._identityDataStorage.smtp.key = oldIdentityData.smtp.key;
-				if (!this._identityDataStorage.id.key) this._identityDataStorage.id.key = oldIdentityData.id.key;
+				if (!this._identityDataStorage.id.key) {
+					this._identityDataStorage.id.key = oldIdentityData.id.key;
+					this._identityDataStorage.sideDescription = oldIdentityData.sideDescription;
+				}
 				this._identityDataStorage.extras.setValuesToEnvironment();
 				if (this._identityDataStorage.existingID) this.vid = false;
 				else this.checkForVirtualIdentity();
