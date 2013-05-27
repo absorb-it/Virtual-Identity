@@ -39,7 +39,7 @@ function identityDataExtrasObject_sMimeSignature(currentWindow) {
   this.option = "storageExtras_sMime_messageSignature";    // option string to get preference settings
   this.elementID_msgCompose = "menu_securitySign1";
   this.updateFunction_msgCompose = function() {
-    (typeof(setSecuritySettings)=='function')?setSecuritySettings(1):null };
+    (typeof(this.currentWindow.setSecuritySettings)=='function')?this.currentWindow.setSecuritySettings(1):null };
 }
 identityDataExtrasObject_sMimeSignature.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,
