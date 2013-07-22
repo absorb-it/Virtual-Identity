@@ -38,6 +38,7 @@
             .getService(Components.interfaces.nsIMsgAccountManager);
         var debugNotes = vI.prefDialog.preferences.getBoolPref("debug_notification");
 
+        Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdentityExtension);
         var accounts = virtualIdentityExtension.getAccountsArray();
         for (let acc = 0; acc < accounts.length; acc++) {
             let account = accounts[acc];

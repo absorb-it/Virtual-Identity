@@ -42,7 +42,5 @@
 			src="chrome://v_identity/content/prefDialog/vI_prefDialog_FolderPicker.js" />
 		<script type="application/x-javascript"
             src="chrome://v_identity/content/prefDialog/vI_prefDialog.js" />
-		<script type="application/x-javascript"
-            src="chrome://v_identity/content/modules/vI_helper.js" />
 
 </dialog>

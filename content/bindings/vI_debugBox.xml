@@ -13,6 +13,7 @@
     <implementation implements="nsIObserver">
       <constructor><![CDATA[
         this.splitter = document.createElement("splitter");
+		Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
         virtualIdentityExtension.vIprefs.addObserver("debug_notification", this.observe, this);
         this.observe(this);
       ]]></constructor>
