@@ -13,10 +13,10 @@
 .replaceVIdentity #virtualIdentityExtension_Dialog_title,
 .replaceVIdentity #virtualIdentityExtension_Dialog_query { background-color: #d8e0e8; }
 
-.updateStorage .dialog-content-box { border: 10px solid infobackground; }
+.updateStorage .dialog-content-box { border: 10px solid #FFFFC7; }
 .updateStorage .dialog-button-box,
 .updateStorage #virtualIdentityExtension_Dialog_title,
-.updateStorage #virtualIdentityExtension_Dialog_query { background-color: infobackground; }
+.updateStorage #virtualIdentityExtension_Dialog_query { background-color: #FFFFC7; }
 
 #virtualIdentityExtension_Dialog_title {
 	font-size: medium;
