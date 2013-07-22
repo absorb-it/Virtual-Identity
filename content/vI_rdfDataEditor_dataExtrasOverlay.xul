@@ -90,7 +90,7 @@
 		<hbox id="vI_storageExtras_messageFormat">
 			<vbox><spacer flex="1"/>
 				<label id="outputFormatMenuLabel" value="&outputFormatMenu.label;"
-					accesskey="&outputFormatMenu.label;" control="outputFormatMenu" />
+					accesskey="&outputFormatMenu.accesskey;" control="outputFormatMenu" />
 			<spacer flex="1"/></vbox>
 			<menulist id="outputFormatMenu">
 			<menupopup>
