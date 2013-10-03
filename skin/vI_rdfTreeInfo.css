@@ -46,7 +46,7 @@ td {
 
 table {
 	background-color: #eee;
-	-moz-border-radius: 10px;
+	border-radius: 10px;
 	font-size: small;
 	border-collapse: collapse;
 	margin: auto;
