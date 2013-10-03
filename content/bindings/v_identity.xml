@@ -233,7 +233,7 @@
             
 			var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
                 .getService(Components.interfaces.nsISmtpService);
-			<!-- check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService -->
+			// check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
 			if (typeof(smtpService.servers) == "object") servers = smtpService.servers;
 			else servers = smtpService.smtpServers;
 			
