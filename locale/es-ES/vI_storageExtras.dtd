@@ -36,3 +36,7 @@
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP mensajes cifrados">
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: mensajes firmados">
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: usar PGP/MIME">
+
+<!-- required for pre TB24 versions -->
+<!ENTITY deliveryFormatMenu.label "Delivery Format"> <!-- translate -->
+<!ENTITY deliveryFormatMenu.accesskey "F"> <!-- translate -->

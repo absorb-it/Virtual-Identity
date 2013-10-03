@@ -36,3 +36,7 @@
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP: verschlüssel Emails">
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: signiere Emails">
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: nutze PGP/MIME">
+
+<!-- required for pre TB24 versions -->
+<!ENTITY deliveryFormatMenu.label "Sende-Format"> <!-- translate -->
+<!ENTITY deliveryFormatMenu.accesskey "F"> <!-- translate -->

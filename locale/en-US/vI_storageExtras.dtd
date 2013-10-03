@@ -36,3 +36,7 @@
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP: encrypt messages">
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: sign messages">
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: use PGP/MIME">
+
+<!-- required for pre TB24 versions -->
+<!ENTITY deliveryFormatMenu.label "Delivery Format"> <!-- translate -->
+<!ENTITY deliveryFormatMenu.accesskey "F"> <!-- translate -->

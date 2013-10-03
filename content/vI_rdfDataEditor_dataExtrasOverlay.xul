@@ -24,12 +24,12 @@
    - ***** END LICENSE BLOCK ***** -->
 
 <!DOCTYPE window [
-<!ENTITY % vIstorageExtrasDTD SYSTEM "chrome://v_identity/locale/vI_storageExtras.dtd" >
-%vIstorageExtrasDTD;
 <!ENTITY % messengercomposeDTD SYSTEM "chrome://messenger/locale/messengercompose/messengercompose.dtd" >
 %messengercomposeDTD;
 <!ENTITY % charsetDTD SYSTEM "chrome://global/locale/charsetOverlay.dtd" >
 %charsetDTD;
+<!ENTITY % vIstorageExtrasDTD SYSTEM "chrome://v_identity/locale/vI_storageExtras.dtd" >
+%vIstorageExtrasDTD;
 ]>
 
 <overlay id="vI_storageExtras" 
@@ -89,8 +89,8 @@
 			oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, 'outputFormatMenuLabel');virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, 'outputFormatMenu');" />
 		<hbox id="vI_storageExtras_messageFormat">
 			<vbox><spacer flex="1"/>
-				<label id="outputFormatMenuLabel" value="&outputFormatMenu.label;"
-					accesskey="&outputFormatMenu.accesskey;" control="outputFormatMenu" />
+				<label id="outputFormatMenuLabel" value="&deliveryFormatMenu.label;"
+					accesskey="&deliveryFormatMenu.accesskey;" control="outputFormatMenu" />
 			<spacer flex="1"/></vbox>
 			<menulist id="outputFormatMenu">
 			<menupopup>

@@ -36,3 +36,7 @@
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP: шифрование сообщений">
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: цифровая подпись сообщений">
 <!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: использование PGP/MIME">
+
+<!-- required for pre TB24 versions -->
+<!ENTITY deliveryFormatMenu.label "Delivery Format"> <!-- translate -->
+<!ENTITY deliveryFormatMenu.accesskey "F"> <!-- translate -->
