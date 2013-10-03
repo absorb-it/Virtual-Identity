@@ -323,8 +323,12 @@ smtpObj.prototype = {
 			if (this._key == DEFAULT_SMTP_TAG) this._value = this.DEFAULT_TAG;
 			else if (!this._key) this._value = null;
 			else if (this._key) {
-				var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
-					.getService(Components.interfaces.nsISmtpService).smtpServers;
+				var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+					.getService(Components.interfaces.nsISmtpService);
+				// check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
+				if (typeof(smtpService.servers) == "object") servers = smtpService.servers;
+				else servers = smtpService.smtpServers;
+
 				while (servers && servers.hasMoreElements()) {
 					var server = servers.getNext();
 					if (server instanceof Components.interfaces.nsISmtpServer && 
@@ -361,7 +365,7 @@ idObj.prototype = {
 		if (this._value == null) {
 			this._value = "";
             // if this worked we are having at least seamonkey 1.17
-            accounts = getAccountsArray();
+            let accounts = getAccountsArray();
             for (let acc = 0; acc < accounts.length; acc++) {
                 let account = accounts[acc];
                 let identities = getIdentitiesArray(account);

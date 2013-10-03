@@ -472,8 +472,12 @@ rdfDatasource.prototype = {
         var mismatchSMTPs = [];
         
         for (var smtp in relevantSMTPs) {
-            var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
-                .getService(Components.interfaces.nsISmtpService).smtpServers;
+			var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+                .getService(Components.interfaces.nsISmtpService);
+			// check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
+			if (typeof(smtpService.servers) == "object") servers = smtpService.servers;
+			else servers = smtpService.smtpServers;
+
             var found = false;
 			while (servers && servers.hasMoreElements()) {
 				var server = servers.getNext();
@@ -534,8 +538,12 @@ rdfDatasource.prototype = {
             else parent._smtpContainer.AppendElement(resource);
         }
         
-        var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
-            .getService(Components.interfaces.nsISmtpService).smtpServers;
+		var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+			.getService(Components.interfaces.nsISmtpService);
+		// check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
+		if (typeof(smtpService.servers) == "object") servers = smtpService.servers;
+		else servers = smtpService.smtpServers;
+
 		while (servers && servers.hasMoreElements()) {
 			var server = servers.getNext(); 
 			if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) storeSmtp(server, this);
@@ -1024,8 +1032,12 @@ rdfDatasourceImporter.prototype = {
     },
     
     _getMatchingSMTP : function(label, hostname, username) {
-        var servers = Components.classes["@mozilla.org/messengercompose/smtp;1"]
-            .getService(Components.interfaces.nsISmtpService).smtpServers;
+		var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+			.getService(Components.interfaces.nsISmtpService);
+		// check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
+		if (typeof(smtpService.servers) == "object") servers = smtpService.servers;
+		else servers = smtpService.smtpServers;
+
 		while (servers && servers.hasMoreElements()) {
 			var server = servers.getNext(); 
 			if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType)
