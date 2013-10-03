@@ -59,6 +59,36 @@ var draftsFolderPickerId = "msgDraftsFolderPicker";
 var tmplAccountPickerId = "msgStationeryAccountPicker";
 var tmplFolderPickerId = "msgStationeryFolderPicker";
 
+
+// patch for https://bugzilla.mozilla.org/show_bug.cgi?id=889022, see there
+if (Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo).ID != "postbox@postbox-inc.com")
+{
+  Components.utils.import("resource:///modules/MailUtils.js");
+}
+
+if (typeof(GetMsgFolderFromUri) != "function") {
+	function GetMsgFolderFromUri(uri, checkFolderAttributes)
+	{
+		let msgfolder = null;
+		if (typeof MailUtils != 'undefined') {
+		return MailUtils.getFolderForURI(uri, checkFolderAttributes);
+		}
+		try { // Postbox
+		let resource = GetResourceFromUri(uri);
+		msgfolder = resource.QueryInterface(Components.interfaces.nsIMsgFolder);
+		if (checkFolderAttributes) {
+			if (!(msgfolder && (msgfolder.parent || msgfolder.isServer))) {
+			msgfolder = null;
+			}
+		}
+		}
+		catch (ex) {
+		//dump("failed to get the folder resource\n");
+		}
+		return msgfolder;
+	}
+}
+  
 function setDefaultCopiesAndFoldersPrefs(identity, server, accountData)
 {
     var am = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
