@@ -37,8 +37,6 @@ Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdent
 Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
 Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
-tmpfield = null;
-
 //prepares an object for easy comparison against another. for strings, lowercases them
 function prepareForComparison (element, field) {
     if (field == "changedCol") {
