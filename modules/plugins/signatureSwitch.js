@@ -31,8 +31,6 @@ Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.signatureSwitch");
 
 function signatureSwitch(existingIdentity) {
-  if (!signatureSwitchInstalled) return;
-  
   // always try to initialize Security/Enigmail-Options
   try { setSecuritySettings(1); enigSetMenuSettings(''); } catch(vErr) { };
   
@@ -44,7 +42,7 @@ function signatureSwitch(existingIdentity) {
     Log.debug("signatureSwitch hide/remove signatures");
     
     // code to hide the text signature
-    if (vIprefs.get("hide_signature") && signatureWindow.ss_signature && signatureWindow.ss_signature.length == 0) {
+    if (signatureSwitchInstalled && vIprefs.get("hide_signature") && signatureWindow.ss_signature && signatureWindow.ss_signature.length == 0) {
       Log.debug("hide text/html signature");
       signatureWindow.ss_main.signatureSwitch()
     }
@@ -79,7 +77,7 @@ function signatureSwitch(existingIdentity) {
       }
     }
   }
-  else {
+  else if (signatureSwitchInstalled) {
     Log.debug("signatureSwitch restore signature");
     // code to show the text signature
     if (signatureWindow.ss_signature && signatureWindow.ss_signature.length > 0) {
