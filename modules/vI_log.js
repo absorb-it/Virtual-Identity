@@ -212,25 +212,58 @@ function clearDebugOutput() {
     obj_notificationBox.removeAllNotifications(true);
 }
 
+function UpdateSmartReplyNotification() {
+    if (vIprefs.get("smart_reply_notification")) {
+        SmartReplyAppender = new NotificationOutputAppender(myNotificationFormatter);
+        SmartReplyAppender.level = Log4Moz.Level["All"];
+        SmartReplyNotification.addAppender(SmartReplyAppender);
+    }
+    else {
+        SmartReplyNotification.removeAppender(SmartReplyAppender);
+    }
+}
+
+function UpdateStorageNotification() {
+    if (vIprefs.get("storage_notification")) {
+        StorageAppender = new NotificationOutputAppender(myNotificationFormatter);
+        StorageAppender.level = Log4Moz.Level["All"];
+        StorageNotification.addAppender(StorageAppender);
+    }
+    else {
+        StorageNotification.removeAppender(StorageAppender);
+    }
+}
+
+function UpdateGetHeaderNotification() {
+    if (vIprefs.get("get_header_notification")) {
+        GetHeaderAppender = new NotificationOutputAppender(myNotificationFormatter);
+        GetHeaderAppender.level = Log4Moz.Level["All"];
+        GetHeaderNotification.addAppender(GetHeaderAppender);
+    }
+    else {
+        GetHeaderNotification.removeAppender(GetHeaderAppender);
+    }
+}
+
+
 let logRoot = "virtualIdentity";
 let MyLog = setupFullLogging(logRoot);
 
 let myNotificationFormatter = new NotificationFormatter();
+
+let SmartReplyAppender;
 let SmartReplyNotification = Log4Moz.repository.getLogger("virtualIdentity.SmartReply");
-if (vIprefs.get("smart_reply_notification")) {
-  let napp = new NotificationOutputAppender(myNotificationFormatter);
-  napp.level = Log4Moz.Level["All"];
-  SmartReplyNotification.addAppender(napp);
-}
+
+let StorageAppender;
 let StorageNotification = Log4Moz.repository.getLogger("virtualIdentity.StorageNotification");
-if (vIprefs.get("storage_notification")) {
-  let napp = new NotificationOutputAppender(myNotificationFormatter);
-  napp.level = Log4Moz.Level["All"];
-  StorageNotification.addAppender(napp);
-}
+
+let GetHeaderAppender;
 let GetHeaderNotification = Log4Moz.repository.getLogger("virtualIdentity.GetHeaderNotification");
-if (vIprefs.get("get_header_notification")) {
-  let napp = new NotificationOutputAppender(myNotificationFormatter);
-  napp.level = Log4Moz.Level["All"];
-  GetHeaderNotification.addAppender(napp);
-}
+
+UpdateSmartReplyNotification();
+UpdateStorageNotification();
+UpdateGetHeaderNotification();
+
+vIprefs.addObserver("smart_reply_notification", UpdateSmartReplyNotification, this);
+vIprefs.addObserver("storage_notification", UpdateStorageNotification, this);
+vIprefs.addObserver("get_header_notification", UpdateGetHeaderNotification, this);
