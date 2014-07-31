@@ -23,8 +23,8 @@
    - Contributor(s):
    - ***** END LICENSE BLOCK ***** -->
 
-<!DOCTYPE pickerDTD SYSTEM "chrome://messenger/locale/msgFolderPickerOverlay.dtd">
-<?xml-stylesheet href="chrome://messenger/skin/folderMenus.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://messenger/locale/msgFolderPickerOverlay.dtd">
+<?xml-stylesheet href="chrome://messenger/skin/messenger.css" type="text/css"?>
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	
@@ -44,11 +44,12 @@
 	<row id="msgFccFolderPickerRow">
 		<menulist id="msgFccFolderPicker" 
 			  aria-labelledby="VIdent_fcc_selectFolder"
-			  oncommand="noteSelectionChange('VIdent_fcc_selectFolder', event)" 
-			  observes="VIdent_broadcaster_doFcc">
-			<menupopup id="msgFccFolderPopup" type="folder" mode="filing"
-				   showFileHereLabel="true"
-				   fileHereLabel="&filemessageschoosethis.label;"/>
+              oncommand="virtualIdentityExtension.noteSelectionChange('VIdent_fcc_selectFolder', event)">
+			<menupopup class="searchPopup menulist-menupopup"
+                      type="folder"
+                      mode="search"
+                      showAccountsFileHere="true"
+                      showFileHereLabel="true"/>
 		</menulist>
 	</row>
 	<row id="msgDraftsAccountPickerRow">
@@ -61,10 +62,12 @@
 	<row id="msgDraftsFolderPickerRow">
 		<menulist id="msgDraftsFolderPicker"
 			  aria-labelledby="VIdent_draft_selectFolder"
-			  oncommand="noteSelectionChange('VIdent_draft_selectFolder', event)">
-			<menupopup id="msgDraftFolderPopup" type="folder" mode="filing"
-				   showFileHereLabel="true"
-				   fileHereLabel="&filemessageschoosethis.label;"/>
+			  oncommand="virtualIdentityExtension.noteSelectionChange('VIdent_draft_selectFolder', event)">
+            <menupopup class="searchPopup menulist-menupopup"
+                      type="folder"
+                      mode="filing"
+                      showAccountsFileHere="true"
+                      showFileHereLabel="true"/>
 		</menulist>
 	</row>
 	<row id="msgStationeryAccountPickerRow">
@@ -77,10 +80,12 @@
 	<row id="msgStationeryFolderPickerRow">
 		<menulist id="msgStationeryFolderPicker"
 			  aria-labelledby="VIdent_tmpl_selectFolder"
-			  oncommand="noteSelectionChange('VIdent_tmpl_selectFolder', event)">
-			<menupopup id="msgTemplFolderPopup" type="folder" mode="filing"
-				   showFileHereLabel="true"
-				   fileHereLabel="&filemessageschoosethis.label;"/>
+              oncommand="virtualIdentityExtension.noteSelectionChange('VIdent_tmpl_selectFolder', event)">
+            <menupopup class="searchPopup menulist-menupopup"
+                      type="folder"
+                      mode="filing"
+                      showAccountsFileHere="true"
+                      showFileHereLabel="true"/>
 		</menulist>
 	</row>
 	

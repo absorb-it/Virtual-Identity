@@ -372,4 +372,8 @@ function SetRadioButtons(selectPickerId, unselectPickerId)
 vI.onInitCopiesAndFolders = onInitCopiesAndFolders;
 vI.onSaveCopiesAndFolders = onSaveCopiesAndFolders;
 vI.setPickersState = setPickersState;
+vI.gFccRadioElemChoice = gFccRadioElemChoice;
+vI.gDraftsRadioElemChoice = gDraftsRadioElemChoice;
+vI.gTmplRadioElemChoice = gTmplRadioElemChoice;
+
 }});

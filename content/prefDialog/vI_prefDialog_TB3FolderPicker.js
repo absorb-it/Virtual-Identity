@@ -73,17 +73,17 @@ function noteSelectionChange(radioItemId, aEvent)
     switch (radioGroup)
     {
         case "VIdent_doFcc" :
-            gFccRadioElemChoice = modeValue;
+            vI.gFccRadioElemChoice = modeValue;
             picker = document.getElementById("msgFccFolderPicker");
             break;
     
         case "VIdent_messageDrafts" :
-            gDraftsRadioElemChoice = modeValue;
+            vI.gDraftsRadioElemChoice = modeValue;
             picker = document.getElementById("msgDraftsFolderPicker");
             break;
 
         case "VIdent_messageTemplates" :
-            gTmplRadioElemChoice = modeValue;
+            vI.gTmplRadioElemChoice = modeValue;
             picker = document.getElementById("msgStationeryFolderPicker");
             break;
     }
@@ -127,4 +127,5 @@ function SaveFolderSettings(radioElemChoice,
 }
 vI.InitFolderDisplays = InitFolderDisplays;
 vI.SaveFolderSettings = SaveFolderSettings;
+vI.noteSelectionChange = noteSelectionChange;
 }});
