@@ -71,7 +71,7 @@ var storage = {
 	awOnBlur : function (element, currentWindow) {
 		// only react on events triggered by addressCol2 - textinput Elements
 		if (!element || ! element.id.match(/^addressCol2*/)) return;
-		Log.debug("awOnBlur '" + element.id + "'");
+		Log.debug("awOnBlur '" + element.id + "' '" + element.value  + "'");
     storage.__updateVIdentityFromStorage(element, currentWindow);
 		storage.focusedElement = null;
 	},
@@ -82,7 +82,7 @@ var storage = {
 	},
 
 	awPopupOnCommand : function (element, currentWindow) {
-		Log.debug("awPopupOnCommand '" + element.id + "'");
+		Log.debug("awPopupOnCommand '" + element.id + "' '" + element.value  + "'");
 		storage.__updateVIdentityFromStorage(currentWindow.document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")), currentWindow);
 		if (element.selectedItem.getAttribute("value") == "addr_reply") // if reply-to is manually entered disable AutoReplyToSelf
 			currentWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").setAttribute("hidden", "true");
