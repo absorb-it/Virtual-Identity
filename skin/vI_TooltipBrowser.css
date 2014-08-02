@@ -27,6 +27,7 @@ div.bool.checked {
 
 body {
 	margin: 0px;
+    color: infotext;
 }
 
 table {
