@@ -72,7 +72,12 @@ var storage = {
 		// only react on events triggered by addressCol2 - textinput Elements
 		if (!element || ! element.id.match(/^addressCol2*/)) return;
 		Log.debug("awOnBlur '" + element.id + "' '" + element.value  + "'");
-    storage.__updateVIdentityFromStorage(element, currentWindow);
+        if (element.value == "") {
+            element.value = element.getAttribute("value");
+            Log.debug("awOnBlur second try'" + element.id + "' '" + element.value  + "'");
+        }
+        if (element.value == "") return;
+        storage.__updateVIdentityFromStorage(element, currentWindow);
 		storage.focusedElement = null;
 	},
 
