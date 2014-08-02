@@ -105,7 +105,8 @@
 	  <statusbarpanel class="virtualIdentityExtension_Logo"
 			  id="virtualIdentityExtension_Logo"
 			  insertafter="statusText"
-			  align="right">
+			  align="right"
+              hidden="true">
 		<label value="&vident.vidLogo.label; &vident.version;" />
 		<observes id="virtualIdentityExtension_msgIdentityClone_observer" element="virtualIdentityExtension_msgIdentityClone" attribute="vid" />
 	</statusbarpanel>
@@ -115,7 +116,8 @@
 			  insertafter="totalMessageCount"
 			  context="virtualIdentityExtension_statusMenu"
 			  tooltip="virtualIdentityExtension_statusMenuTooltip"
-			  onclick="virtualIdentityExtension.statusmenu.clicked(event.button);" />
+			  onclick="virtualIdentityExtension.statusmenu.clicked(event.button);"
+              hidden="true"/>
 </statusbar>
   
 </overlay>

@@ -43,10 +43,15 @@ var statusmenu = {
 	objSaveSMTPSwitch : null,
 	objFccSwitch : null,
 	objStatusText : null,
+    objStatusLogo : null,
 	
 	observe: function(self, subject, topic, data) {
 //         Log.debug("statusmenu observe " + data);
 		switch (data) {
+            case "show_status":
+                statusmenu.objStatusMenu.setAttribute("hidden", !vI.vIprefs.get(data));
+                statusmenu.objStatusLogo.setAttribute("hidden", !vI.vIprefs.get(data));
+                // no break, continue like with doFcc           
 			case "fcc_show_switch":
 				statusmenu.objFccSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
 				// no break, continue like with doFcc			
@@ -98,7 +103,8 @@ var statusmenu = {
 	},
 	
 	addObserver: function() {
-		vI.vIprefs.addObserver("fcc_show_switch", this.observe, this);
+		vI.vIprefs.addObserver("show_status", this.observe, this);
+        vI.vIprefs.addObserver("fcc_show_switch", this.observe, this);
 		vI.vIprefs.addObserver("doFcc", this.observe, this);
 		vI.vIprefs.addObserver("storage", this.observe, this);
 		vI.vIprefs.addObserver("storage_show_switch", this.observe, this);
@@ -111,6 +117,7 @@ var statusmenu = {
 	},
 	
 	removeObserver: function() {
+        vI.vIprefs.removeObserver("show_status", this.observe);
 		vI.vIprefs.removeObserver("fcc_show_switch", this.observe);
 		vI.vIprefs.removeObserver("doFcc", this.observe);
 		vI.vIprefs.removeObserver("storage", this.observe);
@@ -125,6 +132,7 @@ var statusmenu = {
 	
 	init : function () {
 		statusmenu.objStatusMenu = document.getElementById("virtualIdentityExtension_vIStatusMenu");
+        statusmenu.objStatusLogo = document.getElementById("virtualIdentityExtension_Logo");
 		statusmenu.objSaveBaseIDMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_saveBaseID");
 		statusmenu.objSaveSMTPMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_saveSMTP");
 		statusmenu.objStorageSaveMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_save");
@@ -138,6 +146,7 @@ var statusmenu = {
 		statusmenu.objStatusTooltipLine2 = document.getElementById("virtualIdentityExtension_statusMenuTooltip_StatusValueLine2");
 
 		statusmenu.addObserver();
+        statusmenu.observe(this, null, null, "show_status");
 		statusmenu.observe(this, null, null, "fcc_show_switch");
 		statusmenu.observe(this, null, null, "storage_show_switch");
 		statusmenu.observe(this, null, null, "storage_show_baseID_switch");
@@ -151,22 +160,24 @@ var statusmenu = {
 	
 	__timeout : 5,	// timeout for status messages in seconds
 	__addStatusMessage : function(save, smtp) {
-		var sourceString = "vident.statusText.save." + save;
-		if (smtp != "off") sourceString = sourceString + ".smtp"
-		var messageLine1 = statusmenu.stringBundle.GetStringFromName(sourceString + ".line1");
-		var messageLine2 = statusmenu.stringBundle.GetStringFromName(sourceString + ".line2");
-		if (!messageLine2) {
-			statusmenu.objStatusText.setAttribute("label", messageLine1);
-			statusmenu.objStatusTooltipLine1.setAttribute("value", messageLine1);
-			statusmenu.objStatusTooltipLine2.setAttribute("hidden", "true");
-		}	
-		else {
-			statusmenu.objStatusText.setAttribute("label", messageLine1 + " " + messageLine2);
-			statusmenu.objStatusTooltipLine1.setAttribute("value", messageLine1);
-			statusmenu.objStatusTooltipLine2.setAttribute("value", messageLine2);
-			statusmenu.objStatusTooltipLine2.removeAttribute("hidden");
-		}
-		window.setTimeout(virtualIdentityExtension.statusmenu.__clearStatusMessage, statusmenu.__timeout * 1000);
+        if (vI.vIprefs.get("show_status")) {
+            var sourceString = "vident.statusText.save." + save;
+            if (smtp != "off") sourceString = sourceString + ".smtp"
+            var messageLine1 = statusmenu.stringBundle.GetStringFromName(sourceString + ".line1");
+            var messageLine2 = statusmenu.stringBundle.GetStringFromName(sourceString + ".line2");
+            if (!messageLine2) {
+                statusmenu.objStatusText.setAttribute("label", messageLine1);
+                statusmenu.objStatusTooltipLine1.setAttribute("value", messageLine1);
+                statusmenu.objStatusTooltipLine2.setAttribute("hidden", "true");
+            }	
+            else {
+                statusmenu.objStatusText.setAttribute("label", messageLine1 + " " + messageLine2);
+                statusmenu.objStatusTooltipLine1.setAttribute("value", messageLine1);
+                statusmenu.objStatusTooltipLine2.setAttribute("value", messageLine2);
+                statusmenu.objStatusTooltipLine2.removeAttribute("hidden");
+            }
+            window.setTimeout(virtualIdentityExtension.statusmenu.__clearStatusMessage, statusmenu.__timeout * 1000);
+        }
 	},
 
 	__clearStatusMessage : function() {

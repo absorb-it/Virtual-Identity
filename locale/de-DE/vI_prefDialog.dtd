@@ -90,6 +90,8 @@
 <!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "entferne S/MIME Signatur Nutzung einer Virtuellen Identität">
 <!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "entferne openPGP Signatur bei Nutzung einer Virtuellen Identität">
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "setze Virtuelle Identität als Reply-To Adresse">
+<!ENTITY vI_prefDialog.composeDialog.status.label "zeige Status-Bar Infos / Menu">
+<!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "zeigt Hinweise im Status-Bar sowie Status-Bar Menu">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "zeige SMTP Auswahlmenu">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "zeige Menu um zwischen existierenden SMTP-Servern auszuwählen">
 <!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "zeige Schalter um Sende-Kopien an-/abzuschalten (Fcc)">

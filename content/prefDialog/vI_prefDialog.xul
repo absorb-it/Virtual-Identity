@@ -360,6 +360,8 @@
 				<dialogheader title="&vI_prefDialog.composeDialog.header2;"/>
 				<groupbox>
 				<caption label="&vI_prefDialog.composeDialog.caption2;"/>
+                    <checkbox id="VIdent_identity.show_status" label="&vI_prefDialog.composeDialog.status.label;"
+                        tooltiptext="&vI_prefDialog.composeDialog.status.tooltiptext;" prefstring="show_status" />
 					<checkbox id="VIdent_identity.show_smtp" label="&vI_prefDialog.composeDialog.SMTP.label;"
 						tooltiptext="&vI_prefDialog.composeDialog.SMTP.tooltiptext;" prefstring="show_smtp" />
 					<checkbox id="VIdent_identity.fcc_show_switch" label="&vI_prefDialog.composeDialog.fcc_show_switch.label;"

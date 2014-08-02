@@ -90,6 +90,8 @@
 <!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "désactiver la signature S/MIME en cas d'utilisation de Virtual Identity">
 <!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "désactiver la signature openPGP en cas d'utilisation de Virtual Identity">
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "utiliser Virtual Identity pour une adresse de &apos;réponse à&apos;">
+<!ENTITY vI_prefDialog.composeDialog.status.label "show Status-Bar infos / menu"> <!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifiations in Status-Bar, display Status-Bar Menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "montrer le menu SMTP">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "affiche le menu de sélection entre les serveurs SMTP disponibles">
 <!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "afficher le bouton pour activer/désactiver l'enregistrement de courriers envoyés">

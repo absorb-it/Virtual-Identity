@@ -73,6 +73,7 @@ var prefDialog = {
 				"VIdent_identity.smart_reply",
 				"VIdent_identity.smart_detectByReceivedHeader",
 				"VIdent_identity.smart_reply_for_newsgroups",
+                "VIdent_identity.show_status",
 				"VIdent_identity.show_smtp",
 				"VIdent_identity.fcc_show_switch",
 				"VIdent_identity.menu_entry",
