@@ -269,11 +269,11 @@ var account = {
 		if (account._account) {
 			account.__removeAccount(account._account);
 			account._account = null;
+            try {
+                if (selectedFolder) mailWindow.gFolderTreeView.selectFolder(selectedFolder);
+                if (selectedMessages) mailWindow.gFolderDisplay.selectMessages(selectedMessages, false, false);
+            } catch (e) { };
 		}
-		try {
-		if (selectedFolder) mailWindow.gFolderTreeView.selectFolder(selectedFolder);
-		if (selectedMessages) mailWindow.gFolderDisplay.selectMessages(selectedMessages, false, false);
-		} catch (e) { };
 	},
 	
 	createAccount : function(identityData, baseIdentity)
