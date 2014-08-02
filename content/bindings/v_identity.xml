@@ -338,7 +338,7 @@
 		// it will be done in v_identity.js init
 		// document.getElementById("virtualIdentityExtension_tooltipPopupset").addTooltip(this, false);
 		
-		virtualIdentityExtension.vIprefs.addObserver("extensions.virtualIdentity.show_smtp", this.observe, this);
+		virtualIdentityExtension.vIprefs.addObserver("show_smtp", this.observe, this);
 		this.observe(this);
 		]]>
 	</constructor>
@@ -346,7 +346,7 @@
 		<![CDATA[
 		var tooltipPopupset = document.getElementById("virtualIdentityExtension_tooltipPopupset")
 		if (tooltipPopupset) tooltipPopupset.removeTooltip(this.tooltipElem.getAttribute("tooltip"));
-		virtualIdentityExtension.vIprefs.removeObserver("extensions.virtualIdentity.show_smtp", this.observe);
+		virtualIdentityExtension.vIprefs.removeObserver("show_smtp", this.observe);
         ]]>
 	</destructor>
 
@@ -608,7 +608,7 @@
       <parameter name="aSubject" />
       <parameter name="aTopic" />
       <parameter name="aPrefName" />
-      <![CDATA[
+      <body><![CDATA[
         self.showSmtp = 
           virtualIdentityExtension.vIprefs.get("show_smtp");
         var MenuItems = self._popupElem.childNodes;
@@ -616,7 +616,8 @@
             if (MenuItems[j].localName == "menuseparator") continue;
             MenuItems[j].smtpStyle = "width:" + document.getElementById("virtualIdentityExtension_SmtpServerList").clientWidth + "px;";
         }
-    ]]></method>
+        ]]></body>
+    </method>
 	<property name="email" onset="this.identityData.email = val; this.label = this.identityData.combinedName; this.inputEvent()" />
 	<property name="vid" onget="return (this.getAttribute('vid') == 'true');" onset="this.setAttribute('vid',val?'true':'false'); return val;" />
 	<property name="label" onget="return this.textBoxElem.value;" onset="this.textBoxElem.value = val; return val;" />
