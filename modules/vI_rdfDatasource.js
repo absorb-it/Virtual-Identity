@@ -126,7 +126,19 @@ rdfDatasource.prototype = {
             .get("ProfD", Components.interfaces.nsIFile);
         var delimiter = (file.path.match(/\\/))?"\\":"/";
 
-        newFile.initWithPath(file.path + delimiter + this._rdfFileName);
+        try {
+            newFile.initWithPath(file.path + delimiter + this._rdfFileName);
+        } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
+            var debugMsg = "Filename not valid: '" + file.path + delimiter + this._rdfFileName + "'\n" +
+                "Virtual Identity Storage won't work.\n\n" +
+                "Please report this issue with filename on https://www.absorb.it/virtual-id\n\n" +
+                "You can just copy the lines below in your browser to create a ticket\n\n" +
+                "https://www.absorb.it/virtual-id/newticket?summary=RDF Filename Error&description=Filename " + file.path + delimiter + this._rdfFileName + " for rdf not valid"
+            get3PaneWindow().alert(debugMsg);
+            log.debug("Filename not valid: '" + file.path + delimiter + this._rdfFileName + "'");
+            log.debug("can't open rdfDatasource - storage won't work");
+            return;
+        }
         var fileURI = protoHandler.newFileURI(newFile);
 
         Log.debug("init: read rdf from '" + fileURI.spec + "'");
