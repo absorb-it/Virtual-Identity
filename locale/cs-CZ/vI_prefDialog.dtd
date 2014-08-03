@@ -91,7 +91,7 @@
 <!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "při použití Virtual Identity vypnout openPGP podpis">
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "nastavit Virtual Identity jako adresu pro Reply-To">
 <!ENTITY vI_prefDialog.composeDialog.status.label "show Status-Bar infos / menu"> <!-- translate -->
-<!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifiations in Status-Bar, display Status-Bar Menu"> <!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "zobrazit nabídku SMTP">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "zobrazit nabídku pro výběr dostupných SMTP serverů">
 <!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "zobrazit přepínač pro zapnutí ukládání odesílaných e-mailů (FCC)">

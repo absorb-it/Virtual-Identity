@@ -91,7 +91,7 @@
 <!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "deactivate openPGP signature when using a Virtual Identity">
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "set Virtual Identity as Reply-To address">
 <!ENTITY vI_prefDialog.composeDialog.status.label "show Status-Bar infos / menu">
-<!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifiations in Status-Bar, display Status-Bar Menu">
+<!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "show SMTP Menu">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "show Menu to select between available SMTP-servers">
 <!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "show switch to activate/deactivate saving of sent mails (fcc)">

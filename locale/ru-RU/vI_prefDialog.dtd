@@ -91,7 +91,7 @@
 <!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "Деактивировать цифровые подписи openPGP при использовании виртуальных личных данных">
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "Устанавливать виртуальные личные данные в качестве обратного адреса (Reply-To)">
 <!ENTITY vI_prefDialog.composeDialog.status.label "show Status-Bar infos / menu"> <!-- translate -->
-<!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifiations in Status-Bar, display Status-Bar Menu"> <!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "Отображать меню SMTP-серверов">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "Отображать меню доступных SMTP-серверов с возможностью выбора SMTP-сервера, используемого для отправки сообщения.">
 <!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "Чекбокс для выборочной активации/деактивации сохранения отправленных сообщений (FCC)">
