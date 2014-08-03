@@ -45,6 +45,7 @@
 <!ENTITY vI_prefDialog.smartTab3.caption "3. vergleiche mit bestehenden Identitäten">
 <!ENTITY vI_prefDialog.smartReply.ignoreFullname.label "ignoriere Namensangaben beim Vergleich der Email-Adressen mit vorhandenen Identitäten">
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "falls kein Name zu einer Email-Adresse gefunden wurde, benutze folgenden Namen:">
+<!ENTITY vI_prefDialog.smartReply.searchBaseIdentity.label "nutze erste permanente Identität mit passender Domain als Basis-Identität">
 
 
 <!ENTITY vI_prefDialog.idSelection.Cell0.label "Virtual Identity Nutzung">

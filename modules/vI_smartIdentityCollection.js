@@ -392,6 +392,21 @@ smartIdentityCollection.prototype = {
 					}
 				}
 			}
+			
+			/* smart_reply_searchBaseIdentity: compare email with other Identities          */
+            /* to find matching domain. Use first found as base identity (smtp etc) */
+            if (vIprefs.get("smart_reply_searchBaseIdentity")) {
+                Log.debug("compare domain name with existing accounts.")
+            
+                for (var index = 0; index < this._allIdentities.number; index++) {
+                    var idKey = this._allIdentities.identityDataCollection[index].hasMatchingDomainIdentity();
+                    if (idKey) {
+                        Log.debug("use id with matching domain as base ID");
+                        this._allIdentities.identityDataCollection[index].id.key = idKey;
+                    }
+                }                
+            }
+            
 		}
 		else Log.debug("SmartReply skipped. No Header-information found.");
 		

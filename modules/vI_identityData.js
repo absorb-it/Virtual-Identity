@@ -179,7 +179,39 @@ identityData.prototype = {
 		return null;
 	},
 	
-	equals : function(compareIdentityData) {
+    // dependent on MsgComposeCommands, should/will only be called in ComposeDialog
+    hasMatchingDomainIdentity : function() {
+        Log.debug("hasMatchingDomainIdentity");
+        
+        var domainArray = this.email.match(/@[^@]+$/);
+        if (!domainArray) {
+            Log.debug("hasMatchingDomainIdentity found no domain for email " + this.email);
+            return;
+        }
+        Log.debug("hasMatchingDomainIdentity searching for domain " + domainArray[0]);
+        
+        var accounts = getAccountsArray();
+        for (let acc = 0; acc < accounts.length; acc++) {
+            let account = accounts[acc];
+            try { prefroot.getBoolPref("mail.account."+account.key+".vIdentity"); continue; } catch (e) { };
+            let identities = getIdentitiesArray(account);
+            for (let i = 0; i < identities.length; i++) {
+                let identity = identities[i];
+                var idDomainArray = identity.email.match(/@[^@]+$/);
+                if (!idDomainArray) continue;
+//                 Log.debug("comp: domain.toLowerCase()='" + domainArray[0].toLowerCase() + "' idDomain.toLowerCase()='" + idDomainArray[0].toLowerCase() + "'");
+                if (domainArray[0].toLowerCase() == idDomainArray[0].toLowerCase()) {
+                        // if domain matches, everything is perfect!
+                        Log.debug("hasMatchingDomainIdentity: found matching id for domain '" + domainArray[0] + "'");
+                        return identity.key; // return key and stop searching
+                }
+            }
+        }
+        Log.debug("hasMatchingDomainIdentity: '" + domainArray[0] + "' not found");
+        return null;
+    },
+
+    equals : function(compareIdentityData) {
 		this.comp.compareID = compareIdentityData;
 
 		this.comp.equals.fullName = (((this.fullName)?this.fullName.toLowerCase():null) == ((compareIdentityData.fullName)?compareIdentityData.fullName.toLowerCase():null));

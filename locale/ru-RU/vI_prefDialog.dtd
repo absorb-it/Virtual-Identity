@@ -45,6 +45,7 @@
 <!ENTITY vI_prefDialog.smartTab3.caption "3. Сравнение с имеющимися данными">
 <!ENTITY vI_prefDialog.smartReply.ignoreFullname.label "Игнорировать имена при сравнении полученных E-mail адресов с уже имеющимися в хранилище личными данными.">
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "При отсутствии имен у полученных E-mail адресов, использовать имя:">
+<!ENTITY vI_prefDialog.smartReply.searchBaseIdentity.label "use first persistent Identity with matching domain as Base Identity"> <!-- translate -->
 
 
 <!ENTITY vI_prefDialog.idSelection.Cell0.label "Использование Virtual Identity">

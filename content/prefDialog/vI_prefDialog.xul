@@ -224,6 +224,8 @@
 					<vbox><spacer flex="1"/><textbox id="VIdent_identity.smart_reply_defaultFullName"
 						prefstring="smart_reply_defaultFullName" size="20" /><spacer flex="1"/></vbox>
 					</hbox>
+                    <checkbox id="VIdent_identity.smart_reply_searchBaseIdentity" label="&vI_prefDialog.smartReply.searchBaseIdentity.label;"
+                        prefstring="smart_reply_searchBaseIdentity" wrap="true" class="widthXX" />
 				</vbox>
 				</groupbox>
 			</tabpanel>

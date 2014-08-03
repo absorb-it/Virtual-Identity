@@ -22,6 +22,7 @@ pref("extensions.virtualIdentity.smart_reply_ignoreFullName", false);
 pref("extensions.virtualIdentity.smart_reply_for_newsgroups", false);
 pref("extensions.virtualIdentity.smart_reply_added_extraHeaders", "");
 pref("extensions.virtualIdentity.smart_detectByReceivedHeader", true);
+pref("extensions.virtualIdentity.smart_reply_searchBaseIdentity", true);
 pref("extensions.virtualIdentity.autoTimestamp", false);
 pref("extensions.virtualIdentity.autoString", "%l%t@%d");
 pref("extensions.virtualIdentity.autoTimeFormat", "");

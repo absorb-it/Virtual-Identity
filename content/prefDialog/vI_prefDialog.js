@@ -84,6 +84,7 @@ var prefDialog = {
 				"VIdent_identity.get_header_notification",
 				"VIdent_identity.smart_reply_defaultFullName",
 				"VIdent_identity.smart_reply_ignoreFullName",
+                "VIdent_identity.smart_reply_searchBaseIdentity",
 				"VIdent_identity.autoTimestamp",
 				"VIdent_identity.autoTimeString",
 				"VIdent_identity.autoTimeFormat",

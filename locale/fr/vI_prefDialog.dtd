@@ -45,6 +45,7 @@
 <!ENTITY vI_prefDialog.smartTab3.caption "3. Comparer avec les identités existantes">
 <!ENTITY vI_prefDialog.smartReply.ignoreFullname.label "ignorer le nom complet lors de la comparaison des adresses courriel avec les identités existantes">
 <!ENTITY vI_prefDialog.smartReply.defaultFullname.label "Si aucune adresse courriel trouvée ne contient un nom, utiliser le nom suivant :">
+<!ENTITY vI_prefDialog.smartReply.searchBaseIdentity.label "use first persistent Identity with matching domain as Base Identity"> <!-- translate -->
 
 
 <!ENTITY vI_prefDialog.idSelection.Cell0.label "Virtual Identity Usage"> <!-- translate -->
