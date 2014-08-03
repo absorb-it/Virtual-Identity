@@ -327,6 +327,10 @@ treechildren::-moz-tree-cell-text(locked) {
 	padding: 0;
 }
 
+.v_identity_logo_statusbar {
+    padding-top: 5px
+}
+
 #virtualIdentityExtension_debugBox {
     -moz-binding: url("chrome://v_identity/content/bindings/vI_debugBox.xml#vI_debugBox");
 }

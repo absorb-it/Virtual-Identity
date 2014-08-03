@@ -107,7 +107,7 @@
 			  insertafter="statusText"
 			  align="right"
               hidden="true">
-		<label value="&vident.vidLogo.label; &vident.version;" />
+		<label class="v_identity_logo v_identity_logo_statusbar" value="&vident.vidLogo.label; &vident.version;" />
 		<observes id="virtualIdentityExtension_msgIdentityClone_observer" element="virtualIdentityExtension_msgIdentityClone" attribute="vid" />
 	</statusbarpanel>
 	  <statusbarpanel id="virtualIdentityExtension_vIStatusMenu" save="off"
