@@ -146,7 +146,8 @@ function notificationOverflow(elem) {
     elem.height = newHeight;
   // give the box a frame if it is to big
   if (tooBig)
-    currentWindow.document.getElementById("virtualIdentityExtension_vINotificationTextbox").setAttribute("class", "plain border")
+    var notificationBox = currentWindow.document.getElementById("virtualIdentityExtension_vINotificationTextbox");
+    if (notificationBox) notificationBox.setAttribute("class", "plain border");
 }
 
 
