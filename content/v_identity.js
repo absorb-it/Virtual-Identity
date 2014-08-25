@@ -295,29 +295,31 @@ var main = {
 		
         vI.vIprefs.dropLocalChanges();
 
-		// stateListener only works in reply-cases
-		// so activate stage2 in reply-cases trough StateListener
-		// in other cases directly
-        // (but StateListener is required for Cleanup, so register)
-		var msgComposeType = Components.interfaces.nsIMsgCompType;
-		switch (gMsgCompose.type) {
-			case msgComposeType.New:
-			case msgComposeType.NewsPost:
-			case msgComposeType.MailToUrl:
-			case msgComposeType.Draft:
-			case msgComposeType.Template:
-			case msgComposeType.ForwardAsAttachment:
-			case msgComposeType.ForwardInline:
-				main.initSystemStage2();
-			case msgComposeType.Reply:
-			case msgComposeType.ReplyAll:
-			case msgComposeType.ReplyToGroup:
-			case msgComposeType.ReplyToSender:
-			case msgComposeType.ReplyToSenderAndGroup:
-			case msgComposeType.ReplyWithTemplate:
-			case msgComposeType.ReplyToList:
-				gMsgCompose.RegisterStateListener(main.ComposeStateListener);
-		}
+        // stateListener sometimes does not work at all - just trying to call stage2 directly
+// 		// stateListener only works in reply-cases
+// 		// so activate stage2 in reply-cases trough StateListener
+// 		// in other cases directly
+//         // (but StateListener is required for Cleanup, so register)
+// 		var msgComposeType = Components.interfaces.nsIMsgCompType;
+// 		switch (gMsgCompose.type) {
+// 			case msgComposeType.New:
+// 			case msgComposeType.NewsPost:
+// 			case msgComposeType.MailToUrl:
+// 			case msgComposeType.Draft:
+// 			case msgComposeType.Template:
+// 			case msgComposeType.ForwardAsAttachment:
+// 			case msgComposeType.ForwardInline:
+// 				main.initSystemStage2();
+// 			case msgComposeType.Reply:
+// 			case msgComposeType.ReplyAll:
+// 			case msgComposeType.ReplyToGroup:
+// 			case msgComposeType.ReplyToSender:
+// 			case msgComposeType.ReplyToSenderAndGroup:
+// 			case msgComposeType.ReplyWithTemplate:
+// 			case msgComposeType.ReplyToList:
+// 				gMsgCompose.RegisterStateListener(main.ComposeStateListener);
+// 		}
+		main.initSystemStage2();
 		Log.debug("reopen done.")
 	},
 	
