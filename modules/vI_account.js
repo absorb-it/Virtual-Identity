@@ -213,6 +213,26 @@ var account = {
 	cleanupSystem : function() {
 		Log.debug("checking for leftover VirtualIdentity accounts ...")
         var accounts = getAccountsArray();
+//         Log.debug("number of currently used accounts = " + accounts.length);
+
+        for (let acc = 0; acc < accounts.length; acc++) {
+            let checkAccount = accounts[acc];
+            if (account.__isVIdentityAccount(checkAccount)) {
+                account.__removeAccount(checkAccount);
+            }
+            // replace account with key, required for next check
+            accounts[acc] = accounts[acc].key;
+//             Log.debug("current account = " + accounts[acc]);
+        }
+        
+//         var usedAccounts = prefroot.getCharPref("mail.accountmanager.accounts");
+        var lastAccountKey = prefroot.getIntPref("mail.account.lastKey");
+//         Log.debug("number of last AccountKey = " + lastAccountKey);
+        for (let key = 0; key <= lastAccountKey; key++) {
+            if (accounts.indexOf("account" + key) > -1) continue;
+            account.__removeAccountPrefs("account" + key);
+        }
+        
         for (let acc = 0; acc < accounts.length; acc++) {
             let checkAccount = accounts[acc];
 			if (account.__isVIdentityAccount(checkAccount)) {
@@ -233,7 +253,29 @@ var account = {
 		return false;
 	},
 	
-	__removeAccount : function(checkAccount) {
+    __removeAccountPrefs : function(key) {
+        // remove the additional tagging-pref
+        try {
+            prefroot.clearUserPref("mail.account." + key + ".vIdentity");
+            // prevent useless increasing of lastKey https://bugzilla.mozilla.org/show_bug.cgi?id=485839
+            var lastAccountKey = prefroot.getIntPref("mail.account.lastKey");
+            if ("account" + lastAccountKey == key)
+                prefroot.setIntPref("mail.account.lastKey", lastAccountKey - 1);
+        }
+        catch (e) { };
+        try {
+            // account-prefs are not removed, grrrr --> https://bugzilla.mozilla.org/show_bug.cgi?id=875675
+            prefroot.clearUserPref("mail.account." + key + ".server");
+        }
+        catch (e) { };
+        try {
+            // account-prefs are not removed, grrrr --> https://bugzilla.mozilla.org/show_bug.cgi?id=875675
+            prefroot.clearUserPref("mail.account." + key + ".identities");
+        }
+        catch (e) { };
+    },
+
+    __removeAccount : function(checkAccount) {
 		Log.debug("__removeAccount")
 		// in new (post 0.5.0) Virtual Identity accounts the incomingServer of the account
 		// points to an incoming server of a different account. Cause the internal
@@ -253,9 +295,8 @@ var account = {
 		Log.debug("removing account " + key)
 		// remove the account
 		account._AccountManager.removeAccount(checkAccount);
-		// remove the additional tagging-pref
-		try { prefroot.clearUserPref("mail.account." + key + ".vIdentity");	}
-		catch (e) { };
+        
+        account.__removeAccountPrefs(key);
 	},
 	
 	removeUsedVIAccount : function() {
@@ -295,6 +336,8 @@ var account = {
 		account._account = account._AccountManager.createAccount();
 		prefroot.setBoolPref("mail.account." + account._account.key + ".vIdentity", true)
 		account._account.addIdentity(account._AccountManager.createIdentity());
+        
+        Log.debug("createAccount create Identity based on baseIdentity (" + baseIdentity.key + ") " + baseIdentity.fullName + " <" + baseIdentity.email + ">");
 		// the new account uses the same incomingServer than the base one,
 		// it's especially required for NNTP cause incomingServer is used for sending newsposts.
 		// by pointing to the same incomingServer stored passwords can be reused
