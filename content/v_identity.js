@@ -74,11 +74,13 @@ var main = {
 		},
 		ComposeProcessDone: function(aResult) {
 			Log.debug("StateListener reports ComposeProcessDone");
+            vI.vIaccount_removeUsedVIAccount();
 			main.Cleanup(); // not really required, parallel handled by main.close
 			vI.storage.clean();
 		},
 		SaveInFolderDone: function(folderURI) { 
 			Log.debug("SaveInFolderDone");
+            vI.vIaccount_removeUsedVIAccount();
 			main.Cleanup();
 			vI.storage.clean();
 		}
@@ -290,6 +292,9 @@ var main = {
 		document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
 		Log.debug("everything cleaned.")
 		
+        // register StateListener
+        gMsgCompose.RegisterStateListener(main.ComposeStateListener);
+        
 		// now (re)init the elements
 		main.initSystemStage1();
 		
@@ -369,7 +374,7 @@ var main = {
 
 	Cleanup : function() {
 		main.removeVirtualIdentityFromMsgIdentityMenu();
-		vI.vIaccount_removeUsedVIAccount();
+// 		vI.vIaccount_removeUsedVIAccount();
 	},
 	
 	//  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
