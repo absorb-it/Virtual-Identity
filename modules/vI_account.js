@@ -232,13 +232,6 @@ var account = {
             if (accounts.indexOf("account" + key) > -1) continue;
             account.__removeAccountPrefs("account" + key);
         }
-        
-        for (let acc = 0; acc < accounts.length; acc++) {
-            let checkAccount = accounts[acc];
-			if (account.__isVIdentityAccount(checkAccount)) {
-				account.__removeAccount(checkAccount);
-			}
-		}
 		Log.debug("done.")
 		account.__cleanupDirectories();
 	},
@@ -257,10 +250,6 @@ var account = {
         // remove the additional tagging-pref
         try {
             prefroot.clearUserPref("mail.account." + key + ".vIdentity");
-            // prevent useless increasing of lastKey https://bugzilla.mozilla.org/show_bug.cgi?id=485839
-            var lastAccountKey = prefroot.getIntPref("mail.account.lastKey");
-            if ("account" + lastAccountKey == key)
-                prefroot.setIntPref("mail.account.lastKey", lastAccountKey - 1);
         }
         catch (e) { };
         try {
@@ -295,7 +284,12 @@ var account = {
 		Log.debug("removing account " + key)
 		// remove the account
 		account._AccountManager.removeAccount(checkAccount);
-        
+
+        // prevent useless increasing of lastKey https://bugzilla.mozilla.org/show_bug.cgi?id=485839
+        var lastAccountKey = prefroot.getIntPref("mail.account.lastKey");
+        if ("account" + lastAccountKey == key)
+            prefroot.setIntPref("mail.account.lastKey", lastAccountKey - 1);
+
         account.__removeAccountPrefs(key);
 	},
 	
