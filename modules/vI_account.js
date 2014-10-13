@@ -213,7 +213,6 @@ var account = {
 	cleanupSystem : function() {
 		Log.debug("checking for leftover VirtualIdentity accounts ...")
         var accounts = getAccountsArray();
-//         Log.debug("number of currently used accounts = " + accounts.length);
 
         for (let acc = 0; acc < accounts.length; acc++) {
             let checkAccount = accounts[acc];
@@ -222,16 +221,17 @@ var account = {
             }
             // replace account with key, required for next check
             accounts[acc] = accounts[acc].key;
-//             Log.debug("current account = " + accounts[acc]);
         }
-        
-//         var usedAccounts = prefroot.getCharPref("mail.accountmanager.accounts");
-        var lastAccountKey = prefroot.getIntPref("mail.account.lastKey");
-//         Log.debug("number of last AccountKey = " + lastAccountKey);
-        for (let key = 0; key <= lastAccountKey; key++) {
-            if (accounts.indexOf("account" + key) > -1) continue;
-            account.__removeAccountPrefs("account" + key);
+
+        //      account-prefs are not removed, grrrr --> https://bugzilla.mozilla.org/show_bug.cgi?id=875675
+        try {
+            var lastAccountKey = prefroot.getIntPref("mail.account.lastKey");
+            for (let key = 0; key <= lastAccountKey; key++) {
+                if (accounts.indexOf("account" + key) > -1) continue;
+                account.__removeAccountPrefs("account" + key);
+            }
         }
+        catch (e) {};
 		Log.debug("done.")
 		account.__cleanupDirectories();
 	},
@@ -286,9 +286,12 @@ var account = {
 		account._AccountManager.removeAccount(checkAccount);
 
         // prevent useless increasing of lastKey https://bugzilla.mozilla.org/show_bug.cgi?id=485839
-        var lastAccountKey = prefroot.getIntPref("mail.account.lastKey");
-        if ("account" + lastAccountKey == key)
-            prefroot.setIntPref("mail.account.lastKey", lastAccountKey - 1);
+        try {
+            var lastAccountKey = prefroot.getIntPref("mail.account.lastKey");
+            if ("account" + lastAccountKey == key)
+                prefroot.setIntPref("mail.account.lastKey", lastAccountKey - 1);
+        }
+        catch (e) { };
 
         account.__removeAccountPrefs(key);
 	},
