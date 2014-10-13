@@ -62,7 +62,7 @@ var storage = {
 
 	replacement_functions : {
 		awSetInputAndPopupValue : function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
-			Log.debug("awSetInputAndPopupValue '" + inputElem.id + "'");
+            debug.Log("awSetInputAndPopupValue '" + inputElem.id + "'");
 			storage.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
 			storage.__updateVIdentityFromStorage(inputElem, storage.currentWindow);
 		}
@@ -124,10 +124,12 @@ var storage = {
 			storage.currentWindow = window;
 			storage.initialized = true;
 		}
-		storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
-		awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
-			storage.replacement_functions.awSetInputAndPopupValue (inputElem, inputValue, popupElem, popupValue, rowNumber) }
 
+        if (storage.original_functions.awSetInputAndPopupValue == null) {
+            storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
+            awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
+                storage.replacement_functions.awSetInputAndPopupValue (inputElem, inputValue, popupElem, popupValue, rowNumber) }
+        }
 		// reset unavailable storageExtras preferences
         AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function(addon) {
           if (addon && !addon.userDisabled && !addon.appDisable) {
