@@ -85,12 +85,11 @@
           Components.utils.import("resource://gre/modules/AddonManager.jsm");
           AddonManager.getAllAddons(function(addons) {
             var strings = addons.map(function(addon) {
-                return "addon: " + addon.name + " " + addon.version
-                + (addon.userDisabled || addon.appDisabled ? " [DISABLED]" : "");
+                return (addon.userDisabled || addon.appDisabled ? "" : "addon: " + addon.name + " " + addon.version + "\n");
             });
             self.dump("--------------------------------------------------------------------------------\n" +
-                      strings.join("\n") +
-                      "\n--------------------------------------------------------------------------------\n");
+                      strings.join("") +
+                      "--------------------------------------------------------------------------------\n");
           });
         ]]></body>
       </method>
