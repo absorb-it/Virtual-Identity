@@ -185,6 +185,8 @@
 <!ENTITY vI_prefDialog.options.Tab2.caption "Fehlersuche">
 <!ENTITY vI_prefDialog.notifyDebug.desc "Zur Fehlersuche und zum besseren Verständnis der Funktionsweise von Virtual Identity, besonders auch der Filter von &apos;Smart Reply&apos;, können weitere Informationen in einem eigenen Bereich angezeigt werden. Diese Debug-Informationen stehen nur in englischer Sprache zur Verfügung. Die Ausgabe verlangsamt die Arbeit des Email-Programms und sollte darum nicht dauerhaft aktiviert bleiben.">
 <!ENTITY vI_prefDialog.notifyDebug.label "zeige Bereich mit Informationen zur Fehlersuche">
+<!ENTITY vI_prefDialog.debugToFile.label "speicher Fehlerlog">
+<!ENTITY vI_prefDialog.debugToFile.choose "wähle">
 
 
 <!-- just for TB 1.5. ReplyFollowsParent not available -->

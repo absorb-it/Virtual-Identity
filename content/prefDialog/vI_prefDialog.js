@@ -59,6 +59,46 @@ var prefDialog = {
 	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
 				.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 	
+    selectFile : function(elementID) {
+        dump("selectFile\n");
+        var filePicker = Components.classes["@mozilla.org/filepicker;1"]
+            .createInstance(Components.interfaces.nsIFilePicker);
+        var file = Components.classes["@mozilla.org/file/local;1"]
+            .createInstance(Components.interfaces.nsIFile);
+        var defaultPath = Components.classes["@mozilla.org/file/directory_service;1"]
+                    .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
+
+        try {
+            file.initWithPath(document.getElementById(elementID).value);
+            filePicker.displayDirectory = file.parent;
+            filePicker.defaultString = file.leafName;
+        }
+        catch(NS_ERROR_FILE_UNRECOGNIZED_PATH) {
+            try {
+                // try linux delimiter
+                file.initWithPath(defaultPath + "/" + document.getElementById(elementID).value);
+                filePicker.displayDirectory = file.parent;
+                filePicker.defaultString = file.leafName;
+            } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
+                try {
+                    // use windows delimiter
+                    file.initWithPath(defaultPath + "\\" + document.getElementById(elementID).value);
+                    filePicker.displayDirectory = file.parent;
+                    filePicker.defaultString = file.leafName;
+                } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) { };
+            }
+        }
+        
+        filePicker.init(window, "", Components.interfaces.nsIFilePicker.modeSave);
+        
+        if (filePicker.show() != Components.interfaces.nsIFilePicker.returnCancel) {
+            if (filePicker.file.parent.path == defaultPath)
+                document.getElementById(elementID).setAttribute("value", filePicker.file.leafName);
+            else
+                document.getElementById(elementID).setAttribute("value", filePicker.file.path);
+        }
+    },
+                            
 	base : {
 		_elementIDs : [	"VIdent_identity.doFcc",
 				"VIdent_identity.fccFolderPickerMode",
@@ -90,6 +130,8 @@ var prefDialog = {
 				"VIdent_identity.autoTimeFormat",
 				"VIdent_identity.notification_timeout",
 				"VIdent_identity.debug_notification",
+                "VIdent_identity.debug_to_file",
+                "VIdent_identity.debug_to_file_path",
 				"VIdent_identity.warn_nonvirtual",
 				"VIdent_identity.warn_virtual",
 				"VIdent_identity.hide_signature",
@@ -148,12 +190,12 @@ var prefDialog = {
                         else {
                             element.setAttribute("value", 
                             prefDialog.unicodeConverter.ConvertToUnicode(prefDialog.preferences.getCharPref(element.getAttribute("prefstring"))) );
-// 							alert(element.getAttribute("prefstring") + " " + element.getAttribute("value"))
 						}
                     else if (eltType == "listbox")
                         element.value =
                             prefDialog.preferences.getCharPref(element.getAttribute("prefstring"));
 // 				} catch (ex) {}
+//             dump("setting textbox value: " + element.getAttribute("prefstring") + " " + element.getAttribute("value") + "\n");
 			}
 		},
 

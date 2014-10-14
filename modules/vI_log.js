@@ -29,6 +29,55 @@ var EXPORTED_SYMBOLS = ["setupLogging", "dumpCallStack", "MyLog", "Colors",
 const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
 Cu.import("resource:///modules/gloda/log4moz.js");
 Cu.import("resource://v_identity/vI_prefs.js");
+Cu.import("resource://gre/modules/Services.jsm");
+
+/** ******************************************************************************************************
+ * _errorConsoleTunnel was copied and adapted mozilla test-function
+ * mailnews/test/resources/logHelper.js
+ */
+/**
+ * Tunnel nsIScriptErrors that show up on the error console to Log4Moz.  We could
+ *  send everything but I think only script errors are likely of much concern.
+ *  Also, this nicely avoids infinite recursions no matter what you do since
+ *  what we publish is not going to end up as an nsIScriptError.
+ *
+ * This is based on my (asuth') exmmad extension.
+ */
+let _errorConsoleTunnel = {
+  initialize: function () {
+    Services.console.registerListener(this);
+    // we need to unregister our listener at shutdown if we don't want explosions
+    Services.obs.addObserver(this, "quit-application", false);
+  },
+
+  shutdown: function () {
+      try {
+        Services.console.unregisterListener(this);
+        Services.obs.removeObserver(this, "quit-application");
+      } catch (e) { };
+  },
+
+  observe: function (aMessage, aTopic, aData) {
+    if (aTopic == "quit-application") {
+      this.shutdown();
+      return;
+    }
+
+    try {
+      if ((aMessage instanceof Components.interfaces.nsIScriptError) &&
+        (!aMessage.errorMessage.contains("Error console says")))
+        {
+          if (aMessage.indexOf("v_identity") != -1)
+            MyLog.error("Error console says" + aMessage);
+        }
+    }
+    catch (ex) {
+      // This is to avoid pathological error loops.  we definitely do not
+      // want to propagate an error here.
+    }
+  }
+};
+/** ******************************************************************************************************/
 
 // different formatters for the log output
 // Basic formatter that only prints the message / used for NotificationBox
@@ -177,12 +226,13 @@ function setupFullLogging(name) {
     dapp.level = Log4Moz.Level["All"];
     root.addAppender(dapp);
   }
-  
+
   // A dump appender outputs to Debug Output Box
   let doapp = new DebugOutputAppender(myNewFormatter);
   doapp.level = Log4Moz.Level["All"];
   root.addAppender(doapp);
-  
+
+
   return Log;
 }
 
@@ -211,6 +261,108 @@ function clearDebugOutput() {
   let obj_notificationBox = currentWindow.document.getElementById("virtualIdentityExtension_vINotification");
   if (obj_notificationBox)
     obj_notificationBox.removeAllNotifications(true);
+}
+
+function _startFileLogging() {
+    var file = Components.classes["@mozilla.org/file/local;1"]
+        .createInstance(Components.interfaces.nsIFile);
+
+    var defaultPath = Components.classes["@mozilla.org/file/directory_service;1"]
+                .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
+
+    try {
+        file.initWithPath(vIprefs.get("debug_to_file_path"));
+    }
+    catch(NS_ERROR_FILE_UNRECOGNIZED_PATH) {
+        try {
+            // try linux delimiter
+            file.initWithPath(defaultPath + "/" + vIprefs.get("debug_to_file_path"));
+        } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
+            try {
+                // use windows delimiter
+                file.initWithPath(defaultPath + "\\" + vIprefs.get("debug_to_file_path"));
+            } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
+                dump("FileAppender not available for logging: set logging file first\n");
+            };
+        }
+    }
+    // A dump appender outputs to File
+    DebugFileAppender = new Log4Moz.FileAppender(file);
+
+    if (DebugFileAppender.doAppend.toString().indexOf("this._fos().write") > -1) {
+        dump("*** hot-fixing FileAppender Logging Bug (https://bugzilla.mozilla.org/show_bug.cgi?id=1082551)\n");
+        // there is a bug in original implementation of doAppend, fix the issue
+        DebugFileAppender.doAppend = function FApp_doAppend(message) {
+            if (message === null || message.length <= 0)
+                return;
+            try {
+                this._fos.write(message, message.length);
+            } catch(e) {
+                dump("Error writing file:\n" + e);
+            }
+        };
+    }
+
+    DebugFileAppender.level = Log4Moz.Level["All"];
+    Log4Moz.repository.rootLogger.addAppender(DebugFileAppender);
+    
+    _errorConsoleTunnel.initialize();
+}
+
+function _stopFileLogging() {
+    if (DebugFileAppender)
+        Log4Moz.repository.rootLogger.removeAppender(DebugFileAppender);
+    _errorConsoleTunnel.shutdown();
+}
+
+function _dump_extension_list() {
+    Components.utils.import("resource://gre/modules/AddonManager.jsm");
+    AddonManager.getAllAddons(function(addons) {
+        var strings = addons.map(function(addon) {
+            return (addon.userDisabled || addon.appDisabled ? "" : "addon: " + addon.name + " " + addon.version + "\n");
+        });
+        MyLog.info("\n--------------------------------------------------------------------------------\n" +
+            strings.join("") +
+            "--------------------------------------------------------------------------------");
+        });
+}
+
+function _dump_info_block() {
+    // add some information about the mail-client and the extensions installed
+    if ("@mozilla.org/xre/app-info;1" in Components.classes) {
+        var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
+            .getService(Components.interfaces.nsIXULAppInfo);
+        var protohandler = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+            .getService(Components.interfaces.nsIHttpProtocolHandler);
+        MyLog.info("start logging for new session\n--------------------------------------------------------------------------------\n" + 
+            appInfo.name + " " + appInfo.version + " (" + appInfo.appBuildID + "; " + protohandler.oscpu + ")\n" +
+            "--------------------------------------------------------------------------------");
+    }
+    else
+        MyLog.info("\n--------------------------------------------------------------------------------\n" + 
+            "mail-client seems not supported by Virtual Identity Extension\n" +
+            "--------------------------------------------------------------------------------");
+    
+    _dump_extension_list();
+}
+
+function UpdateFileLoggerPath() {
+    dump("UpdateFileLoggerPath\n");
+    if (vIprefs.get("debug_to_file")) {
+        _stopFileLogging();
+        _startFileLogging();
+        _dump_info_block();
+    }
+}   
+
+function UpdateFileLogger() {
+    if (vIprefs.get("debug_to_file")) {
+        _startFileLogging();
+        _dump_info_block();
+    }
+    else {
+        _stopFileLogging();
+    }
 }
 
 function UpdateSmartReplyNotification() {
@@ -246,11 +398,12 @@ function UpdateGetHeaderNotification() {
     }
 }
 
-
 let logRoot = "virtualIdentity";
 let MyLog = setupFullLogging(logRoot);
 
 let myNotificationFormatter = new NotificationFormatter();
+
+let DebugFileAppender = null;
 
 let SmartReplyAppender;
 let SmartReplyNotification = Log4Moz.repository.getLogger("virtualIdentity.SmartReply");
@@ -264,7 +417,10 @@ let GetHeaderNotification = Log4Moz.repository.getLogger("virtualIdentity.GetHea
 UpdateSmartReplyNotification();
 UpdateStorageNotification();
 UpdateGetHeaderNotification();
+UpdateFileLogger();
 
 vIprefs.addObserver("smart_reply_notification", UpdateSmartReplyNotification, this);
 vIprefs.addObserver("storage_notification", UpdateStorageNotification, this);
 vIprefs.addObserver("get_header_notification", UpdateGetHeaderNotification, this);
+vIprefs.addObserver("debug_to_file", UpdateFileLogger, this);
+vIprefs.addObserver("debug_to_file_path", UpdateFileLoggerPath, this);

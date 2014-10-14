@@ -185,7 +185,8 @@
 <!ENTITY vI_prefDialog.options.Tab2.caption "Отладка">
 <!ENTITY vI_prefDialog.notifyDebug.desc "Чтобы найти ошибки, решить проблемы в конфигурации и понять, что и как выполняет Virtual Identity, особенно при использовании фильтров функции «Умный ответ», Вы можете включить отображение некоторой дополнительной информации. При использовании этой опции работа почтового клиента несколько замедляется, поэтому она не должна быть включена постоянно.">
 <!ENTITY vI_prefDialog.notifyDebug.label "Показывать область с отладочной информацией">
-
+<!ENTITY vI_prefDialog.debugToFile.label "debug to file"> <!-- translate -->
+<!ENTITY vI_prefDialog.debugToFile.choose "choose"> <!-- translate -->
 
 <!-- just for TB 1.5. ReplyFollowsParent not available -->
 <!-- fields will be hidden, dont have to be translated -->

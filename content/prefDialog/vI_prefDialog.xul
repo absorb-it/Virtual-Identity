@@ -728,7 +728,16 @@
 					<description class="widthXX">&vI_prefDialog.notifyDebug.desc;</description>
 					<checkbox id="VIdent_identity.debug_notification" label="&vI_prefDialog.notifyDebug.label;"
 						prefstring="debug_notification"/>
-				</vbox>
+                    <hbox>
+                        <checkbox id="VIdent_identity.debug_to_file" label="&vI_prefDialog.debugToFile.label;"
+                            prefstring="debug_to_file"/>
+                        <textbox id="VIdent_identity.debug_to_file_path"
+                            prefstring="debug_to_file_path" />
+                        <button id="VIdent_identity.debug_to_file.filePicker"
+                                label="&vI_prefDialog.debugToFile.choose;"
+                                oncommand="virtualIdentityExtension.prefDialog.selectFile('VIdent_identity.debug_to_file_path');" />
+                    </hbox>
+                </vbox>
 				</groupbox>
 			</tabpanel>
 		</tabpanels>

@@ -184,6 +184,8 @@
 <!ENTITY vI_prefDialog.options.Tab2.caption "Debugging">
 <!ENTITY vI_prefDialog.notifyDebug.desc "To find bugs, solve configuration problems and understand what Virtual Identity is doing, especially with the Smart Reply-filters, you can enable some additional informations. Using this option slows down your mail-client, therefore it shouldn&apos;t be activated permanently.">
 <!ENTITY vI_prefDialog.notifyDebug.label "show area with debug-informations">
+<!ENTITY vI_prefDialog.debugToFile.label "debug to file">
+<!ENTITY vI_prefDialog.debugToFile.choose "choose">
 
 
 <!-- just for TB 1.5. ReplyFollowsParent not available -->
