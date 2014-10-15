@@ -65,10 +65,10 @@ let _errorConsoleTunnel = {
 
     try {
       if ((aMessage instanceof Components.interfaces.nsIScriptError) &&
+        (aMessage.sourceName.contains("v_identity")) && 
         (!aMessage.errorMessage.contains("Error console says")))
         {
-          if (aMessage.indexOf("v_identity") != -1)
-            MyLog.error("Error console says" + aMessage);
+            MyLog.info("Error console says" + aMessage);
         }
     }
     catch (ex) {
