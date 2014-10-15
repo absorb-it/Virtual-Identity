@@ -284,10 +284,20 @@ var rdfDataTreeCollection = {
 			if (rdfDataTreeCollection._braille) return;
 			var aserv=Components.classes["@mozilla.org/atom-service;1"].
 				getService(Components.interfaces.nsIAtomService);
-			switch (table[row][col.id.substr(0,col.id.indexOf("_"))]) {
-				case "yes":	props.AppendElement(aserv.getAtom("yes")); break;
-				case "no":	props.AppendElement(aserv.getAtom("no")); break;
-			}
+			if (typeof props == 'undefined') {
+                // Requires Gecko 22
+                switch (table[row][col.id.substr(0,col.id.indexOf("_"))]) {
+                    case "yes": return aserv.getAtom("yes"); break;
+                    case "no":  return aserv.getAtom("no"); break;
+                }
+            } else {
+                // Obsolete since Gecko 22
+                switch (table[row][col.id.substr(0,col.id.indexOf("_"))]) {
+                    case "yes":	props.AppendElement(aserv.getAtom("yes")); break;
+                    case "no":	props.AppendElement(aserv.getAtom("no")); break;
+                }
+            }
+            return "";
 		};
 	},
 
