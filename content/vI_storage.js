@@ -62,7 +62,7 @@ var storage = {
 
 	replacement_functions : {
 		awSetInputAndPopupValue : function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
-            debug.Log("awSetInputAndPopupValue '" + inputElem.id + "'");
+            Log.debug("awSetInputAndPopupValue '" + inputElem.id + "'");
 			storage.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
 			storage.__updateVIdentityFromStorage(inputElem, storage.currentWindow);
 		}
