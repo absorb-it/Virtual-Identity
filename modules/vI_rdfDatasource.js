@@ -50,6 +50,30 @@ function rdfDatasource(rdfFileName, dontRegisterObserver) {
     } catch (e) { }
 }
 
+function initWithFilePath_tryDelimiters(_nsILocalFile, path, filename) {
+    try {
+        Log.debug("Filename try linux delimiter: '" + path + "/" + filename + "'");
+        _nsILocalFile.initWithPath(path + "/" + filename);
+    } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
+        try {
+            Log.debug("Filename try windows delimiter: '" + path + "\\" + filename + "'");
+            _nsILocalFile.initWithPath(path + "\\" + filename);
+        }
+        catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
+            Log.debug("Filename not valid: '" + path + "[\\/]" + filename + "'");
+            Log.debug("can't open rdfDatasource - storage won't work");
+            var debugMsg = "Filename not valid: '" + path + "\\" + filename + "'\n" +
+                "Filename not valid: '" + path + "/" + filename + "'\n" +
+                "Virtual Identity Storage won't work.\n\n" +
+                "Please report this issue with filename on https://www.absorb.it/virtual-id\n\n" +
+                "You can just copy the lines below in your browser to create a ticket\n\n" +
+                "https://www.absorb.it/virtual-id/newticket?summary=RDF Filename Error&description=Filename " + path + "[\\/]" + filename + " for rdf not valid"
+            get3PaneWindow().alert(debugMsg);
+            return;
+        }
+    }
+};
+
 rdfDatasource.prototype = {
 	_extVersion :		null,
     _rdfVersion :       "0.0.5",
@@ -57,7 +81,6 @@ rdfDatasource.prototype = {
                             .getService(Components.interfaces.nsIRDFService),
 	_rdfDataSource :    null,
 	_rdfFileName :      null,
-    _rdfDelimiter :     null,
 	_rdfNS :            "http://virtual-id.absorb.it/",
     _rdfNSStorage :     "vIStorage",
 	_rdfNSEmail :       "vIStorage/email",
@@ -127,31 +150,8 @@ rdfDatasource.prototype = {
             .get("ProfD", Components.interfaces.nsIFile);
         
 //         Log.debug("_openRdfDataSource");
-        try {
-            Log.debug("Filename try linux delimiter: '" + file.path + "/" + this._rdfFileName + "'");
-            newFile.initWithPath(file.path + "/" + this._rdfFileName);
-//             Log.debug("success");
-            this._rdfDelimiter = "/";
-        } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
-            try {
-                Log.debug("Filename try windows delimiter: '" + file.path + "\\" + this._rdfFileName + "'");
-                newFile.initWithPath(file.path + "\\" + this._rdfFileName);
-//                 Log.debug("success");
-                this._rdfDelimiter = "\\";
-            }
-            catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
-                Log.debug("Filename not valid: '" + file.path + "[\\/]" + this._rdfFileName + "'");
-                Log.debug("can't open rdfDatasource - storage won't work");
-                var debugMsg = "Filename not valid: '" + file.path + "\\" + this._rdfFileName + "'\n" +
-                    "Filename not valid: '" + file.path + "/" + this._rdfFileName + "'\n" +
-                    "Virtual Identity Storage won't work.\n\n" +
-                    "Please report this issue with filename on https://www.absorb.it/virtual-id\n\n" +
-                    "You can just copy the lines below in your browser to create a ticket\n\n" +
-                    "https://www.absorb.it/virtual-id/newticket?summary=RDF Filename Error&description=Filename " + file.path + "[\\/]" + this._rdfFileName + " for rdf not valid"
-                get3PaneWindow().alert(debugMsg);
-                return;
-            }
-        }
+        initWithFilePath_tryDelimiters(newFile, file.path, this._rdfFileName);
+        
         var fileURI = protoHandler.newFileURI(newFile);
 
         Log.debug("init: read rdf from '" + fileURI.spec + "'");
@@ -424,11 +424,12 @@ rdfDatasource.prototype = {
         for (var id in relevantIDs) {
             var found = false;
             var accounts = getAccountsArray();
+            var identity = null;
             for (let acc = 0; acc < accounts.length; acc++) {
                 let account = accounts[acc];
                 let identities = getIdentitiesArray(account);
                 for (let i = 0; i < identities.length; i++) {
-                    let identity = identities[i];
+                    identity = identities[i];
                     if (id == identity.key) { found = true; break; }
                 }
                 if (found) break;
@@ -578,6 +579,7 @@ rdfDatasource.prototype = {
     },
 
     export : function(rdfFileName) {
+        Log.debug("vI_rdfDatasource export: " + rdfFileName + "\n");
         var filePicker = Components.classes["@mozilla.org/filepicker;1"]
             .createInstance(Components.interfaces.nsIFilePicker);
         filePicker.init(get3PaneWindow(), "", Components.interfaces.nsIFilePicker.modeSave);
@@ -589,8 +591,8 @@ rdfDatasource.prototype = {
                 .createInstance(Components.interfaces.nsILocalFile);
             var file = Components.classes["@mozilla.org/file/directory_service;1"]
                 .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-            rdfDataFile.initWithPath(file.path + this._rdfDelimiter + rdfFileName);
-
+                
+            initWithFilePath_tryDelimiters(rdfDataFile, file.path, rdfFileName);
             rdfDataFile.copyTo(filePicker.file.parent,filePicker.file.leafName);
         }
     },
@@ -1150,7 +1152,8 @@ rdfDatasourceImporter.prototype = {
                 .createInstance(Components.interfaces.nsILocalFile);
             var file = Components.classes["@mozilla.org/file/directory_service;1"]
                 .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-            importRdfDataFile.initWithPath(file.path + this._rdfDelimiter + this._rdfFileName + "_import");
+                
+            initWithFilePath_tryDelimiters(importRdfDataFile, file.path, this._rdfFileName + "_import");
             filePicker.file.copyTo(importRdfDataFile.parent,importRdfDataFile.leafName);
 
             Log.debug("import: copied file from " + filePicker.file.path + " to " + importRdfDataFile.path + "'");
