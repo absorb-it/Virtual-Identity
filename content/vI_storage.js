@@ -125,7 +125,7 @@ var storage = {
 			storage.initialized = true;
 		}
 
-        if (storage.original_functions.awSetInputAndPopupValue == null) {
+        if (typeof awSetInputAndPopupValue == 'function' && storage.original_functions.awSetInputAndPopupValue == null) {
             storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
             awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
                 storage.replacement_functions.awSetInputAndPopupValue (inputElem, inputValue, popupElem, popupValue, rowNumber) }
