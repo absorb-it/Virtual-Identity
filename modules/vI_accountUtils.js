@@ -54,6 +54,26 @@ function getIdentitiesArray(account) {
 
 function getAccountsArray() {
     var accounts;
+    function sortAccounts(a, b) {
+        if (a.key == accountManager.defaultAccount.key)
+        return -1;
+        if (b.key == accountManager.defaultAccount.key)
+        return 1;
+        var aIsNews = a.incomingServer.type == "nntp";
+        var bIsNews = b.incomingServer.type == "nntp";
+        if (aIsNews && !bIsNews)
+        return 1;
+        if (bIsNews && !aIsNews)
+        return -1;
+
+        var aIsLocal = a.incomingServer.type == "none";
+        var bIsLocal = b.incomingServer.type == "none";
+        if (aIsLocal && !bIsLocal)
+        return 1;
+        if (bIsLocal && !aIsLocal)
+        return -1;
+        return 0;
+    }
     if (Components.utils.import("resource:///modules/folderUtils.jsm") && Components.utils.import("resource:///modules/iteratorUtils.jsm")
         && typeof(allAccountsSorted)=='function') {
         // if this worked we are having at least seamonkey 1.17
@@ -67,26 +87,6 @@ function getAccountsArray() {
 
         // Ugly hack to work around bug 41133. :-(
         accounts = accounts.filter(function isNonSuckyAccount(a) { return !!a.incomingServer; });
-        function sortAccounts(a, b) {
-            if (a.key == accountManager.defaultAccount.key)
-            return -1;
-            if (b.key == accountManager.defaultAccount.key)
-            return 1;
-            var aIsNews = a.incomingServer.type == "nntp";
-            var bIsNews = b.incomingServer.type == "nntp";
-            if (aIsNews && !bIsNews)
-            return 1;
-            if (bIsNews && !aIsNews)
-            return -1;
-
-            var aIsLocal = a.incomingServer.type == "none";
-            var bIsLocal = b.incomingServer.type == "none";
-            if (aIsLocal && !bIsLocal)
-            return 1;
-            if (bIsLocal && !aIsLocal)
-            return -1;
-            return 0;
-        }
         accounts.sort(sortAccounts);
     }
     return accounts

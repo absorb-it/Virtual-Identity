@@ -482,6 +482,6 @@ var account = {
 function get_vIaccount() {
   return account._account;
 };
-vIaccount_cleanupSystem = account.cleanupSystem;
-vIaccount_createAccount = account.createAccount;
-vIaccount_removeUsedVIAccount = account.removeUsedVIAccount;
+var vIaccount_cleanupSystem = account.cleanupSystem;
+var vIaccount_createAccount = account.createAccount;
+var vIaccount_removeUsedVIAccount = account.removeUsedVIAccount;

@@ -38,7 +38,7 @@ Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIden
 Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
 //prepares an object for easy comparison against another. for strings, lowercases them
-function prepareForComparison (element, field) {
+var prepareForComparison = function(element, field) {
     if (field == "changedCol") {
         field = "changed"
     }
@@ -51,7 +51,7 @@ function prepareForComparison (element, field) {
 };
 
 
-function rdfDataTree(treeType, rdfDatasource) {
+var rdfDataTree = function(treeType, rdfDatasource) {
 	this.treeType = treeType;
     this._rdfDatasource = rdfDatasource;
 	this.filterText = "";
@@ -281,23 +281,25 @@ var rdfDataTreeCollection = {
 				rdfDataTreeCollection.trees[treeType].sort(col.id.substr(0,col.id.indexOf("_")));
 		};
 		this.getCellProperties = function(row,col,props){
-			if (rdfDataTreeCollection._braille) return;
-			var aserv=Components.classes["@mozilla.org/atom-service;1"].
-				getService(Components.interfaces.nsIAtomService);
-			if (typeof props == 'undefined') {
-                // Requires Gecko 22
-                switch (table[row][col.id.substr(0,col.id.indexOf("_"))]) {
-                    case "yes": return aserv.getAtom("yes"); break;
-                    case "no":  return aserv.getAtom("no"); break;
-                }
-            } else {
-                // Obsolete since Gecko 22
-                switch (table[row][col.id.substr(0,col.id.indexOf("_"))]) {
-                    case "yes":	props.AppendElement(aserv.getAtom("yes")); break;
-                    case "no":	props.AppendElement(aserv.getAtom("no")); break;
+            var returnValue = null;
+            if (!rdfDataTreeCollection._braille) {
+                var aserv=Components.classes["@mozilla.org/atom-service;1"].
+                    getService(Components.interfaces.nsIAtomService);
+                if (typeof props == 'undefined') {
+                    // Requires Gecko 22
+                    switch (table[row][col.id.substr(0,col.id.indexOf("_"))]) {
+                        case "yes": returnValue = aserv.getAtom("yes"); break;
+                        case "no":  returnValue = aserv.getAtom("no"); break;
+                    }
+                } else {
+                    // Obsolete since Gecko 22
+                    switch (table[row][col.id.substr(0,col.id.indexOf("_"))]) {
+                        case "yes":	props.AppendElement(aserv.getAtom("yes")); break;
+                        case "no":	props.AppendElement(aserv.getAtom("no")); break;
+                    }
                 }
             }
-            return "";
+            return returnValue;
 		};
 	},
 
@@ -518,6 +520,7 @@ var rdfDataTreeCollection = {
 		rdfDataTreeCollection.hideInfoBox();
 	}
 };
+
 vI.rdfDataTreeCollection = rdfDataTreeCollection;
 vI.rdfDataTree = rdfDataTree;
 }});

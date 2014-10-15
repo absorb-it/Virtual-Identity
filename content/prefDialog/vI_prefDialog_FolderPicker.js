@@ -59,37 +59,28 @@ var draftsFolderPickerId = "msgDraftsFolderPicker";
 var tmplAccountPickerId = "msgStationeryAccountPicker";
 var tmplFolderPickerId = "msgStationeryFolderPicker";
 
-
-// patch for https://bugzilla.mozilla.org/show_bug.cgi?id=889022, see there
-if (Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo).ID != "postbox@postbox-inc.com")
+var _GetMsgFolderFromUri = function(uri, checkFolderAttributes)
 {
-  Components.utils.import("resource:///modules/MailUtils.js");
-}
-
-if (typeof(GetMsgFolderFromUri) != "function") {
-	function GetMsgFolderFromUri(uri, checkFolderAttributes)
-	{
-		let msgfolder = null;
-		if (typeof MailUtils != 'undefined') {
-		return MailUtils.getFolderForURI(uri, checkFolderAttributes);
-		}
-		try { // Postbox
-		let resource = GetResourceFromUri(uri);
-		msgfolder = resource.QueryInterface(Components.interfaces.nsIMsgFolder);
-		if (checkFolderAttributes) {
-			if (!(msgfolder && (msgfolder.parent || msgfolder.isServer))) {
-			msgfolder = null;
-			}
-		}
-		}
-		catch (ex) {
-		//dump("failed to get the folder resource\n");
-		}
-		return msgfolder;
-	}
+    let msgfolder = null;
+    if (typeof MailUtils != 'undefined') {
+    return MailUtils.getFolderForURI(uri, checkFolderAttributes);
+    }
+    try { // Postbox
+    let resource = GetResourceFromUri(uri);
+    msgfolder = resource.QueryInterface(Components.interfaces.nsIMsgFolder);
+    if (checkFolderAttributes) {
+        if (!(msgfolder && (msgfolder.parent || msgfolder.isServer))) {
+        msgfolder = null;
+        }
+    }
+    }
+    catch (ex) {
+    //dump("failed to get the folder resource\n");
+    }
+    return msgfolder;
 }
   
-function setDefaultCopiesAndFoldersPrefs(identity, server, accountData)
+var setDefaultCopiesAndFoldersPrefs = function(identity, server, accountData)
 {
     var am = Components.classes["@mozilla.org/messenger/account-manager;1"].getService(Components.interfaces.nsIMsgAccountManager);
     var rootFolder = am.defaultAccount.incomingServer.rootFolder
@@ -111,7 +102,7 @@ function setDefaultCopiesAndFoldersPrefs(identity, server, accountData)
 }
 
 
-function onInitCopiesAndFolders()
+var onInitCopiesAndFolders = function()
 {
     SetSpecialFolderNamesWithDelims();
     SetGlobalRadioElemChoices();
@@ -140,7 +131,7 @@ function onInitCopiesAndFolders()
 }
 
 // Initialize the picker mode choices (account/folder picker) into global vars
-function SetGlobalRadioElemChoices()
+var SetGlobalRadioElemChoices = function()
 {
     var pickerModeElement = document.getElementById("VIdent_identity.fccFolderPickerMode");
     gFccRadioElemChoice = pickerModeElement.getAttribute("value");
@@ -164,7 +155,7 @@ function SetGlobalRadioElemChoices()
  * set to 1 i.e., Other picker displaying the folder value read from the 
  * preferences file.
  */
-function SetFolderDisplay(pickerMode, disableMode,
+var SetFolderDisplay = function(pickerMode, disableMode,
                           radioElemPrefix, 
                           accountPickerId, 
                           folderPickedField, 
@@ -230,7 +221,7 @@ function SetFolderDisplay(pickerMode, disableMode,
 // Need to append special folders when account picker is selected.
 // Create a set of global special folder vars to be suffixed to the
 // server URI of the selected account.
-function SetSpecialFolderNamesWithDelims()
+var SetSpecialFolderNamesWithDelims = function()
 {
     var folderDelim = "/";
     /* we use internal names known to everyone like "Sent", "Templates" and "Drafts" */
@@ -240,7 +231,7 @@ function SetSpecialFolderNamesWithDelims()
     gTemplatesFolderWithDelim = folderDelim + "Templates";
 }
 
-function onSaveCopiesAndFolders()
+var onSaveCopiesAndFolders = function()
 {
     vI.SaveFolderSettings( gFccRadioElemChoice, 
                         "doFcc",
@@ -268,7 +259,7 @@ function onSaveCopiesAndFolders()
 }
 
 // Check the Fcc Self item and setup associated picker state 
-function setupFccItems()
+var setupFccItems = function()
 { 
     var broadcaster = document.getElementById("VIdent_broadcaster_doFcc");
 
@@ -284,7 +275,7 @@ function setupFccItems()
 }
 
 // Set up picker settings for Sent Folder 
-function SetupFccPickerState(pickerMode, accountPickerId, folderPickerId)
+var SetupFccPickerState = function(pickerMode, accountPickerId, folderPickerId)
 {
     switch (pickerMode) {
         case "0" :
@@ -307,7 +298,7 @@ function SetupFccPickerState(pickerMode, accountPickerId, folderPickerId)
 }
 
 // Enable and disable pickers based on the radio element clicked
-function SetPickerEnabling(enablePickerId, disablePickerId)
+var SetPickerEnabling = function(enablePickerId, disablePickerId)
 {
     var activePicker = document.getElementById(enablePickerId);
     activePicker.removeAttribute("disabled");
@@ -317,7 +308,7 @@ function SetPickerEnabling(enablePickerId, disablePickerId)
 }
 
 // Set radio element choices and picker states
-function setPickersState(enablePickerId, disablePickerId, event)
+var setPickersState = function(enablePickerId, disablePickerId, event)
 {
     SetPickerEnabling(enablePickerId, disablePickerId);
 
@@ -364,7 +355,7 @@ function setPickersState(enablePickerId, disablePickerId, event)
 
 // This routine is to restore the correct radio element 
 // state when the fcc self checkbox broadcasts the change
-function SetRadioButtons(selectPickerId, unselectPickerId)
+var SetRadioButtons = function(selectPickerId, unselectPickerId)
 {
     var activeRadioElem = document.getElementById(selectPickerId);
     activeRadioElem.radioGroup.selectedItem = activeRadioElem;
@@ -375,5 +366,11 @@ vI.setPickersState = setPickersState;
 vI.gFccRadioElemChoice = gFccRadioElemChoice;
 vI.gDraftsRadioElemChoice = gDraftsRadioElemChoice;
 vI.gTmplRadioElemChoice = gTmplRadioElemChoice;
+
+// patch for https://bugzilla.mozilla.org/show_bug.cgi?id=889022, see there
+Components.utils.import("resource:///modules/MailUtils.js");
+if (typeof(GetMsgFolderFromUri) != "function") {
+    var GetMsgFolderFromUri = _GetMsgFolderFromUri;
+}
 
 }});

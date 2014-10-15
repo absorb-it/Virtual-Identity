@@ -45,7 +45,7 @@
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
 virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
 
-function InitFolderDisplays(msgFolder, accountPickerId, folderPickerId) {
+var InitFolderDisplays = function(msgFolder, accountPickerId, folderPickerId) {
     var accountPicker = document.getElementById(accountPickerId);
     var folderPicker = document.getElementById(folderPickerId);
     InitFolderDisplay(msgFolder.server.rootFolder, accountPicker);
@@ -53,7 +53,7 @@ function InitFolderDisplays(msgFolder, accountPickerId, folderPickerId) {
 }
 
 // Initialize the folder display based on prefs values
-function InitFolderDisplay(folder, folderPicker) {
+var InitFolderDisplay = function(folder, folderPicker) {
     try {
       folderPicker.firstChild.selectFolder(folder);
     } catch(ex) {
@@ -63,7 +63,7 @@ function InitFolderDisplay(folder, folderPicker) {
 }
 
 // Capture any menulist changes
-function noteSelectionChange(radioItemId, aEvent)
+var noteSelectionChange = function(radioItemId, aEvent)
 {
     var checkedElem = document.getElementById(radioItemId);
     var folder = aEvent.target._folder;
@@ -92,7 +92,7 @@ function noteSelectionChange(radioItemId, aEvent)
 }
 
 // Save folder settings and radio element choices
-function SaveFolderSettings(radioElemChoice, 
+var SaveFolderSettings = function(radioElemChoice, 
                             radioGroupId,
                             folderSuffix,
                             accountPickerId,
