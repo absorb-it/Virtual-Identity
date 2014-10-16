@@ -23,16 +23,15 @@
    - Contributor(s):
    - ***** END LICENSE BLOCK ***** -->
 
-<?xul-overlay href="chrome://communicator/content/charsetOverlay.xul"?>
-
 <!DOCTYPE window [
-<!ENTITY % vIstorageExtrasDTD SYSTEM "chrome://v_identity/locale/vI_storageExtras.dtd" >
-%vIstorageExtrasDTD;
-<!ENTITY % charsetMenuDTD SYSTEM "chrome://global/locale/charsetMenu.dtd" >
-%charsetMenuDTD;
 <!ENTITY % messengercomposeDTD SYSTEM "chrome://messenger/locale/messengercompose/messengercompose.dtd" >
 %messengercomposeDTD;
+<!ENTITY % charsetDTD SYSTEM "chrome://global/locale/charsetOverlay.dtd" >
+%charsetDTD;
+<!ENTITY % vIstorageExtrasDTD SYSTEM "chrome://v_identity/locale/vI_storageExtras.dtd" >
+%vIstorageExtrasDTD;
 ]>
+
 <overlay id="vI_storageExtras" 
           xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
 
@@ -62,19 +61,26 @@
 	<!-- storageExtras_characterEncoding -->
 		<hbox>
 		<checkbox id="vI_storageExtras_characterEncoding_store"
-			oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, 'maileditCharsetMenuLabel');virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, 'maileditCharsetMenu');" />
+			oncommand="dump('charEnc store oncommand'); virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, 'maileditCharsetMenuLabel');virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, 'maileditCharsetMenu');" />
 		<hbox id="vI_storageExtras_characterEncoding">
-        <script>
-            Components.utils.import("resource://gre/modules/CharsetMenu.jsm");
-        </script>
-        <vbox><spacer flex="1"/>
-            <label id="maileditCharsetMenuLabel" value="&charsetMenu.label;"
-                accesskey="&charsetMenu.accesskey;" control="maileditCharsetMenu" />
-        <spacer flex="1"/></vbox>
-        <menulist id="maileditCharsetMenu">
-            <menupopup id="charsetPopup"
-                    onpopupshowing="CharsetMenu.build(this, false, false);"/>
-        </menulist>
+			<vbox><spacer flex="1"/>
+				<label id="maileditCharsetMenuLabel" value="&charsetMenu.label;"
+					accesskey="&charsetMenu.accesskey;" control="maileditCharsetMenu" />
+			<spacer flex="1"/></vbox>
+			<menulist id="maileditCharsetMenu" 
+				datasources="rdf:charset-menu" ref="NC:MaileditCharsetMenuRoot" >
+			<template>
+				<rule>
+				<menupopup>
+					<menuitem type="radio" name="charsetGroup" checked="rdf:http://home.netscape.com/NC-rdf#Checked" uri="..." label="rdf:http://home.netscape.com/NC-rdf#Name"/>
+				</menupopup>
+				</rule>	
+			</template>
+			<menupopup>
+				<menuitem name="charsetCustomize" oncommand="window.openDialog('chrome://global/content/customizeCharset.xul','PrefWindow', 'chrome, dialog, modal, alwaysRaised, resizable=yes', 'mailedit')"/>
+				<menuseparator />
+			</menupopup>
+			</menulist>
 		</hbox>
 		</hbox>
 	<!-- storageExtras_messageFormat -->

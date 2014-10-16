@@ -541,3 +541,7 @@ treechildren::-moz-tree-cell-text(locked) {
 	font-style: italic;
 	margin-top: 20px;
 }
+
+#virtualIdentityExtension_rdfDataEditorContent .menu-iconic-text {
+    padding-left: 20px;
+}

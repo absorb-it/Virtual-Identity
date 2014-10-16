@@ -31,6 +31,14 @@ const Cu = Components.utils;
 
 Cu.import("resource://v_identity/vI_identityDataExtras.js");
 Cu.import("resource://v_identity/vI_log.js");
+let legacy = false; // use pre TB-32 legacy code
+try {
+    Cu.import("resource://gre/modules/CharsetMenu.jsm");
+} catch (e) {
+    legacy = true; // pre TB-32-version, might be removed in the future
+}
+    
+
 let Log = setupLogging("virtualIdentity.identityDataExtras.characterEncoding");
 
 function identityDataExtrasObject_characterEncoding(currentWindow) {
@@ -47,6 +55,7 @@ identityDataExtrasObject_characterEncoding.prototype = {
                   .getCharsetTitle(this.currentWindow.gCharsetConvertManager.getCharsetAlias(this.value)):"";
   },
 
+  // pre TB-32-version, might be removed in the future --------------------------------
   _setMenuMark: function() {
     var maileditCharsetMenu = this.currentWindow.document.getElementById("maileditCharsetMenu")
     var value = maileditCharsetMenu.getAttribute("unmarkedValue")
@@ -57,29 +66,47 @@ identityDataExtrasObject_characterEncoding.prototype = {
         maileditCharsetMenu.removeAttribute("unmarkedValue")
     }
   },
+  // ----------------------------------------------------------------------------------
   
   setValueToEnvironment_msgCompose: function() {
     if (!this.value)
       return;
-    var menuitem = this.currentWindow.document.getElementById(this.value);
-    if (menuitem)
-      menuitem.setAttribute('checked', 'true');
-    else {  // set menumark later if menu is not ready yet
-      var maileditCharsetMenu = this.currentWindow.document.getElementById("maileditCharsetMenu")
-      maileditCharsetMenu.setAttribute("unmarkedValue", this.value)
-      var onpopupshowing = maileditCharsetMenu.getAttribute("onpopupshowing")
-      this.currentWindow.document.getElementById("maileditCharsetMenu").setAttribute("onpopupshowing",
-        onpopupshowing + ";this.setMenuMark();")
+    // pre TB-32-version, might be removed in the future --------------------------------
+    if (legacy) {
+        // old style
+        var menuitem = this.currentWindow.document.getElementById(this.value);
+        if (menuitem)
+        menuitem.setAttribute('checked', 'true');
+        else {  // set menumark later if menu is not ready yet
+        var maileditCharsetMenu = this.currentWindow.document.getElementById("maileditCharsetMenu")
+        maileditCharsetMenu.setAttribute("unmarkedValue", this.value)
+        var onpopupshowing = maileditCharsetMenu.getAttribute("onpopupshowing")
+        this.currentWindow.document.getElementById("maileditCharsetMenu").setAttribute("onpopupshowing",
+            onpopupshowing + ";this._setMenuMark();")
+        }
     }
+    // ----------------------------------------------------------------------------------
     this.currentWindow.gMsgCompose.compFields.characterSet = this.value;
     this.currentWindow.SetDocumentCharacterSet(this.value);
   },
   
   setValueToEnvironment_dataEditor: function() {
-    this.currentWindow.CreateMenu('mailedit'); // this is part of the magic included by the xul-binding
-    if (this.value != null) {
-      this.currentWindow.document.getElementById("maileditCharsetMenu").selectedItem = this.currentWindow.document.getElementById(this.value);
-      this.currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+    // pre TB-32-version, might be removed in the future --------------------------------
+    if (legacy) {
+      this.currentWindow.CreateMenu('mailedit'); // this is part of the magic included by the xul-binding
+        if (this.value != null) {
+            this.currentWindow.document.getElementById("maileditCharsetMenu").selectedItem = this.currentWindow.document.getElementById(this.value);
+            this.currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+        }
+    }
+    // ----------------------------------------------------------------------------------
+    else {
+        CharsetMenu.build(this.currentWindow.document.getElementById("charsetPopup"), false, false)
+        if (this.value != null) {
+            CharsetMenu.update(this.currentWindow.document.getElementById("maileditCharsetMenu"), this.value);
+            this.currentWindow.document.getElementById("maileditCharsetMenu").setAttribute("label",CharsetMenu._getCharsetLabel(this.value));
+            this.currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+        }
     }
     this.currentWindow.document.getElementById("vI_" + this.option + "_store").doCommand();
   },
@@ -99,7 +126,14 @@ identityDataExtrasObject_characterEncoding.prototype = {
     if (this.currentWindow.document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true")
       // check if element is selected (list might not contain relevant entry)
       if (this.currentWindow.document.getElementById("maileditCharsetMenu").selectedItem)
-        this.value = this.currentWindow.document.getElementById("maileditCharsetMenu").selectedItem.id
+        // pre TB-32-version, might be removed in the future --------------------------------
+        if (legacy) {
+            this.value = this.currentWindow.document.getElementById("maileditCharsetMenu").selectedItem.id
+        }
+        // ----------------------------------------------------------------------------------
+        else {
+            this.value = this.currentWindow.document.getElementById("maileditCharsetMenu").selectedItem.getAttribute('charset');
+        }
     else
       this.value = null;
   }
