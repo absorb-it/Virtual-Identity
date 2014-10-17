@@ -33,8 +33,6 @@ Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdent
 Components.utils.import("resource://v_identity/plugins/signatureSwitch.js", virtualIdentityExtension);
 
 var main = {
-    _window_first_use : true,
-    
 	headerParser : Components.classes["@mozilla.org/messenger/headerparser;1"]
 				.getService(Components.interfaces.nsIMsgHeaderParser),
 	
@@ -69,11 +67,7 @@ var main = {
 	ComposeStateListener : {
 		NotifyComposeBodyReady: function() { 
 			Log.debug("NotifyComposeBodyReady");
-            // only call initSystemStage2 if window is not reopened
-			if (main._window_first_use) {
-                main._window_first_use = false;
-                main.initSystemStage2();
-            }
+            main.initSystemStage2();
 		},
 		NotifyComposeFieldsReady: function() { 
 			Log.debug("NotifyComposeFieldsReady");
@@ -306,7 +300,28 @@ var main = {
 		
         vI.vIprefs.dropLocalChanges();
 
-		main.initSystemStage2();
+        // NotifyComposeBodyReady is only triggered in reply-cases
+        // so activate stage2 in reply-cases trough StateListener
+        // in other cases directly
+        var msgComposeType = Components.interfaces.nsIMsgCompType;
+        switch (gMsgCompose.type) {
+            case msgComposeType.New:
+            case msgComposeType.NewsPost:
+            case msgComposeType.MailToUrl:
+            case msgComposeType.Draft:
+            case msgComposeType.Template:
+            case msgComposeType.ForwardAsAttachment:
+            case msgComposeType.ForwardInline:
+                main.initSystemStage2();
+//             case msgComposeType.Reply:
+//             case msgComposeType.ReplyAll:
+//             case msgComposeType.ReplyToGroup:
+//             case msgComposeType.ReplyToSender:
+//             case msgComposeType.ReplyToSenderAndGroup:
+//             case msgComposeType.ReplyWithTemplate:
+//             case msgComposeType.ReplyToList:
+//                 main.initSystemStage2() triggered trough NotifyComposeBodyReady;
+        }
 		Log.debug("reopen done.")
 	},
 	
