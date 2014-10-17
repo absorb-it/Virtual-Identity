@@ -66,7 +66,7 @@ $BEFORE_BUILD
 REV=$(git log -n 1 --abbrev-commit --abbrev=8 | grep "commit" | cut -d" " -f2 | cut -d"." -f1)
 #CLEAN=$(git status | grep "working directory clean")
 CLEAN="true"
-TAG=$(git describe 2>/dev/null)
+TAG=$(git describe 2>/dev/null | sed 's/-/\./')
 INTERMEDIATE=$(git describe 2>/dev/null | grep "-")
 
 LOCALVERSION=$(cut -d"\"" -f 2 content/_version.dtd)
