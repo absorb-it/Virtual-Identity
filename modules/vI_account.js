@@ -224,10 +224,12 @@ var account = {
         }
 
         //      account-prefs are not removed, grrrr --> https://bugzilla.mozilla.org/show_bug.cgi?id=875675
+        //  compare against all accounts, getAccountsArray() does not include 'smart mailboxes' == 'unified folders'
+        var all_accounts = prefroot.getCharPref("mail.accountmanager.accounts").split(",");
         try {
             var lastAccountKey = prefroot.getIntPref("mail.account.lastKey");
             for (let key = 0; key <= lastAccountKey; key++) {
-                if (accounts.indexOf("account" + key) > -1) continue;
+                if (all_accounts.indexOf("account" + key) > -1) continue;
                 account.__removeAccountPrefs("account" + key);
             }
         }

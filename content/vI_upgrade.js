@@ -56,10 +56,49 @@ var upgrade = {
 				upgrade.__transferMovedUserPrefs(currentVersion);
 				upgrade.__removeObsoleteUserPrefs(currentVersion);
                 upgrade.__removeExtraAddedHeaders(currentVersion);
+                upgrade.__cleanupSmartMailboxFolders(currentVersion);
 		}
 		upgrade.rdfDatasource.storeExtVersion();
 		Log.debug("extension-upgrade to " + upgrade.rdfDatasource.getCurrentExtFileVersion() + " done.");
 	},
+    
+    __cleanupSmartMailboxFolders : function(currentVersion) {
+        if ((!currentVersion || upgrade.versionChecker.compare(currentVersion, "0.9.26") < 0)) {
+            Log.debug("cleaning leftover 'smart mailboxes' == 'unified folder mailboxes'");
+            // remove obsolete 'smart mailboxes'=='unified folder' server entries
+            // this is only required because of a virtualIdentity bug introduced in 0.9.22 and fixed in 0.9.26
+
+            //  compare against all accounts, getAccountsArray() does not include 'smart mailboxes' == 'unified folders'
+            var all_accounts = vI.prefroot.getCharPref("mail.accountmanager.accounts").split(",");
+
+            for each (let pref in vI.prefroot.getChildList("mail.server")) {
+                if (pref.indexOf(".hostname") == pref.length - 9 && vI.prefroot.getCharPref(pref) == "smart mailboxes") {
+                    // ok, smart mailbox server found, check if it still in use
+                    let server = pref.replace(/^mail\.server\./,"").replace(/\.hostname$/,"");
+                    let inUse = false;
+                    for each (let account in all_accounts) {
+                        if (vI.prefroot.getCharPref("mail.account." + account + ".server") == server)
+                            inUse = true;
+                    }
+                    if (!inUse) {
+                        Log.debug("cleaning leftover 'smart mailbox' for server " + server);
+                        for each (let obsoletePref in vI.prefroot.getChildList("mail.server." + server)) {
+                            if (obsoletePref.indexOf(".directory") == obsoletePref.length - 10) {
+                                // remove obsolete 'smart mailbox' directory
+                                try {
+                                    let file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
+                                    file.initWithPath(vI.prefroot.getCharPref(obsoletePref));
+                                    Log.debug("removing obsolete storage Folder " + vI.prefroot.getCharPref(obsoletePref));
+                                    file.remove(true);
+                                } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) { };
+                            }
+                            vI.prefroot.clearUserPref(obsoletePref);
+                        }
+                    }
+                }
+            }
+        }
+    },
     
     __removeExtraAddedHeaders : function(currentVersion) {
         if ((!currentVersion || upgrade.versionChecker.compare(currentVersion, "0.6.9") < 0) && 
