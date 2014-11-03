@@ -12,15 +12,19 @@ virtualIdentityExtension.Log = virtualIdentityExtension.MyLog;
 virtualIdentityExtension.initTime = parseInt((new Date()).getTime());
 virtualIdentityExtension.Log.debug("init vI_overlayNameSpaceWrapper " + virtualIdentityExtension.initTime);
 
-(function() { this.ns = function(fn) { fn.apply({}); };  }).apply(virtualIdentityExtension);
+(function () {
+  this.ns = function (fn) {
+    fn.apply({});
+  };
+}).apply(virtualIdentityExtension);
 
 virtualIdentityExtension.LIB = {
-    // Shared APIs
-    getCurrentURI: function() {
-      virtualIdentityExtension.Log.debug("getCurrentURI " + window.location.href);
-      return window.location.href;
-    },
+  // Shared APIs
+  getCurrentURI: function () {
+    virtualIdentityExtension.Log.debug("getCurrentURI " + window.location.href);
+    return window.location.href;
+  },
 
-    // Extension singleton shortcut
-    vI: virtualIdentityExtension
+  // Extension singleton shortcut
+  vI: virtualIdentityExtension
 };

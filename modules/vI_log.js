@@ -24,9 +24,15 @@
 
 var EXPORTED_SYMBOLS = ["setupLogging", "dumpCallStack", "MyLog", "Colors",
   "clearDebugOutput", "notificationOverflow",
-  "SmartReplyNotification", "StorageNotification", "GetHeaderNotification" ]
+  "SmartReplyNotification", "StorageNotification", "GetHeaderNotification"
+]
 
-const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
+const {
+  classes: Cc,
+  interfaces: Ci,
+  utils: Cu,
+  results: Cr
+} = Components;
 Cu.import("resource:///modules/gloda/log4moz.js");
 Cu.import("resource://v_identity/vI_prefs.js");
 Cu.import("resource://gre/modules/Services.jsm");
@@ -51,10 +57,10 @@ let _errorConsoleTunnel = {
   },
 
   shutdown: function () {
-      try {
-        Services.console.unregisterListener(this);
-        Services.obs.removeObserver(this, "quit-application");
-      } catch (e) { };
+    try {
+      Services.console.unregisterListener(this);
+      Services.obs.removeObserver(this, "quit-application");
+    } catch (e) {};
   },
 
   observe: function (aMessage, aTopic, aData) {
@@ -65,13 +71,11 @@ let _errorConsoleTunnel = {
 
     try {
       if ((aMessage instanceof Components.interfaces.nsIScriptError) &&
-        (aMessage.sourceName.contains("v_identity")) && 
-        (!aMessage.errorMessage.contains("Error console says")))
-        {
-            MyLog.info("Error console says" + aMessage);
-        }
-    }
-    catch (ex) {
+        (aMessage.sourceName.contains("v_identity")) &&
+        (!aMessage.errorMessage.contains("Error console says"))) {
+        MyLog.info("Error console says" + aMessage);
+      }
+    } catch (ex) {
       // This is to avoid pathological error loops.  we definitely do not
       // want to propagate an error here.
     }
@@ -88,8 +92,8 @@ NotificationFormatter.prototype = {
     // The trick below prevents errors further down because mo is null or
     //  undefined.
     let messageString = [
-      ("" + mo) for each
-      ([,mo] in Iterator(message.messageObjects))].join(" ");
+      ("" + mo) for each([, mo] in Iterator(message.messageObjects))
+    ].join(" ");
     return messageString;
   }
 };
@@ -103,9 +107,9 @@ NewFormatter.prototype = {
     // The trick below prevents errors further down because mo is null or
     //  undefined.
     let messageString = [
-      ("" + mo) for each
-      ([,mo] in Iterator(message.messageObjects))].join(" ");
-    return message.loggerName.replace("virtualIdentity.", "") + ":\t" + messageString  + "\n";
+      ("" + mo) for each([, mo] in Iterator(message.messageObjects))
+    ].join(" ");
+    return message.loggerName.replace("virtualIdentity.", "") + ":\t" + messageString + "\n";
   }
 };
 
@@ -120,8 +124,8 @@ function DebugOutputAppender(formatter) {
 DebugOutputAppender.prototype = {
   __proto__: Log4Moz.Appender.prototype,
 
-  currentWindow : null,
-  
+  currentWindow: null,
+
   doAppend: function DOApp_doAppend(message) {
     if (!vIprefs.get("debug_notification")) return;
     this.currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
@@ -143,8 +147,8 @@ function NotificationOutputAppender(formatter) {
 }
 NotificationOutputAppender.prototype = {
   __proto__: Log4Moz.Appender.prototype,
-  
-  currentWindow : null,
+
+  currentWindow: null,
 
   doAppend: function DOApp_doAppend(message) {
     this.currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
@@ -153,10 +157,10 @@ NotificationOutputAppender.prototype = {
     if (this.currentWindow)
       this.addNote(message);
   },
-  
-  timer : null,
 
-  clearNote: function(self) {
+  timer: null,
+
+  clearNote: function (self) {
     if (self.timer)
       self.currentWindow.clearTimeout(self.timer);
     self.timer = null;
@@ -165,19 +169,19 @@ NotificationOutputAppender.prototype = {
       obj_notificationBox.removeAllNotifications(true);
   },
 
-  addNote: function(note) {
+  addNote: function (note) {
     let obj_notificationBox = this.currentWindow.document.getElementById("virtualIdentityExtension_vINotification");
     if (!obj_notificationBox)
       return;
     let oldNotification = obj_notificationBox.currentNotification
-    let newLabel = (oldNotification)?oldNotification.label + note:note;
+    let newLabel = (oldNotification) ? oldNotification.label + note : note;
     this.clearNote(this);
     obj_notificationBox.appendNotification(newLabel, "", "chrome://messenger/skin/icons/flag.png");
 
     if (vIprefs.get("notification_timeout") != 0)
       this.timer =
-        this.currentWindow.setTimeout(this.clearNote,
-                                      vIprefs.get("notification_timeout") * 1000, this);
+      this.currentWindow.setTimeout(this.clearNote,
+        vIprefs.get("notification_timeout") * 1000, this);
   }
 }
 
@@ -188,15 +192,15 @@ function notificationOverflow(elem) {
     .getMostRecentWindow(null);
   // height will be cut off from messagepane (in 3pane window)
   let objMessagepane = currentWindow.document.getElementById("messagepane");
-  let maxHeight = (objMessagepane)?parseInt(objMessagepane.boxObject.height / 2)+1:null;
+  let maxHeight = (objMessagepane) ? parseInt(objMessagepane.boxObject.height / 2) + 1 : null;
   if (maxHeight < 60) maxHeight = 60; // set a minimum size, if to small scrollbars are hidden
-    let tooBig = (maxHeight)?(elem.inputField.scrollHeight > maxHeight):false;
-    let newHeight = (tooBig)?maxHeight:elem.inputField.scrollHeight;
-    elem.height = newHeight;
+  let tooBig = (maxHeight) ? (elem.inputField.scrollHeight > maxHeight) : false;
+  let newHeight = (tooBig) ? maxHeight : elem.inputField.scrollHeight;
+  elem.height = newHeight;
   // give the box a frame if it is to big
   if (tooBig)
     var notificationBox = currentWindow.document.getElementById("virtualIdentityExtension_vINotificationTextbox");
-    if (notificationBox) notificationBox.setAttribute("class", "plain border");
+  if (notificationBox) notificationBox.setAttribute("class", "plain border");
 }
 
 
@@ -264,138 +268,132 @@ function clearDebugOutput() {
 }
 
 function _startFileLogging() {
-    var file = Components.classes["@mozilla.org/file/local;1"]
-        .createInstance(Components.interfaces.nsIFile);
+  var file = Components.classes["@mozilla.org/file/local;1"]
+    .createInstance(Components.interfaces.nsIFile);
 
-    var defaultPath = Components.classes["@mozilla.org/file/directory_service;1"]
-                .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
+  var defaultPath = Components.classes["@mozilla.org/file/directory_service;1"]
+    .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile).path;
 
+  try {
+    file.initWithPath(vIprefs.get("debug_to_file_path"));
+  } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
     try {
-        file.initWithPath(vIprefs.get("debug_to_file_path"));
+      // try linux delimiter
+      file.initWithPath(defaultPath + "/" + vIprefs.get("debug_to_file_path"));
+    } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
+      try {
+        // use windows delimiter
+        file.initWithPath(defaultPath + "\\" + vIprefs.get("debug_to_file_path"));
+      } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
+        dump("FileAppender not available for logging: set logging file first\n");
+      };
     }
-    catch(NS_ERROR_FILE_UNRECOGNIZED_PATH) {
-        try {
-            // try linux delimiter
-            file.initWithPath(defaultPath + "/" + vIprefs.get("debug_to_file_path"));
-        } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
-            try {
-                // use windows delimiter
-                file.initWithPath(defaultPath + "\\" + vIprefs.get("debug_to_file_path"));
-            } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
-                dump("FileAppender not available for logging: set logging file first\n");
-            };
-        }
-    }
-    // A dump appender outputs to File
-    DebugFileAppender = new Log4Moz.FileAppender(file);
+  }
+  // A dump appender outputs to File
+  DebugFileAppender = new Log4Moz.FileAppender(file);
 
-    if (DebugFileAppender.doAppend.toString().indexOf("this._fos().write") > -1) {
-        dump("*** hot-fixing FileAppender Logging Bug (https://bugzilla.mozilla.org/show_bug.cgi?id=1082551)\n");
-        // there is a bug in original implementation of doAppend, fix the issue
-        DebugFileAppender.doAppend = function FApp_doAppend(message) {
-            if (message === null || message.length <= 0)
-                return;
-            try {
-                this._fos.write(message, message.length);
-            } catch(e) {
-                dump("Error writing file:\n" + e);
-            }
-        };
-    }
+  if (DebugFileAppender.doAppend.toString().indexOf("this._fos().write") > -1) {
+    dump("*** hot-fixing FileAppender Logging Bug (https://bugzilla.mozilla.org/show_bug.cgi?id=1082551)\n");
+    // there is a bug in original implementation of doAppend, fix the issue
+    DebugFileAppender.doAppend = function FApp_doAppend(message) {
+      if (message === null || message.length <= 0)
+        return;
+      try {
+        this._fos.write(message, message.length);
+      } catch (e) {
+        dump("Error writing file:\n" + e);
+      }
+    };
+  }
 
-    DebugFileAppender.level = Log4Moz.Level["All"];
-    Log4Moz.repository.rootLogger.addAppender(DebugFileAppender);
-    
-    _errorConsoleTunnel.initialize();
+  DebugFileAppender.level = Log4Moz.Level["All"];
+  Log4Moz.repository.rootLogger.addAppender(DebugFileAppender);
+
+  _errorConsoleTunnel.initialize();
 }
 
 function _stopFileLogging() {
-    if (DebugFileAppender)
-        Log4Moz.repository.rootLogger.removeAppender(DebugFileAppender);
-    _errorConsoleTunnel.shutdown();
+  if (DebugFileAppender)
+    Log4Moz.repository.rootLogger.removeAppender(DebugFileAppender);
+  _errorConsoleTunnel.shutdown();
 }
 
 function _dump_extension_list() {
-    Components.utils.import("resource://gre/modules/AddonManager.jsm");
-    AddonManager.getAllAddons(function(addons) {
-        var strings = addons.map(function(addon) {
-            return (addon.userDisabled || addon.appDisabled ? "" : "addon: " + addon.name + " " + addon.version + "\n");
-        });
-        MyLog.info("\n--------------------------------------------------------------------------------\n" +
-            strings.join("") +
-            "--------------------------------------------------------------------------------");
-        });
+  Components.utils.import("resource://gre/modules/AddonManager.jsm");
+  AddonManager.getAllAddons(function (addons) {
+    var strings = addons.map(function (addon) {
+      return (addon.userDisabled || addon.appDisabled ? "" : "addon: " + addon.name + " " + addon.version + "\n");
+    });
+    MyLog.info("\n--------------------------------------------------------------------------------\n" +
+      strings.join("") +
+      "--------------------------------------------------------------------------------");
+  });
 }
 
 function _dump_info_block() {
-    // add some information about the mail-client and the extensions installed
-    if ("@mozilla.org/xre/app-info;1" in Components.classes) {
-        var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
-            .getService(Components.interfaces.nsIXULAppInfo);
-        var protohandler = Components.classes["@mozilla.org/network/protocol;1?name=http"]
-            .getService(Components.interfaces.nsIHttpProtocolHandler);
-        MyLog.info("start logging for new session\n--------------------------------------------------------------------------------\n" + 
-            appInfo.name + " " + appInfo.version + " (" + appInfo.appBuildID + "; " + protohandler.oscpu + ")\n" +
-            "--------------------------------------------------------------------------------");
-    }
-    else
-        MyLog.info("\n--------------------------------------------------------------------------------\n" + 
-            "mail-client seems not supported by Virtual Identity Extension\n" +
-            "--------------------------------------------------------------------------------");
-    
-    _dump_extension_list();
+  // add some information about the mail-client and the extensions installed
+  if ("@mozilla.org/xre/app-info;1" in Components.classes) {
+    var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
+      .getService(Components.interfaces.nsIXULAppInfo);
+    var protohandler = Components.classes["@mozilla.org/network/protocol;1?name=http"]
+      .getService(Components.interfaces.nsIHttpProtocolHandler);
+    MyLog.info("start logging for new session\n--------------------------------------------------------------------------------\n" +
+      appInfo.name + " " + appInfo.version + " (" + appInfo.appBuildID + "; " + protohandler.oscpu + ")\n" +
+      "--------------------------------------------------------------------------------");
+  } else
+    MyLog.info("\n--------------------------------------------------------------------------------\n" +
+      "mail-client seems not supported by Virtual Identity Extension\n" +
+      "--------------------------------------------------------------------------------");
+
+  _dump_extension_list();
 }
 
 function UpdateFileLoggerPath() {
-    dump("UpdateFileLoggerPath\n");
-    if (vIprefs.get("debug_to_file")) {
-        _stopFileLogging();
-        _startFileLogging();
-        _dump_info_block();
-    }
-}   
+  dump("UpdateFileLoggerPath\n");
+  if (vIprefs.get("debug_to_file")) {
+    _stopFileLogging();
+    _startFileLogging();
+    _dump_info_block();
+  }
+}
 
 function UpdateFileLogger() {
-    if (vIprefs.get("debug_to_file")) {
-        _startFileLogging();
-        _dump_info_block();
-    }
-    else {
-        _stopFileLogging();
-    }
+  if (vIprefs.get("debug_to_file")) {
+    _startFileLogging();
+    _dump_info_block();
+  } else {
+    _stopFileLogging();
+  }
 }
 
 function UpdateSmartReplyNotification() {
-    if (vIprefs.get("smart_reply_notification")) {
-        SmartReplyAppender = new NotificationOutputAppender(myNotificationFormatter);
-        SmartReplyAppender.level = Log4Moz.Level["All"];
-        SmartReplyNotification.addAppender(SmartReplyAppender);
-    }
-    else {
-        SmartReplyNotification.removeAppender(SmartReplyAppender);
-    }
+  if (vIprefs.get("smart_reply_notification")) {
+    SmartReplyAppender = new NotificationOutputAppender(myNotificationFormatter);
+    SmartReplyAppender.level = Log4Moz.Level["All"];
+    SmartReplyNotification.addAppender(SmartReplyAppender);
+  } else {
+    SmartReplyNotification.removeAppender(SmartReplyAppender);
+  }
 }
 
 function UpdateStorageNotification() {
-    if (vIprefs.get("storage_notification")) {
-        StorageAppender = new NotificationOutputAppender(myNotificationFormatter);
-        StorageAppender.level = Log4Moz.Level["All"];
-        StorageNotification.addAppender(StorageAppender);
-    }
-    else {
-        StorageNotification.removeAppender(StorageAppender);
-    }
+  if (vIprefs.get("storage_notification")) {
+    StorageAppender = new NotificationOutputAppender(myNotificationFormatter);
+    StorageAppender.level = Log4Moz.Level["All"];
+    StorageNotification.addAppender(StorageAppender);
+  } else {
+    StorageNotification.removeAppender(StorageAppender);
+  }
 }
 
 function UpdateGetHeaderNotification() {
-    if (vIprefs.get("get_header_notification")) {
-        GetHeaderAppender = new NotificationOutputAppender(myNotificationFormatter);
-        GetHeaderAppender.level = Log4Moz.Level["All"];
-        GetHeaderNotification.addAppender(GetHeaderAppender);
-    }
-    else {
-        GetHeaderNotification.removeAppender(GetHeaderAppender);
-    }
+  if (vIprefs.get("get_header_notification")) {
+    GetHeaderAppender = new NotificationOutputAppender(myNotificationFormatter);
+    GetHeaderAppender.level = Log4Moz.Level["All"];
+    GetHeaderNotification.addAppender(GetHeaderAppender);
+  } else {
+    GetHeaderNotification.removeAppender(GetHeaderAppender);
+  }
 }
 
 let logRoot = "virtualIdentity";

@@ -35,17 +35,18 @@ let Log = setupLogging("virtualIdentity.identityDataExtras.PGPMIME");
 
 function identityDataExtrasObject_PGPMIME(currentWindow) {
   this.currentWindow = currentWindow;
-  this.field  = "PGPMIME";                        // description of the option
-  this.option = "storageExtras_openPGP_PGPMIME";    // option string to get preference settings
+  this.field = "PGPMIME"; // description of the option
+  this.option = "storageExtras_openPGP_PGPMIME"; // option string to get preference settings
   this.elementID_msgCompose = "enigmail_sendPGPMime";
-  this.updateFunction_msgCompose = function() {
-    (typeof(this.currentWindow.Enigmail.msg.setMenuSettings)=='function')?this.currentWindow.Enigmail.msg.setMenuSettings(''):null };
+  this.updateFunction_msgCompose = function () {
+    (typeof (this.currentWindow.Enigmail.msg.setMenuSettings) == 'function') ? this.currentWindow.Enigmail.msg.setMenuSettings(''): null
+  };
 }
 identityDataExtrasObject_PGPMIME.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,
-  
-  readIdentityValue : function(identity) { 
-    if (this.active) this.value = (identity.getBoolAttribute('pgpMimeMode'))?"true":"false";
+
+  readIdentityValue: function (identity) {
+    if (this.active) this.value = (identity.getBoolAttribute('pgpMimeMode')) ? "true" : "false";
   }
 }
 registerIdExtrasObject(identityDataExtrasObject_PGPMIME);

@@ -1,8 +1,7 @@
-
 /**
-* some code copied and adapted from Thunderbird Sources
-* thanks to all Thunderbird Developers
-*/
+ * some code copied and adapted from Thunderbird Sources
+ * thanks to all Thunderbird Developers
+ */
 
 /* -*- Mode: Java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  * ***** BEGIN LICENSE BLOCK *****
@@ -43,89 +42,87 @@
  * ***** END LICENSE BLOCK ***** */
 
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
-virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+virtualIdentityExtension.ns(function () {
+  with(virtualIdentityExtension.LIB) {
 
-var InitFolderDisplays = function(msgFolder, accountPickerId, folderPickerId) {
-    var accountPicker = document.getElementById(accountPickerId);
-    var folderPicker = document.getElementById(folderPickerId);
-    InitFolderDisplay(msgFolder.server.rootFolder, accountPicker);
-    InitFolderDisplay(msgFolder, folderPicker);
-}
-
-// Initialize the folder display based on prefs values
-var InitFolderDisplay = function(folder, folderPicker) {
-    try {
-      folderPicker.firstChild.selectFolder(folder);
-    } catch(ex) {
-      folderPicker.setAttribute("label", folder.prettyName);
+    var InitFolderDisplays = function (msgFolder, accountPickerId, folderPickerId) {
+      var accountPicker = document.getElementById(accountPickerId);
+      var folderPicker = document.getElementById(folderPickerId);
+      InitFolderDisplay(msgFolder.server.rootFolder, accountPicker);
+      InitFolderDisplay(msgFolder, folderPicker);
     }
-    folderPicker.folder = folder;
-}
 
-// Capture any menulist changes
-var noteSelectionChange = function(radioItemId, aEvent)
-{
-    var checkedElem = document.getElementById(radioItemId);
-    var folder = aEvent.target._folder;
-    var modeValue  = checkedElem.value;
-    var radioGroup = checkedElem.radioGroup.getAttribute("id");
-    var picker;
-    switch (radioGroup)
-    {
-        case "VIdent_doFcc" :
-            vI.gFccRadioElemChoice = modeValue;
-            picker = document.getElementById("msgFccFolderPicker");
-            break;
-    
-        case "VIdent_messageDrafts" :
-            vI.gDraftsRadioElemChoice = modeValue;
-            picker = document.getElementById("msgDraftsFolderPicker");
-            break;
-
-        case "VIdent_messageTemplates" :
-            vI.gTmplRadioElemChoice = modeValue;
-            picker = document.getElementById("msgStationeryFolderPicker");
-            break;
+    // Initialize the folder display based on prefs values
+    var InitFolderDisplay = function (folder, folderPicker) {
+      try {
+        folderPicker.firstChild.selectFolder(folder);
+      } catch (ex) {
+        folderPicker.setAttribute("label", folder.prettyName);
+      }
+      folderPicker.folder = folder;
     }
-    picker.folder = folder;
-    picker.setAttribute("label", folder.prettyName);
-}
 
-// Save folder settings and radio element choices
-var SaveFolderSettings = function(radioElemChoice, 
-                            radioGroupId,
-                            folderSuffix,
-                            accountPickerId,
-                            folderPickerId,
-                            folderElementId,
-                            folderPickerModeId)
-{
-    var formElement = document.getElementById(folderElementId);
-    var uri = "";
+    // Capture any menulist changes
+    var noteSelectionChange = function (radioItemId, aEvent) {
+      var checkedElem = document.getElementById(radioItemId);
+      var folder = aEvent.target._folder;
+      var modeValue = checkedElem.value;
+      var radioGroup = checkedElem.radioGroup.getAttribute("id");
+      var picker;
+      switch (radioGroup) {
+      case "VIdent_doFcc":
+        vI.gFccRadioElemChoice = modeValue;
+        picker = document.getElementById("msgFccFolderPicker");
+        break;
 
-    switch (radioElemChoice) 
-    {
-        case "0" :
-            uri = document.getElementById(accountPickerId).selectedItem._folder.URI;
-            if (uri) {
-                // Create  Folder URI
-                uri = uri + folderSuffix;
-            }
-            break;
+      case "VIdent_messageDrafts":
+        vI.gDraftsRadioElemChoice = modeValue;
+        picker = document.getElementById("msgDraftsFolderPicker");
+        break;
 
-        case "1" : 
-            uri = document.getElementById(folderPickerId).folder.URI;
-            break;
-
-        default :
-            break;
+      case "VIdent_messageTemplates":
+        vI.gTmplRadioElemChoice = modeValue;
+        picker = document.getElementById("msgStationeryFolderPicker");
+        break;
+      }
+      picker.folder = folder;
+      picker.setAttribute("label", folder.prettyName);
     }
-    formElement.setAttribute("value", uri);
 
-    formElement = document.getElementById(folderPickerModeId);
-    formElement.setAttribute("value", radioElemChoice);
-}
-vI.InitFolderDisplays = InitFolderDisplays;
-vI.SaveFolderSettings = SaveFolderSettings;
-vI.noteSelectionChange = noteSelectionChange;
-}});
+    // Save folder settings and radio element choices
+    var SaveFolderSettings = function (radioElemChoice,
+      radioGroupId,
+      folderSuffix,
+      accountPickerId,
+      folderPickerId,
+      folderElementId,
+      folderPickerModeId) {
+      var formElement = document.getElementById(folderElementId);
+      var uri = "";
+
+      switch (radioElemChoice) {
+      case "0":
+        uri = document.getElementById(accountPickerId).selectedItem._folder.URI;
+        if (uri) {
+          // Create  Folder URI
+          uri = uri + folderSuffix;
+        }
+        break;
+
+      case "1":
+        uri = document.getElementById(folderPickerId).folder.URI;
+        break;
+
+      default:
+        break;
+      }
+      formElement.setAttribute("value", uri);
+
+      formElement = document.getElementById(folderPickerModeId);
+      formElement.setAttribute("value", radioElemChoice);
+    }
+    vI.InitFolderDisplays = InitFolderDisplays;
+    vI.SaveFolderSettings = SaveFolderSettings;
+    vI.noteSelectionChange = noteSelectionChange;
+  }
+});

@@ -35,25 +35,25 @@ let Log = setupLogging("virtualIdentity.identityDataExtras.fccSwitch");
 
 function identityDataExtrasObject_fccSwitch(currentWindow) {
   this.currentWindow = currentWindow;
-  this.field  = "fcc";                        // description of the option
-  this.option = "storageExtras_fcc";    // option string to get preference settings
+  this.field = "fcc"; // description of the option
+  this.option = "storageExtras_fcc"; // option string to get preference settings
   this.elementID_msgCompose = "virtualIdentityExtension_fccSwitch";
 }
 identityDataExtrasObject_fccSwitch.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,
-  
-  readIdentityValue : function(identity) { 
-    if (this.active) this.value = (identity.doFcc)?"true":"false";
+
+  readIdentityValue: function (identity) {
+    if (this.active) this.value = (identity.doFcc) ? "true" : "false";
   },
 
-  setValueToEnvironment_msgCompose: function() {
+  setValueToEnvironment_msgCompose: function () {
     var element = this.currentWindow.document.getElementById(this.elementID_msgCompose);
     if (!this.active || (this.value == null) || !element)
       return;
-    
+
     this.updateFunction_msgCompose();
     if ((element.getAttribute("checked") == "true") != (this.value == "true")) {
-      Log.debug("change "+ this.field + " to " + this.value + " directly");
+      Log.debug("change " + this.field + " to " + this.value + " directly");
       element.setAttribute("checked", (element.getAttribute("checked") != "true"));
     }
   }

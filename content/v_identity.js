@@ -23,281 +23,289 @@
  * ***** END LICENSE BLOCK ***** */
 
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
-virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+virtualIdentityExtension.ns(function () {
+  with(virtualIdentityExtension.LIB) {
 
-let Log = vI.setupLogging("virtualIdentity.main");
-Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
-Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
-Components.utils.import("resource://v_identity/vI_replyToSelf.js", virtualIdentityExtension);
-Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdentityExtension);
-Components.utils.import("resource://v_identity/plugins/signatureSwitch.js", virtualIdentityExtension);
+    let Log = vI.setupLogging("virtualIdentity.main");
+    Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
+    Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
+    Components.utils.import("resource://v_identity/vI_replyToSelf.js", virtualIdentityExtension);
+    Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdentityExtension);
+    Components.utils.import("resource://v_identity/plugins/signatureSwitch.js", virtualIdentityExtension);
 
-var main = {
-	headerParser : Components.classes["@mozilla.org/messenger/headerparser;1"]
-				.getService(Components.interfaces.nsIMsgHeaderParser),
-	
-	unicodeConverter : Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-				.createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
-							
-	accountManager : Components.classes["@mozilla.org/messenger/account-manager;1"]
-			.getService(Components.interfaces.nsIMsgAccountManager),
-		
+    var main = {
+      headerParser: Components.classes["@mozilla.org/messenger/headerparser;1"]
+        .getService(Components.interfaces.nsIMsgHeaderParser),
 
-	gMsgCompose : null, // to store the global gMsgCompose after MsgComposeDialog is closed
+      unicodeConverter: Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+        .createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
 
-	// Those variables keep pointers to original functions which might get replaced later
-	original_functions : {
-		GenericSendMessage : null,
-		FillIdentityList : null
-	},
+      accountManager: Components.classes["@mozilla.org/messenger/account-manager;1"]
+        .getService(Components.interfaces.nsIMsgAccountManager),
 
-	// some pointers to the layout-elements of the extension
-	elements : {
-		init_base : function() {
-			main.elements.Area_MsgIdentityHbox = document.getElementById("virtualIdentityExtension_msgIdentityHbox");
-			main.elements.Obj_MsgIdentity = document.getElementById("msgIdentity");
-		},
-		init_rest : function() {
-			main.elements.Obj_MsgIdentityPopup = document.getElementById("msgIdentityPopup");
-			main.elements.Obj_vILogo = document.getElementById("virtualIdentityExtension_Logo");
-		},
-		strings : null
-	},
 
-	ComposeStateListener : {
-		NotifyComposeBodyReady: function() { 
-			Log.debug("NotifyComposeBodyReady");
-            main.initSystemStage2();
-		},
-		NotifyComposeFieldsReady: function() { 
-			Log.debug("NotifyComposeFieldsReady");
-		},
-		ComposeProcessDone: function(aResult) {
-			Log.debug("StateListener reports ComposeProcessDone");
-            vI.vIaccount_removeUsedVIAccount();
-			main.Cleanup(); // not really required, parallel handled by main.close
-			vI.storage.clean();
-		},
-		SaveInFolderDone: function(folderURI) { 
-			Log.debug("SaveInFolderDone");
-            vI.vIaccount_removeUsedVIAccount();
-			main.Cleanup();
-			vI.storage.clean();
-		}
-	},
-	
-	replacement_functions : {
-		FillIdentityList: function(menulist) {
-			Log.debug("mod. FillIdentityList");
-            var accounts = virtualIdentityExtension.getAccountsArray();
-            for (let acc = 0; acc < accounts.length; acc++) {
-                let server = accounts[acc].incomingServer;
-                if (!server)
-                    continue;
-                
-                // check for VirtualIdentity Account
-                try {   vI.prefroot.getBoolPref("mail.account." + accounts[acc].key + ".vIdentity"); continue; } catch (e) { };
-                let account = accounts[acc];
-                let identities = virtualIdentityExtension.getIdentitiesArray(account);
+      gMsgCompose: null, // to store the global gMsgCompose after MsgComposeDialog is closed
 
-                if (identities.length == 0)
-                    continue;
+      // Those variables keep pointers to original functions which might get replaced later
+      original_functions: {
+        GenericSendMessage: null,
+        FillIdentityList: null
+      },
 
-                for (let i = 0; i < identities.length; i++) {
-                    let identity = identities[i];
-                    let item = menulist.appendItem(identity.identityName, identity.key,
-                                                    account.incomingServer.prettyName);
-                    item.setAttribute("accountkey", account.key);
-                    if (i == 0) {
-                        // Mark the first identity as default.
-                        item.setAttribute("default", "true");
-                    }
-                }
+      // some pointers to the layout-elements of the extension
+      elements: {
+        init_base: function () {
+          main.elements.Area_MsgIdentityHbox = document.getElementById("virtualIdentityExtension_msgIdentityHbox");
+          main.elements.Obj_MsgIdentity = document.getElementById("msgIdentity");
+        },
+        init_rest: function () {
+          main.elements.Obj_MsgIdentityPopup = document.getElementById("msgIdentityPopup");
+          main.elements.Obj_vILogo = document.getElementById("virtualIdentityExtension_Logo");
+        },
+        strings: null
+      },
+
+      ComposeStateListener: {
+        NotifyComposeBodyReady: function () {
+          Log.debug("NotifyComposeBodyReady");
+          main.initSystemStage2();
+        },
+        NotifyComposeFieldsReady: function () {
+          Log.debug("NotifyComposeFieldsReady");
+        },
+        ComposeProcessDone: function (aResult) {
+          Log.debug("StateListener reports ComposeProcessDone");
+          vI.vIaccount_removeUsedVIAccount();
+          main.Cleanup(); // not really required, parallel handled by main.close
+          vI.storage.clean();
+        },
+        SaveInFolderDone: function (folderURI) {
+          Log.debug("SaveInFolderDone");
+          vI.vIaccount_removeUsedVIAccount();
+          main.Cleanup();
+          vI.storage.clean();
+        }
+      },
+
+      replacement_functions: {
+        FillIdentityList: function (menulist) {
+          Log.debug("mod. FillIdentityList");
+          var accounts = virtualIdentityExtension.getAccountsArray();
+          for (let acc = 0; acc < accounts.length; acc++) {
+            let server = accounts[acc].incomingServer;
+            if (!server)
+              continue;
+
+            // check for VirtualIdentity Account
+            try {
+              vI.prefroot.getBoolPref("mail.account." + accounts[acc].key + ".vIdentity");
+              continue;
+            } catch (e) {};
+            let account = accounts[acc];
+            let identities = virtualIdentityExtension.getIdentitiesArray(account);
+
+            if (identities.length == 0)
+              continue;
+
+            for (let i = 0; i < identities.length; i++) {
+              let identity = identities[i];
+              let item = menulist.appendItem(identity.identityName, identity.key,
+                account.incomingServer.prettyName);
+              item.setAttribute("accountkey", account.key);
+              if (i == 0) {
+                // Mark the first identity as default.
+                item.setAttribute("default", "true");
+              }
             }
-		},
-		
-		GenericSendMessageInProgress : false,
-		GenericSendMessage: function (msgType) {
-			if (main.replacement_functions.GenericSendMessageInProgress) return;
-			main.replacement_functions.GenericSendMessageInProgress = true;
-			
-			// if addressCol2 is focused while sending check storage for the entered address before continuing
-			vI.storage.awOnBlur(vI.storage.focusedElement, window);
+          }
+        },
 
-			Log.debug("VIdentity_GenericSendMessage");
-            
-            Log.debug("VIdentity_GenericSendMessage top=" + top);
-			
-			if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now)
-              vI.addReplyToSelf(window);
+        GenericSendMessageInProgress: false,
+        GenericSendMessage: function (msgType) {
+          if (main.replacement_functions.GenericSendMessageInProgress) return;
+          main.replacement_functions.GenericSendMessageInProgress = true;
 
-			var vid = document.getElementById("virtualIdentityExtension_msgIdentityClone").vid
-			var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
-			
-			let returnValue = vI.vIaccount_prepareSendMsg(vid, msgType, virtualIdentityData,
-							main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
-							main._getRecipients(), window );
-			if (returnValue.update == "abort") {
-				main.replacement_functions.GenericSendMessageInProgress = false;
-				Log.debug("sending: --------------  aborted  ---------------------------------")
-				return;
-			}
-			else if (returnValue.update == "takeover") {
-					var msgIdentityCloneElem = document.getElementById("virtualIdentityExtension_msgIdentityClone");
-					msgIdentityCloneElem.selectedMenuItem = msgIdentityCloneElem.addIdentityToCloneMenu(returnValue.storedIdentity);
-					main.replacement_functions.GenericSendMessageInProgress = false;
-					Log.debug("sending: --------------  aborted  ---------------------------------")
-					return;
-			}
-			
-			if (vid) main.addVirtualIdentityToMsgIdentityMenu();
-			
-			// final check if eyerything is nice before we handover to the real sending...
-			if (vI.vIaccount_finalCheck(virtualIdentityData, getCurrentIdentity())) {
-				main.replacement_functions.GenericSendMessageInProgress = false;
-				main.original_functions.GenericSendMessage(msgType);
-			}
-			else	main.Cleanup();
-			main.replacement_functions.GenericSendMessageInProgress = false;
-			// 			Log.debug("original_functions.GenericSendMessage done");
-		},
-		
-		replace_FillIdentityList : function() {
-			//~ Log.debug("replace FillIdentityList");
-			main.original_functions.FillIdentityList = FillIdentityList;
-			FillIdentityList = main.replacement_functions.FillIdentityList;
-		}
-	},
+          // if addressCol2 is focused while sending check storage for the entered address before continuing
+          vI.storage.awOnBlur(vI.storage.focusedElement, window);
 
-	remove: function() {
-		window.removeEventListener('compose-window-reopen', main.reopen, true);
-		window.removeEventListener('compose-window-close', main.close, true);
-		Log.debug("end. remove Account if there.")
-		main.Cleanup();
-		vI.storage.clean();
-	},
+          Log.debug("VIdentity_GenericSendMessage");
 
-	_getRecipients : function() {
-		var recipients = [];
-		for (var row = 1; row <= top.MAX_RECIPIENTS; row ++) {
-			var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
-			if (recipientType == "addr_reply" || recipientType == "addr_followup" || 
-				main._recipientIsDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/) ) continue;
-			recipients.push( { recipient: awGetInputElement(row).value, recipientType : recipientType } );
-		}
-		return recipients;
-	},
-	
-	_recipientIsDoBcc : function(row) {
-		var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
-		if (recipientType != "addr_bcc" || !getCurrentIdentity().doBcc) return false
+          Log.debug("VIdentity_GenericSendMessage top=" + top);
 
-		var doBccArray = gMsgCompose.compFields.splitRecipients(getCurrentIdentity().doBccList, false, {});
+          if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now)
+            vI.addReplyToSelf(window);
 
-		for (var index = 0; index < doBccArray.count; index++ ) {
-			if (doBccArray.StringAt(index) == awGetInputElement(row).value) {
-				Log.debug("_recipientIsDoBcc: ignoring doBcc field '" +
-					doBccArray.StringAt(index));
-				return true;
-			}
-		}		
-		return false
-	},
+          var vid = document.getElementById("virtualIdentityExtension_msgIdentityClone").vid
+          var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
 
-	// initialization //
-	init: function() {
-		window.removeEventListener('load', main.init, false);
-		window.removeEventListener('compose-window-init', main.init, true);
-		if (main.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
-		Log.debug("init.")
-		main.unicodeConverter.charset="UTF-8";
-		if (!main.adapt_genericSendMessage()) { Log.error("init failed."); return; }
-		
-		main.adapt_interface();
-		gMsgCompose.RegisterStateListener(main.ComposeStateListener);
-		document.getElementById("virtualIdentityExtension_tooltipPopupset")
-			.addTooltip(document.getElementById("virtualIdentityExtension_msgIdentityClone"), false);
-		window.addEventListener('compose-window-reopen', main.reopen, true);
-		window.addEventListener('compose-window-close', main.close, true);
-		
-		// append observer to virtualIdentityExtension_fccSwitch, because it does'n work with real identities (hidden by css)
-		document.getElementById("virtualIdentityExtension_fccSwitch").appendChild(document.getElementById("virtualIdentityExtension_msgIdentityClone_observer").cloneNode(false));
+          let returnValue = vI.vIaccount_prepareSendMsg(vid, msgType, virtualIdentityData,
+            main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
+            main._getRecipients(), window);
+          if (returnValue.update == "abort") {
+            main.replacement_functions.GenericSendMessageInProgress = false;
+            Log.debug("sending: --------------  aborted  ---------------------------------")
+            return;
+          } else if (returnValue.update == "takeover") {
+            var msgIdentityCloneElem = document.getElementById("virtualIdentityExtension_msgIdentityClone");
+            msgIdentityCloneElem.selectedMenuItem = msgIdentityCloneElem.addIdentityToCloneMenu(returnValue.storedIdentity);
+            main.replacement_functions.GenericSendMessageInProgress = false;
+            Log.debug("sending: --------------  aborted  ---------------------------------")
+            return;
+          }
+
+          if (vid) main.addVirtualIdentityToMsgIdentityMenu();
+
+          // final check if eyerything is nice before we handover to the real sending...
+          if (vI.vIaccount_finalCheck(virtualIdentityData, getCurrentIdentity())) {
+            main.replacement_functions.GenericSendMessageInProgress = false;
+            main.original_functions.GenericSendMessage(msgType);
+          } else main.Cleanup();
+          main.replacement_functions.GenericSendMessageInProgress = false;
+          // 			Log.debug("original_functions.GenericSendMessage done");
+        },
+
+        replace_FillIdentityList: function () {
+          //~ Log.debug("replace FillIdentityList");
+          main.original_functions.FillIdentityList = FillIdentityList;
+          FillIdentityList = main.replacement_functions.FillIdentityList;
+        }
+      },
+
+      remove: function () {
+        window.removeEventListener('compose-window-reopen', main.reopen, true);
+        window.removeEventListener('compose-window-close', main.close, true);
+        Log.debug("end. remove Account if there.")
+        main.Cleanup();
+        vI.storage.clean();
+      },
+
+      _getRecipients: function () {
+        var recipients = [];
+        for (var row = 1; row <= top.MAX_RECIPIENTS; row++) {
+          var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
+          if (recipientType == "addr_reply" || recipientType == "addr_followup" ||
+            main._recipientIsDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/)) continue;
+          recipients.push({
+            recipient: awGetInputElement(row).value,
+            recipientType: recipientType
+          });
+        }
+        return recipients;
+      },
+
+      _recipientIsDoBcc: function (row) {
+        var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
+        if (recipientType != "addr_bcc" || !getCurrentIdentity().doBcc) return false
+
+        var doBccArray = gMsgCompose.compFields.splitRecipients(getCurrentIdentity().doBccList, false, {});
+
+        for (var index = 0; index < doBccArray.count; index++) {
+          if (doBccArray.StringAt(index) == awGetInputElement(row).value) {
+            Log.debug("_recipientIsDoBcc: ignoring doBcc field '" +
+              doBccArray.StringAt(index));
+            return true;
+          }
+        }
+        return false
+      },
+
+      // initialization //
+      init: function () {
+        window.removeEventListener('load', main.init, false);
+        window.removeEventListener('compose-window-init', main.init, true);
+        if (main.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
+        Log.debug("init.")
+        main.unicodeConverter.charset = "UTF-8";
+        if (!main.adapt_genericSendMessage()) {
+          Log.error("init failed.");
+          return;
+        }
+
+        main.adapt_interface();
+        gMsgCompose.RegisterStateListener(main.ComposeStateListener);
+        document.getElementById("virtualIdentityExtension_tooltipPopupset")
+          .addTooltip(document.getElementById("virtualIdentityExtension_msgIdentityClone"), false);
+        window.addEventListener('compose-window-reopen', main.reopen, true);
+        window.addEventListener('compose-window-close', main.close, true);
+
+        // append observer to virtualIdentityExtension_fccSwitch, because it does'n work with real identities (hidden by css)
+        document.getElementById("virtualIdentityExtension_fccSwitch").appendChild(document.getElementById("virtualIdentityExtension_msgIdentityClone_observer").cloneNode(false));
 
         main.AccountManagerObserver.register();
-        
-		main.initSystemStage1();
-		Log.debug("init done.")
-	},
-	
-	initSystemStage1 : function() {
-		Log.debug("initSystemStage1.")
-		main.gMsgCompose = gMsgCompose;
-		document.getElementById("virtualIdentityExtension_msgIdentityClone").init();
-		vI.statusmenu.init();
-		Log.debug("initSystemStage1 done.")
-	},
-	
-	initSystemStage2 : function() {
-		Log.debug("initSystemStage2.")
-        vI.initReplyTo(window);
-		vI.storage.init();
-		vI.smartIdentity.init(window);
-		Log.debug("initSystemStage2 done.")
-	},
-	
-	close : function() {
-		main.Cleanup();
-		vI.storage.clean();
-	},
-	
-	adapt_interface : function() {
-		if (main.elements.Obj_MsgIdentityPopup) return; // only rearrange the interface once
-		
-		// initialize the pointers to extension elements
-		main.elements.init_base()
-		
-		// rearrange the positions of some elements
-		var parent_hbox = main.elements.Obj_MsgIdentity.parentNode;
-		var storage_box = document.getElementById("addresses-box");
-		var virtualIdentityExtension_autoReplyToSelfLabel = document.getElementById("virtualIdentityExtension_autoReplyToSelfLabelBox");
-		
-		storage_box.removeChild(virtualIdentityExtension_autoReplyToSelfLabel);
-		parent_hbox.appendChild(virtualIdentityExtension_autoReplyToSelfLabel);
-		storage_box.removeChild(main.elements.Area_MsgIdentityHbox);
-		parent_hbox.appendChild(main.elements.Area_MsgIdentityHbox);
 
-		main.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
-		main.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "virtualIdentityExtension_msgIdentityClone");
-		
-		var access_label = parent_hbox.getElementsByAttribute( "control", "msgIdentity" )[0];
-		if (access_label) access_label.setAttribute("control", "virtualIdentityExtension_msgIdentityClone");
-		
-		// initialize the pointers to extension elements (initialize those earlier might brake the interface)
-		main.elements.init_rest();	
-	},
-	
-	adapt_genericSendMessage : function() {
-		if (main.original_functions.GenericSendMessage) return true; // only initialize this once
-		Log.debug("adapt GenericSendMessage");
-		main.original_functions.GenericSendMessage = GenericSendMessage;
-		GenericSendMessage = main.replacement_functions.GenericSendMessage;
-		return true;
-	},
-	
-	reopen: function() {
-		vI.clearDebugOutput();
-		Log.debug("composeDialog reopened. (msgType " + gMsgCompose.type + ")")
-		
-		// clean all elements
-		document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
-		Log.debug("everything cleaned.")
-		
+        main.initSystemStage1();
+        Log.debug("init done.")
+      },
+
+      initSystemStage1: function () {
+        Log.debug("initSystemStage1.")
+        main.gMsgCompose = gMsgCompose;
+        document.getElementById("virtualIdentityExtension_msgIdentityClone").init();
+        vI.statusmenu.init();
+        Log.debug("initSystemStage1 done.")
+      },
+
+      initSystemStage2: function () {
+        Log.debug("initSystemStage2.")
+        vI.initReplyTo(window);
+        vI.storage.init();
+        vI.smartIdentity.init(window);
+        Log.debug("initSystemStage2 done.")
+      },
+
+      close: function () {
+        main.Cleanup();
+        vI.storage.clean();
+      },
+
+      adapt_interface: function () {
+        if (main.elements.Obj_MsgIdentityPopup) return; // only rearrange the interface once
+
+        // initialize the pointers to extension elements
+        main.elements.init_base()
+
+        // rearrange the positions of some elements
+        var parent_hbox = main.elements.Obj_MsgIdentity.parentNode;
+        var storage_box = document.getElementById("addresses-box");
+        var virtualIdentityExtension_autoReplyToSelfLabel = document.getElementById("virtualIdentityExtension_autoReplyToSelfLabelBox");
+
+        storage_box.removeChild(virtualIdentityExtension_autoReplyToSelfLabel);
+        parent_hbox.appendChild(virtualIdentityExtension_autoReplyToSelfLabel);
+        storage_box.removeChild(main.elements.Area_MsgIdentityHbox);
+        parent_hbox.appendChild(main.elements.Area_MsgIdentityHbox);
+
+        main.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
+        main.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "virtualIdentityExtension_msgIdentityClone");
+
+        var access_label = parent_hbox.getElementsByAttribute("control", "msgIdentity")[0];
+        if (access_label) access_label.setAttribute("control", "virtualIdentityExtension_msgIdentityClone");
+
+        // initialize the pointers to extension elements (initialize those earlier might brake the interface)
+        main.elements.init_rest();
+      },
+
+      adapt_genericSendMessage: function () {
+        if (main.original_functions.GenericSendMessage) return true; // only initialize this once
+        Log.debug("adapt GenericSendMessage");
+        main.original_functions.GenericSendMessage = GenericSendMessage;
+        GenericSendMessage = main.replacement_functions.GenericSendMessage;
+        return true;
+      },
+
+      reopen: function () {
+        vI.clearDebugOutput();
+        Log.debug("composeDialog reopened. (msgType " + gMsgCompose.type + ")")
+
+        // clean all elements
+        document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
+        Log.debug("everything cleaned.")
+
         // register StateListener
         gMsgCompose.RegisterStateListener(main.ComposeStateListener);
-        
-		// now (re)init the elements
-		main.initSystemStage1();
-		
+
+        // now (re)init the elements
+        main.initSystemStage1();
+
         vI.vIprefs.dropLocalChanges();
 
         // NotifyComposeBodyReady is only triggered in reply-cases
@@ -305,109 +313,116 @@ var main = {
         // in other cases directly
         var msgComposeType = Components.interfaces.nsIMsgCompType;
         switch (gMsgCompose.type) {
-            case msgComposeType.New:
-            case msgComposeType.NewsPost:
-            case msgComposeType.MailToUrl:
-            case msgComposeType.Draft:
-            case msgComposeType.Template:
-            case msgComposeType.ForwardAsAttachment:
-            case msgComposeType.ForwardInline:
-                main.initSystemStage2();
-//             case msgComposeType.Reply:
-//             case msgComposeType.ReplyAll:
-//             case msgComposeType.ReplyToGroup:
-//             case msgComposeType.ReplyToSender:
-//             case msgComposeType.ReplyToSenderAndGroup:
-//             case msgComposeType.ReplyWithTemplate:
-//             case msgComposeType.ReplyToList:
-//                 main.initSystemStage2() triggered trough NotifyComposeBodyReady;
+        case msgComposeType.New:
+        case msgComposeType.NewsPost:
+        case msgComposeType.MailToUrl:
+        case msgComposeType.Draft:
+        case msgComposeType.Template:
+        case msgComposeType.ForwardAsAttachment:
+        case msgComposeType.ForwardInline:
+          main.initSystemStage2();
+          //             case msgComposeType.Reply:
+          //             case msgComposeType.ReplyAll:
+          //             case msgComposeType.ReplyToGroup:
+          //             case msgComposeType.ReplyToSender:
+          //             case msgComposeType.ReplyToSenderAndGroup:
+          //             case msgComposeType.ReplyWithTemplate:
+          //             case msgComposeType.ReplyToList:
+          //                 main.initSystemStage2() triggered trough NotifyComposeBodyReady;
         }
-		Log.debug("reopen done.")
-	},
-	
-	tempStorage: { BaseIdentity : null, NewIdentity : null },
+        Log.debug("reopen done.")
+      },
 
-	__setSelectedIdentity : function(menuItem) {
-		main.elements.Obj_MsgIdentity.selectedItem = menuItem;
-		main.elements.Obj_MsgIdentity.setAttribute("label", menuItem.getAttribute("label"));
-		main.elements.Obj_MsgIdentity.setAttribute("accountname", menuItem.getAttribute("accountname"));
-		main.elements.Obj_MsgIdentity.setAttribute("value", menuItem.getAttribute("value"));
-	},
+      tempStorage: {
+        BaseIdentity: null,
+        NewIdentity: null
+      },
 
-	// sets the values of the dropdown-menu to the ones of the newly created account
-	addVirtualIdentityToMsgIdentityMenu : function()
-	{
-		main.tempStorage.BaseIdentity = main.elements.Obj_MsgIdentity.selectedItem;
-		main.tempStorage.NewIdentity = document.createElement("menuitem");
-		main.tempStorage.NewIdentity.className = "identity-popup-item";
-		
-		// set the account name in the choosen menu item
-		main.tempStorage.NewIdentity.setAttribute("label", vI.get_vIaccount().defaultIdentity.identityName);
-		main.tempStorage.NewIdentity.setAttribute("accountname", " - " +  vI.get_vIaccount().incomingServer.prettyName);
-		main.tempStorage.NewIdentity.setAttribute("accountkey", vI.get_vIaccount().key);
-		main.tempStorage.NewIdentity.setAttribute("value", vI.get_vIaccount().defaultIdentity.key);
-		
-		main.elements.Obj_MsgIdentityPopup.appendChild(main.tempStorage.NewIdentity);
-		main.__setSelectedIdentity(main.tempStorage.NewIdentity);
-	},
-	
-	removeVirtualIdentityFromMsgIdentityMenu : function()
-	{
-		if (!main.tempStorage.BaseIdentity) return; // don't try to remove Item twice
-		try {	// might not exist anymore (window closed), so just try to remove it
-			document.getElementById("msgIdentity").firstChild.removeChild(main.tempStorage.NewIdentity);
-			main.__setSelectedIdentity(main.tempStorage.BaseIdentity);
-		} catch (e) { };
-		main.tempStorage.NewIdentity = null;
-		main.tempStorage.BaseIdentity = null;
-	},
+      __setSelectedIdentity: function (menuItem) {
+        main.elements.Obj_MsgIdentity.selectedItem = menuItem;
+        main.elements.Obj_MsgIdentity.setAttribute("label", menuItem.getAttribute("label"));
+        main.elements.Obj_MsgIdentity.setAttribute("accountname", menuItem.getAttribute("accountname"));
+        main.elements.Obj_MsgIdentity.setAttribute("value", menuItem.getAttribute("value"));
+      },
 
-	prepareAccount : function() {
-		main.Cleanup(); // just to be sure that nothing is left (maybe last time sending was irregularily stopped)
-		vI.vIaccount_createAccount(document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData,
-								 main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value));
-		main.addVirtualIdentityToMsgIdentityMenu();
-	},
+      // sets the values of the dropdown-menu to the ones of the newly created account
+      addVirtualIdentityToMsgIdentityMenu: function () {
+        main.tempStorage.BaseIdentity = main.elements.Obj_MsgIdentity.selectedItem;
+        main.tempStorage.NewIdentity = document.createElement("menuitem");
+        main.tempStorage.NewIdentity.className = "identity-popup-item";
 
-	Cleanup : function() {
-		main.removeVirtualIdentityFromMsgIdentityMenu();
-// 		vI.vIaccount_removeUsedVIAccount();
-	},
-	
-	//  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
-    AccountManagerObserver : {
-        _uninstall : false,
-        observe : function(subject, topic, data) {
-            if (topic == "am-smtpChanges") {
-                Log.debug("smtp changes observed");
-                var virtualIdentityExtension_msgIdentityClone = document.getElementById("virtualIdentityExtension_msgIdentityClone");
-                document.getAnonymousElementByAttribute(virtualIdentityExtension_msgIdentityClone, "class", "smtpServerListHbox").refresh();
-            }
-            if (topic == "am-acceptChanges") {
-                Log.debug("account changes observed");
-                document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
-                document.getElementById("virtualIdentityExtension_msgIdentityClone").init();
-            }
+        // set the account name in the choosen menu item
+        main.tempStorage.NewIdentity.setAttribute("label", vI.get_vIaccount().defaultIdentity.identityName);
+        main.tempStorage.NewIdentity.setAttribute("accountname", " - " + vI.get_vIaccount().incomingServer.prettyName);
+        main.tempStorage.NewIdentity.setAttribute("accountkey", vI.get_vIaccount().key);
+        main.tempStorage.NewIdentity.setAttribute("value", vI.get_vIaccount().defaultIdentity.key);
+
+        main.elements.Obj_MsgIdentityPopup.appendChild(main.tempStorage.NewIdentity);
+        main.__setSelectedIdentity(main.tempStorage.NewIdentity);
+      },
+
+      removeVirtualIdentityFromMsgIdentityMenu: function () {
+        if (!main.tempStorage.BaseIdentity) return; // don't try to remove Item twice
+        try { // might not exist anymore (window closed), so just try to remove it
+          document.getElementById("msgIdentity").firstChild.removeChild(main.tempStorage.NewIdentity);
+          main.__setSelectedIdentity(main.tempStorage.BaseIdentity);
+        } catch (e) {};
+        main.tempStorage.NewIdentity = null;
+        main.tempStorage.BaseIdentity = null;
+      },
+
+      prepareAccount: function () {
+        main.Cleanup(); // just to be sure that nothing is left (maybe last time sending was irregularily stopped)
+        vI.vIaccount_createAccount(document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData,
+          main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value));
+        main.addVirtualIdentityToMsgIdentityMenu();
+      },
+
+      Cleanup: function () {
+        main.removeVirtualIdentityFromMsgIdentityMenu();
+        // 		vI.vIaccount_removeUsedVIAccount();
+      },
+
+      //  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
+      AccountManagerObserver: {
+        _uninstall: false,
+        observe: function (subject, topic, data) {
+          if (topic == "am-smtpChanges") {
+            Log.debug("smtp changes observed");
+            var virtualIdentityExtension_msgIdentityClone = document.getElementById("virtualIdentityExtension_msgIdentityClone");
+            document.getAnonymousElementByAttribute(virtualIdentityExtension_msgIdentityClone, "class", "smtpServerListHbox").refresh();
+          }
+          if (topic == "am-acceptChanges") {
+            Log.debug("account changes observed");
+            document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
+            document.getElementById("virtualIdentityExtension_msgIdentityClone").init();
+          }
         },
-        register : function() {
-            var obsService = Components.classes["@mozilla.org/observer-service;1"].
-                getService(Components.interfaces.nsIObserverService)
-            obsService.addObserver(this, "am-smtpChanges", false);
-            obsService.addObserver(this, "am-acceptChanges", false);
+        register: function () {
+          var obsService = Components.classes["@mozilla.org/observer-service;1"].
+          getService(Components.interfaces.nsIObserverService)
+          obsService.addObserver(this, "am-smtpChanges", false);
+          obsService.addObserver(this, "am-acceptChanges", false);
         },
-        unregister : function() {
-            var obsService = Components.classes["@mozilla.org/observer-service;1"].
-                getService(Components.interfaces.nsIObserverService)
-            obsService.removeObserver(this, "am-smtpChanges");
-            obsService.removeObserver(this, "am-acceptChanges");
+        unregister: function () {
+          var obsService = Components.classes["@mozilla.org/observer-service;1"].
+          getService(Components.interfaces.nsIObserverService)
+          obsService.removeObserver(this, "am-smtpChanges");
+          obsService.removeObserver(this, "am-acceptChanges");
         }
+      }
     }
-}
 
 
-main.replacement_functions.replace_FillIdentityList();
-window.addEventListener('compose-window-init', main.init, true);
+    main.replacement_functions.replace_FillIdentityList();
+    window.addEventListener('compose-window-init', main.init, true);
 
-window.addEventListener("unload", function(e) { main.AccountManagerObserver.unregister(); try {vI.statusmenu.removeObserver();} catch (ex) { } }, false);
-vI.main = main;
-}});
+    window.addEventListener("unload", function (e) {
+      main.AccountManagerObserver.unregister();
+      try {
+        vI.statusmenu.removeObserver();
+      } catch (ex) {}
+    }, false);
+    vI.main = main;
+  }
+});

@@ -21,10 +21,15 @@
 
     Contributor(s): 
  * ***** END LICENSE BLOCK ***** */
-  
+
 var EXPORTED_SYMBOLS = [];
 
-const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
+const {
+  classes: Cc,
+  interfaces: Ci,
+  utils: Cu,
+  results: Cr
+} = Components;
 
 Cu.import("resource://v_identity/vI_log.js");
 Cu.import("resource://v_identity/vI_rdfDatasource.js");
@@ -37,7 +42,7 @@ let Log = setupLogging("virtualIdentity.plugins.conversations");
 
 const AccountManager = Cc["@mozilla.org/messenger/account-manager;1"]
   .getService(Components.interfaces.nsIMsgAccountManager);
- 
+
 const HeaderParser = Cc["@mozilla.org/messenger/headerparser;1"]
   .getService(Ci.nsIMsgHeaderParser);
 
@@ -48,14 +53,14 @@ let virtualSenderNameElem;
 
 let _rdfDatasourceAccess;
 
-let changeIdentityToSmartIdentity = function(allIdentities, index) {
+let changeIdentityToSmartIdentity = function (allIdentities, index) {
   _changeIdentityToSmartIdentity(allIdentities.identityDataCollection[index]);
 };
 
-let _changeIdentityToSmartIdentity = function(identityData) {
+let _changeIdentityToSmartIdentity = function (identityData) {
   Log.debug("changeIdentityToSmartIdentity");
-  
-  if ( identityData.id.key != null ) {
+
+  if (identityData.id.key != null) {
     currentParams.identity = AccountManager.getIdentity(identityData.id.key);
     Log.debug("changed base identity to ", identityData.id.key);
     virtualSenderNameElem.text(currentIdSenderName);
@@ -72,33 +77,39 @@ let _changeIdentityToSmartIdentity = function(identityData) {
 let virtualIdentityHook = {
   onComposeSessionChanged: function _virtualIdentityHook_onComposeSessionChanged(aComposeSession, aMessage, aAddress) {
     let toAddrList = aAddress.to.concat(aAddress.cc);
-    
-    currentParams = aComposeSession.params; virtualSenderNameElem = aComposeSession.senderNameElem; // to enable access from out of this class.
+
+    currentParams = aComposeSession.params;
+    virtualSenderNameElem = aComposeSession.senderNameElem; // to enable access from out of this class.
     let identity = aComposeSession.params.identity;
-    
-    if (typeof(this._AccountManager.getServersForIdentity) == 'function') { // new style
-        let server = this._AccountManager.getServersForIdentity(identity).queryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
+
+    if (typeof (this._AccountManager.getServersForIdentity) == 'function') { // new style
+      let server = this._AccountManager.getServersForIdentity(identity).queryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
     } else {
-        let server = this._AccountManager.GetServersForIdentity(identity).QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
+      let server = this._AccountManager.GetServersForIdentity(identity).QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
     }
 
     currentIdentityData = new identityData(identity.email, identity.fullName, identity.key,
-                                                                    identity.smtpServerKey, null, server.prettyName, true)
+      identity.smtpServerKey, null, server.prettyName, true)
     currentIdSenderName = currentIdentityData.combinedName;
     virtualIdInUse = false;
-    
-    let recipients = []; var combinedNames = {}; var number;
+
+    let recipients = [];
+    var combinedNames = {};
+    var number;
     number = HeaderParser.parseHeadersWithArray(toAddrList.join(", "), {}, {}, combinedNames);
     for (var index = 0; index < number; index++)
-      recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
-      
-    var localSmartIdentityCollection = new smartIdentityCollection(aComposeSession.params.msgHdr, identity, 
-                                                                      false, false, recipients);
-    localSmartIdentityCollection.Reply();   // we can always use the reply-case, msgHdr is set the right way
-    
+      recipients.push({
+        recipient: combinedNames.value[index],
+        recipientType: "addr_to"
+      })
+
+    var localSmartIdentityCollection = new smartIdentityCollection(aComposeSession.params.msgHdr, identity,
+      false, false, recipients);
+    localSmartIdentityCollection.Reply(); // we can always use the reply-case, msgHdr is set the right way
+
     if (localSmartIdentityCollection._allIdentities.number == 0)
       return;
-  
+
     if (vIprefs.get("idSelection_preferExisting")) {
       var existingIDIndex = localSmartIdentityCollection._foundExistingIdentity();
       if (existingIDIndex) {
@@ -108,22 +119,21 @@ let virtualIdentityHook = {
       }
     }
 
-    if (vIprefs.get("idSelection_ask") && 
-      ((localSmartIdentityCollection._allIdentities.number == 1 && vIprefs.get("idSelection_ask_always"))
-      || localSmartIdentityCollection._allIdentities.number > 1)) {
-        recentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
-          .getService(Ci.nsIWindowMediator)
-          .getMostRecentWindow("mail:3pane");
-      
-        recentWindow.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul",0,
-          "chrome, dialog, modal, alwaysRaised, resizable=yes",
-          localSmartIdentityCollection._allIdentities,
-          /* callback: */ changeIdentityToSmartIdentity).focus();
-      }
-    else if (vIprefs.get("idSelection_autocreate"))
+    if (vIprefs.get("idSelection_ask") &&
+      ((localSmartIdentityCollection._allIdentities.number == 1 && vIprefs.get("idSelection_ask_always")) || localSmartIdentityCollection._allIdentities.number > 1)) {
+      recentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+        .getService(Ci.nsIWindowMediator)
+        .getMostRecentWindow("mail:3pane");
+
+      recentWindow.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul", 0,
+        "chrome, dialog, modal, alwaysRaised, resizable=yes",
+        localSmartIdentityCollection._allIdentities,
+        /* callback: */
+        changeIdentityToSmartIdentity).focus();
+    } else if (vIprefs.get("idSelection_autocreate"))
       changeIdentityToSmartIdentity(localSmartIdentityCollection._allIdentities, 0);
   },
-  
+
   onMessageBeforeSendOrPopout_canceled: function _enigmailHook_onMessageBeforeSendOrPopout_canceledy(aAddress, aEditor, aStatus, aPopout) {
     Log.debug("onMessageBeforeSendOrPopout_canceled");
     return aStatus;
@@ -140,37 +150,43 @@ let virtualIdentityHook = {
 
     let toAddrList = aAddress.to.concat(aAddress.cc);
     Log.debug("onMessageBeforeSendOrPopup_early");
-    
+
     if (virtualIdInUse) {
       if (!aPopout) {
-        let recipients = []; var combinedNames = {}; var number;
+        let recipients = [];
+        var combinedNames = {};
+        var number;
         number = HeaderParser.parseHeadersWithArray(toAddrList.join(", "), {}, {}, combinedNames);
         for (var index = 0; index < number; index++)
-          recipients.push( { recipient: combinedNames.value[index], recipientType: "addr_to" } )
-        
+          recipients.push({
+            recipient: combinedNames.value[index],
+            recipientType: "addr_to"
+          })
+
         let recentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
           .getService(Ci.nsIWindowMediator)
           .getMostRecentWindow("mail:3pane");
-          
+
         returnValue = vIaccount_prepareSendMsg(virtualIdInUse, Ci.nsIMsgCompDeliverMode.Now,
           currentIdentityData, aAddress.params.identity, recipients, recentWindow);
         Log.debug("returnValue.update:", returnValue.update);
-        
+
         if (returnValue.update == "abort") {
-          aStatus.canceled = true; return aStatus;
-        }
-        else if (returnValue.update == "takeover") {
+          aStatus.canceled = true;
+          return aStatus;
+        } else if (returnValue.update == "takeover") {
           _changeIdentityToSmartIdentity(returnValue.storedIdentity);
-          aStatus.canceled = true; return aStatus;
+          aStatus.canceled = true;
+          return aStatus;
         }
-        
+
         aAddress.params.identity = get_vIaccount().defaultIdentity;
         if (!vIaccount_finalCheck(currentIdentityData, aAddress.params.identity)) {
           vIaccount_removeUsedVIAccount();
-          aStatus.canceled = true; return aStatus;
+          aStatus.canceled = true;
+          return aStatus;
         }
-      }
-      else {
+      } else {
         // code virtual Identity into subject - this will be decoded by smartIdentity - newMail
         aAddress.params.subject = aAddress.params.subject + "\nvirtualIdentityExtension\n" + currentIdSenderName;
         Log.debug("coding virtualIdentity into subject:", aAddress.params.subject);
@@ -179,7 +195,7 @@ let virtualIdentityHook = {
     Log.debug("onSendMessage done");
     return aStatus;
   },
-  
+
   onStopSending: function _virtualIdentityHook_onStopSending(aMsgID, aStatus, aMsg, aReturnFile) {
     vIaccount_removeUsedVIAccount();
     Log.debug("onStopSending done");
@@ -194,20 +210,20 @@ let virtualIdentityHook = {
     // if we are editing the "cc" or not the first recipient, recognize this.
     var isNotFirstInputElement = !(aType == "to" && aCount == 0);
     Log.debug("onRecipientAdded isNotFirstInputElement", isNotFirstInputElement);
-    
+
     if (!_rdfDatasourceAccess) _rdfDatasourceAccess = new rdfDatasourceAccess();
     else _rdfDatasourceAccess.clean();
 
     let recentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
-          .getService(Ci.nsIWindowMediator)
-          .getMostRecentWindow("mail:3pane");
+      .getService(Ci.nsIWindowMediator)
+      .getMostRecentWindow("mail:3pane");
 
     var storageResult = _rdfDatasourceAccess.updateVIdentityFromStorage(aData.data, "addr_to",
       currentIdentityData, virtualIdInUse, isNotFirstInputElement, recentWindow);
-    
+
     if (storageResult.identityCollection.number == 0) return; // return if there was no match
     if (storageResult.result != "accept") return; // return if we don't like the resulting id
-    
+
     changeIdentityToSmartIdentity(storageResult.identityCollection, 0);
   }
 }
@@ -221,7 +237,6 @@ try {
     Log.debug("Virtual Identity plugin for Thunderbird Conversations loaded!");
     registerHook(virtualIdentityHook);
   }, false);
-}
-catch(e) {
+} catch (e) {
   Log.debug("virtualIdentity is ready for conversations, but you don't use it");
 }

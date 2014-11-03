@@ -35,17 +35,18 @@ let Log = setupLogging("virtualIdentity.identityDataExtras.PGPEncryption");
 
 function identityDataExtrasObject_PGPEncryption(currentWindow) {
   this.currentWindow = currentWindow;
-  this.field  = "PGPEnc";                        // description of the option
-  this.option = "storageExtras_openPGP_messageEncryption";    // option string to get preference settings
+  this.field = "PGPEnc"; // description of the option
+  this.option = "storageExtras_openPGP_messageEncryption"; // option string to get preference settings
   this.elementID_msgCompose = "enigmail_encrypted_send";
-  this.updateFunction_msgCompose = function() {
-    (typeof(this.currentWindow.Enigmail.msg.setMenuSettings)=='function')?this.currentWindow.Enigmail.msg.setMenuSettings(''):null };
+  this.updateFunction_msgCompose = function () {
+    (typeof (this.currentWindow.Enigmail.msg.setMenuSettings) == 'function') ? this.currentWindow.Enigmail.msg.setMenuSettings(''): null
+  };
 }
 identityDataExtrasObject_PGPEncryption.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,
-  
-  readIdentityValue : function(identity) { 
-    if (this.active) this.value = (identity.getIntAttribute('defaultEncryptionPolicy') > 0)?"true":"false";
+
+  readIdentityValue: function (identity) {
+    if (this.active) this.value = (identity.getIntAttribute('defaultEncryptionPolicy') > 0) ? "true" : "false";
   }
 }
 registerIdExtrasObject(identityDataExtrasObject_PGPEncryption);

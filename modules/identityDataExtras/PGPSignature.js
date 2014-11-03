@@ -35,21 +35,22 @@ let Log = setupLogging("virtualIdentity.identityDataExtras.PGPSignature");
 
 function identityDataExtrasObject_PGPSignature(currentWindow) {
   this.currentWindow = currentWindow;
-  this.field  = "PGPSig";                        // description of the option
-  this.option = "storageExtras_openPGP_messageSignature";    // option string to get preference settings
+  this.field = "PGPSig"; // description of the option
+  this.option = "storageExtras_openPGP_messageSignature"; // option string to get preference settings
   this.elementID_msgCompose = "enigmail_signed_send";
-  this.updateFunction_msgCompose = function() {
-    (typeof(this.currentWindow.Enigmail.msg.setMenuSettings)=='function')?this.currentWindow.Enigmail.msg.setMenuSettings(''):null };
+  this.updateFunction_msgCompose = function () {
+    (typeof (this.currentWindow.Enigmail.msg.setMenuSettings) == 'function') ? this.currentWindow.Enigmail.msg.setMenuSettings(''): null
+  };
 }
 identityDataExtrasObject_PGPSignature.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,
-  
-  readIdentityValue : function(identity) { 
+
+  readIdentityValue: function (identity) {
     if (this.active) {
       if (identity.getIntAttribute('defaultEncryptionPolicy') > 0)
-        this.value = (identity.getBoolAttribute('pgpSignEncrypted'))?"true":"false";
+        this.value = (identity.getBoolAttribute('pgpSignEncrypted')) ? "true" : "false";
       else
-        this.value = (identity.getBoolAttribute('pgpSignPlain'))?"true":"false";
+        this.value = (identity.getBoolAttribute('pgpSignPlain')) ? "true" : "false";
     }
   }
 }

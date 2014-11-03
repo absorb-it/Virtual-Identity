@@ -23,26 +23,28 @@
  * ***** END LICENSE BLOCK ***** */
 
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
-virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
-var Dialog = {
-	setDescription : function(object, description) {
-		var new_text = document.createTextNode(description);
-		object.appendChild(new_text);
-	},
+virtualIdentityExtension.ns(function () {
+  with(virtualIdentityExtension.LIB) {
+    var Dialog = {
+      setDescription: function (object, description) {
+        var new_text = document.createTextNode(description);
+        object.appendChild(new_text);
+      },
 
-	init : function(warning) {
-		document.getElementById("virtualIdentityExtension_Dialog").setAttribute("class", warning.class); 
-		Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_title"), warning.title);
-		Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_recLabel"), warning.recLabel);
-		Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_recipient"), warning.recipient);
-		document.getElementById("virtualIdentityExtension_Dialog_browser").outputString = warning.warning;
-		Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_query"), warning.query);
-		// show abort button
-		if (warning.class == "replaceVIdentity") {
-			document.documentElement.getButton("extra1").hidden = true;
-			document.documentElement.getButton("extra2").hidden = true;
-		}
-	}
-}
-vI.Dialog = Dialog;
-}});
+      init: function (warning) {
+        document.getElementById("virtualIdentityExtension_Dialog").setAttribute("class", warning.class);
+        Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_title"), warning.title);
+        Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_recLabel"), warning.recLabel);
+        Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_recipient"), warning.recipient);
+        document.getElementById("virtualIdentityExtension_Dialog_browser").outputString = warning.warning;
+        Dialog.setDescription(document.getElementById("virtualIdentityExtension_Dialog_query"), warning.query);
+        // show abort button
+        if (warning.class == "replaceVIdentity") {
+          document.documentElement.getButton("extra1").hidden = true;
+          document.documentElement.getButton("extra2").hidden = true;
+        }
+      }
+    }
+    vI.Dialog = Dialog;
+  }
+});

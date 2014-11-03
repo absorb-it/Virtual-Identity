@@ -23,19 +23,21 @@
  * ***** END LICENSE BLOCK ***** */
 
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
-virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
-var am_smtpOverlay = {
-    refreshServerList : function(aServerKeyToSelect, aFocusList) {
+virtualIdentityExtension.ns(function () {
+  with(virtualIdentityExtension.LIB) {
+    var am_smtpOverlay = {
+      refreshServerList: function (aServerKeyToSelect, aFocusList) {
         gSmtpServerListWindow.orig_refreshServerList(aServerKeyToSelect, aFocusList);
         var gObserver = Components.classes["@mozilla.org/observer-service;1"].
-            getService(Components.interfaces.nsIObserverService);
+        getService(Components.interfaces.nsIObserverService);
         gObserver.notifyObservers(null, "am-smtpChanges", "other");
-    },
-    
-    init : function() {
+      },
+
+      init: function () {
         gSmtpServerListWindow.orig_refreshServerList = gSmtpServerListWindow.refreshServerList;
         gSmtpServerListWindow.refreshServerList = am_smtpOverlay.refreshServerList;
+      }
     }
-}
-window.addEventListener('load', am_smtpOverlay.init, false);
-}});
+    window.addEventListener('load', am_smtpOverlay.init, false);
+  }
+});

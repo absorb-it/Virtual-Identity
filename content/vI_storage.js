@@ -21,196 +21,203 @@
 
     Contributor(s): Mike Krieger, Sebastian Apel
  * ***** END LICENSE BLOCK ***** */
- 
+
 /**
-* some code copied and adapted from 'addressContext' and from 'Birthday Reminder'
-* thanks to Mike Krieger and Sebastian Apel
-*/
+ * some code copied and adapted from 'addressContext' and from 'Birthday Reminder'
+ * thanks to Mike Krieger and Sebastian Apel
+ */
 
 Components.utils.import("resource://v_identity/vI_nameSpaceWrapper.js");
-virtualIdentityExtension.ns(function() { with (virtualIdentityExtension.LIB) {
+virtualIdentityExtension.ns(function () {
+  with(virtualIdentityExtension.LIB) {
 
-Components.utils.import("resource://gre/modules/AddonManager.jsm");
-let Log = vI.setupLogging("virtualIdentity.storage");
-Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
-Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
+    Components.utils.import("resource://gre/modules/AddonManager.jsm");
+    let Log = vI.setupLogging("virtualIdentity.storage");
+    Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
+    Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
-var storage = {
-	focusedElement : null,
-	
-	lastCheckedEmail : {}, 	// array of last checked emails per row,
-				// to prevent ugly double dialogs and time-consuming double-checks
-	
-    _rdfDatasourceAccess : null,    // local storage
+    var storage = {
+      focusedElement: null,
 
-    stringBundle : Components.classes["@mozilla.org/intl/stringbundle;1"]
+      lastCheckedEmail: {}, // array of last checked emails per row,
+      // to prevent ugly double dialogs and time-consuming double-checks
+
+      _rdfDatasourceAccess: null, // local storage
+
+      stringBundle: Components.classes["@mozilla.org/intl/stringbundle;1"]
         .getService(Components.interfaces.nsIStringBundleService)
         .createBundle("chrome://v_identity/locale/v_identity.properties"),
 
-    clean: function() {
-		Log.debug("clean.");
-		storage.multipleRecipients = null;
-		storage.lastCheckedEmail = {};
-		storage.firstUsedInputElement = null;
-		awSetInputAndPopupValue = storage.original_functions.awSetInputAndPopupValue;
+      clean: function () {
+        Log.debug("clean.");
+        storage.multipleRecipients = null;
+        storage.lastCheckedEmail = {};
+        storage.firstUsedInputElement = null;
+        awSetInputAndPopupValue = storage.original_functions.awSetInputAndPopupValue;
         if (storage._rdfDatasourceAccess) storage._rdfDatasourceAccess.clean();
-	},
-	
-	original_functions : {
-		awSetInputAndPopupValue : null
-	},
+      },
 
-	replacement_functions : {
-		awSetInputAndPopupValue : function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
-            Log.debug("awSetInputAndPopupValue '" + inputElem.id + "'");
-			storage.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
-			storage.__updateVIdentityFromStorage(inputElem, storage.currentWindow);
-		}
-	},
-		
-	awOnBlur : function (element, currentWindow) {
-		// only react on events triggered by addressCol2 - textinput Elements
-		if (!element || ! element.id.match(/^addressCol2*/)) return;
-		Log.debug("awOnBlur '" + element.id + "' '" + element.value  + "'");
+      original_functions: {
+        awSetInputAndPopupValue: null
+      },
+
+      replacement_functions: {
+        awSetInputAndPopupValue: function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
+          Log.debug("awSetInputAndPopupValue '" + inputElem.id + "'");
+          storage.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
+          storage.__updateVIdentityFromStorage(inputElem, storage.currentWindow);
+        }
+      },
+
+      awOnBlur: function (element, currentWindow) {
+        // only react on events triggered by addressCol2 - textinput Elements
+        if (!element || !element.id.match(/^addressCol2*/)) return;
+        Log.debug("awOnBlur '" + element.id + "' '" + element.value + "'");
         if (typeof element.value == 'undefined') {
-            element.value = element.getAttribute("value");
-            Log.debug("awOnBlur second try'" + element.id + "' '" + element.value  + "'");
+          element.value = element.getAttribute("value");
+          Log.debug("awOnBlur second try'" + element.id + "' '" + element.value + "'");
         }
         if (element.value == "" || typeof element.value == 'undefined') return;
         storage.__updateVIdentityFromStorage(element, currentWindow);
-		storage.focusedElement = null;
-	},
+        storage.focusedElement = null;
+      },
 
-	awOnFocus : function (element, currentWindow) {
-		if (!element || ! element.id.match(/^addressCol2*/)) return;
-		storage.focusedElement = element;
-	},
+      awOnFocus: function (element, currentWindow) {
+        if (!element || !element.id.match(/^addressCol2*/)) return;
+        storage.focusedElement = element;
+      },
 
-	awPopupOnCommand : function (element, currentWindow) {
-		Log.debug("awPopupOnCommand '" + element.id + "' '" + element.value  + "'");
-		storage.__updateVIdentityFromStorage(currentWindow.document.getElementById(element.id.replace(/^addressCol1/,"addressCol2")), currentWindow);
-		if (element.selectedItem.getAttribute("value") == "addr_reply") // if reply-to is manually entered disable AutoReplyToSelf
-			currentWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").setAttribute("hidden", "true");
+      awPopupOnCommand: function (element, currentWindow) {
+        Log.debug("awPopupOnCommand '" + element.id + "' '" + element.value + "'");
+        storage.__updateVIdentityFromStorage(currentWindow.document.getElementById(element.id.replace(/^addressCol1/, "addressCol2")), currentWindow);
+        if (element.selectedItem.getAttribute("value") == "addr_reply") // if reply-to is manually entered disable AutoReplyToSelf
+          currentWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").setAttribute("hidden", "true");
 
-	},
-	
-  initialized : null,
-  currentWindow: null,
-	init: function() {
-		if (!storage.initialized) {
-            storage._rdfDatasourceAccess = new vI.rdfDatasourceAccess();
+      },
 
-			// better approach would be to use te onchange event, but this one is not fired in any change case
-			// see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
-			// same seems to happen with the ondragdrop event
-			if (!top.MAX_RECIPIENTS || top.MAX_RECIPIENTS == 0) top.MAX_RECIPIENTS = 1;
-			for (var row = 1; row <= top.MAX_RECIPIENTS ; row ++) {
-				var input = window.awGetInputElement(row);
-				if (input) {
-					var oldBlur = input.getAttribute("onblur")
-					input.setAttribute("onblur", (oldBlur?oldBlur+"; ":"") +
-						"window.setTimeout(virtualIdentityExtension.storage.awOnBlur, 250, this, window);")
-					var oldFocus = input.getAttribute("onfocus")
-					input.setAttribute("onfocus", (oldFocus?oldFocus+"; ":"") +
-						"window.setTimeout(virtualIdentityExtension.storage.awOnFocus, 250, this, window);")
-				}
-				var popup = window.awGetPopupElement(row);
-				if (popup) {
-					var oldCommand = popup.getAttribute("oncommand")
-					popup.setAttribute("oncommand", (oldCommand?oldCommand+"; ":"") +
-						"window.setTimeout(virtualIdentityExtension.storage.awPopupOnCommand, 250, this, window);")
-				}
-			}
-			storage.currentWindow = window;
-			storage.initialized = true;
-		}
+      initialized: null,
+      currentWindow: null,
+      init: function () {
+        if (!storage.initialized) {
+          storage._rdfDatasourceAccess = new vI.rdfDatasourceAccess();
+
+          // better approach would be to use te onchange event, but this one is not fired in any change case
+          // see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
+          // same seems to happen with the ondragdrop event
+          if (!top.MAX_RECIPIENTS || top.MAX_RECIPIENTS == 0) top.MAX_RECIPIENTS = 1;
+          for (var row = 1; row <= top.MAX_RECIPIENTS; row++) {
+            var input = window.awGetInputElement(row);
+            if (input) {
+              var oldBlur = input.getAttribute("onblur")
+              input.setAttribute("onblur", (oldBlur ? oldBlur + "; " : "") +
+                "window.setTimeout(virtualIdentityExtension.storage.awOnBlur, 250, this, window);")
+              var oldFocus = input.getAttribute("onfocus")
+              input.setAttribute("onfocus", (oldFocus ? oldFocus + "; " : "") +
+                "window.setTimeout(virtualIdentityExtension.storage.awOnFocus, 250, this, window);")
+            }
+            var popup = window.awGetPopupElement(row);
+            if (popup) {
+              var oldCommand = popup.getAttribute("oncommand")
+              popup.setAttribute("oncommand", (oldCommand ? oldCommand + "; " : "") +
+                "window.setTimeout(virtualIdentityExtension.storage.awPopupOnCommand, 250, this, window);")
+            }
+          }
+          storage.currentWindow = window;
+          storage.initialized = true;
+        }
 
         if (typeof awSetInputAndPopupValue == 'function' && storage.original_functions.awSetInputAndPopupValue == null) {
-            storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
-            awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
-                storage.replacement_functions.awSetInputAndPopupValue (inputElem, inputValue, popupElem, popupValue, rowNumber) }
+          storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
+          awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
+            storage.replacement_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber)
+          }
         }
-		// reset unavailable storageExtras preferences
-        AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function(addon) {
+        // reset unavailable storageExtras preferences
+        AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function (addon) {
           if (addon && !addon.userDisabled && !addon.appDisable) {
             vI.vIprefs.commit("storageExtras_openPGP_messageEncryption", false)
             vI.vIprefs.commit("storageExtras_openPGP_messageSignature", false)
             vI.vIprefs.commit("storageExtras_openPGP_PGPMIME", false)
           }
-        }); 
-	},
-	
-	firstUsedInputElement : null, 	// this stores the first Element for which a Lookup in the Storage was successfull
-	__updateVIdentityFromStorage: function(inputElement, currentWindow) {
-		if (!vI.vIprefs.get("storage"))
-			{ Log.debug("Storage deactivated"); return; }
-		var currentDocument = currentWindow.document;
-    var recipientType = currentDocument.getElementById(inputElement.id.replace(/^addressCol2/,"addressCol1"))
-			.selectedItem.getAttribute("value");
+        });
+      },
 
-    var row = inputElement.id.replace(/^addressCol2#/,"")
-		if (recipientType == "addr_reply" || recipientType == "addr_followup" || storage.isDoBcc(row, currentWindow)) {
-			// reset firstUsedInputElement if recipientType was changed (and don't care about doBcc fields)
-			if (storage.firstUsedInputElement == inputElement)
-				storage.firstUsedInputElement = null;
-			Log.debug("field is a 'reply-to' or 'followup-to' or preconfigured 'doBcc'. not searched.")
-			return;
-		}
-		
-		if (inputElement.value == "") {
-			Log.debug("no recipient found, not checked."); return;
-		}
-		
-		var row = inputElement.id.replace(/^addressCol2#/,"")
-		if (storage.lastCheckedEmail[row] && storage.lastCheckedEmail[row] == inputElement.value) {
-			Log.debug("same email than before, not checked again."); return;
-		}
-		storage.lastCheckedEmail[row] = inputElement.value;
-		
-		// firstUsedInputElement was set before and we are not editing the same
-		var isNotFirstInputElement = (storage.firstUsedInputElement && storage.firstUsedInputElement != inputElement)
-		var currentIdentity = currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").identityData
-		var storageResult = storage._rdfDatasourceAccess.updateVIdentityFromStorage(inputElement.value, recipientType,
-			currentIdentity, currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").vid, isNotFirstInputElement, window);
-		
-		if (storageResult.identityCollection.number == 0) return; // return if there was no match
-		Log.debug("__updateVIdentityFromStorage result: " + storageResult.result);
-		// found storageData, so store InputElement
-		if (!storage.firstUsedInputElement) storage.firstUsedInputElement = inputElement;
-		
-		var newMenuItem = null;
-		if (storageResult.result != "equal") {
-			for (var j = 0; j < storageResult.identityCollection.number; j++) {
-				Log.debug("__updateVIdentityFromStorage adding: " + storageResult.identityCollection.identityDataCollection[j].combinedName);
-				let menuItem = currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone")
-                  .addIdentityToCloneMenu(storageResult.identityCollection.identityDataCollection[j])
-                if (!newMenuItem) newMenuItem = menuItem;
-			}
-		}
-		if (storageResult.result == "accept") {
-			Log.debug("__updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName);
-			currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = newMenuItem;
-			if (currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").vid)
-				vI.StorageNotification.info(storage.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageUsage") + ".");
-		}
-	},
-	
-	isDoBcc : function(row, currentWindow) {
-		var recipientType = currentWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
-		if (recipientType != "addr_bcc" || !getCurrentIdentity().doBcc) return false
-
-		var doBccArray = gMsgCompose.compFields.splitRecipients(getCurrentIdentity().doBccList, false, {});
-        if (doBccArray && doBccArray.count) {
-            for (var index = 0; index < doBccArray.count; index++ ) {
-                if (doBccArray.StringAt(index) == currentWindow.awGetInputElement(row).value) {
-                    Log.debug("ignoring doBcc field '" +
-                        doBccArray.StringAt(index));
-                    return true;
-                }
-            }
+      firstUsedInputElement: null, // this stores the first Element for which a Lookup in the Storage was successfull
+      __updateVIdentityFromStorage: function (inputElement, currentWindow) {
+        if (!vI.vIprefs.get("storage")) {
+          Log.debug("Storage deactivated");
+          return;
         }
-		return false
-	}
-}
-vI.storage = storage;
-}});
+        var currentDocument = currentWindow.document;
+        var recipientType = currentDocument.getElementById(inputElement.id.replace(/^addressCol2/, "addressCol1"))
+          .selectedItem.getAttribute("value");
+
+        var row = inputElement.id.replace(/^addressCol2#/, "")
+        if (recipientType == "addr_reply" || recipientType == "addr_followup" || storage.isDoBcc(row, currentWindow)) {
+          // reset firstUsedInputElement if recipientType was changed (and don't care about doBcc fields)
+          if (storage.firstUsedInputElement == inputElement)
+            storage.firstUsedInputElement = null;
+          Log.debug("field is a 'reply-to' or 'followup-to' or preconfigured 'doBcc'. not searched.")
+          return;
+        }
+
+        if (inputElement.value == "") {
+          Log.debug("no recipient found, not checked.");
+          return;
+        }
+
+        var row = inputElement.id.replace(/^addressCol2#/, "")
+        if (storage.lastCheckedEmail[row] && storage.lastCheckedEmail[row] == inputElement.value) {
+          Log.debug("same email than before, not checked again.");
+          return;
+        }
+        storage.lastCheckedEmail[row] = inputElement.value;
+
+        // firstUsedInputElement was set before and we are not editing the same
+        var isNotFirstInputElement = (storage.firstUsedInputElement && storage.firstUsedInputElement != inputElement)
+        var currentIdentity = currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").identityData
+        var storageResult = storage._rdfDatasourceAccess.updateVIdentityFromStorage(inputElement.value, recipientType,
+          currentIdentity, currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").vid, isNotFirstInputElement, window);
+
+        if (storageResult.identityCollection.number == 0) return; // return if there was no match
+        Log.debug("__updateVIdentityFromStorage result: " + storageResult.result);
+        // found storageData, so store InputElement
+        if (!storage.firstUsedInputElement) storage.firstUsedInputElement = inputElement;
+
+        var newMenuItem = null;
+        if (storageResult.result != "equal") {
+          for (var j = 0; j < storageResult.identityCollection.number; j++) {
+            Log.debug("__updateVIdentityFromStorage adding: " + storageResult.identityCollection.identityDataCollection[j].combinedName);
+            let menuItem = currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone")
+              .addIdentityToCloneMenu(storageResult.identityCollection.identityDataCollection[j])
+            if (!newMenuItem) newMenuItem = menuItem;
+          }
+        }
+        if (storageResult.result == "accept") {
+          Log.debug("__updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName);
+          currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = newMenuItem;
+          if (currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").vid)
+            vI.StorageNotification.info(storage.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageUsage") + ".");
+        }
+      },
+
+      isDoBcc: function (row, currentWindow) {
+        var recipientType = currentWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
+        if (recipientType != "addr_bcc" || !getCurrentIdentity().doBcc) return false
+
+        var doBccArray = gMsgCompose.compFields.splitRecipients(getCurrentIdentity().doBccList, false, {});
+        if (doBccArray && doBccArray.count) {
+          for (var index = 0; index < doBccArray.count; index++) {
+            if (doBccArray.StringAt(index) == currentWindow.awGetInputElement(row).value) {
+              Log.debug("ignoring doBcc field '" +
+                doBccArray.StringAt(index));
+              return true;
+            }
+          }
+        }
+        return false
+      }
+    }
+    vI.storage = storage;
+  }
+});

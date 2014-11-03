@@ -35,15 +35,15 @@ let Log = setupLogging("virtualIdentity.identityDataExtras.returnReceipt");
 
 function identityDataExtrasObject_ReturnReceipt(currentWindow) {
   this.currentWindow = currentWindow;
-  this.field  = "receipt";                        // description of the option
-  this.option = "storageExtras_returnReciept";    // option string to get preference settings
+  this.field = "receipt"; // description of the option
+  this.option = "storageExtras_returnReciept"; // option string to get preference settings
   this.elementID_msgCompose = "returnReceiptMenu";
 }
 identityDataExtrasObject_ReturnReceipt.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,
-  
-  readIdentityValue : function(identity) { 
-    if (this.active) this.value =  identity.requestReturnReceipt;
+
+  readIdentityValue: function (identity) {
+    if (this.active) this.value = identity.requestReturnReceipt;
   }
 }
 registerIdExtrasObject(identityDataExtrasObject_ReturnReceipt);

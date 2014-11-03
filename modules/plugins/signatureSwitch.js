@@ -24,7 +24,12 @@
 
 var EXPORTED_SYMBOLS = ["signatureSwitch"]
 
-const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
+const {
+  classes: Cc,
+  interfaces: Ci,
+  utils: Cu,
+  results: Cr
+} = Components;
 Cu.import("resource://gre/modules/AddonManager.jsm");
 Cu.import("resource://v_identity/vI_prefs.js");
 Cu.import("resource://v_identity/vI_log.js");
@@ -32,21 +37,24 @@ let Log = setupLogging("virtualIdentity.signatureSwitch");
 
 function signatureSwitch(existingIdentity) {
   // always try to initialize Security/Enigmail-Options
-  try { setSecuritySettings(1); enigSetMenuSettings(''); } catch(vErr) { };
-  
+  try {
+    setSecuritySettings(1);
+    enigSetMenuSettings('');
+  } catch (vErr) {};
+
   let signatureWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
-      .getService(Ci.nsIWindowMediator)
-      .getMostRecentWindow(null);
+    .getService(Ci.nsIWindowMediator)
+    .getMostRecentWindow(null);
 
   if (!existingIdentity) {
     Log.debug("signatureSwitch hide/remove signatures");
-    
+
     // code to hide the text signature
     if (signatureSwitchInstalled && vIprefs.get("hide_signature") && signatureWindow.ss_signature && signatureWindow.ss_signature.length == 0) {
       Log.debug("hide text/html signature");
       signatureWindow.ss_main.signatureSwitch()
     }
-    
+
     // code to hide the sMime signature
     if (vIprefs.get("hide_sMime_messageSignature")) {
       var element = signatureWindow.document.getElementById("menu_securitySign1");
@@ -76,8 +84,7 @@ function signatureSwitch(existingIdentity) {
         }
       }
     }
-  }
-  else if (signatureSwitchInstalled) {
+  } else if (signatureSwitchInstalled) {
     Log.debug("signatureSwitch restore signature");
     // code to show the text signature
     if (signatureWindow.ss_signature && signatureWindow.ss_signature.length > 0) {
@@ -90,10 +97,10 @@ function signatureSwitch(existingIdentity) {
 
 let signatureSwitchInstalled = false;
 // check for signature_switch extension
-AddonManager.getAddonByID("{2ab1b709-ba03-4361-abf9-c50b964ff75d}", function(addon) {
+AddonManager.getAddonByID("{2ab1b709-ba03-4361-abf9-c50b964ff75d}", function (addon) {
   signatureSwitchInstalled = (addon && !addon.userDisabled && !addon.appDisable);
   if (signatureSwitchInstalled)
     Log.debug("Virtual Identity plugin for signatureSwitch Extension loaded!");
   else
     Log.debug("virtualIdentity is ready for signatureSwitch, but you don't use it");
-  });
+});

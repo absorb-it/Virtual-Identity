@@ -24,7 +24,12 @@
 
 var EXPORTED_SYMBOLS = ["initReplyTo", "addReplyToSelf"]
 
-const {classes: Cc, interfaces: Ci, utils: Cu, results : Cr} = Components;
+const {
+  classes: Cc,
+  interfaces: Ci,
+  utils: Cu,
+  results: Cr
+} = Components;
 Cu.import("resource://v_identity/vI_prefs.js");
 Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.replyToSelf");
@@ -34,14 +39,13 @@ function initReplyTo(vIcomposeWindow) {
   if (vIprefs.get("autoReplyToSelf")) {
     replyToSelfObj.removeAttribute("hidden");
     removeAllReplyTos(vIcomposeWindow, replyToSelfObj);
-  }
-  else
+  } else
     replyToSelfObj.setAttribute("hidden", "true");
 };
 
 function removeAllReplyTos(vIcomposeWindow, replyToSelfObj) {
   if (!replyToSelfObj.hasAttribute("hidden")) {
-    for (var row = 1; row <= vIcomposeWindow.top.MAX_RECIPIENTS; row ++) {
+    for (var row = 1; row <= vIcomposeWindow.top.MAX_RECIPIENTS; row++) {
       var awType = vIcomposeWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
       if (awType == "addr_reply") {
         Log.debug("removed ReplyTo found in row " + row);
@@ -54,8 +58,8 @@ function removeAllReplyTos(vIcomposeWindow, replyToSelfObj) {
 function addReplyToSelf(vIcomposeWindow) {
   let replyToSelfObj = vIcomposeWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel");
   if (!replyToSelfObj.hasAttribute("hidden")) {
-    vIcomposeWindow.awAddRecipient("addr_reply",vIcomposeWindow.document.getElementById("virtualIdentityExtension_msgIdentityClone").label);
+    vIcomposeWindow.awAddRecipient("addr_reply", vIcomposeWindow.document.getElementById("virtualIdentityExtension_msgIdentityClone").label);
     Log.debug("added ReplyToSelf");
-    replyToSelfObj.setAttribute("hidden","true");
+    replyToSelfObj.setAttribute("hidden", "true");
   }
 };

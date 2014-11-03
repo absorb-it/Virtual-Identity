@@ -35,17 +35,18 @@ let Log = setupLogging("virtualIdentity.identityDataExtras.sMimeEncryption");
 
 function identityDataExtrasObject_sMimeEncryption(currentWindow) {
   this.currentWindow = currentWindow;
-  this.field  = "sMimeEnc";                        // description of the option
-  this.option = "storageExtras_sMime_messageEncryption";    // option string to get preference settings
+  this.field = "sMimeEnc"; // description of the option
+  this.option = "storageExtras_sMime_messageEncryption"; // option string to get preference settings
   this.elementID_msgCompose = "menu_securityEncryptRequire1";
-  this.updateFunction_msgCompose = function() {
-    (typeof(this.currentWindow.setSecuritySettings)=='function')?this.currentWindow.setSecuritySettings(1):null };
+  this.updateFunction_msgCompose = function () {
+    (typeof (this.currentWindow.setSecuritySettings) == 'function') ? this.currentWindow.setSecuritySettings(1): null
+  };
 }
 identityDataExtrasObject_sMimeEncryption.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,
-  
-  readIdentityValue : function(identity) { 
-    if (this.active) this.value = (identity.getIntAttribute('encryptionpolicy') == 2)?"true":"false";
+
+  readIdentityValue: function (identity) {
+    if (this.active) this.value = (identity.getIntAttribute('encryptionpolicy') == 2) ? "true" : "false";
   }
 }
 registerIdExtrasObject(identityDataExtrasObject_sMimeEncryption);
