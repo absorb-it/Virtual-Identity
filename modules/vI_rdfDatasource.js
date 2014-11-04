@@ -704,9 +704,11 @@ rdfDatasource.prototype = {
   },
 
   __getDescriptionAndType: function (recipient, recipientType) {
-    if (recipientType == "addr_newsgroups") return {
-      recDesc: recipient,
-      recType: "newsgroup"
+    if (recipientType == "addr_newsgroups") {
+      return {
+        recDesc: recipient,
+        recType: "newsgroup"
+      }
     } else if (this.__isMailingList(recipient)) {
       Log.debug("__getDescriptionAndType: '" + recipient + "' is MailList");
       return {
