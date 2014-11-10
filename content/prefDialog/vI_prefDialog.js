@@ -110,6 +110,7 @@ virtualIdentityExtension.ns(function () {
           "VIdent_identity.stationeryFolder",
           "VIdent_identity.copySMIMESettings",
           "VIdent_identity.copyAttachVCardSettings",
+          "VIdent_identity.copyNewEnigmailSettings",
           "VIdent_identity.smart_reply",
           "VIdent_identity.smart_detectByReceivedHeader",
           "VIdent_identity.smart_reply_for_newsgroups",
@@ -364,6 +365,7 @@ virtualIdentityExtension.ns(function () {
           if (addon && !addon.userDisabled && !addon.appDisable) {
             document.getElementById("openPGPencryption").removeAttribute("hidden");
             document.getElementById("VIdent_identity.hide_openPGP_messageSignature").removeAttribute("hidden");
+            document.getElementById("VIdent_identity.copyNewEnigmailSettings").removeAttribute("hidden");
           }
         });
 

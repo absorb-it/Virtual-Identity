@@ -32,21 +32,47 @@ const Cu = Components.utils;
 Cu.import("resource://v_identity/vI_identityDataExtras.js");
 Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityDataExtras.PGPEncryption");
+let vc = Cc["@mozilla.org/xpcom/version-comparator;1"].getService(Ci.nsIVersionComparator);
 
 function identityDataExtrasObject_PGPEncryption(currentWindow) {
   this.currentWindow = currentWindow;
   this.field = "PGPEnc"; // description of the option
   this.option = "storageExtras_openPGP_messageEncryption"; // option string to get preference settings
-  this.elementID_msgCompose = "enigmail_encrypted_send";
-  this.updateFunction_msgCompose = function () {
-    (typeof (this.currentWindow.Enigmail.msg.setMenuSettings) == 'function') ? this.currentWindow.Enigmail.msg.setMenuSettings(''): null
-  };
+  this.enigmail_active = (typeof this.currentWindow.Enigmail != 'undefined');
+
+  // enigmail preferences have changed into 1.7 - check for enigmail version
+  if (this.enigmail_active && vc.compare(this.currentWindow.EnigmailCommon.getVersion(), "1.7") < 0) {
+    this.elementID_msgCompose = "enigmail_encrypted_send";
+    this.updateFunction_msgCompose = function () {
+      (typeof (this.currentWindow.Enigmail.msg.setMenuSettings) == 'function') ? this.currentWindow.Enigmail.msg.setMenuSettings(''): null
+    };
+  } else {
+    this.setValueToEnvironment_msgCompose = this.__new_setValueToEnvironment_msgCompose;
+    this.getValueFromEnvironment_msgCompose = this.__new_getValueFromEnvironment_msgCompose;
+  }
 }
 identityDataExtrasObject_PGPEncryption.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,
 
   readIdentityValue: function (identity) {
-    if (this.active) this.value = (identity.getIntAttribute('defaultEncryptionPolicy') > 0) ? "true" : "false";
+    if (this.enigmail_active && this.active) this.value = (identity.getIntAttribute('defaultEncryptionPolicy') > 0) ? "true" : "false";
+  },
+
+  __new_setValueToEnvironment_msgCompose: function () {
+    if (!this.enigmail_active || !this.active || (this.value == null))
+      return;
+
+    if (this.value == "true") {
+      this.currentWindow.Enigmail.msg.setFinalSendMode("final-encryptYes");
+    } else {
+      this.currentWindow.Enigmail.msg.setFinalSendMode("final-encryptNo");
+    }
+  },
+
+  __new_getValueFromEnvironment_msgCompose: function () {
+    if (this.enigmail_active && this.active) {
+      this.value = (this.currentWindow.Enigmail.msg.statusEncrypted) ? "true" : "false";
+    }
   }
 }
 registerIdExtrasObject(identityDataExtrasObject_PGPEncryption);

@@ -110,6 +110,7 @@
 <!ENTITY vI_prefDialog.sending.Folder.header "Message Attributes">
 <!ENTITY vI_prefDialog.sending.Folder.caption "attributes to copy">
 <!ENTITY vI_prefDialog.sending.Folder.desc "copy following Attributes from underlying base Identity:">
+<!ENTITY vI_prefDialog.sending.Folder.Enigmail.label "OpenPGP / Enigmail settings">
 <!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME security settings">
 <!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard attachments">
 

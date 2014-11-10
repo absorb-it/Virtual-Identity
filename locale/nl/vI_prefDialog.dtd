@@ -111,6 +111,7 @@
 <!ENTITY vI_prefDialog.sending.Folder.header "Berichteigenschappen">
 <!ENTITY vI_prefDialog.sending.Folder.caption "Te kopiëren eigenschappen">
 <!ENTITY vI_prefDialog.sending.Folder.desc "De volgende eigenschappen van de vorige identiteit overnemen:">
+<!ENTITY vI_prefDialog.sending.Folder.Enigmail.label "OpenPGP / Enigmail settings"> <!-- translate -->
 <!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME-beveiligingsinstellingen">
 <!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard-bijlagen">
 

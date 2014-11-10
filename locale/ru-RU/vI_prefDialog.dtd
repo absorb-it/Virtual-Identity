@@ -111,6 +111,7 @@
 <!ENTITY vI_prefDialog.sending.Folder.header "Атрибуты сообщений">
 <!ENTITY vI_prefDialog.sending.Folder.caption "Атрибуты сообщений для копирования">
 <!ENTITY vI_prefDialog.sending.Folder.desc "Копировать следующие атрибуты сообщений из учетной записи:">
+<!ENTITY vI_prefDialog.sending.Folder.Enigmail.label "OpenPGP / Enigmail settings"> <!-- translate -->
 <!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME настройки безопасности">
 <!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard вложения">
 

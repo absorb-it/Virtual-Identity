@@ -111,6 +111,7 @@
 <!ENTITY vI_prefDialog.sending.Folder.header "Email Eigenschaften">
 <!ENTITY vI_prefDialog.sending.Folder.caption "zu Kopierende Eigenschaften">
 <!ENTITY vI_prefDialog.sending.Folder.desc "folgende Einstellungen der zugrunde liegenden Identität kopieren:">
+<!ENTITY vI_prefDialog.sending.Folder.Enigmail.label "OpenPGP / Enigmail Einstellungen">
 <!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME Sicherheitseinstellungen">
 <!ENTITY vI_prefDialog.sending.Folder.VCard.label "anzuhängende Visitenkarten">
 

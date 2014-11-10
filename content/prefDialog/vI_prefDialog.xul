@@ -413,6 +413,8 @@
 				<groupbox>
 				<caption label="&vI_prefDialog.sending.Folder.caption;"/>
 				<description class="widthXX">&vI_prefDialog.sending.Folder.desc;</description>
+        <checkbox id="VIdent_identity.copyNewEnigmailSettings" label="&vI_prefDialog.sending.Folder.Enigmail.label;"
+          prefstring="copyNewEnigmailSettings" hidden="true"/>
 				<checkbox id="VIdent_identity.copySMIMESettings" label="&vI_prefDialog.sending.Folder.SMIME.label;"
 					prefstring="copySMIMESettings"/>
 				<checkbox id="VIdent_identity.copyAttachVCardSettings" label="&vI_prefDialog.sending.Folder.VCard.label;"

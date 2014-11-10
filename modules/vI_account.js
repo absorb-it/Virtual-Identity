@@ -125,21 +125,25 @@ var account = {
     .createInstance(Ci.nsIScriptableUnicodeConverter),
 
   _copyBoolAttribute: function (name) {
+    Log.debug("copy attribute '" + name + "', value='" + account._baseIdentity.getBoolAttribute(name) + "'");
     account._account.defaultIdentity.setBoolAttribute(name,
       account._baseIdentity.getBoolAttribute(name));
   },
 
   _copyIntAttribute: function (name) {
+    Log.debug("copy attribute '" + name + "', value='" + account._baseIdentity.getIntAttribute(name) + "'");
     account._account.defaultIdentity.setIntAttribute(name,
       account._baseIdentity.getIntAttribute(name));
   },
 
   _copyCharAttribute: function (name) {
+    Log.debug("copy attribute '" + name + "', value='" + account._baseIdentity.getCharAttribute(name) + "'");
     account._account.defaultIdentity.setCharAttribute(name,
       account._baseIdentity.getCharAttribute(name));
   },
 
   _copyUnicharAttribute: function (name) {
+    Log.debug("copy attribute '" + name + "', value='" + account._baseIdentity.getUnicharAttribute(name) + "'");
     account._account.defaultIdentity.setUnicharAttribute(name,
       account._baseIdentity.getUnicharAttribute(name));
   },
@@ -152,20 +156,22 @@ var account = {
       account._copyUnicharAttribute("encryption_cert_name");
       account._copyIntAttribute("encryptionpolicy");
     }
-    /*		seems not required, encryption happens before Virtual Identity account is created
-    		if (vIprefs.get("copyEnigmailSettings")) {
-    			// pgp/enigmail settings
-    			Log.debug("copy PGP settings")
-    			account._copyBoolAttribute("pgpSignEncrypted");
-    			account._copyBoolAttribute("pgpSignPlain");
-    			account._copyBoolAttribute("enablePgp");
-    			account._copyIntAttribute("pgpKeyMode");
-    			account._copyCharAttribute("pgpkeyId");
-    			account._copyIntAttribute("openPgpHeaderMode");
-    			account._copyCharAttribute("openPgpUrlName");
-    		
-    			account._copyIntAttribute("defaultEncryptionPolicy");
-    		}	*/
+    if (vIprefs.get("copyNewEnigmailSettings")) {
+      // pgp/enigmail settings
+      Log.debug("copy PGP settings")
+      account._copyBoolAttribute("enablePgp");
+      account._copyIntAttribute("pgpKeyMode");
+      account._copyCharAttribute("pgpkeyId");
+      account._copyIntAttribute("defaultSigningPolicy");
+      account._copyIntAttribute("defaultEncryptionPolicy");
+      account._copyBoolAttribute("pgpMimeMode");
+      account._copyBoolAttribute("pgpSignEncrypted");
+      account._copyBoolAttribute("pgpSignPlain");
+      account._copyBoolAttribute("autoEncryptDrafts");
+      account._copyIntAttribute("openPgpHeaderMode");
+      account._copyCharAttribute("openPgpUrlName");
+      account._copyBoolAttribute("attachPgpKey");
+    }
     if (vIprefs.get("copyAttachVCardSettings")) {
       // attach vcard
       Log.debug("copy VCard settings")

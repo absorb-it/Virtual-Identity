@@ -76,13 +76,11 @@ virtualIdentityExtension.ns(function () {
         ComposeProcessDone: function (aResult) {
           Log.debug("StateListener reports ComposeProcessDone");
           vI.vIaccount_removeUsedVIAccount();
-          main.Cleanup(); // not really required, parallel handled by main.close
           vI.storage.clean();
         },
         SaveInFolderDone: function (folderURI) {
           Log.debug("SaveInFolderDone");
           vI.vIaccount_removeUsedVIAccount();
-          main.Cleanup();
           vI.storage.clean();
         }
       },
@@ -159,7 +157,12 @@ virtualIdentityExtension.ns(function () {
           if (vI.vIaccount_finalCheck(virtualIdentityData, getCurrentIdentity())) {
             main.replacement_functions.GenericSendMessageInProgress = false;
             main.original_functions.GenericSendMessage(msgType);
-          } else main.Cleanup();
+          }
+          // sending or saving is done (or skipped), if aborted we must restore interface settings for further use
+          main.removeVirtualIdentityFromMsgIdentityMenu();
+          // restore enigmail 'current' identity - has been changed while trying to sent
+          if (typeof Enigmail != 'undefined') Enigmail.msg.identity = getCurrentIdentity();
+
           main.replacement_functions.GenericSendMessageInProgress = false;
           // 			Log.debug("original_functions.GenericSendMessage done");
         },
@@ -175,7 +178,6 @@ virtualIdentityExtension.ns(function () {
         window.removeEventListener('compose-window-reopen', main.reopen, true);
         window.removeEventListener('compose-window-close', main.close, true);
         Log.debug("end. remove Account if there.")
-        main.Cleanup();
         vI.storage.clean();
       },
 
@@ -254,7 +256,6 @@ virtualIdentityExtension.ns(function () {
       },
 
       close: function () {
-        main.Cleanup();
         vI.storage.clean();
       },
 
@@ -372,15 +373,10 @@ virtualIdentityExtension.ns(function () {
       },
 
       prepareAccount: function () {
-        main.Cleanup(); // just to be sure that nothing is left (maybe last time sending was irregularily stopped)
+        main.removeVirtualIdentityFromMsgIdentityMenu(); // just to be sure that nothing is left (maybe last time sending was irregularily stopped)
         vI.vIaccount_createAccount(document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData,
           main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value));
         main.addVirtualIdentityToMsgIdentityMenu();
-      },
-
-      Cleanup: function () {
-        main.removeVirtualIdentityFromMsgIdentityMenu();
-        // 		vI.vIaccount_removeUsedVIAccount();
       },
 
       //  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
