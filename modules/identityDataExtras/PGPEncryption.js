@@ -71,7 +71,9 @@ identityDataExtrasObject_PGPEncryption.prototype = {
 
   __new_getValueFromEnvironment_msgCompose: function () {
     if (this.enigmail_active && this.active) {
-      this.value = (this.currentWindow.Enigmail.msg.statusEncrypted) ? "true" : "false";
+      this.value = (
+        this.currentWindow.Enigmail.msg.statusEncrypted == this.currentWindow.EnigmailCommon.ENIG_FINAL_YES ||
+        this.currentWindow.Enigmail.msg.statusEncrypted == this.currentWindow.EnigmailCommon.ENIG_FINAL_FORCEYES) ? "true" : "false";
     }
   }
 }

@@ -76,7 +76,9 @@ identityDataExtrasObject_PGPSignature.prototype = {
 
   __new_getValueFromEnvironment_msgCompose: function () {
     if (this.enigmail_active && this.active) {
-      this.value = (this.currentWindow.Enigmail.msg.statusSigned) ? "true" : "false";
+      this.value = (
+        this.currentWindow.Enigmail.msg.statusSigned == this.currentWindow.EnigmailCommon.ENIG_FINAL_YES ||
+        this.currentWindow.Enigmail.msg.statusSigned == this.currentWindow.EnigmailCommon.ENIG_FINAL_FORCEYES) ? "true" : "false";
     }
   }
 }
