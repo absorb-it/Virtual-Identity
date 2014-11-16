@@ -46,6 +46,9 @@ virtualIdentityExtension.ns(function () {
       init: function (currentWindow) {
         var msgHdr;
         var msgComposeTypeReference = Components.interfaces.nsIMsgCompType;
+        if (gMsgCompose === null) { // this should not happen - but I faced this issue. Than try to use the one stored globally
+          gMsgCompose = vI.gMsgCompose;
+        }
         var newsgroup = gMsgCompose.compFields.newsgroups;
         var autocreate = false;
         Log.debug("msgComposeTypeReference = " + gMsgCompose.type);
