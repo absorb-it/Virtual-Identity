@@ -296,7 +296,7 @@ virtualIdentityExtension.ns(function () {
       reopen: function () {
         vI.clearDebugOutput();
         Log.debug("composeDialog reopened. (msgType " + gMsgCompose.type + ")")
-        vI.gMsgCompose = sMsgCompose; // don't know why and how, but faced loosing of gMsgCompose trough later stages, strange
+        vI.gMsgCompose = gMsgCompose; // don't know why and how, but faced loosing of gMsgCompose trough later stages, strange
 
         // clean all elements
         document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
