@@ -37,8 +37,9 @@ virtualIdentityExtension.ns(function () {
     Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
     var storage = {
+      initTime: null, // used to trace different objects of same type
       focusedElement: null,
-
+      
       lastCheckedEmail: {}, // array of last checked emails per row,
       // to prevent ugly double dialogs and time-consuming double-checks
 
@@ -49,11 +50,14 @@ virtualIdentityExtension.ns(function () {
         .createBundle("chrome://v_identity/locale/v_identity.properties"),
 
       clean: function () {
-        Log.debug("clean.");
+        Log.debug("clean. storageElem-time " + storage.initTime);
         storage.multipleRecipients = null;
         storage.lastCheckedEmail = {};
         storage.firstUsedInputElement = null;
-        awSetInputAndPopupValue = storage.original_functions.awSetInputAndPopupValue;
+        if (storage.original_functions.awSetInputAndPopupValue) {
+          awSetInputAndPopupValue = storage.original_functions.awSetInputAndPopupValue;
+          storage.original_functions.awSetInputAndPopupValue = null;
+        }
         if (storage._rdfDatasourceAccess) storage._rdfDatasourceAccess.clean();
       },
 
@@ -63,7 +67,7 @@ virtualIdentityExtension.ns(function () {
 
       replacement_functions: {
         awSetInputAndPopupValue: function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
-          Log.debug("awSetInputAndPopupValue '" + inputElem.id + "'");
+          Log.debug("awSetInputAndPopupValue '" + inputElem.id + "'" + " storageElem-time " + storage.initTime);
           storage.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
           storage.__updateVIdentityFromStorage(inputElem, storage.currentWindow);
         }
@@ -98,7 +102,10 @@ virtualIdentityExtension.ns(function () {
       initialized: null,
       currentWindow: null,
       init: function () {
+        if (!this.initTime)
+          this.initTime = (new Date()).toLocaleTimeString();
         if (!storage.initialized) {
+          Log.debug("initializing storage request environment storageElem-time " + storage.initTime);
           storage._rdfDatasourceAccess = new vI.rdfDatasourceAccess();
 
           // better approach would be to use te onchange event, but this one is not fired in any change case
@@ -110,28 +117,34 @@ virtualIdentityExtension.ns(function () {
             if (input) {
               var oldBlur = input.getAttribute("onblur")
               input.setAttribute("onblur", (oldBlur ? oldBlur + "; " : "") +
-                "window.setTimeout(virtualIdentityExtension.storage.awOnBlur, 250, this, window);")
+                "window.setTimeout(virtualIdentityExtension.main.storage.awOnBlur, 250, this, window);")
               var oldFocus = input.getAttribute("onfocus")
               input.setAttribute("onfocus", (oldFocus ? oldFocus + "; " : "") +
-                "window.setTimeout(virtualIdentityExtension.storage.awOnFocus, 250, this, window);")
+                "window.setTimeout(virtualIdentityExtension.main.storage.awOnFocus, 250, this, window);")
             }
             var popup = window.awGetPopupElement(row);
             if (popup) {
               var oldCommand = popup.getAttribute("oncommand")
               popup.setAttribute("oncommand", (oldCommand ? oldCommand + "; " : "") +
-                "window.setTimeout(virtualIdentityExtension.storage.awPopupOnCommand, 250, this, window);")
+                "window.setTimeout(virtualIdentityExtension.main.storage.awPopupOnCommand, 250, this, window);")
             }
           }
           storage.currentWindow = window;
+          Log.debug("initializing storage request environment - done.");
           storage.initialized = true;
+        }
+        else {
+          Log.debug("storage request environment already initialized storageElem-time " + storage.initTime);
         }
 
         if (typeof awSetInputAndPopupValue == 'function' && storage.original_functions.awSetInputAndPopupValue == null) {
+          Log.debug("replacing awSetInputAndPopupValue");
           storage.original_functions.awSetInputAndPopupValue = awSetInputAndPopupValue;
           awSetInputAndPopupValue = function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
             storage.replacement_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber)
           }
         }
+        
         // reset unavailable storageExtras preferences
         AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function (addon) {
           if (addon && !addon.userDisabled && !addon.appDisable) {
@@ -144,6 +157,7 @@ virtualIdentityExtension.ns(function () {
 
       firstUsedInputElement: null, // this stores the first Element for which a Lookup in the Storage was successfull
       __updateVIdentityFromStorage: function (inputElement, currentWindow) {
+        Log.debug("__updateVIdentityFromStorage storageElem-time " + storage.initTime);
         if (!vI.vIprefs.get("storage")) {
           Log.debug("Storage deactivated");
           return;
@@ -218,6 +232,6 @@ virtualIdentityExtension.ns(function () {
         return false
       }
     }
-    vI.storage = storage;
+    vI.main.storage = storage;
   }
 });

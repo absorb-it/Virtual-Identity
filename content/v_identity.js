@@ -32,9 +32,11 @@ virtualIdentityExtension.ns(function () {
     Components.utils.import("resource://v_identity/vI_replyToSelf.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/plugins/signatureSwitch.js", virtualIdentityExtension);
+    Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_smartIdentity.js", virtualIdentityExtension);
 
     var main = {
+      initTime: null,
       _smartIdentity: null,
       
       headerParser: Components.classes["@mozilla.org/messenger/headerparser;1"]
@@ -77,12 +79,12 @@ virtualIdentityExtension.ns(function () {
         ComposeProcessDone: function (aResult) {
           Log.debug("StateListener reports ComposeProcessDone");
           vI.vIaccount_removeUsedVIAccount();
-          vI.storage.clean();
+          main.storage.clean();
         },
         SaveInFolderDone: function (folderURI) {
           Log.debug("SaveInFolderDone");
           vI.vIaccount_removeUsedVIAccount();
-          vI.storage.clean();
+          main.storage.clean();
         }
       },
 
@@ -125,7 +127,7 @@ virtualIdentityExtension.ns(function () {
           main.replacement_functions.GenericSendMessageInProgress = true;
 
           // if addressCol2 is focused while sending check storage for the entered address before continuing
-          vI.storage.awOnBlur(vI.storage.focusedElement, window);
+          main.storage.awOnBlur(main.storage.focusedElement, window);
 
           Log.debug("VIdentity_GenericSendMessage");
 
@@ -179,7 +181,7 @@ virtualIdentityExtension.ns(function () {
         window.removeEventListener('compose-window-reopen', main.reopen, true);
         window.removeEventListener('compose-window-close', main.close, true);
         Log.debug("end. remove Account if there.")
-        vI.storage.clean();
+        main.storage.clean();
       },
 
       _getRecipients: function () {
@@ -214,6 +216,9 @@ virtualIdentityExtension.ns(function () {
 
       // initialization //
       init: function () {
+        if (!main.initTime)
+          main.initTime = (new Date()).toLocaleTimeString();
+        Log.debug("init set main-time " + main.initTime);
         window.removeEventListener('load', main.init, false);
         window.removeEventListener('compose-window-init', main.init, true);
         if (main.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
@@ -241,23 +246,23 @@ virtualIdentityExtension.ns(function () {
       },
 
       initSystemStage1: function () {
-        Log.debug("initSystemStage1.")
+        Log.debug("initSystemStage1. main-time " + main.initTime);
         document.getElementById("virtualIdentityExtension_msgIdentityClone").init();
         vI.statusmenu.init();
         Log.debug("initSystemStage1 done.")
       },
 
       initSystemStage2: function () {
-        Log.debug("initSystemStage2.")
+        Log.debug("initSystemStage2. main-time " + main.initTime);
         Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityClone=" + document.getElementById("virtualIdentityExtension_msgIdentityClone"))
         vI.initReplyTo(window);
-        vI.storage.init();
-        this._smartIdentity = new vI.smartIdentity(window, gMsgCompose, vI.storage);
+        main.storage.init();
+        new vI.smartIdentity(window, gMsgCompose, main.storage);
         Log.debug("initSystemStage2 done.")
       },
 
       close: function () {
-        vI.storage.clean();
+        main.storage.clean();
       },
 
       adapt_interface: function () {
@@ -301,7 +306,7 @@ virtualIdentityExtension.ns(function () {
         
         // clean all elements
         document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
-        vI.storage.clean(); // just to be sure!
+        main.storage.clean(); // just to be sure!
         Log.debug("everything cleaned.")
 
         // register StateListener
