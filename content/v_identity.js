@@ -32,8 +32,11 @@ virtualIdentityExtension.ns(function () {
     Components.utils.import("resource://v_identity/vI_replyToSelf.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/plugins/signatureSwitch.js", virtualIdentityExtension);
+    Components.utils.import("resource://v_identity/vI_smartIdentity.js", virtualIdentityExtension);
 
     var main = {
+      _smartIdentity: null,
+      
       headerParser: Components.classes["@mozilla.org/messenger/headerparser;1"]
         .getService(Components.interfaces.nsIMsgHeaderParser),
 
@@ -43,8 +46,6 @@ virtualIdentityExtension.ns(function () {
       accountManager: Components.classes["@mozilla.org/messenger/account-manager;1"]
         .getService(Components.interfaces.nsIMsgAccountManager),
 
-
-      gMsgCompose: null, // to store the global gMsgCompose after MsgComposeDialog is closed
 
       // Those variables keep pointers to original functions which might get replaced later
       original_functions: {
@@ -241,7 +242,6 @@ virtualIdentityExtension.ns(function () {
 
       initSystemStage1: function () {
         Log.debug("initSystemStage1.")
-        main.gMsgCompose = gMsgCompose;
         document.getElementById("virtualIdentityExtension_msgIdentityClone").init();
         vI.statusmenu.init();
         Log.debug("initSystemStage1 done.")
@@ -249,9 +249,10 @@ virtualIdentityExtension.ns(function () {
 
       initSystemStage2: function () {
         Log.debug("initSystemStage2.")
+        Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityClone=" + document.getElementById("virtualIdentityExtension_msgIdentityClone"))
         vI.initReplyTo(window);
         vI.storage.init();
-        vI.smartIdentity.init(window);
+        this._smartIdentity = new vI.smartIdentity(window, gMsgCompose, vI.storage);
         Log.debug("initSystemStage2 done.")
       },
 
@@ -296,10 +297,11 @@ virtualIdentityExtension.ns(function () {
       reopen: function () {
         vI.clearDebugOutput();
         Log.debug("composeDialog reopened. (msgType " + gMsgCompose.type + ")")
-        vI.gMsgCompose = gMsgCompose; // don't know why and how, but faced loosing of gMsgCompose trough later stages, strange
-
+        Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityClone=" + document.getElementById("virtualIdentityExtension_msgIdentityClone"))
+        
         // clean all elements
         document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
+        vI.storage.clean(); // just to be sure!
         Log.debug("everything cleaned.")
 
         // register StateListener
