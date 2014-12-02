@@ -564,8 +564,14 @@
 	</property>
 	<property name="identityData">
 		<getter><![CDATA[
-		this._identityDataStorage.extras.getValuesFromEnvironment(); // update with current data
-		return this._identityDataStorage;
+    virtualIdentityExtension.MyLog.debug("v_identity.xml identityData getter")
+    if (this._identityDataStorage) {
+      this._identityDataStorage.extras.getValuesFromEnvironment(); // update with current data
+    }
+    else {
+      virtualIdentityExtension.MyLog.debug("v_identity.xml identityData getter - _identityDataStorage not set")
+    }
+    return this._identityDataStorage;
 		]]></getter>
 		<setter><![CDATA[
 		virtualIdentityExtension.MyLog.debug("v_identity.xml identityData setter")
