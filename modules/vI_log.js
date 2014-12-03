@@ -74,6 +74,11 @@ let _errorConsoleTunnel = {
         (aMessage.sourceName.contains("v_identity")) &&
         (!aMessage.errorMessage.contains("Error console says"))) {
         MyLog.info("Error console says" + aMessage);
+        if (vIprefs.get("error_alert"))
+          Cc["@mozilla.org/appshell/window-mediator;1"]
+          .getService(Ci.nsIWindowMediator)
+          .getMostRecentWindow(null)
+          .alert("Error console says:\n" + aMessage);
       }
     } catch (ex) {
       // This is to avoid pathological error loops.  we definitely do not
