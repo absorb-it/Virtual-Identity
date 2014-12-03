@@ -37,7 +37,7 @@ virtualIdentityExtension.ns(function () {
     Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
     var storage = {
-      initTime: null, // used to trace different objects of same type
+      timeStampID: null, // used to trace different objects of same type
       focusedElement: null,
 
       lastCheckedEmail: {}, // array of last checked emails per row,
@@ -50,7 +50,7 @@ virtualIdentityExtension.ns(function () {
         .createBundle("chrome://v_identity/locale/v_identity.properties"),
 
       clean: function () {
-        Log.debug("clean. storageElem-time " + storage.initTime);
+        Log.debug("clean");
         storage.multipleRecipients = null;
         storage.lastCheckedEmail = {};
         storage.firstUsedInputElement = null;
@@ -67,7 +67,7 @@ virtualIdentityExtension.ns(function () {
 
       replacement_functions: {
         awSetInputAndPopupValue: function (inputElem, inputValue, popupElem, popupValue, rowNumber) {
-          Log.debug("awSetInputAndPopupValue '" + inputElem.id + "'" + " storageElem-time " + storage.initTime);
+          Log.debug("[" + storage.timeStampID + "] " + "awSetInputAndPopupValue '" + inputElem.id + "'");
           storage.original_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber);
           storage.__updateVIdentityFromStorage(inputElem, storage.currentWindow);
         }
@@ -102,10 +102,12 @@ virtualIdentityExtension.ns(function () {
       initialized: null,
       currentWindow: null,
       init: function () {
-        if (!this.initTime)
-          this.initTime = (new Date()).toLocaleTimeString();
+        if (!this.timeStampID) {
+          this.timeStampID = parseInt((new Date()).getTime() / 100) % 864000; // give object unified id (per day)
+          Log = vI.setupLogging("virtualIdentity.storage[" + this.timeStampID + "]");
+        }
         if (!storage.initialized) {
-          Log.debug("initializing storage request environment storageElem-time " + storage.initTime);
+          Log.debug("initializing storage request environment");
           storage._rdfDatasourceAccess = new vI.rdfDatasourceAccess();
 
           // better approach would be to use te onchange event, but this one is not fired in any change case
@@ -133,7 +135,7 @@ virtualIdentityExtension.ns(function () {
           Log.debug("initializing storage request environment - done.");
           storage.initialized = true;
         } else {
-          Log.debug("storage request environment already initialized storageElem-time " + storage.initTime);
+          Log.debug("storage request environment already initialized");
         }
 
         if (typeof awSetInputAndPopupValue == 'function' && storage.original_functions.awSetInputAndPopupValue == null) {
@@ -156,7 +158,7 @@ virtualIdentityExtension.ns(function () {
 
       firstUsedInputElement: null, // this stores the first Element for which a Lookup in the Storage was successfull
       __updateVIdentityFromStorage: function (inputElement, currentWindow) {
-        Log.debug("__updateVIdentityFromStorage storageElem-time " + storage.initTime);
+        Log.debug("__updateVIdentityFromStorage");
         if (!vI.vIprefs.get("storage")) {
           Log.debug("Storage deactivated");
           return;

@@ -36,7 +36,7 @@ virtualIdentityExtension.ns(function () {
     Components.utils.import("resource://v_identity/vI_smartIdentity.js", virtualIdentityExtension);
 
     var main = {
-      initTime: null,
+      timeStampID: null,
       _smartIdentity: null,
 
       headerParser: Components.classes["@mozilla.org/messenger/headerparser;1"]
@@ -216,9 +216,10 @@ virtualIdentityExtension.ns(function () {
 
       // initialization //
       init: function () {
-        if (!main.initTime)
-          main.initTime = (new Date()).toLocaleTimeString();
-        Log.debug("init set main-time " + main.initTime);
+        if (!this.timeStampID) {
+          this.timeStampID = parseInt((new Date()).getTime() / 100) % 864000; // give object unified id (per day)
+          Log = vI.setupLogging("virtualIdentity.main[" + this.timeStampID + "]");
+        }
         window.removeEventListener('load', main.init, false);
         window.removeEventListener('compose-window-init', main.init, true);
         if (main.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
@@ -246,14 +247,14 @@ virtualIdentityExtension.ns(function () {
       },
 
       initSystemStage1: function () {
-        Log.debug("initSystemStage1. main-time " + main.initTime);
+        Log.debug("initSystemStage1.");
         document.getElementById("virtualIdentityExtension_msgIdentityClone").init();
         vI.statusmenu.init();
         Log.debug("initSystemStage1 done.")
       },
 
       initSystemStage2: function () {
-        Log.debug("initSystemStage2. main-time " + main.initTime);
+        Log.debug("initSystemStage2.");
         Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityClone=" + document.getElementById("virtualIdentityExtension_msgIdentityClone"))
         vI.initReplyTo(window);
         main.storage.init();
