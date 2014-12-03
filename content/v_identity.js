@@ -38,7 +38,7 @@ virtualIdentityExtension.ns(function () {
     var main = {
       initTime: null,
       _smartIdentity: null,
-      
+
       headerParser: Components.classes["@mozilla.org/messenger/headerparser;1"]
         .getService(Components.interfaces.nsIMsgHeaderParser),
 
@@ -303,7 +303,7 @@ virtualIdentityExtension.ns(function () {
         vI.clearDebugOutput();
         Log.debug("composeDialog reopened. (msgType " + gMsgCompose.type + ")")
         Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityClone=" + document.getElementById("virtualIdentityExtension_msgIdentityClone"))
-        
+
         // clean all elements
         document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
         main.storage.clean(); // just to be sure!

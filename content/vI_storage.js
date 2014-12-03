@@ -39,7 +39,7 @@ virtualIdentityExtension.ns(function () {
     var storage = {
       initTime: null, // used to trace different objects of same type
       focusedElement: null,
-      
+
       lastCheckedEmail: {}, // array of last checked emails per row,
       // to prevent ugly double dialogs and time-consuming double-checks
 
@@ -132,8 +132,7 @@ virtualIdentityExtension.ns(function () {
           storage.currentWindow = window;
           Log.debug("initializing storage request environment - done.");
           storage.initialized = true;
-        }
-        else {
+        } else {
           Log.debug("storage request environment already initialized storageElem-time " + storage.initTime);
         }
 
@@ -144,7 +143,7 @@ virtualIdentityExtension.ns(function () {
             storage.replacement_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber)
           }
         }
-        
+
         // reset unavailable storageExtras preferences
         AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function (addon) {
           if (addon && !addon.userDisabled && !addon.appDisable) {

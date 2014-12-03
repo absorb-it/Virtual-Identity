@@ -35,7 +35,7 @@ function smartIdentity(currentWindow, msgCompose, storage) {
   this._window = currentWindow;
   this._document = currentWindow.document;
   this._msgCompose = msgCompose;
-  this._storage =  storage;
+  this._storage = storage;
   this.init();
 };
 
@@ -45,7 +45,7 @@ smartIdentity.prototype = {
   _msgCompose: null,
   _storage: null,
   _smartIdentityCollection: null,
-  
+
   messenger: Components.classes["@mozilla.org/messenger;1"].createInstance()
     .QueryInterface(Components.interfaces.nsIMessenger),
 
