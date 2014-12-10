@@ -76,7 +76,7 @@ virtualIdentityExtension.ns(function () {
       awOnBlur: function (element, currentWindow) {
         // only react on events triggered by addressCol2 - textinput Elements
         if (!element || !element.id.match(/^addressCol2*/)) return;
-        Log.debug("awOnBlur '" + element.id + "' '" + element.value + "'");
+        Log.debug("awOnBlur '" + element.id);
         if (typeof element.value == 'undefined') {
           element.value = element.getAttribute("value");
           Log.debug("awOnBlur second try'" + element.id + "' '" + element.value + "'");
