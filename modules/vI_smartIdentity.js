@@ -131,7 +131,7 @@ smartIdentity.prototype = {
         Log.debug("found existing Identity, use without interaction.");
         // add all Indentities to Clone Menu before selecting and leaving the function
         this._document.getElementById("virtualIdentityExtension_msgIdentityClone").addIdentitiesToCloneMenu(this._smartIdentityCollection._allIdentities);
-        this.changeIdentityToSmartIdentity(this._smartIdentityCollection._allIdentities, existingIDIndex.key);
+        this.changeIdentityToSmartIdentity(this, existingIDIndex.key);
         return;
       }
     }
@@ -146,26 +146,28 @@ smartIdentity.prototype = {
       for (var index = 0; index < this._smartIdentityCollection._allIdentities.number; index++) {
         Log.debug("smartIdentityReplyDialog index=" + index + ": '" + this._smartIdentityCollection._allIdentities.identityDataCollection[index].combinedName + "' " + "(" + this._smartIdentityCollection._allIdentities.identityDataCollection[index].id.value + "," + this._smartIdentityCollection._allIdentities.identityDataCollection[index].smtp.value + ")");
       }
-      window.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul", 0,
+      this._window.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul", 0,
         "chrome, dialog, modal, alwaysRaised, resizable=yes",
-        this._smartIdentityCollection._allIdentities,
+        this._smartIdentityCollection._allIdentities, this,
         /* callback: */
         this.changeIdentityToSmartIdentity).focus();
     } else if (autocreate || vIprefs.get("idSelection_autocreate")) {
-      this.changeIdentityToSmartIdentity(this._smartIdentityCollection._allIdentities, 0);
+      this.changeIdentityToSmartIdentity(this, 0);
     }
   },
 
-  changeIdentityToSmartIdentity: function (allIdentities, selectedValue) {
+  // might be called from external window
+  changeIdentityToSmartIdentity: function (self, selectedValue) {
+    let allIdentities = self._smartIdentityCollection._allIdentities;
     Log.debug("changeIdentityToSmartIdentity selectedValue=" + selectedValue + " from " + allIdentities.number);
     Log.debug("changeIdentityToSmartIdentity selectedValue=" + selectedValue + ": '" + allIdentities.identityDataCollection[selectedValue].combinedName + "' " + "(" + allIdentities.identityDataCollection[selectedValue].id.value + "," + allIdentities.identityDataCollection[selectedValue].smtp.value + ")");
-    this._document.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = allIdentities.menuItems[selectedValue];
-    if (this._document.getElementById("virtualIdentityExtension_msgIdentityClone").vid) {
-      var label = this.stringBundle.GetStringFromName("vident.smartIdentity.vIUsage");
-      if (allIdentities.number > 1) label += " " + this.stringBundle.GetStringFromName("vident.smartIdentity.moreThanOne");
+    self._document.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = allIdentities.menuItems[selectedValue];
+    if (self._document.getElementById("virtualIdentityExtension_msgIdentityClone").vid) {
+      var label = self.stringBundle.GetStringFromName("vident.smartIdentity.vIUsage");
+      if (allIdentities.number > 1) label += " " + self.stringBundle.GetStringFromName("vident.smartIdentity.moreThanOne");
       SmartReplyNotification.info(label + ".");
     }
-    this.__removeSmartIdentityFromRecipients(allIdentities, selectedValue);
+    self.__removeSmartIdentityFromRecipients(allIdentities, selectedValue);
   },
 
   __removeSmartIdentityFromRecipients: function (allIdentities, index) {

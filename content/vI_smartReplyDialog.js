@@ -28,10 +28,12 @@ virtualIdentityExtension.ns(function () {
     var smartReply_dialog = {
       Obj_radioGroup: null,
       all_addresses: null,
+      parent_object: null,
 
       init: function () {
         smartReply_dialog.Obj_radioGroup = document.getElementById("replySelector.radiogroup");
         smartReply_dialog.all_addresses = window.arguments[0];
+        smartReply_dialog.parent_object = window.arguments[1];
         for (var index = 0; index < smartReply_dialog.all_addresses.number; index++) {
           var menuentry = smartReply_dialog.all_addresses.identityDataCollection[index].combinedName;
 
@@ -60,8 +62,8 @@ virtualIdentityExtension.ns(function () {
       },
 
       accept: function () {
-        /* window.argument[1] stores callback function */
-        window.arguments[1](smartReply_dialog.all_addresses, smartReply_dialog.Obj_radioGroup.selectedIndex);
+        /* window.argument[2] stores callback function */
+        window.arguments[2](smartReply_dialog.parent_object, smartReply_dialog.Obj_radioGroup.selectedIndex);
         document.documentElement.acceptDialog();
       }
     }

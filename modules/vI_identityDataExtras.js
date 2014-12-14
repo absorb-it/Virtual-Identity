@@ -46,13 +46,17 @@ function registerIdExtrasObject(h) {
   idExtrasObjects.push(h);
 }
 
-function identityDataExtras(rdfDatasource, resource) {
+function identityDataExtras(rdfDatasource, resource, currentWindow) {
   this.extras = [];
-  let currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
-    .getService(Ci.nsIWindowMediator)
-    .getMostRecentWindow(null);
+  if (currentWindow) {
+    this._currentWindow = currentWindow;
+  } else {
+    this._currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+      .getService(Ci.nsIWindowMediator)
+      .getMostRecentWindow(null);
+  }
   for each(let [, identityDataExtrasObject] in Iterator(idExtrasObjects)) {
-    this.extras.push(new identityDataExtrasObject(currentWindow));
+    this.extras.push(new identityDataExtrasObject(this._currentWindow));
   }
   if (rdfDatasource)
     this.loopThroughExtras(
@@ -61,6 +65,8 @@ function identityDataExtras(rdfDatasource, resource) {
       });
 }
 identityDataExtras.prototype = {
+  _currentWindow: null,
+
   loopThroughExtras: function (k, returnVal) {
     for (var i = 0; i < this.extras.length; i++) {
       try {
@@ -75,7 +81,7 @@ identityDataExtras.prototype = {
 
   // just give a duplicate of the current identityDataExtras, else we will work with pointers
   getDuplicate: function () {
-    var newExtras = new identityDataExtras();
+    var newExtras = new identityDataExtras(null, null, this._currentWindow);
     this.loopThroughExtras(function (extra, i) {
       newExtras.extras[i].value = extra.value;
     });
