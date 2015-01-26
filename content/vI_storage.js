@@ -88,6 +88,7 @@ virtualIdentityExtension.ns(function () {
 
       awOnFocus: function (element, currentWindow) {
         if (!element || !element.id.match(/^addressCol2*/)) return;
+        Log.debug("awOnFocus '" + element.id);
         storage.focusedElement = element;
       },
 
@@ -127,8 +128,9 @@ virtualIdentityExtension.ns(function () {
             var popup = window.awGetPopupElement(row);
             if (popup) {
               var oldCommand = popup.getAttribute("oncommand")
-              popup.setAttribute("oncommand", (oldCommand ? oldCommand + "; " : "") +
-                "window.setTimeout(virtualIdentityExtension.main.storage.awPopupOnCommand, 250, this, window);")
+              popup.setAttribute("oncommand",
+                "window.setTimeout(virtualIdentityExtension.main.storage.awPopupOnCommand, 250, this, window);" +
+                (oldCommand ? "; " + oldCommand : ""))
             }
           }
           storage.currentWindow = window;
