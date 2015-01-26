@@ -56,7 +56,12 @@ function identityDataExtras(rdfDatasource, resource, currentWindow) {
       .getMostRecentWindow(null);
   }
   for each(let [, identityDataExtrasObject] in Iterator(idExtrasObjects)) {
-    this.extras.push(new identityDataExtrasObject(this._currentWindow));
+    try {
+      this.extras.push(new identityDataExtrasObject(this._currentWindow));
+    } catch (e) {
+      Log.error("identityDataExtras '" + identityDataExtrasObject + "' returned an error:", e)
+      dumpCallStack(e);
+    }
   }
   if (rdfDatasource)
     this.loopThroughExtras(
@@ -72,7 +77,7 @@ identityDataExtras.prototype = {
       try {
         returnVal = k(this.extras[i], i, returnVal)
       } catch (e) {
-        Log.warn("identityDataExtras '" + this.extras[i].field + "' returned an error:", e);
+        Log.error("identityDataExtras '" + this.extras[i].field + "' returned an error:", e);
         dumpCallStack(e);
       }
     }
