@@ -93,7 +93,7 @@ virtualIdentityExtension.ns(function () {
 
       awPopupOnCommand: function (element, currentWindow) {
         Log.debug("awPopupOnCommand '" + element.id + "' '" + element.value + "'");
-        storage.__updateVIdentityFromStorage(currentWindow.document.getElementById(element.id.replace(/^addressCol1/, "addressCol2")), currentWindow);
+        storage.__updateVIdentityFromStorage(element.parentNode.nextSibling.firstChild, currentWindow);
         if (element.selectedItem.getAttribute("value") == "addr_reply") // if reply-to is manually entered disable AutoReplyToSelf
           currentWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").setAttribute("hidden", "true");
 
@@ -164,8 +164,7 @@ virtualIdentityExtension.ns(function () {
           return;
         }
         var currentDocument = currentWindow.document;
-        var recipientType = currentDocument.getElementById(inputElement.id.replace(/^addressCol2/, "addressCol1"))
-          .selectedItem.getAttribute("value");
+        var recipientType = inputElement.parentNode.previousSibling.firstChild.selectedItem.getAttribute("value");
 
         var row = inputElement.id.replace(/^addressCol2#/, "")
         if (recipientType == "addr_reply" || recipientType == "addr_followup" || storage.isDoBcc(row, currentWindow)) {
