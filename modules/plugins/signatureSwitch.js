@@ -44,7 +44,7 @@ function signatureSwitch(existingIdentity) {
 
   let signatureWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
     .getService(Ci.nsIWindowMediator)
-    .getMostRecentWindow(null);
+    .getMostRecentWindow("msgcompose");
 
   if (!existingIdentity) {
     Log.debug("signatureSwitch hide/remove signatures");
