@@ -24,7 +24,7 @@
 
 var EXPORTED_SYMBOLS = ["setupLogging", "dumpCallStack", "MyLog", "Colors",
   "clearDebugOutput", "notificationOverflow",
-  "SmartReplyNotification", "StorageNotification", "GetHeaderNotification"
+  "SmartReplyNotification", "StorageNotification", "GetHeaderNotification", "errorReportEmail"
 ]
 
 const {
@@ -36,6 +36,7 @@ const {
 Cu.import("resource:///modules/gloda/log4moz.js");
 Cu.import("resource://v_identity/vI_prefs.js");
 Cu.import("resource://gre/modules/Services.jsm");
+Cu.import("resource:///modules/mailServices.js");
 
 /** ******************************************************************************************************
  * _errorConsoleTunnel was copied and adapted mozilla test-function
@@ -230,6 +231,14 @@ function setupFullLogging(name) {
     capp.level = Log4Moz.Level["Warn"];
     root.addAppender(capp);
 
+    dump("*** making ConsoleAppender robust against empty messages\n");
+    // original implementation of doAppend dies if message data is empty
+    capp.doAppend = function CApp_doAppend(message) {
+      try {
+        Services.console.logStringMessage(message);
+      } catch (e) {}
+    }
+
     // A dump appender outputs to standard out
     let dapp = new Log4Moz.DumpAppender(myBasicFormatter);
     dapp.level = Log4Moz.Level["All"];
@@ -244,6 +253,49 @@ function setupFullLogging(name) {
 
   return Log;
 }
+
+function errorReportEmail(e) {
+  if (EmailReportAlreadyCreated) // do this only once per session, prevent endless loops
+    return;
+  EmailReportAlreadyCreated = true;
+
+  let params = Cc["@mozilla.org/messengercompose/composeparams;1"]
+    .createInstance(Ci.nsIMsgComposeParams);
+
+  let composeFields = Cc["@mozilla.org/messengercompose/composefields;1"]
+    .createInstance(Ci.nsIMsgCompFields);
+
+  let frame = (e && e.stack) ? e.stack : Components.stack;
+
+  let body =
+    "# please send this debug-information if possible #\n" +
+    "# it will help to make the extension better #\n" +
+    "----------------------------------------------    \n" +
+    "(even if some other message compose window does\n" +
+    "not work anymore, sending this message might even\n" +
+    "work with a virtual identity)\n" +
+    "----------------------------------------------    \n\n\n" +
+    "virtualIdentity raised an error: " + e + "\n\n";
+  while (frame) {
+    MyLog.debug(frame);
+    body += frame + "\n";
+    frame = frame.caller;
+  }
+
+  let version = ""
+  try {
+    version = "*** " + Services.wm.getMostRecentWindow("msgcompose").document
+      .getElementsByAttribute("class", "v_identity_logo v_identity_logo_statusbar")[0].value + " ***\n\n"
+  } catch (e) {}
+
+  params.composeFields = composeFields;
+  params.composeFields.subject = "Major Error in virtualIdentityExtension";
+  params.composeFields.body = version + body;
+  params.composeFields.to = "virtualIdentityBug@absorb.it";
+
+  MailServices.compose.OpenComposeWindowWithParams(null, params);
+}
+
 
 function dumpCallStack(e) {
   let frame = (e && e.stack) ? e.stack : Components.stack;
@@ -416,6 +468,8 @@ let StorageNotification = Log4Moz.repository.getLogger("virtualIdentity.StorageN
 
 let GetHeaderAppender;
 let GetHeaderNotification = Log4Moz.repository.getLogger("virtualIdentity.GetHeaderNotification");
+
+let EmailReportAlreadyCreated = null;
 
 UpdateSmartReplyNotification();
 UpdateStorageNotification();
