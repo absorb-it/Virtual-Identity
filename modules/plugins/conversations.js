@@ -88,7 +88,10 @@ let virtualIdentityHook = {
       let server = this._AccountManager.GetServersForIdentity(identity).QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
     }
 
-    currentIdentityData = new identityData(identity.email, identity.fullName, identity.key,
+    let recentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+      .getService(Ci.nsIWindowMediator)
+      .getMostRecentWindow("mail:3pane");
+    currentIdentityData = new identityData(recentWindow, identity.email, identity.fullName, identity.key,
       identity.smtpServerKey, null, server.prettyName, true)
     currentIdSenderName = currentIdentityData.combinedName;
     virtualIdInUse = false;
@@ -103,8 +106,12 @@ let virtualIdentityHook = {
         recipientType: "addr_to"
       })
 
-    var localSmartIdentityCollection = new smartIdentityCollection(aComposeSession.params.msgHdr, identity,
-      false, false, recipients);
+    let recentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
+      .getService(Ci.nsIWindowMediator)
+      .getMostRecentWindow("mail:3pane");
+
+    var localSmartIdentityCollection = new smartIdentityCollection(recentWindow, aComposeSession.params.msgHdr, identity,
+      false, false, recipients, null);
     localSmartIdentityCollection.Reply(); // we can always use the reply-case, msgHdr is set the right way
 
     if (localSmartIdentityCollection._allIdentities.number == 0)
@@ -167,8 +174,8 @@ let virtualIdentityHook = {
           .getService(Ci.nsIWindowMediator)
           .getMostRecentWindow("mail:3pane");
 
-        returnValue = vIaccount_prepareSendMsg(virtualIdInUse, Ci.nsIMsgCompDeliverMode.Now,
-          currentIdentityData, aAddress.params.identity, recipients, recentWindow);
+        returnValue = vIaccount_prepareSendMsg(recentWindow, virtualIdInUse, Ci.nsIMsgCompDeliverMode.Now,
+          currentIdentityData, aAddress.params.identity, recipients);
         Log.debug("returnValue.update:", returnValue.update);
 
         if (returnValue.update == "abort") {
@@ -181,7 +188,7 @@ let virtualIdentityHook = {
         }
 
         aAddress.params.identity = get_vIaccount().defaultIdentity;
-        if (!vIaccount_finalCheck(currentIdentityData, aAddress.params.identity)) {
+        if (!vIaccount_finalCheck(recentWindow, currentIdentityData, aAddress.params.identity)) {
           vIaccount_removeUsedVIAccount();
           aStatus.canceled = true;
           return aStatus;
@@ -211,15 +218,15 @@ let virtualIdentityHook = {
     var isNotFirstInputElement = !(aType == "to" && aCount == 0);
     Log.debug("onRecipientAdded isNotFirstInputElement", isNotFirstInputElement);
 
-    if (!_rdfDatasourceAccess) _rdfDatasourceAccess = new rdfDatasourceAccess();
-    else _rdfDatasourceAccess.clean();
-
     let recentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
       .getService(Ci.nsIWindowMediator)
       .getMostRecentWindow("mail:3pane");
 
+    if (!_rdfDatasourceAccess) _rdfDatasourceAccess = new rdfDatasourceAccess(recentWindow);
+    else _rdfDatasourceAccess.clean();
+
     var storageResult = _rdfDatasourceAccess.updateVIdentityFromStorage(aData.data, "addr_to",
-      currentIdentityData, virtualIdInUse, isNotFirstInputElement, recentWindow);
+      currentIdentityData, virtualIdInUse, isNotFirstInputElement);
 
     if (storageResult.identityCollection.number == 0) return; // return if there was no match
     if (storageResult.result != "accept") return; // return if we don't like the resulting id

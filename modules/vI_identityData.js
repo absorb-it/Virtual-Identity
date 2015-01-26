@@ -43,14 +43,15 @@ Components.utils.import("resource://v_identity/identityDataExtras/PGPEncryption.
 Components.utils.import("resource://v_identity/identityDataExtras/PGPSignature.js");
 Components.utils.import("resource://v_identity/identityDataExtras/PGPMIME.js");
 
-function identityData(email, fullName, id, smtp, extras, sideDescription, existingID) {
+function identityData(currentWindow, email, fullName, id, smtp, extras, sideDescription, existingID) {
+  this._currentWindow = currentWindow;
   this._email = email ? email : "";
   this._emailParsed = false;
   this._fullName = fullName ? fullName : "";
   this.id = new idObj(id);
   this.smtp = new smtpObj(smtp);
   if (extras) this.extras = extras;
-  else this.extras = new identityDataExtras();
+  else this.extras = new identityDataExtras(currentWindow);
   this.comp = { // holds the results of the last comparison for later creation of a compareMatrix
     compareID: null,
     equals: {
@@ -72,6 +73,7 @@ identityData.prototype = {
   _email: null, // internal email-field might contain combinedName (until first queried via email)
   _fullName: null,
   _emailParsed: null,
+  _currentWindow: null,
   id: null,
   smtp: null,
   extras: null,
@@ -164,7 +166,8 @@ identityData.prototype = {
 
   // creates an Duplicate of the current IdentityData, cause usually we are working with a pointer
   getDuplicate: function () {
-    return new identityData(this.email, this.fullName, this.id.key, this.smtp.key, this.extras ? this.extras.getDuplicate() : null, this.sideDescription, this.existingID);
+    return new identityData(this._currentWindow, this.email, this.fullName, this.id.key, this.smtp.key, this.extras ? this.extras.getDuplicate() : null,
+      this.sideDescription, this.existingID);
   },
 
   // copys all values of an identity. This way we can create a new object with a different document-context
@@ -175,6 +178,7 @@ identityData.prototype = {
     this.smtp.key = identityData.smtp.key;
     this.sideDescription = identityData.sideDescription;
     if (this.extras) this.extras.copy(identityData.extras);
+    // don't copy the currentWindow value
   },
 
   // dependent on MsgComposeCommands, should/will only be called in ComposeDialog

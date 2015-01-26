@@ -141,9 +141,9 @@ virtualIdentityExtension.ns(function () {
             var vid = document.getElementById("virtualIdentityExtension_msgIdentityClone").vid
             var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
 
-            let returnValue = vI.vIaccount_prepareSendMsg(vid, msgType, virtualIdentityData,
+            let returnValue = vI.vIaccount_prepareSendMsg(window, vid, msgType, virtualIdentityData,
               main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
-              main._getRecipients(), window);
+              main._getRecipients());
             if (returnValue.update == "abort") {
               main.replacement_functions.GenericSendMessageInProgress = false;
               Log.debug("sending: --------------  aborted  ---------------------------------")
@@ -158,7 +158,7 @@ virtualIdentityExtension.ns(function () {
 
             if (vid) main.addVirtualIdentityToMsgIdentityMenu();
             // final check if eyerything is nice before we handover to the real sending...
-            if (vI.vIaccount_finalCheck(virtualIdentityData, getCurrentIdentity())) {
+            if (vI.vIaccount_finalCheck(window, virtualIdentityData, getCurrentIdentity())) {
               main.replacement_functions.GenericSendMessageInProgress = false;
               main.original_functions.GenericSendMessage(msgType);
             }

@@ -35,16 +35,16 @@ let Log = setupLogging("virtualIdentity.identityDataExtras.PGPMIME");
 let vc = Cc["@mozilla.org/xpcom/version-comparator;1"].getService(Ci.nsIVersionComparator);
 
 function identityDataExtrasObject_PGPMIME(currentWindow) {
-  this.currentWindow = currentWindow;
+  this._currentWindow = currentWindow;
   this.field = "PGPMIME"; // description of the option
   this.option = "storageExtras_openPGP_PGPMIME"; // option string to get preference settings
-  this.enigmail_active = (typeof this.currentWindow.Enigmail != 'undefined');
+  this.enigmail_active = (typeof this._currentWindow.Enigmail != 'undefined');
 
   // enigmail preferences have changed into 1.7 - check for enigmail version
-  if (this.enigmail_active && vc.compare(this.currentWindow.EnigmailCommon.getVersion(), "1.7") < 0) {
+  if (this.enigmail_active && vc.compare(this._currentWindow.EnigmailCommon.getVersion(), "1.7") < 0) {
     this.elementID_msgCompose = "enigmail_sendPGPMime";
     this.updateFunction_msgCompose = function () {
-      (typeof (this.currentWindow.Enigmail.msg.setMenuSettings) == 'function') ? this.currentWindow.Enigmail.msg.setMenuSettings(''): null
+      (typeof (this._currentWindow.Enigmail.msg.setMenuSettings) == 'function') ? this._currentWindow.Enigmail.msg.setMenuSettings(''): null
     };
   } else {
     this.setValueToEnvironment_msgCompose = this.__new_setValueToEnvironment_msgCompose;
@@ -63,17 +63,17 @@ identityDataExtrasObject_PGPMIME.prototype = {
       return;
 
     if (this.value == "true") {
-      this.currentWindow.Enigmail.msg.setFinalSendMode("final-pgpmimeYes");
+      this._currentWindow.Enigmail.msg.setFinalSendMode("final-pgpmimeYes");
     } else {
-      this.currentWindow.Enigmail.msg.setFinalSendMode("final-pgpmimeNo");
+      this._currentWindow.Enigmail.msg.setFinalSendMode("final-pgpmimeNo");
     }
   },
 
   __new_getValueFromEnvironment_msgCompose: function () {
     if (this.enigmail_active && this.active) {
       this.value = (
-        this.currentWindow.Enigmail.msg.statusPGPMime == this.currentWindow.EnigmailCommon.ENIG_FINAL_YES ||
-        this.currentWindow.Enigmail.msg.statusPGPMime == this.currentWindow.EnigmailCommon.ENIG_FINAL_FORCEYES) ? "true" : "false";
+        this._currentWindow.Enigmail.msg.statusPGPMime == this._currentWindow.EnigmailCommon.ENIG_FINAL_YES ||
+        this._currentWindow.Enigmail.msg.statusPGPMime == this._currentWindow.EnigmailCommon.ENIG_FINAL_FORCEYES) ? "true" : "false";
     }
   }
 }

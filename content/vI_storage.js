@@ -109,7 +109,7 @@ virtualIdentityExtension.ns(function () {
         }
         if (!storage.initialized) {
           Log.debug("initializing storage request environment");
-          storage._rdfDatasourceAccess = new vI.rdfDatasourceAccess();
+          storage._rdfDatasourceAccess = new vI.rdfDatasourceAccess(window);
 
           // better approach would be to use te onchange event, but this one is not fired in any change case
           // see https://bugzilla.mozilla.org/show_bug.cgi?id=355367
@@ -193,7 +193,7 @@ virtualIdentityExtension.ns(function () {
         var isNotFirstInputElement = (storage.firstUsedInputElement && storage.firstUsedInputElement != inputElement)
         var currentIdentity = currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").identityData
         var storageResult = storage._rdfDatasourceAccess.updateVIdentityFromStorage(inputElement.value, recipientType,
-          currentIdentity, currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").vid, isNotFirstInputElement, window);
+          currentIdentity, currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").vid, isNotFirstInputElement);
 
         if (storageResult.identityCollection.number == 0) return; // return if there was no match
         Log.debug("__updateVIdentityFromStorage result: " + storageResult.result);

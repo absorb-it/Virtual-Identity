@@ -587,8 +587,8 @@
 					tooltiptext="&vI_prefDialog.storage.tooltiptext;" prefstring="storage"
 					oncommand="virtualIdentityExtension.prefDialog.base.storageConstraint(this);" />
 				<spacer class="paragraph"/>
-                <button id="VIdent_identity.storage.import" label="&vI_prefDialog.storage.import;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter('virtualIdentity.rdf');" />
-                <button id="VIdent_identity.storage.export" label="&vI_prefDialog.storage.export;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasource(); vI_localRdfDatasource.export('virtualIdentity.rdf')" />
+                <button id="VIdent_identity.storage.import" label="&vI_prefDialog.storage.import;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter(window, 'virtualIdentity.rdf');" />
+                <button id="VIdent_identity.storage.export" label="&vI_prefDialog.storage.export;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasource(window); vI_localRdfDatasource.export('virtualIdentity.rdf')" />
 				</groupbox>
                 <groupbox>
                 <caption label="&vI_prefDialog.storageTab.Tab0.caption2;" />

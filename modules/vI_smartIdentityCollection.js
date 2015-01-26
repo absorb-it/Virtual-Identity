@@ -31,18 +31,21 @@ Components.utils.import("resource://v_identity/vI_prefs.js");
 
 let Log = setupLogging("virtualIdentity.smartIdentityCollection");
 
-function smartIdentityCollection(msgHdr, preseletedID, currentIDisVID, newsgroup, recipients) {
+function smartIdentityCollection(currentWindow, msgHdr, preseletedID, currentIDisVID, newsgroup, recipients) {
+  this._currentWindow = currentWindow;
   this._IDisVID = currentIDisVID;
   this._preselectedID = preseletedID;
   this._msgHdr = msgHdr;
   this._newsgroup = newsgroup;
   this._unicodeConverter.charset = "UTF-8";
   this._recipients = recipients;
-  this._rdfDatasourceAccess = new rdfDatasourceAccess();
+  this._rdfDatasourceAccess = new rdfDatasourceAccess(this._currentWindow);
   this._allIdentities = new identityCollection();
 };
 
 smartIdentityCollection.prototype = {
+  _currentWindow: null,
+
   messenger: Components.classes["@mozilla.org/messenger;1"].createInstance()
     .QueryInterface(Components.interfaces.nsIMessenger),
   _unicodeConverter: Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
@@ -86,7 +89,7 @@ smartIdentityCollection.prototype = {
     var new_email = autoString.replace(/%l/g, localpart).replace(/%d/g, domain).replace(/%t/g, dateString);
     Log.debug("new email: " + new_email);
 
-    var newIdentity = new identityData(new_email,
+    var newIdentity = new identityData(this._currentWindow, new_email,
       this._preselectedID.fullName, this._preselectedID.key, this._preselectedID.smtpServerKey, null, null)
 
     this._allIdentities.addWithoutDuplicates(newIdentity);
@@ -151,7 +154,7 @@ smartIdentityCollection.prototype = {
     var combinedNames = {};
     var number = this._headerParser.parseHeadersWithArray(header, emails, fullNames, combinedNames);
     for (var index = 0; index < number; index++) {
-      var newIdentity = new identityData(emails.value[index], fullNames.value[index],
+      var newIdentity = new identityData(this._currentWindow, emails.value[index], fullNames.value[index],
         null, NO_SMTP_TAG, null, null);
       identityCollection.addWithoutDuplicates(newIdentity);
     }

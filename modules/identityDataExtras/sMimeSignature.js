@@ -34,12 +34,12 @@ Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityDataExtras.sMimeSignature");
 
 function identityDataExtrasObject_sMimeSignature(currentWindow) {
-  this.currentWindow = currentWindow;
+  this._currentWindow = currentWindow;
   this.field = "sMimeSig"; // description of the option
   this.option = "storageExtras_sMime_messageSignature"; // option string to get preference settings
   this.elementID_msgCompose = "menu_securitySign1";
   this.updateFunction_msgCompose = function () {
-    (typeof (this.currentWindow.setSecuritySettings) == 'function') ? this.currentWindow.setSecuritySettings(1): null
+    (typeof (this._currentWindow.setSecuritySettings) == 'function') ? this._currentWindow.setSecuritySettings(1): null
   };
 }
 identityDataExtrasObject_sMimeSignature.prototype = {

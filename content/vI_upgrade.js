@@ -38,7 +38,7 @@ virtualIdentityExtension.ns(function () {
       rdfDatasource: null,
 
       quickUpgrade: function (currentVersion) {
-        upgrade.rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf", true);
+        upgrade.rdfDatasource = new vI.rdfDatasource(window, "virtualIdentity.rdf", true);
         if (upgrade.rdfDatasource.extUpgradeRequired())
           upgrade.extUpgrade();
         upgrade.rdfDatasource.refreshAccountInfo();

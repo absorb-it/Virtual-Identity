@@ -54,7 +54,7 @@ virtualIdentityExtension.ns(function () {
         rdfDataEditor.__type = window.arguments[1];
         rdfDataEditor.__rdfDatasource = window.arguments[2];
         rdfDataEditor.__rdfDataTree = window.arguments[3];;
-        rdfDataEditor.__identityData = new vI.identityData();
+        rdfDataEditor.__identityData = new vI.identityData(window);
         rdfDataEditor.__identityData.copy(window.arguments[0].identityData);
 
 
@@ -124,13 +124,13 @@ virtualIdentityExtension.ns(function () {
 
       blurEvent: function (elementId) {
         var elem = document.getElementById(elementId);
-        var localIdentityData = new vI.identityData(elem.value, null, null, null, null, null, null);
+        var localIdentityData = new vI.identityData(window, elem.value, null, null, null, null, null, null);
         elem.value = localIdentityData.combinedName;
       },
 
       accept: function () {
         Log.debug("accept");
-        var localIdentityData = new vI.identityData(document.getElementById("sender").value, null,
+        var localIdentityData = new vI.identityData(window, document.getElementById("sender").value, null,
           document.getElementById("virtualIdentityExtension_IdentityList").selectedItem.getAttribute("value"),
           document.getElementById("virtualIdentityExtension_SmtpServerList").selectedItem.getAttribute("key"));
         localIdentityData.extras.getValuesFromEnvironment();

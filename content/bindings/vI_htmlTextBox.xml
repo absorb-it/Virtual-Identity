@@ -165,22 +165,20 @@
 	<implementation>
 	<constructor>
 		<![CDATA[		
-		virtualIdentityExtension.MyLog.debug('******* vI_htmlTextBox.xml constructor\n');
+		virtualIdentityExtension.MyLog.debug('******* vI_htmlTextBox.xml constructor');
 		]]>
 	</constructor>
 	<field name="_cssRead">false</field>
 	<property name="cssSource" >
 		<setter><![CDATA[
 		if (!val) return;
-		virtualIdentityExtension.MyLog.debug("cssSource set to " + val + "\n");
 		var head = this.contentDocument.getElementsByTagName("HEAD").item(0);
 		var range = document.createRange();
 		range.selectNode(head);
 		var css_text = this._getContents("chrome://v_identity/skin/" + val);
-		virtualIdentityExtension.MyLog.debug("cssSource set to " + val + " cont.\n");
 		var documentFragment = range.createContextualFragment("<style type='text/css'>" + css_text + "</style>");
 		head.appendChild(documentFragment);
-		virtualIdentityExtension.MyLog.debug("cssSource set to " + val + " done\n");
+		virtualIdentityExtension.MyLog.debug("cssSource set to " + val + " done");
 		this._cssRead = true;
 		]]></setter>
 	</property>

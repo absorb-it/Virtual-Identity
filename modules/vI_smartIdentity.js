@@ -32,7 +32,7 @@ Components.utils.import("resource://v_identity/vI_prefs.js");
 let Log = setupLogging("virtualIdentity.smartIdentity");
 
 function smartIdentity(currentWindow, msgCompose, storage) {
-  this._window = currentWindow;
+  this._currentWindow = currentWindow;
   this._document = currentWindow.document;
   this._msgCompose = msgCompose;
   this._storage = storage;
@@ -73,7 +73,8 @@ smartIdentity.prototype = {
       Log.debug("Reply");
       msgHdr = this.messenger.
       messageServiceFromURI(this._msgCompose.originalMsgURI).messageURIToMsgHdr(this._msgCompose.originalMsgURI);
-      this._smartIdentityCollection = new smartIdentityCollection(msgHdr, this._window.getCurrentIdentity(), this._document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients(this._window));
+      this._smartIdentityCollection = new smartIdentityCollection(this._currentWindow, msgHdr, this._currentWindow.getCurrentIdentity(), this._document.getElementById("virtualIdentityExtension_msgIdentityClone").vid,
+        newsgroup, this._getRecipients());
       this._smartIdentityCollection.Reply();
       autocreate = false;
       break;
@@ -82,7 +83,8 @@ smartIdentity.prototype = {
       Log.debug("Draft");
       msgHdr = this.messenger.
       messageServiceFromURI(this._msgCompose.compFields.draftId).messageURIToMsgHdr(this._msgCompose.compFields.draftId);
-      this._smartIdentityCollection = new smartIdentityCollection(msgHdr, this._window.getCurrentIdentity(), this._document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients(this._window));
+      this._smartIdentityCollection = new smartIdentityCollection(this._currentWindow, msgHdr, this._currentWindow.getCurrentIdentity(), this._document.getElementById("virtualIdentityExtension_msgIdentityClone").vid,
+        newsgroup, this._getRecipients());
       this._smartIdentityCollection.Draft();
       autocreate = false;
       break;
@@ -92,7 +94,8 @@ smartIdentity.prototype = {
     case msgComposeTypeReference.NewsPost:
     case msgComposeTypeReference.MailToUrl:
       Log.debug("New Mail");
-      this._smartIdentityCollection = new smartIdentityCollection(null, this._window.getCurrentIdentity(), this._document.getElementById("virtualIdentityExtension_msgIdentityClone").vid, newsgroup, this._getRecipients(this._window));
+      this._smartIdentityCollection = new smartIdentityCollection(this._currentWindow, null, this._currentWindow.getCurrentIdentity(), this._document.getElementById("virtualIdentityExtension_msgIdentityClone").vid,
+        newsgroup, this._getRecipients());
       // to enable composing new email with new identity: identity is hidden in subject line
       // used for instance from conversation addon
       var subject = this._msgCompose.compFields.subject.split(/\n/);
@@ -110,12 +113,12 @@ smartIdentity.prototype = {
 
   _getRecipients: function () {
     var recipients = [];
-    for (var row = 1; row <= this._window.top.MAX_RECIPIENTS; row++) {
-      var recipientType = this._window.awGetPopupElement(row).selectedItem.getAttribute("value");
+    for (var row = 1; row <= this._currentWindow.top.MAX_RECIPIENTS; row++) {
+      var recipientType = this._currentWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
       if (recipientType == "addr_reply" || recipientType == "addr_followup" ||
-        this._storage.isDoBcc(row, this._window) || this._window.awGetInputElement(row).value.match(/^\s*$/)) continue;
+        this._storage.isDoBcc(row, this._currentWindow) || this._currentWindow.awGetInputElement(row).value.match(/^\s*$/)) continue;
       recipients.push({
-        recipient: this._window.awGetInputElement(row).value,
+        recipient: this._currentWindow.awGetInputElement(row).value,
         recipientType: recipientType
       });
     }
@@ -146,7 +149,7 @@ smartIdentity.prototype = {
       for (var index = 0; index < this._smartIdentityCollection._allIdentities.number; index++) {
         Log.debug("smartIdentityReplyDialog index=" + index + ": '" + this._smartIdentityCollection._allIdentities.identityDataCollection[index].combinedName + "' " + "(" + this._smartIdentityCollection._allIdentities.identityDataCollection[index].id.value + "," + this._smartIdentityCollection._allIdentities.identityDataCollection[index].smtp.value + ")");
       }
-      this._window.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul", 0,
+      this._currentWindow.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul", 0,
         "chrome, dialog, modal, alwaysRaised, resizable=yes",
         this._smartIdentityCollection._allIdentities, this,
         /* callback: */
@@ -175,9 +178,9 @@ smartIdentity.prototype = {
 
     // check if selected email is defined as doBcc address. If so, it should not be removed.
     var skip_bcc = false;
-    if (this._window.getCurrentIdentity().doBcc) {
+    if (this._currentWindow.getCurrentIdentity().doBcc) {
       var bcc_addresses = new identityCollection();
-      this.__parseHeadersWithArray(this._window.getCurrentIdentity().doBccList, bcc_addresses);
+      this.__parseHeadersWithArray(this._currentWindow.getCurrentIdentity().doBccList, bcc_addresses);
 
       for (var i = 0; i < bcc_addresses.number; i++) {
         if (allIdentities.identityDataCollection[index].email == bcc_addresses.identityDataCollection[i].email) {
@@ -189,16 +192,16 @@ smartIdentity.prototype = {
 
     // check if there is more than one recipient for this mail. If not, preserve the only one existing.
     var recipientCount = 0;
-    for (var row = 1; row <= this._window.top.MAX_RECIPIENTS; row++) {
-      var recipientType = this._window.awGetPopupElement(row).selectedItem.getAttribute("value");
+    for (var row = 1; row <= this._currentWindow.top.MAX_RECIPIENTS; row++) {
+      var recipientType = this._currentWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
       if (recipientType == "addr_to" || recipientType == "addr_cc") recipientCount++;
     }
     if (recipientCount < 2) return;
 
 
-    for (var row = 1; row <= this._window.top.MAX_RECIPIENTS; row++) {
-      var popup = this._window.awGetPopupElement(row);
-      var input = this._window.awGetInputElement(row);
+    for (var row = 1; row <= this._currentWindow.top.MAX_RECIPIENTS; row++) {
+      var popup = this._currentWindow.awGetPopupElement(row);
+      var input = this._currentWindow.awGetInputElement(row);
       var recipientType = popup.selectedItem.getAttribute("value");
       // if the entry is not a recipient, just continue
       if (recipientType == "addr_reply" || recipientType == "addr_followup") continue;
@@ -207,8 +210,8 @@ smartIdentity.prototype = {
       // check if entry is matching senders address, if so, remove it
       if (input.value == allIdentities.identityDataCollection[index].email ||
         input.value == allIdentities.identityDataCollection[index].combinedName) {
-        this._window.awSetInputAndPopupValue(input, "", popup, "addr_to", -1);
-        this._window.awCleanupRows()
+        this._currentWindow.awSetInputAndPopupValue(input, "", popup, "addr_to", -1);
+        this._currentWindow.awCleanupRows()
         SmartReplyNotification.info(" " + this.stringBundle.GetStringFromName("vident.smartIdentity.remRecipient"));
         break;
       }

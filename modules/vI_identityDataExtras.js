@@ -46,15 +46,9 @@ function registerIdExtrasObject(h) {
   idExtrasObjects.push(h);
 }
 
-function identityDataExtras(rdfDatasource, resource, currentWindow) {
+function identityDataExtras(currentWindow, rdfDatasource, resource) {
+  this._currentWindow = currentWindow;
   this.extras = [];
-  if (currentWindow) {
-    this._currentWindow = currentWindow;
-  } else {
-    this._currentWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
-      .getService(Ci.nsIWindowMediator)
-      .getMostRecentWindow(null);
-  }
   for each(let [, identityDataExtrasObject] in Iterator(idExtrasObjects)) {
     try {
       this.extras.push(new identityDataExtrasObject(this._currentWindow));
@@ -86,7 +80,7 @@ identityDataExtras.prototype = {
 
   // just give a duplicate of the current identityDataExtras, else we will work with pointers
   getDuplicate: function () {
-    var newExtras = new identityDataExtras(null, null, this._currentWindow);
+    var newExtras = new identityDataExtras(this._currentWindow);
     this.loopThroughExtras(function (extra, i) {
       newExtras.extras[i].value = extra.value;
     });
@@ -168,13 +162,14 @@ identityDataExtras.prototype = {
 }
 
 function identityDataExtrasObject(currentWindow) {
-  this.currentWindow = currentWindow;
+  this._currentWindow = currentWindow;
 }
 identityDataExtrasObject.prototype = {
+  _currentWindow: null, // the current Window the object was created for
+
   value: null, // will contain the current value of the object and can be accessed from outside
   field: null, // short description of the field
   option: null, // option from preferences, boolean
-  window: null, // the current Window the object was created for
 
   lastCompareValue: "",
   lastCompareResult: false,
@@ -212,7 +207,7 @@ identityDataExtrasObject.prototype = {
   readIdentityValue: function (identity) {},
   // function to set or read the value from/to the environment
   setValueToEnvironment: function () {
-    let id = this.currentWindow.document.documentElement.id;
+    let id = this._currentWindow.document.documentElement.id;
     switch (id) {
     case "msgcomposeWindow":
       this.setValueToEnvironment_msgCompose();
@@ -229,7 +224,7 @@ identityDataExtrasObject.prototype = {
     }
   },
   getValueFromEnvironment: function () {
-    let id = this.currentWindow.document.documentElement.id;
+    let id = this._currentWindow.document.documentElement.id;
     switch (id) {
     case "msgcomposeWindow":
       this.getValueFromEnvironment_msgCompose();
@@ -267,9 +262,11 @@ identityDataExtrasObject.prototype = {
 
 
 function identityDataExtrasCheckboxObject(currentWindow) {
-  this.currentWindow = currentWindow;
+  this._currentWindow = currentWindow;
 }
 identityDataExtrasCheckboxObject.prototype = {
+  _currentWindow: null, // the current Window the object was created for
+
   __proto__: identityDataExtrasObject.prototype,
 
   updateFunction_msgCompose: function () {},
@@ -281,7 +278,7 @@ identityDataExtrasCheckboxObject.prototype = {
   },
 
   setValueToEnvironment_msgCompose: function () {
-    var element = this.currentWindow.document.getElementById(this.elementID_msgCompose);
+    var element = this._currentWindow.document.getElementById(this.elementID_msgCompose);
     if (!this.active || (this.value == null) || !element)
       return;
 
@@ -294,14 +291,14 @@ identityDataExtrasCheckboxObject.prototype = {
 
   setValueToEnvironment_dataEditor: function () {
     if (this.value != null) {
-      this.currentWindow.document.getElementById("vI_" + this.option).setAttribute("checked", this.value);
-      this.currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+      this._currentWindow.document.getElementById("vI_" + this.option).setAttribute("checked", this.value);
+      this._currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
     }
-    this.currentWindow.document.getElementById("vI_" + this.option + "_store").doCommand();
+    this._currentWindow.document.getElementById("vI_" + this.option + "_store").doCommand();
   },
 
   getValueFromEnvironment_msgCompose: function () {
-    var element = this.currentWindow.document.getElementById(this.elementID_msgCompose)
+    var element = this._currentWindow.document.getElementById(this.elementID_msgCompose)
     if (this.active && element) {
       this.updateFunction_msgCompose();
       this.value = ((element.getAttribute("checked") == "true") ? "true" : "false");
@@ -309,8 +306,8 @@ identityDataExtrasCheckboxObject.prototype = {
   },
 
   getValueFromEnvironment_dataEditor: function () {
-    if (this.currentWindow.document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true") {
-      var elementValue = this.currentWindow.document.getElementById("vI_" + this.option).getAttribute("checked");
+    if (this._currentWindow.document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true") {
+      var elementValue = this._currentWindow.document.getElementById("vI_" + this.option).getAttribute("checked");
       this.value = (elementValue == "true") ? "true" : "false"
     } else
       this.value = null;

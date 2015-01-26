@@ -243,7 +243,7 @@ virtualIdentityExtension.ns(function () {
           .getService(Components.interfaces.nsIStringBundleService)
           .createBundle("chrome://v_identity/locale/vI_rdfDataEditor.properties");
 
-        rdfDataTreeCollection._rdfDatasource = new vI.rdfDatasource("virtualIdentity.rdf");
+        rdfDataTreeCollection._rdfDatasource = new vI.rdfDatasource(window, "virtualIdentity.rdf");
 
         for each(var treeType in rdfDataTreeCollection.treeTypes)
         rdfDataTreeCollection.trees[treeType] = new rdfDataTree(treeType, rdfDataTreeCollection._rdfDatasource);
@@ -546,7 +546,7 @@ virtualIdentityExtension.ns(function () {
       newItem: function () {
         var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
         var newItemPreset = {
-          identityData: new vI.identityData("", null, null, vI.NO_SMTP_TAG, null, null)
+          identityData: new vI.identityData(window, "", null, null, vI.NO_SMTP_TAG, null, null)
         };
         var retVar = {
           treeType: null

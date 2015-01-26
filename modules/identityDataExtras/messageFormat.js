@@ -34,7 +34,7 @@ Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityDataExtras.messageFormat");
 
 function identityDataExtrasObject_messageFormat(currentWindow) {
-  this.currentWindow = currentWindow;
+  this._currentWindow = currentWindow;
   this.field = "msgFormat"; // description of the option
   this.option = "storageExtras_messageFormat"; // option string to get preference settings
 }
@@ -46,28 +46,28 @@ identityDataExtrasObject_messageFormat.prototype = {
     return this.valueNice;
   },
   get valueNice() {
-    return this.value ? this.currentWindow.document.getElementById(this.value).label : "";
+    return this.value ? this._currentWindow.document.getElementById(this.value).label : "";
   },
 
   setValueToEnvironment_msgCompose: function () {
     if (this.value == null)
       return
-    this.currentWindow.document.getElementById("outputFormatMenu").removeAttribute("hidden");
-    this.currentWindow.document.getElementById(this.value).setAttribute("checked", "true");
-    this.currentWindow.OutputFormatMenuSelect(this.currentWindow.document.getElementById(this.value))
+    this._currentWindow.document.getElementById("outputFormatMenu").removeAttribute("hidden");
+    this._currentWindow.document.getElementById(this.value).setAttribute("checked", "true");
+    this._currentWindow.OutputFormatMenuSelect(this._currentWindow.document.getElementById(this.value))
   },
 
   setValueToEnvironment_dataEditor: function () {
     if (this.value != null) {
-      this.currentWindow.document.getElementById("outputFormatMenu").selectedItem = this.currentWindow.document.getElementById(this.value);
-      this.currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+      this._currentWindow.document.getElementById("outputFormatMenu").selectedItem = this._currentWindow.document.getElementById(this.value);
+      this._currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
     }
-    this.currentWindow.document.getElementById("vI_" + this.option + "_store").doCommand();
+    this._currentWindow.document.getElementById("vI_" + this.option + "_store").doCommand();
   },
 
   getValueFromEnvironment_msgCompose: function () {
     const nsIMsgCompSendFormat = Components.interfaces.nsIMsgCompSendFormat;
-    switch (this.currentWindow.gSendFormat) {
+    switch (this._currentWindow.gSendFormat) {
     case nsIMsgCompSendFormat.AskUser:
       this.value = "format_auto";
       break;
@@ -84,8 +84,8 @@ identityDataExtrasObject_messageFormat.prototype = {
   },
 
   getValueFromEnvironment_dataEditor: function () {
-    if (this.currentWindow.document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true")
-      this.value = this.currentWindow.document.getElementById("outputFormatMenu").selectedItem.id
+    if (this._currentWindow.document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true")
+      this.value = this._currentWindow.document.getElementById("outputFormatMenu").selectedItem.id
     else
       this.value = null;
   }

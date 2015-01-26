@@ -65,8 +65,8 @@
                     <menupopup>                        
                         <menuitem label="&vident.vI_Menu.DataEditor.label;"
                             oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome, dialog, resizable=yes');" />
-                        <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter('virtualIdentity.rdf');"/>
-                        <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasource(); vI_localRdfDatasource.export('virtualIdentity.rdf')"/>
+                        <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter(window, 'virtualIdentity.rdf');"/>
+                        <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasource(window); vI_localRdfDatasource.export('virtualIdentity.rdf')"/>
                     </menupopup>
                 </menu>
 			</menupopup>

@@ -34,7 +34,7 @@ Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityDataExtras.returnReceipt");
 
 function identityDataExtrasObject_ReturnReceipt(currentWindow) {
-  this.currentWindow = currentWindow;
+  this._currentWindow = currentWindow;
   this.field = "receipt"; // description of the option
   this.option = "storageExtras_returnReciept"; // option string to get preference settings
   this.elementID_msgCompose = "returnReceiptMenu";

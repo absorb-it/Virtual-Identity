@@ -34,7 +34,7 @@ Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.identityDataExtras.fccSwitch");
 
 function identityDataExtrasObject_fccSwitch(currentWindow) {
-  this.currentWindow = currentWindow;
+  this._currentWindow = currentWindow;
   this.field = "fcc"; // description of the option
   this.option = "storageExtras_fcc"; // option string to get preference settings
   this.elementID_msgCompose = "virtualIdentityExtension_fccSwitch";
@@ -47,7 +47,7 @@ identityDataExtrasObject_fccSwitch.prototype = {
   },
 
   setValueToEnvironment_msgCompose: function () {
-    var element = this.currentWindow.document.getElementById(this.elementID_msgCompose);
+    var element = this._currentWindow.document.getElementById(this.elementID_msgCompose);
     if (!this.active || (this.value == null) || !element)
       return;
 

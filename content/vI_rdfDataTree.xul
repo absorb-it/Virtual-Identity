@@ -113,8 +113,8 @@
         </menu>
 		<menu id="tasksMenu" label="&tasksMenu.label;" accesskey="&tasksMenu.accesskey;">
 		<menupopup>
-            <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter('virtualIdentity.rdf');"/>
-            <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasource(); vI_localRdfDatasource.export('virtualIdentity.rdf')"/>
+            <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter(window, 'virtualIdentity.rdf');"/>
+            <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasource(); vI_localRdfDatasource.export(window, 'virtualIdentity.rdf')"/>
 		</menupopup>
 		</menu>
 	</menubar>

@@ -43,7 +43,7 @@ Cu.import("resource://v_identity/vI_accountUtils.js");
 
 let Log = setupLogging("virtualIdentity.account");
 
-function vIaccount_prepareSendMsg(vid, msgType, identityData, baseIdentity, recipients, currentWindow) {
+function vIaccount_prepareSendMsg(currentWindow, vid, msgType, identityData, baseIdentity, recipients) {
   var stringBundle = Services.strings.createBundle("chrome://v_identity/locale/v_identity.properties");
 
   var promptService = Cc["@mozilla.org/embedcomp/prompt-service;1"]
@@ -69,8 +69,8 @@ function vIaccount_prepareSendMsg(vid, msgType, identityData, baseIdentity, reci
       }; // completely abort sending
     }
     if (vIprefs.get("storage") && vIprefs.get("storage_store")) {
-      var localeDatasourceAccess = new rdfDatasourceAccess();
-      var returnValue = localeDatasourceAccess.storeVIdentityToAllRecipients(identityData, recipients, currentWindow)
+      var localeDatasourceAccess = new rdfDatasourceAccess(currentWindow);
+      var returnValue = localeDatasourceAccess.storeVIdentityToAllRecipients(identityData, recipients)
       if (returnValue.update == "abort" || returnValue.update == "takeover") {
         Log.debug("prepareSendMsg: sending aborted");
         return returnValue;
@@ -87,11 +87,11 @@ function vIaccount_prepareSendMsg(vid, msgType, identityData, baseIdentity, reci
   };
 };
 
-function vIaccount_finalCheck(virtualIdentityData, currentIdentity) {
+function vIaccount_finalCheck(currentWindow, virtualIdentityData, currentIdentity) {
   var stringBundle = Services.strings.createBundle("chrome://v_identity/locale/v_identity.properties");
 
   // identityData(email, fullName, id, smtp, extras, sideDescription, existingID)
-  var currentIdentityData = new identityData(currentIdentity.email, currentIdentity.fullName, null, currentIdentity.smtpServerKey, null, null, null);
+  var currentIdentityData = new identityData(currentWindow, currentIdentity.email, currentIdentity.fullName, null, currentIdentity.smtpServerKey, null, null, null);
 
   Log.debug("SendMessage Final Check");
   Log.debug("currentIdentity: fullName='" + currentIdentityData.fullName + "' email='" + currentIdentityData.email + "' smtp='" + currentIdentityData.smtp.key + "'");
