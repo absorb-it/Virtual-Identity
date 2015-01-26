@@ -34,6 +34,7 @@ virtualIdentityExtension.ns(function () {
     Components.utils.import("resource://v_identity/plugins/signatureSwitch.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_smartIdentity.js", virtualIdentityExtension);
+    Components.utils.import("resource://v_identity/vI_log.js", virtualIdentityExtension);
 
     var main = {
       timeStampID: null,
@@ -123,43 +124,60 @@ virtualIdentityExtension.ns(function () {
 
         GenericSendMessageInProgress: false,
         GenericSendMessage: function (msgType) {
-          if (main.replacement_functions.GenericSendMessageInProgress) return;
-          main.replacement_functions.GenericSendMessageInProgress = true;
+          try {
+            if (main.replacement_functions.GenericSendMessageInProgress) return;
+            main.replacement_functions.GenericSendMessageInProgress = true;
 
-          // if addressCol2 is focused while sending check storage for the entered address before continuing
-          main.storage.awOnBlur(main.storage.focusedElement, window);
+            // if addressCol2 is focused while sending check storage for the entered address before continuing
+            main.storage.awOnBlur(main.storage.focusedElement, window);
 
-          Log.debug("VIdentity_GenericSendMessage");
+            Log.debug("VIdentity_GenericSendMessage");
 
-          Log.debug("VIdentity_GenericSendMessage top=" + top);
+            Log.debug("VIdentity_GenericSendMessage top=" + top);
 
-          if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now)
-            vI.addReplyToSelf(window);
+            if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now)
+              vI.addReplyToSelf(window);
 
-          var vid = document.getElementById("virtualIdentityExtension_msgIdentityClone").vid
-          var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
+            var vid = document.getElementById("virtualIdentityExtension_msgIdentityClone").vid
+            var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
 
-          let returnValue = vI.vIaccount_prepareSendMsg(vid, msgType, virtualIdentityData,
-            main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
-            main._getRecipients(), window);
-          if (returnValue.update == "abort") {
-            main.replacement_functions.GenericSendMessageInProgress = false;
-            Log.debug("sending: --------------  aborted  ---------------------------------")
-            return;
-          } else if (returnValue.update == "takeover") {
-            var msgIdentityCloneElem = document.getElementById("virtualIdentityExtension_msgIdentityClone");
-            msgIdentityCloneElem.selectedMenuItem = msgIdentityCloneElem.addIdentityToCloneMenu(returnValue.storedIdentity);
-            main.replacement_functions.GenericSendMessageInProgress = false;
-            Log.debug("sending: --------------  aborted  ---------------------------------")
-            return;
-          }
+            let returnValue = vI.vIaccount_prepareSendMsg(vid, msgType, virtualIdentityData,
+              main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
+              main._getRecipients(), window);
+            if (returnValue.update == "abort") {
+              main.replacement_functions.GenericSendMessageInProgress = false;
+              Log.debug("sending: --------------  aborted  ---------------------------------")
+              return;
+            } else if (returnValue.update == "takeover") {
+              var msgIdentityCloneElem = document.getElementById("virtualIdentityExtension_msgIdentityClone");
+              msgIdentityCloneElem.selectedMenuItem = msgIdentityCloneElem.addIdentityToCloneMenu(returnValue.storedIdentity);
+              main.replacement_functions.GenericSendMessageInProgress = false;
+              Log.debug("sending: --------------  aborted  ---------------------------------")
+              return;
+            }
 
-          if (vid) main.addVirtualIdentityToMsgIdentityMenu();
-
-          // final check if eyerything is nice before we handover to the real sending...
-          if (vI.vIaccount_finalCheck(virtualIdentityData, getCurrentIdentity())) {
-            main.replacement_functions.GenericSendMessageInProgress = false;
-            main.original_functions.GenericSendMessage(msgType);
+            if (vid) main.addVirtualIdentityToMsgIdentityMenu();
+            // final check if eyerything is nice before we handover to the real sending...
+            if (vI.vIaccount_finalCheck(virtualIdentityData, getCurrentIdentity())) {
+              main.replacement_functions.GenericSendMessageInProgress = false;
+              main.original_functions.GenericSendMessage(msgType);
+            }
+          } catch (e) {
+            Log.warn("GenericSendMessage raised an error:", e);
+            try {
+              alert(
+                "virtualIdentity Extension Error\n\n" +
+                "sorry for the inconveniance\n" +
+                "try to save your email and restart!\n\n" +
+                "please send the bug-report to fix this issue");
+              virtualIdentityExtension.errorReportEmail(e);
+            } catch (e) {}
+            // at least try to save the mail - even with the wrong senders id
+            if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Save || msgType == Components.interfaces.nsIMsgCompDeliverMode.SaveAs ||
+              msgType == Components.interfaces.nsIMsgCompDeliverMode.SaveAsDraft || msgType == Components.interfaces.nsIMsgCompDeliverMode.SaveAsTemplate) {
+              main.replacement_functions.GenericSendMessageInProgress = false;
+              main.original_functions.GenericSendMessage(msgType);
+            }
           }
           // sending or saving is done (or skipped), if aborted we must restore interface settings for further use
           main.removeVirtualIdentityFromMsgIdentityMenu();
