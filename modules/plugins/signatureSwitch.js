@@ -46,6 +46,11 @@ function signatureSwitch(existingIdentity) {
     .getService(Ci.nsIWindowMediator)
     .getMostRecentWindow("msgcompose");
 
+  if (!signatureWindow) {
+    Log.error("signatureSwitch didn't found msgcompose-window");
+    return;
+  }
+  
   if (!existingIdentity) {
     Log.debug("signatureSwitch hide/remove signatures");
 
