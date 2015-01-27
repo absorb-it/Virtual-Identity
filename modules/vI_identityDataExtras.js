@@ -199,7 +199,7 @@ identityDataExtrasObject.prototype = {
     this.lastCompareValue = compareIdentityDataExtrasObject.valueHtml;
     this.lastCompareResult = (!this.value || !compareIdentityDataExtrasObject.value || this.value == compareIdentityDataExtrasObject.value);
     if (!this.lastCompareResult) {
-      Log.debug("extras not equal " + this.field + " ('" + this.value + "' != '" + compareIdentityDataExtrasObject.value + "')");
+      Log.debug("extras not equal " + this.field + " (current:'" + this.value + "' != target:'" + compareIdentityDataExtrasObject.value + "')");
     }
     return this.lastCompareResult;
   },
