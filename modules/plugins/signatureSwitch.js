@@ -50,7 +50,7 @@ function signatureSwitch(existingIdentity) {
     Log.error("signatureSwitch didn't found msgcompose-window");
     return;
   }
-  
+
   if (!existingIdentity) {
     Log.debug("signatureSwitch hide/remove signatures");
 
