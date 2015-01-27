@@ -198,9 +198,9 @@ identityDataExtrasObject.prototype = {
   equal: function (compareIdentityDataExtrasObject) {
     this.lastCompareValue = compareIdentityDataExtrasObject.valueHtml;
     this.lastCompareResult = (!this.value || !compareIdentityDataExtrasObject.value || this.value == compareIdentityDataExtrasObject.value);
-    if (!this.lastCompareResult) {
-      Log.debug("extras not equal " + this.field + " (current:'" + this.value + "' != target:'" + compareIdentityDataExtrasObject.value + "')");
-    }
+//     if (!this.lastCompareResult) {
+//       Log.debug("extras not equal " + this.field + " (current:'" + this.value + "' != target:'" + compareIdentityDataExtrasObject.value + "')");
+//     }
     return this.lastCompareResult;
   },
   // function to read the value from a given identity (probably not part of identity)

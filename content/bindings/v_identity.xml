@@ -383,6 +383,7 @@
 	</method>	
 	<method name="init">
     <body><![CDATA[
+    virtualIdentityExtension.MyLog.debug("v_identity.xml msgIdentityCloneElem.init()")
 		var MenuItems = this._msgIdentityPopupElem.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
 			var identity = this._AccountManager.getIdentity(MenuItems[index].getAttribute("value"));
@@ -408,6 +409,7 @@
 			}
 		}
 		this._popupMenu_separator = true;
+    virtualIdentityExtension.MyLog.debug("v_identity.xml msgIdentityCloneElem.init() done.")
 		]]></body>
 	</method>
 	<method name="clean">
