@@ -166,7 +166,12 @@ virtualIdentityExtension.ns(function () {
           return;
         }
         var currentDocument = currentWindow.document;
-        var recipientType = inputElement.parentNode.previousSibling.firstChild.selectedItem.getAttribute("value");
+        try {
+          var recipientType = inputElement.parentNode.previousSibling.firstChild.selectedItem.getAttribute("value");
+        } catch (e) {
+          Log.debug("inputElement.parentNode.previousSibling.firstChild.selectedItem.getAttribute('value') raised an error")
+          return;
+        }
 
         var row = inputElement.id.replace(/^addressCol2#/, "")
         if (recipientType == "addr_reply" || recipientType == "addr_followup" || storage.isDoBcc(row, currentWindow)) {
