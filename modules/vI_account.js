@@ -333,7 +333,10 @@ var account = {
 
   createAccount: function (identityData, baseIdentity) {
     if (account._account) { // if the Account is still created, then leave all like it is
-      alert("account still created, shouldn't happen");
+      var mailWindow = Cc["@mozilla.org/appshell/window-mediator;1"].getService()
+        .QueryInterface(Ci.nsIWindowMediator)
+        .getMostRecentWindow("mail:3pane");
+      mailWindow.alert("account already created, shouldn't happen");
       return;
     }
     account._baseIdentity = baseIdentity;
