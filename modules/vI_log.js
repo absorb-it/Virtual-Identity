@@ -284,9 +284,9 @@ function errorReportEmail(e) {
 
   let version = ""
   try {
-    version = Cc["@mozilla.org/appshell/window-mediator;1"]
+    version = "virtual identity v " + Cc["@mozilla.org/appshell/window-mediator;1"]
       .getService(Ci.nsIWindowMediator)
-      .getMostRecentWindow("mail:3pane").virtualIdentityExtension.extensionVersion;
+      .getMostRecentWindow("mail:3pane").virtualIdentityExtension.extensionVersion + ":\n\n";
   } catch (e) {}
 
   params.composeFields = composeFields;
