@@ -108,7 +108,7 @@ function vIaccount_finalCheck(currentWindow, virtualIdentityData, currentIdentit
       Log.error("failed check for email.");
     if (!(virtualIdentityData.smtp.equal(currentIdentityData.smtp)))
       Log.error("failed check for SMTP.");
-    alert(stringBundle.GetStringFromName("vident.genericSendMessage.error"));
+    currentWindow.alert(stringBundle.GetStringFromName("vident.genericSendMessage.error"));
     return false
   }
 };
