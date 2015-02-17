@@ -421,7 +421,9 @@ virtualIdentityExtension.ns(function () {
             Log.debug("cleaning original msgIdentityPopup");
             var MenuItems = main.elements.Obj_MsgIdentityPopup.childNodes;
             while (MenuItems.length > 0) {
-              try {MenuItems[0].clean();} catch (e) { };
+              try {
+                MenuItems[0].clean();
+              } catch (e) {};
               main.elements.Obj_MsgIdentityPopup.removeChild(MenuItems[0])
             }
             main.replacement_functions.FillIdentityList(main.elements.Obj_MsgIdentity)
