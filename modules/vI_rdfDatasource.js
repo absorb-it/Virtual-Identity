@@ -68,7 +68,7 @@ function rdfDatasource(currentWindow, rdfFileName, dontRegisterObserver) {
   this._currentWindow = currentWindow;
   this._rdfFileName = rdfFileName;
   if (this._rdfFileName) this.init();
-  if (!dontRegisterObserver) this.AccountManagerObserver.register();
+  if (!dontRegisterObserver) this.AccountManagerObserver.register(this);
   try {
     this._extVersion = get3PaneWindow().virtualIdentityExtension.extensionVersion;
   } catch (e) {}
@@ -931,16 +931,18 @@ rdfDatasource.prototype = {
 
   //  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
   AccountManagerObserver: {
+    self: null,
     _uninstall: false,
     observe: function (subject, topic, data) {
       if (topic == "am-smtpChanges" || topic == "am-acceptChanges") {
         Log.debug("account/smtp changes observed");
-        this.searchIdentityMismatch();
-        this.searchSmtpMismatch();
-        this.refreshAccountInfo();
+        this.self.searchIdentityMismatch();
+        this.self.searchSmtpMismatch();
+        this.self.refreshAccountInfo();
       }
     },
-    register: function () {
+    register: function (self) {
+      this.self = self;
       Log.debug("register AccountManagerObserver");
       var obsService = Components.classes["@mozilla.org/observer-service;1"].
       getService(Components.interfaces.nsIObserverService)

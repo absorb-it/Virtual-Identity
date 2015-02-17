@@ -366,10 +366,10 @@
 				if ( MenuItems[index].getAttribute("value") == this.selectedMenuItem.identityData.id.key ) {
 					this._msgIdentityElem.selectedItem = MenuItems[index];
 					this._msgIdentityElem.value = MenuItems[index].getAttribute("value");
+          this._msgIdentityPopupElem.doCommand();
 					break;
 				}
 			}
-			this._msgIdentityPopupElem.doCommand();
 		}
 		this.identityData = this.selectedMenuItem.identityData.getDuplicate();
 		virtualIdentityExtension.MyLog.debug("v_identity.xml msgIdentityCloneElem.doCommand() this.value=" + this.value);
@@ -377,8 +377,8 @@
 		if (this.identityData.smtp.hasNoDefinedSMTP()) {
 			this.identityData.smtp.key = this._AccountManager.getIdentity(this.value).smtpServerKey;
 			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this.identityData.smtp.keyNice;
-			this.checkForVirtualIdentity();
 		}
+    this.checkForVirtualIdentity();
 	]]></body>
 	</method>	
 	<method name="init">

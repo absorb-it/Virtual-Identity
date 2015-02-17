@@ -35,6 +35,7 @@ virtualIdentityExtension.ns(function () {
     Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_smartIdentity.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_log.js", virtualIdentityExtension);
+    Components.utils.import("resource:///modules/mailServices.js");
 
     var main = {
       timeStampID: null,
@@ -417,8 +418,27 @@ virtualIdentityExtension.ns(function () {
           }
           if (topic == "am-acceptChanges") {
             Log.debug("account changes observed");
-            document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
-            document.getElementById("virtualIdentityExtension_msgIdentityClone").init();
+            Log.debug("cleaning original msgIdentityPopup");
+            var MenuItems = main.elements.Obj_MsgIdentityPopup.childNodes;
+            while (MenuItems.length > 0) {
+              try {MenuItems[0].clean();} catch (e) { };
+              main.elements.Obj_MsgIdentityPopup.removeChild(MenuItems[0])
+            }
+            main.replacement_functions.FillIdentityList(main.elements.Obj_MsgIdentity)
+            let virtualIdentityExtension_msgIdentityClone = document.getElementById("virtualIdentityExtension_msgIdentityClone")
+            let tmp_identity = virtualIdentityExtension_msgIdentityClone.identityData;
+            virtualIdentityExtension_msgIdentityClone.clean();
+            virtualIdentityExtension_msgIdentityClone.init();
+            Log.debug("cleaning original msgIdentityPopup done.");
+            tmp_identity.existingID = tmp_identity.isExistingIdentity(false)
+            if (tmp_identity.existingID) {
+              tmp_identity.id.key = tmp_identity.existingID
+            } else {
+              tmp_identity.id.key = MailServices.accounts.defaultAccount.defaultIdentity.key
+            }
+            Log.debug("adding previous identity to msgIdentityClone");
+            virtualIdentityExtension_msgIdentityClone.selectedMenuItem = virtualIdentityExtension_msgIdentityClone.addIdentityToCloneMenu(tmp_identity);
+            Log.debug("adding previous identity to msgIdentityClone done.");
           }
         },
         register: function () {
