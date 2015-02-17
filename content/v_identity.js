@@ -129,8 +129,10 @@ virtualIdentityExtension.ns(function () {
             if (main.replacement_functions.GenericSendMessageInProgress) return;
             main.replacement_functions.GenericSendMessageInProgress = true;
 
-            // if addressCol2 is focused while sending check storage for the entered address before continuing
-            main.storage.awOnBlur(main.storage.focusedElement, window);
+            try { // nice, but not required for sending messages
+              // if addressCol2 is focused while sending check storage for the entered address before continuing
+              main.storage.awOnBlur(main.storage.focusedElement, window);
+            } catch (e) {}
 
             Log.debug("VIdentity_GenericSendMessage");
 
