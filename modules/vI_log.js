@@ -282,6 +282,15 @@ function errorReportEmail(e) {
     frame = frame.caller;
   }
 
+  body += "\n\nerror-log:\n---------\n"
+  let messages = Services.console.getMessageArray();
+  let i = 0
+  while (++i < messages.length) {
+    if (messages[i].message.indexOf("v_identity") != -1 || messages[i].message.indexOf("virtualIdentity") != -1) {
+      body += (messages[i].message) + "\n";
+    }
+  }
+
   let version = ""
   try {
     version = "virtual identity v " + Cc["@mozilla.org/appshell/window-mediator;1"]
