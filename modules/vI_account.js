@@ -104,19 +104,19 @@ function vIaccount_finalCheck(currentWindow, virtualIdentityData, currentIdentit
   } else {
     let alertMsg = stringBundle.GetStringFromName("vident.genericSendMessage.error") + "\n\n"
     if (!(currentIdentityData.fullName.toLowerCase() == virtualIdentityData.fullName.toLowerCase())) {
-      alertMsg += "failed check for fullName:\n" + 
+      alertMsg += "failed check for fullName:\n" +
         "current : " + currentIdentityData.fullName + "\n" +
         "required: " + virtualIdentityData.fullName + "\n"
       Log.error("failed check for fullName.");
     }
     if (!(currentIdentityData.email.toLowerCase() == virtualIdentityData.email.toLowerCase())) {
-      alertMsg += "failed check for email:\n" + 
+      alertMsg += "failed check for email:\n" +
         "current : " + currentIdentityData.email + "\n" +
         "required: " + virtualIdentityData.email + "\n"
       Log.error("failed check for email.");
     }
     if (!(virtualIdentityData.smtp.equal(currentIdentityData.smtp))) {
-      alertMsg += "failed check for SMTP:\n" + 
+      alertMsg += "failed check for SMTP:\n" +
         "current : " + currentIdentityData.smtp + "\n" +
         "required: " + virtualIdentityData.smtp + "\n"
       Log.error("failed check for SMTP.");
