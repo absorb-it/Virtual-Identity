@@ -77,10 +77,6 @@ virtualIdentityExtension.ns(function () {
         // only react on events triggered by addressCol2 - textinput Elements
         if (!element || !element.id.match(/^addressCol2*/)) return;
         Log.debug("awOnBlur '" + element.id);
-        if (!element.value || typeof element.value == 'undefined') {
-          element.value = element.getAttribute("value");
-          Log.debug("awOnBlur second try'" + element.id + "' '" + element.value + "'");
-        }
         if (!element.value || element.value == "" || typeof element.value == 'undefined') return;
         storage.__updateVIdentityFromStorage(element, currentWindow);
         storage.focusedElement = null;
