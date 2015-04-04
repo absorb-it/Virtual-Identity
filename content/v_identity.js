@@ -114,6 +114,7 @@ virtualIdentityExtension.ns(function () {
               let identity = identities[i];
               let item = menulist.appendItem(identity.identityName, identity.key,
                 account.incomingServer.prettyName);
+              item.setAttribute("identitykey", identity.key);
               item.setAttribute("accountkey", account.key);
               if (i == 0) {
                 // Mark the first identity as default.
