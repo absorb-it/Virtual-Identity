@@ -376,7 +376,10 @@ rdfDatasource.prototype = {
 
   _flush: function () {
     this._rdfDataSource.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
-    this._rdfDataSource.Flush();
+    try {
+      // this might fail for instance with NS_ERROR_FILE_NO_DEVICE_SPACE
+      this._rdfDataSource.Flush();
+    } catch (e) {}
   },
 
   refreshAccountInfo: function () {
