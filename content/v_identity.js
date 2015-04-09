@@ -387,6 +387,7 @@ virtualIdentityExtension.ns(function () {
         main.tempStorage.NewIdentity.setAttribute("label", vI.get_vIaccount().defaultIdentity.identityName);
         main.tempStorage.NewIdentity.setAttribute("accountname", " - " + vI.get_vIaccount().incomingServer.prettyName);
         main.tempStorage.NewIdentity.setAttribute("accountkey", vI.get_vIaccount().key);
+        main.tempStorage.NewIdentity.setAttribute("identitykey", vI.get_vIaccount().defaultIdentity.key);
         main.tempStorage.NewIdentity.setAttribute("value", vI.get_vIaccount().defaultIdentity.key);
 
         main.elements.Obj_MsgIdentityPopup.appendChild(main.tempStorage.NewIdentity);
