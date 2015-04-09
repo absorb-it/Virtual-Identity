@@ -116,16 +116,16 @@ virtualIdentityExtension.ns(function () {
             if (input) {
               var oldBlur = input.getAttribute("onblur")
               input.setAttribute("onblur", (oldBlur ? oldBlur + "; " : "") +
-                "window.setTimeout(virtualIdentityExtension.main.storage.awOnBlur, 250, this, window);")
+                "window.setTimeout(virtualIdentityExtension.storage.awOnBlur, 250, this, window);")
               var oldFocus = input.getAttribute("onfocus")
               input.setAttribute("onfocus", (oldFocus ? oldFocus + "; " : "") +
-                "window.setTimeout(virtualIdentityExtension.main.storage.awOnFocus, 250, this, window);")
+                "window.setTimeout(virtualIdentityExtension.storage.awOnFocus, 250, this, window);")
             }
             var popup = window.awGetPopupElement(row);
             if (popup) {
               var oldCommand = popup.getAttribute("oncommand")
               popup.setAttribute("oncommand",
-                "window.setTimeout(virtualIdentityExtension.main.storage.awPopupOnCommand, 250, this, window);" +
+                "window.setTimeout(virtualIdentityExtension.storage.awPopupOnCommand, 250, this, window);" +
                 (oldCommand ? "; " + oldCommand : ""))
             }
           }
@@ -235,6 +235,6 @@ virtualIdentityExtension.ns(function () {
         return false
       }
     }
-    vI.main.storage = storage;
+    vI.storage = storage;
   }
 });

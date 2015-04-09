@@ -81,12 +81,12 @@ virtualIdentityExtension.ns(function () {
         ComposeProcessDone: function (aResult) {
           Log.debug("StateListener reports ComposeProcessDone");
           vI.vIaccount_removeUsedVIAccount();
-          main.storage.clean();
+          vI.storage.clean();
         },
         SaveInFolderDone: function (folderURI) {
           Log.debug("SaveInFolderDone");
           vI.vIaccount_removeUsedVIAccount();
-          main.storage.clean();
+          vI.storage.clean();
         }
       },
 
@@ -132,7 +132,7 @@ virtualIdentityExtension.ns(function () {
 
             try { // nice, but not required for sending messages
               // if addressCol2 is focused while sending check storage for the entered address before continuing
-              main.storage.awOnBlur(main.storage.focusedElement, window);
+              vI.storage.awOnBlur(vI.storage.focusedElement, window);
             } catch (e) {}
 
             Log.debug("VIdentity_GenericSendMessage");
@@ -203,7 +203,7 @@ virtualIdentityExtension.ns(function () {
         window.removeEventListener('compose-window-reopen', main.reopen, true);
         window.removeEventListener('compose-window-close', main.close, true);
         Log.debug("end. remove Account if there.")
-        main.storage.clean();
+        vI.storage.clean();
       },
 
       _getRecipients: function () {
@@ -279,13 +279,13 @@ virtualIdentityExtension.ns(function () {
         Log.debug("initSystemStage2.");
         Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityClone=" + document.getElementById("virtualIdentityExtension_msgIdentityClone"))
         vI.initReplyTo(window);
-        main.storage.init();
-        new vI.smartIdentity(window, gMsgCompose, main.storage);
+        vI.storage.init();
+        new vI.smartIdentity(window, gMsgCompose, vI.storage);
         Log.debug("initSystemStage2 done.")
       },
 
       close: function () {
-        main.storage.clean();
+        vI.storage.clean();
       },
 
       adapt_interface: function () {
@@ -329,7 +329,7 @@ virtualIdentityExtension.ns(function () {
 
         // clean all elements
         document.getElementById("virtualIdentityExtension_msgIdentityClone").clean();
-        main.storage.clean(); // just to be sure!
+        vI.storage.clean(); // just to be sure!
         Log.debug("everything cleaned.")
 
         // register StateListener
