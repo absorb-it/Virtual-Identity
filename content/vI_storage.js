@@ -219,6 +219,8 @@ virtualIdentityExtension.ns(function () {
       },
 
       isDoBcc: function (row, currentWindow) {
+        if (typeof currentWindow.awGetPopupElement(row).selectedItem == 'undefined')
+          return false;
         var recipientType = currentWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
         if (recipientType != "addr_bcc" || !getCurrentIdentity().doBcc) return false
 

@@ -46,6 +46,8 @@ function initReplyTo(vIcomposeWindow) {
 function removeAllReplyTos(vIcomposeWindow, replyToSelfObj) {
   if (!replyToSelfObj.hasAttribute("hidden")) {
     for (var row = 1; row <= vIcomposeWindow.top.MAX_RECIPIENTS; row++) {
+      if (typeof vIcomposeWindow.awGetPopupElement(row).selectedItem == 'undefined')
+        continue;
       var awType = vIcomposeWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
       if (awType == "addr_reply") {
         Log.debug("removed ReplyTo found in row " + row);

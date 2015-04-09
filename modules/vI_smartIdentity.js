@@ -114,6 +114,8 @@ smartIdentity.prototype = {
   _getRecipients: function () {
     var recipients = [];
     for (var row = 1; row <= this._currentWindow.top.MAX_RECIPIENTS; row++) {
+      if (typeof this._currentWindow.awGetPopupElement(row).selectedItem == 'undefined')
+        continue;
       var recipientType = this._currentWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
       if (recipientType == "addr_reply" || recipientType == "addr_followup" ||
         this._storage.isDoBcc(row, this._currentWindow) || this._currentWindow.awGetInputElement(row).value.match(/^\s*$/)) continue;
@@ -193,6 +195,8 @@ smartIdentity.prototype = {
     // check if there is more than one recipient for this mail. If not, preserve the only one existing.
     var recipientCount = 0;
     for (var row = 1; row <= this._currentWindow.top.MAX_RECIPIENTS; row++) {
+      if (typeof this._currentWindow.awGetPopupElement(row).selectedItem == 'undefined')
+        continue;
       var recipientType = this._currentWindow.awGetPopupElement(row).selectedItem.getAttribute("value");
       if (recipientType == "addr_to" || recipientType == "addr_cc") recipientCount++;
     }
@@ -202,6 +206,8 @@ smartIdentity.prototype = {
     for (var row = 1; row <= this._currentWindow.top.MAX_RECIPIENTS; row++) {
       var popup = this._currentWindow.awGetPopupElement(row);
       var input = this._currentWindow.awGetInputElement(row);
+      if (typeof popup.selectedItem == 'undefined')
+        continue;
       var recipientType = popup.selectedItem.getAttribute("value");
       // if the entry is not a recipient, just continue
       if (recipientType == "addr_reply" || recipientType == "addr_followup") continue;

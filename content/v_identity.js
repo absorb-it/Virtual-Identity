@@ -209,6 +209,8 @@ virtualIdentityExtension.ns(function () {
       _getRecipients: function () {
         var recipients = [];
         for (var row = 1; row <= top.MAX_RECIPIENTS; row++) {
+          if (typeof awGetPopupElement(row).selectedItem == 'undefined')
+            continue;
           var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
           if (recipientType == "addr_reply" || recipientType == "addr_followup" ||
             main._recipientIsDoBcc(row) || awGetInputElement(row).value.match(/^\s*$/)) continue;
@@ -221,6 +223,8 @@ virtualIdentityExtension.ns(function () {
       },
 
       _recipientIsDoBcc: function (row) {
+        if (typeof awGetPopupElement(row).selectedItem == 'undefined')
+          return false;
         var recipientType = awGetPopupElement(row).selectedItem.getAttribute("value");
         if (recipientType != "addr_bcc" || !getCurrentIdentity().doBcc) return false
 
