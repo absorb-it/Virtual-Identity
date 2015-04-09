@@ -475,9 +475,15 @@ var account = {
     switch (vIprefs.get("stationeryFolderPickerMode")) {
     case "2":
       Log.debug("preparing Templates --- use Settings of Default Account");
-      account._account.defaultIdentity.stationeryFolder = account._AccountManager.defaultAccount.defaultIdentity.stationeryFolder;
-      account._account.defaultIdentity.tmplFolderPickerMode = account._AccountManager.defaultAccount.defaultIdentity.tmplFolderPickerMode;
-      break;
+      try {
+        // if no defaultIdentity (received bug-report) use Settings of Modified Account instead
+        account._account.defaultIdentity.stationeryFolder = account._AccountManager.defaultAccount.defaultIdentity.stationeryFolder;
+        account._account.defaultIdentity.tmplFolderPickerMode = account._AccountManager.defaultAccount.defaultIdentity.tmplFolderPickerMode;
+        break;
+      } catch (e) {
+        Log.debug("something went wrong while trying to access default Identity");
+        Log.debug(e);
+      }
     case "3":
       Log.debug("preparing Templates --- use Settings of Modified Account");
       account._account.defaultIdentity.stationeryFolder = account._baseIdentity.stationeryFolder;
