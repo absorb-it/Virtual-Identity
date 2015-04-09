@@ -258,6 +258,9 @@ identityData.prototype = {
   },
 
   equals: function (compareIdentityData) {
+    if (!compareIdentityData)
+      return false;
+    
     this.comp.compareID = compareIdentityData;
 
     this.comp.equals.fullName = (((this.fullName) ? this.fullName.toLowerCase() : null) == ((compareIdentityData.fullName) ? compareIdentityData.fullName.toLowerCase() : null));
