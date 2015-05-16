@@ -360,10 +360,18 @@
 		virtualIdentityExtension.MyLog.debug("v_identity.xml msgIdentityCloneElem.doCommand()")
 		// copy selected Menu-Value from clone to orig.
 		virtualIdentityExtension.MyLog.debug("v_identity.xml copy selected Menu-Value from clone to orig. Searching for id=" + this.selectedMenuItem.identityData.id.key)
+    if (typeof getCurrentIdentityKey == 'function') {
+      // TB version after changeset 17696 35d9101cb3b1 (menuitem.value == email address)
+		  var id_attribute = "identitykey"
+    } else {
+		  // TB version before changeset 17696 35d9101cb3b1 (menuitem.value == id)
+		  var id_attribute = "value"
+    }
+
 		if ( this.selectedMenuItem.identityData.id.key != null ) {
 			var MenuItems = this._msgIdentityPopupElem.childNodes
 			for (var index = 0; index < MenuItems.length; index++) {
-				if ( MenuItems[index].getAttribute("value") == this.selectedMenuItem.identityData.id.key ) {
+				if ( MenuItems[index].getAttribute(id_attribute) == this.selectedMenuItem.identityData.id.key ) {
 					this._msgIdentityElem.selectedItem = MenuItems[index];
 					this._msgIdentityElem.value = MenuItems[index].getAttribute("value");
           this._msgIdentityPopupElem.doCommand();
@@ -375,8 +383,20 @@
 		virtualIdentityExtension.MyLog.debug("v_identity.xml msgIdentityCloneElem.doCommand() this.value=" + this.value);
 		// if current SMTP is empty, take the one from current Identity
 		if (this.identityData.smtp.hasNoDefinedSMTP()) {
-			this.identityData.smtp.key = this._AccountManager.getIdentity(this.value).smtpServerKey;
-			document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this.identityData.smtp.keyNice;
+			if (typeof getCurrentIdentityKey == 'function') {
+			  // TB version after changeset 17696 35d9101cb3b1 (menuitem.value == email address)
+        if (!this.identitykey)
+          this.identitykey = this.identityData.id.key
+        if (this.identitykey) {
+          virtualIdentityExtension.MyLog.debug("v_identity.xml msgIdentityCloneElem.doCommand() " + this.identitykey)
+          this.identityData.smtp.key = this._AccountManager.getIdentity(this.identitykey).smtpServerKey;
+          document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this.identityData.smtp.keyNice;
+        }
+			} else {
+			  // TB version before changeset 17696 35d9101cb3b1 (menuitem.value == id)
+				this.identityData.smtp.key = this._AccountManager.getIdentity(this.value).smtpServerKey;
+				document.getAnonymousElementByAttribute(this, "anonid", "smtpServerListHbox").smtp = this.identityData.smtp.keyNice;
+			}
 		}
     this.checkForVirtualIdentity();
 	]]></body>
@@ -386,7 +406,14 @@
     virtualIdentityExtension.MyLog.debug("v_identity.xml msgIdentityCloneElem.init()")
 		var MenuItems = this._msgIdentityPopupElem.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
-			var identity = this._AccountManager.getIdentity(MenuItems[index].getAttribute("value"));
+			if (typeof getCurrentIdentityKey == 'function') {
+			  // TB version after changeset 17696 35d9101cb3b1 (menuitem.value == email address)
+				var identity = this._AccountManager.getIdentity(MenuItems[index].getAttribute("identitykey"));
+			} else {
+			  // TB version before changeset 17696 35d9101cb3b1 (menuitem.value == id)
+				var identity = this._AccountManager.getIdentity(MenuItems[index].getAttribute("value"));
+			}
+
 			var description;
 			if (typeof(this._AccountManager.getServersForIdentity) == 'function') { // new style
 				var server = this._AccountManager.getServersForIdentity(identity).queryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
@@ -434,7 +461,13 @@
 		    	MenuItem.identityData = localIdentityData;
 			MenuItem.setAttribute("class", "identity_clone-popup-item");
 			MenuItem.setAttribute("type", "vIdentity"); // to prevent overriding with menuitem:not([type])
-			MenuItem.value = localIdentityData.id.key; // might be accessed before item is constructed
+			if (typeof getCurrentIdentityKey == 'function') {
+			  // TB version after changeset 17696 35d9101cb3b1 (menuitem.value == email address)
+				MenuItem.identitykey = localIdentityData.id.key; // might be accessed before item is constructed
+			} else {
+			  // TB version before changeset 17696 35d9101cb3b1 (menuitem.value == id)
+				MenuItem.value = localIdentityData.id.key; // might be accessed before item is constructed
+			}
 
 			// set vid explicitely
 			if (this._popupMenu_separator) MenuItem.setAttribute("vid", "true");
@@ -459,8 +492,15 @@
 		<body><![CDATA[
 		var MenuItems = this._popupElem.childNodes;
 		for (var index = 0; index < MenuItems.length; index++) {
-			if (MenuItems[index].value == identitykey)
-				return MenuItems[index]
+			if (typeof getCurrentIdentityKey == 'function') {
+			  // TB version after changeset 17696 35d9101cb3b1 (menuitem.value == email address)
+				if (MenuItems[index].identitykey == identitykey)
+					return MenuItems[index]
+			} else {
+			  // TB version before changeset 17696 35d9101cb3b1 (menuitem.value == id)
+				if (MenuItems[index].value == identitykey)
+					return MenuItems[index]
+			}
 		}
 		return null;
 		]]></body>
@@ -539,7 +579,13 @@
 		this.identityData.combinedName = this.label;
 		
 		var existingIdentity = this.checkForVirtualIdentity();
-		if (existingIdentity && this.selectedMenuItem.value != existingIdentity) this.selectedMenuItem = existingIdentity;
+    if (typeof getCurrentIdentityKey == 'function') {
+      // TB version after changeset 17696 35d9101cb3b1 (menuitem.value == email address)
+      if (existingIdentity && this.selectedMenuItem.identitykey != existingIdentity) this.selectedMenuItem = existingIdentity;			} else {
+      // TB version before changeset 17696 35d9101cb3b1 (menuitem.value == id)
+      if (existingIdentity && this.selectedMenuItem.value != existingIdentity) this.selectedMenuItem = existingIdentity;
+    }
+
 		]]></body>
 	</method>
 	<method name="checkForVirtualIdentity">
@@ -630,6 +676,7 @@
 	<property name="vid" onget="return (this.getAttribute('vid') == 'true');" onset="this.setAttribute('vid',val?'true':'false'); return val;" />
 	<property name="label" onget="return this.textBoxElem.value;" onset="this.textBoxElem.value = val; return val;" />
 	<property name="value" onget="return this.getAttribute('value');" onset="this.setAttribute('value', val); return val;" />
+  	<property name="identitykey" onget="return this.getAttribute('identitykey');" onset="this.setAttribute('identitykey', val); return val;" />
 	<property name="extras" onget="return this.identityData.extras;" />
 	<property name="description" onget="return this.getAttribute('description');" onset="this.setAttribute('description', val); return val;" />
 	<property name="showSmtp" onget="return (this.getAttribute('showSmtp') == 'true');" onset="this.setAttribute('showSmtp',val?'true':'false'); return val;" />

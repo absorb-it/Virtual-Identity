@@ -112,8 +112,16 @@ virtualIdentityExtension.ns(function () {
 
             for (let i = 0; i < identities.length; i++) {
               let identity = identities[i];
-              let item = menulist.appendItem(identity.identityName, identity.key,
-                account.incomingServer.prettyName);
+              var item;
+              if (typeof getCurrentIdentityKey == 'function') {
+                // TB version after changeset 17696 35d9101cb3b1 (menuitem.value == email address)
+                item = menulist.appendItem(identity.identityName, identity.identityName,
+                  account.incomingServer.prettyName);
+              } else {
+                // TB version before changeset 17696 35d9101cb3b1 (menuitem.value == id)
+                item = menulist.appendItem(identity.identityName, identity.key,
+                  account.incomingServer.prettyName);
+              }
               item.setAttribute("identitykey", identity.key);
               item.setAttribute("accountkey", account.key);
               if (i == 0) {
@@ -255,6 +263,14 @@ virtualIdentityExtension.ns(function () {
           Log.error("init failed.");
           return;
         }
+        
+        if (typeof getCurrentIdentityKey == 'function') {
+          // TB version after changeset 17696 35d9101cb3b1 (menuitem.value == email address)
+          Log.info("TB 38+")
+        } else {
+          // TB version before changeset 17696 35d9101cb3b1 (menuitem.value == id)
+          Log.info("TB <38")
+        }
 
         main.adapt_interface();
         gMsgCompose.RegisterStateListener(main.ComposeStateListener);
@@ -379,6 +395,7 @@ virtualIdentityExtension.ns(function () {
         main.elements.Obj_MsgIdentity.setAttribute("label", menuItem.getAttribute("label"));
         main.elements.Obj_MsgIdentity.setAttribute("accountname", menuItem.getAttribute("accountname"));
         main.elements.Obj_MsgIdentity.setAttribute("value", menuItem.getAttribute("value"));
+        main.elements.Obj_MsgIdentity.setAttribute("identitykey", menuItem.getAttribute("identitykey"));
       },
 
       // sets the values of the dropdown-menu to the ones of the newly created account
@@ -392,7 +409,13 @@ virtualIdentityExtension.ns(function () {
         main.tempStorage.NewIdentity.setAttribute("accountname", " - " + vI.get_vIaccount().incomingServer.prettyName);
         main.tempStorage.NewIdentity.setAttribute("accountkey", vI.get_vIaccount().key);
         main.tempStorage.NewIdentity.setAttribute("identitykey", vI.get_vIaccount().defaultIdentity.key);
-        main.tempStorage.NewIdentity.setAttribute("value", vI.get_vIaccount().defaultIdentity.key);
+        if (typeof getCurrentIdentityKey == 'function') {
+          // TB version after changeset 17696 35d9101cb3b1 (menuitem.value == email address)
+          main.tempStorage.NewIdentity.setAttribute("value", vI.get_vIaccount().defaultIdentity.identityName);
+        } else {
+          // TB version before changeset 17696 35d9101cb3b1 (menuitem.value == id)
+          main.tempStorage.NewIdentity.setAttribute("value", vI.get_vIaccount().defaultIdentity.key);
+        }
 
         main.elements.Obj_MsgIdentityPopup.appendChild(main.tempStorage.NewIdentity);
         main.__setSelectedIdentity(main.tempStorage.NewIdentity);
