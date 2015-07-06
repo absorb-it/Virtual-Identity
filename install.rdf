@@ -15,7 +15,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
                    em:name="Virtual Identity"
-                   em:version="0.9.32"
+                   em:version="0.9.33"
 				   em:type="2"
                    em:description="Allows you to modify your Identity settings for a single Mail on the fly."
                    em:creator="Rene Ejury"
