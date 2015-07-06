@@ -374,6 +374,7 @@
 				if ( MenuItems[index].getAttribute(id_attribute) == this.selectedMenuItem.identityData.id.key ) {
 					this._msgIdentityElem.selectedItem = MenuItems[index];
 					this._msgIdentityElem.value = MenuItems[index].getAttribute("value");
+          this._msgIdentityElem.identitykey = MenuItems[index].getAttribute("identitykey");
           this._msgIdentityPopupElem.doCommand();
 					break;
 				}
@@ -433,6 +434,7 @@
 			if (this._msgIdentity_selectedItem == MenuItems[index]) {
 				this.selectedItem = menuItem;
 				this.identityData = newIdentity.getDuplicate();
+        this._msgIdentityElem.identitykey = MenuItems[index].getAttribute("identitykey");
 			}
 		}
 		this._popupMenu_separator = true;

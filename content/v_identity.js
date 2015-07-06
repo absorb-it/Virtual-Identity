@@ -154,7 +154,7 @@ virtualIdentityExtension.ns(function () {
             var virtualIdentityData = document.getElementById("virtualIdentityExtension_msgIdentityClone").identityData;
 
             let returnValue = vI.vIaccount_prepareSendMsg(window, vid, msgType, virtualIdentityData,
-              main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.value),
+              main.accountManager.getIdentity(main.elements.Obj_MsgIdentity.identitykey),
               main._getRecipients());
             if (returnValue.update == "abort") {
               main.replacement_functions.GenericSendMessageInProgress = false;
