@@ -39,17 +39,6 @@ function identityDataExtrasObject_PGPSignature(currentWindow) {
   this.field = "PGPSig"; // description of the option
   this.option = "storageExtras_openPGP_messageSignature"; // option string to get preference settings
   this.enigmail_active = (typeof this._currentWindow.Enigmail != 'undefined');
-
-  // enigmail preferences have changed into 1.7 - check for enigmail version
-  if (this.enigmail_active && vc.compare(this._currentWindow.EnigmailCommon.getVersion(), "1.7") < 0) {
-    this.elementID_msgCompose = "enigmail_signed_send";
-    this.updateFunction_msgCompose = function () {
-      (typeof (this._currentWindow.Enigmail.msg.setMenuSettings) == 'function') ? this._currentWindow.Enigmail.msg.setMenuSettings(''): null
-    };
-  } else {
-    this.setValueToEnvironment_msgCompose = this.__new_setValueToEnvironment_msgCompose;
-    this.getValueFromEnvironment_msgCompose = this.__new_getValueFromEnvironment_msgCompose;
-  }
 }
 identityDataExtrasObject_PGPSignature.prototype = {
   __proto__: identityDataExtrasCheckboxObject.prototype,
@@ -63,7 +52,7 @@ identityDataExtrasObject_PGPSignature.prototype = {
     }
   },
 
-  __new_setValueToEnvironment_msgCompose: function () {
+  setValueToEnvironment_msgCompose: function () {
     if (!this.enigmail_active || !this.active || (this.value == null))
       return;
 
@@ -74,11 +63,11 @@ identityDataExtrasObject_PGPSignature.prototype = {
     }
   },
 
-  __new_getValueFromEnvironment_msgCompose: function () {
+  getValueFromEnvironment_msgCompose: function () {
     if (this.enigmail_active && this.active) {
       this.value = (
-        this._currentWindow.Enigmail.msg.statusSigned == this._currentWindow.EnigmailCommon.ENIG_FINAL_YES ||
-        this._currentWindow.Enigmail.msg.statusSigned == this._currentWindow.EnigmailCommon.ENIG_FINAL_FORCEYES) ? "true" : "false";
+        this._currentWindow.Enigmail.msg.statusSigned == this._currentWindow.EnigmailConstants.ENIG_FINAL_YES ||
+        this._currentWindow.Enigmail.msg.statusSigned == this._currentWindow.EnigmailConstants.ENIG_FINAL_FORCEYES) ? "true" : "false";
     }
   }
 }
