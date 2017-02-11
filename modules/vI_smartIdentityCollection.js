@@ -258,6 +258,12 @@ smartIdentityCollection.prototype = {
       if (replyHeaderNumber && !isNaN(replyHeaderNumber)) replyHeaderNameToRead += ":" + replyHeaderNumber
 
       // if mailing-list ignore to-header (usually the mailing list address)
+      if ((replyHeaderNameToRead == "to" || replyHeaderNameToRead == "x-original-to") && this._msgHdr.getStringProperty("vI_list-id")) {
+        Log.debug("header 'list-id' found (mailinglist), skipping header '" + replyHeaderNameToRead + "'");
+        continue;
+      }
+
+      // if mailing-list ignore to-header (usually the mailing list address)
       if (replyHeaderNameToRead == "to" && this._msgHdr.getStringProperty("vI_list-id")) {
         Log.debug("header 'list-id' found (mailinglist), skipping header 'to'");
         continue;
