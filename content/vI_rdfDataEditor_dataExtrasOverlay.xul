@@ -68,8 +68,8 @@
             Components.utils.import("resource://gre/modules/CharsetMenu.jsm");
         </script>
         <vbox><spacer flex="1"/>
-            <label id="maileditCharsetMenuLabel" value="&charsetMenu.label;"
-                accesskey="&charsetMenu.accesskey;" control="maileditCharsetMenu" />
+            <label id="maileditCharsetMenuLabel" value="&charsetMenu2.label;"
+                accesskey="&charsetMenu2.accesskey;" control="maileditCharsetMenu" />
         <spacer flex="1"/></vbox>
         <menulist id="maileditCharsetMenu">
             <menupopup id="charsetPopup"
