@@ -95,7 +95,19 @@ virtualIdentityExtension.ns(function () {
 
         // set extra values
         rdfDataEditor.__identityData.extras.setValuesToEnvironment();
-        this.hideUnusedEditorFields();
+        
+        // only display hide-switch if not all extras are enabled in preferences
+        var allEnabled = true;
+        rdfDataEditor.__identityData.extras.loopThroughExtras(
+          function (extra) {
+            allEnabled = allEnabled && vI.vIprefs.get(extra.option);
+          }
+        )
+        if (allEnabled)
+            document.getElementById("vI_storageExtras_hideUnusedEditorFields").setAttribute("hidden", true);
+        else
+            this.hideUnusedEditorFields();
+        
         Log.debug("init done");
       },
 
