@@ -105,8 +105,13 @@ identityDataExtrasObject_characterEncoding.prototype = {
     else {
       CharsetMenu.build(this._currentWindow.document.getElementById("charsetPopup"), false, false)
       if (this.value != null) {
-        CharsetMenu.update(this._currentWindow.document.getElementById("maileditCharsetMenu"), this.value);
-        this._currentWindow.document.getElementById("maileditCharsetMenu").setAttribute("label", CharsetMenu._getCharsetLabel(this.value));
+        let menu = this._currentWindow.document.getElementById("maileditCharsetMenu");
+        let menuitem = menu.getElementsByAttribute("charset", this.value).item(0);
+        if (menuitem) {
+            menu.selectedItem = menuitem;
+            menuitem.setAttribute("checked", "true");
+        }
+        menu.setAttribute("label", CharsetMenu._getCharsetLabel(this.value));
         this._currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
       }
     }
