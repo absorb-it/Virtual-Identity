@@ -63,7 +63,7 @@ virtualIdentityExtension.ns(function () {
 
         // set type of entry (and populate Menu)
         var typeMenuPopup = document.getElementById("type_menu_popup")
-        for each(var typeField in Array("email", "maillist", "newsgroup", "filter")) {
+        for (var typeField of Array("email", "maillist", "newsgroup", "filter")) {
           var menuitem = document.createElement("menuitem");
           var label = Components.classes["@mozilla.org/intl/stringbundle;1"]
             .getService(Components.interfaces.nsIStringBundleService)

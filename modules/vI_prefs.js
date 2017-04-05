@@ -94,12 +94,12 @@ var vIprefs = {
       this._retrievePref(aPrefName);
     this._localPrefs[aPrefName] = aPrefValue;
     //       Log.debug("changed pref " + aPrefName + " to " + aPrefValue)
-    for each(let [, prefObserver] in Iterator(this._localObservers)) {
+    this._localObservers.map(function(prefObserver) {
       //         Log.debug("check prefobserver " + prefObserver.pref + " against " + aPrefName)
       if (prefObserver.pref == aPrefName) {
         prefObserver.observe(prefObserver.context, aPrefValue, "nsPref:changed", aPrefName);
-      }
-    }
+      };
+    });
   },
   commit: function (aPrefName, aPrefValue) {
     if (aPrefValue)
@@ -119,33 +119,34 @@ var vIprefs = {
     //       Log.debug("added observer for " + aPrefName);
   },
   removeObserver: function (aPrefName, aFunction) {
-    for each(let [i, prefObserver] in Iterator(this._localObservers)) {
+    var this_object = this;
+    this._localObservers.forEach(function(prefObserver, i) {
       if (prefObserver.pref == aPrefName && prefObserver.observe == aFunction) {
-        this._localObservers.splice(i, 1)
-        break;
+        this_object._localObservers.splice(i, 1)
       }
-    }
+    });
   },
   observe: function (subject, topic, aPrefName) {
     Log.debug("prefChange observed : " + aPrefName)
     this._retrievePref(aPrefName);
-    for each(let [, prefObserver] in Iterator(this._localObservers)) {
+    this._localObservers.map(function(prefObserver) {
       if (prefObserver.pref == aPrefName) {
         //           Log.debug("found observer, calling : " + prefObserver.observe)
         prefObserver.observe(prefObserver.context, subject, topic, aPrefName);
         //           Log.debug("found observer, calling : " + prefObserver.observe + " done")
       }
-    }
+    });
   },
   dropLocalChanges: function () {
-    for each(let [aPrefName, aPrefValue] in Iterator(this._localPrefs)) {
-      this._retrievePref(aPrefName);
+    var this_object = this;
+    for (let [aPrefName, aPrefValue] in this._localPrefs.values()) {
+      this_object._retrievePref(aPrefName);
       if (aPrefValue != this._localPrefs[aPrefName]) {
-        for each(let [, prefObserver] in Iterator(this._localObservers)) {
+        this_object._localObservers.map(function(prefObserver) {
           if (prefObserver.pref == aPrefName) {
             prefObserver.observe(prefObserver.context, aPrefValue, "nsPref:changed", aPrefName);
           }
-        }
+        });
       }
     }
   }

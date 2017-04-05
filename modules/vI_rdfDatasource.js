@@ -258,7 +258,7 @@ rdfDatasource.prototype = {
   // **************    RDF UPGRADE CODE    ****************************************************
   _tagDefaultSMTP: function () {
     Log.debug("upgrade: tagDefaultSMTP");
-    for each(let treeType in Array("email", "maillist", "newsgroup", "filter")) {
+    for (let treeType of Array("email", "maillist", "newsgroup", "filter")) {
       var enumerator = this.getContainer(treeType).GetElements();
       while (enumerator && enumerator.hasMoreElements()) {
         var resource = enumerator.getNext();
@@ -416,7 +416,7 @@ rdfDatasource.prototype = {
   getRelevantIDs: function () {
     var relevantIDs = new Object();
     // search relevant Identities
-    for each(let treeType in Array("email", "maillist", "newsgroup", "filter")) {
+    for (let treeType of Array("email", "maillist", "newsgroup", "filter")) {
       var enumerator = this.getContainer(treeType).GetElements();
       while (enumerator && enumerator.hasMoreElements()) {
         var resource = enumerator.getNext();
@@ -486,7 +486,7 @@ rdfDatasource.prototype = {
     for (var i = 0; i < mismatchItems.length; i++) {
       Log.debug("repairAccountMismatch change " + mismatchItems[i].oldkey + " into " + mismatchItems[i].key);
       // search relevant Identities
-      for each(let treeType in Array("email", "maillist", "newsgroup", "filter")) {
+      for (let treeType of Array("email", "maillist", "newsgroup", "filter")) {
         var enumerator = this.getContainer(treeType).GetElements();
         while (enumerator && enumerator.hasMoreElements()) {
           var resource = enumerator.getNext();
@@ -503,7 +503,7 @@ rdfDatasource.prototype = {
   getRelevantSMTPs: function () {
     var relevantSMTPs = new Object();
     // search relevant SMTPs
-    for each(let treeType in Array("email", "maillist", "newsgroup", "filter")) {
+    for (let treeType of Array("email", "maillist", "newsgroup", "filter")) {
       var enumerator = this.getContainer(treeType).GetElements();
       while (enumerator && enumerator.hasMoreElements()) {
         var resource = enumerator.getNext();
@@ -1259,7 +1259,7 @@ rdfDatasourceImporter.prototype = {
 
       Log.debug("import: preparation done.");
 
-      for each(let treeType in Array("email", "maillist", "newsgroup", "filter")) {
+      for (let treeType of Array("email", "maillist", "newsgroup", "filter")) {
         // re-initialize importDataSource to point rdfService to the right Resources
         this._rdfImportDataSource = new rdfDatasource(this._currentWindow, importRdfDataFile.leafName, true);
         var container = this._rdfImportDataSource.getContainer(treeType)

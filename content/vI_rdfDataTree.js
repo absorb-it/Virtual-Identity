@@ -245,7 +245,7 @@ virtualIdentityExtension.ns(function () {
 
         rdfDataTreeCollection._rdfDatasource = new vI.rdfDatasource(window, "virtualIdentity.rdf");
 
-        for each(var treeType in rdfDataTreeCollection.treeTypes)
+        for (var treeType of rdfDataTreeCollection.treeTypes)
         rdfDataTreeCollection.trees[treeType] = new rdfDataTree(treeType, rdfDataTreeCollection._rdfDatasource);
       },
 
@@ -337,7 +337,7 @@ virtualIdentityExtension.ns(function () {
 
       __setFilter: function (text) {
         // loop trough all trees
-        for each(var treeType in rdfDataTreeCollection.treeTypes) {
+        for (var treeType of rdfDataTreeCollection.treeTypes) {
           var tree = rdfDataTreeCollection.trees[treeType];
           tree.filterText = text;
           tree.loadTable();
@@ -414,7 +414,7 @@ virtualIdentityExtension.ns(function () {
         }
 
         // reload all trees (multiple types might have changed)
-        for each(var treeType in rdfDataTreeCollection.treeTypes) {
+        for (var treeType of rdfDataTreeCollection.treeTypes) {
           rdfDataTreeCollection.trees[treeType].idData = null;
           rdfDataTreeCollection.trees[treeType].loadTable()
         }
@@ -529,7 +529,7 @@ virtualIdentityExtension.ns(function () {
       hideInfoBox: function () {
         rdfDataTreeCollection.infoBoxHidden = true;
         document.getElementById("rdfDataTreeCollectionInfoBox").setAttribute("style", "height:0px");
-        for each(var treeType in rdfDataTreeCollection.treeTypes) {
+        for (var treeType of rdfDataTreeCollection.treeTypes) {
           try {
             if (rdfDataTreeCollection.trees[treeType])
               rdfDataTreeCollection.trees[treeType].treeElem.view.selection.selectNone()
@@ -558,7 +558,7 @@ virtualIdentityExtension.ns(function () {
           rdfDataTreeCollection._rdfDatasource, retVar).focus();
 
         // reload all trees (multiple types might have changed)
-        for each(var treeType in rdfDataTreeCollection.treeTypes) {
+        for (var treeType of rdfDataTreeCollection.treeTypes) {
           rdfDataTreeCollection.trees[treeType].idData = null;
           rdfDataTreeCollection.trees[treeType].idTable = null;
           rdfDataTreeCollection.trees[treeType].loadTable()

@@ -72,18 +72,20 @@ virtualIdentityExtension.ns(function () {
           //  compare against all accounts, getAccountsArray() does not include 'smart mailboxes' == 'unified folders'
           var all_accounts = vI.prefroot.getCharPref("mail.accountmanager.accounts").split(",");
 
-          for each(let pref in vI.prefroot.getChildList("mail.server")) {
+          for (let pref of vI.prefroot.getChildList("mail.server")) {
+              
+              
             if (pref.indexOf(".hostname") == pref.length - 9 && vI.prefroot.getCharPref(pref) == "smart mailboxes") {
               // ok, smart mailbox server found, check if it still in use
               let server = pref.replace(/^mail\.server\./, "").replace(/\.hostname$/, "");
               let inUse = false;
-              for each(let account in all_accounts) {
+              for (let account of all_accounts) {
                 if (vI.prefroot.getCharPref("mail.account." + account + ".server") == server)
                   inUse = true;
               }
               if (!inUse) {
                 Log.debug("cleaning leftover 'smart mailbox' for server " + server);
-                for each(let obsoletePref in vI.prefroot.getChildList("mail.server." + server)) {
+                for (let obsoletePref of vI.prefroot.getChildList("mail.server." + server)) {
                   if (obsoletePref.indexOf(".directory") == obsoletePref.length - 10) {
                     // remove obsolete 'smart mailbox' directory
                     try {
@@ -141,7 +143,7 @@ virtualIdentityExtension.ns(function () {
           if (!currentVersion || (upgrade.versionChecker.compare(currentVersion, transferPrefs[i].version) < 0)) {
             // remove any obsolete preferences under extensions.virtualIdentity
             Log.debug("transfer changed preferences of pre-" + transferPrefs[i].version + " release...")
-            for each(let transferPref in transferPrefs[i].prefs) {
+            for (let transferPref of transferPrefs[i].prefs) {
               try {
                 vI.vIprefs.commit(transferPref.targetPref,
                   vI.vIprefs.get(transferPref.sourcePref));
@@ -180,7 +182,7 @@ virtualIdentityExtension.ns(function () {
           if (!currentVersion || (upgrade.versionChecker.compare(currentVersion, obsoletePrefs[i].version) < 0)) {
             // remove any obsolete preferences under extensions.virtualIdentity
             Log.debug("removing obsolete preferences of pre-" + obsoletePrefs[i].version + " release...")
-            for each(let pref in obsoletePrefs[i].prefs) {
+            for (let pref of obsoletePrefs[i].prefs) {
               try {
                 vI.vIprefs.clearUserPref(pref);
                 Log.debug(".")

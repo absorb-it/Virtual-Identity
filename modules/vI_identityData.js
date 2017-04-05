@@ -295,7 +295,7 @@ identityData.prototype = {
     var string = "";
     var saveBaseId = vIprefs.get("storage_store_base_id");
     var saveSMTP = vIprefs.get("storage_store_SMTP");
-    for each(let item in Items) {
+    for (let item of Items) {
       var classEqual = (this.comp.equals[item]) ? "equal" : "unequal";
       var classIgnore = (((!saveBaseId) && (item == "id")) || ((!saveSMTP) && (item == "smtp"))) ? " ignoreValues" : ""
       string += "<tr>" +
@@ -311,7 +311,7 @@ identityData.prototype = {
   getMatrix: function () {
     const Items = Array("smtp", "id");
     var string = "";
-    for each(var item in Items) if (this[item + "Html"])
+    for (var item of Items) if (this[item + "Html"])
         string += "<tr><td class='col1'>" + this[item + "Label"] + ":</td>" +
         "<td class='col2'>" + this[item + "Html"] + "</td></tr>"
     string += this.extras ? this.extras.getMatrix() : "";

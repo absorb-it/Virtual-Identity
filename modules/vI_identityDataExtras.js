@@ -49,14 +49,16 @@ function registerIdExtrasObject(h) {
 function identityDataExtras(currentWindow, rdfDatasource, resource) {
   this._currentWindow = currentWindow;
   this.extras = [];
-  for each(let [, identityDataExtrasObject] in Iterator(idExtrasObjects)) {
+  
+  this_object = this;
+  idExtrasObjects.map(function(identityDataExtrasObject) {
     try {
-      this.extras.push(new identityDataExtrasObject(this._currentWindow));
+      this_object.extras.push(new identityDataExtrasObject(this_object._currentWindow));
     } catch (e) {
       Log.error("identityDataExtras '" + identityDataExtrasObject + "' returned an error:", e)
       dumpCallStack(e);
     }
-  }
+  });
   if (rdfDatasource)
     this.loopThroughExtras(
       function (extra) {
