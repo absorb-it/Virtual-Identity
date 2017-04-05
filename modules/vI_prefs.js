@@ -34,13 +34,13 @@ const {
 Cu.import("resource://v_identity/vI_log.js");
 let Log = setupLogging("virtualIdentity.prefs");
 
-prefroot = Cc["@mozilla.org/preferences-service;1"]
+var prefroot = Cc["@mozilla.org/preferences-service;1"]
   .getService(Ci.nsIPrefService)
   .getBranch(null);
 
 //     .QueryInterface(Components.interfaces.nsIPrefBranch2),
 
-vIprefroot = Cc["@mozilla.org/preferences-service;1"]
+var vIprefroot = Cc["@mozilla.org/preferences-service;1"]
   .getService(Ci.nsIPrefService)
   .getBranch("extensions.virtualIdentity.");
 
@@ -153,7 +153,7 @@ var vIprefs = {
 }
 
 // always try to (re)init the object
-vIprefBranch2 = Cc["@mozilla.org/preferences-service;1"]
+var vIprefBranch2 = Cc["@mozilla.org/preferences-service;1"]
   .getService(Ci.nsIPrefService)
   .getBranch("extensions.virtualIdentity.")
   .QueryInterface(Components.interfaces.nsIPrefBranch2);

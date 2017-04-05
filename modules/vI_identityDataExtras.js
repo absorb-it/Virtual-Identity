@@ -50,7 +50,7 @@ function identityDataExtras(currentWindow, rdfDatasource, resource) {
   this._currentWindow = currentWindow;
   this.extras = [];
   
-  this_object = this;
+  var this_object = this;
   idExtrasObjects.map(function(identityDataExtrasObject) {
     try {
       this_object.extras.push(new identityDataExtrasObject(this_object._currentWindow));
