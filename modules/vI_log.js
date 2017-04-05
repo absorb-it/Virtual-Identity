@@ -97,9 +97,7 @@ NotificationFormatter.prototype = {
   format: function NF_format(message) {
     // The trick below prevents errors further down because mo is null or
     //  undefined.
-    let messageString = [
-      ("" + mo) for each([, mo] in Iterator(message.messageObjects))
-    ].join(" ");
+    let messageString = message.messageObjects.map(mo => "" + mo).join(" ");
     return messageString;
   }
 };
@@ -112,9 +110,7 @@ NewFormatter.prototype = {
   format: function NF_format(message) {
     // The trick below prevents errors further down because mo is null or
     //  undefined.
-    let messageString = [
-      ("" + mo) for each([, mo] in Iterator(message.messageObjects))
-    ].join(" ");
+    let messageString = message.messageObjects.map(mo => "" + mo).join(" ");
     return message.loggerName.replace("virtualIdentity.", "") + ":\t" + messageString + "\n";
   }
 };
