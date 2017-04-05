@@ -73,7 +73,7 @@
         <spacer flex="1"/></vbox>
         <menulist id="maileditCharsetMenu">
             <menupopup id="charsetPopup"
-                    onpopupshowing="CharsetMenu.build(this, false, false);"/>
+                    onpopupshowing="CharsetMenu.build(this, true, false);"/>
         </menulist>
 		</hbox>
 		</hbox>

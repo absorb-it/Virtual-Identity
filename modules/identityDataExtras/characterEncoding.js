@@ -103,7 +103,7 @@ identityDataExtrasObject_characterEncoding.prototype = {
     }
     // ----------------------------------------------------------------------------------
     else {
-      CharsetMenu.build(this._currentWindow.document.getElementById("charsetPopup"), false, false)
+      CharsetMenu.build(this._currentWindow.document.getElementById("charsetPopup"), true, false)
       if (this.value != null) {
         let menu = this._currentWindow.document.getElementById("maileditCharsetMenu");
         let menuitem = menu.getElementsByAttribute("charset", this.value).item(0);
