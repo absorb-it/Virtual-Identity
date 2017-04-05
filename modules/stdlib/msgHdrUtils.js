@@ -85,8 +85,9 @@ XPCOMUtils.defineLazyGetter(MailServices, "messenger", function () {
  * @param {nsIMsgDbHdr} aMsg The message
  * @return {String}
  */
-function msgHdrGetUri(aMsg)
-aMsg.folder.getUriForMsg(aMsg)
+function msgHdrGetUri(aMsg) {
+    return aMsg.folder.getUriForMsg(aMsg);
+}
 
 /**
  * Get a msgHdr from a message URI (msgHdr.URI).
@@ -108,40 +109,45 @@ function msgUriToMsgHdr(aUri) {
  * @param {nsIMsgDbHdr} msgHdr The message header to examine
  * @return {bool}
  */
-function msgHdrIsInbox(msgHdr)
-msgHdr.folder.getFlag(nsMsgFolderFlags_Inbox)
+function msgHdrIsInbox(msgHdr) {
+    return msgHdr.folder.getFlag(nsMsgFolderFlags_Inbox);
+}
 
 /**
  * Tells if the message is a draft message
  * @param {nsIMsgDbHdr} msgHdr The message header to examine
  * @return {bool}
  */
-function msgHdrIsDraft(msgHdr)
-msgHdr.folder.getFlag(nsMsgFolderFlags_Drafts)
+function msgHdrIsDraft(msgHdr) {
+    return msgHdr.folder.getFlag(nsMsgFolderFlags_Drafts);
+}
 
 /**
  * Tells if the message is a sent message
  * @param {nsIMsgDbHdr} msgHdr The message header to examine
  * @return {bool}
  */
-function msgHdrIsSent(msgHdr)
-msgHdr.folder.getFlag(nsMsgFolderFlags_SentMail)
+function msgHdrIsSent(msgHdr) {
+    return msgHdr.folder.getFlag(nsMsgFolderFlags_SentMail);
+}
 
 /**
  * Tells if the message is an archived message
  * @param {nsIMsgDbHdr} msgHdr The message header to examine
  * @return {bool}
  */
-function msgHdrIsArchive(msgHdr)
-msgHdr.folder.getFlag(nsMsgFolderFlags_Archive)
+function msgHdrIsArchive(msgHdr) {
+    return msgHdr.folder.getFlag(nsMsgFolderFlags_Archive);
+}
 
 /**
  * Get a nsIMsgDbHdr from a Necko URL.
  * @param {String} The URL
  * @return {nsIMsgDbHdr} The message header.
  */
-function msgHdrFromNeckoUrl(aUrl)
-aUrl.QueryInterface(Ci.nsIMsgMessageUrl).messageHeader
+function msgHdrFromNeckoUrl(aUrl) {
+    return aUrl.QueryInterface(Ci.nsIMsgMessageUrl).messageHeader;
+}
 
 /**
  * Get a string containing the body of a messsage.
@@ -213,13 +219,13 @@ function msgHdrGetTags(aMsgHdr) {
 function msgHdrSetTags(aMsgHdr, aTags) {
   let oldTagList = msgHdrGetTags(aMsgHdr);
   let oldTags = {}; // hashmap
-  for each(let [, tag] in Iterator(oldTagList))
-  oldTags[tag.key] = null;
+  
+  oldTagList.map(tag => oldTags[tag.key] = null);
 
   let newTags = {};
   let newTagList = aTags;
-  for each(let [, tag] in Iterator(newTagList))
-  newTags[tag.key] = null;
+
+  newTagList.map(tag => newTags[tag.key] = null);
 
   let toAdd = newTagList.map(function(x) {if (!(x.key in oldTags)) return x.key});
 
@@ -239,7 +245,8 @@ function msgHdrSetTags(aMsgHdr, aTags) {
  */
 function msgHdrsMarkAsRead(msgHdrs, read) {
   let pending = {};
-  for each(let msgHdr in msgHdrs) {
+  
+  for (let msgHdr of Object.values(msgHdrs)) {
     if (msgHdr.isRead == read)
       continue;
     if (!pending[msgHdr.folder.URI]) {
@@ -250,9 +257,9 @@ function msgHdrsMarkAsRead(msgHdrs, read) {
     }
     pending[msgHdr.folder.URI].msgs.appendElement(msgHdr, false);
   }
-  for each(let {
+  for (let {
     folder, msgs
-  } in pending) {
+  } of Object.values(pending)) {
     folder.markMessagesRead(msgs, read);
     folder.msgDatabase = null; /* don't leak */
   }
@@ -264,7 +271,7 @@ function msgHdrsMarkAsRead(msgHdrs, read) {
  */
 function msgHdrsDelete(msgHdrs) {
   let pending = {};
-  for each(let msgHdr in msgHdrs) {
+  for (let msgHdr of Object.values(msgHdrs)) {
     if (!pending[msgHdr.folder.URI]) {
       pending[msgHdr.folder.URI] = {
         folder: msgHdr.folder,
@@ -273,9 +280,9 @@ function msgHdrsDelete(msgHdrs) {
     }
     pending[msgHdr.folder.URI].msgs.appendElement(msgHdr, false);
   }
-  for each(let {
+  for (let {
     folder, msgs
-  } in pending) {
+  } of Object.values(pending)) {
     folder.deleteMessages(msgs, getMail3Pane().msgWindow, false, false, null, true);
     folder.msgDatabase = null; /* don't leak */
   }
@@ -306,7 +313,9 @@ function msgHdrsArchive(msgHdrs) {
   let mail3PaneWindow = getMail3Pane();
   let batchMover = new mail3PaneWindow.BatchMessageMover();
   batchMover.archiveMessages(msgHdrs.filter(
-    function (x) !msgHdrIsArchive(x) && getMail3Pane().getIdentityForHeader(x).archiveEnabled
+    function (x) {
+        return !msgHdrIsArchive(x) && getMail3Pane().getIdentityForHeader(x).archiveEnabled;
+    }
   ));
 }
 
@@ -315,24 +324,27 @@ function msgHdrsArchive(msgHdrs) {
  * @param {nsIMsgDbHdr} msgHdr The message header
  * @return {Bool}
  */
-function msgHdrIsRss(msgHdr)
-  (msgHdr.folder.server instanceof Ci.nsIRssIncomingServer)
+function msgHdrIsRss(msgHdr) {
+  return (msgHdr.folder.server instanceof Ci.nsIRssIncomingServer);
+}
 
 /**
  * Tell if a message is a NNTP message
  * @param {nsIMsgDbHdr} msgHdr The message header
  * @return {Bool}
  */
-function msgHdrIsNntp(msgHdr)
-  (msgHdr.folder.server instanceof Ci.nsINntpIncomingServer)
+function msgHdrIsNntp(msgHdr) {
+  return (msgHdr.folder.server instanceof Ci.nsINntpIncomingServer);
+}
 
 /**
  * Tell if a message has been marked as junk.
  * @param {nsIMsgDbHdr} msgHdr The message header
  * @return {Bool}
  */
-function msgHdrIsJunk(aMsgHdr)
-aMsgHdr.getStringProperty("junkscore") == Ci.nsIJunkMailPlugin.IS_SPAM_SCORE
+function msgHdrIsJunk(aMsgHdr) {
+    return aMsgHdr.getStringProperty("junkscore") == Ci.nsIJunkMailPlugin.IS_SPAM_SCORE;
+}
 
 /**
  * Recycling the HeaderHandlerBase from mimemsg.js
@@ -384,12 +396,13 @@ function msgHdrGetHeaders(aMsgHdr, k) {
   let uri = msgHdrGetUri(aMsgHdr);
   let messageService = MailServices.messenger.messageServiceFromURI(uri);
 
-  let fallback = function ()
-  MsgHdrToMimeMessage(aMsgHdr, null, function (aMsgHdr, aMimeMsg) {
-    k(aMimeMsg);
-  }, true, {
-    partsOnDemand: true,
-  });
+  let fallback = function () {
+    return MsgHdrToMimeMessage(aMsgHdr, null, function (aMsgHdr, aMimeMsg) {
+        k(aMimeMsg);
+    }, true, {
+        partsOnDemand: true,
+    });
+  }
 
   // This is intentionally disabled because there's a bug in Thunderbird that
   // renders the supposedly-useful streamHeaders function unusable.
@@ -400,16 +413,16 @@ function msgHdrGetHeaders(aMsgHdr, k) {
         let str = aRawString.replace(re, " ");
         let lines = str.split(/\r?\n/);
         let obj = {};
-        for each(let [, line] in Iterator(lines)) {
+        lines.map(function(line) {
           let i = line.indexOf(":");
-          if (i < 0)
-            continue;
-          let k = line.substring(0, i).toLowerCase();
-          let v = line.substring(i + 1).trim();
-          if (!(k in obj))
-            obj[k] = [];
-          obj[k].push(v);
-        }
+          if (i >= 0) {
+            let k = line.substring(0, i).toLowerCase();
+            let v = line.substring(i + 1).trim();
+            if (!(k in obj))
+                obj[k] = [];
+            obj[k].push(v);
+          }
+        });
         k(new HeaderHandler(obj));
       }), null, true);
     } catch (e) {
