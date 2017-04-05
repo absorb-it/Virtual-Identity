@@ -185,14 +185,18 @@
 	<method name="_getContents">
         <parameter name="aURL" />
 		<body><![CDATA[		
-		// read the chrome file (copied from http://forums.mozillazine.org/viewtopic.php?p=921150)
-		var ioService=Components.classes["@mozilla.org/network/io-service;1"]
+                var {classes: Cc, interfaces: Ci, utils: Cu} = Components;
+                // read the chrome file (copied from http://forums.mozillazine.org/viewtopic.php?p=921150)
+		var ioService=Cc["@mozilla.org/network/io-service;1"]
 			.getService(Components.interfaces.nsIIOService);
-		var scriptableStream=Components
-			.classes["@mozilla.org/scriptableinputstream;1"]
+		var scriptableStream=Cc["@mozilla.org/scriptableinputstream;1"]
 			.getService(Components.interfaces.nsIScriptableInputStream);
-		
-		var channel=ioService.newChannel2(aURL,null,null);
+                Cu.import("resource:///modules/imServices.jsm");
+		var channel=ioService.newChannel2(aURL, null, null, null,
+                                          Services.scriptSecurityManager.getSystemPrincipal(),
+                                          null,
+                                          Ci.nsILoadInfo.SEC_NORMAL,
+                                          Ci.nsIContentPolicy.TYPE_OTHER);
 		var input=channel.open();
 		scriptableStream.init(input);
 		var str=scriptableStream.read(input.available());
