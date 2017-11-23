@@ -82,7 +82,7 @@ virtualIdentityExtension.ns(function () {
         rdfDataEditor.__populateIdentityMenu();
         var MenuItems = document.getElementById("virtualIdentityExtension_IdentityListPopup").childNodes;
         for (var index = 0; index < MenuItems.length; index++) {
-          if (MenuItems[index].getAttribute("value") == rdfDataEditor.__identityData.id.key) {
+          if (MenuItems[index].getAttribute("identitykey") == rdfDataEditor.__identityData.id.key) {
             document.getElementById("virtualIdentityExtension_IdentityList").selectedItem =
               MenuItems[index];
             break;
@@ -143,7 +143,7 @@ virtualIdentityExtension.ns(function () {
       accept: function () {
         Log.debug("accept");
         var localIdentityData = new vI.identityData(window, document.getElementById("sender").value, null,
-          document.getElementById("virtualIdentityExtension_IdentityList").selectedItem.getAttribute("value"),
+          document.getElementById("virtualIdentityExtension_IdentityList").selectedItem.getAttribute("identitykey"),
           document.getElementById("virtualIdentityExtension_SmtpServerList").selectedItem.getAttribute("key"));
         localIdentityData.extras.getValuesFromEnvironment();
         rdfDataEditor.__rdfDatasource.updateRDF(
