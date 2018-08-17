@@ -460,7 +460,7 @@ function UpdateGetHeaderNotification() {
 }
 
 let logRoot = "virtualIdentity";
-let MyLog = setupFullLogging(logRoot);
+var MyLog = setupFullLogging(logRoot);
 
 let myNotificationFormatter = new NotificationFormatter();
 
