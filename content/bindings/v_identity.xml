@@ -407,21 +407,17 @@
     virtualIdentityExtension.MyLog.debug("v_identity.xml msgIdentityCloneElem.init()")
 		var MenuItems = this._msgIdentityPopupElem.childNodes
 		for (var index = 0; index < MenuItems.length; index++) {
-			if (typeof getCurrentIdentityKey == 'function') {
-			  // TB version after changeset 17696 35d9101cb3b1 (menuitem.value == email address)
-				var identity = this._AccountManager.getIdentity(MenuItems[index].getAttribute("identitykey"));
-			} else {
-			  // TB version before changeset 17696 35d9101cb3b1 (menuitem.value == id)
-				var identity = this._AccountManager.getIdentity(MenuItems[index].getAttribute("value"));
-			}
+                        // TB version after changeset 17696 35d9101cb3b1 (menuitem.value == email address)
+                        var identity = this._AccountManager.getIdentity(MenuItems[index].getAttribute("identitykey"));
+                        if (!identity) continue;
 
 			var description;
-			if (typeof(this._AccountManager.getServersForIdentity) == 'function') { // new style
-				var server = this._AccountManager.getServersForIdentity(identity).queryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
-			} else {
-				var server = this._AccountManager.GetServersForIdentity(identity).QueryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
-			}
-			// if (server.type == "nntp")
+                        
+                        virtualIdentityExtension.MyLog.debug("getServersForIdentity" + identity);
+                        
+                        var server = this._AccountManager.getServersForIdentity(identity).queryElementAt(0, Components.interfaces.nsIMsgIncomingServer);
+
+                        // if (server.type == "nntp")
 				description = server.prettyName
 			// else description = identity.description?"- "+identity.description:identity.accountname
 			
