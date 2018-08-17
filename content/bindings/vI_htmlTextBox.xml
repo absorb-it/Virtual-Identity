@@ -195,7 +195,7 @@
 		var channel=ioService.newChannel2(aURL, null, null, null,
                                           Services.scriptSecurityManager.getSystemPrincipal(),
                                           null,
-                                          Ci.nsILoadInfo.SEC_NORMAL,
+                                          Ci.nsILoadInfo.SEC_ALLOW_CROSS_ORIGIN_DATA_IS_NULL,
                                           Ci.nsIContentPolicy.TYPE_OTHER);
 		var input=channel.open();
 		scriptableStream.init(input);
