@@ -41,14 +41,14 @@ function get3PaneWindow() {
   return mail3paneWindow;
 };
 
-function initWithFilePath_tryDelimiters(_nsILocalFile, path, filename) {
+function initWithFilePath_tryDelimiters(_nsIFile, path, filename) {
   try {
     Log.debug("Filename try linux delimiter: '" + path + "/" + filename + "'");
-    _nsILocalFile.initWithPath(path + "/" + filename);
+    _nsIFile.initWithPath(path + "/" + filename);
   } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
     try {
       Log.debug("Filename try windows delimiter: '" + path + "\\" + filename + "'");
-      _nsILocalFile.initWithPath(path + "\\" + filename);
+      _nsIFile.initWithPath(path + "\\" + filename);
     } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
       Log.debug("Filename not valid: '" + path + "[\\/]" + filename + "'");
       Log.debug("can't open rdfDatasource - storage won't work");
@@ -150,7 +150,7 @@ rdfDatasource.prototype = {
     var protoHandler = Components.classes["@mozilla.org/network/protocol;1?name=file"]
       .getService(Components.interfaces.nsIFileProtocolHandler)
     var newFile = Components.classes["@mozilla.org/file/local;1"]
-      .createInstance(Components.interfaces.nsILocalFile);
+      .createInstance(Components.interfaces.nsIFile);
 
     var file = Components.classes["@mozilla.org/file/directory_service;1"]
       .getService(Components.interfaces.nsIProperties)
@@ -621,9 +621,9 @@ rdfDatasource.prototype = {
     filePicker.appendFilters(Components.interfaces.nsIFilePicker.filterAll | Components.interfaces.nsIFilePicker.filterText);
     filePicker.appendFilter("RDF Files", "*.rdf");
 
-    if (filePicker.show() != Components.interfaces.nsIFilePicker.returnCancel) {
+    if (this._pickerShow(filePicker) != Components.interfaces.nsIFilePicker.returnCancel) {
       var rdfDataFile = Components.classes["@mozilla.org/file/local;1"]
-        .createInstance(Components.interfaces.nsILocalFile);
+        .createInstance(Components.interfaces.nsIFile);
       var file = Components.classes["@mozilla.org/file/directory_service;1"]
         .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
 
@@ -632,6 +632,21 @@ rdfDatasource.prototype = {
     }
   },
 
+  _pickerShow: function (fp) {
+    let done = false;
+    let rv, result;
+    fp.open(result => {
+      rv = result;
+      done = true;
+    });
+    let thread = Components.classes["@mozilla.org/thread-manager;1"]
+                          .getService().currentThread;
+    while (!done) {
+      thread.processNextEvent(true);
+    }
+    return rv;
+  },
+  
   _getRDFResourceForVIdentity: function (recDescription, recType) {
     if (!this._rdfDataSource) return null;
     if (!recDescription) {
@@ -1237,11 +1252,11 @@ rdfDatasourceImporter.prototype = {
     filePicker.appendFilter("RDF Files", "*.rdf");
     filePicker.appendFilters(Components.interfaces.nsIFilePicker.filterText | Components.interfaces.nsIFilePicker.filterAll);
 
-    if (filePicker.show() == Components.interfaces.nsIFilePicker.returnOK) {
+    if (this._pickerShow(filePicker) == Components.interfaces.nsIFilePicker.returnOK) {
       Log.debug("import: preparation:");
 
       var importRdfDataFile = Components.classes["@mozilla.org/file/local;1"]
-        .createInstance(Components.interfaces.nsILocalFile);
+        .createInstance(Components.interfaces.nsIFile);
       var file = Components.classes["@mozilla.org/file/directory_service;1"]
         .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
 
@@ -1310,5 +1325,20 @@ rdfDatasourceImporter.prototype = {
       Log.debug("import: cleaning ID/SMTP storages done.");
       Log.debug("IMPORT DONE.");
     }
+  },
+  
+  _pickerShow: function (fp) {
+    let done = false;
+    let rv, result;
+    fp.open(result => {
+      rv = result;
+      done = true;
+    });
+    let thread = Components.classes["@mozilla.org/thread-manager;1"]
+                          .getService().currentThread;
+    while (!done) {
+      thread.processNextEvent(true);
+    }
+    return rv;
   }
 }

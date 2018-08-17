@@ -91,12 +91,27 @@ virtualIdentityExtension.ns(function () {
 
         filePicker.init(window, "", Components.interfaces.nsIFilePicker.modeSave);
 
-        if (filePicker.show() != Components.interfaces.nsIFilePicker.returnCancel) {
+        if (this._pickerShow(filePicker) != Components.interfaces.nsIFilePicker.returnCancel) {
           if (filePicker.file.parent.path == defaultPath)
             document.getElementById(elementID).setAttribute("value", filePicker.file.leafName);
           else
             document.getElementById(elementID).setAttribute("value", filePicker.file.path);
         }
+      },
+      
+      _pickerShow: function (fp) {
+        let done = false;
+        let rv, result;
+        fp.open(result => {
+          rv = result;
+          done = true;
+        });
+        let thread = Components.classes["@mozilla.org/thread-manager;1"]
+                              .getService().currentThread;
+        while (!done) {
+          thread.processNextEvent(true);
+        }
+        return rv;
       },
 
       base: {
