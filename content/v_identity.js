@@ -202,8 +202,8 @@ virtualIdentityExtension.ns(function () {
 
         replace_FillIdentityList: function () {
           //~ Log.debug("replace FillIdentityList");
-          main.original_functions.FillIdentityList = FillIdentityList;
-          FillIdentityList = main.replacement_functions.FillIdentityList;
+//           main.original_functions.FillIdentityList = FillIdentityList;
+//           FillIdentityList = main.replacement_functions.FillIdentityList;
         }
       },
 
@@ -291,7 +291,7 @@ virtualIdentityExtension.ns(function () {
       initSystemStage1: function () {
         Log.debug("initSystemStage1.");
         document.getElementById("virtualIdentityExtension_msgIdentityClone").init();
-        vI.statusmenu.init();
+        
         Log.debug("initSystemStage1 done.")
       },
 
@@ -300,6 +300,7 @@ virtualIdentityExtension.ns(function () {
         Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityClone=" + document.getElementById("virtualIdentityExtension_msgIdentityClone"))
         vI.initReplyTo(window);
         vI.storage.init();
+        vI.statusmenu.init();
         new vI.smartIdentity(window, gMsgCompose, vI.storage);
         Log.debug("initSystemStage2 done.")
       },
@@ -324,7 +325,7 @@ virtualIdentityExtension.ns(function () {
         storage_box.removeChild(main.elements.Area_MsgIdentityHbox);
         parent_hbox.appendChild(main.elements.Area_MsgIdentityHbox);
 
-        main.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
+        //main.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
         main.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "virtualIdentityExtension_msgIdentityClone");
 
         var access_label = parent_hbox.getElementsByAttribute("control", "msgIdentity")[0];
