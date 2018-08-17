@@ -6,7 +6,7 @@ var EXPORTED_SYMBOLS = ["virtualIdentityExtension"]
 
 var virtualIdentityExtension = {};
 
-Components.utils.import("resource://v_identity/vI_log.js", virtualIdentityExtension);
+ChromeUtils.import("resource://v_identity/vI_log.js", virtualIdentityExtension);
 virtualIdentityExtension.Log = virtualIdentityExtension.MyLog;
 
 virtualIdentityExtension.initTime = parseInt((new Date()).getTime());
