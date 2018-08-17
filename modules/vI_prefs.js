@@ -38,7 +38,7 @@ var prefroot = Cc["@mozilla.org/preferences-service;1"]
   .getService(Ci.nsIPrefService)
   .getBranch(null);
 
-//     .QueryInterface(Components.interfaces.nsIPrefBranch2),
+//     .QueryInterface(Components.interfaces.nsIPrefBranch),
 
 var vIprefroot = Cc["@mozilla.org/preferences-service;1"]
   .getService(Ci.nsIPrefService)
@@ -156,7 +156,7 @@ var vIprefs = {
 var vIprefBranch2 = Cc["@mozilla.org/preferences-service;1"]
   .getService(Ci.nsIPrefService)
   .getBranch("extensions.virtualIdentity.")
-  .QueryInterface(Components.interfaces.nsIPrefBranch2);
+  .QueryInterface(Components.interfaces.nsIPrefBranch);
 vIprefBranch2.addObserver("", vIprefs, false);
 
 // mainWindow = Cc["@mozilla.org/appshell/window-mediator;1"]
