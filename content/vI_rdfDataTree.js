@@ -303,37 +303,7 @@ virtualIdentityExtension.ns(function () {
           if (treeType != "filter")
             rdfDataTreeCollection.trees[treeType].sort(col.id.substr(0, col.id.indexOf("_")));
         };
-        this.getCellProperties = function (row, col, props) {
-          var returnValue = null;
-          if (!rdfDataTreeCollection._braille) {
-            var aserv = Components.classes["@mozilla.org/atom-service;1"].
-            getService(Components.interfaces.nsIAtomService);
-            if (typeof props == 'undefined') {
-              // Requires Gecko 22
-              switch (table[row][col.id.substr(0, col.id.indexOf("_"))]) {
-              case "yes":
-                returnValue = aserv.getAtom("yes");
-                break;
-              case "no":
-                returnValue = aserv.getAtom("no");
-                break;
-              }
-            } else {
-              // Obsolete since Gecko 22
-              switch (table[row][col.id.substr(0, col.id.indexOf("_"))]) {
-              case "yes":
-                props.AppendElement(aserv.getAtom("yes"));
-                break;
-              case "no":
-                props.AppendElement(aserv.getAtom("no"));
-                break;
-              }
-            }
-          }
-          return returnValue;
-        };
       },
-
 
       __setFilter: function (text) {
         // loop trough all trees
