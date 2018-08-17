@@ -26,8 +26,6 @@
 <!DOCTYPE page [
 <!ENTITY % amCopiesDTD SYSTEM "chrome://messenger/locale/am-copies.dtd">
 %amCopiesDTD;
-<!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
-%versionDTD;
 <!ENTITY % vIprefDialogDTD SYSTEM "chrome://v_identity/locale/vI_prefDialog.dtd">
 %vIprefDialogDTD;
 <!ENTITY % vIstorageExtrasDTD SYSTEM "chrome://v_identity/locale/vI_storageExtras.dtd">

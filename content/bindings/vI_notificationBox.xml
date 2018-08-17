@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 
 <!DOCTYPE bindings [
-<!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
-%versionDTD;
 <!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
 %vIdentDTD;
 ]>

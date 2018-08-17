@@ -1,3 +1,4 @@
+<!ENTITY vident.version "0.9.36">
 <!ENTITY vident.vidLogo.label "Виртуальные личные данные">
 <!ENTITY vident.accPane.prettyName.prefix "Виртуальный ">
 <!ENTITY vident.composeDialog.storageSave.label "Сохранить">

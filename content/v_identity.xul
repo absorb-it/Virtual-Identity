@@ -27,8 +27,6 @@
 <?xml-stylesheet href="chrome://messenger/skin/tabmail.css" type="text/css"?>
 
 <!DOCTYPE overlay [
-<!ENTITY % versionDTD SYSTEM "chrome://v_identity/content/_version.dtd">
-%versionDTD;
 <!ENTITY % vIdentDTD SYSTEM "chrome://v_identity/locale/v_identity.dtd">
 %vIdentDTD;
 ]>
@@ -117,7 +115,9 @@
 			  context="virtualIdentityExtension_statusMenu"
 			  tooltip="virtualIdentityExtension_statusMenuTooltip"
 			  onclick="virtualIdentityExtension.statusmenu.clicked(event.button);"
-              hidden="true"/>
+              hidden="true">
+            <image />
+            </statusbarpanel>
 </statusbar>
   
 </overlay>

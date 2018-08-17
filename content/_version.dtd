@@ -1,2 +1,0 @@
-<!-- the version-string is still required, because the only other way to retrieve the Version-Number is asynchronous -->
-<!ENTITY vident.version "0.9.36">
