@@ -15,19 +15,17 @@ div.bool {
 	min-width: 14px;
 }
 
-div.bool {
+div.bool.image {
 	background-image: url("chrome://v_identity/skin/notchecked-unequal.png");
 }
-div.bool.checked {
+div.bool.checked.image {
 	background-image: url("chrome://v_identity/skin/checked-unequal.png");
 }
-
-@media braille { label.screen { display:none; } }
-@media screen { label.braille { display:none; } }
 
 body {
 	margin: 0px;
     color: infotext;
+    overflow: hidden;
 }
 
 table {

@@ -9,21 +9,18 @@ div.bool {
 	background-position: center;
 }
 
-td.equal div.bool {
+td.equal div.bool.image {
 	background-image: url("chrome://v_identity/skin/notchecked-equal.png");
 }
-td.unequal div.bool {
+td.unequal div.bool.image {
 	background-image: url("chrome://v_identity/skin/notchecked-unequal.png");
 }
-td.equal div.bool.checked {
+td.equal div.bool.checked.image {
 	background-image: url("chrome://v_identity/skin/checked-equal.png");
 }
-td.unequal div.bool.checked {
+td.unequal div.bool.checked.image {
 	background-image: url("chrome://v_identity/skin/checked-unequal.png");
 }
-
-@media braille { label.screen { display:none; } }
-@media screen { label.braille { display:none; } }
 
 h1 {
 	font-size: medium;

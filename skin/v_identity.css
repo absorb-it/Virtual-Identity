@@ -31,8 +31,6 @@
     -moz-binding: url("chrome://v_identity/content/prefDialog/vI_prefDialog.xml#identitySelector");
 }
 
-
-
 .mismatchMenuitem {
     -moz-binding: url("chrome://v_identity/content/bindings/vI_rdfAccountMismatchDialog.xml#mismatch-menuitem");
 }
@@ -67,7 +65,7 @@
 	background-color: transparent;
 }
 
-.identityHbox, .baseIDHbox, .smtpServerHbox {
+/* .identityHbox, .baseIDHbox, .smtpServerHbox {
 	background-color: transparent;
 }
 .identityHbox[checked="true"][colorize="true"], .baseIDHbox[checked="true"][colorize="true"], .smtpServerHbox[checked="true"][colorize="true"] {
@@ -75,7 +73,7 @@
 }
 .identityHbox {
 	padding-right: 0.25em;
-}
+}*/
 .baseIDHbox {
 	padding-left: 0.25em;
 }
@@ -201,6 +199,10 @@ image#storageUp[featureDisabled="true"]		{ -moz-image-region: rect(30px, 48px, 6
 	padding-left: 8px;
 }
 
+#prefTabbox radio .radio-check {
+  display: none;
+}
+
 .paneButtonIcon {
 	width: 56px;
 	height: 52px;
@@ -323,7 +325,7 @@ treechildren::-moz-tree-cell-text(locked) {
 }
 
 .virtualIdentityExtension_vINotificationLogo {
-	margin: 0 0 0 0.5em;
+	margin: 0 0.5em 0 0.5em;
 	padding: 0;
 }
 
@@ -341,6 +343,10 @@ treechildren::-moz-tree-cell-text(locked) {
     height: 10em;
 }
 
+#identityHbox .menulist-editable-input[nomatch="true"][highlightnonmatches="true"] {
+  color: red;
+}
+
 .identity_clone-menulist {
 	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#fromMenuList_clone");
 	-moz-appearance: textfield;
@@ -353,6 +359,14 @@ treechildren::-moz-tree-cell-text(locked) {
 	padding: 0px;
 	background-color: -moz-Field;
 	color: -moz-FieldText;
+}
+
+#msgIdentity {
+	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#fromMenuList_new");
+}
+
+#msgIdentity menuitem {
+        -moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#fromPopupItem_new");
 }
 
 .description-treecell {
@@ -434,7 +448,7 @@ treechildren::-moz-tree-cell-text(locked) {
 }
 
 
-.menulist_clone-textbox .textbox-search-icons {
+#identityHbox .menulist-editable-input .textbox-search-icons, #identityHbox .menulist-editable-input .textbox-search-sign {
 	display:	none;
 }
 
@@ -465,12 +479,17 @@ treechildren::-moz-tree-cell-text(locked) {
 	color: graytext;
 }
 
-.identity_clone-menulist[vid="true"], .identity_clone-popup-item[vid="true"] {
+
+#msgIdentityPopup menuitem[command="cmd_customizeFromAddress"] {
+        display: none;
+}
+
+#fromMenuList_new[vid="true"], .identity_clone-popup-item[vid="true"] {
 	list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook-toolbar-small.png");
 	-moz-image-region: rect(0px 16px 16px 0px);	
 }
 
-.identity_clone-menulist[vid="false"], .identity_clone-popup-item[vid="false"] {
+#fromMenuList_new[vid="false"], .identity_clone-popup-item[vid="false"] {
 	list-style-image: url("chrome://messenger/skin/addressbook/icons/abcard.png");
 }
 
