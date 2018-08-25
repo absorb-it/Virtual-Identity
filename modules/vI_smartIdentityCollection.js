@@ -29,6 +29,8 @@ Components.utils.import("resource://v_identity/vI_identityData.js");
 Components.utils.import("resource://v_identity/vI_rdfDatasource.js");
 Components.utils.import("resource://v_identity/vI_prefs.js");
 
+Components.utils.import("resource://v_identity/strftime/strftime.js");
+
 let Log = setupLogging("virtualIdentity.smartIdentityCollection");
 
 function smartIdentityCollection(currentWindow, msgHdr, preseletedID, currentIDisVID, newsgroup, recipients) {
@@ -81,9 +83,11 @@ smartIdentityCollection.prototype = {
 
     var dateObj = new Date();
     var dateString = "";
-    if (formatString == "") dateString = parseInt(dateObj.getTime() / 1000);
+    if (formatString == "") 
+      dateString = parseInt(dateObj.getTime() / 1000);
     else try { //	you never know what the formatString will be...
-      dateString = dateObj.toLocaleFormat(formatString).replace(/\s+|[\x00-\x2a]|\x2c|\x2f|[\x3a-\x40]|[\x5b-\x5d]|\x60|\x7c|[\x7f-\xff]/g, "_");
+      dateString = strftime(formatString, dateObj);
+//       dateString = dateObj.toLocaleFormat(formatString).replace(/\s+|[\x00-\x2a]|\x2c|\x2f|[\x3a-\x40]|[\x5b-\x5d]|\x60|\x7c|[\x7f-\xff]/g, "_");
     } catch (e) {};
 
     var new_email = autoString.replace(/%l/g, localpart).replace(/%d/g, domain).replace(/%t/g, dateString);
