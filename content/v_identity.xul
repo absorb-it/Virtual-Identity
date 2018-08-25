@@ -50,24 +50,34 @@
 	<notificationbox id="virtualIdentityExtension_vINotification" position="1" insertbefore="MsgHeadersToolbar" />
 </toolbox>
 
-<vbox flex="1" id="addresses-box"> <!-- this is used as a strorage, elements will be rearranged by v_identity_init -->
+<!--<vbox flex="1" id="addresses-box"> --><!-- this is used as a strorage, elements will be rearranged by v_identity_init -->
 
-<vbox id="virtualIdentityExtension_autoReplyToSelfLabelBox">
+<!--<vbox id="virtualIdentityExtension_autoReplyToSelfLabelBox">
   <spacer flex="1"/>
   <label id="virtualIdentityExtension_autoReplyToSelfLabel" context="virtualIdentityExtension_vIAutoReplyToSelfMenu" value="&vident.composeDialog.autoReplyToSelf.label;" hidden="true" />
-  <spacer flex="1"/>
-</vbox>
-<hbox id="virtualIdentityExtension_msgIdentityHbox" flex="1">
-	<menulist id="virtualIdentityExtension_msgIdentityClone" class="identity_clone-menulist" vid="false"
+<spacer flex="1"/>-->
+  <!--</vbox>-->
+<!--<hbox id="virtualIdentityExtension_msgIdentityHbox" flex="1">-->
+  
+<!--  
+              <menulist id="msgIdentity"
+                      editable="true"
+                      disableautoselect="true"
+                      flex="1"
+                      oncommand="LoadIdentity(false);">
+              <menupopup id="msgIdentityPopup"/>
+  -->
+  
+<!--	<menulist id="virtualIdentityExtension_msgIdentityClone" class="identity_clone-menulist" vid="false"
 		label="..." flex="1" oncommand="this.command();">
 		<menupopup id="virtualIdentityExtension_msgIdentityPopupClone"/>
 	</menulist>
 	<checkbox id="virtualIdentityExtension_fccSwitch" label="&vident.composeDialog.fcc_switch.label;" 
 		tooltiptext="&vident.composeDialog.fcc_switch.tooltiptext;" hidden="true" doFcc="false"
 		oncommand="virtualIdentityExtension.vIprefs.set('doFcc', this.checked);" />
-	<popupset id="virtualIdentityExtension_tooltipPopupset" />
-</hbox>
-  </vbox>
+	
+</hbox>-->
+<!--  </vbox>-->
   
   <popupset>
 	  <menupopup id="virtualIdentityExtension_statusMenu">
@@ -75,8 +85,8 @@
 			oncommand="virtualIdentityExtension.vIprefs.set('storage_store', (this.getAttribute('checked') == 'true'));"/>
 		  <menuitem type="checkbox" id="virtualIdentityExtension_statusMenu_storage_saveBaseID" label="&vident.vI_Menu.saveBaseID.label;"
 			oncommand="virtualIdentityExtension.vIprefs.set('storage_store_base_id', (this.getAttribute('checked') == 'true'));"/>
-		  <menuitem type="checkbox" id="virtualIdentityExtension_statusMenu_storage_saveSMTP" label="&vident.vI_Menu.saveSMTP.label;"
-			oncommand="virtualIdentityExtension.vIprefs.set('storage_store_SMTP', (this.getAttribute('checked') == 'true'));"/>
+<!--		  <menuitem type="checkbox" id="virtualIdentityExtension_statusMenu_storage_saveSMTP" label="&vident.vI_Menu.saveSMTP.label;"
+                  oncommand="virtualIdentityExtension.vIprefs.set('storage_store_SMTP', (this.getAttribute('checked') == 'true'));"/>-->
 		  <menuseparator id="virtualIdentityExtension_statusMenu_separator" />
 		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.Settings.label;"
 			oncommand="window.open('chrome://v_identity/content/prefDialog/vI_prefDialog_TB3.xul', '', 'chrome, dialog, alwaysRaised, resizable=yes');" />
@@ -84,12 +94,12 @@
 			oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome, dialog, resizable=yes');" />
 	  </menupopup>
   </popupset>
-  <popupset>
+<!--  <popupset>
 	  <menupopup id="virtualIdentityExtension_vIAutoReplyToSelfMenu">
 		  <menuitem type="menuitem-iconic" label="&vident.composeDialog.autoReplyToSelf.menuLabel;"
 			oncommand="document.getElementById('virtualIdentityExtension_autoReplyToSelfLabel').setAttribute('hidden', 'true');"/>
 		</menupopup>
-  </popupset>
+  </popupset>-->
   <popupset>
 	  <tooltip id="virtualIdentityExtension_statusMenuTooltip" orient="vertical" >
 		<label id="virtualIdentityExtension_statusMenuTooltip_Title" value="&vident.vI_Menu.TooltipTitle.label;" />
@@ -105,8 +115,8 @@
 			  insertafter="statusText"
 			  align="right"
               hidden="true">
-		<label class="v_identity_logo v_identity_logo_statusbar" value="&vident.vidLogo.label; &vident.version;" />
-		<observes id="virtualIdentityExtension_msgIdentityClone_observer" element="virtualIdentityExtension_msgIdentityClone" attribute="vid" />
+		<label id="v_identity_logo_statusbar" class="v_identity_logo v_identity_logo_statusbar" value="&vident.vidLogo.label; " />
+		<observes id="virtualIdentityExtension_msgIdentityClone_observer" element="msgIdentity" attribute="vid" />
 	</statusbarpanel>
 	  <statusbarpanel id="virtualIdentityExtension_vIStatusMenu" save="off"
 			  class="statusbarpanel-menu-iconic"

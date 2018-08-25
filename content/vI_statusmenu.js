@@ -39,10 +39,10 @@ virtualIdentityExtension.ns(function () {
       objSaveBaseIDMenuItem: null,
       objStorageSaveMenuItem: null,
       objStatusMenuSeparator: null,
-      objSaveSwitch: null,
-      objSaveBaseIDSwitch: null,
-      objSaveSMTPSwitch: null,
-      objFccSwitch: null,
+//       objSaveSwitch: null,
+//       objSaveBaseIDSwitch: null,
+//       objSaveSMTPSwitch: null,
+//       objFccSwitch: null,
       objStatusText: null,
       objStatusLogo: null,
 
@@ -53,22 +53,22 @@ virtualIdentityExtension.ns(function () {
           statusmenu.objStatusMenu.setAttribute("hidden", !vI.vIprefs.get(data));
           statusmenu.objStatusLogo.setAttribute("hidden", !vI.vIprefs.get(data));
           // no break, continue like with doFcc           
-        case "fcc_show_switch":
-          statusmenu.objFccSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
-          // no break, continue like with doFcc			
-        case "doFcc":
-          statusmenu.objFccSwitch.setAttribute("checked", vI.vIprefs.get(data));
-          break;
-        case "storage_show_switch":
-          statusmenu.objSaveSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
-          break;
-        case "storage_show_baseID_switch":
-          statusmenu.objSaveBaseIDSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
-          break;
-        case "storage_show_SMTP_switch":
-          //                 Log.debug("changed storage_show_SMTP_switch to " + statusmenu.objSaveSMTPMenuItem + "=" + vI.vIprefs.get(data));
-          statusmenu.objSaveSMTPSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
-          break;
+//         case "fcc_show_switch":
+//           statusmenu.objFccSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
+//           // no break, continue like with doFcc			
+//         case "doFcc":
+//           statusmenu.objFccSwitch.setAttribute("checked", vI.vIprefs.get(data));
+//           break;
+//         case "storage_show_switch":
+//           statusmenu.objSaveSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
+//           break;
+//         case "storage_show_baseID_switch":
+//           statusmenu.objSaveBaseIDSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
+//           break;
+//         case "storage_show_SMTP_switch":
+//           //                 Log.debug("changed storage_show_SMTP_switch to " + statusmenu.objSaveSMTPMenuItem + "=" + vI.vIprefs.get(data));
+//           statusmenu.objSaveSMTPSwitch.setAttribute("hidden", !vI.vIprefs.get(data));
+//           break;
         case "storage_store":
           statusmenu.objStorageSaveMenuItem.setAttribute("checked", vI.vIprefs.get(data));
           break;
@@ -83,18 +83,18 @@ virtualIdentityExtension.ns(function () {
         case "storage_colorIndication":
           document.getElementById("identityHbox").setAttribute("colorize", vI.vIprefs.get(data))
           document.getElementById("baseIDHbox").setAttribute("colorize", vI.vIprefs.get(data))
-          document.getElementById("smtpServerHbox").setAttribute("colorize", vI.vIprefs.get(data))
+//           document.getElementById("smtpServerHbox").setAttribute("colorize", vI.vIprefs.get(data))
           break;
         case "storage":
           if (vI.vIprefs.get(data)) {
             statusmenu.objStorageSaveMenuItem.removeAttribute("hidden");
             statusmenu.objSaveBaseIDMenuItem.removeAttribute("hidden");
-            statusmenu.objSaveSMTPMenuItem.removeAttribute("hidden");
+//             statusmenu.objSaveSMTPMenuItem.removeAttribute("hidden");
             statusmenu.objStatusMenuSeparator.removeAttribute("hidden");
           } else {
             statusmenu.objStorageSaveMenuItem.setAttribute("hidden", "true");
             statusmenu.objSaveBaseIDMenuItem.setAttribute("hidden", "true");
-            statusmenu.objSaveSMTPMenuItem.setAttribute("hidden", "true");
+//             statusmenu.objSaveSMTPMenuItem.setAttribute("hidden", "true");
             statusmenu.objStatusMenuSeparator.setAttribute("hidden", "true");
           }
           break;
@@ -104,56 +104,56 @@ virtualIdentityExtension.ns(function () {
 
       addObserver: function () {
         vI.vIprefs.addObserver("show_status", this.observe, this);
-        vI.vIprefs.addObserver("fcc_show_switch", this.observe, this);
+//         vI.vIprefs.addObserver("fcc_show_switch", this.observe, this);
         vI.vIprefs.addObserver("doFcc", this.observe, this);
         vI.vIprefs.addObserver("storage", this.observe, this);
-        vI.vIprefs.addObserver("storage_show_switch", this.observe, this);
-        vI.vIprefs.addObserver("storage_show_baseID_switch", this.observe, this);
-        vI.vIprefs.addObserver("storage_show_SMTP_switch", this.observe, this);
+//         vI.vIprefs.addObserver("storage_show_switch", this.observe, this);
+//         vI.vIprefs.addObserver("storage_show_baseID_switch", this.observe, this);
+//         vI.vIprefs.addObserver("storage_show_SMTP_switch", this.observe, this);
         vI.vIprefs.addObserver("storage_colorIndication", this.observe, this);
         vI.vIprefs.addObserver("storage_store", this.observe, this);
         vI.vIprefs.addObserver("storage_store_base_id", this.observe, this);
-        vI.vIprefs.addObserver("storage_store_SMTP", this.observe, this);
+//         vI.vIprefs.addObserver("storage_store_SMTP", this.observe, this);
       },
 
       removeObserver: function () {
         vI.vIprefs.removeObserver("show_status", this.observe);
-        vI.vIprefs.removeObserver("fcc_show_switch", this.observe);
+//         vI.vIprefs.removeObserver("fcc_show_switch", this.observe);
         vI.vIprefs.removeObserver("doFcc", this.observe);
         vI.vIprefs.removeObserver("storage", this.observe);
-        vI.vIprefs.removeObserver("storage_show_switch", this.observe);
-        vI.vIprefs.removeObserver("storage_show_baseID_switch", this.observe);
-        vI.vIprefs.removeObserver("storage_show_SMTP_switch", this.observe);
+//         vI.vIprefs.removeObserver("storage_show_switch", this.observe);
+//         vI.vIprefs.removeObserver("storage_show_baseID_switch", this.observe);
+//         vI.vIprefs.removeObserver("storage_show_SMTP_switch", this.observe);
         vI.vIprefs.removeObserver("storage_colorIndication", this.observe);
         vI.vIprefs.removeObserver("storage_store", this.observe);
         vI.vIprefs.removeObserver("storage_store_base_id", this.observe);
-        vI.vIprefs.removeObserver("storage_store_SMTP", this.observe);
+//         vI.vIprefs.removeObserver("storage_store_SMTP", this.observe);
       },
 
       init: function () {
         statusmenu.objStatusMenu = document.getElementById("virtualIdentityExtension_vIStatusMenu");
         statusmenu.objStatusLogo = document.getElementById("virtualIdentityExtension_Logo");
         statusmenu.objSaveBaseIDMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_saveBaseID");
-        statusmenu.objSaveSMTPMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_saveSMTP");
+//         statusmenu.objSaveSMTPMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_saveSMTP");
         statusmenu.objStorageSaveMenuItem = document.getElementById("virtualIdentityExtension_statusMenu_storage_save");
         statusmenu.objStatusMenuSeparator = document.getElementById("virtualIdentityExtension_statusMenu_separator");
-        statusmenu.objSaveSwitch = document.getElementById("virtualIdentityExtension_saveSwitch");
-        statusmenu.objSaveBaseIDSwitch = document.getElementById("virtualIdentityExtension_saveBaseIDSwitch");
-        statusmenu.objSaveSMTPSwitch = document.getElementById("virtualIdentityExtension_SaveSmtpSwitch");
-        statusmenu.objFccSwitch = document.getElementById("virtualIdentityExtension_fccSwitch");
+//         statusmenu.objSaveSwitch = document.getElementById("virtualIdentityExtension_saveSwitch");
+//         statusmenu.objSaveBaseIDSwitch = document.getElementById("virtualIdentityExtension_saveBaseIDSwitch");
+//         statusmenu.objSaveSMTPSwitch = document.getElementById("virtualIdentityExtension_SaveSmtpSwitch");
+//         statusmenu.objFccSwitch = document.getElementById("virtualIdentityExtension_fccSwitch");
         statusmenu.objStatusText = document.getElementById("statusText");
         statusmenu.objStatusTooltipLine1 = document.getElementById("virtualIdentityExtension_statusMenuTooltip_StatusValueLine1");
         statusmenu.objStatusTooltipLine2 = document.getElementById("virtualIdentityExtension_statusMenuTooltip_StatusValueLine2");
 
         statusmenu.addObserver();
         statusmenu.observe(this, null, null, "show_status");
-        statusmenu.observe(this, null, null, "fcc_show_switch");
-        statusmenu.observe(this, null, null, "storage_show_switch");
-        statusmenu.observe(this, null, null, "storage_show_baseID_switch");
-        statusmenu.observe(this, null, null, "storage_show_SMTP_switch");
+//         statusmenu.observe(this, null, null, "fcc_show_switch");
+//         statusmenu.observe(this, null, null, "storage_show_switch");
+//         statusmenu.observe(this, null, null, "storage_show_baseID_switch");
+//         statusmenu.observe(this, null, null, "storage_show_SMTP_switch");
         statusmenu.observe(this, null, null, "storage_colorIndication");
         statusmenu.observe(this, null, null, "storage_store_base_id");
-        statusmenu.observe(this, null, null, "storage_store_SMTP");
+//         statusmenu.observe(this, null, null, "storage_store_SMTP");
         statusmenu.observe(this, null, null, "storage_store");
         statusmenu.observe(this, null, null, "storage");
       },
@@ -184,7 +184,7 @@ virtualIdentityExtension.ns(function () {
       },
 
       changeSMTPStatus: function (elem) {
-        statusmenu.objSaveSMTPMenuItem.setAttribute("checked", elem.getAttribute("checked"));
+//         statusmenu.objSaveSMTPMenuItem.setAttribute("checked", elem.getAttribute("checked"));
         statusmenu.menuConstraint();
       },
 
@@ -202,15 +202,15 @@ virtualIdentityExtension.ns(function () {
         var save = "off";
         var smtp = "off";
         if (statusmenu.objStorageSaveMenuItem.getAttribute("checked") == "true") {
-          statusmenu.objSaveSMTPMenuItem.removeAttribute("disabled");
+//           statusmenu.objSaveSMTPMenuItem.removeAttribute("disabled");
           statusmenu.objSaveBaseIDMenuItem.removeAttribute("disabled");
           if (vI.vIprefs.get("storage")) {
             if (statusmenu.objSaveBaseIDMenuItem.getAttribute("checked") == "true") save = "base";
             else save = "ok";
-            if (statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true") smtp = "save";
+//             if (statusmenu.objSaveSMTPMenuItem.getAttribute("checked") == "true") smtp = "save";
           }
         } else {
-          statusmenu.objSaveSMTPMenuItem.setAttribute("disabled", "true");
+//           statusmenu.objSaveSMTPMenuItem.setAttribute("disabled", "true");
           statusmenu.objSaveBaseIDMenuItem.setAttribute("disabled", "true");
         }
         statusmenu.objStatusMenu.setAttribute("save", save);
