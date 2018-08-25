@@ -59,13 +59,5 @@ virtualIdentityExtension.ns(function () {
     }
 
     addEventListener('messagepane-loaded', extensionInit, true);
-    // this is the entry place, nameSpaceWrapper is loaded and the show can start
-    try {
-      Components.utils.import("resource://v_identity/plugins/conversations.js", virtualIdentityExtension);
-    } catch (e) {
-      vI.dumpCallStack(e);
-    }
-
-
   }
 });
