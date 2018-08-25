@@ -253,13 +253,9 @@ virtualIdentityExtension.ns(function () {
         if (rdfDataTreeCollection._rdfDatasource) rdfDataTreeCollection._rdfDatasource.clean();
       },
 
-      get _braille() {
-        var braille = false;
-        try {
-          braille = (vI.prefroot.getCharPref("accessibility.usebrailledisplay") ||
-            vI.prefroot.getCharPref("accessibility.usetexttospeech"));
-        } catch (e) {};
-        return braille;
+      get _texttospeach() {
+        return "true"; // can't get icons drawn in tree - changed behavior of treechildren::-moz-tree-cell
+        //return vI.prefroot.getCharPref("accessibility.usetexttospeech");
       },
 
       // generic custom tree view stuff
@@ -267,7 +263,7 @@ virtualIdentityExtension.ns(function () {
         this.rowCount = table.length;
         this.getCellText = function (row, col) {
           var retValue = table[row][col.id.substr(0, col.id.indexOf("_"))];
-          if (!rdfDataTreeCollection._braille && (retValue == "no" || retValue == "yes"))
+          if (!rdfDataTreeCollection._texttospeach && (retValue == "no" || retValue == "yes"))
             return ""; // image will be used as indicator
           else return retValue;
         };

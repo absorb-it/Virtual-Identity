@@ -176,13 +176,18 @@ identityDataExtrasObject.prototype = {
   lastCompareValue: "",
   lastCompareResult: false,
 
+  get _texttospeach() {
+    return prefroot.getCharPref("accessibility.usetexttospeech");
+  },
+
   get valueHtml() {
     if (!this.value)
       return "";
-    return "<div class='bool" + ((this.value == "true") ? " checked" : "") + "'>" +
-      "<label class='screen'>&nbsp;</label>" +
-      "<label class='braille'>" + this.valueNice + "</label>" +
-      "</div>"
+    let boolclass = ((this.value == "true") ? " checked" : "");
+    let accessclass = ((this._texttospeach == "true") ? " texttospeach" : " image");
+    let value = ((this._texttospeach == "true") ? this.valueNice : "&nbsp;");
+    return "<div class='bool" + boolclass + accessclass + "'>" +
+      "<label>" + value + "</label></div>"
   },
   get valueNice() {
     if (!this.value)
