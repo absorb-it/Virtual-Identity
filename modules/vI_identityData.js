@@ -169,6 +169,21 @@ identityData.prototype = {
     return new identityData(this._currentWindow, this.email, this.fullName, this.id.key, this.smtp.key, this.extras ? this.extras.getDuplicate() : null,
       this.sideDescription, this.existingID);
   },
+  
+  takeOverAvailableData: function(identityData) {
+    if (identityData.email)
+      this.email = identityData.email;
+    if (identityData.fullName)
+      this.fullName = identityData.fullName;
+    if (identityData.id.key)
+      this.id.key = identityData.id.key;
+    if (identityData.smtp.key)
+      this.smtp.key = identityData.smtp.key;
+    if (identityData.sideDescription)
+      this.sideDescription = identityData.sideDescription;
+    if (identityData.extras)
+      this.extras.copy(identityData.extras);
+  },
 
   // copys all values of an identity. This way we can create a new object with a different document-context
   copy: function (identityData) {
@@ -446,6 +461,7 @@ function idObj(key) {
 idObj.prototype = {
   _key: null,
   _value: null,
+  _accountkey: null,
 
   set key(key) {
     this._key = key;
@@ -454,6 +470,10 @@ idObj.prototype = {
   get key() {
     if (this._value == null) var dummy = this.value;
     return this._key
+  },
+  get accountkey() {
+    if (this._value == null) var dummy = this.value;
+    return this._accountkey
   },
   get value() {
     if (this._value == null) {
@@ -469,11 +489,15 @@ idObj.prototype = {
           let identity = identities[i];
           if (this._key == identity.key) {
             this._value = identity.identityName;
+            this._accountkey = account.key;
             break;
           }
         }
       }
-      if (!this._value) this._key = null;
+      if (!this._value) {
+        this._key = null;
+        this._accountkey = null;
+      }
     }
     return this._value;
   },
