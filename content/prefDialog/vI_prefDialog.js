@@ -47,9 +47,9 @@ virtualIdentityExtension.ns(function () {
         if (browserElem.getAttribute("hidden")) return; // don't load any url if browser is hidden
         var panelIndex = (tabpanel) ? tabpanel : document.getElementById('prefTabbox').selectedIndex
         var prefTree = document.getElementById('prefTabbox').selectedPanel.getElementsByAttribute("class", "vIprefTree")[0];
-        var currentVersion = document.getElementById("virtualIdentityExtension_extVersion").getAttribute("value").split(/\./);
+        var currentVersion = vI.extensionVersion.split(/\./);
         var extVersion = currentVersion[0] + "." + currentVersion[1];
-        var url = "https://www.absorb.it/virtual-id/wiki/docs/" + extVersion + "/tab" + panelIndex + "/tree" + prefTree.currentIndex;
+        var url = "http://www.absorb.it/virtual-id/wiki/docs/" + extVersion + "/tab" + panelIndex + "/tree" + prefTree.currentIndex;
         document.getElementById("virtualIdentityExtension_remoteBrowserBox").url = url;
       },
 
@@ -213,6 +213,10 @@ virtualIdentityExtension.ns(function () {
             // 				} catch (ex) {}
             //             dump("setting textbox value: " + element.getAttribute("prefstring") + " " + element.getAttribute("value") + "\n");
           }
+        let versionLabel = document.getElementById("logoButton1");
+        versionLabel.setAttribute("label", versionLabel.getAttribute("label") + vI.extensionVersion);
+        versionLabel = document.getElementById("logoButton2");
+        versionLabel.setAttribute("label", versionLabel.getAttribute("label") + vI.extensionVersion);
         },
 
         savePrefs: function () {
@@ -405,7 +409,7 @@ virtualIdentityExtension.ns(function () {
         var protocolSvc = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"].getService(Components.interfaces.nsIExternalProtocolService);
         Log.debug("load url " + aURL);
         uri.spec = aURL;
-        protocolSvc.loadUrl(uri);
+        protocolSvc.loadURI(uri);
       }
     }
     vI.prefDialog = prefDialog;

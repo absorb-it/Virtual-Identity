@@ -22,14 +22,14 @@
 -->
   <binding id="vI_notification" extends="chrome://global/content/bindings/notification.xml#notification">
     <content>
-      <xul:hbox class="notification-inner outset" flex="1" xbl:inherits="type" style="background-color: appworkspace; color: windowtext">
+      <xul:hbox class="notification-inner" flex="1" xbl:inherits="type">
         <xul:hbox anonid="details" align="center" flex="1"
                   oncommand="this.parentNode.parentNode._doButtonCommand(event);">
           <xul:image anonid="messageImage" class="messageImage" xbl:inherits="src=image"/>
      <xul:vbox><xul:spacer flex="1" />
          <xul:label id="virtualIdentityExtension_vINotificationTitle" hidden="true" align="right" />
-         <xul:label class="v_identity_logo virtualIdentityExtension_vINotificationLogo"
-           value="&vident.vidLogo.label; &vident.version;" align="right" />
+         <xul:label id="virtualIdentityExtension_vINotificationLogo" class="v_identity_logo virtualIdentityExtension_vINotificationLogo"
+           value="&vident.vidLogo.label; " align="right" />
           <xul:spacer flex="1" /></xul:vbox>
           <xul:textbox id="virtualIdentityExtension_vINotificationTextbox" anonid="messageText" class="plain" height="3"
            value="" flex="1" multiline="true" readonly="true" 
@@ -44,5 +44,17 @@
                            oncommand="document.getBindingParent(this).close();"/>
       </xul:hbox>
     </content>
+    <implementation>
+    <constructor>
+      <![CDATA[
+      let statusbarLabel = document.getElementById("virtualIdentityExtension_vINotificationLogo");
+      statusbarLabel.setAttribute("value", statusbarLabel.getAttribute("value") + virtualIdentityExtension.extensionVersion);
+      ]]>
+    </constructor>
+    </implementation>
   </binding>
+  
+  
+
+  
 </bindings>

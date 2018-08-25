@@ -108,7 +108,7 @@
 			</hbox>
 			<spacer flex="1"/>
 			<button id="logoButton1" class="v_identity_logo v_identity_logo_button"
-				label="&vident.vidLogo.label; &vident.version;"
+				label="&vident.vidLogo.label; "
 				oncommand="virtualIdentityExtension.prefDialog.openURL('http://www.absorb.it/virtual-id')"
 				tooltiptext="&vI_prefDialog.vidLogo.tooltiptext;" />
 		</vbox>
@@ -125,7 +125,7 @@
 		</tabs>
 		<spacer flex="1" />
 		<button id="logoButton2" class="v_identity_logo v_identity_logo_button"
-				label="&vident.vidLogo.label; &vident.version;"
+				label="&vident.vidLogo.label; "
 				oncommand="virtualIdentityExtension.prefDialog.openURL('http://www.absorb.it/virtual-id')"
 				tooltiptext="&vI_prefDialog.vidLogo.tooltiptext;" hidden="true" />
 	</hbox>
@@ -747,7 +747,6 @@
 	</tabpanels>
 </tabbox>
 <browserbox id="virtualIdentityExtension_remoteBrowserBox" class="virtualIdentityExtension_remoteBrowserBox" localCss="localDoc.css" flex="1" hidden="true" type="content" />
-<label id="virtualIdentityExtension_extVersion" value="&vident.version;" hidden="true" />
 </hbox>
 <textbox id="virtualIdentityExtension_debugBox" />
 </dialog>

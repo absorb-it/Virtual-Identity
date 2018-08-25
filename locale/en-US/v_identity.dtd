@@ -1,4 +1,3 @@
-<!ENTITY vident.version "0.9.36">
 <!ENTITY vident.vidLogo.label "virtual identity">
 <!ENTITY vident.accPane.prettyName.prefix "virtual Id">
 <!ENTITY vident.composeDialog.storageSave.label "save">

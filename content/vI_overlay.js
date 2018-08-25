@@ -36,8 +36,10 @@ virtualIdentityExtension.ns(function () {
 
     const virtualIdentity_ID = "{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
     AddonManager.getAddonByID(virtualIdentity_ID, function (addon) {
-      if (addon)
+      if (addon) {
         vI.extensionVersion = addon.version;
+        Log.debug("current version = " + vI.extensionVersion);
+      }
     });
 
 
