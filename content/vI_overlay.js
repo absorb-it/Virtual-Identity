@@ -46,7 +46,6 @@ virtualIdentityExtension.ns(function () {
     function extensionInit() {
       Log.debug("init")
       vI.upgrade.quickUpgrade();
-      vI.vIaccount_cleanupSystem(); // always clean leftover accounts and directories
 
       if (vI.vIprefs.get("error_console")) {
         document.getElementById("virtualIdentityExtension_vIErrorBoxSplitter").removeAttribute("hidden");
