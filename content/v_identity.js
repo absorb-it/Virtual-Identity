@@ -31,10 +31,10 @@ virtualIdentityExtension.ns(function () {
     Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_replyToSelf.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdentityExtension);
-    Components.utils.import("resource://v_identity/plugins/signatureSwitch.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_smartIdentity.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_log.js", virtualIdentityExtension);
+    Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
     Components.utils.import("resource:///modules/mailServices.js");
 
     var main = {
@@ -50,9 +50,14 @@ virtualIdentityExtension.ns(function () {
       accountManager: Components.classes["@mozilla.org/messenger/account-manager;1"]
         .getService(Components.interfaces.nsIMsgAccountManager),
 
+      promptService: Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+              .getService(Ci.nsIPromptService),
+
+      _stringBundle: Services.strings.createBundle("chrome://v_identity/locale/v_identity.properties"),
 
       // Those variables keep pointers to original functions which might get replaced later
       original_functions: {
+        GenericSendMessage: null,
         LoadIdentity: null
       },
 
@@ -121,6 +126,45 @@ virtualIdentityExtension.ns(function () {
           
           identityElement.vid = identityElement.selectedItem.vid;
         },
+        
+        GenericSendMessage: function (msgType) {
+          try { // nice, but not required for sending messages
+            // if addressCol2 is focused while sending check storage for the entered address before continuing
+            vI.storage.awOnBlur(vI.storage.focusedElement, window);
+          } catch (e) {}
+
+          Log.debug("VIdentity_GenericSendMessage");
+
+  //           if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now)
+  //             vI.addReplyToSelf(window);
+
+          // check via virtual / non-virtual constraints and storage results if mail should be sent
+          if (msgType == Ci.nsIMsgCompDeliverMode.Now) {
+            if ((main.elements.Obj_MsgIdentity.vid && vI.vIprefs.get("warn_virtual") &&
+                !(main.promptService.confirm(window, "Warning",
+                  main._stringBundle.GetStringFromName("vident.sendVirtual.warning")))) ||
+              (!main.elements.Obj_MsgIdentity.vid && vI.vIprefs.get("warn_nonvirtual") &&
+                !(main.promptService.confirm(window, "Warning",
+                  main._stringBundle.GetStringFromName("vident.sendNonvirtual.warning"))))) {
+
+              Log.debug("sending: --------------  aborted  ---------------------------------")
+              return;
+            }
+            if (vI.vIprefs.get("storage") && vI.vIprefs.get("storage_store")) {
+              var localeDatasourceAccess = new vI.rdfDatasourceAccess(window);
+              var returnValue = localeDatasourceAccess.storeVIdentityToAllRecipients(
+                main.elements.Obj_MsgIdentity.identityData, main._getRecipients())
+              if (returnValue.update == "takeover")
+                main.elements.Obj_MsgIdentity.selectedMenuItem =
+                  main.elements.Obj_MsgIdentity.addIdentityToCloneMenu(returnValue.storedIdentity);
+              if (returnValue.update == "takeover" || returnValue.update == "abort") {
+                Log.debug("sending: --------------  aborted  ---------------------------------")
+                return;
+              }
+            } else Log.debug("prepareSendMsg: storage deactivated");
+          }
+          main.original_functions.GenericSendMessage(msgType);
+        },
       },
 
       remove: function () {
@@ -176,19 +220,10 @@ virtualIdentityExtension.ns(function () {
         Log.debug("init.")
         main.unicodeConverter.charset = "UTF-8";
         
-        // make msgIdentity editable
-//         var identityElement = document.getElementById("msgIdentity");
-//         identityElement.removeAttribute("type");
-//         identityElement.editable = true;
-//         identityElement.focus();
-//         identityElement.value = identityElement.selectedItem.value;
-//         identityElement.select();
-//         identityElement.inputField.placeholder = getComposeBundle().getFormattedString("msgIdentityPlaceholder", [identityElement.selectedItem.value]);
-//         
-//         main.adapt_interface();
-        
-//         main.adapt_loadIdentity();
-        
+        if (!main.adapt_genericSendMessage()) {
+          Log.error("init failed.");
+          return;
+        }
         
         let statusbarLabel = document.getElementById("v_identity_logo_statusbar");
         statusbarLabel.setAttribute("value", statusbarLabel.getAttribute("value") + vI.extensionVersion);
@@ -199,20 +234,9 @@ virtualIdentityExtension.ns(function () {
         window.addEventListener('compose-window-reopen', main.reopen, true);
         window.addEventListener('compose-window-close', main.close, true);
 
-        // append observer to virtualIdentityExtension_fccSwitch, because it does'n work with real identities (hidden by css)
-//         document.getElementById("virtualIdentityExtension_fccSwitch").appendChild(document.getElementById("virtualIdentityExtension_msgIdentityClone_observer").cloneNode(false));
-
         main.AccountManagerObserver.register();
 
-        main.initSystemStage1();
         Log.debug("init done.")
-      },
-
-      initSystemStage1: function () {
-        Log.debug("initSystemStage1.");
-//         document.getElementById("msgIdentity").init();
-        
-        Log.debug("initSystemStage1 done.")
       },
 
       initSystemStage2: function () {
@@ -260,6 +284,14 @@ virtualIdentityExtension.ns(function () {
         Log.debug("adapt LoadIdentity");
         main.original_functions.LoadIdentity = LoadIdentity;
         LoadIdentity = main.replacement_functions.LoadIdentity;
+        return true;
+      },
+
+      adapt_genericSendMessage: function () {
+        if (main.original_functions.GenericSendMessage) return true; // only initialize this once
+        Log.debug("adapt GenericSendMessage");
+        main.original_functions.GenericSendMessage = GenericSendMessage;
+        GenericSendMessage = main.replacement_functions.GenericSendMessage;
         return true;
       },
 
