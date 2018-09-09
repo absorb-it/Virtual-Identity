@@ -316,8 +316,6 @@
 		
 		this.vid = (!existingIdentity);
 		
-		virtualIdentityExtension.signatureSwitch(existingIdentity);
-		
 		return existingIdentity;
 		]]></body>
 	</method>
