@@ -227,7 +227,7 @@ function setupFullLogging(name) {
     capp.level = Log4Moz.Level["Warn"];
     root.addAppender(capp);
 
-    dump("*** making ConsoleAppender robust against empty messages\n");
+//     dump("*** making ConsoleAppender robust against empty messages\n");
     // original implementation of doAppend dies if message data is empty
     capp.doAppend = function CApp_doAppend(message) {
       try {

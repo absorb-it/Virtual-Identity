@@ -343,6 +343,7 @@ rdfDatasource.prototype = {
   },
 
   clean: function () {
+    Log.debug("rdfDatasource clean");
     if (!this._dontRegisterObserver) this.AccountManagerObserver.unregister();
     this._flush();
   },
@@ -363,7 +364,7 @@ rdfDatasource.prototype = {
   },
 
   cleanAccountInfo: function () {
-    Log.debug("cleanAccountInfo");
+    Log.debug("rdfDatasource cleanAccountInfo");
 
     var enumerator = this._identityContainer.GetElements();
     while (enumerator && enumerator.hasMoreElements()) {
@@ -395,7 +396,7 @@ rdfDatasource.prototype = {
   },
 
   searchIdentityMismatch: function () {
-    Log.debug("searchIdentityMismatch");
+    Log.debug("rdfDatasource searchIdentityMismatch");
 
     var relevantIDs = this.getRelevantIDs();
     var mismatchIDs = [];
@@ -475,7 +476,7 @@ rdfDatasource.prototype = {
   },
 
   storeAccountInfo: function () {
-    Log.debug("storeAccounts");
+    Log.debug("rdfDatasource storeAccountInfo");
     var accounts = getAccountsArray();
     for (let acc = 0; acc < accounts.length; acc++) {
       let account = accounts[acc];
@@ -853,7 +854,7 @@ rdfDatasource.prototype = {
 
 function rdfDatasourceAccess(currentWindow) {
   this._currentWindow = currentWindow;
-  this._rdfDataSource = new rdfDatasource(this._currentWindow, "virtualIdentity_0.10.rdf", false);
+  this._rdfDataSource = new rdfDatasource(this._currentWindow, "virtualIdentity_0.10.rdf", true);
   this.stringBundle = Services.strings.createBundle("chrome://v_identity/locale/v_identity.properties");
 }
 
