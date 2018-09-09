@@ -1175,6 +1175,11 @@ rdfDatasourceImporter.prototype = {
   },
 
   _importFile: function (file) {
+    if (!file.exists() || !file.isFile() || !file.isReadable()) {
+      Log.debug("rdfDatasourceImporter _importFile: " + file.path + " not found / not readable");
+      return;
+    }
+
     Log.debug("import: preparation:");
 
     var importRdfDataFile = Components.classes["@mozilla.org/file/local;1"]
