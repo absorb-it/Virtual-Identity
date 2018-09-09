@@ -27,7 +27,8 @@ virtualIdentityExtension.ns(function () {
   with(virtualIdentityExtension.LIB) {
 
     let Log = vI.setupLogging("virtualIdentity.overlay");
-
+    var rdfDatasource;
+    
     Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
@@ -38,14 +39,13 @@ virtualIdentityExtension.ns(function () {
     AddonManager.getAddonByID(virtualIdentity_ID, function (addon) {
       if (addon) {
         vI.extensionVersion = addon.version;
-        Log.debug("current version = " + vI.extensionVersion);
       }
     });
 
 
     function extensionInit() {
-      Log.debug("init")
-      vI.upgrade.quickUpgrade();
+      rdfDatasource = new vI.rdfDatasource(window, "virtualIdentity_0.10.rdf", false); // create this for upgrade and keep it to permanatly enable accountManager observer
+      vI.upgrade.quickUpgrade(rdfDatasource);
 
       if (vI.vIprefs.get("error_console")) {
         document.getElementById("virtualIdentityExtension_vIErrorBoxSplitter").removeAttribute("hidden");
@@ -58,8 +58,5 @@ virtualIdentityExtension.ns(function () {
     }
 
     addEventListener('messagepane-loaded', extensionInit, true);
-    Log.debug("init rdfDatasource");
-    var rdfDatasource = vI.rdfDatasourceAccess(window);
-    Log.debug("init rdfDatasource done");
   }
 });
