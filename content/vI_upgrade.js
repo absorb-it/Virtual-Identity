@@ -38,7 +38,7 @@ virtualIdentityExtension.ns(function () {
       rdfDatasource: null,
 
       quickUpgrade: function (currentVersion) {
-        upgrade.rdfDatasource = new vI.rdfDatasource(window, "virtualIdentity.rdf", true);
+        upgrade.rdfDatasource = new vI.rdfDatasource(window, "virtualIdentity_0.10.rdf", true);
         if (upgrade.rdfDatasource.extUpgradeRequired())
           upgrade.extUpgrade();
         upgrade.rdfDatasource.refreshAccountInfo();
@@ -52,91 +52,45 @@ virtualIdentityExtension.ns(function () {
           currentVersion + "... extension-upgrade required.")
         switch (currentVersion) {
         case null:
+          // import pre-0.10 rdf
+          var vI_localRdfDatasource = 
+            new virtualIdentityExtension.rdfDatasourceImporter(window, 'virtualIdentity_0.10.rdf', false);
+          vI_localRdfDatasource.importFileByName("virtualIdentity.rdf");
           // no break
         default:
           upgrade.__transferMovedUserPrefs(currentVersion);
           upgrade.__removeObsoleteUserPrefs(currentVersion);
-          upgrade.__removeExtraAddedHeaders(currentVersion);
-          upgrade.__cleanupSmartMailboxFolders(currentVersion);
         }
         upgrade.rdfDatasource.storeExtVersion();
         Log.debug("extension-upgrade to " + upgrade.rdfDatasource.getCurrentExtFileVersion() + " done.");
       },
 
-      __cleanupSmartMailboxFolders: function (currentVersion) {
-        if ((!currentVersion || upgrade.versionChecker.compare(currentVersion, "0.9.26") < 0)) {
-          Log.debug("cleaning leftover 'smart mailboxes' == 'unified folder mailboxes'");
-          // remove obsolete 'smart mailboxes'=='unified folder' server entries
-          // this is only required because of a virtualIdentity bug introduced in 0.9.22 and fixed in 0.9.26
-
-          //  compare against all accounts, getAccountsArray() does not include 'smart mailboxes' == 'unified folders'
-          var all_accounts = vI.prefroot.getCharPref("mail.accountmanager.accounts").split(",");
-
-          for (let pref of vI.prefroot.getChildList("mail.server")) {
-              
-              
-            if (pref.indexOf(".hostname") == pref.length - 9 && vI.prefroot.getCharPref(pref) == "smart mailboxes") {
-              // ok, smart mailbox server found, check if it still in use
-              let server = pref.replace(/^mail\.server\./, "").replace(/\.hostname$/, "");
-              let inUse = false;
-              for (let account of all_accounts) {
-                if (vI.prefroot.getCharPref("mail.account." + account + ".server") == server)
-                  inUse = true;
-              }
-              if (!inUse) {
-                Log.debug("cleaning leftover 'smart mailbox' for server " + server);
-                for (let obsoletePref of vI.prefroot.getChildList("mail.server." + server)) {
-                  if (obsoletePref.indexOf(".directory") == obsoletePref.length - 10) {
-                    // remove obsolete 'smart mailbox' directory
-                    try {
-                      let file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsIFile);
-                      file.initWithPath(vI.prefroot.getCharPref(obsoletePref));
-                      Log.debug("removing obsolete storage Folder " + vI.prefroot.getCharPref(obsoletePref));
-                      file.remove(true);
-                    } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {};
-                  }
-                  vI.prefroot.clearUserPref(obsoletePref);
-                }
-              }
-            }
-          }
-        }
-      },
-
-      __removeExtraAddedHeaders: function (currentVersion) {
-        if ((!currentVersion || upgrade.versionChecker.compare(currentVersion, "0.6.9") < 0) &&
-          vI.prefroot.getCharPref("mailnews.headers.extraExpandedHeaders") != "") {
-          // clean extraExpandedHeaders once, because the whole header-saving and restoring was broken too long
-          Log.debug("cleaning extraExpandedHeaders");
-          vI.prefroot.setCharPref("mailnews.headers.extraExpandedHeaders", "")
-          Log.debug("cleaned extraExpandedHeaders");
-        }
-      },
-
       __transferMovedUserPrefs: function (currentVersion) {
         // transfer renamed preferences
-        var transferPrefs = [{
-          version: "0.5.3",
-          prefs: Array({
-            sourcePref: "smart_reply_ask",
-            targetPref: "idSelection_ask"
-          }, {
-            sourcePref: "smart_reply_ask_always",
-            targetPref: "idSelection_ask_always"
-          }, {
-            sourcePref: "smart_reply_autocreate",
-            targetPref: "idSelection_autocreate"
-          }, {
-            sourcePref: "smart_timestamp",
-            targetPref: "autoTimestamp"
-          }, {
-            sourcePref: "storage_prefer_smart_reply",
-            targetPref: "idSelection_storage_prefer_smart_reply"
-          }, {
-            sourcePref: "storage_ignore_smart_reply",
-            targetPref: "idSelection_storage_ignore_smart_reply"
-          })
-        }];
+        var transferPrefs = [
+//         {
+//           version: "0.5.3",
+//           prefs: Array({
+//             sourcePref: "smart_reply_ask",
+//             targetPref: "idSelection_ask"
+//           }, {
+//             sourcePref: "smart_reply_ask_always",
+//             targetPref: "idSelection_ask_always"
+//           }, {
+//             sourcePref: "smart_reply_autocreate",
+//             targetPref: "idSelection_autocreate"
+//           }, {
+//             sourcePref: "smart_timestamp",
+//             targetPref: "autoTimestamp"
+//           }, {
+//             sourcePref: "storage_prefer_smart_reply",
+//             targetPref: "idSelection_storage_prefer_smart_reply"
+//           }, {
+//             sourcePref: "storage_ignore_smart_reply",
+//             targetPref: "idSelection_storage_ignore_smart_reply"
+//           })
+//         }
+        ];
         // remove obsolete preference-tree virtualIdentity
         for (var i = 0; i < transferPrefs.length; i++) {
           // if former version of extension was at least 0.5.0, start with WizardPage 0.5.2
@@ -156,26 +110,14 @@ virtualIdentityExtension.ns(function () {
       },
 
       __removeObsoleteUserPrefs: function (currentVersion) {
-        var obsoletePrefs = [{
-          version: "0.5.0",
-          prefs: Array("aBook_use", "aBook_storedefault", "aBook_dont_update_multiple",
-            "aBook_show_switch", "aBook_warn_update", "aBook_use_for_smart_reply",
-            "aBook_prefer_smart_reply", "aBook_ignore_smart_reply", "aBook_warn_vI_replace",
-            "aBook_use_non_vI", "aBook_notification", "storeVIdentity", "experimental",
-            "storage_use_for_smart_reply")
-        }, {
-          version: "0.5.3",
-          prefs: Array("storage_use_for_smart_reply")
-        }, {
-          version: "0.5.6",
-          prefs: Array("copyEnigmailSettings")
-        }, {
-          version: "0.9",
-          prefs: Array("extensions.virtualIdentity.{2ab1b709-ba03-4361-abf9-c50b964ff75d}",
-            "extensions.virtualIdentity.{847b3a00-7ab1-11d4-8f02-006008948af5}",
-            "extensions.virtualIdentity.smart_reply_added_extraHeaders",
-            "mailnews.headers.extraExpandedHeaders")
-        }];
+        var obsoletePrefs = [
+        {
+          version: "0.10",
+          prefs: Array("extensions.virtualIdentity.show_smtp",
+            "extensions.virtualIdentity.storage_store_SMTP",
+            "extensions.virtualIdentity.storage_show_SMTP_switch")
+        }
+        ];
         // remove obsolete preference-tree virtualIdentity
         for (var i = 0; i < obsoletePrefs.length; i++) {
           // if former version of extension was at least 0.5.0, start with WizardPage 0.5.2

@@ -59,5 +59,8 @@ virtualIdentityExtension.ns(function () {
     }
 
     addEventListener('messagepane-loaded', extensionInit, true);
+    Log.debug("init rdfDatasource");
+    var rdfDatasource = vI.rdfDatasourceAccess(window);
+    Log.debug("init rdfDatasource done");
   }
 });
