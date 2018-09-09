@@ -57,7 +57,7 @@ smartIdentity.prototype = {
   init: function () {
     var msgHdr;
     var msgComposeTypeReference = Components.interfaces.nsIMsgCompType;
-    Log.debug("this._document.title=" + this._document.title + " this._msgCompose=" + this._msgCompose + " msgIdentityClone=" + this._document.getElementById("msgIdentity"))
+    Log.debug("this._document.title=" + this._document.title)
 
     var newsgroup = this._msgCompose.compFields.newsgroups;
     var autocreate = false;
@@ -155,7 +155,7 @@ smartIdentity.prototype = {
     if (!autocreate && vIprefs.get("idSelection_ask") &&
       ((this._smartIdentityCollection._allIdentities.number == 1 && vIprefs.get("idSelection_ask_always")) || this._smartIdentityCollection._allIdentities.number > 1)) {
       for (var index = 0; index < this._smartIdentityCollection._allIdentities.number; index++) {
-        Log.debug("smartIdentityReplyDialog index=" + index + ": '" + this._smartIdentityCollection._allIdentities.identityDataCollection[index].combinedName + "' " + "(" + this._smartIdentityCollection._allIdentities.identityDataCollection[index].id.value + "," + this._smartIdentityCollection._allIdentities.identityDataCollection[index].smtp.value + ")");
+        Log.debug("smartIdentityReplyDialog index=" + index + ": '" + this._smartIdentityCollection._allIdentities.identityDataCollection[index].combinedName + "' " + "(" + this._smartIdentityCollection._allIdentities.identityDataCollection[index].id.value + ")");
       }
       this._currentWindow.openDialog("chrome://v_identity/content/vI_smartReplyDialog.xul", 0,
         "chrome, dialog, modal, alwaysRaised, resizable=yes",
@@ -171,7 +171,7 @@ smartIdentity.prototype = {
   changeIdentityToSmartIdentity: function (self, selectedValue) {
     let allIdentities = self._smartIdentityCollection._allIdentities;
     Log.debug("changeIdentityToSmartIdentity selectedValue=" + selectedValue + " from " + allIdentities.number);
-    Log.debug("changeIdentityToSmartIdentity selectedValue=" + selectedValue + ": '" + allIdentities.identityDataCollection[selectedValue].combinedName + "' " + "(" + allIdentities.identityDataCollection[selectedValue].id.value + "," + allIdentities.identityDataCollection[selectedValue].smtp.value + ")");
+    Log.debug("changeIdentityToSmartIdentity selectedValue=" + selectedValue + ": '" + allIdentities.identityDataCollection[selectedValue].combinedName + "' " + "(" + allIdentities.identityDataCollection[selectedValue].id.value + ")");
     
 //     allIdentities.menuItems[selectedValue].setAttribute("accountkey", 
 //                                                         self._document.getElementById("msgIdentity").selectedMenuItem.accountkey);

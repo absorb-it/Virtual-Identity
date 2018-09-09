@@ -119,9 +119,6 @@ virtualIdentityExtension.ns(function () {
           // store identitykey locally to enable restoring after selection of next virtual identity without identitykey
           identityElement.setAttribute("identitykey", identityElement.selectedItem.getAttribute("identitykey"));
           
-          // we are not using the smtp display, smtp is selected based on base identity
-          //dentityElement.setAttribute("smtp", identityElement.identityData.smtp.value);
-          
           identityElement.vid = identityElement.selectedItem.vid;
         },
       },
@@ -313,11 +310,6 @@ virtualIdentityExtension.ns(function () {
       AccountManagerObserver: {
         _uninstall: false,
         observe: function (subject, topic, data) {
-          if (topic == "am-smtpChanges") {
-            Log.debug("smtp changes observed");
-            var msgIdentity = document.getElementById("msgIdentity");
-            document.getAnonymousElementByAttribute(msgIdentity, "class", "smtpServerListHbox").refresh();
-          }
           if (topic == "am-acceptChanges") {
             Log.debug("account changes observed");
             Log.debug("cleaning original msgIdentityPopup");
@@ -347,13 +339,11 @@ virtualIdentityExtension.ns(function () {
         register: function () {
           var obsService = Components.classes["@mozilla.org/observer-service;1"].
           getService(Components.interfaces.nsIObserverService)
-          obsService.addObserver(this, "am-smtpChanges", false);
           obsService.addObserver(this, "am-acceptChanges", false);
         },
         unregister: function () {
           var obsService = Components.classes["@mozilla.org/observer-service;1"].
           getService(Components.interfaces.nsIObserverService)
-          obsService.removeObserver(this, "am-smtpChanges");
           obsService.removeObserver(this, "am-acceptChanges");
         }
       }

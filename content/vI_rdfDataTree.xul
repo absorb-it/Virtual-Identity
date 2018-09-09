@@ -113,8 +113,8 @@
         </menu>
 		<menu id="tasksMenu" label="&tasksMenu.label;" accesskey="&tasksMenu.accesskey;">
 		<menupopup>
-            <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter(window, 'virtualIdentity.rdf');"/>
-            <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasource(window); vI_localRdfDatasource.export('virtualIdentity.rdf')"/>
+            <menuitem label="&importCmd.label;" accesskey="&importCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter(window, 'virtualIdentity_0.10.rdf');"/>
+            <menuitem label="&exportCmd.label;" accesskey="&exportCmd.accesskey;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasource(window); vI_localRdfDatasource.export('virtualIdentity_0.10.rdf')"/>
 		</menupopup>
 		</menu>
 	</menubar>
@@ -145,10 +145,6 @@
 			persist="width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
 		<treecol id="senderCol_email" label="&vI_rdfDataTree.senderColumn.label;" flex="10"
-			class="sortDirectionIndicator"
-			persist="hidden width ordinal sortDirection"/>
-		<splitter class="tree-splitter" />
-		<treecol id="smtpCol_email" label="&vI_rdfDataTree.smtpColumn.label;" flex="5"
 			class="sortDirectionIndicator"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
@@ -193,10 +189,6 @@
 			class="sortDirectionIndicator"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
-		<treecol id="smtpCol_maillist" label="&vI_rdfDataTree.smtpColumn.label;" flex="5"
-			class="sortDirectionIndicator"
-			persist="hidden width ordinal sortDirection"/>
-		<splitter class="tree-splitter" />
 		<treecol id="idCol_maillist" label="&vI_rdfDataTree.idColumn.label;" flex="10"
 			class="sortDirectionIndicator"
 			persist="hidden width ordinal sortDirection"/>		
@@ -234,10 +226,6 @@
 			persist="width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
 		<treecol id="senderCol_newsgroup" label="&vI_rdfDataTree.senderColumn.label;" flex="10"
-			class="sortDirectionIndicator"
-			persist="hidden width ordinal sortDirection"/>
-		<splitter class="tree-splitter" />
-		<treecol id="smtpCol_newsgroup" label="&vI_rdfDataTree.smtpColumn.label;" flex="5"
 			class="sortDirectionIndicator"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
@@ -283,10 +271,6 @@
 			persist="width ordinal"/>
 		<splitter class="tree-splitter" />
 		<treecol id="senderCol_filter" label="&vI_rdfDataTree.senderColumn.label;" flex="10"
-			class="sortDirectionIndicator"
-			persist="hidden width ordinal"/>
-		<splitter class="tree-splitter" />
-		<treecol id="smtpCol_filter" label="&vI_rdfDataTree.smtpColumn.label;" flex="5"
 			class="sortDirectionIndicator"
 			persist="hidden width ordinal"/>
 		<splitter class="tree-splitter" />

@@ -30,5 +30,4 @@ overlay chrome://v_identity/content/vI_rdfDataEditor.xul    chrome://v_identity/
 
 
 
-overlay chrome://messenger/content/am-smtp.xul          chrome://v_identity/content/accountManagerOverlays/vI_am-smtpOverlay.xul
 overlay chrome://messenger/content/AccountManager.xul   chrome://v_identity/content/accountManagerOverlays/vI_am-Overlay.xul

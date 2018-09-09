@@ -82,8 +82,8 @@
 				"<table><tr>" +
 					"<td class='image'><img src='chrome://v_identity/skin/vi-info.png' /></td>" +
 					"<td class='identityTable'>" +
-						"<div class='name'>" + this.elem.identityData.combinedNameHtml + "</div>" +	
-						"<table><tbody>" + this.elem.identityData.getMatrix() + "</tbody></table>" +
+						"<div class='name'>" + this.elem.identityData.combinedNameHtml + "</div>" +
+                                                "<table><tbody>" + this.elem.identityData.getMatrix() + "</tbody></table>" +
 					"</td>" +
 				"</tr></table>"
 			virtualIdentityExtension.MyLog.debug("v_identity.xml added tooltip with id='" +  this.elem.identityData.id.key + "'")
@@ -134,10 +134,10 @@
         // virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor id='" + this.value + "'")
 
 		this.description = this._identityDataStorage.sideDescription?this._identityDataStorage.sideDescription:"";
-		this.smtp = this._identityDataStorage.smtp.value;
+		this.smtp = this._identityDataStorage.id.smtpServerName;
+
         // virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor smtp='" + this.smtp + "'")
 		this.smtpStyle = "width:" + document.getElementById("virtualIdentityExtension_SmtpServerList").clientWidth + "px;";
-		this._identityDataStorage.smtp.value;
 		
 		document.getElementById("virtualIdentityExtension_tooltipPopupset").addTooltip(this, true);
 		]]>
@@ -163,117 +163,6 @@
 	<property name="smtpStyle" onget="return this.getAttribute('smtpStyle');" onset="this.setAttribute('smtpStyle', val); return val;" />
 	</implementation>
 	</binding>
-
-	<binding id="smtpServerList">
- 	<resources>
-      		<stylesheet src="chrome://global/skin/menu.css"/>
-  	</resources>
- 	<content sizetopopup="pref">
-		<xul:hbox id="smtpServerHbox" class="smtpServerHbox">
-			<xul:menulist class="smtpServerMenuList" anonid="smtpServerMenuList" allowevents="true" id="virtualIdentityExtension_SmtpServerList">
-				<xul:menupopup anonid="virtualIdentityExtension_SmtpServerList_popup" />
-			</xul:menulist>
-			<xul:checkbox  id="virtualIdentityExtension_SaveSmtpSwitch" class="vI_plain" allowevents="true" oncommand="event.stopPropagation();virtualIdentityExtension.vIprefs.set('storage_store_SMTP', this.checked);" >
-				<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveSMTP" attribute="checked" />
-				<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveSMTP" attribute="disabled" />
-			</xul:checkbox>
-			<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveSMTP" attribute="checked" />
-			<xul:observes element="virtualIdentityExtension_statusMenu_storage_saveSMTP" attribute="disabled" />
-		</xul:hbox>
-	</content>
-	<implementation>
-	<method name="addNoneServer">
-		<body><![CDATA[
-		var listitem = document.createElement("menuitem");
-		listitem.setAttribute("class", "menuitem-non-iconic");
-		listitem.setAttribute("type", "non-iconic-noaccel");
-		listitem.setAttribute("label", " ");
-		listitem.setAttribute("key", virtualIdentityExtension.NO_SMTP_TAG);
-		this._smtpPopup.insertBefore(listitem, this._smtpPopup.firstChild);
-		this._smtpMenu.selectedItem = listitem;
-		]]></body>
-	</method>
-	<method name="_addDefaultServer">
-        	<body><![CDATA[
-		var listitem = document.createElement("menuitem");
-		listitem.setAttribute("class", "menuitem-non-iconic");
-		listitem.setAttribute("type", "non-iconic-noaccel");
-		listitem.setAttribute("label", 
-          Components.classes["@mozilla.org/intl/stringbundle;1"]
-            .getService(Components.interfaces.nsIStringBundleService)
-            .createBundle("chrome://messenger/locale/messenger.properties")
-            .GetStringFromName("defaultServerTag"));
-		this._smtpPopup.appendChild(listitem);
-		this._smtpMenu.selectedItem = listitem;
-		]]></body>
-	</method>
-	<method name="_addServer">
-		<parameter name="server" />
-        	<body><![CDATA[
-		if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) {
-			var listitem = document.createElement("menuitem");
-			listitem.setAttribute("class", "menuitem-non-iconic");
-			listitem.setAttribute("type", "non-iconic-noaccel");
-			listitem.setAttribute("label", (server.description?server.description:server.hostname));
-			listitem.setAttribute("key", server.key);
-			this._smtpPopup.appendChild(listitem);
-		}
-		]]></body>
-	</method>
-	<method name="refresh">
-        <body><![CDATA[
-            this.unload();
-            this.load();
-        ]]></body>
-	</method>
-    <method name="load">
-        <body><![CDATA[
-            this._addDefaultServer();
-            this._smtpPopup.appendChild(document.createElement("menuseparator"));
-            
-			var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
-                .getService(Components.interfaces.nsISmtpService);
-			// check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
-			if (typeof(smtpService.servers) == "object") servers = smtpService.servers;
-			else servers = smtpService.smtpServers;
-			
-			while (servers && servers.hasMoreElements())
-				this._addServer(servers.getNext());
-        ]]></body>
-    </method>
-    <method name="unload">
-        <body><![CDATA[
-            var MenuItems = this._smtpPopup.childNodes
-            while (MenuItems.length > 0) { this._smtpPopup.removeChild(MenuItems[0]) }
-            this._smtpMenu.selectedItem = null;
-        ]]></body>
-    </method>
-	<constructor>
-		<![CDATA[
-            this.load();
-		]]>
-	</constructor>
-	<property name="smtp" onget="return this._smtpMenu.selectedItem.getAttribute('key');" >
-		<setter><![CDATA[
-		if (val == virtualIdentityExtension.NO_SMTP_TAG) return; // dont overwrite if not set
-		virtualIdentityExtension.MyLog.debug("v_identity.xml smtp set to '" + val + "'")
-		var MenuItems = this._smtpPopup.childNodes
-		for (var index = 0; index < MenuItems.length; index++) {
-			if (MenuItems[index].localName == "menuseparator") continue;
-			if (MenuItems[index].getAttribute("key") == val) {
-				this._smtpMenu.selectedItem = MenuItems[index];
-				break;
-			}
-		}
-		]]></setter>
-	</property>
-	<field name="_smtpPopup">document.getAnonymousElementByAttribute(this, "anonid", "virtualIdentityExtension_SmtpServerList_popup")</field>
-	<field name="_smtpMenu">document.getAnonymousElementByAttribute(this, "anonid", "smtpServerMenuList")</field>
-	<field name="_smtpService"></field>
-
-	</implementation>
-	</binding>
-	
 	
 	<binding id="fromMenuList_new" extends="chrome://global/content/bindings/menulist.xml#menulist-editable">
   	<resources>
@@ -305,7 +194,6 @@
                         <xul:observes element="virtualIdentityExtension_statusMenu_storage_saveBaseID" attribute="disabled" />
                 </xul:hbox>
               </xul:moz-input-box>
-              <!--<xul:hbox oncommand="event.stopPropagation();document.getBindingParent(this).smtp = this.smtp" xbl:inherits="showSmtp" anonid="smtpServerListHbox" class="smtpServerListHbox" />-->
               <xul:dropmarker class="menulist-dropmarker" type="menu" xbl:inherits="open,disabled,parentfocused=focused"/>
               <xul:popupset id="virtualIdentityExtension_tooltipPopupset" />
               <children includes="menupopup"/>
@@ -323,16 +211,12 @@
 		// too early to access virtualIdentityExtension_tooltipPopupset, this might break the interface
 		// it will be done in v_identity.js init
 		// document.getElementById("virtualIdentityExtension_tooltipPopupset").addTooltip(this, false);
-		
-		virtualIdentityExtension.vIprefs.addObserver("show_smtp", this.observe, this);
-                this.observe(this);
 		]]>
 	</constructor>
 	<destructor>
 		<![CDATA[
 		var tooltipPopupset = document.getElementById("virtualIdentityExtension_tooltipPopupset")
 		if (tooltipPopupset) tooltipPopupset.removeTooltip(this.tooltipElem.getAttribute("tooltip"));
-		virtualIdentityExtension.vIprefs.removeObserver("show_smtp", this.observe);
         ]]>
           </destructor>
 
@@ -437,16 +321,6 @@
 		return existingIdentity;
 		]]></body>
 	</method>
-        <property name="smtp" onget="return this.identityData.smtp.key;" > // used to detect changes from SMTP-Menu
-		<setter><![CDATA[
-		this.identityData.smtp.key = val;
-		
-		document.getElementById("virtualIdentityExtension_tooltipPopupset").addTooltip(this);
-
-		var existingIdentity = this.checkForVirtualIdentity();
-		if (existingIdentity) this.selectedMenuItem = existingIdentity;
-		]]></setter>
-        </property>
 	<property name="identityData">
 		<getter><![CDATA[
                   virtualIdentityExtension.MyLog.debug("v_identity.xml identityData getter")
@@ -469,27 +343,11 @@
 	<field name="_popupElem">document.getElementById("msgIdentityPopup")</field>
 	<field name="tooltipElem">document.getAnonymousElementByAttribute(this, "anonid", "inputBox")</field>
 	<field name="textBoxElem">document.getAnonymousElementByAttribute(this, "anonid", "input");</field>
-        <method name="observe">
-          <parameter name="self" />
-          <parameter name="aSubject" />
-          <parameter name="aTopic" />
-          <parameter name="aPrefName" />
-          <body><![CDATA[
-            self.showSmtp = 
-              virtualIdentityExtension.vIprefs.get("show_smtp");
-            var MenuItems = self._popupElem.childNodes;
-            for (var j = 0; j < MenuItems.length; j++) {
-                if (MenuItems[j].localName == "menuseparator") continue;
-                MenuItems[j].smtpStyle = "width:" + document.getElementById("virtualIdentityExtension_SmtpServerList").clientWidth + "px;";
-            }
-            ]]></body>
-        </method>
 	<property name="email" onset="this.identityData.email = val; this.label = this.identityData.combinedName; this.inputEvent()" />
 	<property name="vid" onget="return (this.getAttribute('vid') == 'true');" onset="this.setAttribute('vid',val); return val;" />
         <property name="value" onget="return this.textBoxElem.value;" onset="this.textBoxElem.value = val; return val;" />
 	<property name="extras" onget="return this.identityData.extras;" />
 	<property name="description" onget="return this.getAttribute('description');" onset="this.setAttribute('description', val); return val;" />
-        <!--<property name="showSmtp" onget="return (this.getAttribute('showSmtp') == 'true');" onset="this.setAttribute('showSmtp',val?'true':'false'); return val;" />-->
 	</implementation>
 	</binding>
 
@@ -521,7 +379,7 @@
             if (identity) {
               this.identityData = new virtualIdentityExtension.identityData(window, identity.email,
                                     identity.fullName, identity.key,
-                                    identity.smtpServerKey, null, null, true);
+                                    null, null, true);
               this._identityData.extras.readIdentityValues(identity);
               }
             ]]></body>
@@ -549,7 +407,7 @@
 
             this._setAttributeIfNotEmpty("label", this._identityData.combinedName);
             this._setAttributeIfNotEmpty("value", this._identityData.combinedName);
-            this._setAttributeIfNotEmpty("smtp", this._identityData.smtp.value);
+            this._setAttributeIfNotEmpty("smtp", this._identityData.id.smtpServerName);
             this._setAttributeIfNotEmpty("description", "");
             
             

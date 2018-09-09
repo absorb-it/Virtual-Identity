@@ -44,9 +44,9 @@
             <caption label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.caption;"/>
             <description class="widthXX">&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.desc;</description>
         </vbox>
-        <vbox id="virtualIdentityExtension_rdfAccountMismatchDialog_vbox_smtp" align="left" hidden="true" >
-            <caption label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.caption;"/>
-            <description class="widthXX">&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.desc;</description>
+        <vbox id="virtualIdentityExtension_rdfAccountMismatchDialog_vbox_smtpid" align="left" hidden="true" >
+            <caption label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.caption;"/>
+            <description class="widthXX">&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.desc;</description>
         </vbox>
         <listbox id="virtualIdentityExtension_rdfAccountMismatchDialog_listbox" suppressonselect="true" rows="5" >
         <listhead id="virtualIdentityExtension_rdfAccountMismatchDialog_listhead_identity" hidden="true">
@@ -54,10 +54,10 @@
             <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.count;" />
             <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.new;" />
         </listhead>
-        <listhead id="virtualIdentityExtension_rdfAccountMismatchDialog_listhead_smtp" hidden="true">
-            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.old;" />
-            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.count;" />
-            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.new;" />
+        <listhead id="virtualIdentityExtension_rdfAccountMismatchDialog_listhead_smtpid" hidden="true">
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.old;" />
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.count;" />
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.new;" />
         </listhead>
         <listcols><listcol/><listcol/><listcol/></listcols>
         </listbox>

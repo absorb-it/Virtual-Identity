@@ -59,7 +59,7 @@ virtualIdentityExtension.ns(function () {
           rdfAccountMismatchDialog.mismatchItems[i].key = document.getElementById("virtualIdentityExtension_mismatchLine_" + i).key
         }
         /* window.argument[2] stores callback parent */
-        window.arguments[2].repairAccountMismatch(rdfAccountMismatchDialog.type, rdfAccountMismatchDialog.mismatchItems);
+        window.arguments[2].repairMismatch(rdfAccountMismatchDialog.type, rdfAccountMismatchDialog.mismatchItems);
       }
     }
     window.addEventListener("load", rdfAccountMismatchDialog.init, false);

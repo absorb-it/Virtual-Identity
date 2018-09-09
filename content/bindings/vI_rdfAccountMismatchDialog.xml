@@ -73,7 +73,7 @@
     </content>
     <implementation>
     <constructor>
-        <![CDATA[       
+        <![CDATA[
         var menuitem = document.createElement("menuitem");
         menuitem.setAttribute("class", "mismatchMenuitem");
         menuitem.setAttribute("label",  document.getElementById("virtualIdentityExtension_removeRelationLabel").getAttribute("value"));
@@ -94,7 +94,7 @@
 
         if (oldval) {
         oldval.removeAttribute('selected');
-        if (document instanceof Components.interfaces.nsIDOMXULDocument) {
+        if (ChromeUtils.getClassName(document) == "XULDocument") {
             document.removeBroadcastListenerFor(oldval, this, "value");
             document.removeBroadcastListenerFor(oldval, this, "label");
             document.removeBroadcastListenerFor(oldval, this, "image");
@@ -115,7 +115,7 @@
         this.setAttribute('ext2', val.getAttribute('ext2'));
         // DOMAttrModified listeners slow down setAttribute calls within
         // the document, see bug 395496
-        if (document instanceof Components.interfaces.nsIDOMXULDocument) {
+        if (ChromeUtils.getClassName(document) == "XULDocument") {
             document.addBroadcastListenerFor(val, this, "value");
             document.addBroadcastListenerFor(val, this, "label");
             document.addBroadcastListenerFor(val, this, "image");
@@ -155,6 +155,7 @@
     <method name="_addIdentities">
         <body><![CDATA[
         virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: _addIdentities.");
+        Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdentityExtension);
         var accounts = virtualIdentityExtension.getAccountsArray();
         for (let acc = 0; acc < accounts.length; acc++) {
             let account = accounts[acc];
@@ -173,56 +174,56 @@
         }
 		]]></body>
     </method>
-    <method name="_addSmtp">
-        <parameter name="server" />
+    <method name="_addIdentitiesWithSmtp">
         <body><![CDATA[
-            virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: _addSmtp.");
-            const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-            var menuitem = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
-            menuitem.setAttribute("class", "mismatchMenuitem");
-            menuitem.setAttribute("label",  (server.description?server.description:server.hostname));
-            menuitem.setAttribute("ext1",  server.hostname);
-            menuitem.setAttribute("ext2",  server.username);
-            menuitem.setAttribute("key",  server.key);
-            this.appendChild(menuitem);
-        ]]></body>
-    </method>
-    <method name="_addSmtpServers">
-        <body><![CDATA[
-            virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: _addSmtpServers.");
-            
-            const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-            var menuitem = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
-            menuitem.setAttribute("class", "mismatchMenuitem");
-            menuitem.setAttribute("key", virtualIdentityExtension.identityData.DEFAULT_SMTP_TAG);
-            
-            menuitem.setAttribute("label", Components.classes["@mozilla.org/intl/stringbundle;1"]
-              .getService(Components.interfaces.nsIStringBundleService)
-              .createBundle("chrome://v_identity/locale/v_identity.properties")
-              .GetStringFromName("defaultServerTag"));
-        
-            this.appendChild(menuitem);
-            
-            var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
-                .getService(Components.interfaces.nsISmtpService);
-			// check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
-			if (typeof(smtpService.servers) == "object") servers = smtpService.servers;
-			else servers = smtpService.smtpServers;
+        virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: _addIdentitiesWithSmtp.");
+        Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdentityExtension);
+        var accounts = virtualIdentityExtension.getAccountsArray();
+        for (let acc = 0; acc < accounts.length; acc++) {
+            let account = accounts[acc];
+            let identities = virtualIdentityExtension.getIdentitiesArray(account);
+            for (let i = 0; i < identities.length; i++) {
+                let identity = identities[i];
+                const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+                var menuitem = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
+                menuitem.setAttribute("class", "mismatchMenuitem");
+                menuitem.setAttribute("label",  identity.identityName);
+                
+                ChromeUtils.import("resource:///modules/mailServices.js");
+                var servers = MailServices.smtp.servers;
 
-			while (servers && servers.hasMoreElements()) {
-				var server = servers.getNext(); 
-				if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) this._addSmtp(server);
-			}
-		]]></body>
+                var smtpName;
+                while (servers && servers.hasMoreElements()) {
+                  var server = servers.getNext();
+                  if (server instanceof Components.interfaces.nsISmtpServer &&
+                    !server.redirectorType && identity.smtpServerKey == server.key) {
+                    smtpName = server.description ? server.description : server.hostname;
+                    break;
+                  }
+                }
+
+                menuitem.setAttribute("ext1",  smtpName);
+                menuitem.setAttribute("key",  identity.key);
+                this.appendChild(menuitem);
+            }
+        }
+        virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: _addIdentitiesWithSmtp done.");
+        ]]></body>
     </method>
     <constructor>
         <![CDATA[       
         virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: constructor.");
         const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
         this.appendChild(document.createElementNS(XUL_NS, "menuseparator")); // create a new XUL menuseparator
-        if (this.getAttribute("type") == "identity") this._addIdentities();
-        else    this._addSmtpServers();
-		]]>
+        switch (this.getAttribute("type")) {
+          case "identity":
+            this._addIdentities();
+            break;
+          case "smtpid":
+            this._addIdentitiesWithSmtp();
+            break;
+        }
+        ]]>
 	</constructor>
 	</implementation>
 	</binding>

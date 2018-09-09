@@ -362,8 +362,6 @@
 				<caption label="&vI_prefDialog.composeDialog.caption2;"/>
                     <checkbox id="VIdent_identity.show_status" label="&vI_prefDialog.composeDialog.status.label;"
                         tooltiptext="&vI_prefDialog.composeDialog.status.tooltiptext;" prefstring="show_status" />
-					<checkbox id="VIdent_identity.show_smtp" label="&vI_prefDialog.composeDialog.SMTP.label;"
-						tooltiptext="&vI_prefDialog.composeDialog.SMTP.tooltiptext;" prefstring="show_smtp" />
 					<checkbox id="VIdent_identity.fcc_show_switch" label="&vI_prefDialog.composeDialog.fcc_show_switch.label;"
 						tooltiptext="&vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext;" prefstring="fcc_show_switch" />
 					<checkbox id="VIdent_identity.storage_colorIndication" label="&vI_prefDialog.composeDialog.storage_colorIndication.label;"
@@ -375,8 +373,6 @@
 						prefstring="storage_show_switch"/>
 					<checkbox id="VIdent_identity.storage_show_baseID_switch" label="&vI_prefDialog.composeDialog.show_baseID_switch.label;"
 						prefstring="storage_show_baseID_switch"/>
-					<checkbox id="VIdent_identity.storage_show_SMTP_switch" label="&vI_prefDialog.composeDialog.show_SMTP_switch.label;"
-						prefstring="storage_show_SMTP_switch"/>
 				</groupbox>
 			</tabpanel>
 		</tabpanels>
@@ -585,8 +581,8 @@
 					tooltiptext="&vI_prefDialog.storage.tooltiptext;" prefstring="storage"
 					oncommand="virtualIdentityExtension.prefDialog.base.storageConstraint(this);" />
 				<spacer class="paragraph"/>
-                <button id="VIdent_identity.storage.import" label="&vI_prefDialog.storage.import;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter(window, 'virtualIdentity.rdf');" />
-                <button id="VIdent_identity.storage.export" label="&vI_prefDialog.storage.export;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasource(window); vI_localRdfDatasource.export('virtualIdentity.rdf')" />
+                <button id="VIdent_identity.storage.import" label="&vI_prefDialog.storage.import;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasourceImporter(window, 'virtualIdentity_0.10.rdf');" />
+                <button id="VIdent_identity.storage.export" label="&vI_prefDialog.storage.export;" oncommand="var vI_localRdfDatasource = new virtualIdentityExtension.rdfDatasource(window); vI_localRdfDatasource.export('virtualIdentity_0.10.rdf')" />
 				</groupbox>
                 <groupbox>
                 <caption label="&vI_prefDialog.storageTab.Tab0.caption2;" />
@@ -619,8 +615,6 @@
 						prefstring="storage_store"/>
 					<checkbox id="VIdent_identity.storage_store_base_id" label="&vI_prefDialog.storage.store_base_id.label;"
 						prefstring="storage_store_base_id"/>
-					<checkbox id="VIdent_identity.storage_store_SMTP" label="&vI_prefDialog.storage.store_SMTP.label;"
-						prefstring="storage_store_SMTP"/>
 					<checkbox id="VIdent_identity.storage_warn_update" label="&vI_prefDialog.storage.warn_update.label;"
 						prefstring="storage_warn_update"/>
 					<checkbox id="VIdent_identity.storage_dont_update_multiple" label="&vI_prefDialog.storage.dont_update_multiple.label;"

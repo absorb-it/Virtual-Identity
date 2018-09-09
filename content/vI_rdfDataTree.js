@@ -133,8 +133,6 @@ virtualIdentityExtension.ns(function () {
             recipientCol: name,
             indexCol: idData.length + 1 + ".",
             senderCol: localIdentityData.combinedName,
-            smtpCol: localIdentityData.smtp.value,
-            //				smtpKey : localIdentityData.smtp.key,
             idCol: localIdentityData.id.value,
             usedCol: usedDate,
             used: used,
@@ -243,7 +241,7 @@ virtualIdentityExtension.ns(function () {
           .getService(Components.interfaces.nsIStringBundleService)
           .createBundle("chrome://v_identity/locale/vI_rdfDataEditor.properties");
 
-        rdfDataTreeCollection._rdfDatasource = new vI.rdfDatasource(window, "virtualIdentity.rdf");
+        rdfDataTreeCollection._rdfDatasource = new vI.rdfDatasource(window, "virtualIdentity_0.10.rdf");
 
         for (var treeType of rdfDataTreeCollection.treeTypes)
         rdfDataTreeCollection.trees[treeType] = new rdfDataTree(treeType, rdfDataTreeCollection._rdfDatasource);
@@ -512,7 +510,7 @@ virtualIdentityExtension.ns(function () {
       newItem: function () {
         var treeType = rdfDataTreeCollection.tabbox.selectedPanel.id;
         var newItemPreset = {
-          identityData: new vI.identityData(window, "", null, null, vI.NO_SMTP_TAG, null, null)
+          identityData: new vI.identityData(window, "", null, null, null, null)
         };
         var retVar = {
           treeType: null

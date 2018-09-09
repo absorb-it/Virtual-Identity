@@ -38,19 +38,15 @@ virtualIdentityExtension.ns(function () {
           var menuentry = smartReply_dialog.all_addresses.identityDataCollection[index].combinedName;
 
           var id = null;
-          var smtp = null;
-
           if (smartReply_dialog.all_addresses.identityDataCollection[index].id)
             id = smartReply_dialog.all_addresses.identityDataCollection[index].id.value;
-          if (smartReply_dialog.all_addresses.identityDataCollection[index].smtp)
-            smtp = smartReply_dialog.all_addresses.identityDataCollection[index].smtp.value;
 
           let defaultServerTag = Components.classes["@mozilla.org/intl/stringbundle;1"]
             .getService(Components.interfaces.nsIStringBundleService)
             .createBundle("chrome://messenger/locale/messenger.properties")
             .GetStringFromName("defaultServerTag")
 
-          menuentry += (id ? " (" + id + "," + (smtp ? smtp : defaultServerTag) + ")" : "")
+          menuentry += (id ? " (" + id + ")" : "")
           smartReply_dialog.add_row(menuentry);
         }
       },

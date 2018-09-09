@@ -85,8 +85,6 @@
 			oncommand="virtualIdentityExtension.vIprefs.set('storage_store', (this.getAttribute('checked') == 'true'));"/>
 		  <menuitem type="checkbox" id="virtualIdentityExtension_statusMenu_storage_saveBaseID" label="&vident.vI_Menu.saveBaseID.label;"
 			oncommand="virtualIdentityExtension.vIprefs.set('storage_store_base_id', (this.getAttribute('checked') == 'true'));"/>
-<!--		  <menuitem type="checkbox" id="virtualIdentityExtension_statusMenu_storage_saveSMTP" label="&vident.vI_Menu.saveSMTP.label;"
-                  oncommand="virtualIdentityExtension.vIprefs.set('storage_store_SMTP', (this.getAttribute('checked') == 'true'));"/>-->
 		  <menuseparator id="virtualIdentityExtension_statusMenu_separator" />
 		  <menuitem class="menuitem-iconic" label="&vident.vI_Menu.Settings.label;"
 			oncommand="window.open('chrome://v_identity/content/prefDialog/vI_prefDialog_TB3.xul', '', 'chrome, dialog, alwaysRaised, resizable=yes');" />

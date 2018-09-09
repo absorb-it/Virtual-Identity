@@ -61,12 +61,6 @@
 		</hbox>
 		<hbox>
 			<vbox><spacer flex="1"/>
-				<label value="&vI_rdfDataEditor.smtp.label;" accesskey="&vI_rdfDataEditor.smtp.accesskey;" control="virtualIdentityExtension_SmtpServerList"/>
-			<spacer flex="1"/></vbox>
-			<!-- structure to show SMTP server -->
-			<hbox id="virtualIdentityExtension_smtpServerListHbox" class="smtpServerListHbox" />
-			
-			<vbox><spacer flex="1"/>
 				<label value="&vI_rdfDataEditor.identity.label;" accesskey="&vI_rdfDataEditor.identity.accesskey;" control="virtualIdentityExtension_IdentityList"/>
 			<spacer flex="1"/></vbox>
 			<menulist id="virtualIdentityExtension_IdentityList">

@@ -43,13 +43,14 @@ Components.utils.import("resource://v_identity/identityDataExtras/PGPEncryption.
 Components.utils.import("resource://v_identity/identityDataExtras/PGPSignature.js");
 Components.utils.import("resource://v_identity/identityDataExtras/PGPMIME.js");
 
-function identityData(currentWindow, email, fullName, id, smtp, extras, sideDescription, existingID) {
+ChromeUtils.import("resource:///modules/mailServices.js");
+
+function identityData(currentWindow, email, fullName, id, extras, sideDescription, existingID) {
   this._currentWindow = currentWindow;
   this._email = email ? email : "";
   this._emailParsed = false;
   this._fullName = fullName ? fullName : "";
   this.id = new idObj(id);
-  this.smtp = new smtpObj(smtp);
   if (extras) this.extras = extras;
   else this.extras = new identityDataExtras(currentWindow);
   this.comp = { // holds the results of the last comparison for later creation of a compareMatrix
@@ -57,7 +58,6 @@ function identityData(currentWindow, email, fullName, id, smtp, extras, sideDesc
     equals: {
       fullName: {},
       email: {},
-      smtp: {},
       id: {},
       extras: {}
     }
@@ -75,7 +75,6 @@ identityData.prototype = {
   _emailParsed: null,
   _currentWindow: null,
   id: null,
-  smtp: null,
   extras: null,
   sideDescription: null,
   existingID: null, // indicates that this is a pre-defined Identity, which might handled slightly differently
@@ -138,9 +137,6 @@ identityData.prototype = {
   get idHtml() {
     return this.__makeHtml(this.id.value);
   },
-  get smtpHtml() {
-    return this.__makeHtml(this.smtp.value);
-  },
   get fullNameHtml() {
     return this.__makeHtml(this.fullName);
   },
@@ -154,9 +150,6 @@ identityData.prototype = {
   get idLabel() {
     return this.stringBundle.GetStringFromName("vident.identityData.baseID")
   },
-  get smtpLabel() {
-    return this.stringBundle.GetStringFromName("vident.identityData.SMTP")
-  },
   get fullNameLabel() {
     return this.stringBundle.GetStringFromName("vident.identityData.Name")
   },
@@ -166,7 +159,7 @@ identityData.prototype = {
 
   // creates an Duplicate of the current IdentityData, cause usually we are working with a pointer
   getDuplicate: function () {
-    return new identityData(this._currentWindow, this.email, this.fullName, this.id.key, this.smtp.key, this.extras ? this.extras.getDuplicate() : null,
+    return new identityData(this._currentWindow, this.email, this.fullName, this.id.key, this.extras ? this.extras.getDuplicate() : null,
       this.sideDescription, this.existingID);
   },
   
@@ -177,8 +170,6 @@ identityData.prototype = {
       this.fullName = identityData.fullName;
     if (identityData.id.key)
       this.id.key = identityData.id.key;
-    if (identityData.smtp.key)
-      this.smtp.key = identityData.smtp.key;
     if (identityData.sideDescription)
       this.sideDescription = identityData.sideDescription;
     if (identityData.extras)
@@ -190,7 +181,6 @@ identityData.prototype = {
     this.email = identityData.email;
     this.fullName = identityData.fullName;
     this.id.key = identityData.id.key;
-    this.smtp.key = identityData.smtp.key;
     this.sideDescription = identityData.sideDescription;
     if (this.extras) this.extras.copy(identityData.extras);
     // don't copy the currentWindow value
@@ -199,7 +189,7 @@ identityData.prototype = {
   // dependent on MsgComposeCommands, should/will only be called in ComposeDialog
   isExistingIdentity: function (ignoreFullNameWhileComparing) {
     Log.debug("isExistingIdentity: ignoreFullNameWhileComparing='" + ignoreFullNameWhileComparing + "'");
-    // 		Log.debug("base: fullName.toLowerCase()='" + this.fullName + "' email.toLowerCase()='" + this.email + "' smtp='" + this.smtp.key + "'");
+    // 		Log.debug("base: fullName.toLowerCase()='" + this.fullName + "' email.toLowerCase()='" + this.email + "'");
 
     var ignoreFullNameMatchKey = null;
     var accounts = getAccountsArray();
@@ -212,11 +202,10 @@ identityData.prototype = {
       let identities = getIdentitiesArray(account);
       for (let i = 0; i < identities.length; i++) {
         let identity = identities[i];
-        // 				Log.debug("comp: fullName.toLowerCase()='" + identity.fullName.toLowerCase() + "' email.toLowerCase()='" + identity.email.toLowerCase() + "' smtp='" + identity.smtpServerKey + "'");
+        // 				Log.debug("comp: fullName.toLowerCase()='" + identity.fullName.toLowerCase() + "' email.toLowerCase()='" + identity.email.toLowerCase() + "'");
         var email = this.email ? this.email : ""; // might be null if no identity is set
         var idEmail = identity.email ? identity.email : ""; // might be null if no identity is set
-        if ((email.toLowerCase() == idEmail.toLowerCase()) &&
-          this.smtp.equal(new smtpObj(identity.smtpServerKey))) {
+        if (email.toLowerCase() == idEmail.toLowerCase()) {
           // if fullName matches, than this is a final match
           if (this.fullName.toLowerCase() == identity.fullName.toLowerCase()) {
             Log.debug("isExistingIdentity: " + this.combinedName + " found, id='" + identity.key + "'");
@@ -287,11 +276,10 @@ identityData.prototype = {
       //       Log.debug("email not equal ('" + ((this.email)?this.email.toLowerCase():null) + "' != '" + ((compareIdentityData.email)?compareIdentityData.email.toLowerCase():null) + "')");
     }
 
-    this.comp.equals.smtp = this.smtp.equal(compareIdentityData.smtp);
     this.comp.equals.id = this.id.equal(compareIdentityData.id);
     this.comp.equals.extras = this.extras ? this.extras.equal(compareIdentityData.extras) : true;
 
-    return (this.comp.equals.fullName && this.comp.equals.email && this.comp.equals.smtp && this.comp.equals.id && this.comp.equals.extras);
+    return (this.comp.equals.fullName && this.comp.equals.email && this.comp.equals.id && this.comp.equals.extras);
   },
 
   equalsIdentity: function (compareIdentityData, getCompareMatrix) {
@@ -306,13 +294,12 @@ identityData.prototype = {
   },
 
   getCompareMatrix: function () {
-    const Items = Array("fullName", "email", "smtp", "id");
+    const Items = Array("fullName", "email", "id");
     var string = "";
     var saveBaseId = vIprefs.get("storage_store_base_id");
-    var saveSMTP = vIprefs.get("storage_store_SMTP");
     for (let item of Items) {
       var classEqual = (this.comp.equals[item]) ? "equal" : "unequal";
-      var classIgnore = (((!saveBaseId) && (item == "id")) || ((!saveSMTP) && (item == "smtp"))) ? " ignoreValues" : ""
+      var classIgnore = ((!saveBaseId) && (item == "id")) ? " ignoreValues" : ""
       string += "<tr>" +
         "<td class='col1 " + classEqual + "'>" + this[item + "Label"] + "</td>" +
         "<td class='col2 " + classEqual + classIgnore + "'>" + this.comp.compareID[item + "Html"] + "</td>" +
@@ -324,11 +311,10 @@ identityData.prototype = {
   },
 
   getMatrix: function () {
-    const Items = Array("smtp", "id");
     var string = "";
-    for (var item of Items) if (this[item + "Html"])
-        string += "<tr><td class='col1'>" + this[item + "Label"] + ":</td>" +
-        "<td class='col2'>" + this[item + "Html"] + "</td></tr>"
+    if (this["idHtml"])
+        string = "<tr><td class='col1'>" + this["idLabel"] + ":</td>" +
+        "<td class='col2'>" + this["idHtml"] + "</td></tr>"
     string += this.extras ? this.extras.getMatrix() : "";
     return string;
   }
@@ -362,20 +348,18 @@ identityCollection.prototype = {
     for (var index = 0; index < this.number; index++) {
       if (this.identityDataCollection[index].email == identityData.email &&
         (!this.identityDataCollection[index].id.key || !identityData.id.key ||
-          (this.identityDataCollection[index].id.key == identityData.id.key &&
-            this.identityDataCollection[index].smtp.key == identityData.smtp.key))) {
+          this.identityDataCollection[index].id.key == identityData.id.key)) {
         // found, so check if we can use the Name of the new field
         if (this.identityDataCollection[index].fullName == "" && identityData.fullName != "") {
           this.identityDataCollection[index].fullName = identityData.fullName;
           Log.debug("added fullName '" + identityData.fullName + "' to stored email '" + this.identityDataCollection[index].email + "'")
         }
-        // check if id_key, smtp_key or extras can be used
+        // check if id_key or extras can be used
         // only try this once, for the first Identity where id is set)
         if (!this.identityDataCollection[index].id.key && identityData.id.key) {
           this.identityDataCollection[index].id.key = identityData.id.key;
-          this.identityDataCollection[index].smtp.key = identityData.smtp.key;
           this.identityDataCollection[index].extras = identityData.extras;
-          Log.debug("added id '" + identityData.id.value + "' smtp '" + identityData.smtp.value + "' (+extras) to stored email '" + this.identityDataCollection[index].email + "'")
+          Log.debug("added id '" + identityData.id.value + "' (+extras) to stored email '" + this.identityDataCollection[index].email + "'")
         }
         return;
       }
@@ -392,68 +376,6 @@ identityCollection.prototype = {
     this.identityDataCollection = newIdentityCollection.identityDataCollection
   }
 };
-
-function smtpObj(key) {
-  this._key = key;
-  this.DEFAULT_TAG = Components.classes["@mozilla.org/intl/stringbundle;1"]
-    .getService(Components.interfaces.nsIStringBundleService)
-    .createBundle("chrome://messenger/locale/messenger.properties").
-  GetStringFromName("defaultServerTag");
-}
-smtpObj.prototype = {
-  DEFAULT_TAG: null,
-  _key: null,
-  _value: null,
-
-  set key(key) {
-    this._key = key;
-    this._value = null;
-  },
-  get key() {
-    var dummy = this.value; // just to be sure key is adapted if SMTP is not available
-    return this._key
-  },
-  get keyNice() { // the same as key but with "" for DEFAULT_SMTP_TAG
-    if (this.key == DEFAULT_SMTP_TAG) return ""; // this is the key used for default server
-    return this.key
-  },
-  get value() {
-    if (this._value == null) {
-      this._value = "";
-      if (this._key == null || this._key == "") this._key = DEFAULT_SMTP_TAG;
-      if (this._key == DEFAULT_SMTP_TAG) this._value = this.DEFAULT_TAG;
-      else if (!this._key) this._value = null;
-      else if (this._key) {
-        var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
-          .getService(Components.interfaces.nsISmtpService);
-        // check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
-        if (typeof (smtpService.servers) == "object") servers = smtpService.servers;
-        else servers = smtpService.smtpServers;
-
-        while (servers && servers.hasMoreElements()) {
-          var server = servers.getNext();
-          if (server instanceof Components.interfaces.nsISmtpServer &&
-            !server.redirectorType && this._key == server.key) {
-            this._value = server.description ? server.description : server.hostname;
-            break;
-          }
-        }
-      }
-    }
-    if (!this._value) this._key = NO_SMTP_TAG; // if non-existant SMTP handle like non available
-    return this._value;
-  },
-  equal: function (compareSmtpObj) {
-    if (this.key == NO_SMTP_TAG || compareSmtpObj.key == NO_SMTP_TAG) return true;
-    if (this.keyNice != compareSmtpObj.keyNice) {
-      //       Log.debug("smtp not equal ('" + this.keyNice + "' != '" + compareSmtpObj.keyNice + "')");
-    }
-    return (this.keyNice == compareSmtpObj.keyNice);
-  },
-  hasNoDefinedSMTP: function () {
-    return (this.key == NO_SMTP_TAG);
-  }
-}
 
 function idObj(key) {
   this._key = key;
@@ -501,6 +423,40 @@ idObj.prototype = {
     }
     return this._value;
   },
+
+  get smtpServerKey() {
+    if (!this.key)
+      return null;
+    var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
+          .getService(Components.interfaces.nsIMsgAccountManager);
+
+    var identity = AccountManager.getIdentity(this.key);
+    if (identity) {
+      if (identity.smtpServerKey)
+        return identity.smtpServerKey;
+      else
+        return MailServices.smtp.defaultServer.key
+    }
+    return null;
+  },
+  
+  get smtpServerName() {
+    if (!this.smtpServerKey)
+      return null;
+    var servers = MailServices.smtp.servers;
+
+    var smtpName;
+    while (servers && servers.hasMoreElements()) {
+      var server = servers.getNext();
+      if (server instanceof Components.interfaces.nsISmtpServer &&
+        !server.redirectorType && this.smtpServerKey == server.key) {
+        smtpName = server.description ? server.description : server.hostname;
+        break;
+      }
+    }
+    return smtpName;
+  },
+  
   equal: function (compareIdObj) {
     if (!this.key || !compareIdObj.key) return true;
     if (this.key != compareIdObj.key) {

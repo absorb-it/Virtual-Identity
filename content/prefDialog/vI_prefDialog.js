@@ -130,7 +130,6 @@ virtualIdentityExtension.ns(function () {
           "VIdent_identity.smart_detectByReceivedHeader",
           "VIdent_identity.smart_reply_for_newsgroups",
           "VIdent_identity.show_status",
-          "VIdent_identity.show_smtp",
           "VIdent_identity.fcc_show_switch",
           "VIdent_identity.menu_entry",
           "VIdent_identity.smart_reply_headers",
@@ -156,11 +155,9 @@ virtualIdentityExtension.ns(function () {
           "VIdent_identity.storage",
           "VIdent_identity.storage_store",
           "VIdent_identity.storage_store_base_id",
-          "VIdent_identity.storage_store_SMTP",
           "VIdent_identity.storage_dont_update_multiple",
           "VIdent_identity.storage_show_switch",
           "VIdent_identity.storage_show_baseID_switch",
-          "VIdent_identity.storage_show_SMTP_switch",
           "VIdent_identity.storage_colorIndication",
           "VIdent_identity.storage_warn_update",
           "VIdent_identity.storage_warn_vI_replace",
@@ -323,11 +320,9 @@ virtualIdentityExtension.ns(function () {
           var mAttr = prefDialog.base.modifyAttribute;
           mAttr("VIdent_identity.storage_store", "disabled", element.checked);
           mAttr("VIdent_identity.storage_store_base_id", "disabled", element.checked);
-          mAttr("VIdent_identity.storage_store_SMTP", "disabled", element.checked);
           mAttr("VIdent_identity.storage_dont_update_multiple", "disabled", element.checked);
           mAttr("VIdent_identity.storage_show_switch", "disabled", element.checked);
           mAttr("VIdent_identity.storage_show_baseID_switch", "disabled", element.checked);
-          mAttr("VIdent_identity.storage_show_SMTP_switch", "disabled", element.checked);
           mAttr("VIdent_identity.storage_colorIndication", "disabled", element.checked);
           mAttr("VIdent_identity.storage_warn_update", "disabled", element.checked);
           mAttr("VIdent_identity.storage_warn_vI_replace", "disabled", element.checked);

@@ -94,7 +94,7 @@ smartIdentityCollection.prototype = {
     Log.debug("new email: " + new_email);
 
     var newIdentity = new identityData(this._currentWindow, new_email,
-      this._preselectedID.fullName, this._preselectedID.key, this._preselectedID.smtpServerKey, null, null)
+      this._preselectedID.fullName, this._preselectedID.key, null, null)
 
     this._allIdentities.addWithoutDuplicates(newIdentity);
     this._selectedValue = 0;
@@ -159,7 +159,7 @@ smartIdentityCollection.prototype = {
     var number = this._headerParser.parseHeadersWithArray(header, emails, fullNames, combinedNames);
     for (var index = 0; index < number; index++) {
       var newIdentity = new identityData(this._currentWindow, emails.value[index], fullNames.value[index],
-        null, NO_SMTP_TAG, null, null);
+        null, null, null);
       identityCollection.addWithoutDuplicates(newIdentity);
     }
   },
