@@ -140,7 +140,7 @@
 <!ENTITY vI_prefDialog.storageTab.Tab0.header "Identity Storage">
 <!ENTITY vI_prefDialog.storageTab.Tab0.caption "Storage Usage">
 <!ENTITY vI_prefDialog.storageTab.Tab0.caption2 "Storage Editor">
-<!ENTITY vI_prefDialog.storageTab.DateFormat.label "Format of Dates: Leave empty or use strftime() syntax (&apos;&#37;c&apos;)">
+<!ENTITY vI_prefDialog.storageTab.DateFormat.label "Format of Dates: Leave empty or use strftime() syntax (&apos;&#37;F&apos;)">
 <!ENTITY vI_prefDialog.storage.label "store (and recall) used Identities">
 <!ENTITY vI_prefDialog.storage.tooltiptext "Used Identities might be stored related to the recipients of your email. If you write again to the same recipient, the same virtual or non-virtual Identity will be used">
 <!ENTITY vI_prefDialog.storage.openEditor "edit stored data">

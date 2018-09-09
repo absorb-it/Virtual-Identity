@@ -141,7 +141,7 @@
 <!ENTITY vI_prefDialog.storageTab.Tab0.header "Identitäts-Speicher">
 <!ENTITY vI_prefDialog.storageTab.Tab0.caption "Speicher-Benutzung">
 <!ENTITY vI_prefDialog.storageTab.Tab0.caption2 "Speicher-Editor"> <!-- translate -->
-<!ENTITY vI_prefDialog.storageTab.DateFormat.label "Datums/Zeit-Format: Leer lassen oder die strftime()-Syntax nutzen (&apos;&#37;c&apos;)"> <!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.DateFormat.label "Datums/Zeit-Format: Leer lassen oder die strftime()-Syntax nutzen (&apos;&#37;F&apos;)"> <!-- translate -->
 <!ENTITY vI_prefDialog.storage.label "speichere (und lese) genutzte Identitäten">
 <!ENTITY vI_prefDialog.storage.tooltiptext "Verwendete Identitäten können gespeichert werden. Schreibst Du dem selben Empfänger erneut eine Email, wird die gleiche virtuelle oder nicht-virtuelle Identität benutzt.">
 <!ENTITY vI_prefDialog.storage.openEditor "bearbeite gespeicherte Daten">

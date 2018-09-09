@@ -141,7 +141,7 @@
 <!ENTITY vI_prefDialog.storageTab.Tab0.header "Almacén de identidades">
 <!ENTITY vI_prefDialog.storageTab.Tab0.caption "Uso del almacén">
 <!ENTITY vI_prefDialog.storageTab.Tab0.caption2 "Storage Editor"> <!-- translate -->
-<!ENTITY vI_prefDialog.storageTab.DateFormat.label "Format of Dates: Leave empty or use strftime() syntax (&apos;&#37;c&apos;)"> <!-- translate -->
+<!ENTITY vI_prefDialog.storageTab.DateFormat.label "Format of Dates: Leave empty or use strftime() syntax (&apos;&#37;F&apos;)"> <!-- translate -->
 <!ENTITY vI_prefDialog.storage.label "guardar las identidades usadas">
 <!ENTITY vI_prefDialog.storage.tooltiptext "Las identidades usadas pueden guardarse relacionadas con los destinatarios de su correo. Si vuelve a escribir al mismo destinatario, se volverá a usar la misma identidad virtual o no virtual.">
 <!ENTITY vI_prefDialog.storage.openEditor "editar datos guardados">

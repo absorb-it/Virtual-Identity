@@ -38,6 +38,8 @@ virtualIdentityExtension.ns(function () {
     Components.utils.import("resource://v_identity/vI_rdfDatasource.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
 
+    Components.utils.import("resource://v_identity/strftime/strftime.js");
+    
     //prepares an object for easy comparison against another. for strings, lowercases them
     var prepareForComparison = function (element, field) {
       if (field == "changedCol") {
@@ -123,8 +125,10 @@ virtualIdentityExtension.ns(function () {
           changedDate = "";
         var format = vI.prefroot.getCharPref("extensions.virtualIdentity.storage_timeFormat")
         if (format != "") {
-          if (used) usedDate = new Date(parseFloat(used)).toLocaleFormat(format);
-          if (changed) changedDate = new Date(parseFloat(changed)).toLocaleFormat(format);
+          try { //	you never know what the formatString will be...
+            if (used) usedDate = strftime(format, new Date(parseFloat(used)));
+            if (changed) changedDate = strftime(format, new Date(parseFloat(changed)));
+          } catch (e) {};
         } else {
           if (used) usedDate = new Date(parseFloat(used)).toLocaleString();
           if (changed) changedDate = new Date(parseFloat(changed)).toLocaleString();
