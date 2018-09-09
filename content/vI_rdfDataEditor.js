@@ -132,14 +132,15 @@ virtualIdentityExtension.ns(function () {
 
       blurEvent: function (elementId) {
         var elem = document.getElementById(elementId);
-        var localIdentityData = new vI.identityData(window, elem.value, null, null, null, null, null, null);
+        var localIdentityData = new vI.identityData(window, elem.value, null, null, null, null, null);
         elem.value = localIdentityData.combinedName;
       },
 
       accept: function () {
         Log.debug("accept");
         var localIdentityData = new vI.identityData(window, document.getElementById("sender").value, null,
-          document.getElementById("virtualIdentityExtension_IdentityList").selectedItem.getAttribute("identitykey"),
+          document.getElementById("virtualIdentityExtension_IdentityList").selectedItem.getAttribute("identitykey"));
+
         localIdentityData.extras.getValuesFromEnvironment();
         rdfDataEditor.__rdfDatasource.updateRDF(
           document.getElementById("recipient").value,
