@@ -84,7 +84,7 @@
 <!ENTITY vI_prefDialog.composeDialog.caption3 "Přepínače úložiště">
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.label "pro nové e-maily automaticky generovat identity s časovým razítkem">
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "Při psaní nového e-mailu, přidá do obvyklé adresy odesilatele časové razítko. Jednoduchý způsob tvorby unikátních identit, ve výchozím stavu vypnuto.">
-<!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;c&apos;)"> <!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;Y&#37;m&#37;d&#37;H&#37;M&#37;S&apos;)"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.autoTimeString.label "Format of Result: &#37;l localpart, &#37;t timestamp, &#37;d domain. Default &apos;&#37;l&#37;t@&#37;d&apos;"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "poznámka: pro aktivaci dynamického odstraňování podpisu je potřeba nainstalovat a aktivovat rozšíření 'Signature Switch'. Nyní tato volba není dostupná.">
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.label "při použití virtuální identity odstranit podpis">

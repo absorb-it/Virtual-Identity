@@ -83,7 +83,7 @@
 <!ENTITY vI_prefDialog.composeDialog.caption3 "Storage Switches">
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.label "autogenerate Timestamp-Identity for new mails">
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "On composing a new email, modify your usual sender-address with a timestamp. On easy way to create unique Identities, off by default.">
-<!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;c&apos;)">
+<!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;Y&#37;m&#37;d&#37;H&#37;M&#37;S&apos;)">
 <!ENTITY vI_prefDialog.composeDialog.autoTimeString.label "Format of Result: &#37;l localpart, &#37;t timestamp, &#37;d domain. Default &apos;&#37;l&#37;t@&#37;d&apos;">
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "note: to enable dynamic deactivation of signatures you have to install (and activate) the &apos;Signature Switch&apos; extension. By now this option is not available.">
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.label "remove any &apos;Signature&apos; while using a Virtual Identity">

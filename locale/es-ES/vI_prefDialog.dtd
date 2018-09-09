@@ -84,7 +84,7 @@
 <!ENTITY vI_prefDialog.composeDialog.caption3 "Opciones del almacenamiento">
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.label "generar automáticamente identidades con marca de fecha para los nuevos correos">
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "Al redactar un nuevo mensaje, modifica su dirección de envío habitual con una marca de fecha. Una manera fácil de crear identidades únicas, desactivado por defecto.">
-<!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;c&apos;)"> <!-- translate -->
+<!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;Y&#37;m&#37;d&#37;H&#37;M&#37;S&apos;)"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.autoTimeString.label "Format of Result: &#37;l localpart, &#37;t timestamp, &#37;d domain. Default &apos;&#37;l&#37;t@&#37;d&apos;"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "nota: para habilitar la desactivación dinámica de firmas tiene que instalar (y activar) la extensión 'Signature Switch'. Por ahora, esta opción no está disponible.">
 <!ENTITY vI_prefDialog.composeDialog.HideSignature.label "eliminar cualquier firma cuando se use una identidad virtual">
