@@ -23,7 +23,6 @@
    - Contributor(s):
    - ***** END LICENSE BLOCK ***** -->
 
-<?xul-overlay href="chrome://v_identity/content/prefDialog/vI_prefDialog_TB3FolderPicker.xul"?>
 <?xul-overlay href="chrome://v_identity/content/prefDialog/vI_prefDialog.xul"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/vI_prefDialog.dtd">

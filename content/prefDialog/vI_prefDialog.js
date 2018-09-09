@@ -115,22 +115,11 @@ virtualIdentityExtension.ns(function () {
       },
 
       base: {
-        _elementIDs: ["VIdent_identity.doFcc",
-          "VIdent_identity.fccFolderPickerMode",
-          "VIdent_identity.fccFolder",
-          "VIdent_identity.fccReplyFollowsParent",
-          "VIdent_identity.draftFolderPickerMode",
-          "VIdent_identity.draftFolder",
-          "VIdent_identity.stationeryFolderPickerMode",
-          "VIdent_identity.stationeryFolder",
-          "VIdent_identity.copySMIMESettings",
-          "VIdent_identity.copyAttachVCardSettings",
-          "VIdent_identity.copyNewEnigmailSettings",
+        _elementIDs: [
           "VIdent_identity.smart_reply",
           "VIdent_identity.smart_detectByReceivedHeader",
           "VIdent_identity.smart_reply_for_newsgroups",
           "VIdent_identity.show_status",
-          "VIdent_identity.fcc_show_switch",
           "VIdent_identity.menu_entry",
           "VIdent_identity.smart_reply_headers",
           "VIdent_identity.smart_reply_filter",
@@ -156,8 +145,6 @@ virtualIdentityExtension.ns(function () {
           "VIdent_identity.storage_store",
           "VIdent_identity.storage_store_base_id",
           "VIdent_identity.storage_dont_update_multiple",
-          "VIdent_identity.storage_show_switch",
-          "VIdent_identity.storage_show_baseID_switch",
           "VIdent_identity.storage_colorIndication",
           "VIdent_identity.storage_warn_update",
           "VIdent_identity.storage_warn_vI_replace",
@@ -321,8 +308,6 @@ virtualIdentityExtension.ns(function () {
           mAttr("VIdent_identity.storage_store", "disabled", element.checked);
           mAttr("VIdent_identity.storage_store_base_id", "disabled", element.checked);
           mAttr("VIdent_identity.storage_dont_update_multiple", "disabled", element.checked);
-          mAttr("VIdent_identity.storage_show_switch", "disabled", element.checked);
-          mAttr("VIdent_identity.storage_show_baseID_switch", "disabled", element.checked);
           mAttr("VIdent_identity.storage_colorIndication", "disabled", element.checked);
           mAttr("VIdent_identity.storage_warn_update", "disabled", element.checked);
           mAttr("VIdent_identity.storage_warn_vI_replace", "disabled", element.checked);
@@ -372,14 +357,12 @@ virtualIdentityExtension.ns(function () {
       init: function () {
         prefDialog.unicodeConverter.charset = "UTF-8";
         prefDialog.base.init();
-        vI.onInitCopiesAndFolders()
 
         // check for enigmail extension
         AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function (addon) {
           if (addon && !addon.userDisabled && !addon.appDisable) {
             document.getElementById("openPGPencryption").removeAttribute("hidden");
             document.getElementById("VIdent_identity.hide_openPGP_messageSignature").removeAttribute("hidden");
-            document.getElementById("VIdent_identity.copyNewEnigmailSettings").removeAttribute("hidden");
           }
         });
 
@@ -395,7 +378,6 @@ virtualIdentityExtension.ns(function () {
 
       savePrefs: function () {
         // Copy all changes to Elements
-        vI.onSaveCopiesAndFolders();
         prefDialog.base.savePrefs();
       },
 

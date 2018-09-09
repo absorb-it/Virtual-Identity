@@ -56,6 +56,10 @@ virtualIdentityExtension.ns(function () {
           var vI_localRdfDatasource = 
             new virtualIdentityExtension.rdfDatasourceImporter(window, 'virtualIdentity_0.10.rdf', false);
           vI_localRdfDatasource.importFileByName("virtualIdentity.rdf");
+          
+          // cleanup created accounts for the last time :)
+          vI.vIaccount_cleanupSystem(); // always clean leftover accounts and directories
+
           // no break
         default:
           upgrade.__transferMovedUserPrefs(currentVersion);
@@ -113,9 +117,25 @@ virtualIdentityExtension.ns(function () {
         var obsoletePrefs = [
         {
           version: "0.10",
-          prefs: Array("extensions.virtualIdentity.show_smtp",
+          prefs: Array(
+            "extensions.virtualIdentity.show_smtp",
             "extensions.virtualIdentity.storage_store_SMTP",
-            "extensions.virtualIdentity.storage_show_SMTP_switch")
+            "extensions.virtualIdentity.storage_show_SMTP_switch",
+            "extensions.virtualIdentity.doFcc",
+            "extensions.virtualIdentity.fccFolder",
+            "extensions.virtualIdentity.fccFolderPickerMode",
+            "extensions.virtualIdentity.fccReplyFollowsParent",
+            "extensions.virtualIdentity.draftFolder",
+            "extensions.virtualIdentity.draftFolderPickerMode",
+            "extensions.virtualIdentity.stationeryFolder",
+            "extensions.virtualIdentity.stationeryFolderPickerMode",
+            "extensions.virtualIdentity.fcc_show_switch",
+            "extensions.virtualIdentity.storage_show_switch",
+            "extensions.virtualIdentity.storage_show_baseID_switch",
+            "extensions.virtualIdentity.copySMIMESettings",
+            "extensions.virtualIdentity.copyAttachVCardSettings",
+            "extensions.virtualIdentity.copyNewEnigmailSettings")
+
         }
         ];
         // remove obsolete preference-tree virtualIdentity

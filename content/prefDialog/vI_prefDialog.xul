@@ -47,20 +47,6 @@
 
 <dialog id="vI_prefDialog">
 
-<broadcaster id="VIdent_broadcaster_doFcc"/>
-
-<textbox hidden="true" id="VIdent_identity.fccFolder"
-                prefstring="fccFolder"/>
-<textbox hidden="true" id="VIdent_identity.fccFolderPickerMode"
-                prefstring="fccFolderPickerMode"/>
-<textbox hidden="true" id="VIdent_identity.draftFolder"
-                prefstring="draftFolder"/>
-<textbox hidden="true" id="VIdent_identity.draftFolderPickerMode"
-                prefstring="draftFolderPickerMode"/>
-<textbox hidden="true" id="VIdent_identity.stationeryFolder"
-                prefstring="stationeryFolder"/>
-<textbox hidden="true" id="VIdent_identity.stationeryFolderPickerMode"
-                prefstring="stationeryFolderPickerMode"/>
 <hbox>
 <tabbox id="prefTabbox" class="viewSelector ">
 	<hbox>
@@ -362,17 +348,8 @@
 				<caption label="&vI_prefDialog.composeDialog.caption2;"/>
                     <checkbox id="VIdent_identity.show_status" label="&vI_prefDialog.composeDialog.status.label;"
                         tooltiptext="&vI_prefDialog.composeDialog.status.tooltiptext;" prefstring="show_status" />
-					<checkbox id="VIdent_identity.fcc_show_switch" label="&vI_prefDialog.composeDialog.fcc_show_switch.label;"
-						tooltiptext="&vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext;" prefstring="fcc_show_switch" />
 					<checkbox id="VIdent_identity.storage_colorIndication" label="&vI_prefDialog.composeDialog.storage_colorIndication.label;"
 						prefstring="storage_colorIndication" />
-				</groupbox>
-				<groupbox>
-				<caption label="&vI_prefDialog.composeDialog.caption3;"/>
-					<checkbox id="VIdent_identity.storage_show_switch" label="&vI_prefDialog.composeDialog.show_switch.label;"
-						prefstring="storage_show_switch"/>
-					<checkbox id="VIdent_identity.storage_show_baseID_switch" label="&vI_prefDialog.composeDialog.show_baseID_switch.label;"
-						prefstring="storage_show_baseID_switch"/>
 				</groupbox>
 			</tabpanel>
 		</tabpanels>
@@ -385,14 +362,6 @@
 			hidecolumnpicker="true" hidehscroll="true" >
 		<treecols orient="vertical"><treecol flex="1" hideheader="true" primary="true"/></treecols>
 		<treechildren>
-			<treeitem container="true" open="true" >
-				<treerow><treecell label="&vI_prefDialog.sending.Folder.label;" /></treerow>
-				<treechildren>
-					<treeitem><treerow><treecell label="&vI_prefDialog.sending.Folder.row0.label;" /></treerow></treeitem>
-					<treeitem><treerow><treecell label="&vI_prefDialog.sending.Folder.row1.label;" /></treerow></treeitem>
-					<treeitem><treerow><treecell label="&vI_prefDialog.sending.Folder.row2.label;" /></treerow></treeitem>
-				</treechildren>
-			</treeitem>
 			<treeitem><treerow><treecell label="&vI_prefDialog.sending.warnings.label;" /></treerow></treeitem>
 		</treechildren>
 		</tree>
@@ -402,138 +371,6 @@
 			<tab /><tab /><tab id="VIdent_messageDraftsTab"/><tab id="VIdent_messageTemplatesTab"/><tab />
 		</tabs>
 		<tabpanels class="plain">
-			<tabpanel orient="vertical">
-				<dialogheader title="&vI_prefDialog.sending.Folder.header;"/>
-				<groupbox>
-				<caption label="&vI_prefDialog.sending.Folder.caption;"/>
-				<description class="widthXX">&vI_prefDialog.sending.Folder.desc;</description>
-        <checkbox id="VIdent_identity.copyNewEnigmailSettings" label="&vI_prefDialog.sending.Folder.Enigmail.label;"
-          prefstring="copyNewEnigmailSettings" hidden="true"/>
-				<checkbox id="VIdent_identity.copySMIMESettings" label="&vI_prefDialog.sending.Folder.SMIME.label;"
-					prefstring="copySMIMESettings"/>
-				<checkbox id="VIdent_identity.copyAttachVCardSettings" label="&vI_prefDialog.sending.Folder.VCard.label;"
-					prefstring="copyAttachVCardSettings"/>
-				</groupbox>
-			</tabpanel>
-			<tabpanel orient="vertical">
-				<dialogheader title="&vI_prefDialog.sending.fccTab.header;" />
-				<groupbox>
-				<caption label="&vI_prefDialog.sending.fccTab.caption;"/>
-				<hbox align="center">
-					<checkbox id="VIdent_identity.doFcc" label="&fccMailFolder.label;" 
-						accesskey="&fccMailFolder.accesskey;"
-						oncommand="setupFccItems();" prefstring="doFcc"/>
-				</hbox>
-				<radiogroup id="VIdent_doFcc">
-				<grid class="specialFolderPickerGrid">
-					<columns>
-						<column flex="1"/>
-						<column flex="2"/>
-					</columns>
-					<rows>
-						<radio id="VIdent_fcc_Settings_Of_Account" 
-							value="3" label="&vI_prefDialog.sending.vidAccount.label;"
-							oncommand="virtualIdentityExtension.setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
-							observes="VIdent_broadcaster_doFcc"/>
-						<radio id="VIdent_fcc_Settings_Of_Default" 
-							value="2" label="&vI_prefDialog.sending.vidDefault.label;"
-							oncommand="virtualIdentityExtension.setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
-							observes="VIdent_broadcaster_doFcc"/>
-						<row align="center" id="msgFccAccountPickerRow">
-							<radio id="VIdent_fcc_selectAccount" 
-								value="0" label="&sentFolderOn.label;"
-								accesskey="&sentFolderOn.accesskey;"
-								oncommand="virtualIdentityExtension.setPickersState('msgFccAccountPicker', 'msgFccFolderPicker', event)" 
-								observes="VIdent_broadcaster_doFcc"/>
-						</row> 
-						<row align="center" id="msgFccFolderPickerRow">
-							<radio id="VIdent_fcc_selectFolder" 
-								value="1" label="&sentInOtherFolder.label;"
-								accesskey="&sentInOtherFolder.accesskey;"
-								oncommand="virtualIdentityExtension.setPickersState('msgFccFolderPicker', 'msgFccAccountPicker', event)" 
-								observes="VIdent_broadcaster_doFcc"/>
-						</row>
-					</rows>
-				</grid>
-				</radiogroup>
-				<hbox id="fccReplyFollowsParentBox" align="center" class="fccReplyFollowsParent">
-					<checkbox wsm_persist="true" id="VIdent_identity.fccReplyFollowsParent"
-						label="&fccReplyFollowsParent.label;"
-						accesskey="&fccReplyFollowsParent.accesskey;"
-						prefattribute="value"
-						prefstring="fccReplyFollowsParent"
-						observes="VIdent_broadcaster_doFcc"/>
-				</hbox>
-				</groupbox>
-			</tabpanel>
-			<tabpanel orient="vertical">
-				<dialogheader title="&vI_prefDialog.sending.draftTab.header;" />
-				<groupbox>
-				<caption label="&vI_prefDialog.sending.draftTab.caption;" />
-				<radiogroup id="VIdent_messageDrafts">
-				<grid class="specialFolderPickerGrid">
-					<columns>
-						<column flex="1"/>
-						<column flex="2"/>
-					</columns>
-					<rows>
-						<radio id="VIdent_draft_Settings_Of_Account" 
-							value="3" label="&vI_prefDialog.sending.vidAccount.label;"
-							oncommand="virtualIdentityExtension.setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
-						<radio id="VIdent_draft_Settings_Of_Default" 
-							value="2" label="&vI_prefDialog.sending.vidDefault.label;"
-							oncommand="virtualIdentityExtension.setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
-						<row align="center" id="msgDraftsAccountPickerRow">
-							<radio id="VIdent_draft_selectAccount" 
-								value="0" label="&draftsFolderOn.label;"
-								accesskey="&draftsFolderOn.accesskey;"
-								oncommand="virtualIdentityExtension.setPickersState('msgDraftsAccountPicker', 'msgDraftsFolderPicker', event)" />
-						</row> 
-						<row align="center" id="msgDraftsFolderPickerRow">
-							<radio id="VIdent_draft_selectFolder" 
-								value="1" label="&draftInOtherFolder.label;"
-								accesskey="&draftInOtherFolder.accesskey;"
-								oncommand="virtualIdentityExtension.setPickersState('msgDraftsFolderPicker', 'msgDraftsAccountPicker', event)" />
-						</row>
-					</rows>
-				</grid>
-				</radiogroup>
-				</groupbox>
-			</tabpanel>
-			<tabpanel orient="vertical">
-				<dialogheader title="&vI_prefDialog.sending.tmplTab.header;" />
-				<groupbox>
-				<caption label="&vI_prefDialog.sending.tmplTab.caption;"/>
-				<radiogroup id="VIdent_messageTemplates">
-				<grid class="specialFolderPickerGrid">
-					<columns>
-						<column flex="1"/>
-						<column flex="2"/>
-					</columns>
-					<rows>
-						<radio id="VIdent_tmpl_Settings_Of_Account" 
-							value="3" label="&vI_prefDialog.sending.vidAccount.label;"
-							oncommand="virtualIdentityExtension.setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
-						<radio id="VIdent_tmpl_Settings_Of_Default" 
-							value="2" label="&vI_prefDialog.sending.vidDefault.label;"
-							oncommand="virtualIdentityExtension.setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
-						<row align="center" id="msgStationeryAccountPickerRow">
-							<radio id="VIdent_tmpl_selectAccount" 
-								value="0" label="&templatesFolderOn.label;"
-								accesskey="&templatesFolderOn.accesskey;"
-								oncommand="virtualIdentityExtension.setPickersState('msgStationeryAccountPicker', 'msgStationeryFolderPicker', event)" />
-						</row> 
-						<row align="center" id="msgStationeryFolderPickerRow">
-							<radio id="VIdent_tmpl_selectFolder" 
-								value="1" label="&templateInOtherFolder.label;"
-								accesskey="&templateInOtherFolder.accesskey;"
-								oncommand="virtualIdentityExtension.setPickersState('msgStationeryFolderPicker', 'msgStationeryAccountPicker', event)" />
-						</row>
-					</rows>
-				</grid>
-				</radiogroup>
-				</groupbox>
-			</tabpanel>
 			<tabpanel orient="vertical">
 				<dialogheader title="&vI_prefDialog.sending.warnings.header;"/>
 				<groupbox>
