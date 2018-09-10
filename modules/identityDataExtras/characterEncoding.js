@@ -32,6 +32,8 @@ const Cu = Components.utils;
 Cu.import("resource://v_identity/vI_identityDataExtras.js");
 Cu.import("resource://v_identity/vI_log.js");
 
+ChromeUtils.import("resource://gre/modules/CharsetMenu.jsm");
+
 let Log = setupLogging("virtualIdentity.identityDataExtras.characterEncoding");
 
 function identityDataExtrasObject_characterEncoding(currentWindow) {
@@ -41,7 +43,7 @@ function identityDataExtrasObject_characterEncoding(currentWindow) {
 }
 identityDataExtrasObject_characterEncoding.prototype = {
   __proto__: identityDataExtrasObject.prototype,
-
+  
   get valueHtml() {
     return this.valueNice;
   },
