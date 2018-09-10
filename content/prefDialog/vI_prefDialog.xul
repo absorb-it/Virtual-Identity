@@ -41,11 +41,19 @@
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/messageHeader.css"?>
 
+<dialog id="vI_prefDialog"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        onload="virtualIdentityExtension.prefDialog.init();"
+        buttons="accept,cancel,help"
+        ondialogaccept="virtualIdentityExtension.prefDialog.savePrefs();"
+        ondialoghelp="virtualIdentityExtension.prefDialog.toggleHelp();"
+        buttonlabelhelp="&vI_prefDialog.dlgHelpButton.label;"
+        persist="screenX screenY"
+        title="&vI_prefDialog.dlgTitle.label;" >
 
-<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	xmlns:xhtml="http://www.w3.org/1999/xhtml" >
-
-<dialog id="vI_prefDialog">
+<script type="application/x-javascript"
+            src="chrome://v_identity/content/prefDialog/vI_prefDialog.js" />
 
 <hbox>
 <tabbox id="prefTabbox" class="viewSelector ">
@@ -560,4 +568,3 @@
 </hbox>
 <textbox id="virtualIdentityExtension_debugBox" />
 </dialog>
-</overlay>
