@@ -100,19 +100,6 @@
 <!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "zaškrtávací políčko pro ukládání SMTP">
 <!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "obarvit části identit k uložení">
 
-<!ENTITY vI_prefDialog.sending.Folder.label "Atributy / kopie">
-<!ENTITY vI_prefDialog.sending.Folder.row0.label "Odeslat zprávu">
-<!ENTITY vI_prefDialog.sending.Folder.row1.label "Koncepty">
-<!ENTITY vI_prefDialog.sending.Folder.row2.label "Šablony">
-<!ENTITY vI_prefDialog.sending.warnings.label "Varování">
-
-<!ENTITY vI_prefDialog.sending.Folder.header "Vlastnosti zprávy">
-<!ENTITY vI_prefDialog.sending.Folder.caption "atributy pro zkopírování">
-<!ENTITY vI_prefDialog.sending.Folder.desc "kopírovat následující vlastnosti z předchozí identity:">
-<!ENTITY vI_prefDialog.sending.Folder.Enigmail.label "OpenPGP / Enigmail settings"> <!-- translate -->
-<!ENTITY vI_prefDialog.sending.Folder.SMIME.label "Nastavení S/MIME">
-<!ENTITY vI_prefDialog.sending.Folder.VCard.label "přílohy vCard">
-
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Složka používána účtem změněným Virtual Identity">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Složka používána výchozím účtem">
 

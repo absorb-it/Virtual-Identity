@@ -100,19 +100,6 @@
 <!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "zeige Schalter zum Speichern des SMTP">
 <!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "kennzeichne gespeicherte Identitäts-Bereiche farbig">
 
-<!ENTITY vI_prefDialog.sending.Folder.label "Eigenschaften / Kopien">
-<!ENTITY vI_prefDialog.sending.Folder.row0.label "Gesendete Emails">
-<!ENTITY vI_prefDialog.sending.Folder.row1.label "Entwürfe">
-<!ENTITY vI_prefDialog.sending.Folder.row2.label "Vorlagen">
-<!ENTITY vI_prefDialog.sending.warnings.label "Warnungen">
-
-<!ENTITY vI_prefDialog.sending.Folder.header "Email Eigenschaften">
-<!ENTITY vI_prefDialog.sending.Folder.caption "zu Kopierende Eigenschaften">
-<!ENTITY vI_prefDialog.sending.Folder.desc "folgende Einstellungen der zugrunde liegenden Identität kopieren:">
-<!ENTITY vI_prefDialog.sending.Folder.Enigmail.label "OpenPGP / Enigmail Einstellungen">
-<!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME Sicherheitseinstellungen">
-<!ENTITY vI_prefDialog.sending.Folder.VCard.label "anzuhängende Visitenkarten">
-
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Ordner des Accounts, der durch Virtual Identity geändert wurde">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Ordner des Standard-Accounts">
 

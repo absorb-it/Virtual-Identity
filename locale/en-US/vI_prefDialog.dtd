@@ -99,19 +99,6 @@
 <!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "checkbox for saving of SMTP">
 <!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "colorize to be stored Identity-parts">
 
-<!ENTITY vI_prefDialog.sending.Folder.label "Attributes / Copies">
-<!ENTITY vI_prefDialog.sending.Folder.row0.label "Sent Mail">
-<!ENTITY vI_prefDialog.sending.Folder.row1.label "Drafts">
-<!ENTITY vI_prefDialog.sending.Folder.row2.label "Templates">
-<!ENTITY vI_prefDialog.sending.warnings.label "Warnings">
-
-<!ENTITY vI_prefDialog.sending.Folder.header "Message Attributes">
-<!ENTITY vI_prefDialog.sending.Folder.caption "attributes to copy">
-<!ENTITY vI_prefDialog.sending.Folder.desc "copy following Attributes from underlying base Identity:">
-<!ENTITY vI_prefDialog.sending.Folder.Enigmail.label "OpenPGP / Enigmail settings">
-<!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME security settings">
-<!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard attachments">
-
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Folder used by Account changed with Virtual Identity">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Folder used by Default Account">
 

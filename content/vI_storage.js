@@ -143,15 +143,6 @@ virtualIdentityExtension.ns(function () {
             storage.replacement_functions.awSetInputAndPopupValue(inputElem, inputValue, popupElem, popupValue, rowNumber)
           }
         }
-
-        // reset unavailable storageExtras preferences
-        AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function (addon) {
-          if (addon && !addon.userDisabled && !addon.appDisable) {
-            vI.vIprefs.commit("storageExtras_openPGP_messageEncryption", false)
-            vI.vIprefs.commit("storageExtras_openPGP_messageSignature", false)
-            vI.vIprefs.commit("storageExtras_openPGP_PGPMIME", false)
-          }
-        });
       },
 
       firstUsedInputElement: null, // this stores the first Element for which a Lookup in the Storage was successfull

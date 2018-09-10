@@ -134,7 +134,10 @@ virtualIdentityExtension.ns(function () {
             "extensions.virtualIdentity.copySMIMESettings",
             "extensions.virtualIdentity.copyAttachVCardSettings",
             "extensions.virtualIdentity.copyNewEnigmailSettings",
-            "extensions.virtualIdentity.storageExtras_fcc"
+            "extensions.virtualIdentity.storageExtras_fcc",
+            "extensions.virtualIdentity.storageExtras_openPGP_messageEncryption",
+            "extensions.virtualIdentity.storageExtras_openPGP_messageSignature",
+            "extensions.virtualIdentity.storageExtras_openPGP_PGPMIME"
             )
         }
         ];

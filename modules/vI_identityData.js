@@ -38,9 +38,6 @@ Components.utils.import("resource://v_identity/identityDataExtras/messageFormat.
 Components.utils.import("resource://v_identity/identityDataExtras/characterEncoding.js");
 Components.utils.import("resource://v_identity/identityDataExtras/sMimeEncryption.js");
 Components.utils.import("resource://v_identity/identityDataExtras/sMimeSignature.js");
-Components.utils.import("resource://v_identity/identityDataExtras/PGPEncryption.js");
-Components.utils.import("resource://v_identity/identityDataExtras/PGPSignature.js");
-Components.utils.import("resource://v_identity/identityDataExtras/PGPMIME.js");
 
 ChromeUtils.import("resource:///modules/mailServices.js");
 

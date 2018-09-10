@@ -7,10 +7,6 @@
 <!ENTITY vI_prefDialog.storageExtras.sMime.label "S/MIME">
 <!ENTITY vI_prefDialog.storageExtras.sMime.messageEncryption.label "estado del cifrado">
 <!ENTITY vI_prefDialog.storageExtras.sMime.messageSignature.label "uso de la firma">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.label "OpenPGP">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "estado del cifrado">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "uso de la firma">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "uso de PGP/MIME">
 <!ENTITY vI_prefDialog.storageExtras.Warning.label "por favor, vuelva a abrir la ventana actual para aplicar estas opciones">
 
 <!ENTITY vI_storageExtras.caption.label "opciones adicionales del almacén">
@@ -20,9 +16,6 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Formato del mensaje">
 <!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME cifrado">
 <!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME firma">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "openPGP cifrado">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP firma">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "ocultar los campos inactivos">
 <!ENTITY vI_storageExtrasDataEditorOverlay.receipt.label "Acuse de recibo">
@@ -30,6 +23,3 @@
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Formato del mensaje">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: mensajes cifrados">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeSig.label "S/MIME: mensajes firmados">
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP mensajes cifrados">
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: mensajes firmados">
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: usar PGP/MIME">

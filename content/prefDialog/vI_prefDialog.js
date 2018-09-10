@@ -156,9 +156,6 @@ virtualIdentityExtension.ns(function () {
           "VIdent_identity.storageExtras_messageFormat",
           "VIdent_identity.storageExtras_sMime_messageEncryption",
           "VIdent_identity.storageExtras_sMime_messageSignature",
-          "VIdent_identity.storageExtras_openPGP_messageEncryption",
-          "VIdent_identity.storageExtras_openPGP_messageSignature",
-          "VIdent_identity.storageExtras_openPGP_PGPMIME",
           "VIdent_identity.idSelection_storage_prefer_smart_reply",
           "VIdent_identity.idSelection_storage_ignore_smart_reply",
           "VIdent_identity.idSelection_ask",
@@ -317,9 +314,6 @@ virtualIdentityExtension.ns(function () {
           mAttr("VIdent_identity.storageExtras_messageFormat", "disabled", element.checked);
           mAttr("VIdent_identity.storageExtras_sMime_messageEncryption", "disabled", element.checked);
           mAttr("VIdent_identity.storageExtras_sMime_messageSignature", "disabled", element.checked);
-          mAttr("VIdent_identity.storageExtras_openPGP_messageEncryption", "disabled", element.checked);
-          mAttr("VIdent_identity.storageExtras_openPGP_messageSignature", "disabled", element.checked);
-          mAttr("VIdent_identity.storageExtras_openPGP_PGPMIME", "disabled", element.checked);
           mAttr("storageOut", "featureDisabled", element.checked);
           mAttr("storageUp", "featureDisabled", element.checked);
           mAttr("storageUpDown", "featureDisabled", element.checked);
@@ -355,14 +349,6 @@ virtualIdentityExtension.ns(function () {
       init: function () {
         prefDialog.unicodeConverter.charset = "UTF-8";
         prefDialog.base.init();
-
-        // check for enigmail extension
-        AddonManager.getAddonByID("{847b3a00-7ab1-11d4-8f02-006008948af5}", function (addon) {
-          if (addon && !addon.userDisabled && !addon.appDisable) {
-            document.getElementById("openPGPencryption").removeAttribute("hidden");
-            document.getElementById("VIdent_identity.hide_openPGP_messageSignature").removeAttribute("hidden");
-          }
-        });
 
         prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
         prefDialog.base.smartReplyHideSignature();

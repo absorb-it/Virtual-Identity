@@ -480,21 +480,11 @@
 				<groupbox>
 				<caption label="&vI_prefDialog.storageTab.Tab2.caption;" />
 				<vbox align="left">
-					<hbox><vbox>
 					<label value="&vI_prefDialog.storageExtras.sMime.label;"/>
 					<checkbox id="VIdent_identity.storageExtras_sMime_messageEncryption" label="&vI_prefDialog.storageExtras.sMime.messageEncryption.label;"
 						prefstring="storageExtras_sMime_messageEncryption"/>
 					<checkbox id="VIdent_identity.storageExtras_sMime_messageSignature" label="&vI_prefDialog.storageExtras.sMime.messageSignature.label;"
 						prefstring="storageExtras_sMime_messageSignature"/>
-					</vbox><spacer flex="1"/><vbox id="openPGPencryption" hidden="true">
-					<label value="&vI_prefDialog.storageExtras.openPGP.label;"/>
-					<checkbox id="VIdent_identity.storageExtras_openPGP_messageEncryption" label="&vI_prefDialog.storageExtras.openPGP.messageEncryption.label;"
-						prefstring="storageExtras_openPGP_messageEncryption"/>
-					<checkbox id="VIdent_identity.storageExtras_openPGP_messageSignature" label="&vI_prefDialog.storageExtras.openPGP.messageSignature.label;"
-						prefstring="storageExtras_openPGP_messageSignature"/>
-					<checkbox id="VIdent_identity.storageExtras_openPGP_PGPMIME" label="&vI_prefDialog.storageExtras.openPGP.PGPMIME.label;"
-						prefstring="storageExtras_openPGP_PGPMIME"/>
-					</vbox></hbox>
 				</vbox>
 				<label id="storageExtrasWarning" value="&vI_prefDialog.storageExtras.Warning.label;"/>
 				</groupbox>

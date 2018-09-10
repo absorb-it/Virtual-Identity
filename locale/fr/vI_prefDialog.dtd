@@ -100,19 +100,6 @@
 <!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "cocher pour enregistrer le SMTP">
 <!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "mettre de la couleur des éléments d'identité enregistrés">
 
-<!ENTITY vI_prefDialog.sending.Folder.label "Attributs / copies">
-<!ENTITY vI_prefDialog.sending.Folder.row0.label "Courriers envoyés">
-<!ENTITY vI_prefDialog.sending.Folder.row1.label "Brouillons">
-<!ENTITY vI_prefDialog.sending.Folder.row2.label "Modèles">
-<!ENTITY vI_prefDialog.sending.warnings.label "Alertes">
-
-<!ENTITY vI_prefDialog.sending.Folder.header "Attributs du message">
-<!ENTITY vI_prefDialog.sending.Folder.caption "attributs à copier">
-<!ENTITY vI_prefDialog.sending.Folder.desc "copier les attributs suivants à partir de l'ancienne identité :">
-<!ENTITY vI_prefDialog.sending.Folder.Enigmail.label "OpenPGP / Enigmail settings"> <!-- translate -->
-<!ENTITY vI_prefDialog.sending.Folder.SMIME.label "paramètres de sécurité S/MIME">
-<!ENTITY vI_prefDialog.sending.Folder.VCard.label "pièces jointes vCard">
-
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Dossier du compte modifié par Virtual Identity">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Dossier du compte par défaut">
 

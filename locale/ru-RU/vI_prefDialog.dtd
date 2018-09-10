@@ -100,19 +100,6 @@
 <!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "Чекбокс для выборочной активации/деактивации сохранения SMTP-серверов при отправке сообщений">
 <!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "Выделять цветом элементы личных данных, которые будут сохранены при отправке сообщения">
 
-<!ENTITY vI_prefDialog.sending.Folder.label "Атрибуты / Копии / Папки">
-<!ENTITY vI_prefDialog.sending.Folder.row0.label "Отправленные сообщения">
-<!ENTITY vI_prefDialog.sending.Folder.row1.label "Черновики">
-<!ENTITY vI_prefDialog.sending.Folder.row2.label "Шаблоны">
-<!ENTITY vI_prefDialog.sending.warnings.label "Предупреждения">
-
-<!ENTITY vI_prefDialog.sending.Folder.header "Атрибуты сообщений">
-<!ENTITY vI_prefDialog.sending.Folder.caption "Атрибуты сообщений для копирования">
-<!ENTITY vI_prefDialog.sending.Folder.desc "Копировать следующие атрибуты сообщений из учетной записи:">
-<!ENTITY vI_prefDialog.sending.Folder.Enigmail.label "OpenPGP / Enigmail settings"> <!-- translate -->
-<!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME настройки безопасности">
-<!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard вложения">
-
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Папка, используемая учетной записью, изменяемой с помощью Virtual Identity">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Папка, используемая учетной записью по умолчанию">
 

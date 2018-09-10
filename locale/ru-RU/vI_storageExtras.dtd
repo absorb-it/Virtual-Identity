@@ -7,10 +7,6 @@
 <!ENTITY vI_prefDialog.storageExtras.sMime.label "S/MIME">
 <!ENTITY vI_prefDialog.storageExtras.sMime.messageEncryption.label "Состояние шифрования сообщений">
 <!ENTITY vI_prefDialog.storageExtras.sMime.messageSignature.label "Состояние цифровой подписи сообщений">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.label "OpenPGP">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "Состояние шифрования сообщений">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "Состояние цифровой подписи сообщений">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "Использование PGP/MIME">
 <!ENTITY vI_prefDialog.storageExtras.Warning.label "Пожалуйста, откройте повторно текущие окна для применения данных настроек.">
 
 <!ENTITY vI_storageExtras.caption.label "Дополнительные параметры сохранения">
@@ -20,9 +16,6 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Выбранный формат сообщений">
 <!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME: шифрование сообщений">
 <!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME: цифровая подпись сообщений">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "openPGP: шифрование сообщений">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP: цифровая подпись сообщений">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP: использование PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "Скрыть неактивные поля">
 <!ENTITY vI_storageExtrasDataEditorOverlay.receipt.label "Состояние уведомления о получении">
@@ -30,6 +23,3 @@
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Выбранный формат сообщений">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME: шифрование сообщений">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeSig.label "S/MIME: цифровая подпись сообщений">
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "openPGP: шифрование сообщений">
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP: цифровая подпись сообщений">
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP: использование PGP/MIME">

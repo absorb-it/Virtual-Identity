@@ -103,24 +103,6 @@
 		<checkbox id="vI_storageExtras_sMime_messageSignature"
 			label="&vI_storageExtrasDataEditorOverlay.sMimeSig.label;"/>
 		</hbox>
-	<!-- storageExtras_openPGP_messageEncryption -->
-		<hbox>
-		<checkbox id="vI_storageExtras_openPGP_messageEncryption_store" oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, null)" />
-		<checkbox id="vI_storageExtras_openPGP_messageEncryption"
-			label="&vI_storageExtrasDataEditorOverlay.PGPEnc.label;"/>
-		</hbox>
-	<!-- storageExtras_openPGP_messageSignature -->
-		<hbox>
-		<checkbox id="vI_storageExtras_openPGP_messageSignature_store" oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, null)" />
-		<checkbox id="vI_storageExtras_openPGP_messageSignature"
-			label="&vI_storageExtrasDataEditorOverlay.PGPSig.label;"/>
-		</hbox>
-	<!-- storageExtras_openPGP_PGPMIME -->
-		<hbox>
-		<checkbox id="vI_storageExtras_openPGP_PGPMIME_store" oncommand="virtualIdentityExtension.rdfDataEditor.identityExtras_adapt(this.id, null)" />
-		<checkbox id="vI_storageExtras_openPGP_PGPMIME"
-			label="&vI_storageExtrasDataEditorOverlay.PGPMIME.label;"/>
-		</hbox>
 	</groupbox>
 	</vbox>
 </overlay>

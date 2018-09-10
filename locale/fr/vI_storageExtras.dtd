@@ -7,10 +7,6 @@
 <!ENTITY vI_prefDialog.storageExtras.sMime.label "S/MIME">
 <!ENTITY vI_prefDialog.storageExtras.sMime.messageEncryption.label "état du chiffrement">
 <!ENTITY vI_prefDialog.storageExtras.sMime.messageSignature.label "usage de la signature">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.label "OpenPGP">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.messageEncryption.label "état du chiffrement">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.messageSignature.label "usage de la signature">
-<!ENTITY vI_prefDialog.storageExtras.openPGP.PGPMIME.label "usage de PGP/MIME">
 <!ENTITY vI_prefDialog.storageExtras.Warning.label "Veuillez ré-ouvrir les fenêtres courantes pour appliquer ces paramètres">
 
 <!ENTITY vI_storageExtras.caption.label "paramètres supplémentaires stockés">
@@ -20,9 +16,6 @@
 <!ENTITY vI_storageExtrasDataTreeOverlay.msgFormatCol.label "Format du message">
 <!ENTITY vI_storageExtrasDataTreeOverlay.sMimeEncCol.label "S/MIME : chiffrer">
 <!ENTITY vI_storageExtrasDataTreeOverlay.sMimeSigCol.label "S/MIME : signer">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPEncCol.label "chiffrement openPGP">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPSigCol.label "openPGP : signer">
-<!ENTITY vI_storageExtrasDataTreeOverlay.PGPMIMECol.label "openPGP : PGP/MIME">
 
 <!ENTITY vI_storageExtrasDataEditorOverlay.hideUnused.label "cacher les champs inactifs">
 <!ENTITY vI_storageExtrasDataEditorOverlay.receipt.label "Accusé de réception">
@@ -30,6 +23,3 @@
 <!ENTITY vI_storageExtrasDataEditorOverlay.msgFormat.label "Format du message">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeEnc.label "S/MIME : chiffrer les messages">
 <!ENTITY vI_storageExtrasDataEditorOverlay.sMimeSig.label "S/MIME : signer les messages">
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPEnc.label "Chiffrer les messages avec openPGP">
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPSig.label "openPGP : signer les messages">
-<!ENTITY vI_storageExtrasDataEditorOverlay.PGPMIME.label "openPGP : utiliser PGP/MIME">

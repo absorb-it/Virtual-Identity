@@ -100,19 +100,6 @@
 <!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "Aanvinkveld voor opslaan van SMTP">
 <!ENTITY vI_prefDialog.composeDialog.storage_colorIndication.label "Op te slaan identiteitsgedeelten kleuren">
 
-<!ENTITY vI_prefDialog.sending.Folder.label "Eigenschappen / Kopieën">
-<!ENTITY vI_prefDialog.sending.Folder.row0.label "Verzonden berichten">
-<!ENTITY vI_prefDialog.sending.Folder.row1.label "Concepten">
-<!ENTITY vI_prefDialog.sending.Folder.row2.label "Sjablonen">
-<!ENTITY vI_prefDialog.sending.warnings.label "Waarschuwingen">
-
-<!ENTITY vI_prefDialog.sending.Folder.header "Berichteigenschappen">
-<!ENTITY vI_prefDialog.sending.Folder.caption "Te kopiëren eigenschappen">
-<!ENTITY vI_prefDialog.sending.Folder.desc "De volgende eigenschappen van de vorige identiteit overnemen:">
-<!ENTITY vI_prefDialog.sending.Folder.Enigmail.label "OpenPGP / Enigmail settings"> <!-- translate -->
-<!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME-beveiligingsinstellingen">
-<!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard-bijlagen">
-
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Door account gebruikte map wijzigen bij gebruik virtuele identiteit">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Door standaardaccount gebruikte map">
 
