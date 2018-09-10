@@ -60,7 +60,7 @@ function removeAllReplyTos(vIcomposeWindow, replyToSelfObj) {
 function addReplyToSelf(vIcomposeWindow) {
   let replyToSelfObj = vIcomposeWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel");
   if (!replyToSelfObj.hasAttribute("hidden")) {
-    vIcomposeWindow.awAddRecipient("addr_reply", vIcomposeWindow.document.getElementById("virtualIdentityExtension_msgIdentityClone").label);
+    vIcomposeWindow.awAddRecipient("addr_reply", vIcomposeWindow.document.getElementById("msgIdentity").label);
     Log.debug("added ReplyToSelf");
     replyToSelfObj.setAttribute("hidden", "true");
   }
