@@ -31,44 +31,24 @@
     color:      graytext;
 }
 
-.smtpServerListHbox {
-	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#smtpServerList");
-}
 #virtualIdentityExtension_rdfDataEditorContent checkbox.vI_plain {
 	display: none;
-}
-
-.smtpServerHbox {
-	margin: -1px 0px -1px -1px;
 }
 
 .vI_msgIdentity-menulist .contentHbox {
 	padding-right: 0.25em;
 }
 
-.vI_msgIdentity-menulist .smtpServerMenuList {
-	border-style: none;
-	-moz-appearance: none;
-	margin: 0px;
-	padding: 0px;
-	color: graytext;
-	text-align: center;
-	background-color: transparent;
-}
-
-/* .identityHbox, .baseIDHbox, .smtpServerHbox {
-	background-color: transparent;
-}
-.identityHbox[checked="true"][colorize="true"], .baseIDHbox[checked="true"][colorize="true"], .smtpServerHbox[checked="true"][colorize="true"] {
+#identityHbox[checked="true"][colorize="true"] textbox, #identityHbox[checked="true"][colorize="true"] .virtIdLabel, .baseIDHbox[checked="true"][colorize="true"] {
 	background-color: rgb(235, 245, 235);
 }
-.identityHbox {
+#identityHbox {
 	padding-right: 0.25em;
-}*/
+}
 .baseIDHbox {
 	padding-left: 0.25em;
 }
-.baseIDHbox[checked="true"][colorize="true"][disabled="true"], .smtpServerHbox[checked="true"][colorize="true"][disabled="true"] {
+.baseIDHbox[checked="true"][colorize="true"][disabled="true"] {
 	background-color: transparent;
 }
 
@@ -261,16 +241,6 @@ treechildren::-moz-tree-cell(yes) {
 	visibility: visible;
 }
 
-#virtualIdentityExtension_vIStatusMenu[save="ok"][smtp="save"] {
-	list-style-image: url("chrome://v_identity/skin/vI_bl.png");
-	visibility: visible;
-}
-
-#virtualIdentityExtension_vIStatusMenu[save="base"][smtp="save"] {
-	list-style-image: url("chrome://v_identity/skin/vI_gebl.png");
-	visibility: visible;
-}
-
 treechildren::-moz-tree-cell-text(user) {
 	font-weight: bold;
 }
@@ -351,32 +321,6 @@ treechildren::-moz-tree-cell-text(locked) {
 	color: red;
 }
 
-.vI_msgIdentity-menulist .smtpServerHbox, .vI_msgIdentity-menulist .smtpServerMenuList, .vI_msgIdentity-menulist .smtpServerMenuList .menulist-label-box {
-	border: medium none ; margin: 0px; height: 1em; max-height: 1em;
-}
-
-
-.vI_msgIdentity-menulist .smtpServerMenuList .menuitem-non-iconic {
-	padding: 0;
-}
-
-.vI_msgIdentity-menulist .smtpServerMenuList .menuitem-label {
-	text-align:	center;
-}
-
-.vI_msgIdentity-menulist .smtpServerMenuList .menulist-icon, .smtpServerMenuList .menulist-dropmarker {
-	display: none;
-}
-
-.smtpServerListHbox[showSmtp="false"], .vI_msgIdentity-menulist[showSmtp="false"] .vI_menupopup-smtp {
-	display: none;
-}
-
-.autoReplyTo {
-	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#autoReplyTo");
-}
-
-
 .identityDataTooltip {
 	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#vI_identityDataTooltip");
 }
@@ -400,10 +344,6 @@ treechildren::-moz-tree-cell-text(locked) {
 	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#vI_menupopupItem");
 	padding: 0;
 	margin: 0;
-}
-
-.auto-reply-to {
-	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#autoReplyTo");
 }
 
 .vI_menupopup-icon{
@@ -444,13 +384,6 @@ treechildren::-moz-tree-cell-text(locked) {
 	margin: 	0 2px 0 0;
 	padding-right:	0;
 }
-
-.vI_menupopup-smtp {
-	margin: 1px 0pt 1px 4px;
-	text-align: center;
-	color: graytext;
-}
-
 
 #msgIdentityPopup menuitem[command="cmd_customizeFromAddress"] {
         display: none;
