@@ -109,6 +109,7 @@ virtualIdentityExtension.ns(function () {
           }
           else {
             identityElement.setAttribute("description", identityElement.selectedItem.getAttribute("description"));
+            identityElement.setAttribute("idDescription", identityElement.selectedItem.identityData.id.value);
           }
           
           if (startup)
@@ -125,6 +126,8 @@ virtualIdentityExtension.ns(function () {
           identityElement.setAttribute("identitykey", identityElement.selectedItem.getAttribute("identitykey"));
           
           identityElement.vid = identityElement.selectedItem.vid;
+          
+          identityElement.selectedItem.identityData.extras.setValuesToEnvironment()
         },
         
         GenericSendMessage: function (msgType) {
@@ -241,7 +244,7 @@ virtualIdentityExtension.ns(function () {
 
       initSystemStage2: function () {
         Log.debug("initSystemStage2.");
-        Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityClone=" + document.getElementById("msgIdentity"))
+//         Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityClone=" + document.getElementById("msgIdentity"))
 //         vI.initReplyTo(window);
         vI.storage.init();
         vI.statusmenu.init();
