@@ -6,11 +6,6 @@
 	display: none;
 }
 
-#virtualIdentityExtension_msgIdentityClone .smtpServerListHbox {
-	margin: 0px;
-	-moz-appearance: textfield;
-}
-
 .mismatchLine {
     -moz-binding: url("chrome://v_identity/content/bindings/vI_rdfAccountMismatchDialog.xml#mismatch-line");
 }
@@ -51,11 +46,11 @@
 	margin: -1px 0px -1px -1px;
 }
 
-.identity_clone-menulist .contentHbox {
+.vI_msgIdentity-menulist .contentHbox {
 	padding-right: 0.25em;
 }
 
-.identity_clone-menulist .smtpServerMenuList {
+.vI_msgIdentity-menulist .smtpServerMenuList {
 	border-style: none;
 	-moz-appearance: none;
 	margin: 0px;
@@ -347,26 +342,12 @@ treechildren::-moz-tree-cell-text(locked) {
   color: red;
 }
 
-.identity_clone-menulist {
-	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#fromMenuList_clone");
-	-moz-appearance: textfield;
-	margin: 2px 4px;
-	border: 2px solid;
-	-moz-border-top-colors: ThreeDShadow ThreeDDarkShadow;
-	-moz-border-right-colors: ThreeDHighlight ThreeDLightShadow;
-	-moz-border-bottom-colors: ThreeDHighlight ThreeDLightShadow;
-	-moz-border-left-colors: ThreeDShadow ThreeDDarkShadow;
-	padding: 0px;
-	background-color: -moz-Field;
-	color: -moz-FieldText;
-}
-
 #msgIdentity {
-	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#fromMenuList_new");
+	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#fromMenuList");
 }
 
 #msgIdentity menuitem {
-        -moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#fromPopupItem_new");
+        -moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#fromPopupItem");
 }
 
 .description-treecell {
@@ -374,24 +355,24 @@ treechildren::-moz-tree-cell-text(locked) {
 	color: red;
 }
 
-.identity_clone-menulist .smtpServerHbox, .identity_clone-menulist .smtpServerMenuList, .identity_clone-menulist .smtpServerMenuList .menulist-label-box {
+.vI_msgIdentity-menulist .smtpServerHbox, .vI_msgIdentity-menulist .smtpServerMenuList, .vI_msgIdentity-menulist .smtpServerMenuList .menulist-label-box {
 	border: medium none ; margin: 0px; height: 1em; max-height: 1em;
 }
 
 
-.identity_clone-menulist .smtpServerMenuList .menuitem-non-iconic {
+.vI_msgIdentity-menulist .smtpServerMenuList .menuitem-non-iconic {
 	padding: 0;
 }
 
-.identity_clone-menulist .smtpServerMenuList .menuitem-label {
+.vI_msgIdentity-menulist .smtpServerMenuList .menuitem-label {
 	text-align:	center;
 }
 
-.identity_clone-menulist .smtpServerMenuList .menulist-icon, .smtpServerMenuList .menulist-dropmarker {
+.vI_msgIdentity-menulist .smtpServerMenuList .menulist-icon, .smtpServerMenuList .menulist-dropmarker {
 	display: none;
 }
 
-.smtpServerListHbox[showSmtp="false"], .identity_clone-menulist[showSmtp="false"] .menupopup_clone-smtp {
+.smtpServerListHbox[showSmtp="false"], .vI_msgIdentity-menulist[showSmtp="false"] .vI_menupopup-smtp {
 	display: none;
 }
 
@@ -419,8 +400,8 @@ treechildren::-moz-tree-cell-text(locked) {
 	padding: 3px;
 }
 
-.identity_clone-popup-item {
-	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#fromPopupItem_clone");
+.vI_msgIdentity-popup-item {
+	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#vI_menupopupItem");
 	padding: 0;
 	margin: 0;
 }
@@ -429,17 +410,12 @@ treechildren::-moz-tree-cell-text(locked) {
 	-moz-binding: url("chrome://v_identity/content/bindings/v_identity.xml#autoReplyTo");
 }
 
-.menulist_clone-icon {
-	margin: 	-2px 0pt -2px 3px;
-	-moz-image-region: rect(0px, 16px, 16px, 0px);
-}
-
-.menupopup_clone-icon{
+.vI_menupopup-icon{
 	margin: 	0 3px;
 	padding:	0;
 }
 
-.menulist_clone-textbox, .menupopup_clone-text, .menupopup_clone-description {
+.vI_menupopup-text, .vI_menupopup-description {
 	margin:		0;
 	padding: 	1px;
 	background-color: transparent;
@@ -452,28 +428,28 @@ treechildren::-moz-tree-cell-text(locked) {
 	display:	none;
 }
 
-.menu_clone-vid, .menupopup_clone-vid {
+.vI_menu-vid, .vI_menupopup-vid {
 	margin: 	0 5px 0 0;
 	font-style:	italic;
 	color:		graytext;
 }
 
-.menupopup_clone-vid {
+.vI_menupopup-vid {
 	margin: 0;
 	padding-left: 0;
 }
-.menupopup_clone-description, .menupopup_clone-idDescription, .menu_clone-description, .menu_clone-idDescription {
+.vI_menupopup-description, .vI_menupopup-idDescription, .vI_menu-description, .vI_menu-idDescription {
 	margin: 	0 5px 0 0;
 	font-style:	italic;
 	color:		graytext;
 }
 
-.menupopup_clone-description {
+.vI_menupopup-description {
 	margin: 	0 2px 0 0;
 	padding-right:	0;
 }
 
-.menupopup_clone-smtp {
+.vI_menupopup-smtp {
 	margin: 1px 0pt 1px 4px;
 	text-align: center;
 	color: graytext;
@@ -484,26 +460,21 @@ treechildren::-moz-tree-cell-text(locked) {
         display: none;
 }
 
-#fromMenuList_new[vid="true"], .identity_clone-popup-item[vid="true"] {
+#fromMenuList[vid="true"], .vI_msgIdentity-popup-item[vid="true"] {
 	list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook-toolbar-small.png");
 	-moz-image-region: rect(0px 16px 16px 0px);	
 }
 
-.vI_menupopupItem[vid="false"] .menupopup_clone-idDescription, #msgIdentity[vid="false"] .menu_clone-idDescription {
+.vI_menupopupItem[vid="false"] .vI_menupopup-idDescription, #msgIdentity[vid="false"] .vI_menu-idDescription {
         display: none;
 }
-.vI_menupopupItem[vid="true"] .menupopup_clone-description, #msgIdentity[vid="true"] .menu_clone-description {
+.vI_menupopupItem[vid="true"] .vI_menupopup-description, #msgIdentity[vid="true"] .vI_menu-description {
         display: none;
 }
 
-#fromMenuList_new[vid="false"], .identity_clone-popup-item[vid="false"] {
+#fromMenuList[vid="false"], .vI_msgIdentity-popup-item[vid="false"] {
 	list-style-image: url("chrome://messenger/skin/addressbook/icons/abcard.png");
 }
-
-/*  this is only for TB < 3 to indicate virtual Identity, now done with autocomplete css */
-/*.menulist_clone-textbox[nomatch="true"] {
-  	color: green;
-}*/
 
 .virtIdLabel[vid="false"], .virtualIdentityExtension_Logo[vid="false"] {
 	display:	none;
@@ -520,7 +491,7 @@ treechildren::-moz-tree-cell-text(locked) {
 	-moz-image-region: rect(0px 16px 16px 0px);
 }
 
-#fromPopupItem_clone .menulist-menupopup {
+#vI_menupopupItem .menulist-menupopup {
 	padding: 0;
 }
 

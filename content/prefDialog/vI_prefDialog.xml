@@ -94,9 +94,9 @@
     <binding id="selectorListitem" extends="chrome://global/content/bindings/listbox.xml#listitem">
     <content allowevents="true">
         <xul:checkbox anonid="selector_checkbox" />
-        <xul:label class="menupopup_clone-text" xbl:inherits="value=label,accesskey,crop" />
-        <xul:label class="menupopup_clone-description" anonid="debugNote" xbl:inherits="value=value, hidden=debugNotesHidden" hidden="true" />
-        <xul:label class="menupopup_clone-description" xbl:inherits="value=description" flex="1" />
+        <xul:label class="vI_menupopup-text" xbl:inherits="value=label,accesskey,crop" />
+        <xul:label class="vI_menupopup-description" anonid="debugNote" xbl:inherits="value=value, hidden=debugNotesHidden" hidden="true" />
+        <xul:label class="vI_menupopup-description" xbl:inherits="value=description" flex="1" />
     </content>
     <implementation>
     <property name="checked" onget="return this._checkbox.checked;" onset="this._checkbox.checked = val;" />

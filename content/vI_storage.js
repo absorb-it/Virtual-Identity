@@ -206,7 +206,7 @@ virtualIdentityExtension.ns(function () {
           for (var j = 0; j < storageResult.identityCollection.number; j++) {
             Log.debug("__updateVIdentityFromStorage adding: " + storageResult.identityCollection.identityDataCollection[j].combinedName);
             let menuItem = currentDocument.getElementById("msgIdentity")
-              .addIdentityToCloneMenu(storageResult.identityCollection.identityDataCollection[j])
+              .addIdentityToMsgIdentityMenu(storageResult.identityCollection.identityDataCollection[j])
             if (!newMenuItem) newMenuItem = menuItem;
           }
         }

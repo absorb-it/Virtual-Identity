@@ -159,7 +159,7 @@ virtualIdentityExtension.ns(function () {
                 main.elements.Obj_MsgIdentity.identityData, main._getRecipients())
               if (returnValue.update == "takeover")
                 main.elements.Obj_MsgIdentity.selectedMenuItem =
-                  main.elements.Obj_MsgIdentity.addIdentityToCloneMenu(returnValue.storedIdentity);
+                  main.elements.Obj_MsgIdentity.addIdentityToMsgIdentityMenu(returnValue.storedIdentity);
               if (returnValue.update == "takeover" || returnValue.update == "abort") {
                 Log.debug("sending: --------------  aborted  ---------------------------------")
                 return;
@@ -244,7 +244,7 @@ virtualIdentityExtension.ns(function () {
 
       initSystemStage2: function () {
         Log.debug("initSystemStage2.");
-//         Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityClone=" + document.getElementById("msgIdentity"))
+//         Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityMenu=" + document.getElementById("msgIdentity"))
 //         vI.initReplyTo(window);
         vI.storage.init();
         vI.statusmenu.init();
@@ -301,7 +301,7 @@ virtualIdentityExtension.ns(function () {
       reopen: function () {
         vI.clearDebugOutput();
         Log.debug("composeDialog reopened. (msgType " + gMsgCompose.type + ")")
-        Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityClone=" + document.getElementById("msgIdentity"))
+        Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityMenu=" + document.getElementById("msgIdentity"))
 
         // clean all elements
         document.getElementById("msgIdentity").clean();
@@ -366,9 +366,9 @@ virtualIdentityExtension.ns(function () {
             } else {
               tmp_identity.id.key = MailServices.accounts.defaultAccount.defaultIdentity.key
             }
-            Log.debug("adding previous identity to msgIdentityClone");
-            msgIdentity.selectedMenuItem = msgIdentity.addIdentityToCloneMenu(tmp_identity);
-            Log.debug("adding previous identity to msgIdentityClone done.");
+            Log.debug("adding previous identity to msgIdentityMenu");
+            msgIdentity.selectedMenuItem = msgIdentity.addIdentityToMsgIdentityMenu(tmp_identity);
+            Log.debug("adding previous identity to msgIdentityMenu done.");
           }
         },
         register: function () {

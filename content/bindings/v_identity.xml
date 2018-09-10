@@ -116,13 +116,13 @@
 	</implementation>
 	</binding>	
 	
-	<binding id="fromPopupItem_clone" extends="chrome://global/content/bindings/menu.xml#menuitem">
+	<binding id="vI_menupopupItem" extends="chrome://global/content/bindings/menu.xml#menuitem">
   	<content excludes="template,observes,menupopup">
-		<xul:image class="menupopup_clone-icon" xbl:inherits="src"/>
-		<xul:label class="menupopup_clone-text" xbl:inherits="value=label,accesskey,crop" crop="right" flex="1"/>
-		<xul:label value="&vident.accPane.prettyName.prefix;" class="menupopup_clone-vid virtIdLabel" vid="false" xbl:inherits="vid" crop="right"/>
-      		<xul:label class="menupopup_clone-description" xbl:inherits="value=description" crop="right"/>
-		<xul:label class="menupopup_clone-smtp" xbl:inherits="value=smtp,style=smtpStyle" crop="right"/>
+		<xul:image class="vI_menupopup-icon" xbl:inherits="src"/>
+		<xul:label class="vI_menupopup-text" xbl:inherits="value=label,accesskey,crop" crop="right" flex="1"/>
+		<xul:label value="&vident.accPane.prettyName.prefix;" class="vI_menupopup-vid virtIdLabel" vid="false" xbl:inherits="vid" crop="right"/>
+      		<xul:label class="vI_menupopup-description" xbl:inherits="value=description" crop="right"/>
+		<xul:label class="vI_menupopup-smtp" xbl:inherits="value=smtp,style=smtpStyle" crop="right"/>
   	</content>
   	<implementation>
 	<constructor>
@@ -131,12 +131,12 @@
 		
 		this.label = this._identityDataStorage.combinedName;
 		this.value = this._identityDataStorage.id.key;
-        // virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor id='" + this.value + "'")
+        // virtualIdentityExtension.MyLog.debug("v_identity.xml vI_menupopupItem constructor id='" + this.value + "'")
 
 		this.description = this._identityDataStorage.sideDescription?this._identityDataStorage.sideDescription:"";
 		this.smtp = this._identityDataStorage.id.smtpServerName;
 
-        // virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_clone constructor smtp='" + this.smtp + "'")
+        // virtualIdentityExtension.MyLog.debug("v_identity.xml vI_menupopupItem constructor smtp='" + this.smtp + "'")
 		this.smtpStyle = "width:" + document.getElementById("virtualIdentityExtension_SmtpServerList").clientWidth + "px;";
 		
 		document.getElementById("virtualIdentityExtension_tooltipPopupset").addTooltip(this, true);
@@ -164,7 +164,7 @@
 	</implementation>
 	</binding>
 	
-	<binding id="fromMenuList_new" extends="chrome://global/content/bindings/menulist.xml#menulist-editable">
+	<binding id="fromMenuList" extends="chrome://global/content/bindings/menulist.xml#menulist-editable">
   	<resources>
       		<stylesheet src="chrome://global/skin/menu.css"/>
 		<stylesheet src="chrome://global/skin/autocomplete.css"/>
@@ -180,22 +180,22 @@
                             crop="right" highlightnonmatches="true"/>
                 </xul:vbox>
                 <xul:vbox><xul:spacer flex="1" />
-                        <xul:label value="&vident.accPane.prettyName.prefix; - " class="menu_clone-vid virtIdLabel" xbl:inherits="vid" crop="right"/>
+                        <xul:label value="&vident.accPane.prettyName.prefix; - " class="vI_menu-vid virtIdLabel" xbl:inherits="vid" crop="right"/>
                 <xul:spacer flex="1" /></xul:vbox>
                 <xul:observes element="virtualIdentityExtension_statusMenu_storage_save" attribute="checked" />
                 <xul:hbox id="baseIDHbox" class="baseIDHbox" >
                         <xul:vbox><xul:spacer flex="1" />
                                 <xul:hbox>
-                                  <!--<xul:label id="msgIdentity_base_id_label" class="menu_clone-description" xbl:inherits="hidden=base_id_key_hidden" crop="right" hidden="true"/>-->
-                                        <xul:label id="virtualIdentityExtension_msgIdentityClone_label" class="menu_clone-description"
+                                  <!--<xul:label id="msgIdentity_base_id_label" class="vI_menu-description" xbl:inherits="hidden=base_id_key_hidden" crop="right" hidden="true"/>-->
+                                        <xul:label id="virtualIdentityExtension_msgIdentity_label" class="vI_menu-description"
                                                    xbl:inherits="value=description, vid" crop="right"/>
-                                        <xul:label id="virtualIdentityExtension_msgIdentityClone_idLabel" class="menu_clone-idDescription"
+                                        <xul:label id="virtualIdentityExtension_msgIdentity_idLabel" class="vI_menu-idDescription"
                                                    xbl:inherits="value=idDescription, vid" crop="right"/>
-<!--                                        <xul:label class="menupopup_clone-smtp virtualIdentityExtension_debug_interface" 
+<!--                                        <xul:label class="vI_menupopup-smtp virtualIdentityExtension_debug_interface" 
                                                    xbl:inherits="value=smtp,style=smtpStyle" crop="right"/>
-                                        <xul:label class="menupopup_clone-accountkey virtualIdentityExtension_debug_interface" 
+                                        <xul:label class="vI_menupopup-accountkey virtualIdentityExtension_debug_interface" 
                                                    xbl:inherits="value=accountkey" crop="right"/>
-                                        <xul:label class="menupopup_clone-identitykey virtualIdentityExtension_debug_interface" 
+                                        <xul:label class="vI_menupopup-identitykey virtualIdentityExtension_debug_interface" 
                                         xbl:inherits="value=identitykey" crop="right"/>-->
                                 </xul:hbox>
                         <xul:spacer flex="1" /></xul:vbox>
@@ -229,10 +229,10 @@
         ]]>
           </destructor>
 
-	<method name="addIdentityToCloneMenu">
+	<method name="addIdentityToMsgIdentityMenu">
 		<parameter name="localIdentityData" />
 		<body><![CDATA[
-		var existingItem = this._isExistingCloneMenuItem(localIdentityData);
+		var existingItem = this._isExistingMenuItem(localIdentityData);
 //                var existingItem = localIdentityData.isExistingIdentity();
 		if (!existingItem) {
 			var MenuItem = document.createElement("menuitem");
@@ -243,12 +243,12 @@
 		else return existingItem;
 		]]></body>
 	</method>
-	<method name="addIdentitiesToCloneMenu">
+	<method name="addIdentitiesToMsgIdentityMenu">
 		<parameter name="identityCollection" />
 		<body><![CDATA[
 		for (var index = 0; index < identityCollection.number; index++)
 			identityCollection.menuItems[index] =
-				this.addIdentityToCloneMenu(identityCollection.identityDataCollection[index])
+				this.addIdentityToMsgIdentityMenu(identityCollection.identityDataCollection[index])
 		]]></body>
 	</method>
 	<method name="_getMenuItemForIdentity">
@@ -284,10 +284,10 @@
                           }
 		]]></setter>	
 	</property>
-	<method name="_isExistingCloneMenuItem">
+	<method name="_isExistingMenuItem">
 		<parameter name="localIdentityData" />
 		<body><![CDATA[
-                //virtualIdentityExtension.MyLog.debug("v_identity.xml _isExistingCloneMenuItem " + localIdentityData.id)
+                //virtualIdentityExtension.MyLog.debug("v_identity.xml _isExistingMenuItem " + localIdentityData.id)
 		var MenuItems = this._popupElem.childNodes
 		for (var j = 0; j < MenuItems.length; j++) {
                     if (MenuItems[j].command == "cmd_customizeFromAddress" ||
@@ -295,11 +295,11 @@
                       continue;
                   
                     if (MenuItems[j].identityData.equals(localIdentityData)) {
-                      virtualIdentityExtension.MyLog.debug("v_identity.xml _isExistingCloneMenuItem found: " + MenuItems[j].value);
+                      virtualIdentityExtension.MyLog.debug("v_identity.xml _isExistingMenuItem found: " + MenuItems[j].value);
                       return MenuItems[j];
                     }
 		}
-                virtualIdentityExtension.MyLog.debug("v_identity.xml _isExistingCloneMenuItem didn't found: " + localIdentityData.email);
+                virtualIdentityExtension.MyLog.debug("v_identity.xml _isExistingMenuItem didn't found: " + localIdentityData.email);
 		return null;
 		]]></body>
 	</method>
@@ -371,16 +371,16 @@
 	</binding>
 
         
-        <binding id="fromPopupItem_new" extends="chrome://global/content/bindings/menu.xml#menuitem">
+        <binding id="fromPopupItem" extends="chrome://global/content/bindings/menu.xml#menuitem">
   	<content class="vI_menupopupItem" excludes="template,observes,menupopup">
-		<xul:image class="menupopup_clone-icon" xbl:inherits="src"/>
-		<xul:label class="menupopup_clone-text" xbl:inherits="value=label,accesskey,crop" crop="right" flex="1"/>
-		<xul:label value="&vident.accPane.prettyName.prefix; - " class="menupopup_clone-vid virtIdLabel" vid="false" xbl:inherits="vid" crop="right"/>
-      		<xul:label class="menupopup_clone-description" xbl:inherits="value=description" crop="right"/>
-                <xul:label class="menupopup_clone-idDescription" xbl:inherits="value=idDescription" crop="right"/>
-<!--                <xul:label class="menupopup_clone-smtp virtualIdentityExtension_debug_interface" xbl:inherits="value=smtp,style=smtpStyle" crop="right"/>
-                <xul:label class="menupopup_clone-accountkey virtualIdentityExtension_debug_interface" xbl:inherits="value=accountkey" crop="right"/>
-                <xul:label class="menupopup_clone-identitykey virtualIdentityExtension_debug_interface" xbl:inherits="value=identitykey" crop="right"/>-->
+		<xul:image class="vI_menupopup-icon" xbl:inherits="src"/>
+		<xul:label class="vI_menupopup-text" xbl:inherits="value=label,accesskey,crop" crop="right" flex="1"/>
+		<xul:label value="&vident.accPane.prettyName.prefix; - " class="vI_menupopup-vid virtIdLabel" vid="false" xbl:inherits="vid" crop="right"/>
+      		<xul:label class="vI_menupopup-description" xbl:inherits="value=description" crop="right"/>
+                <xul:label class="vI_menupopup-idDescription" xbl:inherits="value=idDescription" crop="right"/>
+<!--                <xul:label class="vI_menupopup-smtp virtualIdentityExtension_debug_interface" xbl:inherits="value=smtp,style=smtpStyle" crop="right"/>
+                <xul:label class="vI_menupopup-accountkey virtualIdentityExtension_debug_interface" xbl:inherits="value=accountkey" crop="right"/>
+                <xul:label class="vI_menupopup-identitykey virtualIdentityExtension_debug_interface" xbl:inherits="value=identitykey" crop="right"/>-->
   	</content>
   	<implementation>
 	<constructor>
@@ -420,7 +420,7 @@
             // attributes (label, value, description, identitykey, accountkey) have to be set accordingly
             
             
-            //virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_new set identityData");
+            //virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem set identityData");
             this._identityData = val;
               
             
@@ -436,7 +436,7 @@
             
             this.setAttribute("vid", this._identityData.isExistingIdentity()?"false":"true");
 
-            //virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem_new set identityData done.");
+            //virtualIdentityExtension.MyLog.debug("v_identity.xml fromPopupItem set identityData done.");
               ]]></setter>
             <getter><![CDATA[
               if (!this._identityData)

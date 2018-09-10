@@ -50,35 +50,6 @@
 	<notificationbox id="virtualIdentityExtension_vINotification" position="1" insertbefore="MsgHeadersToolbar" />
 </toolbox>
 
-<!--<vbox flex="1" id="addresses-box"> --><!-- this is used as a strorage, elements will be rearranged by v_identity_init -->
-
-<!--<vbox id="virtualIdentityExtension_autoReplyToSelfLabelBox">
-  <spacer flex="1"/>
-  <label id="virtualIdentityExtension_autoReplyToSelfLabel" context="virtualIdentityExtension_vIAutoReplyToSelfMenu" value="&vident.composeDialog.autoReplyToSelf.label;" hidden="true" />
-<spacer flex="1"/>-->
-  <!--</vbox>-->
-<!--<hbox id="virtualIdentityExtension_msgIdentityHbox" flex="1">-->
-  
-<!--  
-              <menulist id="msgIdentity"
-                      editable="true"
-                      disableautoselect="true"
-                      flex="1"
-                      oncommand="LoadIdentity(false);">
-              <menupopup id="msgIdentityPopup"/>
-  -->
-  
-<!--	<menulist id="virtualIdentityExtension_msgIdentityClone" class="identity_clone-menulist" vid="false"
-		label="..." flex="1" oncommand="this.command();">
-		<menupopup id="virtualIdentityExtension_msgIdentityPopupClone"/>
-	</menulist>
-	<checkbox id="virtualIdentityExtension_fccSwitch" label="&vident.composeDialog.fcc_switch.label;" 
-		tooltiptext="&vident.composeDialog.fcc_switch.tooltiptext;" hidden="true" doFcc="false"
-		oncommand="virtualIdentityExtension.vIprefs.set('doFcc', this.checked);" />
-	
-</hbox>-->
-<!--  </vbox>-->
-  
   <popupset>
 	  <menupopup id="virtualIdentityExtension_statusMenu">
 		  <menuitem type="checkbox" id="virtualIdentityExtension_statusMenu_storage_save" label="&vident.vI_Menu.storageSave.label;"
@@ -113,7 +84,7 @@
 			  align="right"
                           hidden="true">
 		<label id="v_identity_logo_statusbar" class="v_identity_logo v_identity_logo_statusbar" value="&vident.vidLogo.label; " />
-		<observes id="virtualIdentityExtension_msgIdentityClone_observer" element="msgIdentity" attribute="vid" />
+		<observes element="msgIdentity" attribute="vid" />
           </statusbarpanel>
 	  <statusbarpanel id="virtualIdentityExtension_vIStatusMenu" save="off"
 			  class="statusbarpanel-menu-iconic"

@@ -138,14 +138,14 @@ smartIdentity.prototype = {
       var existingIDIndex = this._smartIdentityCollection._foundExistingIdentity();
       if (existingIDIndex) {
         Log.debug("found existing Identity, use without interaction.");
-        // add all Indentities to Clone Menu before selecting and leaving the function
-        this._document.getElementById("msgIdentity").addIdentitiesToCloneMenu(this._smartIdentityCollection._allIdentities);
+        // add all Indentities to MsgIdentity Menu before selecting and leaving the function
+        this._document.getElementById("msgIdentity").addIdentitiesToMsgIdentityMenu(this._smartIdentityCollection._allIdentities);
         this.changeIdentityToSmartIdentity(this, existingIDIndex.key);
         return;
       }
     }
 
-    this._document.getElementById("msgIdentity").addIdentitiesToCloneMenu(this._smartIdentityCollection._allIdentities);
+    this._document.getElementById("msgIdentity").addIdentitiesToMsgIdentityMenu(this._smartIdentityCollection._allIdentities);
     
     
     Log.debug("__smartIdentitySelection _allIdentities.number=" +
