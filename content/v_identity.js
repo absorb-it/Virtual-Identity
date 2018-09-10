@@ -83,12 +83,10 @@ virtualIdentityExtension.ns(function () {
         },
         ComposeProcessDone: function (aResult) {
           Log.debug("StateListener reports ComposeProcessDone");
-          vI.vIaccount_removeUsedVIAccount();
           vI.storage.clean();
         },
         SaveInFolderDone: function (folderURI) {
           Log.debug("SaveInFolderDone");
-          vI.vIaccount_removeUsedVIAccount();
           vI.storage.clean();
         }
       },
@@ -166,13 +164,6 @@ virtualIdentityExtension.ns(function () {
         },
       },
 
-      remove: function () {
-        window.removeEventListener('compose-window-reopen', main.reopen, true);
-        window.removeEventListener('compose-window-close', main.close, true);
-        Log.debug("end. remove Account if there.")
-        vI.storage.clean();
-      },
-
       _getRecipients: function () {
         var recipients = [];
         for (var row = 1; row <= top.MAX_RECIPIENTS; row++) {
@@ -215,7 +206,7 @@ virtualIdentityExtension.ns(function () {
         }
         window.removeEventListener('load', main.init, false);
         window.removeEventListener('compose-window-init', main.init, true);
-        if (main.elements.Area_MsgIdentityHbox) return; // init done before, (?reopen)
+
         Log.debug("init.")
         main.unicodeConverter.charset = "UTF-8";
         
@@ -230,8 +221,6 @@ virtualIdentityExtension.ns(function () {
         gMsgCompose.RegisterStateListener(main.ComposeStateListener);
         document.getElementById("virtualIdentityExtension_tooltipPopupset")
           .addTooltip(document.getElementById("msgIdentity"), false);
-        window.addEventListener('compose-window-reopen', main.reopen, true);
-        window.addEventListener('compose-window-close', main.close, true);
 
         main.AccountManagerObserver.register();
 
@@ -245,10 +234,6 @@ virtualIdentityExtension.ns(function () {
         vI.statusmenu.init();
         new vI.smartIdentity(window, gMsgCompose, vI.storage);
         Log.debug("initSystemStage2 done.")
-      },
-
-      close: function () {
-        vI.storage.clean();
       },
 
       adapt_loadIdentity: function () {
@@ -265,49 +250,6 @@ virtualIdentityExtension.ns(function () {
         main.original_functions.GenericSendMessage = GenericSendMessage;
         GenericSendMessage = main.replacement_functions.GenericSendMessage;
         return true;
-      },
-
-      reopen: function () {
-        vI.clearDebugOutput();
-        Log.debug("composeDialog reopened. (msgType " + gMsgCompose.type + ")")
-        Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityMenu=" + document.getElementById("msgIdentity"))
-
-        // clean all elements
-        document.getElementById("msgIdentity").clean();
-        vI.storage.clean(); // just to be sure!
-        Log.debug("everything cleaned.")
-
-        // register StateListener
-        gMsgCompose.RegisterStateListener(main.ComposeStateListener);
-
-        // now (re)init the elements
-        main.initSystemStage1();
-
-        vI.vIprefs.dropLocalChanges();
-
-        // NotifyComposeBodyReady is only triggered in reply-cases
-        // so activate stage2 in reply-cases trough StateListener
-        // in other cases directly
-        var msgComposeType = Components.interfaces.nsIMsgCompType;
-        switch (gMsgCompose.type) {
-        case msgComposeType.New:
-        case msgComposeType.NewsPost:
-        case msgComposeType.MailToUrl:
-        case msgComposeType.Draft:
-        case msgComposeType.Template:
-        case msgComposeType.ForwardAsAttachment:
-        case msgComposeType.ForwardInline:
-          main.initSystemStage2();
-          //             case msgComposeType.Reply:
-          //             case msgComposeType.ReplyAll:
-          //             case msgComposeType.ReplyToGroup:
-          //             case msgComposeType.ReplyToSender:
-          //             case msgComposeType.ReplyToSenderAndGroup:
-          //             case msgComposeType.ReplyWithTemplate:
-          //             case msgComposeType.ReplyToList:
-          //                 main.initSystemStage2() triggered trough NotifyComposeBodyReady;
-        }
-        Log.debug("reopen done.")
       },
 
       //  code adapted from http://xulsolutions.blogspot.com/2006/07/creating-uninstall-script-for.html
