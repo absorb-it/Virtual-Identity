@@ -462,7 +462,7 @@ treechildren::-moz-tree-cell-text(locked) {
 	margin: 0;
 	padding-left: 0;
 }
-.menupopup_clone-description, .menu_clone-description {
+.menupopup_clone-description, .menupopup_clone-idDescription, .menu_clone-description, .menu_clone-idDescription {
 	margin: 	0 5px 0 0;
 	font-style:	italic;
 	color:		graytext;
@@ -487,6 +487,13 @@ treechildren::-moz-tree-cell-text(locked) {
 #fromMenuList_new[vid="true"], .identity_clone-popup-item[vid="true"] {
 	list-style-image: url("chrome://messenger/skin/addressbook/icons/addressbook-toolbar-small.png");
 	-moz-image-region: rect(0px 16px 16px 0px);	
+}
+
+.vI_menupopupItem[vid="false"] .menupopup_clone-idDescription, #msgIdentity[vid="false"] .menu_clone-idDescription {
+        display: none;
+}
+.vI_menupopupItem[vid="true"] .menupopup_clone-description, #msgIdentity[vid="true"] .menu_clone-description {
+        display: none;
 }
 
 #fromMenuList_new[vid="false"], .identity_clone-popup-item[vid="false"] {
