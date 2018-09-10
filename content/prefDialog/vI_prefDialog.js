@@ -351,11 +351,12 @@ virtualIdentityExtension.ns(function () {
       },
 
       openURL: function (aURL) {
-        var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
         var protocolSvc = Components.classes["@mozilla.org/uriloader/external-protocol-service;1"].getService(Components.interfaces.nsIExternalProtocolService);
+        
+        var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+                  .getService(Components.interfaces.nsIIOService);
         Log.debug("load url " + aURL);
-        uri.spec = aURL;
-        protocolSvc.loadURI(uri);
+        protocolSvc.loadURI(ioService.newURI(aURL));
       }
     }
     vI.prefDialog = prefDialog;
