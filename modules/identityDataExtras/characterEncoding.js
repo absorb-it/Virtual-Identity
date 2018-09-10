@@ -52,19 +52,6 @@ identityDataExtrasObject_characterEncoding.prototype = {
       .getCharsetTitle(this._currentWindow.gCharsetConvertManager.getCharsetAlias(this.value)) : "";
   },
 
-  // pre TB-32-version, might be removed in the future --------------------------------
-  _setMenuMark: function () {
-    var maileditCharsetMenu = this._currentWindow.document.getElementById("maileditCharsetMenu")
-    var value = maileditCharsetMenu.getAttribute("unmarkedValue")
-    if (value) {
-      var menuitem = this._currentWindow.document.getElementById(value);
-      if (menuitem)
-        menuitem.setAttribute('checked', 'true');
-      maileditCharsetMenu.removeAttribute("unmarkedValue")
-    }
-  },
-  // ----------------------------------------------------------------------------------
-
   setValueToEnvironment_msgCompose: function () {
     if (!this.value)
       return;
