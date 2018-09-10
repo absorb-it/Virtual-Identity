@@ -32,7 +32,7 @@
 
 <!ENTITY vI_prefDialog.smartTab1.header "Slim Antwoorden - Header zoeken">
 <!ENTITY vI_prefDialog.smartTab1.caption "1. adressen ophalen">
-<!ENTITY vI_prefDialog.smartReplyTab.Tab1.desc "Om een Antwoord-identiteit te vinden moet Slim Antwoorden een lijst van mogelijke afzendersidentiteiten ophalen. Daarom worden de koptekstvelden ‘Aan’ en ‘Cc’ geanalyseerd. Als Slim Antwoorden nog meer koptekstvelden moet analyseren kunt u ze hier ingeven (wellicht dient u een andere extensie te installeren om ze te herkennen, zoals bijvoorbeeld enigmail or mnenhy). Als u ‘:@’ aan een ingave toevoegt worden alleen e-mailadressen gebruikt; namen worden genegeerd.">
+<!ENTITY vI_prefDialog.smartReplyTab.Tab1.desc "Om een Antwoord-identiteit te vinden moet Slim Antwoorden een lijst van mogelijke afzendersidentiteiten ophalen. Daarom worden de koptekstvelden ‘Aan’ en ‘Cc’ geanalyseerd. Als Slim Antwoorden nog meer koptekstvelden moet analyseren kunt u ze hier ingeven. Als u ‘:@’ aan een ingave toevoegt worden alleen e-mailadressen gebruikt; namen worden genegeerd.">
 <!ENTITY vI_prefDialog.smartReply.headers.desc "Aanvullende kopteksten - één per regel, bijvoorbeeld ‘x-original-to’, ‘x-original-to:@’ of ‘x-original-to:2:@’">
 <!ENTITY vI_prefDialog.smartReply.headers.reset "Standaardwaarden instellen">
 
