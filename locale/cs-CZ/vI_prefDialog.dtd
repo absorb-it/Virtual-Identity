@@ -109,6 +109,7 @@
 <!ENTITY vI_prefDialog.sending.tmplTab.header "Složka šablon">
 <!ENTITY vI_prefDialog.sending.tmplTab.caption "Místo pro uložení šablon">
 
+<!ENTITY vI_prefDialog.sending.warnings.label "Varování">
 <!ENTITY vI_prefDialog.sending.warnings.header "Varování">
 <!ENTITY vI_prefDialog.sending.warnings.caption "před odesláním zprávy">
 <!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "varovat při jakémkoliv použití nevirtuální identity">

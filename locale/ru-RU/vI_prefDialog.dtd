@@ -109,6 +109,7 @@
 <!ENTITY vI_prefDialog.sending.tmplTab.header "Папка шаблонов">
 <!ENTITY vI_prefDialog.sending.tmplTab.caption "Помещать шаблоны в:">
 
+<!ENTITY vI_prefDialog.sending.warnings.label "Предупреждения">
 <!ENTITY vI_prefDialog.sending.warnings.header "Предупреждения">
 <!ENTITY vI_prefDialog.sending.warnings.caption "Предупреждение перед отправкой сообщения">
 <!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "Предупреждать о любом использовании не виртуальных (из учетной записи) личных данных">

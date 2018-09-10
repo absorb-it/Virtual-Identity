@@ -109,6 +109,7 @@
 <!ENTITY vI_prefDialog.sending.tmplTab.header "Dossier &apos;Modèles&apos;">
 <!ENTITY vI_prefDialog.sending.tmplTab.caption "emplacement de sauvegarde des modèles">
 
+<!ENTITY vI_prefDialog.sending.warnings.label "Alertes">
 <!ENTITY vI_prefDialog.sending.warnings.header "Alertes">
 <!ENTITY vI_prefDialog.sending.warnings.caption "avant d'envoyer le message">
 <!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "avertir dès qu'est utilisée une identité non-virtuelle">

@@ -108,6 +108,7 @@
 <!ENTITY vI_prefDialog.sending.tmplTab.header "Template Folder">
 <!ENTITY vI_prefDialog.sending.tmplTab.caption "Place Templates in">
 
+<!ENTITY vI_prefDialog.sending.warnings.label "Warnings">
 <!ENTITY vI_prefDialog.sending.warnings.header "Warnings">
 <!ENTITY vI_prefDialog.sending.warnings.caption "before sending of the message">
 <!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "warn on any usage of non-virtual Identities">

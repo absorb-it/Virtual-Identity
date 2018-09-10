@@ -109,6 +109,7 @@
 <!ENTITY vI_prefDialog.sending.tmplTab.header "Carpeta de plantillas">
 <!ENTITY vI_prefDialog.sending.tmplTab.caption "Colocar las plantillas en">
 
+<!ENTITY vI_prefDialog.sending.warnings.label "Avisos">
 <!ENTITY vI_prefDialog.sending.warnings.header "Avisos">
 <!ENTITY vI_prefDialog.sending.warnings.caption "antes de enviar los mensajes">
 <!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "avisar si se usa una identidad no virtual">

@@ -109,6 +109,7 @@
 <!ENTITY vI_prefDialog.sending.tmplTab.header "Ordner für Vorlagen">
 <!ENTITY vI_prefDialog.sending.tmplTab.caption "Speicherort für Templates">
 
+<!ENTITY vI_prefDialog.sending.warnings.label "Warnungen">
 <!ENTITY vI_prefDialog.sending.warnings.header "Warnungen">
 <!ENTITY vI_prefDialog.sending.warnings.caption "vor dem Senden einer Nachricht">
 <!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "warne bei jeder Verwendung einer dauerhaft gespeicherten Identität">

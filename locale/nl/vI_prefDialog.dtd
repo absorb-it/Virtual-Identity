@@ -109,6 +109,7 @@
 <!ENTITY vI_prefDialog.sending.tmplTab.header "Map Sjablonen">
 <!ENTITY vI_prefDialog.sending.tmplTab.caption "Opslaglokatie voor sjablonen">
 
+<!ENTITY vI_prefDialog.sending.warnings.label "Waarschuwingen">
 <!ENTITY vI_prefDialog.sending.warnings.header "Waarschuwingen">
 <!ENTITY vI_prefDialog.sending.warnings.caption "Voor verzenden van bericht">
 <!ENTITY vI_prefDialog.sending.warnings.warnNonvirtual.label "Waarschuwen bij gebruik van niet-virtuele identiteiten">
