@@ -137,6 +137,9 @@ identityData.prototype = {
   get idHtml() {
     return this.__makeHtml(this.id.value);
   },
+  get smtpHtml() {
+    return this.__makeHtml(this.id.smtpServerName);
+  },
   get fullNameHtml() {
     return this.__makeHtml(this.fullName);
   },
@@ -149,6 +152,9 @@ identityData.prototype = {
 
   get idLabel() {
     return this.stringBundle.GetStringFromName("vident.identityData.baseID")
+  },
+  get smtpLabel() {
+    return this.stringBundle.GetStringFromName("vident.identityData.SMTP")
   },
   get fullNameLabel() {
     return this.stringBundle.GetStringFromName("vident.identityData.Name")
@@ -188,7 +194,9 @@ identityData.prototype = {
 
   // dependent on MsgComposeCommands, should/will only be called in ComposeDialog
   isExistingIdentity: function (ignoreFullNameWhileComparing) {
-    Log.debug("isExistingIdentity: ignoreFullNameWhileComparing='" + ignoreFullNameWhileComparing + "'");
+    var intenseDebug = false;
+    if (intenseDebug)
+      Log.debug("isExistingIdentity: ignoreFullNameWhileComparing='" + ignoreFullNameWhileComparing + "'");
     // 		Log.debug("base: fullName.toLowerCase()='" + this.fullName + "' email.toLowerCase()='" + this.email + "'");
 
     var ignoreFullNameMatchKey = null;
@@ -208,7 +216,8 @@ identityData.prototype = {
         if (email.toLowerCase() == idEmail.toLowerCase()) {
           // if fullName matches, than this is a final match
           if (this.fullName.toLowerCase() == identity.fullName.toLowerCase()) {
-            Log.debug("isExistingIdentity: " + this.combinedName + " found, id='" + identity.key + "'");
+            if (intenseDebug)
+              Log.debug("isExistingIdentity: " + this.combinedName + " found, id='" + identity.key + "'");
             return identity.key; // return key and stop searching
           }
           // if fullNames don't match, remember the key but continue to search for full match
@@ -218,11 +227,13 @@ identityData.prototype = {
     }
 
     if (ignoreFullNameWhileComparing && ignoreFullNameMatchKey) {
-      Log.debug("isExistingIdentity: " + this.combinedName + " found, id='" + ignoreFullNameMatchKey + "'");
+      if (intenseDebug)
+        Log.debug("isExistingIdentity: " + this.combinedName + " found, id='" + ignoreFullNameMatchKey + "' (without FullName match)");
       return ignoreFullNameMatchKey;
     }
 
-    Log.debug("isExistingIdentity: " + this.combinedName + " not found");
+    if (intenseDebug)
+      Log.debug("isExistingIdentity: " + this.combinedName + " not found");
     return null;
   },
 
@@ -265,19 +276,29 @@ identityData.prototype = {
     if (!compareIdentityData)
       return false;
     
+    var intenseDebug = false;
+    if (intenseDebug) Log.debug("compareIdentityData");
+    
     this.comp.compareID = compareIdentityData;
 
     this.comp.equals.fullName = (((this.fullName) ? this.fullName.toLowerCase() : null) == ((compareIdentityData.fullName) ? compareIdentityData.fullName.toLowerCase() : null));
-    if (!this.comp.equals.fullName) {
-      //       Log.debug("fullName not equal ('" + ((this.fullName)?this.fullName.toLowerCase():null) + "' != '" + ((compareIdentityData.fullName)?compareIdentityData.fullName.toLowerCase():null) + "')");
+    if (intenseDebug && !this.comp.equals.fullName) {
+            Log.debug("fullName not equal ('" + ((this.fullName)?this.fullName.toLowerCase():null) + "' != '" + ((compareIdentityData.fullName)?compareIdentityData.fullName.toLowerCase():null) + "')");
     }
     this.comp.equals.email = (((this.email) ? this.email.toLowerCase() : null) == ((compareIdentityData.email) ? compareIdentityData.email.toLowerCase() : null));
-    if (!this.comp.equals.email) {
-      //       Log.debug("email not equal ('" + ((this.email)?this.email.toLowerCase():null) + "' != '" + ((compareIdentityData.email)?compareIdentityData.email.toLowerCase():null) + "')");
+    if (intenseDebug && !this.comp.equals.email) {
+            Log.debug("email not equal ('" + ((this.email)?this.email.toLowerCase():null) + "' != '" + ((compareIdentityData.email)?compareIdentityData.email.toLowerCase():null) + "')");
     }
 
     this.comp.equals.id = this.id.equal(compareIdentityData.id);
+    if (intenseDebug && !this.comp.equals.id) {
+            Log.debug("id not equal ('" + this.id + "' != '" + compareIdentityData.id + "')");
+    }
+
     this.comp.equals.extras = this.extras ? this.extras.equal(compareIdentityData.extras) : true;
+    if (intenseDebug && !this.comp.equals.extras) {
+            Log.debug("extras not equal");
+    }
 
     return (this.comp.equals.fullName && this.comp.equals.email && this.comp.equals.id && this.comp.equals.extras);
   },
@@ -312,9 +333,12 @@ identityData.prototype = {
 
   getMatrix: function () {
     var string = "";
-    if (this["idHtml"])
+    if (this["idHtml"]) {
         string = "<tr><td class='col1'>" + this["idLabel"] + ":</td>" +
-        "<td class='col2'>" + this["idHtml"] + "</td></tr>"
+        "<td class='col2'>" + this["idHtml"] + "</td></tr>" +
+        "<tr><td class='col1'>" + this["smtpLabel"] + ":</td>" +
+        "<td class='col2'>" + this["smtpHtml"] + "</td></tr>";
+    }
     string += this.extras ? this.extras.getMatrix() : "";
     return string;
   }
@@ -384,6 +408,9 @@ idObj.prototype = {
   _key: null,
   _value: null,
   _accountkey: null,
+  _accountIncomingServerPrettyName: null,
+  _accountManager: Components.classes["@mozilla.org/messenger/account-manager;1"]
+    .getService(Components.interfaces.nsIMsgAccountManager),
 
   set key(key) {
     this._key = key;
@@ -397,6 +424,12 @@ idObj.prototype = {
     if (this._value == null) var dummy = this.value;
     return this._accountkey
   },
+  
+  get accountIncomingServerPrettyName() {
+    if (this._value == null) var dummy = this.value;
+    return this._accountIncomingServerPrettyName
+  },
+  
   get value() {
     if (this._value == null) {
       this._value = "";
@@ -412,6 +445,7 @@ idObj.prototype = {
           if (this._key == identity.key) {
             this._value = identity.identityName;
             this._accountkey = account.key;
+            this._accountIncomingServerPrettyName = account.incomingServer.prettyName;
             break;
           }
         }
@@ -427,10 +461,8 @@ idObj.prototype = {
   get smtpServerKey() {
     if (!this.key)
       return null;
-    var AccountManager = Components.classes["@mozilla.org/messenger/account-manager;1"]
-          .getService(Components.interfaces.nsIMsgAccountManager);
 
-    var identity = AccountManager.getIdentity(this.key);
+    var identity = this._accountManager.getIdentity(this.key);
     if (identity) {
       if (identity.smtpServerKey)
         return identity.smtpServerKey;
