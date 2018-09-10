@@ -192,9 +192,9 @@ virtualIdentityExtension.ns(function () {
 
         // firstUsedInputElement was set before and we are not editing the same
         var isNotFirstInputElement = (storage.firstUsedInputElement && storage.firstUsedInputElement != inputElement)
-        var currentIdentity = currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").identityData
+        var currentIdentity = currentDocument.getElementById("msgIdentity").identityData
         var storageResult = storage._rdfDatasourceAccess.updateVIdentityFromStorage(inputElement.value, recipientType,
-          currentIdentity, currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").vid, isNotFirstInputElement);
+          currentIdentity, currentDocument.getElementById("msgIdentity").vid, isNotFirstInputElement);
 
         if (storageResult.identityCollection.number == 0) return; // return if there was no match
         Log.debug("__updateVIdentityFromStorage result: " + storageResult.result);
@@ -205,15 +205,15 @@ virtualIdentityExtension.ns(function () {
         if (storageResult.result != "equal") {
           for (var j = 0; j < storageResult.identityCollection.number; j++) {
             Log.debug("__updateVIdentityFromStorage adding: " + storageResult.identityCollection.identityDataCollection[j].combinedName);
-            let menuItem = currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone")
+            let menuItem = currentDocument.getElementById("msgIdentity")
               .addIdentityToCloneMenu(storageResult.identityCollection.identityDataCollection[j])
             if (!newMenuItem) newMenuItem = menuItem;
           }
         }
         if (storageResult.result == "accept") {
           Log.debug("__updateVIdentityFromStorage selecting: " + storageResult.identityCollection.identityDataCollection[0].combinedName);
-          currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").selectedMenuItem = newMenuItem;
-          if (currentDocument.getElementById("virtualIdentityExtension_msgIdentityClone").vid)
+          currentDocument.getElementById("msgIdentity").selectedMenuItem = newMenuItem;
+          if (currentDocument.getElementById("msgIdentity").vid)
             vI.StorageNotification.info(storage.stringBundle.GetStringFromName("vident.smartIdentity.vIStorageUsage") + ".");
         }
       },
