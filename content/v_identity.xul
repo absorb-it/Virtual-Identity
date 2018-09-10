@@ -110,21 +110,19 @@
   <statusbar id="status-bar">
 	  <statusbarpanel class="virtualIdentityExtension_Logo"
 			  id="virtualIdentityExtension_Logo"
-			  insertafter="statusText"
 			  align="right"
-              hidden="true">
+                          hidden="true">
 		<label id="v_identity_logo_statusbar" class="v_identity_logo v_identity_logo_statusbar" value="&vident.vidLogo.label; " />
 		<observes id="virtualIdentityExtension_msgIdentityClone_observer" element="msgIdentity" attribute="vid" />
-	</statusbarpanel>
+          </statusbarpanel>
 	  <statusbarpanel id="virtualIdentityExtension_vIStatusMenu" save="off"
 			  class="statusbarpanel-menu-iconic"
 			  collapsed="true"
-			  insertafter="totalMessageCount"
 			  context="virtualIdentityExtension_statusMenu"
 			  tooltip="virtualIdentityExtension_statusMenuTooltip"
 			  onclick="virtualIdentityExtension.statusmenu.clicked(event.button);"
-              hidden="true">
-            <image />
+                          hidden="true">
+                <image />
             </statusbarpanel>
 </statusbar>
   
