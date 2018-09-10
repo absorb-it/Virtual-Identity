@@ -44,7 +44,6 @@ pref("extensions.virtualIdentity.storageExtras_sMime_messageSignature", false);
 pref("extensions.virtualIdentity.storageExtras_openPGP_messageEncryption", false);
 pref("extensions.virtualIdentity.storageExtras_openPGP_messageSignature", false);
 pref("extensions.virtualIdentity.storageExtras_openPGP_PGPMIME", false);
-pref("extensions.virtualIdentity.storageExtras_fcc", false);
 pref("extensions.virtualIdentity.idSelection_storage_prefer_smart_reply", false);
 pref("extensions.virtualIdentity.idSelection_storage_ignore_smart_reply", true);
 pref("extensions.virtualIdentity.idSelection_ask", false);

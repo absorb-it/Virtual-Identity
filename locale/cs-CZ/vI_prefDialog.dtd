@@ -95,8 +95,6 @@
 <!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "zobrazit nabídku SMTP">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "zobrazit nabídku pro výběr dostupných SMTP serverů">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "zobrazit přepínač pro zapnutí ukládání odesílaných e-mailů (FCC)">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "zobrazí tlačítko pro zapnutí/vypnutí ukládání odesílaných mailů (FCC)">
 <!ENTITY vI_prefDialog.composeDialog.show_switch.label "zaškrtávací políčko pro ukládání identit">
 <!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "zaškrtávací políčko pro ukládání základních identit">
 <!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "zaškrtávací políčko pro ukládání SMTP">
@@ -115,8 +113,6 @@
 <!ENTITY vI_prefDialog.sending.Folder.SMIME.label "Nastavení S/MIME">
 <!ENTITY vI_prefDialog.sending.Folder.VCard.label "přílohy vCard">
 
-<!ENTITY vI_prefDialog.sending.fccTab.header "Složka odeslané pošty">
-<!ENTITY vI_prefDialog.sending.fccTab.caption "při odeslání zprávy s Virtual Identity">
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Složka používána účtem změněným Virtual Identity">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Složka používána výchozím účtem">
 
@@ -188,9 +184,3 @@
 <!ENTITY vI_prefDialog.notifyDebug.label "zobrazit pole s ladícími informacemi">
 <!ENTITY vI_prefDialog.debugToFile.label "debug to file"> <!-- translate -->
 <!ENTITY vI_prefDialog.debugToFile.choose "choose"> <!-- translate -->
-
-
-<!-- just for TB 1.5. ReplyFollowsParent not available -->
-<!-- fields will be hidden, dont have to be translated -->
-<!ENTITY fccReplyFollowsParent.label "">
-<!ENTITY fccReplyFollowsParent.accesskey "">

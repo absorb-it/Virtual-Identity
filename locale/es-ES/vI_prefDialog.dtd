@@ -95,8 +95,6 @@
 <!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "mostrar menú SMTP">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "mostrar un menú para seleccionar los servidores SMTP disponibles">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "mostrar la opción para activar o desactivar el guardar los mensajes enviados (fcc)">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "mostrar un botón para activar o desactivar el almacenamiento de los mensajes enviados (fcc) al vuelo">
 <!ENTITY vI_prefDialog.composeDialog.show_switch.label "casilla para guardar las identidades">
 <!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "casilla para guardar las identidades base">
 <!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "casilla para guardar el SMTP">
@@ -115,8 +113,6 @@
 <!ENTITY vI_prefDialog.sending.Folder.SMIME.label "Opciones de seguridad S/MIME">
 <!ENTITY vI_prefDialog.sending.Folder.VCard.label "adjuntos vCard">
 
-<!ENTITY vI_prefDialog.sending.fccTab.header "Carpeta de correos enviados">
-<!ENTITY vI_prefDialog.sending.fccTab.caption "al enviar un mensaje usando una identidad virtual">
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Carpeta usada por la cuenta cambiada con Virtual Identity">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Carpeta usada por la cuenta por defecto">
 
@@ -188,8 +184,3 @@
 <!ENTITY vI_prefDialog.notifyDebug.label "mostrar el área con la información de depuración">
 <!ENTITY vI_prefDialog.debugToFile.label "debug to file"> <!-- translate -->
 <!ENTITY vI_prefDialog.debugToFile.choose "choose"> <!-- translate -->
-
-<!-- just for TB 1.5. ReplyFollowsParent not available -->
-<!-- fields will be hidden, dont have to be translated -->
-<!ENTITY fccReplyFollowsParent.label "">
-<!ENTITY fccReplyFollowsParent.accesskey "">

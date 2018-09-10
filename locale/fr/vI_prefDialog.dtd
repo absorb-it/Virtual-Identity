@@ -95,8 +95,6 @@
 <!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "montrer le menu SMTP">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "affiche le menu de sélection entre les serveurs SMTP disponibles">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "afficher le bouton pour activer/désactiver l'enregistrement de courriers envoyés">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "affiche un bouton qui permet d'activer désactiver l'enregistrement de courriers envoyés">
 <!ENTITY vI_prefDialog.composeDialog.show_switch.label "cocher pour l'enregistrement des identités">
 <!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "cocher pour l'enregistrement des bases d'identités">
 <!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "cocher pour enregistrer le SMTP">
@@ -115,8 +113,6 @@
 <!ENTITY vI_prefDialog.sending.Folder.SMIME.label "paramètres de sécurité S/MIME">
 <!ENTITY vI_prefDialog.sending.Folder.VCard.label "pièces jointes vCard">
 
-<!ENTITY vI_prefDialog.sending.fccTab.header "Dossier &apos;Envoyé&apos;">
-<!ENTITY vI_prefDialog.sending.fccTab.caption "Quand j'envoie un message avec une identité virtuelle">
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Dossier du compte modifié par Virtual Identity">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Dossier du compte par défaut">
 
@@ -188,8 +184,3 @@
 <!ENTITY vI_prefDialog.notifyDebug.label "afficher les informations de débogage">
 <!ENTITY vI_prefDialog.debugToFile.label "debug to file"> <!-- translate -->
 <!ENTITY vI_prefDialog.debugToFile.choose "choose"> <!-- translate -->
-
-<!-- just for TB 1.5. ReplyFollowsParent not available -->
-<!-- fields will be hidden, dont have to be translated -->
-<!ENTITY fccReplyFollowsParent.label "">
-<!ENTITY fccReplyFollowsParent.accesskey "">

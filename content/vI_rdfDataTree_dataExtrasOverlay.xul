@@ -39,10 +39,6 @@
 			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
-		<treecol id="fccCol_email" label="&vI_storageExtrasDataTreeOverlay.fccCol.label;" flex="2"
-			class="sortDirectionIndicator" hidden="true"
-			persist="hidden width ordinal sortDirection"/>
-		<splitter class="tree-splitter" />
 		<treecol id="charEncCol_email" label="&vI_storageExtrasDataTreeOverlay.charEncCol.label;" flex="2"
 			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
@@ -75,10 +71,6 @@
 	<treecols id="rdfDataTreeCols_maillist">
 		<splitter class="tree-splitter" />
 		<treecol id="receiptCol_maillist" label="&vI_storageExtrasDataTreeOverlay.receiptCol.label;" flex="2"
-			class="sortDirectionIndicator" hidden="true"
-			persist="hidden width ordinal sortDirection"/>
-		<splitter class="tree-splitter" />
-		<treecol id="fccCol_maillist" label="&vI_storageExtrasDataTreeOverlay.fccCol.label;" flex="2"
 			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
@@ -117,10 +109,6 @@
 			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />
-		<treecol id="fccCol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.fccCol.label;" flex="2"
-			class="sortDirectionIndicator" hidden="true"
-			persist="hidden width ordinal sortDirection"/>
-		<splitter class="tree-splitter" />
 		<treecol id="charEncCol_newsgroup" label="&vI_storageExtrasDataTreeOverlay.charEncCol.label;" flex="2"
 			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
@@ -154,10 +142,6 @@
 	<treecols id="rdfDataTreeCols_filter">
 		<splitter class="tree-splitter" />
 		<treecol id="receiptCol_filter" label="&vI_storageExtrasDataTreeOverlay.receiptCol.label;" flex="2"
-			class="sortDirectionIndicator" hidden="true"
-			persist="hidden width ordinal sortDirection"/>
-		<splitter class="tree-splitter" />
-		<treecol id="fccCol_filter" label="&vI_storageExtrasDataTreeOverlay.fccCol.label;" flex="2"
 			class="sortDirectionIndicator" hidden="true"
 			persist="hidden width ordinal sortDirection"/>
 		<splitter class="tree-splitter" />

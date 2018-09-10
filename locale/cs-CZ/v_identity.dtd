@@ -2,8 +2,6 @@
 <!ENTITY vident.accPane.prettyName.prefix "virtual Id">
 <!ENTITY vident.composeDialog.storageSave.label "uložit">
 <!ENTITY vident.composeDialog.storageSave.tooltiptext "uložit identitu při odesílání">
-<!ENTITY vident.composeDialog.fcc_switch.label "Fcc">
-<!ENTITY vident.composeDialog.fcc_switch.tooltiptext "uložit kopii odeslaného e-mailu">
 <!ENTITY vident.composeDialog.autoReplyToSelf.label "(=Reply-To)">
 <!ENTITY vident.composeDialog.autoReplyToSelf.menuLabel "zakázat synchronizaci Reply-To">
 <!ENTITY vident.replySelector.dialogheader.title "Virtuální identita">
@@ -20,8 +18,3 @@
 
 <!ENTITY vident.virtualIdentityExtension_Dialog.extra1Button.label "Zrušit odesílání">
 <!ENTITY vident.virtualIdentityExtension_Dialog.extra2Button.label "Použít uloženou identitu">
-
-<!ENTITY fccMailFolder.accesskey "P">
-<!ENTITY sentFolderOn.accesskey "e">
-<!ENTITY sentInOtherFolder.label "Další:">
-<!ENTITY sentInOtherFolder.accesskey "D">

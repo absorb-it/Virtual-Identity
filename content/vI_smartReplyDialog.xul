@@ -38,8 +38,6 @@
 
 <script type="application/x-javascript" src="chrome://v_identity/content/vI_smartReplyDialog.js" />
 
-<broadcaster id="VIdent_broadcaster_doFcc"/>
-
   <dialogheader title="&vident.replySelector.dialogheader.title;"/>
   
   <groupbox>

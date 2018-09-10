@@ -466,8 +466,6 @@
 				<vbox align="left">
 					<checkbox id="VIdent_identity.storageExtras_returnReciept" label="&vI_prefDialog.storageExtras.returnReciept.label;"
 						prefstring="storageExtras_returnReciept"/>
-					<checkbox id="VIdent_identity.storageExtras_fcc" label="&vI_prefDialog.storageExtras.fcc.label;"
-						prefstring="storageExtras_fcc"/>
 					<checkbox id="VIdent_identity.storageExtras_characterEncoding" label="&vI_prefDialog.storageExtras.characterEncoding.label;"
 						prefstring="storageExtras_characterEncoding"/>
 					<checkbox id="VIdent_identity.storageExtras_messageFormat" label="&vI_prefDialog.storageExtras.messageFormat.label;"

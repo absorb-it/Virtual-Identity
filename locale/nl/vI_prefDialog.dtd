@@ -95,8 +95,6 @@
 <!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "SMTP-menu weergeven">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "Menu weergeven om beschikbare SMTP-servers te selecteren">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "Schakelaar weergeven om opslaan van verzonden e-mailberichten (fcc) te activeren/deactiveren">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "Knop weergeven om opslaan van verzonden e-mailberichten (fcc) tijdens verwerking te activeren/deactiveren">
 <!ENTITY vI_prefDialog.composeDialog.show_switch.label "Aanvinkveld voor opslaan van identiteiten">
 <!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "Aanvinkveld voor opslaan van basisidentiteiten">
 <!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "Aanvinkveld voor opslaan van SMTP">
@@ -115,8 +113,6 @@
 <!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME-beveiligingsinstellingen">
 <!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard-bijlagen">
 
-<!ENTITY vI_prefDialog.sending.fccTab.header "Map Verzonden">
-<!ENTITY vI_prefDialog.sending.fccTab.caption "Bij het verzenden van een bericht met een virtuele identiteit">
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Door account gebruikte map wijzigen bij gebruik virtuele identiteit">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Door standaardaccount gebruikte map">
 
@@ -188,8 +184,3 @@
 <!ENTITY vI_prefDialog.notifyDebug.label "Veld met foutopsporingsinformatie weergeven">
 <!ENTITY vI_prefDialog.debugToFile.label "debug to file"> <!-- translate -->
 <!ENTITY vI_prefDialog.debugToFile.choose "choose"> <!-- translate -->
-
-<!-- just for TB 1.5. ReplyFollowsParent not available -->
-<!-- fields will be hidden, dont have to be translated -->
-<!ENTITY fccReplyFollowsParent.label "">
-<!ENTITY fccReplyFollowsParent.accesskey "">

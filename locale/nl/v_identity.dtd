@@ -2,8 +2,6 @@
 <!ENTITY vident.accPane.prettyName.prefix "virtuele ID">
 <!ENTITY vident.composeDialog.storageSave.label "Opslaan">
 <!ENTITY vident.composeDialog.storageSave.tooltiptext "Identiteit opslaan bij verzenden">
-<!ENTITY vident.composeDialog.fcc_switch.label "Fcc">
-<!ENTITY vident.composeDialog.fcc_switch.tooltiptext "Kopie van verzonden e-mailbericht opslaan">
 <!ENTITY vident.composeDialog.autoReplyToSelf.label "(=Reply-To)">
 <!ENTITY vident.composeDialog.autoReplyToSelf.menuLabel "Reply-To-synchronisatie uitschakelen">
 <!ENTITY vident.replySelector.dialogheader.title "Virtual Identity">
@@ -20,8 +18,3 @@
 
 <!ENTITY vident.virtualIdentityExtension_Dialog.extra1Button.label "Verzenden afbreken">
 <!ENTITY vident.virtualIdentityExtension_Dialog.extra2Button.label "Opgeslagen identiteit gebruiken">
-
-<!ENTITY fccMailFolder.accesskey "l">
-<!ENTITY sentFolderOn.accesskey "z">
-<!ENTITY sentInOtherFolder.label "Overig:">
-<!ENTITY sentInOtherFolder.accesskey "o">

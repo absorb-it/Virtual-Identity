@@ -34,7 +34,6 @@ Components.utils.import("resource://v_identity/vI_accountUtils.js");
 
 Components.utils.import("resource://v_identity/vI_identityDataExtras.js");
 Components.utils.import("resource://v_identity/identityDataExtras/returnReceipt.js");
-Components.utils.import("resource://v_identity/identityDataExtras/fccSwitch.js");
 Components.utils.import("resource://v_identity/identityDataExtras/messageFormat.js");
 Components.utils.import("resource://v_identity/identityDataExtras/characterEncoding.js");
 Components.utils.import("resource://v_identity/identityDataExtras/sMimeEncryption.js");

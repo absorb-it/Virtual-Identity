@@ -133,8 +133,9 @@ virtualIdentityExtension.ns(function () {
             "extensions.virtualIdentity.storage_show_baseID_switch",
             "extensions.virtualIdentity.copySMIMESettings",
             "extensions.virtualIdentity.copyAttachVCardSettings",
-            "extensions.virtualIdentity.copyNewEnigmailSettings")
-
+            "extensions.virtualIdentity.copyNewEnigmailSettings",
+            "extensions.virtualIdentity.storageExtras_fcc"
+            )
         }
         ];
         // remove obsolete preference-tree virtualIdentity

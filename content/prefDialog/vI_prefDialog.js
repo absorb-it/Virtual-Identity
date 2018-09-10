@@ -152,7 +152,6 @@ virtualIdentityExtension.ns(function () {
           "VIdent_identity.storage_getOneOnly",
           "VIdent_identity.storage_timeFormat",
           "VIdent_identity.storageExtras_returnReciept",
-          "VIdent_identity.storageExtras_fcc",
           "VIdent_identity.storageExtras_characterEncoding",
           "VIdent_identity.storageExtras_messageFormat",
           "VIdent_identity.storageExtras_sMime_messageEncryption",
@@ -314,7 +313,6 @@ virtualIdentityExtension.ns(function () {
           mAttr("VIdent_identity.storage_notification", "disabled", element.checked);
           mAttr("VIdent_identity.storage_getOneOnly", "disabled", element.checked);
           mAttr("VIdent_identity.storageExtras_returnReciept", "disabled", element.checked);
-          mAttr("VIdent_identity.storageExtras_fcc", "disabled", element.checked);
           mAttr("VIdent_identity.storageExtras_characterEncoding", "disabled", element.checked);
           mAttr("VIdent_identity.storageExtras_messageFormat", "disabled", element.checked);
           mAttr("VIdent_identity.storageExtras_sMime_messageEncryption", "disabled", element.checked);

@@ -2,8 +2,6 @@
 <!ENTITY vident.accPane.prettyName.prefix "Identidad virtual">
 <!ENTITY vident.composeDialog.storageSave.label "guardar">
 <!ENTITY vident.composeDialog.storageSave.tooltiptext "guardar la identidad al enviar">
-<!ENTITY vident.composeDialog.fcc_switch.label "Fcc">
-<!ENTITY vident.composeDialog.fcc_switch.tooltiptext "guardar copia del correo enviado">
 <!ENTITY vident.composeDialog.autoReplyToSelf.label "(=Reply-To)">
 <!ENTITY vident.composeDialog.autoReplyToSelf.menuLabel "deshabilitar la sincronización reply-to">
 <!ENTITY vident.replySelector.dialogheader.title "Virtual Identity">
@@ -20,8 +18,3 @@
 
 <!ENTITY vident.virtualIdentityExtension_Dialog.extra1Button.label "Abortar el envío">
 <!ENTITY vident.virtualIdentityExtension_Dialog.extra2Button.label "Usar la identidad almacenada">
-
-<!ENTITY fccMailFolder.accesskey "P">
-<!ENTITY sentFolderOn.accesskey "e">
-<!ENTITY sentInOtherFolder.label "Otra:">
-<!ENTITY sentInOtherFolder.accesskey "O">

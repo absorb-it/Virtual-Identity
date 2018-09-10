@@ -95,8 +95,6 @@
 <!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "Отображать меню SMTP-серверов">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.tooltiptext "Отображать меню доступных SMTP-серверов с возможностью выбора SMTP-сервера, используемого для отправки сообщения.">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.label "Чекбокс для выборочной активации/деактивации сохранения отправленных сообщений (FCC)">
-<!ENTITY vI_prefDialog.composeDialog.fcc_show_switch.tooltiptext "Отображение переключателя (чекбокса) для возможности активации/деактивации сохранения отправленных сообщений (FCC) «на лету»">
 <!ENTITY vI_prefDialog.composeDialog.show_switch.label "Чекбокс для выборочной активации/деактивации сохранения данных при отправке сообщений">
 <!ENTITY vI_prefDialog.composeDialog.show_baseID_switch.label "Чекбокс для выборочной активации/деактивации сохранения учетных записей при отправке сообщений">
 <!ENTITY vI_prefDialog.composeDialog.show_SMTP_switch.label "Чекбокс для выборочной активации/деактивации сохранения SMTP-серверов при отправке сообщений">
@@ -115,8 +113,6 @@
 <!ENTITY vI_prefDialog.sending.Folder.SMIME.label "S/MIME настройки безопасности">
 <!ENTITY vI_prefDialog.sending.Folder.VCard.label "vCard вложения">
 
-<!ENTITY vI_prefDialog.sending.fccTab.header "Папка отправленных сообщений">
-<!ENTITY vI_prefDialog.sending.fccTab.caption "Действие при отправке сообщения с виртуальными личными данными">
 <!ENTITY vI_prefDialog.sending.vidAccount.label "Папка, используемая учетной записью, изменяемой с помощью Virtual Identity">
 <!ENTITY vI_prefDialog.sending.vidDefault.label "Папка, используемая учетной записью по умолчанию">
 
@@ -188,8 +184,3 @@
 <!ENTITY vI_prefDialog.notifyDebug.label "Показывать область с отладочной информацией">
 <!ENTITY vI_prefDialog.debugToFile.label "debug to file"> <!-- translate -->
 <!ENTITY vI_prefDialog.debugToFile.choose "choose"> <!-- translate -->
-
-<!-- just for TB 1.5. ReplyFollowsParent not available -->
-<!-- fields will be hidden, dont have to be translated -->
-<!ENTITY fccReplyFollowsParent.label "">
-<!ENTITY fccReplyFollowsParent.accesskey "">
