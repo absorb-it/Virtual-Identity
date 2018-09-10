@@ -45,11 +45,11 @@ function get3PaneWindow() {
 
 function initWithFilePath_tryDelimiters(_nsIFile, path, filename) {
   try {
-    Log.debug("Filename try linux delimiter: '" + path + "/" + filename + "'");
+//     Log.debug("Filename try linux delimiter: '" + path + "/" + filename + "'");
     _nsIFile.initWithPath(path + "/" + filename);
   } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
     try {
-      Log.debug("Filename try windows delimiter: '" + path + "\\" + filename + "'");
+//       Log.debug("Filename try windows delimiter: '" + path + "\\" + filename + "'");
       _nsIFile.initWithPath(path + "\\" + filename);
     } catch (NS_ERROR_FILE_UNRECOGNIZED_PATH) {
       Log.debug("Filename not valid: '" + path + "[\\/]" + filename + "'");
@@ -73,7 +73,7 @@ function rdfDatasource(currentWindow, rdfFileName, dontRegisterObserver) {
   if (this._rdfFileName) this.init();
   if (!this._dontRegisterObserver) this.AccountManagerObserver.register(this);
   this._extVersion = get3PaneWindow().virtualIdentityExtension.extensionVersion;
-  Log.debug("rdfDatasource: read ext. Version '" + this._extVersion + "'");
+//   Log.debug("rdfDatasource: read ext. Version '" + this._extVersion + "'");
 }
 
 rdfDatasource.prototype = {
