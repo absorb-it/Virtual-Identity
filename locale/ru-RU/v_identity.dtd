@@ -2,8 +2,6 @@
 <!ENTITY vident.accPane.prettyName.prefix "Виртуальный ">
 <!ENTITY vident.composeDialog.storageSave.label "Сохранить">
 <!ENTITY vident.composeDialog.storageSave.tooltiptext "Сохранить текущие данные в хранилище при отправке сообщения">
-<!ENTITY vident.composeDialog.autoReplyToSelf.label "(= Обратный адрес (Reply-To))">
-<!ENTITY vident.composeDialog.autoReplyToSelf.menuLabel "Запретить синхронизацию обратного адреса (Reply-To)">
 <!ENTITY vident.replySelector.dialogheader.title "Виртуальные личные данные">
 <!ENTITY vident.replySelector.caption.label "Выбрать виртуальные личные данные">
 <!ENTITY vident.vI_Menu.label "Virtual Identity">

@@ -86,7 +86,6 @@
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "При создании нового сообщения, изменяется E-mail отправителя - к нему добавляется отметка времени. Пример: если Ваш E-mail, к примеру, name@domen.com, то после включения данной функции и при составлении нового письма, будет сгенерирован новый E-mail, к примеру, name1266499936@domen.com. По умолчанию данная функция отключена.">
 <!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;Y&#37;m&#37;d&#37;H&#37;M&#37;S&apos;)"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.autoTimeString.label "Format of Result: &#37;l localpart, &#37;t timestamp, &#37;d domain. Default &apos;&#37;l&#37;t@&#37;d&apos;"> <!-- translate -->
-<!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "Устанавливать виртуальные личные данные в качестве обратного адреса (Reply-To)">
 <!ENTITY vI_prefDialog.composeDialog.status.label "show Status-Bar infos / menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "Отображать меню SMTP-серверов">

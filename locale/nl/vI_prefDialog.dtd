@@ -86,7 +86,6 @@
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "Bij het schrijven van een nieuw bericht kunt u uw gebruikelijke afzendersadres aanpassen met een tijdsafdruk. Een eenvoudige manier om unieke identiteiten aan te maken, staat standaard uit.">
 <!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;Y&#37;m&#37;d&#37;H&#37;M&#37;S&apos;)"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.autoTimeString.label "Format of Result: &#37;l localpart, &#37;t timestamp, &#37;d domain. Default &apos;&#37;l&#37;t@&#37;d&apos;"> <!-- translate -->
-<!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "Virtuele identiteit als Reply-To-adres instellen">
 <!ENTITY vI_prefDialog.composeDialog.status.label "show Status-Bar infos / menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "SMTP-menu weergeven">

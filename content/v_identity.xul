@@ -63,12 +63,6 @@
 			oncommand="window.open('chrome://v_identity/content/vI_rdfDataTree.xul', '', 'chrome, dialog, resizable=yes');" />
 	  </menupopup>
   </popupset>
-<!--  <popupset>
-	  <menupopup id="virtualIdentityExtension_vIAutoReplyToSelfMenu">
-		  <menuitem type="menuitem-iconic" label="&vident.composeDialog.autoReplyToSelf.menuLabel;"
-			oncommand="document.getElementById('virtualIdentityExtension_autoReplyToSelfLabel').setAttribute('hidden', 'true');"/>
-		</menupopup>
-  </popupset>-->
   <popupset>
 	  <tooltip id="virtualIdentityExtension_statusMenuTooltip" orient="vertical" >
 		<label id="virtualIdentityExtension_statusMenuTooltip_Title" value="&vident.vI_Menu.TooltipTitle.label;" />

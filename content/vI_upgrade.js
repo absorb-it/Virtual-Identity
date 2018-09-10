@@ -140,7 +140,8 @@ virtualIdentityExtension.ns(function () {
             "extensions.virtualIdentity.storageExtras_openPGP_PGPMIME",
             "extensions.virtualIdentity.hide_signature",
             "extensions.virtualIdentity.hide_sMime_messageSignature",
-            "extensions.virtualIdentity.hide_openPGP_messageSignature"
+            "extensions.virtualIdentity.hide_openPGP_messageSignature",
+            "extensions.virtualIdentity.autoReplyToSelf"
             )
         }
         ];

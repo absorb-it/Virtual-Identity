@@ -2,8 +2,6 @@
 <!ENTITY vident.accPane.prettyName.prefix "virtual Id">
 <!ENTITY vident.composeDialog.storageSave.label "uložit">
 <!ENTITY vident.composeDialog.storageSave.tooltiptext "uložit identitu při odesílání">
-<!ENTITY vident.composeDialog.autoReplyToSelf.label "(=Reply-To)">
-<!ENTITY vident.composeDialog.autoReplyToSelf.menuLabel "zakázat synchronizaci Reply-To">
 <!ENTITY vident.replySelector.dialogheader.title "Virtuální identita">
 <!ENTITY vident.replySelector.caption.label "Zvolte si virtuální identitu">
 <!ENTITY vident.vI_Menu.label "Virtual Identity">

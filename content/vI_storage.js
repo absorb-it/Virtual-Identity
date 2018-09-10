@@ -91,9 +91,6 @@ virtualIdentityExtension.ns(function () {
       awPopupOnCommand: function (element, currentWindow) {
         Log.debug("awPopupOnCommand '" + element.id + "' '" + element.value + "'");
         storage.__updateVIdentityFromStorage(element.parentNode.nextSibling.firstChild, currentWindow);
-        if (element.selectedItem.getAttribute("value") == "addr_reply") // if reply-to is manually entered disable AutoReplyToSelf
-          currentWindow.document.getElementById("virtualIdentityExtension_autoReplyToSelfLabel").setAttribute("hidden", "true");
-
       },
 
       initialized: null,

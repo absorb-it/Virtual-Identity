@@ -29,7 +29,6 @@ virtualIdentityExtension.ns(function () {
     let Log = vI.setupLogging("virtualIdentity.main");
     Components.utils.import("resource://v_identity/vI_account.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_prefs.js", virtualIdentityExtension);
-    Components.utils.import("resource://v_identity/vI_replyToSelf.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_identityData.js", virtualIdentityExtension);
     Components.utils.import("resource://v_identity/vI_smartIdentity.js", virtualIdentityExtension);
@@ -138,9 +137,6 @@ virtualIdentityExtension.ns(function () {
 
           Log.debug("VIdentity_GenericSendMessage");
 
-  //           if (msgType == Components.interfaces.nsIMsgCompDeliverMode.Now)
-  //             vI.addReplyToSelf(window);
-
           // check via virtual / non-virtual constraints and storage results if mail should be sent
           if (msgType == Ci.nsIMsgCompDeliverMode.Now) {
             if ((main.elements.Obj_MsgIdentity.vid && vI.vIprefs.get("warn_virtual") &&
@@ -245,7 +241,6 @@ virtualIdentityExtension.ns(function () {
       initSystemStage2: function () {
         Log.debug("initSystemStage2.");
 //         Log.debug("document.title=" + document.title + " gMsgCompose=" + gMsgCompose + " msgIdentityMenu=" + document.getElementById("msgIdentity"))
-//         vI.initReplyTo(window);
         vI.storage.init();
         vI.statusmenu.init();
         new vI.smartIdentity(window, gMsgCompose, vI.storage);
@@ -254,32 +249,6 @@ virtualIdentityExtension.ns(function () {
 
       close: function () {
         vI.storage.clean();
-      },
-
-      adapt_interface: function () {
-        if (main.elements.Obj_MsgIdentityPopup) return; // only rearrange the interface once
-
-        // initialize the pointers to extension elements
-        main.elements.init_base()
-
-        // rearrange the positions of some elements
-        var parent_hbox = main.elements.Obj_MsgIdentity.parentNode;
-        var storage_box = document.getElementById("addresses-box");
-        var virtualIdentityExtension_autoReplyToSelfLabel = document.getElementById("virtualIdentityExtension_autoReplyToSelfLabelBox");
-
-        storage_box.removeChild(virtualIdentityExtension_autoReplyToSelfLabel);
-        parent_hbox.appendChild(virtualIdentityExtension_autoReplyToSelfLabel);
-        storage_box.removeChild(main.elements.Area_MsgIdentityHbox);
-        parent_hbox.appendChild(main.elements.Area_MsgIdentityHbox);
-
-        //main.elements.Obj_MsgIdentity.setAttribute("hidden", "true");
-        main.elements.Obj_MsgIdentity.previousSibling.setAttribute("control", "msgIdentity");
-
-        var access_label = parent_hbox.getElementsByAttribute("control", "msgIdentity")[0];
-        if (access_label) access_label.setAttribute("control", "msgIdentity");
-
-        // initialize the pointers to extension elements (initialize those earlier might brake the interface)
-        main.elements.init_rest();
       },
 
       adapt_loadIdentity: function () {

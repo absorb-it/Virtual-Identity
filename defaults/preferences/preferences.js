@@ -46,5 +46,4 @@ pref("extensions.virtualIdentity.idSelection_autocreate", true);
 pref("extensions.virtualIdentity.idSelection_preferExisting", true);
 pref("extensions.virtualIdentity.idSelection_removeSmartIdentityFromRecipients", true);
 pref("extensions.virtualIdentity.idSelection_ignoreIDs", "");
-pref("extensions.virtualIdentity.autoReplyToSelf", false);
 pref("extensions.{dddd428e-5ac8-4a81-9f78-276c734f75b8}.description", "chrome://v_identity/locale/v_identity.properties");

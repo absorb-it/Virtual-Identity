@@ -2,8 +2,6 @@
 <!ENTITY vident.accPane.prettyName.prefix "virtual Id">
 <!ENTITY vident.composeDialog.storageSave.label "save">
 <!ENTITY vident.composeDialog.storageSave.tooltiptext "save Identity while sending">
-<!ENTITY vident.composeDialog.autoReplyToSelf.label "(=Reply-To)">
-<!ENTITY vident.composeDialog.autoReplyToSelf.menuLabel "disable Reply-To synchronization">
 <!ENTITY vident.replySelector.dialogheader.title "Virtual Identity">
 <!ENTITY vident.replySelector.caption.label "Choose a Virtual Identity">
 <!ENTITY vident.vI_Menu.label "Virtual Identity">

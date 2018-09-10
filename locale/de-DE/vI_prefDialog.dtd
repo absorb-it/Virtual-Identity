@@ -86,7 +86,6 @@
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "Verändere die Absender-Adresse für neue emails mit einem Zeitstempel. Dies ist ein einfacher Weg um automatisch neue Identitäten zu erzeugen.">
 <!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format des Zeitstempels: Leer lassen oder die strftime()-Syntax nutzen (&apos;&#37;Y&#37;m&#37;d&#37;H&#37;M&#37;S&apos;)"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.autoTimeString.label "Format des Absenders: &#37;l lokaler Teil, &#37;t Zeitstempel, &#37;d domain. Default &apos;&#37;l&#37;t@&#37;d&apos;"> <!-- translate -->
-<!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "setze Virtuelle Identität als Reply-To Adresse">
 <!ENTITY vI_prefDialog.composeDialog.status.label "zeige Status-Bar Infos / Menu">
 <!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "zeigt Hinweise im Status-Bar sowie Status-Bar Menu">
 <!ENTITY vI_prefDialog.composeDialog.SMTP.label "zeige SMTP Auswahlmenu">

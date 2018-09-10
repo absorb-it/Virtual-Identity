@@ -159,8 +159,7 @@ virtualIdentityExtension.ns(function () {
           "VIdent_identity.idSelection_ask_always",
           "VIdent_identity.idSelection_autocreate",
           "VIdent_identity.idSelection_preferExisting",
-          "VIdent_identity.idSelection_ignoreIDs",
-          "VIdent_identity.autoReplyToSelf"
+          "VIdent_identity.idSelection_ignoreIDs"
         ],
 
         init: function () {
