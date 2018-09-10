@@ -57,7 +57,7 @@ smartIdentity.prototype = {
   init: function () {
     var msgHdr;
     var msgComposeTypeReference = Components.interfaces.nsIMsgCompType;
-    Log.debug("this._document.title=" + this._document.title)
+//     Log.debug("this._document.title=" + this._document.title)
 
     var newsgroup = this._msgCompose.compFields.newsgroups;
     var autocreate = false;
