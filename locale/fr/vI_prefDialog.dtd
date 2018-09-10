@@ -86,10 +86,6 @@
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "Lors de la composition d'un nouveau message, modifiez votre adresse d'expéditeur habituelle avec un horodatage">
 <!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;Y&#37;m&#37;d&#37;H&#37;M&#37;S&apos;)"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.autoTimeString.label "Format of Result: &#37;l localpart, &#37;t timestamp, &#37;d domain. Default &apos;&#37;l&#37;t@&#37;d&apos;"> <!-- translate -->
-<!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "Remarque : pour lancer la désactivation dynamique des signatures vous devez installer et activer l'extension &apos;Signature Switch&apos;. Pour le moment cette option n'est pas disponible.">
-<!ENTITY vI_prefDialog.composeDialog.HideSignature.label "supprimer toute &apos;Signature&apos; en utilisant Virtual Identity">
-<!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "désactiver la signature S/MIME en cas d'utilisation de Virtual Identity">
-<!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "désactiver la signature openPGP en cas d'utilisation de Virtual Identity">
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "utiliser Virtual Identity pour une adresse de &apos;réponse à&apos;">
 <!ENTITY vI_prefDialog.composeDialog.status.label "show Status-Bar infos / menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu"> <!-- translate -->

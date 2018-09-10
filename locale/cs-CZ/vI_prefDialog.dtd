@@ -86,10 +86,6 @@
 <!ENTITY vI_prefDialog.composeDialog.autoTimestamp.tooltiptext "Při psaní nového e-mailu, přidá do obvyklé adresy odesilatele časové razítko. Jednoduchý způsob tvorby unikátních identit, ve výchozím stavu vypnuto.">
 <!ENTITY vI_prefDialog.composeDialog.autoTimeFormat.label "Format of Timestamp: Leave empty or use strftime() syntax (&apos;&#37;Y&#37;m&#37;d&#37;H&#37;M&#37;S&apos;)"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.autoTimeString.label "Format of Result: &#37;l localpart, &#37;t timestamp, &#37;d domain. Default &apos;&#37;l&#37;t@&#37;d&apos;"> <!-- translate -->
-<!ENTITY vI_prefDialog.composeDialog.HideSignature.warning.desc "poznámka: pro aktivaci dynamického odstraňování podpisu je potřeba nainstalovat a aktivovat rozšíření 'Signature Switch'. Nyní tato volba není dostupná.">
-<!ENTITY vI_prefDialog.composeDialog.HideSignature.label "při použití virtuální identity odstranit podpis">
-<!ENTITY vI_prefDialog.composeDialog.HideSMimeSignature.label "při použití Virtual Identity vypnout S/MIME podpis">
-<!ENTITY vI_prefDialog.composeDialog.HideOpenPGPSignature.label "při použití Virtual Identity vypnout openPGP podpis">
 <!ENTITY vI_prefDialog.composeDialog.autoReplyToSelf.label "nastavit Virtual Identity jako adresu pro Reply-To">
 <!ENTITY vI_prefDialog.composeDialog.status.label "show Status-Bar infos / menu"> <!-- translate -->
 <!ENTITY vI_prefDialog.composeDialog.status.tooltiptext "show Notifications in Status-Bar, display Status-Bar Menu"> <!-- translate -->

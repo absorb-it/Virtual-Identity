@@ -138,9 +138,6 @@ virtualIdentityExtension.ns(function () {
           "VIdent_identity.debug_to_file_path",
           "VIdent_identity.warn_nonvirtual",
           "VIdent_identity.warn_virtual",
-          "VIdent_identity.hide_signature",
-          "VIdent_identity.hide_sMime_messageSignature",
-          "VIdent_identity.hide_openPGP_messageSignature",
           "VIdent_identity.storage",
           "VIdent_identity.storage_store",
           "VIdent_identity.storage_store_base_id",
@@ -284,16 +281,6 @@ virtualIdentityExtension.ns(function () {
           textfield.value = "envelope-to\nx-original-to\nto\ncc"
         },
 
-        smartReplyHideSignature: function () {
-          // check for signature_switch extension
-          AddonManager.getAddonByID("{2ab1b709-ba03-4361-abf9-c50b964ff75d}", function (addon) {
-            if (addon && !addon.userDisabled && !addon.appDisable) {
-              document.getElementById("VIdent_identity.HideSignature.warning").setAttribute("hidden", "true");
-              document.getElementById("VIdent_identity.hide_signature").setAttribute("disabled", "false");
-            }
-          });
-        },
-
         autoTimestampConstraint: function (element) {
           var mAttr = prefDialog.base.modifyAttribute;
           mAttr("VIdent_identity.autoTimestamp.options", "hidden", element.checked);
@@ -351,7 +338,6 @@ virtualIdentityExtension.ns(function () {
         prefDialog.base.init();
 
         prefDialog.base.smartReplyConstraint(document.getElementById("VIdent_identity.smart_reply"));
-        prefDialog.base.smartReplyHideSignature();
         prefDialog.base.storageConstraint(document.getElementById("VIdent_identity.storage"));
         prefDialog.base.autoTimestampConstraint(document.getElementById("VIdent_identity.autoTimestamp"));
         prefDialog.base.constraints();

@@ -23,9 +23,6 @@ pref("extensions.virtualIdentity.debug_to_file_path", "virtualIdentity_debug.log
 pref("extensions.virtualIdentity.notification_timeout", 5);
 pref("extensions.virtualIdentity.warn_nonvirtual", false);
 pref("extensions.virtualIdentity.warn_virtual", false);
-pref("extensions.virtualIdentity.hide_signature", false);
-pref("extensions.virtualIdentity.hide_sMime_messageSignature", false);
-pref("extensions.virtualIdentity.hide_openPGP_messageSignature", false);
 pref("extensions.virtualIdentity.storage", true);
 pref("extensions.virtualIdentity.storage_store", true);
 pref("extensions.virtualIdentity.storage_store_base_id", false);
