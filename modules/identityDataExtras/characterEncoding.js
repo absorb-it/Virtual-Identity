@@ -31,13 +31,6 @@ const Cu = Components.utils;
 
 Cu.import("resource://v_identity/vI_identityDataExtras.js");
 Cu.import("resource://v_identity/vI_log.js");
-let legacy = false; // use pre TB-32 legacy code
-try {
-  Cu.import("resource://gre/modules/CharsetMenu.jsm");
-} catch (e) {
-  legacy = true; // pre TB-32-version, might be removed in the future
-}
-
 
 let Log = setupLogging("virtualIdentity.identityDataExtras.characterEncoding");
 
@@ -73,47 +66,21 @@ identityDataExtrasObject_characterEncoding.prototype = {
   setValueToEnvironment_msgCompose: function () {
     if (!this.value)
       return;
-    // pre TB-32-version, might be removed in the future --------------------------------
-    if (legacy) {
-      // old style
-      var menuitem = this._currentWindow.document.getElementById(this.value);
-      if (menuitem)
-        menuitem.setAttribute('checked', 'true');
-      else { // set menumark later if menu is not ready yet
-        var maileditCharsetMenu = this._currentWindow.document.getElementById("maileditCharsetMenu")
-        maileditCharsetMenu.setAttribute("unmarkedValue", this.value)
-        var onpopupshowing = maileditCharsetMenu.getAttribute("onpopupshowing")
-        this._currentWindow.document.getElementById("maileditCharsetMenu").setAttribute("onpopupshowing",
-          onpopupshowing + ";this._setMenuMark();")
-      }
-    }
-    // ----------------------------------------------------------------------------------
     this._currentWindow.gMsgCompose.compFields.characterSet = this.value;
     this._currentWindow.SetDocumentCharacterSet(this.value);
   },
 
   setValueToEnvironment_dataEditor: function () {
-    // pre TB-32-version, might be removed in the future --------------------------------
-    if (legacy) {
-      this._currentWindow.CreateMenu('mailedit'); // this is part of the magic included by the xul-binding
-      if (this.value != null) {
-        this._currentWindow.document.getElementById("maileditCharsetMenu").selectedItem = this._currentWindow.document.getElementById(this.value);
-        this._currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
+    CharsetMenu.build(this._currentWindow.document.getElementById("charsetPopup"), true, false)
+    if (this.value != null) {
+      let menu = this._currentWindow.document.getElementById("maileditCharsetMenu");
+      let menuitem = menu.getElementsByAttribute("charset", this.value).item(0);
+      if (menuitem) {
+          menu.selectedItem = menuitem;
+          menuitem.setAttribute("checked", "true");
       }
-    }
-    // ----------------------------------------------------------------------------------
-    else {
-      CharsetMenu.build(this._currentWindow.document.getElementById("charsetPopup"), true, false)
-      if (this.value != null) {
-        let menu = this._currentWindow.document.getElementById("maileditCharsetMenu");
-        let menuitem = menu.getElementsByAttribute("charset", this.value).item(0);
-        if (menuitem) {
-            menu.selectedItem = menuitem;
-            menuitem.setAttribute("checked", "true");
-        }
-        menu.setAttribute("label", CharsetMenu._getCharsetLabel(this.value));
-        this._currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
-      }
+      menu.setAttribute("label", CharsetMenu._getCharsetLabel(this.value));
+      this._currentWindow.document.getElementById("vI_" + this.option + "_store").setAttribute("checked", "true");
     }
     this._currentWindow.document.getElementById("vI_" + this.option + "_store").doCommand();
   },
@@ -133,15 +100,9 @@ identityDataExtrasObject_characterEncoding.prototype = {
     if (this._currentWindow.document.getElementById("vI_" + this.option + "_store").getAttribute("checked") == "true")
     // check if element is selected (list might not contain relevant entry)
       if (this._currentWindow.document.getElementById("maileditCharsetMenu").selectedItem)
-      // pre TB-32-version, might be removed in the future --------------------------------
-        if (legacy) {
-          this.value = this._currentWindow.document.getElementById("maileditCharsetMenu").selectedItem.id
-        }
-        // ----------------------------------------------------------------------------------
-        else {
-          this.value = this._currentWindow.document.getElementById("maileditCharsetMenu").selectedItem.getAttribute('charset');
-        } else
-      this.value = null;
+        this.value = this._currentWindow.document.getElementById("maileditCharsetMenu").selectedItem.getAttribute('charset');
+      else
+        this.value = null;
   }
 }
 registerIdExtrasObject(identityDataExtrasObject_characterEncoding);
