@@ -32,10 +32,13 @@
     <content allowevents="true">
         <xul:listcell>
             <xul:label class="identityDesc-name" xbl:inherits="value=label,accesskey,crop" crop="end" flex="1"/>
+            <xul:label class="identityDesc-pre" value="(" crop="end" />
             <xul:label class="identityDesc-ext1" xbl:inherits="value=ext1" crop="end" />
+            <xul:label class="identityDesc-mid" value="/" crop="end" />
             <xul:label class="identityDesc-ext2" xbl:inherits="value=ext2" crop="end" />
+            <xul:label class="identityDesc-post" value=")" crop="end" />
         </xul:listcell>
-        <xul:listcell>
+        <xul:listcell class="identityDesc-count-cell">
             <xul:label class="identityDesc-count" xbl:inherits="value=count" crop="end" />
         </xul:listcell>
         <xul:listcell>
@@ -52,15 +55,15 @@
     </property>
     </implementation>
     </binding>
-          
-	<binding id="mismatch-menuitem" extends="chrome://global/content/bindings/menu.xml#menuitem">
-  	<content>
-		<xul:label class="identityDesc-name" xbl:inherits="value=label,accesskey,crop" crop="end" flex="1"/>
-        <xul:label class="identityDesc-ext1" xbl:inherits="value=ext1" crop="end" />
-		<xul:label class="identityDesc-ext2" xbl:inherits="value=ext2" crop="end" />
-  	</content>
-	</binding>
-    
+
+    <binding id="mismatch-menuitem" extends="chrome://global/content/bindings/menu.xml#menuitem">
+    <content>
+            <xul:label class="identityDesc-name" xbl:inherits="value=label,accesskey,crop" crop="end" flex="1"/>
+    <xul:label class="identityDesc-ext1" xbl:inherits="value=ext1" crop="end" />
+            <xul:label class="identityDesc-ext2" xbl:inherits="value=ext2" crop="end" />
+    </content>
+    </binding>
+
     <binding id="mismatch-menulist" extends="chrome://global/content/bindings/menulist.xml#menulist">
     <content>
         <xul:hbox class="menulist-label-box" flex="1">
@@ -154,7 +157,7 @@
     <implementation>
     <method name="_addIdentities">
         <body><![CDATA[
-        virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: _addIdentities.");
+        //virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: _addIdentities.");
         Components.utils.import("resource://v_identity/vI_accountUtils.js", virtualIdentityExtension);
         var accounts = virtualIdentityExtension.getAccountsArray();
         for (let acc = 0; acc < accounts.length; acc++) {
@@ -174,6 +177,47 @@
         }
 		]]></body>
     </method>
+    <method name="_addSmtp">
+        <parameter name="server" />
+        <body><![CDATA[
+            //virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: _addSmtp.");
+            const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+            var menuitem = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
+            menuitem.setAttribute("class", "mismatchMenuitem");
+            menuitem.setAttribute("label",  (server.description?server.description:server.hostname));
+            menuitem.setAttribute("ext1",  server.hostname);
+            menuitem.setAttribute("ext2",  server.username);
+            menuitem.setAttribute("key",  server.key);
+            this.appendChild(menuitem);
+        ]]></body>
+    </method>
+    <method name="_addSmtpServers">
+        <body><![CDATA[
+            //virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: _addSmtpServers.");
+            
+            const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+            var menuitem = document.createElementNS(XUL_NS, "menuitem"); // create a new XUL menuitem
+            menuitem.setAttribute("class", "mismatchMenuitem");
+            menuitem.setAttribute("key", virtualIdentityExtension.DEFAULT_SMTP_TAG);
+            menuitem.setAttribute("label", Components.classes["@mozilla.org/intl/stringbundle;1"]
+              .getService(Components.interfaces.nsIStringBundleService)
+              .createBundle("chrome://messenger/locale/messenger.properties")
+              .GetStringFromName("defaultServerTag"));        
+            this.appendChild(menuitem);
+            
+            var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+                .getService(Components.interfaces.nsISmtpService);
+			// check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
+			if (typeof(smtpService.servers) == "object") servers = smtpService.servers;
+			else servers = smtpService.smtpServers;
+
+			while (servers && servers.hasMoreElements()) {
+				var server = servers.getNext(); 
+				if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) this._addSmtp(server);
+			}
+		]]></body>
+    </method>
+
     <method name="_addIdentitiesWithSmtp">
         <body><![CDATA[
         virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: _addIdentitiesWithSmtp.");
@@ -212,12 +256,15 @@
     </method>
     <constructor>
         <![CDATA[       
-        virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: constructor.");
+        //virtualIdentityExtension.Log.debug("rdfAccountMismatchDialog.xml mismatchID-menupopup: constructor.");
         const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
         this.appendChild(document.createElementNS(XUL_NS, "menuseparator")); // create a new XUL menuseparator
         switch (this.getAttribute("type")) {
           case "identity":
             this._addIdentities();
+            break;
+          case "smtp":
+            this._addSmtpServers();
             break;
           case "smtpid":
             this._addIdentitiesWithSmtp();

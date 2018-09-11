@@ -4,16 +4,21 @@
 
 .mismatchLine {
     -moz-binding: url("chrome://v_identity/content/bindings/vI_rdfAccountMismatchDialog.xml#mismatch-line");
+    padding: 10px;
 }
 
 .mismatchMenulist {
     -moz-binding: url("chrome://v_identity/content/bindings/vI_rdfAccountMismatchDialog.xml#mismatch-menulist");
+    margin: 5px;
 }
 
 .mismatchMenupopup {
     -moz-binding: url("chrome://v_identity/content/bindings/vI_rdfAccountMismatchDialog.xml#mismatch-menupopup");
 }
 
+.identityDesc-count-cell {
+  text-align: center;
+}
 
 .selectorListitem {
     -moz-binding: url("chrome://v_identity/content/prefDialog/vI_prefDialog.xml#selectorListitem");
@@ -26,10 +31,19 @@
     -moz-binding: url("chrome://v_identity/content/bindings/vI_rdfAccountMismatchDialog.xml#mismatch-menuitem");
 }
 
-.identityDesc-ext1, .identityDesc-ext2, .identityDesc-count {
+.identityDesc-count {
+  text-align: center;
+}
+
+.identityDesc-pre, .identityDesc-mid, .identityDesc-post {
+  margin: 0;
+}
+
+
+/*.identityDesc-ext1, .identityDesc-ext2, .identityDesc-count {
     font-style: italic;
     color:      graytext;
-}
+}*/
 
 #virtualIdentityExtension_rdfDataEditorContent checkbox.vI_plain {
 	display: none;
@@ -57,6 +71,11 @@ checkbox.vI_plain > .checkbox-spacer-box > .checkbox-check {
 }
 checkbox.vI_plain > .checkbox-label-center-box, checkbox.vI_plain > .checkbox-label-box {
 	display: none;
+}
+
+#virtualIdentityExtension_rdfAccountMismatchDialog_groupbox description {
+        font-size: normal;
+        font-weight: bold;
 }
 
 checkbox.vI_plain {

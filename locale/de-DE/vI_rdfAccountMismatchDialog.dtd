@@ -5,9 +5,14 @@
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.caption "ordne zusammengehörige Identitäten">
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.desc "Einige der vorher gespeicherten SMTP-Server passen nicht zu den aktuellen SMTP-Servern. Bitte entscheide, ob die folgenden SMTP-Server entfernt oder anderen SMTP-Servern zugeordnet werden sollen:">
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.caption "ordne zusammengehörige SMTP-Server">
+<!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.desc "The new version of virtual Identity selects the SMTP-server according to the used underlaying base Identity. This collides with some of your stored identity settings where the stored SMTP differs from the one from your permanent identity. Please select if the folowing previously stored SMTP-relations should be removed or reassign those to the right base Identities:">
+<!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.caption "assign mismatching SMTP-servers:">
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.old "vorherige Identität (Email / voller Name)">
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.count "Häufigkeit">
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.new "neue Identität (Email / voller Name)">
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.old "vorheriger SMTP-Server (name / nutzer)">
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.count "Häufigkeit">
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.new "neuer SMTP-Server (name / nutzer)">
+<!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.old "alter SMTP-Server (Identität / SMTP-Server)">
+<!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.count "Häufigkeit">
+<!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.new "neue Identität (SMTP-Server)">

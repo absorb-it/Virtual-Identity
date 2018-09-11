@@ -23,6 +23,10 @@
    - Contributor(s):
    - ***** END LICENSE BLOCK ***** -->
    
+
+<?xml-stylesheet href="chrome://mozapps/content/xpinstall/xpinstallConfirm.css" type="text/css"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://mozapps/skin/xpinstall/xpinstallConfirm.css" type="text/css"?>
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
 
 <!DOCTYPE overlay SYSTEM "chrome://v_identity/locale/vI_rdfAccountMismatchDialog.dtd">
@@ -38,21 +42,33 @@
     
     <label id="virtualIdentityExtension_removeRelationLabel" value="&vident.virtualIdentityExtension_rdfAccountMismatchDialog.removeRelation.label;" hidden="true" />
     
-    <dialogheader title="&vident.virtualIdentityExtension_rdfAccountMismatchDialog.dialogheader;"/>
-    <groupbox id="virtualIdentityExtension_rdfAccountMismatchDialog_groupbox">
-        <vbox id="virtualIdentityExtension_rdfAccountMismatchDialog_vbox_identity" align="left" hidden="true" >
-            <caption label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.caption;"/>
+    <vbox flex="1" id="dialogContentBox">
+      <dialogheader title="&vident.virtualIdentityExtension_rdfAccountMismatchDialog.dialogheader;"/>
+    <hbox id="xpinstallheader" align="start">
+        <image class="alert-icon"/>
+        <vbox id="virtualIdentityExtension_rdfAccountMismatchDialog_vbox_identity" align="left" hidden="true" flex="1">
+            <description class="warning widthXX">&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.caption;</description>
             <description class="widthXX">&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.desc;</description>
         </vbox>
-        <vbox id="virtualIdentityExtension_rdfAccountMismatchDialog_vbox_smtpid" align="left" hidden="true" >
-            <caption label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.caption;"/>
+        <vbox id="virtualIdentityExtension_rdfAccountMismatchDialog_vbox_smtp" align="left" hidden="true" flex="1">
+            <description class="warning widthXX">&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.caption;</description>
+            <description class="widthXX">&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.desc;</description>
+        </vbox>
+        <vbox id="virtualIdentityExtension_rdfAccountMismatchDialog_vbox_smtpid" align="left" hidden="true" flex="1">
+            <description class="warning widthXX">&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.caption;</description>
             <description class="widthXX">&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.desc;</description>
         </vbox>
-        <listbox id="virtualIdentityExtension_rdfAccountMismatchDialog_listbox" suppressonselect="true" rows="5" >
+    </hbox>
+        <listbox id="virtualIdentityExtension_rdfAccountMismatchDialog_listbox" suppressonselect="true" flex="1" rows="7">
         <listhead id="virtualIdentityExtension_rdfAccountMismatchDialog_listhead_identity" hidden="true">
             <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.old;" />
             <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.count;" />
             <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.new;" />
+        </listhead>
+        <listhead id="virtualIdentityExtension_rdfAccountMismatchDialog_listhead_smtp" hidden="true">
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.old;" />
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.count;" />
+            <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.new;" />
         </listhead>
         <listhead id="virtualIdentityExtension_rdfAccountMismatchDialog_listhead_smtpid" hidden="true">
             <listheader label="&vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.old;" />
@@ -61,5 +77,5 @@
         </listhead>
         <listcols><listcol/><listcol/><listcol/></listcols>
         </listbox>
-    </groupbox>
+  </vbox>
 </dialog>

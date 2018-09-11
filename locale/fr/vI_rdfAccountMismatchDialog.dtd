@@ -5,9 +5,14 @@
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.caption "assign related Identities"> <!-- translate -->
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.desc "Some of the previously stored SMTP-servers don't match the current SMTP-Settings. Please select if the folowing stored SMTP-relations should be removed or assign those to existing SMTP servers:"> <!-- translate -->
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.caption "assign related SMTP-server"> <!-- translate -->
+<!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.desc "The new version of virtual Identity selects the SMTP-server according to the used underlaying base Identity. This collides with some of your stored identity settings where the stored SMTP differs from the one from your permanent identity. Please select if the folowing previously stored SMTP-relations should be removed or reassign those to the right base Identities:">
+<!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.caption "assign mismatching SMTP-servers:">
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.old "previous Identity (email / full Name)"> <!-- translate -->
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.count "use-count"> <!-- translate -->
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_identity.new "new Identitiy (email / full Name)"> <!-- translate -->
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.old "previous SMTP (hostname / username)"> <!-- translate -->
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.count "use-count"> <!-- translate -->
 <!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtp.new "new SMTP (hostname / username)"> <!-- translate -->
+<!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.old "stored SMTP (base Identity  / SMTP)">
+<!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.count "use-count">
+<!ENTITY vident.virtualIdentityExtension_rdfAccountMismatchDialog_smtpid.new "new base Identity (SMTP)">
