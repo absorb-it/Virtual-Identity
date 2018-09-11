@@ -66,11 +66,11 @@ function initWithFilePath_tryDelimiters(_nsIFile, path, filename) {
   }
 };
 
-function rdfDatasource(currentWindow, rdfFileName, dontRegisterObserver) {
+function rdfDatasource(currentWindow, rdfFileName, dontRegisterObserver, dontChange = false) {
   this._currentWindow = currentWindow;
   this._rdfFileName = rdfFileName;
   this._dontRegisterObserver = dontRegisterObserver;
-  if (this._rdfFileName) this.init();
+  if (this._rdfFileName) this.init(dontChange);
   if (!this._dontRegisterObserver) this.AccountManagerObserver.register(this);
   this._extVersion = get3PaneWindow().virtualIdentityExtension.extensionVersion;
 //   Log.debug("rdfDatasource: read ext. Version '" + this._extVersion + "'");
@@ -92,6 +92,8 @@ rdfDatasource.prototype = {
   _rdfNSFilter: "vIStorage/filter",
   _rdfNSAccounts: "vIAccounts",
   _rdfNSIdentities: "vIAccounts/id",
+  // required for import and update of 0.10/0.0.6 rdf
+  _rdfNSSMTPservers: "vIAccounts/smtp",
 
   _virtualIdentityID: "{dddd428e-5ac8-4a81-9f78-276c734f75b8}",
 
@@ -112,6 +114,10 @@ rdfDatasource.prototype = {
   _identityContainer: Components.classes["@mozilla.org/rdf/container;1"]
     .createInstance(Components.interfaces.nsIRDFContainer),
 
+  // required for import and update of 0.10/0.0.6 rdf
+  _smtpContainer: Components.classes["@mozilla.org/rdf/container;1"]
+    .createInstance(Components.interfaces.nsIRDFContainer),
+
   getContainer: function (type) {
     switch (type) {
     case "email":
@@ -124,20 +130,25 @@ rdfDatasource.prototype = {
       return this._filterContainer;
     case "identity":
       return this._identityContainer;
+    // required for import and update of 0.10/0.0.6 rdf
+    case "smtp":
+      return this._smtpContainer;
     }
     return null;
   },
 
-  init: function () {
+  init: function (dontChange = false) {
     //         Log.debug("init.");
 
     this._openRdfDataSource();
     if (!this._rdfDataSource) return;
     this._initContainers();
-    if (this.rdfUpgradeRequired()) this.rdfUpgrade();
+    if (!dontChange) {
+      if (this.rdfUpgradeRequired()) this.rdfUpgrade();
 
-    // store version everytime to recognize downgrades later
-    this.storeRDFVersion();
+      // store version everytime to recognize downgrades later
+      this.storeRDFVersion();
+    }
 
     //         this.refreshAccountInfo();
     //         Log.debug("init done.");
@@ -184,6 +195,9 @@ rdfDatasource.prototype = {
       storageRes = this._rdfService
         .GetResource(this._rdfNS + this._rdfNSIdentities);
       this._identityContainer.Init(this._rdfDataSource, storageRes);
+      storageRes = this._rdfService
+        .GetResource(this._rdfNS + this._rdfNSSMTPservers);
+      this._smtpContainer.Init(this._rdfDataSource, storageRes);
     } catch (e) {};
   },
 
@@ -255,12 +269,15 @@ rdfDatasource.prototype = {
       .GetResource(this._rdfNS + this._rdfNSAccounts);
     var identityRes = this._rdfService
       .GetResource(this._rdfNS + this._rdfNSIdentities);
-
+    var smtpRes = this._rdfService
+      .GetResource(this._rdfNS + this._rdfNSSMTPservers);
     this._setRDFValue(accountRes, "name", "Accounts");
     this._setRDFValue(identityRes, "name", "Identities");
+    this._setRDFValue(smtpRes, "name", "SMTP-Server");
 
     rdfContainerUtils.MakeBag(this._rdfDataSource, accountRes);
     rdfContainerUtils.MakeBag(this._rdfDataSource, identityRes);
+    rdfContainerUtils.MakeBag(this._rdfDataSource, smtpRes);
 
     var accountContainer = Components.classes["@mozilla.org/rdf/container;1"].
     createInstance(Components.interfaces.nsIRDFContainer);
@@ -269,6 +286,7 @@ rdfDatasource.prototype = {
     accountContainer.Init(this._rdfDataSource, accountRes);
     // append all new containers to accountRes
     if (accountContainer.IndexOf(identityRes) == -1) accountContainer.AppendElement(identityRes);
+    if (accountContainer.IndexOf(smtpRes) == -1) accountContainer.AppendElement(smtpRes);
 
     this._initContainers();
     this.refreshAccountInfo();
@@ -375,6 +393,16 @@ rdfDatasource.prototype = {
       this._unsetRDFValue(resource, "email", this._getRDFValue(resource, "email"))
       this._identityContainer.RemoveElement(resource, false);
     }
+
+    enumerator = this._smtpContainer.GetElements();
+    while (enumerator && enumerator.hasMoreElements()) {
+      var resource = enumerator.getNext();
+      resource.QueryInterface(Components.interfaces.nsIRDFResource);
+      this._unsetRDFValue(resource, "label", this._getRDFValue(resource, "label"))
+      this._unsetRDFValue(resource, "hostname", this._getRDFValue(resource, "hostname"))
+      this._unsetRDFValue(resource, "username", this._getRDFValue(resource, "username"))
+      this._smtpContainer.RemoveElement(resource, false);
+    }
   },
 
   getRelevantIDs: function () {
@@ -446,32 +474,110 @@ rdfDatasource.prototype = {
   },
 
   repairMismatch: function (type, mismatchItems) {
-    // type might be 'id' or 'smtpid' - dependent on trigger
+    // type might be 'identity' or 'smtp' or 'smtpid' - dependent on trigger
     for (var i = 0; i < mismatchItems.length; i++) {
-      Log.debug("repairAccountMismatch change " + mismatchItems[i].oldkey + " into " + mismatchItems[i].key);
+      if (mismatchItems[i].key)
+        Log.debug("repairAccountMismatch change " + mismatchItems[i].oldkey + " into " + mismatchItems[i].key);
+      else
+        Log.debug("repairAccountMismatch remove " + mismatchItems[i].oldkey);
       // search relevant Identities
       for (let treeType of Array("email", "maillist", "newsgroup", "filter")) {
         var enumerator = this.getContainer(treeType).GetElements();
         while (enumerator && enumerator.hasMoreElements()) {
           var resource = enumerator.getNext();
           resource.QueryInterface(Components.interfaces.nsIRDFResource);
-          
           // old smtp (stored in pre-0.10 rdf) and id have to match, set new id
           if (type == 'smtpid') {
             var smtp = mismatchItems[i].oldkey.split("-")[0];
             var id = mismatchItems[i].oldkey.split("-")[1];
             if (this._getRDFValue(resource, 'id') == id && this._getRDFValue(resource, 'smtp') == smtp) {
-              if (mismatchItems[i].key == "") this._unsetRDFValue(resource, 'id', id)
+              if (!mismatchItems[i].key) this._unsetRDFValue(resource, 'id', id)
               else this._setRDFValue(resource, 'id', mismatchItems[i].key)
             }
           }
-          // 'id' replacement
-          else if (this._getRDFValue(resource, 'id') == mismatchItems[i].oldkey) {
-            if (mismatchItems[i].key == "") this._unsetRDFValue(resource, 'id', mismatchItems[i].oldkey)
-            else this._setRDFValue(resource, 'id', mismatchItems[i].key)
+          // 'identity' replacement
+          else if (type == 'identity') {
+            if (this._getRDFValue(resource, 'id') == mismatchItems[i].oldkey) {
+              if (!mismatchItems[i].key) this._unsetRDFValue(resource, 'id', mismatchItems[i].oldkey)
+              else this._setRDFValue(resource, 'id', mismatchItems[i].key)
+            }
+          }
+          // 'smtp' replacement
+          else if (type == 'smtp') {
+            if (this._getRDFValue(resource, 'smtp') == mismatchItems[i].oldkey) {
+              if (!mismatchItems[i].key) this._unsetRDFValue(resource, 'smtp', mismatchItems[i].oldkey)
+              else this._setRDFValue(resource, 'smtp', mismatchItems[i].key)
+            }
           }
         }
       }
+    }
+  },
+
+  getRelevantSMTPs: function () {
+    var relevantSMTPs = new Object();
+    // search relevant SMTPs
+    for (let treeType of Array("email", "maillist", "newsgroup", "filter")) {
+      var enumerator = this.getContainer(treeType).GetElements();
+      while (enumerator && enumerator.hasMoreElements()) {
+        var resource = enumerator.getNext();
+        resource.QueryInterface(Components.interfaces.nsIRDFResource);
+        var smtp = this._getRDFValue(resource, "smtp")
+        if (smtp && smtp != DEFAULT_SMTP_TAG) {
+          if (!relevantSMTPs[smtp]) relevantSMTPs[smtp] = 1;
+          else relevantSMTPs[smtp] += 1;
+        }
+      }
+    }
+    return relevantSMTPs;
+  },
+
+  searchSmtpMismatch: function () {
+    Log.debug("searchSmtpMismatch");
+
+    var relevantSMTPs = this.getRelevantSMTPs();
+    var mismatchSMTPs = [];
+
+    for (var smtp in relevantSMTPs) {
+      var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+        .getService(Components.interfaces.nsISmtpService);
+      // check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
+      if (typeof (smtpService.servers) == "object") servers = smtpService.servers;
+      else servers = smtpService.smtpServers;
+
+      var found = false;
+      while (servers && servers.hasMoreElements()) {
+        var server = servers.getNext();
+        if (server instanceof Components.interfaces.nsISmtpServer &&
+          !server.redirectorType && smtp == server.key) {
+          found = true;
+          break;
+        }
+      }
+      var resource = this._rdfService.GetResource(this._rdfNS + this._rdfNSSMTPservers + "/" + smtp);
+      var rdfSMTPlabel = this._getRDFValue(resource, "label");
+      var rdfHostname = this._getRDFValue(resource, "hostname");
+      var rdfUsername = this._getRDFValue(resource, "username")
+      if (!found || rdfSMTPlabel != (server.description ? server.description : server.hostname) && rdfHostname != server.hostname)
+        mismatchSMTPs.push({
+          oldkey: smtp,
+          label: rdfSMTPlabel,
+          ext1: rdfHostname,
+          ext2: rdfUsername,
+          count: relevantSMTPs[smtp],
+          key: ""
+        })
+    }
+    if (mismatchSMTPs.length > 0) {
+      Log.debug(" found mismatches on smtp(s).");
+      get3PaneWindow().openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul", 0,
+        "chrome, dialog, modal, alwaysRaised, resizable=yes", "smtp", mismatchSMTPs,
+        /* callback: */
+        this).focus();
+      return true;
+    } else {
+      Log.debug(" found no mismatch");
+      return false;
     }
   },
 
@@ -489,12 +595,40 @@ rdfDatasource.prototype = {
         this._setRDFValue(resource, "identityName", identity.identityName);
         this._setRDFValue(resource, "fullName", identity.fullName);
         this._setRDFValue(resource, "email", identity.email);
+        if (identity.smtpServerKey)
+          this._setRDFValue(resource, "smtp", identity.smtpServerKey);
+        else
+          this._setRDFValue(resource, "smtp", virtualIdentityExtension.DEFAULT_SMTP_TAG);
 
         var position = this._identityContainer.IndexOf(resource); // check for index in new recType
         if (position != -1) this._identityContainer.InsertElementAt(resource, position, false);
         else this._identityContainer.AppendElement(resource);
       }
     }
+
+    function storeSmtp(server, parent) {
+      //             Log.debug("storeAccounts smtp store id " + server.key);
+      var resource = parent._rdfService.GetResource(parent._rdfNS + parent._rdfNSSMTPservers + "/" + server.key);
+      parent._setRDFValue(resource, "label", (server.description ? server.description : server.hostname));
+      parent._setRDFValue(resource, "hostname", server.hostname);
+      parent._setRDFValue(resource, "username", server.username);
+      var position = parent._smtpContainer.IndexOf(resource); // check for index in new recType
+      if (position != -1) parent._smtpContainer.InsertElementAt(resource, position, false);
+      else parent._smtpContainer.AppendElement(resource);
+    }
+
+    var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+      .getService(Components.interfaces.nsISmtpService);
+    // check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
+    if (typeof (smtpService.servers) == "object") servers = smtpService.servers;
+    else servers = smtpService.smtpServers;
+
+    while (servers && servers.hasMoreElements()) {
+      var server = servers.getNext();
+      if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) storeSmtp(server, this);
+    }
+
+    //         Log.debug("storeAccounts done");
   },
 
   export: function (rdfFileName) {
@@ -827,8 +961,8 @@ rdfDatasource.prototype = {
     self: null,
     _uninstall: false,
     observe: function (subject, topic, data) {
-      if (topic == "am-acceptChanges") {
-        Log.debug("account/identity changes observed");
+      if (topic == "am-smtpChanges" || topic == "am-acceptChanges") {
+        Log.debug("account/smtp changes observed");
         this.self.searchIdentityMismatch();
         this.self.refreshAccountInfo();
       }
@@ -838,6 +972,7 @@ rdfDatasource.prototype = {
       Log.debug("register AccountManagerObserver");
       var obsService = Components.classes["@mozilla.org/observer-service;1"].
       getService(Components.interfaces.nsIObserverService)
+      obsService.addObserver(this, "am-smtpChanges", false);
       obsService.addObserver(this, "am-acceptChanges", false);
     },
     unregister: function () {
@@ -845,6 +980,7 @@ rdfDatasource.prototype = {
       var obsService = Components.classes["@mozilla.org/observer-service;1"].
       getService(Components.interfaces.nsIObserverService)
       try {
+        obsService.removeObserver(this, "am-smtpChanges");
         obsService.removeObserver(this, "am-acceptChanges");
       } catch (e) {};
     }
@@ -1027,6 +1163,22 @@ rdfDatasourceImporter.prototype = {
     return null;
   },
 
+  _getMatchingSMTP: function (label, hostname, username) {
+    var servers, smtpService = Components.classes["@mozilla.org/messengercompose/smtp;1"]
+      .getService(Components.interfaces.nsISmtpService);
+    // check for new https://hg.mozilla.org/comm-central/rev/fab9e5145cd4 smtpService
+    if (typeof (smtpService.servers) == "object") servers = smtpService.servers;
+    else servers = smtpService.smtpServers;
+
+    while (servers && servers.hasMoreElements()) {
+      var server = servers.getNext();
+      if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType)
+        if (label == (server.description ? server.description : server.hostname) || (hostname == server.hostname && username == server.username))
+          return server.key;
+    }
+    return null;
+  },
+
   _translateRelevantIDs: function () {
     var relevantIDs = this._rdfImportDataSource.getRelevantIDs();
     for (var id in relevantIDs) {
@@ -1066,6 +1218,44 @@ rdfDatasourceImporter.prototype = {
 
   //--------------------------------------------------------------------------------------------------------
   //only required for update from pre 0.10 versions
+
+  _translateRelevantSMTPs: function () {
+    var relevantSMTPs = this._rdfImportDataSource.getRelevantSMTPs();
+    for (var smtp in relevantSMTPs) {
+      var resource = this._rdfService.GetResource(this._rdfImportDataSource._rdfNS + this._rdfImportDataSource._rdfNSSMTPservers + "/" + smtp);
+      var values = {
+        smtp: null,
+        label: null,
+        hostname: null,
+        username: null
+      }
+      values.label = this._rdfImportDataSource._getRDFValue(resource, "label");
+      values.hostname = this._rdfImportDataSource._getRDFValue(resource, "hostname");
+      values.username = this._rdfImportDataSource._getRDFValue(resource, "username");
+      values.smtp = this._getMatchingSMTP(values.label, values.hostname, values.username);
+      values.smtp = values.smtp ? values.smtp : "import_" + smtp;
+      relevantSMTPs[smtp] = values;
+      Log.debug("import: translate relevant SMTP from previous '" + smtp + "' to current '" + relevantSMTPs[smtp].smtp + "'");
+    }
+    return relevantSMTPs;
+  },
+
+  _storeMappedSMTPs: function (relevantSMTPs) {
+    for (var smtp in relevantSMTPs) {
+      if (relevantSMTPs[smtp].smtp == "import_" + smtp) {
+        var resource = this._rdfService
+          .GetResource(this._rdfDataSource._rdfNS + this._rdfDataSource._rdfNSSMTPservers + "/" + relevantSMTPs[smtp].smtp);
+        this._rdfDataSource._setRDFValue(resource, "label", relevantSMTPs[smtp].label);
+        this._rdfDataSource._setRDFValue(resource, "hostname", relevantSMTPs[smtp].hostname);
+        this._rdfDataSource._setRDFValue(resource, "username", relevantSMTPs[smtp].username);
+
+        var position = this._rdfDataSource._smtpContainer.IndexOf(resource); // check for index in new recType
+        if (position != -1) this._rdfDataSource._smtpContainer.InsertElementAt(resource, position, false);
+        else this._rdfDataSource._smtpContainer.AppendElement(resource);
+      }
+    }
+  },
+
   _rdfNSSMTPservers: "vIAccounts/smtp",
 
   _getSMTPIDCombinations: function () {
@@ -1074,13 +1264,13 @@ rdfDatasourceImporter.prototype = {
               .getService(Components.interfaces.nsIMsgAccountManager);
     // search relevant SMTPs
     for (let treeType of Array("email", "maillist", "newsgroup", "filter")) {
-      var enumerator = this._rdfImportDataSource.getContainer(treeType).GetElements();
+      var enumerator = this._rdfDataSource.getContainer(treeType).GetElements();
       while (enumerator && enumerator.hasMoreElements()) {
         var resource = enumerator.getNext();
         resource.QueryInterface(Components.interfaces.nsIRDFResource);
-        var smtp = this._rdfImportDataSource._getRDFValue(resource, "smtp")
+        var smtp = this._rdfDataSource._getRDFValue(resource, "smtp")
         if (smtp) {
-          var id = this._rdfImportDataSource._getRDFValue(resource, "id")
+          var id = this._rdfDataSource._getRDFValue(resource, "id")
           if (id) {
             if (!SMTPIDCombinations[smtp + "-" + id]) SMTPIDCombinations[smtp + "-" + id] = 1;
             else SMTPIDCombinations[smtp + "-" + id] += 1;
@@ -1112,8 +1302,8 @@ rdfDatasourceImporter.prototype = {
       if (smtp == id_smtp)
           break;
 
-      var resource = this._rdfImportDataSource._rdfService.GetResource(this._rdfImportDataSource._rdfNS + this._rdfNSSMTPservers + "/" + smtp);
-      var rdfSMTPlabel = this._rdfImportDataSource._getRDFValue(resource, "label");
+      var resource = this._rdfDataSource._rdfService.GetResource(this._rdfDataSource._rdfNS + this._rdfNSSMTPservers + "/" + smtp);
+      var rdfSMTPlabel = this._rdfDataSource._getRDFValue(resource, "label");
 
       var servers = MailServices.smtp.servers;
 
@@ -1129,9 +1319,9 @@ rdfDatasourceImporter.prototype = {
 
       SMTPIDCombinations.push({
         oldkey: smtpid,
-        label: rdfSMTPlabel + " / ",
+        label: rdfSMTPlabel,
         ext1: AccountManager.getIdentity(id).identityName,
-        ext2: "(" + smtpName + ")",
+        ext2: smtpName,
         count: relevantSMTPs[smtpid],
         key: ""
       })
@@ -1141,11 +1331,22 @@ rdfDatasourceImporter.prototype = {
       get3PaneWindow().openDialog("chrome://v_identity/content/vI_rdfAccountMismatchDialog.xul", 0,
         "chrome, dialog, modal, alwaysRaised, resizable=yes", "smtpid", SMTPIDCombinations,
         /* callback: */
-        this._rdfImportDataSource).focus();
+        this._rdfDataSource).focus();
       return true;
     } else {
       Log.debug(" found no mismatch");
       return false;
+    }
+  },
+
+  _removeSMTPEntries: function () {
+    // search and remove all smtp-entries
+    for (let treeType of Array("email", "maillist", "newsgroup", "filter")) {
+      var enumerator = this._rdfDataSource.getContainer(treeType).GetElements();
+      while (enumerator && enumerator.hasMoreElements()) {
+        var resource = enumerator.getNext();
+        this._rdfDataSource._unsetRDFValue(resource, 'smtp', this._rdfDataSource._getRDFValue(resource, 'smtp'))
+      }
     }
   },
   //--------------------------------------------------------------------------------------------------------
@@ -1194,22 +1395,17 @@ rdfDatasourceImporter.prototype = {
     Log.debug("import: copied file from " + file.path + " to " + importRdfDataFile.path + "'");
 
     // init Datasources
-    this._rdfImportDataSource = new rdfDatasource(this._currentWindow, importRdfDataFile.leafName, true);
+    this._rdfImportDataSource = new rdfDatasource(this._currentWindow, importRdfDataFile.leafName, true, true);
 
     // search matching IDs for anyones used in import-file
     var relevantIDs = this._translateRelevantIDs();
-
-    // extension from version 0.10 on does not use any extra SMTP information anymore
-    // and uses the SMTP-server from base identity instead.
-    // check if any collisions between previously stored SMTP and base identity exists and solve this.
-    Log.debug("import: search SMTP-ID mismatches");
-    this._searchSmtpIdMismatch();
+    var relevantSMTPs = this._translateRelevantSMTPs();
 
     Log.debug("import: preparation done.");
 
     for (let treeType of Array("email", "maillist", "newsgroup", "filter")) {
       // re-initialize importDataSource to point rdfService to the right Resources
-      this._rdfImportDataSource = new rdfDatasource(this._currentWindow, importRdfDataFile.leafName, true);
+      this._rdfImportDataSource = new rdfDatasource(this._currentWindow, importRdfDataFile.leafName, true, true);
       var container = this._rdfImportDataSource.getContainer(treeType)
       if (container.GetCount() == 0) continue;
       Log.debug("importing " + treeType + ": " + container.GetCount() + " datasets from " + this._rdfImportDataSource._rdfDataSource.URI);
@@ -1226,13 +1422,18 @@ rdfDatasourceImporter.prototype = {
         var email = this._rdfImportDataSource._getRDFValue(resource, "email")
         var fullName = this._rdfImportDataSource._getRDFValue(resource, "fullName")
         var id = this._rdfImportDataSource._getRDFValue(resource, "id")
+        
         id = id ? relevantIDs[id].id : null
+	var smtp = this._rdfImportDataSource._getRDFValue(resource, "smtp")
+        smtp = (smtp && smtp != DEFAULT_SMTP_TAG) ? relevantSMTPs[smtp].smtp : smtp
+          
         var localIdentityData = new identityData(this._currentWindow, email, fullName, id,
           new identityDataExtras(this._currentWindow, this._rdfImportDataSource, resource))
 
         this._rdfDataSource.updateRDF(name, treeType, localIdentityData, false, null, null, true)
         var resource = this._rdfDataSource._getRDFResourceForVIdentity(name, treeType);
         if (id) this._rdfDataSource._setRDFValue(resource, "id", id); // localIdentityData can only store valid id's, this one might be a temporary invalid id
+        if (smtp) this._rdfDataSource._setRDFValue(resource, "smtp", smtp); // localIdentityData can only store valid smtp's, this one might be a temporary invalid smtp
       }
     }
 
@@ -1242,10 +1443,19 @@ rdfDatasourceImporter.prototype = {
     Log.debug("import: import done.");
 
     Log.debug("import: cleaning ID storages:");
-    this._rdfDataSource = new rdfDatasource(this._currentWindow, this._rdfFileName, true);
 
     this._storeMappedIDs(relevantIDs);
     this._rdfDataSource.searchIdentityMismatch();
+    this._storeMappedSMTPs(relevantSMTPs);
+    this._rdfDataSource.searchSmtpMismatch();
+
+    // extension from version 0.10 on does not use any extra SMTP information anymore
+    // and uses the SMTP-server from base identity instead.
+    // check if any collisions between previously stored SMTP and base identity exists and solve this.
+    Log.debug("import: search SMTP-ID mismatches");
+    this._searchSmtpIdMismatch();
+    
+    this._removeSMTPEntries();
 
     this._rdfDataSource.refreshAccountInfo();
     this._rdfDataSource.clean();
