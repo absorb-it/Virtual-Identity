@@ -5,18 +5,13 @@
   <!-- Thunderbird -->
   <RDF:Description RDF:about="rdf:#$njP94"
                    em:id="{3550f703-e582-4d05-9a08-453d09bdfdc6}"
-                   em:minVersion="5.0"
-                   em:maxVersion="38.0a*" />
-  <!-- Seamonkey -->
-  <RDF:Description RDF:about="rdf:#$rjP94"
-                   em:id="{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}"
-                   em:minVersion="2.1"
-                   em:maxVersion="2.33a*" />
+                   em:minVersion="60"
+                   em:maxVersion="60.*" />
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{dddd428e-5ac8-4a81-9f78-276c734f75b8}"
                    em:name="Virtual Identity"
-                   em:version="0.9.36"
-				   em:type="2"
+                   em:version="0.10"
+                   em:type="2"
                    em:description="Allows you to modify your Identity settings for a single Mail on the fly."
                    em:creator="Rene Ejury"
                    em:homepageURL="http://www.absorb.it/virtual-id"
@@ -24,7 +19,6 @@
                    em:updateKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDY5lTLkMzbwKDrWvC5rAjR9Uiv6THmeOK03lBCsQ89KXYlz8i2CNTgvp44+/kK+73u+ZdduNSID+HGuzfoWy+cJLznFSlKx5DcYWDKKGKhCrXvRZ/nFX1JowmfdR5LskQMLNHMjadUCuS6ka3tX+yWErxOMPTdYmSWazU8tp1fGwIDAQAB"
                    em:optionsURL="chrome://v_identity/content/prefDialog/vI_prefDialog.xul" >
     <em:targetApplication RDF:resource="rdf:#$njP94"/>
-    <em:targetApplication RDF:resource="rdf:#$rjP94"/>
     <em:translator>www.babelzilla.org</em:translator>
     <em:translator>Proyecto Nave</em:translator>
     <em:translator>markh</em:translator>
