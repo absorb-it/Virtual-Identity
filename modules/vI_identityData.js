@@ -166,10 +166,10 @@ identityData.prototype = {
   },
   
   takeOverAvailableData: function(identityData) {
-    if (identityData.email)
+    if (identityData.email) {
       this.email = identityData.email;
-    if (identityData.fullName)
       this.fullName = identityData.fullName;
+    }
     if (identityData.id.key)
       this.id.key = identityData.id.key;
     if (identityData.sideDescription)
