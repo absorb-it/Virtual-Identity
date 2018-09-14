@@ -430,6 +430,7 @@ rdfDatasource.prototype = {
     var mismatchIDs = [];
 
     for (var id in relevantIDs) {
+//       Log.debug(" search relevant id: '" + id + "'");
       var found = false;
       var accounts = getAccountsArray();
       var identity = null;
@@ -438,19 +439,23 @@ rdfDatasource.prototype = {
         let identities = getIdentitiesArray(account);
         for (let i = 0; i < identities.length; i++) {
           identity = identities[i];
+//           Log.debug(" compare id: '" + id + "' with '" + identity.key + "'");
           if (id == identity.key) {
+//             Log.debug(" found!");
             found = true;
             break;
           }
         }
         if (found) break;
       }
+      
       var resource = this._rdfService.GetResource(this._rdfNS + this._rdfNSIdentities + "/" + id);
       var rdfIdentityName = this._getRDFValue(resource, "identityName");
       var rdfEmail = this._getRDFValue(resource, "email");
       var rdfFullName = this._getRDFValue(resource, "fullName")
 
-      if (!found || rdfIdentityName != identity.identityName && rdfEmail != identity.email)
+      if (!found || rdfIdentityName != identity.identityName && rdfEmail != identity.email) {
+//         Log.debug(" found mismatch on id: '" + id + "' label: " + rdfIdentityName);
         mismatchIDs.push({
           oldkey: id,
           label: rdfIdentityName,
@@ -459,6 +464,7 @@ rdfDatasource.prototype = {
           count: relevantIDs[id],
           key: ""
         })
+      }
     }
     if (mismatchIDs.length > 0) {
       Log.debug(" found mismatches on id(s).");
@@ -598,7 +604,10 @@ rdfDatasource.prototype = {
         if (identity.smtpServerKey)
           this._setRDFValue(resource, "smtp", identity.smtpServerKey);
         else
-          this._setRDFValue(resource, "smtp", virtualIdentityExtension.DEFAULT_SMTP_TAG);
+          this._setRDFValue(resource, "smtp", DEFAULT_SMTP_TAG);
+        
+//         Log.debug("id:'" + identity.key +"', identityName='" + identity.identityName + "',
+//              fullName='" + identity.fullName + "', email='" + identity.email);
 
         var position = this._identityContainer.IndexOf(resource); // check for index in new recType
         if (position != -1) this._identityContainer.InsertElementAt(resource, position, false);
@@ -1170,11 +1179,15 @@ rdfDatasourceImporter.prototype = {
     if (typeof (smtpService.servers) == "object") servers = smtpService.servers;
     else servers = smtpService.smtpServers;
 
+//     Log.debug("searching for label='" + label + "' hostname='" + hostname + "' username='" + username + "'");
     while (servers && servers.hasMoreElements()) {
       var server = servers.getNext();
-      if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType)
-        if (label == (server.description ? server.description : server.hostname) || (hostname == server.hostname && username == server.username))
+      if (server instanceof Components.interfaces.nsISmtpServer && !server.redirectorType) {
+//         Log.debug("comparing with for description='" + server.description + "' hostname='" +
+//               server.hostname + "' username='" + server.username + "'");
+        if (label == (server.description ? server.description : server.hostname) && (hostname == server.hostname && username == server.username))
           return server.key;
+      }
     }
     return null;
   },
@@ -1297,7 +1310,7 @@ rdfDatasourceImporter.prototype = {
       
       var id_smtp = AccountManager.getIdentity(id).smtpServerKey;
       if (!id_smtp)
-        id_smtp = MailServices.smtp.defaultServer.key
+        id_smtp = DEFAULT_SMTP_TAG;
       
       if (smtp == id_smtp)
           break;
@@ -1383,7 +1396,6 @@ rdfDatasourceImporter.prototype = {
     }
 
     Log.debug("import: preparation:");
-
     var importRdfDataFile = Components.classes["@mozilla.org/file/local;1"]
       .createInstance(Components.interfaces.nsIFile);
     var tmpfile = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -1443,7 +1455,7 @@ rdfDatasourceImporter.prototype = {
     Log.debug("import: import done.");
 
     Log.debug("import: cleaning ID storages:");
-
+    
     this._storeMappedIDs(relevantIDs);
     this._rdfDataSource.searchIdentityMismatch();
     this._storeMappedSMTPs(relevantSMTPs);
