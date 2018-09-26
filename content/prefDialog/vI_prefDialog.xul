@@ -37,7 +37,6 @@
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/prefPanels.css" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/accountManage.css" type="text/css"?>
-<?xml-stylesheet href="chrome://mozapps/skin/extensions/extensions.css"?>
 <?xml-stylesheet href="chrome://v_identity/skin/v_identity.css" type="text/css"?>
 <?xml-stylesheet href="chrome://messenger/skin/messageHeader.css"?>
 
