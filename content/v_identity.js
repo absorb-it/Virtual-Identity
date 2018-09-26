@@ -134,6 +134,13 @@ virtualIdentityExtension.ns(function () {
           } catch (e) {}
 
           Log.debug("VIdentity_GenericSendMessage");
+          
+          // prevent sending if senders address is empty
+          if (!main.elements.Obj_MsgIdentity.label) {
+            Log.debug("VIdentity_GenericSendMessage: sender empty, aborting");
+            main.elements.Obj_MsgIdentity.blurEvent();
+            return;
+          }
 
           // check via virtual / non-virtual constraints and storage results if mail should be sent
           if (msgType == Ci.nsIMsgCompDeliverMode.Now) {

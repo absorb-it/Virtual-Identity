@@ -313,6 +313,12 @@
 	<method name="blurEvent">
         	<body><![CDATA[
 		virtualIdentityExtension.MyLog.debug("v_identity.xml blurEvent")
+                
+                if (!this.label) { // empty senders field, takeover value from base identity
+                  var identity = this._AccountManager.getIdentity(this.getAttribute("identitykey"));
+                  this.label = identity.fullName + " <" + identity.email + ">";
+                }
+                
 		this.inputEvent(); // timeout might prevent inputEvent to fire before blurEvent
 		
 		this.label = this.identityData.combinedName; // add "<" and ">" to email if required
